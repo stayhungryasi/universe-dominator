@@ -6,6 +6,7 @@
 <title>우주지배자</title>
 <meta name="description" content="글로벌 시가총액 TOP 종목. 매일 자동 갱신.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<script src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <style>
 /* ────────── 라이트 테마 (시안 A · Ivory Editorial) ────────── */
 :root, [data-theme="light"] {
@@ -363,6 +364,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .stock-flag { font-size: 14px; }
+.stock-flag img.emoji, .latent-ticker img.emoji, img.emoji {
+  height: 1.05em;
+  width: 1.4em;
+  margin: 0 2px 0 0;
+  vertical-align: -0.2em;
+  display: inline-block;
+  border-radius: 2px;
+}
 
 .stock-mc { text-align: right; white-space: nowrap; }
 
@@ -732,6 +741,16 @@ regionKeys.forEach((key, idx) => {
   tabs.appendChild(btn);
 });
 
+function parseFlags() {
+  if (window.twemoji) {
+    twemoji.parse(document.body, {
+      folder: 'svg',
+      ext: '.svg',
+      base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.0.2/assets/',
+    });
+  }
+}
+
 function switchRegion(key) {
   document.querySelectorAll('.tab').forEach(t => {
     t.classList.toggle('active', t.dataset.region === key);
@@ -759,6 +778,7 @@ function switchRegion(key) {
       </div>
     `;
   }).join('');
+  parseFlags();
 }
 
 const firstRegion = regionKeys.find(k => DATA.regions[k] && DATA.regions[k].stocks && DATA.regions[k].stocks.length > 0);
@@ -810,6 +830,9 @@ if (DATA.history && DATA.history.length > 0) {
     </div>
   `).join('');
 }
+
+// 모든 렌더링 끝난 후 국기 이모지 → SVG로 변환 (Windows·Linux 호환)
+parseFlags();
 </script>
 </body>
 </html>
