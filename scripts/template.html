@@ -6,7 +6,6 @@
 <title>우주지배자</title>
 <meta name="description" content="글로벌 시가총액 TOP 종목. 매일 자동 갱신.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.5.3/css/flag-icons.min.css">
 <style>
 /* ────────── 라이트 테마 (시안 A · Ivory Editorial) ────────── */
 :root, [data-theme="light"] {
@@ -364,14 +363,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .stock-flag { font-size: 14px; display: inline-flex; align-items: center; }
-.stock-flag .fi, .latent-ticker .fi {
-  width: 1.35em;
+.flag-img {
+  width: 1.4em;
   height: 1em;
-  margin-right: 4px;
-  border-radius: 2px;
+  margin-right: 5px;
   vertical-align: -0.12em;
-  background-size: cover;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+  background: #ddd;
+  display: inline-block;
 }
 
 .stock-mc { text-align: right; white-space: nowrap; }
@@ -742,20 +743,21 @@ regionKeys.forEach((key, idx) => {
   tabs.appendChild(btn);
 });
 
-// 국기 이모지(🇺🇸)를 flag-icons CSS 스팬으로 변환 — Windows에서도 동일하게 표시
+// 국기 이모지(🇺🇸)를 flagcdn.com SVG 이미지로 변환 — 모든 플랫폼 동일 표시
 function flagFromEmoji(emoji) {
   if (!emoji || typeof emoji !== 'string') return '';
   const chars = [...emoji];
-  if (chars.length < 2) return emoji;
+  if (chars.length < 2) return '';
   const c1 = chars[0].codePointAt(0);
   const c2 = chars[1].codePointAt(0);
   // Regional Indicator Symbol Letter A-Z = U+1F1E6 .. U+1F1FF
-  if (c1 < 0x1F1E6 || c1 > 0x1F1FF || c2 < 0x1F1E6 || c2 > 0x1F1FF) return emoji;
+  if (c1 < 0x1F1E6 || c1 > 0x1F1FF || c2 < 0x1F1E6 || c2 > 0x1F1FF) return '';
   const a = String.fromCharCode(97 + (c1 - 0x1F1E6));
   const b = String.fromCharCode(97 + (c2 - 0x1F1E6));
-  return `<span class="fi fi-${a}${b}"></span>`;
+  const code = a + b;
+  return `<img class="flag-img" src="https://flagcdn.com/${code}.svg" alt="${code}" loading="lazy" onerror="this.style.display='none'" />`;
 }
-function parseFlags() { /* flag-icons는 CSS 기반이라 별도 호출 불필요 */ }
+function parseFlags() { /* 이미지 직접 사용이라 별도 호출 불필요 */ }
 
 function switchRegion(key) {
   document.querySelectorAll('.tab').forEach(t => {
