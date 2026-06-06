@@ -621,7 +621,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <span class="brand-tag">@stayhungryasi</span>
     </div>
     <div class="header-right">
-      <span class="update-badge">2026.06.03</span>
+      <span class="update-badge">2026.06.06</span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -644,17 +644,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-label">TOP 20 합계</div>
-      <div class="stat-value">$39.4T</div>
+      <div class="stat-value">$37.5T</div>
       <div class="stat-sub">USD</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">현재 1위</div>
-      <div class="stat-value">$5.11T</div>
-      <div class="stat-sub">NVIDIA</div>
+      <div class="stat-value">$4.97T</div>
+      <div class="stat-sub">NVIDIANVDA</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">조 단위 클럽</div>
-      <div class="stat-value">14<span class="unit">개사</span></div>
+      <div class="stat-value">13<span class="unit">개사</span></div>
       <div class="stat-sub">$1T 이상</div>
     </div>
   </div>
@@ -712,157 +712,888 @@ const DATA = {
       "subtitle": "Global",
       "stocks": [
         {
-          "name": "NVIDIA",
+          "name": "NVIDIANVDA",
           "ticker": "NVDA",
-          "flag": "🇺🇸",
-          "mc": 5114.0
+          "flag": "",
+          "mc": 4967.0
         },
         {
-          "name": "Apple",
+          "name": "AppleAAPL",
           "ticker": "AAPL",
-          "flag": "🇺🇸",
-          "mc": 4583.0
+          "flag": "",
+          "mc": 4514.0
         },
         {
-          "name": "Alphabet",
-          "ticker": "GOOGL",
-          "flag": "🇺🇸",
-          "mc": 4560.0
+          "name": "Alphabet (Google)GOOG",
+          "ticker": "GOOG",
+          "flag": "",
+          "mc": 4449.0
         },
         {
-          "name": "Microsoft",
+          "name": "MicrosoftMSFT",
           "ticker": "MSFT",
-          "flag": "🇺🇸",
-          "mc": 3344.0
+          "flag": "",
+          "mc": 3095.0
         },
         {
-          "name": "Amazon",
+          "name": "AmazonAMZN",
           "ticker": "AMZN",
-          "flag": "🇺🇸",
-          "mc": 2911.0
+          "flag": "",
+          "mc": 2646.0
         },
         {
-          "name": "TSMC",
+          "name": "TSMCTSM",
           "ticker": "TSM",
-          "flag": "🇹🇼",
-          "mc": 2170.0
+          "flag": "",
+          "mc": 2153.0
         },
         {
-          "name": "Broadcom",
+          "name": "BroadcomAVGO",
           "ticker": "AVGO",
-          "flag": "🇺🇸",
-          "mc": 2115.0
+          "flag": "",
+          "mc": 1826.0
         },
         {
-          "name": "Saudi Aramco",
+          "name": "Saudi Aramco2222.SR",
           "ticker": "2222.SR",
-          "flag": "🇸🇦",
-          "mc": 1775.0
+          "flag": "",
+          "mc": 1749.0
         },
         {
-          "name": "Tesla",
-          "ticker": "TSLA",
-          "flag": "🇺🇸",
-          "mc": 1636.0
-        },
-        {
-          "name": "Meta Platforms",
+          "name": "Meta Platforms (Facebook)META",
           "ticker": "META",
-          "flag": "🇺🇸",
-          "mc": 1605.0
+          "flag": "",
+          "mc": 1505.0
         },
         {
-          "name": "삼성전자 Samsung",
+          "name": "TeslaTSLA",
+          "ticker": "TSLA",
+          "flag": "",
+          "mc": 1468.0
+        },
+        {
+          "name": "Samsung005930.KS",
           "ticker": "005930.KS",
-          "flag": "🇰🇷",
-          "mc": 1535.0
+          "flag": "",
+          "mc": 1386.0
         },
         {
-          "name": "SK하이닉스",
-          "ticker": "000660.KS",
-          "flag": "🇰🇷",
-          "mc": 1122.0
+          "name": "Berkshire HathawayBRK-B",
+          "ticker": "BRK-B",
+          "flag": "",
+          "mc": 1052.0
         },
         {
-          "name": "Micron",
-          "ticker": "MU",
-          "flag": "🇺🇸",
-          "mc": 1095.0
-        },
-        {
-          "name": "Berkshire Hathaway",
-          "ticker": "BRK.B",
-          "flag": "🇺🇸",
-          "mc": 1023.0
-        },
-        {
-          "name": "Eli Lilly",
+          "name": "Eli LillyLLY",
           "ticker": "LLY",
-          "flag": "🇺🇸",
-          "mc": 985.37
+          "flag": "",
+          "mc": 1008.0
         },
         {
-          "name": "Walmart",
+          "name": "Micron TechnologyMU",
+          "ticker": "MU",
+          "flag": "",
+          "mc": 974.37
+        },
+        {
+          "name": "WalmartWMT",
           "ticker": "WMT",
-          "flag": "🇺🇸",
-          "mc": 922.64
+          "flag": "",
+          "mc": 946.05
         },
         {
-          "name": "AMD",
-          "ticker": "AMD",
-          "flag": "🇺🇸",
-          "mc": 841.55
+          "name": "SK Hynix000660.KS",
+          "ticker": "000660.KS",
+          "flag": "",
+          "mc": 942.82
         },
         {
-          "name": "JPMorgan Chase",
+          "name": "JPMorgan ChaseJPM",
           "ticker": "JPM",
-          "flag": "🇺🇸",
-          "mc": 802.0
+          "flag": "",
+          "mc": 836.99
         },
         {
-          "name": "Oracle",
-          "ticker": "ORCL",
-          "flag": "🇺🇸",
-          "mc": 649.35
+          "name": "AMDAMD",
+          "ticker": "AMD",
+          "flag": "",
+          "mc": 760.47
         },
         {
-          "name": "ASML",
+          "name": "ASMLASML",
           "ticker": "ASML",
-          "flag": "🇳🇱",
-          "mc": 621.58
+          "flag": "",
+          "mc": 632.75
+        },
+        {
+          "name": "Exxon MobilXOM",
+          "ticker": "XOM",
+          "flag": "",
+          "mc": 621.41
         }
       ]
     },
     "us": {
       "label": "미국",
       "subtitle": "United States",
-      "stocks": []
+      "stocks": [
+        {
+          "name": "NVIDIANVDA",
+          "ticker": "NVDA",
+          "flag": "",
+          "mc": 4967.0
+        },
+        {
+          "name": "AppleAAPL",
+          "ticker": "AAPL",
+          "flag": "",
+          "mc": 4514.0
+        },
+        {
+          "name": "Alphabet (Google)GOOG",
+          "ticker": "GOOG",
+          "flag": "",
+          "mc": 4449.0
+        },
+        {
+          "name": "MicrosoftMSFT",
+          "ticker": "MSFT",
+          "flag": "",
+          "mc": 3095.0
+        },
+        {
+          "name": "AmazonAMZN",
+          "ticker": "AMZN",
+          "flag": "",
+          "mc": 2646.0
+        },
+        {
+          "name": "BroadcomAVGO",
+          "ticker": "AVGO",
+          "flag": "",
+          "mc": 1826.0
+        },
+        {
+          "name": "Meta Platforms (Facebook)META",
+          "ticker": "META",
+          "flag": "",
+          "mc": 1505.0
+        },
+        {
+          "name": "TeslaTSLA",
+          "ticker": "TSLA",
+          "flag": "",
+          "mc": 1468.0
+        },
+        {
+          "name": "Berkshire HathawayBRK-B",
+          "ticker": "BRK-B",
+          "flag": "",
+          "mc": 1052.0
+        },
+        {
+          "name": "Eli LillyLLY",
+          "ticker": "LLY",
+          "flag": "",
+          "mc": 1008.0
+        },
+        {
+          "name": "Micron TechnologyMU",
+          "ticker": "MU",
+          "flag": "",
+          "mc": 974.37
+        },
+        {
+          "name": "WalmartWMT",
+          "ticker": "WMT",
+          "flag": "",
+          "mc": 946.05
+        },
+        {
+          "name": "JPMorgan ChaseJPM",
+          "ticker": "JPM",
+          "flag": "",
+          "mc": 836.99
+        },
+        {
+          "name": "AMDAMD",
+          "ticker": "AMD",
+          "flag": "",
+          "mc": 760.47
+        },
+        {
+          "name": "Exxon MobilXOM",
+          "ticker": "XOM",
+          "flag": "",
+          "mc": 621.41
+        },
+        {
+          "name": "VisaV",
+          "ticker": "V",
+          "flag": "",
+          "mc": 615.34
+        },
+        {
+          "name": "OracleORCL",
+          "ticker": "ORCL",
+          "flag": "",
+          "mc": 614.55
+        },
+        {
+          "name": "Johnson & JohnsonJNJ",
+          "ticker": "JNJ",
+          "flag": "",
+          "mc": 560.32
+        },
+        {
+          "name": "IntelINTC",
+          "ticker": "INTC",
+          "flag": "",
+          "mc": 498.42
+        },
+        {
+          "name": "CiscoCSCO",
+          "ticker": "CSCO",
+          "flag": "",
+          "mc": 479.43
+        }
+      ]
     },
     "china": {
       "label": "중국",
       "subtitle": "Mainland (SH·SZ)",
-      "stocks": []
+      "stocks": [
+        {
+          "name": "TencentTCEHY",
+          "ticker": "TCEHY",
+          "flag": "",
+          "mc": 513.99
+        },
+        {
+          "name": "China Construction Bank601939.SS",
+          "ticker": "601939.SS",
+          "flag": "",
+          "mc": 395.2
+        },
+        {
+          "name": "Agricultural Bank of China601288.SS",
+          "ticker": "601288.SS",
+          "flag": "",
+          "mc": 329.03
+        },
+        {
+          "name": "ICBC1398.HK",
+          "ticker": "1398.HK",
+          "flag": "",
+          "mc": 310.68
+        },
+        {
+          "name": "AlibabaBABA",
+          "ticker": "BABA",
+          "flag": "",
+          "mc": 290.43
+        },
+        {
+          "name": "Bank of China601988.SS",
+          "ticker": "601988.SS",
+          "flag": "",
+          "mc": 287.75
+        },
+        {
+          "name": "CATL300750.SZ",
+          "ticker": "300750.SZ",
+          "flag": "",
+          "mc": 275.61
+        },
+        {
+          "name": "PetroChina0857.HK",
+          "ticker": "0857.HK",
+          "flag": "",
+          "mc": 246.44
+        },
+        {
+          "name": "Kweichow Moutai600519.SS",
+          "ticker": "600519.SS",
+          "flag": "",
+          "mc": 235.2
+        },
+        {
+          "name": "China Mobile0941.HK",
+          "ticker": "0941.HK",
+          "flag": "",
+          "mc": 227.63
+        },
+        {
+          "name": "Foxconn Industrial Internet601138.SS",
+          "ticker": "601138.SS",
+          "flag": "",
+          "mc": 217.24
+        },
+        {
+          "name": "Zhongji Innolight300308.SZ",
+          "ticker": "300308.SZ",
+          "flag": "",
+          "mc": 194.46
+        },
+        {
+          "name": "CNOOC0883.HK",
+          "ticker": "0883.HK",
+          "flag": "",
+          "mc": 161.0
+        },
+        {
+          "name": "China Shenhua Energy601088.SS",
+          "ticker": "601088.SS",
+          "flag": "",
+          "mc": 155.56
+        },
+        {
+          "name": "CM Bank3968.HK",
+          "ticker": "3968.HK",
+          "flag": "",
+          "mc": 155.08
+        },
+        {
+          "name": "Ping An Insurance601318.SS",
+          "ticker": "601318.SS",
+          "flag": "",
+          "mc": 143.14
+        },
+        {
+          "name": "China Life Insurance601628.SS",
+          "ticker": "601628.SS",
+          "flag": "",
+          "mc": 137.12
+        },
+        {
+          "name": "BYD002594.SZ",
+          "ticker": "002594.SZ",
+          "flag": "",
+          "mc": 125.34
+        },
+        {
+          "name": "PDD Holdings (Pinduoduo)PDD",
+          "ticker": "PDD",
+          "flag": "",
+          "mc": 121.08
+        },
+        {
+          "name": "Cambricon Technologies688256.SS",
+          "ticker": "688256.SS",
+          "flag": "",
+          "mc": 120.66
+        }
+      ]
     },
     "hk": {
       "label": "홍콩",
       "subtitle": "HKEX",
-      "stocks": []
+      "stocks": [
+        {
+          "name": "AIA1299.HK",
+          "ticker": "1299.HK",
+          "flag": "",
+          "mc": 97.64
+        },
+        {
+          "name": "Hong Kong Exchanges & Clearing0388.HK",
+          "ticker": "0388.HK",
+          "flag": "",
+          "mc": 63.95
+        },
+        {
+          "name": "Bank of China (Hong Kong)2388.HK",
+          "ticker": "2388.HK",
+          "flag": "",
+          "mc": 63.93
+        },
+        {
+          "name": "Jardine MathesonJ36.SI",
+          "ticker": "J36.SI",
+          "flag": "",
+          "mc": 45.22
+        },
+        {
+          "name": "Sun Hung Kai Properties0016.HK",
+          "ticker": "0016.HK",
+          "flag": "",
+          "mc": 44.71
+        },
+        {
+          "name": "Zijin Gold International Company Limited2259.HK",
+          "ticker": "2259.HK",
+          "flag": "",
+          "mc": 40.06
+        },
+        {
+          "name": "Lenovo0992.HK",
+          "ticker": "0992.HK",
+          "flag": "",
+          "mc": 39.39
+        },
+        {
+          "name": "Swire Pacific0019.HK",
+          "ticker": "0019.HK",
+          "flag": "",
+          "mc": 38.57
+        },
+        {
+          "name": "CK Hutchison Holdings0001.HK",
+          "ticker": "0001.HK",
+          "flag": "",
+          "mc": 33.33
+        },
+        {
+          "name": "China Resources Land1109.HK",
+          "ticker": "1109.HK",
+          "flag": "",
+          "mc": 32.69
+        },
+        {
+          "name": "China Unicom0762.HK",
+          "ticker": "0762.HK",
+          "flag": "",
+          "mc": 28.78
+        },
+        {
+          "name": "Techtronic Industries0669.HK",
+          "ticker": "0669.HK",
+          "flag": "",
+          "mc": 27.32
+        },
+        {
+          "name": "MTR Corporation0066.HK",
+          "ticker": "0066.HK",
+          "flag": "",
+          "mc": 24.95
+        },
+        {
+          "name": "CLP Group0002.HK",
+          "ticker": "0002.HK",
+          "flag": "",
+          "mc": 23.65
+        },
+        {
+          "name": "China Overseas Land & Investment0688.HK",
+          "ticker": "0688.HK",
+          "flag": "",
+          "mc": 21.84
+        },
+        {
+          "name": "CK Asset Holdings1113.HK",
+          "ticker": "1113.HK",
+          "flag": "",
+          "mc": 20.63
+        },
+        {
+          "name": "CK Infrastructure1038.HK",
+          "ticker": "1038.HK",
+          "flag": "",
+          "mc": 18.21
+        },
+        {
+          "name": "Galaxy Entertainment0027.HK",
+          "ticker": "0027.HK",
+          "flag": "",
+          "mc": 17.43
+        },
+        {
+          "name": "Henderson Land Development0012.HK",
+          "ticker": "0012.HK",
+          "flag": "",
+          "mc": 17.21
+        },
+        {
+          "name": "Hong Kong and China Gas0003.HK",
+          "ticker": "0003.HK",
+          "flag": "",
+          "mc": 16.24
+        }
+      ]
     },
     "europe": {
       "label": "유럽",
       "subtitle": "EU + UK + CH",
-      "stocks": []
+      "stocks": [
+        {
+          "name": "ASMLASML",
+          "ticker": "ASML",
+          "flag": "",
+          "mc": 632.75
+        },
+        {
+          "name": "Arm HoldingsARM",
+          "ticker": "ARM",
+          "flag": "",
+          "mc": 366.27
+        },
+        {
+          "name": "RocheRO.SW",
+          "ticker": "RO.SW",
+          "flag": "",
+          "mc": 331.8
+        },
+        {
+          "name": "HSBCHSBC",
+          "ticker": "HSBC",
+          "flag": "",
+          "mc": 311.41
+        },
+        {
+          "name": "AstraZenecaAZN",
+          "ticker": "AZN",
+          "flag": "",
+          "mc": 288.38
+        },
+        {
+          "name": "NovartisNVS",
+          "ticker": "NVS",
+          "flag": "",
+          "mc": 284.61
+        },
+        {
+          "name": "LVMHMC.PA",
+          "ticker": "MC.PA",
+          "flag": "",
+          "mc": 272.77
+        },
+        {
+          "name": "NestléNESN.SW",
+          "ticker": "NESN.SW",
+          "flag": "",
+          "mc": 248.51
+        },
+        {
+          "name": "ShellSHEL",
+          "ticker": "SHEL",
+          "flag": "",
+          "mc": 237.15
+        },
+        {
+          "name": "SiemensSIE.DE",
+          "ticker": "SIE.DE",
+          "flag": "",
+          "mc": 236.28
+        },
+        {
+          "name": "LindeLIN",
+          "ticker": "LIN",
+          "flag": "",
+          "mc": 234.82
+        },
+        {
+          "name": "L'OréalOR.PA",
+          "ticker": "OR.PA",
+          "flag": "",
+          "mc": 230.99
+        },
+        {
+          "name": "SAPSAP",
+          "ticker": "SAP",
+          "flag": "",
+          "mc": 217.83
+        },
+        {
+          "name": "ProsusPRX.AS",
+          "ticker": "PRX.AS",
+          "flag": "",
+          "mc": 202.18
+        },
+        {
+          "name": "InditexITX.MC",
+          "ticker": "ITX.MC",
+          "flag": "",
+          "mc": 197.43
+        },
+        {
+          "name": "TotalEnergiesTTE",
+          "ticker": "TTE",
+          "flag": "",
+          "mc": 197.04
+        },
+        {
+          "name": "HermèsRMS.PA",
+          "ticker": "RMS.PA",
+          "flag": "",
+          "mc": 195.54
+        },
+        {
+          "name": "Novo NordiskNVO",
+          "ticker": "NVO",
+          "flag": "",
+          "mc": 190.3
+        },
+        {
+          "name": "Seagate TechnologySTX",
+          "ticker": "STX",
+          "flag": "",
+          "mc": 190.02
+        },
+        {
+          "name": "ABBABBN.SW",
+          "ticker": "ABBN.SW",
+          "flag": "",
+          "mc": 189.36
+        }
+      ]
     },
     "korea": {
       "label": "한국",
       "subtitle": "KRX",
-      "stocks": []
+      "stocks": [
+        {
+          "name": "Samsung005930.KS",
+          "ticker": "005930.KS",
+          "flag": "",
+          "mc": 1386.0
+        },
+        {
+          "name": "SK Hynix000660.KS",
+          "ticker": "000660.KS",
+          "flag": "",
+          "mc": 942.82
+        },
+        {
+          "name": "Hyundai005380.KS",
+          "ticker": "005380.KS",
+          "flag": "",
+          "mc": 117.6
+        },
+        {
+          "name": "SK Square402340.KS",
+          "ticker": "402340.KS",
+          "flag": "",
+          "mc": 106.39
+        },
+        {
+          "name": "LG Energy Solution373220.KS",
+          "ticker": "373220.KS",
+          "flag": "",
+          "mc": 62.15
+        },
+        {
+          "name": "Samsung C&T Corporation028260.KS",
+          "ticker": "028260.KS",
+          "flag": "",
+          "mc": 48.35
+        },
+        {
+          "name": "Samsung Life Insurance032830.KS",
+          "ticker": "032830.KS",
+          "flag": "",
+          "mc": 47.52
+        },
+        {
+          "name": "HD Hyundai Heavy Industries329180.KS",
+          "ticker": "329180.KS",
+          "flag": "",
+          "mc": 44.71
+        },
+        {
+          "name": "Kia000270.KS",
+          "ticker": "000270.KS",
+          "flag": "",
+          "mc": 40.17
+        },
+        {
+          "name": "Hyundai Mobis012330.KS",
+          "ticker": "012330.KS",
+          "flag": "",
+          "mc": 39.88
+        },
+        {
+          "name": "Samsung Biologics207940.KS",
+          "ticker": "207940.KS",
+          "flag": "",
+          "mc": 39.8
+        },
+        {
+          "name": "Doosan Enerbility034020.KS",
+          "ticker": "034020.KS",
+          "flag": "",
+          "mc": 39.2
+        },
+        {
+          "name": "KB Financial GroupKB",
+          "ticker": "KB",
+          "flag": "",
+          "mc": 38.27
+        },
+        {
+          "name": "LG Electronics066570.KS",
+          "ticker": "066570.KS",
+          "flag": "",
+          "mc": 34.91
+        },
+        {
+          "name": "Hanwha Aerospace012450.KS",
+          "ticker": "012450.KS",
+          "flag": "",
+          "mc": 34.62
+        },
+        {
+          "name": "Shinhan Financial GroupSHG",
+          "ticker": "SHG",
+          "flag": "",
+          "mc": 31.62
+        },
+        {
+          "name": "Samsung Electro-Mechanics009155.KS",
+          "ticker": "009155.KS",
+          "flag": "",
+          "mc": 28.93
+        },
+        {
+          "name": "Celltrion068270.KS",
+          "ticker": "068270.KS",
+          "flag": "",
+          "mc": 25.22
+        },
+        {
+          "name": "Naver035420.KS",
+          "ticker": "035420.KS",
+          "flag": "",
+          "mc": 24.5
+        },
+        {
+          "name": "HD Hyundai Electric267260.KS",
+          "ticker": "267260.KS",
+          "flag": "",
+          "mc": 22.07
+        }
+      ]
     },
     "japan": {
       "label": "일본",
       "subtitle": "TSE",
-      "stocks": []
+      "stocks": [
+        {
+          "name": "KIOXIA Holdings Corporation285A.T",
+          "ticker": "285A.T",
+          "flag": "",
+          "mc": 266.17
+        },
+        {
+          "name": "SoftBank Group Corp.9984.T",
+          "ticker": "9984.T",
+          "flag": "",
+          "mc": 263.98
+        },
+        {
+          "name": "ToyotaTM",
+          "ticker": "TM",
+          "flag": "",
+          "mc": 230.89
+        },
+        {
+          "name": "Mitsubishi UFJ FinancialMUFG",
+          "ticker": "MUFG",
+          "flag": "",
+          "mc": 224.52
+        },
+        {
+          "name": "Tokyo Electron8035.T",
+          "ticker": "8035.T",
+          "flag": "",
+          "mc": 169.4
+        },
+        {
+          "name": "Fast Retailing9983.T",
+          "ticker": "9983.T",
+          "flag": "",
+          "mc": 150.63
+        },
+        {
+          "name": "Hitachi6501.T",
+          "ticker": "6501.T",
+          "flag": "",
+          "mc": 148.88
+        },
+        {
+          "name": "Sumitomo Mitsui Financial GroupSMFG",
+          "ticker": "SMFG",
+          "flag": "",
+          "mc": 147.14
+        },
+        {
+          "name": "SonySONY",
+          "ticker": "SONY",
+          "flag": "",
+          "mc": 128.91
+        },
+        {
+          "name": "Advantest6857.T",
+          "ticker": "6857.T",
+          "flag": "",
+          "mc": 121.1
+        },
+        {
+          "name": "Keyence6861.T",
+          "ticker": "6861.T",
+          "flag": "",
+          "mc": 118.1
+        },
+        {
+          "name": "Mizuho Financial GroupMFG",
+          "ticker": "MFG",
+          "flag": "",
+          "mc": 115.97
+        },
+        {
+          "name": "Mitsubishi Corporation8058.T",
+          "ticker": "8058.T",
+          "flag": "",
+          "mc": 110.97
+        },
+        {
+          "name": "Murata Manufacturing (Murata Seisakusho)6981.T",
+          "ticker": "6981.T",
+          "flag": "",
+          "mc": 110.08
+        },
+        {
+          "name": "Recruit6098.T",
+          "ticker": "6098.T",
+          "flag": "",
+          "mc": 91.97
+        },
+        {
+          "name": "Mitsui Bussan8031.T",
+          "ticker": "8031.T",
+          "flag": "",
+          "mc": 89.08
+        },
+        {
+          "name": "Shin-Etsu Chemical4063.T",
+          "ticker": "4063.T",
+          "flag": "",
+          "mc": 85.12
+        },
+        {
+          "name": "Tokio Marine8766.T",
+          "ticker": "8766.T",
+          "flag": "",
+          "mc": 83.9
+        },
+        {
+          "name": "Itōchū Shōji8001.T",
+          "ticker": "8001.T",
+          "flag": "",
+          "mc": 81.68
+        },
+        {
+          "name": "Mitsubishi Heavy Industries7011.T",
+          "ticker": "7011.T",
+          "flag": "",
+          "mc": 79.43
+        }
+      ]
     }
+  },
+  "meta": {
+    "fetched_at": "2026-06-06T10:39:39.746562+09:00",
+    "fetched_date": "2026-06-06",
+    "errors": []
   },
   "latent": [
     {
@@ -1026,12 +1757,7 @@ const DATA = {
       "mc": 5114,
       "key": "AI 패권 완성"
     }
-  ],
-  "meta": {
-    "fetched_at": "2026-06-03T08:00:00+09:00",
-    "fetched_date": "2026-06-03",
-    "errors": []
-  }
+  ]
 };
 
 const fmtMC = (mc) => {
