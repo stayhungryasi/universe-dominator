@@ -704,7 +704,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   </div>
   <p class="footer-disclaimer">
     본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.<br>
-    Source: companiesmarketcap.com · USD/KRW = 1,480 가정
+    Source: companiesmarketcap.com · USD/KRW <span id="usdKrwDisplay">1,480</span> (오늘 환율)
   </p>
 </footer>
 
@@ -722,8 +722,9 @@ const fmtMC = (mc) => {
   if (mc >= 1000) return '$' + (mc / 1000).toFixed(2) + 'T';
   return '$' + mc.toFixed(0) + 'B';
 };
+const USD_KRW = (DATA.meta && DATA.meta.usd_krw) || 1480;
 const fmtKRW = (mc) => {
-  const krw = mc * 1.48;
+  const krw = mc * (USD_KRW / 1000);
   if (krw >= 1000) return (krw / 1000).toFixed(1) + '천조원';
   return krw.toFixed(0) + '조원';
 };
@@ -841,6 +842,12 @@ if (DATA.history && DATA.history.length > 0) {
 
 // 모든 렌더링 끝난 후 국기 이모지 → SVG로 변환 (Windows·Linux 호환)
 parseFlags();
+
+// 푸터에 오늘 환율 표시
+const rateEl = document.getElementById('usdKrwDisplay');
+if (rateEl) {
+  rateEl.textContent = USD_KRW.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 </script>
 </body>
 </html>
