@@ -175,6 +175,30 @@ def localize_name(name, ticker):
     return KOREAN_NAMES.get(code, name)
 
 
+# ─────────────────── 환율 ───────────────────
+def fetch_exchange_rate():
+    """USD/KRW 환율. frankfurter.app(ECB 데이터) → exchangerate-api 백업.
+    실패 시 None."""
+    apis = [
+        "https://api.frankfurter.app/latest?from=USD&to=KRW",
+        "https://api.exchangerate-api.com/v4/latest/USD",
+    ]
+    for url in apis:
+        try:
+            r = requests.get(url, headers={"User-Agent": UA}, timeout=10)
+            if r.status_code == 200:
+                data = r.json()
+                # frankfurter: data["rates"]["KRW"]
+                # exchangerate-api: data["rates"]["KRW"]
+                rate = data.get("rates", {}).get("KRW")
+                if rate and 1000 < rate < 2500:
+                    print(f"[환율] {rate:.2f} ({url.split('/')[2]})")
+                    return float(rate)
+        except Exception as e:
+            print(f"[환율] {url.split('/')[2]} 실패: {e}", file=sys.stderr)
+    return None
+
+
 # ─────────────────── HTTP fetch ───────────────────
 def fetch(url, retries=4, delay=3):
     last_err = None
@@ -324,6 +348,7 @@ def collect():
         "meta": {
             "fetched_at": TODAY_KST.isoformat(),
             "fetched_date": TODAY_KST.strftime("%Y-%m-%d"),
+            "usd_krw": None,  # main()에서 fetch_exchange_rate() 적용
             "errors": errors,
         },
     }
@@ -348,16 +373,25 @@ def main():
     # 잠재지배자/변천사는 큐레이션 영역 → 보존
     existing_latent = []
     existing_history = []
+    existing_usd_krw = 1480.0
     if DATA_PATH.exists():
         try:
             existing = json.loads(DATA_PATH.read_text(encoding="utf-8"))
             existing_latent = existing.get("latent", [])
             existing_history = existing.get("history", [])
+            existing_usd_krw = existing.get("meta", {}).get("usd_krw") or 1480.0
         except Exception:
             pass
     
     new_data["latent"] = existing_latent
     new_data["history"] = existing_history
+    
+    # 환율: 실시간 fetch → 실패 시 직전 값 → 그래도 없으면 1480
+    rate = fetch_exchange_rate()
+    if rate is None:
+        rate = existing_usd_krw
+        print(f"[환율] fetch 실패, 직전 값 사용: {rate}")
+    new_data["meta"]["usd_krw"] = round(rate, 2)
     
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     DATA_PATH.write_text(
