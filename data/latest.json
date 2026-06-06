@@ -1,0 +1,65 @@
+{
+  "regions": {
+    "earth": {
+      "label": "지구",
+      "subtitle": "Global",
+      "stocks": [
+        {"name": "NVIDIA", "ticker": "NVDA", "flag": "🇺🇸", "mc": 5114.0},
+        {"name": "Apple", "ticker": "AAPL", "flag": "🇺🇸", "mc": 4583.0},
+        {"name": "Alphabet", "ticker": "GOOGL", "flag": "🇺🇸", "mc": 4560.0},
+        {"name": "Microsoft", "ticker": "MSFT", "flag": "🇺🇸", "mc": 3344.0},
+        {"name": "Amazon", "ticker": "AMZN", "flag": "🇺🇸", "mc": 2911.0},
+        {"name": "TSMC", "ticker": "TSM", "flag": "🇹🇼", "mc": 2170.0},
+        {"name": "Broadcom", "ticker": "AVGO", "flag": "🇺🇸", "mc": 2115.0},
+        {"name": "Saudi Aramco", "ticker": "2222.SR", "flag": "🇸🇦", "mc": 1775.0},
+        {"name": "Tesla", "ticker": "TSLA", "flag": "🇺🇸", "mc": 1636.0},
+        {"name": "Meta Platforms", "ticker": "META", "flag": "🇺🇸", "mc": 1605.0},
+        {"name": "삼성전자 Samsung", "ticker": "005930.KS", "flag": "🇰🇷", "mc": 1535.0},
+        {"name": "SK하이닉스", "ticker": "000660.KS", "flag": "🇰🇷", "mc": 1122.0},
+        {"name": "Micron", "ticker": "MU", "flag": "🇺🇸", "mc": 1095.0},
+        {"name": "Berkshire Hathaway", "ticker": "BRK.B", "flag": "🇺🇸", "mc": 1023.0},
+        {"name": "Eli Lilly", "ticker": "LLY", "flag": "🇺🇸", "mc": 985.37},
+        {"name": "Walmart", "ticker": "WMT", "flag": "🇺🇸", "mc": 922.64},
+        {"name": "AMD", "ticker": "AMD", "flag": "🇺🇸", "mc": 841.55},
+        {"name": "JPMorgan Chase", "ticker": "JPM", "flag": "🇺🇸", "mc": 802.0},
+        {"name": "Oracle", "ticker": "ORCL", "flag": "🇺🇸", "mc": 649.35},
+        {"name": "ASML", "ticker": "ASML", "flag": "🇳🇱", "mc": 621.58}
+      ]
+    },
+    "us": {"label": "미국", "subtitle": "United States", "stocks": []},
+    "china": {"label": "중국", "subtitle": "Mainland (SH·SZ)", "stocks": []},
+    "hk": {"label": "홍콩", "subtitle": "HKEX", "stocks": []},
+    "europe": {"label": "유럽", "subtitle": "EU + UK + CH", "stocks": []},
+    "korea": {"label": "한국", "subtitle": "KRX", "stocks": []},
+    "japan": {"label": "일본", "subtitle": "TSE", "stocks": []}
+  },
+  "latent": [
+    {"rank": 33, "ticker": "ARM", "name": "Arm Holdings", "country": "🇬🇧", "mc": 377.34, "momentum_1y": 103, "theme": "AI 칩 CPU IP", "story": "모든 AI 칩에 들어가는 ARM 아키텍처 — SoftBank가 88% 보유. 1년 새 약 2배 상승."},
+    {"rank": 34, "ticker": "PLTR", "name": "Palantir", "country": "🇺🇸", "mc": 375.27, "momentum_1y": 158, "theme": "AI 소프트웨어", "story": "AIP가 엔터프라이즈 AI 표준으로 자리잡음. 정부·방산 핵심 공급사."},
+    {"rank": 48, "ticker": "9984", "name": "SoftBank Group", "country": "🇯🇵", "mc": 307.32, "momentum_1y": 89, "theme": "AI 투자 컨글로머릿", "story": "Arm + OpenAI($30B+) + Stargate($500B) 익스포저. Arm 가치 급등에 직접 수혜."},
+    {"rank": 60, "ticker": "DELL", "name": "Dell Technologies", "country": "🇺🇸", "mc": 273.40, "momentum_1y": 62, "is_new": true, "theme": "AI 서버 OEM", "story": "★ 신규 — NVIDIA Blackwell 서버 공급망 핵심. 1일 +33% 폭등."},
+    {"rank": 65, "ticker": "GEV", "name": "GE Vernova", "country": "🇺🇸", "mc": 260.20, "momentum_1y": 145, "theme": "AI 전력 인프라", "story": "데이터센터 가스터빈·전력망. 트럼프 행정부 친에너지 정책 수혜."},
+    {"rank": 66, "ticker": "MRVL", "name": "Marvell Technology", "country": "🇺🇸", "mc": 254.60, "momentum_1y": 87, "is_new": true, "is_star": true, "theme": "AI 광 인터커넥트", "story": "★ 신규 — NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (6/2 Computex). NVIDIA $2B 직접 투자, 1일 +42% 폭등."},
+    {"rank": 92, "ticker": "ANET", "name": "Arista Networks", "country": "🇺🇸", "mc": 200.79, "momentum_1y": 120, "theme": "AI 클러스터 네트워킹", "story": "AI 데이터센터 네트워크 표준. Cisco를 추월."},
+    {"rank": 110, "ticker": "VRT", "name": "Vertiv Holdings", "country": "🇺🇸", "mc": 142.11, "momentum_1y": 270, "theme": "데이터센터 쿨링", "story": "1Y +270%. 2026.3 S&P 500 편입. AI 액침·공랭 솔루션 1위."},
+    {"rank": 165, "ticker": "688256", "name": "Cambricon", "country": "🇨🇳", "mc": 68.75, "momentum_1y": 295, "theme": "중국 AI 칩", "story": "\"중국의 NVIDIA\". 1Y +295%, Q1 매출 +160%. 중국 자립화 수혜."}
+  ],
+  "history": [
+    {"year": 2016, "top": "Apple", "mc": 604, "key": "스마트폰 시대 정점"},
+    {"year": 2017, "top": "Apple", "mc": 754, "key": "FAANG 시대"},
+    {"year": 2018, "top": "Apple", "mc": 851, "key": "최초 $1T 돌파"},
+    {"year": 2019, "top": "Microsoft", "mc": 905, "key": "클라우드 시대 개막"},
+    {"year": 2020, "top": "Saudi Aramco", "mc": 1601, "key": "IPO 후 1위 등극"},
+    {"year": 2021, "top": "Apple", "mc": 2051, "key": "재탈환, Tesla 부상"},
+    {"year": 2022, "top": "Apple", "mc": 2850, "key": "역대 최고치"},
+    {"year": 2023, "top": "Apple", "mc": 2609, "key": "AI 1차 신호"},
+    {"year": 2024, "top": "Microsoft", "mc": 3126, "key": "NVIDIA TOP 3 진입"},
+    {"year": 2025, "top": "Apple", "mc": 3337, "key": "AI 1년 차"},
+    {"year": 2026, "top": "NVIDIA", "mc": 5114, "key": "AI 패권 완성"}
+  ],
+  "meta": {
+    "fetched_at": "2026-06-03T08:00:00+09:00",
+    "fetched_date": "2026-06-03",
+    "errors": []
+  }
+}
