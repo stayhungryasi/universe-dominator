@@ -632,7 +632,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <span class="brand-tag">@stayhungryasi</span>
     </div>
     <div class="header-right">
-      <span class="update-badge">2026.06.06</span>
+      <span class="update-badge">2026.06.07</span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -704,7 +704,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   </div>
   <p class="footer-disclaimer">
     본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.<br>
-    Source: companiesmarketcap.com · USD/KRW = 1,480 가정
+    Source: companiesmarketcap.com · USD/KRW <span id="usdKrwDisplay">1,480</span> (오늘 환율)
   </p>
 </footer>
 
@@ -783,7 +783,7 @@ const DATA = {
           "mc": 1468.0
         },
         {
-          "name": "Samsung",
+          "name": "삼성전자",
           "ticker": "005930.KS",
           "flag": "🇰🇷",
           "mc": 1386.0
@@ -813,7 +813,7 @@ const DATA = {
           "mc": 946.05
         },
         {
-          "name": "SK Hynix",
+          "name": "SK하이닉스",
           "ticker": "000660.KS",
           "flag": "🇰🇷",
           "mc": 942.82
@@ -975,73 +975,73 @@ const DATA = {
       "subtitle": "KRX",
       "stocks": [
         {
-          "name": "Samsung",
+          "name": "삼성전자",
           "ticker": "005930.KS",
           "flag": "🇰🇷",
           "mc": 1386.0
         },
         {
-          "name": "SK Hynix",
+          "name": "SK하이닉스",
           "ticker": "000660.KS",
           "flag": "🇰🇷",
           "mc": 942.82
         },
         {
-          "name": "Hyundai",
+          "name": "현대차",
           "ticker": "005380.KS",
           "flag": "🇰🇷",
           "mc": 117.6
         },
         {
-          "name": "SK Square",
+          "name": "SK스퀘어",
           "ticker": "402340.KS",
           "flag": "🇰🇷",
           "mc": 106.39
         },
         {
-          "name": "LG Energy Solution",
+          "name": "LG에너지솔루션",
           "ticker": "373220.KS",
           "flag": "🇰🇷",
           "mc": 62.15
         },
         {
-          "name": "Samsung C&T Corporation",
+          "name": "삼성물산",
           "ticker": "028260.KS",
           "flag": "🇰🇷",
           "mc": 48.35
         },
         {
-          "name": "Samsung Life Insurance",
+          "name": "삼성생명",
           "ticker": "032830.KS",
           "flag": "🇰🇷",
           "mc": 47.52
         },
         {
-          "name": "HD Hyundai Heavy Industries",
+          "name": "HD현대중공업",
           "ticker": "329180.KS",
           "flag": "🇰🇷",
           "mc": 44.71
         },
         {
-          "name": "Kia",
+          "name": "기아",
           "ticker": "000270.KS",
           "flag": "🇰🇷",
           "mc": 40.17
         },
         {
-          "name": "Hyundai Mobis",
+          "name": "현대모비스",
           "ticker": "012330.KS",
           "flag": "🇰🇷",
           "mc": 39.88
         },
         {
-          "name": "Samsung Biologics",
+          "name": "삼성바이오로직스",
           "ticker": "207940.KS",
           "flag": "🇰🇷",
           "mc": 39.8
         },
         {
-          "name": "Doosan Enerbility",
+          "name": "두산에너빌리티",
           "ticker": "034020.KS",
           "flag": "🇰🇷",
           "mc": 39.2
@@ -1053,13 +1053,13 @@ const DATA = {
           "mc": 38.27
         },
         {
-          "name": "LG Electronics",
+          "name": "LG전자",
           "ticker": "066570.KS",
           "flag": "🇰🇷",
           "mc": 34.91
         },
         {
-          "name": "Hanwha Aerospace",
+          "name": "한화에어로스페이스",
           "ticker": "012450.KS",
           "flag": "🇰🇷",
           "mc": 34.62
@@ -1077,19 +1077,19 @@ const DATA = {
           "mc": 28.93
         },
         {
-          "name": "Celltrion",
+          "name": "셀트리온",
           "ticker": "068270.KS",
           "flag": "🇰🇷",
           "mc": 25.22
         },
         {
-          "name": "Naver",
+          "name": "NAVER",
           "ticker": "035420.KS",
           "flag": "🇰🇷",
           "mc": 24.5
         },
         {
-          "name": "HD Hyundai Electric",
+          "name": "HD현대일렉트릭",
           "ticker": "267260.KS",
           "flag": "🇰🇷",
           "mc": 22.07
@@ -1602,8 +1602,9 @@ const DATA = {
     }
   },
   "meta": {
-    "fetched_at": "2026-06-06T19:33:24.101486+09:00",
-    "fetched_date": "2026-06-06",
+    "fetched_at": "2026-06-07T11:06:59.237240+09:00",
+    "fetched_date": "2026-06-07",
+    "usd_krw": 1540.93,
     "errors": []
   },
   "latent": [
@@ -1775,8 +1776,9 @@ const fmtMC = (mc) => {
   if (mc >= 1000) return '$' + (mc / 1000).toFixed(2) + 'T';
   return '$' + mc.toFixed(0) + 'B';
 };
+const USD_KRW = (DATA.meta && DATA.meta.usd_krw) || 1480;
 const fmtKRW = (mc) => {
-  const krw = mc * 1.48;
+  const krw = mc * (USD_KRW / 1000);
   if (krw >= 1000) return (krw / 1000).toFixed(1) + '천조원';
   return krw.toFixed(0) + '조원';
 };
@@ -1894,6 +1896,12 @@ if (DATA.history && DATA.history.length > 0) {
 
 // 모든 렌더링 끝난 후 국기 이모지 → SVG로 변환 (Windows·Linux 호환)
 parseFlags();
+
+// 푸터에 오늘 환율 표시
+const rateEl = document.getElementById('usdKrwDisplay');
+if (rateEl) {
+  rateEl.textContent = USD_KRW.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 </script>
 </body>
 </html>
