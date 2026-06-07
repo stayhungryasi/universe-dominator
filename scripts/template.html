@@ -140,6 +140,27 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   50% { opacity: 0.4; }
 }
 
+.rate-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.rate-badge #usdKrwDisplay {
+  color: var(--text);
+  font-weight: 800;
+}
+
 /* ────────── THEME TOGGLE ────────── */
 .theme-toggle {
   width: 36px;
@@ -604,9 +625,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin: 0 auto;
 }
 
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; gap: 8px; }
+  .rate-badge { font-size: 11px; padding: 5px 10px; }
+  .update-badge { font-size: 11px; padding: 5px 10px; }
+}
+
 @media (max-width: 380px) {
   .brand-tag { display: none; }
-  .update-badge { padding: 5px 10px; font-size: 11px; }
+  .update-badge::before { display: none; }
 }
 </style>
 
@@ -633,6 +660,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
     <div class="header-right">
       <span class="update-badge">{{FETCHED_DATE}}</span>
+      <span class="rate-badge">USD/KRW <span id="usdKrwDisplay">—</span></span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -704,7 +732,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   </div>
   <p class="footer-disclaimer">
     본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.<br>
-    Source: companiesmarketcap.com · USD/KRW <span id="usdKrwDisplay">1,480</span> (오늘 환율)
+    Source: companiesmarketcap.com · 매일 08:00 KST 자동 갱신
   </p>
 </footer>
 
