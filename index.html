@@ -154,6 +154,31 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.rate-badge:hover {
+  border-color: var(--gold);
+  background: var(--bg-card);
+}
+
+.rate-badge:hover #usdKrwDisplay,
+.rate-badge:hover .rate-badge-arrow {
+  color: var(--gold);
+}
+
+.rate-badge-arrow {
+  font-size: 10px;
+  margin-left: 2px;
+  color: var(--text-muted);
+  opacity: 0.7;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.rate-badge:hover .rate-badge-arrow {
+  opacity: 1;
 }
 
 .rate-badge #usdKrwDisplay {
@@ -616,13 +641,66 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 
-.footer-disclaimer {
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--gold); }
+
+.disclaimer-box {
+  margin: 28px auto 14px;
+  padding: 18px 22px;
+  max-width: 640px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--gold);
+  border-radius: 3px;
+  text-align: left;
+}
+
+.disclaimer-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.disclaimer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   font-size: 12px;
-  font-weight: 500;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.disclaimer-list li {
+  padding-left: 12px;
+  position: relative;
+}
+
+.disclaimer-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  opacity: 0.55;
+}
+
+.footer-source {
+  font-size: 11px;
   color: var(--text-muted);
-  line-height: 1.65;
-  max-width: 460px;
-  margin: 0 auto;
+  margin: 12px 0 0;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 480px) {
+  .disclaimer-box { padding: 14px 16px; max-width: 100%; }
+  .disclaimer-list { font-size: 11.5px; line-height: 1.7; }
 }
 
 @media (max-width: 480px) {
@@ -660,7 +738,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
     <div class="header-right">
       <span class="update-badge">2026.06.14</span>
-      <span class="rate-badge">USD/KRW <span id="usdKrwDisplay">—</span></span>
+      <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW" 
+         target="_blank" rel="noopener" class="rate-badge" 
+         title="네이버 실시간 환율 보기">
+        USD/KRW <span id="usdKrwDisplay">—</span>
+        <span class="rate-badge-arrow" aria-hidden="true">↗</span>
+      </a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -700,8 +783,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </section>
 
 <section class="section">
-  <h2 class="section-title">권역별 TOP 20</h2>
-  <p class="section-desc">탭을 눌러서 권역 전환</p>
+  <h2 class="section-title">TOP 20</h2>
+  <p class="section-desc">탭을 눌러서 지역별 전환 가능</p>
   <div class="tabs-wrap">
     <div class="tabs-scroll">
       <div class="tabs" id="regionTabs"></div>
@@ -728,11 +811,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <div class="footer-brand">
     <span>✨ Stay hungry. ASI</span>
     <span class="footer-divider">·</span>
-    <span>하나증권 The Centerfield W · 김광모 부장</span>
+    <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
   </div>
-  <p class="footer-disclaimer">
-    본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.<br>
-    Source: companiesmarketcap.com · 매일 08:00 KST 자동 갱신
+  
+  <div class="disclaimer-box">
+    <div class="disclaimer-label">Disclaimer</div>
+    <ul class="disclaimer-list">
+      <li>본 자료는 글로벌 상장기업의 시가총액 정보 제공을 목적으로 합니다.</li>
+      <li>특정 종목의 매수·매도 권유 또는 투자 자문·중개·알선에 해당하지 않습니다.</li>
+      <li>표시된 데이터는 외부 출처를 인용한 것으로, 정확성·완전성·시의성을 보증하지 않습니다.</li>
+      <li>환율 및 시가총액은 시점에 따라 변동될 수 있습니다.</li>
+      <li>모든 투자 판단과 그에 따른 손익은 전적으로 투자자 본인에게 귀속됩니다.</li>
+    </ul>
+  </div>
+  
+  <p class="footer-source">
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 매일 08:00 KST 자동 갱신
   </p>
 </footer>
 
@@ -1630,7 +1724,7 @@ const DATA = {
     }
   },
   "meta": {
-    "fetched_at": "2026-06-14T19:38:59.662532+09:00",
+    "fetched_at": "2026-06-14T22:25:32.585836+09:00",
     "fetched_date": "2026-06-14",
     "usd_krw": 1520.21,
     "errors": []
