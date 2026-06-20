@@ -1,0 +1,40 @@
+{
+  "page_title": "우주지배자 변동 이력",
+  "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
+  "entries": [
+    {
+      "date": "2026.06.03",
+      "period": "5.24 → 6.3 (10일간)",
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주요 변동 사항",
+          "items": [
+            "<strong>삼성전자 · SK하이닉스</strong> 글로벌 TOP 20 진입 (#11, #12) — 메모리 슈퍼사이클 가속",
+            "<strong>Micron</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$1.09T, 13위</span>) — HBM 수혜",
+            "<strong>AMD</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$842B, 17위</span>) — MI400 호조",
+            "<strong>Oracle</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$649B, 19위</span>) — OCI / Stargate",
+            "<strong>Cisco</strong> 미국 TOP 20 복귀 (Costco 탈락) — AI 네트워킹",
+            "유럽: ASML <span class='em-up'>+22% ($621B)</span>, Arm Holdings 두 배 ($377B) — AI 칩 IP 강세",
+            "일본: SoftBank <span class='em-up'>+140% ($307B)</span> — Arm 보유분 가치 급등",
+            "중국: CITIC Bank가 興業銀行(Industrial Bank)을 제치고 TOP 20 진입",
+            "TSMC 글로벌 6위로 약진 (<span class='em-up'>$2.17T, +14%</span>) — Broadcom과 격차 좁힘"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {"k": "USD/KRW", "v": "1,480 (6/3 기준, 30일 평균)"},
+            {"k": "환산식", "v": "시총(조원) = 시총(USD bn) × 1.48"}
+          ]
+        },
+        {
+          "type": "prose",
+          "label": "데이터 보정 안내",
+          "text": "한국·일본·중국·홍콩 권역 일부 종목 시총은 companiesmarketcap.com의 country-page 자료를 사용. 동일 종목이 글로벌 페이지에서 다른 값을 보이는 경우(예: 삼성전자, SoftBank) 사유는 데이터 동기화 시점 차이로 추정됨."
+        }
+      ]
+    }
+  ]
+}
