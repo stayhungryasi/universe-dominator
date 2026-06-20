@@ -151,6 +151,19 @@ body {
   font-variant-numeric: tabular-nums;
   margin-bottom: 4px;
 }
+.entry-auto-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 7px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  vertical-align: middle;
+}
 .entry-period {
   font-size: 11px;
   font-weight: 600;
@@ -438,7 +451,7 @@ function renderBlock(block) {
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
-      <div class="entry-date">${e.date || ''}</div>
+      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">자동</span>' : ''}</div>
       ${e.period ? `<div class="entry-period">${e.period}</div>` : ''}
       ${(e.blocks || []).map(renderBlock).join('')}
     </div>
