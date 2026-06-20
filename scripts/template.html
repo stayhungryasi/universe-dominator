@@ -884,91 +884,107 @@ regionKeys.forEach((key, idx) => {
 // 특정 티커는 개별 URL 매핑 (표준 패턴 예외)
 const STOCK_URL_OVERRIDES = {
   // Alphabet (Google) — 항상 Class A (GOOGL) 페이지로 통일
-  'GOOG':    'https://m.stock.naver.com/worldstock/stock/GOOGL.O/total',
-  'GOOGL':   'https://m.stock.naver.com/worldstock/stock/GOOGL.O/total',
-  // Berkshire Hathaway — Naver는 BRKa/BRKb 형식 사용 (점 없음, 소문자)
-  'BRK.A':   'https://m.stock.naver.com/worldstock/stock/BRKa/total',
-  'BRK-A':   'https://m.stock.naver.com/worldstock/stock/BRKa/total',
-  'BRKA':    'https://m.stock.naver.com/worldstock/stock/BRKa/total',
-  'BRK.B':   'https://m.stock.naver.com/worldstock/stock/BRKb/total',
-  'BRK-B':   'https://m.stock.naver.com/worldstock/stock/BRKb/total',
-  'BRKB':    'https://m.stock.naver.com/worldstock/stock/BRKb/total',
-  // Saudi Aramco (2222.SR) — Naver 미지원 → Investing.com 폴백
-  '2222.SR': 'https://kr.investing.com/equities/saudi-aramco',
-  '2222':    'https://kr.investing.com/equities/saudi-aramco',
-  'ARAMCO':  'https://kr.investing.com/equities/saudi-aramco',
+  'GOOG':    'https://www.google.com/finance/quote/GOOGL:NASDAQ',
+  'GOOGL':   'https://www.google.com/finance/quote/GOOGL:NASDAQ',
+  // Berkshire Hathaway — Google Finance는 점 표기 사용
+  'BRK.A':   'https://www.google.com/finance/quote/BRK.A:NYSE',
+  'BRK-A':   'https://www.google.com/finance/quote/BRK.A:NYSE',
+  'BRKA':    'https://www.google.com/finance/quote/BRK.A:NYSE',
+  'BRK.B':   'https://www.google.com/finance/quote/BRK.B:NYSE',
+  'BRK-B':   'https://www.google.com/finance/quote/BRK.B:NYSE',
+  'BRKB':    'https://www.google.com/finance/quote/BRK.B:NYSE',
 };
 
-// 미국 종목 거래소 매핑 (Naver: NASDAQ=.O, NYSE=.K)
+// 미국 종목 거래소 매핑 (NASDAQ vs NYSE 판별용)
 const US_EXCHANGE = {
-  // NASDAQ (.O)
-  NVDA:'O', AAPL:'O', MSFT:'O', GOOGL:'O', GOOG:'O', AMZN:'O',
-  META:'O', TSLA:'O', AVGO:'O', ASML:'O', AMD:'O', INTC:'O',
-  MU:'O', ADBE:'O', NFLX:'O', COST:'O', PEP:'O', CSCO:'O',
-  CMCSA:'O', TMUS:'O', TXN:'O', QCOM:'O', BKNG:'O', AMAT:'O',
-  LRCX:'O', KLAC:'O', PYPL:'O', PLTR:'O', ANET:'O', MRVL:'O',
-  ARM:'O', AMGN:'O', GILD:'O', INTU:'O', REGN:'O', SBUX:'O',
-  ABNB:'O', MDLZ:'O', ISRG:'O', ADP:'O', CDNS:'O', SNPS:'O',
-  PANW:'O', FTNT:'O', VRTX:'O', MAR:'O', MELI:'O', AZN:'O',
-  NVO:'O', WBA:'O', BIIB:'O', ATVI:'O', EBAY:'O', ROKU:'O',
-  // NYSE (.K)
-  JPM:'K', V:'K', WMT:'K', UNH:'K', JNJ:'K', XOM:'K', PG:'K',
-  MA:'K', HD:'K', CVX:'K', KO:'K', MRK:'K', ABBV:'K', LLY:'K',
-  ORCL:'K', BAC:'K', TM:'K', TSM:'K', ACN:'K', DIS:'K', NKE:'K',
-  CRM:'K', MCD:'K', IBM:'K', BA:'K', CAT:'K', GS:'K', AXP:'K',
-  BLK:'K', MS:'K', C:'K', WFC:'K', NVS:'K', SHEL:'K', BP:'K',
-  UL:'K', DEO:'K', HSBC:'K', RY:'K', TD:'K', DELL:'K', VRT:'K',
-  GEV:'K', F:'K', GM:'K', PFE:'K', T:'K', PM:'K', LIN:'K',
-  RTX:'K', SPGI:'K', NOW:'K', INTC:'K', UPS:'K', LMT:'K',
+  // NASDAQ
+  NVDA:'NASDAQ', AAPL:'NASDAQ', MSFT:'NASDAQ', GOOGL:'NASDAQ', GOOG:'NASDAQ',
+  AMZN:'NASDAQ', META:'NASDAQ', TSLA:'NASDAQ', AVGO:'NASDAQ', ASML:'NASDAQ',
+  AMD:'NASDAQ', INTC:'NASDAQ', MU:'NASDAQ', ADBE:'NASDAQ', NFLX:'NASDAQ',
+  COST:'NASDAQ', PEP:'NASDAQ', CSCO:'NASDAQ', CMCSA:'NASDAQ', TMUS:'NASDAQ',
+  TXN:'NASDAQ', QCOM:'NASDAQ', BKNG:'NASDAQ', AMAT:'NASDAQ', LRCX:'NASDAQ',
+  KLAC:'NASDAQ', PYPL:'NASDAQ', PLTR:'NASDAQ', ANET:'NASDAQ', MRVL:'NASDAQ',
+  ARM:'NASDAQ', AMGN:'NASDAQ', GILD:'NASDAQ', INTU:'NASDAQ', REGN:'NASDAQ',
+  SBUX:'NASDAQ', ABNB:'NASDAQ', MDLZ:'NASDAQ', ISRG:'NASDAQ', ADP:'NASDAQ',
+  CDNS:'NASDAQ', SNPS:'NASDAQ', PANW:'NASDAQ', FTNT:'NASDAQ', VRTX:'NASDAQ',
+  MAR:'NASDAQ', MELI:'NASDAQ', AZN:'NASDAQ', NVO:'NASDAQ', WBA:'NASDAQ',
+  BIIB:'NASDAQ', EBAY:'NASDAQ', ROKU:'NASDAQ',
+  // NYSE
+  JPM:'NYSE', V:'NYSE', WMT:'NYSE', UNH:'NYSE', JNJ:'NYSE', XOM:'NYSE',
+  PG:'NYSE', MA:'NYSE', HD:'NYSE', CVX:'NYSE', KO:'NYSE', MRK:'NYSE',
+  ABBV:'NYSE', LLY:'NYSE', ORCL:'NYSE', BAC:'NYSE', TM:'NYSE', TSM:'NYSE',
+  ACN:'NYSE', DIS:'NYSE', NKE:'NYSE', CRM:'NYSE', MCD:'NYSE', IBM:'NYSE',
+  BA:'NYSE', CAT:'NYSE', GS:'NYSE', AXP:'NYSE', BLK:'NYSE', MS:'NYSE',
+  C:'NYSE', WFC:'NYSE', NVS:'NYSE', SHEL:'NYSE', BP:'NYSE', UL:'NYSE',
+  DEO:'NYSE', HSBC:'NYSE', RY:'NYSE', TD:'NYSE', DELL:'NYSE', VRT:'NYSE',
+  GEV:'NYSE', F:'NYSE', GM:'NYSE', PFE:'NYSE', T:'NYSE', PM:'NYSE',
+  LIN:'NYSE', RTX:'NYSE', SPGI:'NYSE', NOW:'NYSE', UPS:'NYSE', LMT:'NYSE',
   // Korean ADRs (한국 회사인데 NYSE 상장)
-  KB:'K', SHG:'K', KEP:'K', LPL:'K', PKX:'K', WF:'K', SKM:'K',
+  KB:'NYSE', SHG:'NYSE', KEP:'NYSE', LPL:'NYSE', PKX:'NYSE', WF:'NYSE', SKM:'NYSE',
 };
 
-// 거래소 접미사 → Naver worldstock 접미사 변환
-const FOREIGN_SUFFIX_MAP = {
-  'T':'T', 'HK':'HK', 'SS':'SS', 'SZ':'SZ',
-  'L':'L', 'PA':'PA', 'DE':'DE', 'SW':'SW',
-  'AS':'AS', 'MI':'MI', 'MC':'MC', 'CO':'CO',
-  'ST':'ST', 'OL':'OL', 'SR':'SR',
-  'TW':'TWO', 'TWO':'TWO',  // 대만은 .TWO
-  'AX':'AX', 'TO':'TO',
+// 거래소 접미사 → Google Finance 거래소 코드
+const GOOGLE_EXCHANGE = {
+  'T':  'TYO',      // 일본 도쿄
+  'HK': 'HKG',      // 홍콩
+  'SS': 'SHA',      // 상하이
+  'SZ': 'SHE',      // 선전
+  'L':  'LON',      // 런던
+  'PA': 'EPA',      // 파리 (Euronext)
+  'DE': 'ETR',      // 프랑크푸르트 (Xetra)
+  'F':  'FRA',      // 프랑크푸르트
+  'SW': 'SWX',      // 스위스
+  'AS': 'AMS',      // 암스테르담
+  'MI': 'BIT',      // 밀라노
+  'MC': 'BME',      // 마드리드
+  'CO': 'CPH',      // 코펜하겐
+  'ST': 'STO',      // 스톡홀름
+  'OL': 'OSL',      // 오슬로
+  'TW': 'TPE',      // 대만 타이베이
+  'SR': 'TADAWUL',  // 사우디
+  'AX': 'ASX',      // 호주
+  'TO': 'TSE',      // 토론토
+  'SA': 'BVMF',     // 브라질
+  'MX': 'BMV',      // 멕시코
 };
 
-// 네이버 종목 페이지 URL 생성
-function naverStockUrl(ticker, name) {
+// 종목 페이지 URL 생성 (한국=Naver, 글로벌=Google Finance 하이브리드)
+function stockUrl(ticker, name) {
   const t = (ticker || '').trim();
-  
-  // 0) 특수 케이스 — 개별 매핑 (Berkshire, Saudi Aramco 등)
   const tUpper = t.toUpperCase();
+  
+  // 0) 특수 케이스 — 개별 매핑 (Alphabet, Berkshire 등)
   if (tUpper in STOCK_URL_OVERRIDES) {
     return STOCK_URL_OVERRIDES[tUpper];
   }
   
-  // 1) 한국 종목 (.KS/.KQ) → Naver Finance 직접 링크
+  // 1) 한국 종목 (.KS/.KQ) → Naver Finance
   if (t.endsWith('.KS') || t.endsWith('.KQ')) {
     const code = t.split('.')[0];
     return `https://finance.naver.com/item/main.naver?code=${code}`;
   }
   
-  // 2) 거래소 접미사 있는 종목 (.T/.HK/.SS/.SZ/.L/.PA/.DE/.SW 등)
+  // 2) 거래소 접미사 있는 글로벌 종목 → Google Finance
   if (t.includes('.')) {
     const parts = t.split('.');
     const code = parts[0];
     const ourSuffix = parts[parts.length - 1].toUpperCase();
-    const naverSuffix = FOREIGN_SUFFIX_MAP[ourSuffix] || ourSuffix;
-    return `https://m.stock.naver.com/worldstock/stock/${code}.${naverSuffix}/total`;
+    const gEx = GOOGLE_EXCHANGE[ourSuffix];
+    if (gEx) {
+      return `https://www.google.com/finance/quote/${code}:${gEx}`;
+    }
+    // 매핑 없는 접미사 — Google 검색 폴백
+    return `https://www.google.com/search?q=${encodeURIComponent(t + ' stock')}`;
   }
   
-  // 3) 미국 종목 (NASDAQ/NYSE) — 매핑으로 거래소 판정, 기본 NASDAQ
+  // 3) 미국 종목 (접미사 없음) → Google Finance (NASDAQ/NYSE 판별, 기본 NASDAQ)
   if (t) {
-    const upper = t.toUpperCase();
-    const ex = US_EXCHANGE[upper] || 'O';
-    return `https://m.stock.naver.com/worldstock/stock/${upper}.${ex}/total`;
+    const ex = US_EXCHANGE[tUpper] || 'NASDAQ';
+    return `https://www.google.com/finance/quote/${tUpper}:${ex}`;
   }
   
-  // 4) 티커 없음 (history 섹션) → 이름으로 검색
-  const q = encodeURIComponent((name || '') + ' 주가');
-  return `https://search.naver.com/search.naver?query=${q}`;
+  // 4) 티커 없음 (history 섹션) → Google 검색
+  return `https://www.google.com/search?q=${encodeURIComponent((name||'') + ' stock')}`;
 }
 
 // 국기 이모지(🇺🇸)를 flagcdn.com SVG 이미지로 변환 — 모든 플랫폼 동일 표시
@@ -1001,7 +1017,7 @@ function switchRegion(key) {
       <div class="stock-row">
         <div class="stock-rank">${i+1}</div>
         <div class="stock-info">
-          <a href="${naverStockUrl(ticker, name)}" target="_blank" rel="noopener" class="stock-name">${name}</a>
+          <a href="${stockUrl(ticker, name)}" target="_blank" rel="noopener" class="stock-name">${name}</a>
           <div class="stock-meta">
             <span class="stock-flag">${flagFromEmoji(flag)}</span>
             <span>${ticker}</span>
@@ -1031,7 +1047,7 @@ if (DATA.latent && DATA.latent.length > 0) {
     return `
       <div class="latent-card ${star}">
         <div class="latent-header">${badge}</div>
-        <a href="${naverStockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${c.name}</a>
+        <a href="${stockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${c.name}</a>
         <div class="latent-ticker">
           <span class="stock-flag">${flagFromEmoji(c.country)}</span>
           <span>${c.ticker}</span>
@@ -1059,7 +1075,7 @@ if (DATA.history && DATA.history.length > 0) {
     <div class="history-row">
       <div class="history-year">${h.year}</div>
       <div class="history-info">
-        <a href="${naverStockUrl('', h.top)}" target="_blank" rel="noopener" class="history-top">${h.top}</a>
+        <a href="${stockUrl('', h.top)}" target="_blank" rel="noopener" class="history-top">${h.top}</a>
         <div class="history-key">${h.key}</div>
       </div>
       <div class="history-mc">${fmtMC(h.mc)}</div>
