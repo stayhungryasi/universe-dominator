@@ -881,6 +881,21 @@ regionKeys.forEach((key, idx) => {
   tabs.appendChild(btn);
 });
 
+// 특정 티커는 개별 URL 매핑 (표준 패턴 예외)
+const STOCK_URL_OVERRIDES = {
+  // Berkshire Hathaway — Naver는 BRKa/BRKb 형식 사용 (점 없음, 소문자)
+  'BRK.A':   'https://m.stock.naver.com/worldstock/stock/BRKa/total',
+  'BRK-A':   'https://m.stock.naver.com/worldstock/stock/BRKa/total',
+  'BRKA':    'https://m.stock.naver.com/worldstock/stock/BRKa/total',
+  'BRK.B':   'https://m.stock.naver.com/worldstock/stock/BRKb/total',
+  'BRK-B':   'https://m.stock.naver.com/worldstock/stock/BRKb/total',
+  'BRKB':    'https://m.stock.naver.com/worldstock/stock/BRKb/total',
+  // Saudi Aramco (2222.SR) — Naver 미지원 → Investing.com 폴백
+  '2222.SR': 'https://kr.investing.com/equities/saudi-aramco',
+  '2222':    'https://kr.investing.com/equities/saudi-aramco',
+  'ARAMCO':  'https://kr.investing.com/equities/saudi-aramco',
+};
+
 // 미국 종목 거래소 매핑 (Naver: NASDAQ=.O, NYSE=.K)
 const US_EXCHANGE = {
   // NASDAQ (.O)
@@ -919,6 +934,12 @@ const FOREIGN_SUFFIX_MAP = {
 // 네이버 종목 페이지 URL 생성
 function naverStockUrl(ticker, name) {
   const t = (ticker || '').trim();
+  
+  // 0) 특수 케이스 — 개별 매핑 (Berkshire, Saudi Aramco 등)
+  const tUpper = t.toUpperCase();
+  if (tUpper in STOCK_URL_OVERRIDES) {
+    return STOCK_URL_OVERRIDES[tUpper];
+  }
   
   // 1) 한국 종목 (.KS/.KQ) → Naver Finance 직접 링크
   if (t.endsWith('.KS') || t.endsWith('.KQ')) {
