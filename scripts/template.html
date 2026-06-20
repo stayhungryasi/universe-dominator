@@ -881,16 +881,70 @@ regionKeys.forEach((key, idx) => {
   tabs.appendChild(btn);
 });
 
+// 미국 종목 거래소 매핑 (Naver: NASDAQ=.O, NYSE=.K)
+const US_EXCHANGE = {
+  // NASDAQ (.O)
+  NVDA:'O', AAPL:'O', MSFT:'O', GOOGL:'O', GOOG:'O', AMZN:'O',
+  META:'O', TSLA:'O', AVGO:'O', ASML:'O', AMD:'O', INTC:'O',
+  MU:'O', ADBE:'O', NFLX:'O', COST:'O', PEP:'O', CSCO:'O',
+  CMCSA:'O', TMUS:'O', TXN:'O', QCOM:'O', BKNG:'O', AMAT:'O',
+  LRCX:'O', KLAC:'O', PYPL:'O', PLTR:'O', ANET:'O', MRVL:'O',
+  ARM:'O', AMGN:'O', GILD:'O', INTU:'O', REGN:'O', SBUX:'O',
+  ABNB:'O', MDLZ:'O', ISRG:'O', ADP:'O', CDNS:'O', SNPS:'O',
+  PANW:'O', FTNT:'O', VRTX:'O', MAR:'O', MELI:'O', AZN:'O',
+  NVO:'O', WBA:'O', BIIB:'O', ATVI:'O', EBAY:'O', ROKU:'O',
+  // NYSE (.K)
+  JPM:'K', V:'K', WMT:'K', UNH:'K', JNJ:'K', XOM:'K', PG:'K',
+  MA:'K', HD:'K', CVX:'K', KO:'K', MRK:'K', ABBV:'K', LLY:'K',
+  ORCL:'K', BAC:'K', TM:'K', TSM:'K', ACN:'K', DIS:'K', NKE:'K',
+  CRM:'K', MCD:'K', IBM:'K', BA:'K', CAT:'K', GS:'K', AXP:'K',
+  BLK:'K', MS:'K', C:'K', WFC:'K', NVS:'K', SHEL:'K', BP:'K',
+  UL:'K', DEO:'K', HSBC:'K', RY:'K', TD:'K', DELL:'K', VRT:'K',
+  GEV:'K', F:'K', GM:'K', PFE:'K', T:'K', PM:'K', LIN:'K',
+  RTX:'K', SPGI:'K', NOW:'K', INTC:'K', UPS:'K', LMT:'K',
+  // Korean ADRs (한국 회사인데 NYSE 상장)
+  KB:'K', SHG:'K', KEP:'K', LPL:'K', PKX:'K', WF:'K', SKM:'K',
+};
+
+// 거래소 접미사 → Naver worldstock 접미사 변환
+const FOREIGN_SUFFIX_MAP = {
+  'T':'T', 'HK':'HK', 'SS':'SS', 'SZ':'SZ',
+  'L':'L', 'PA':'PA', 'DE':'DE', 'SW':'SW',
+  'AS':'AS', 'MI':'MI', 'MC':'MC', 'CO':'CO',
+  'ST':'ST', 'OL':'OL', 'SR':'SR',
+  'TW':'TWO', 'TWO':'TWO',  // 대만은 .TWO
+  'AX':'AX', 'TO':'TO',
+};
+
 // 네이버 종목 페이지 URL 생성
-// - 한국 종목(.KS/.KQ): Naver Finance 직접 링크
-// - 그 외: 네이버 검색 라우팅 (안정적, 종목 카드 노출)
 function naverStockUrl(ticker, name) {
-  if (ticker && (ticker.endsWith('.KS') || ticker.endsWith('.KQ'))) {
-    const code = ticker.split('.')[0];
+  const t = (ticker || '').trim();
+  
+  // 1) 한국 종목 (.KS/.KQ) → Naver Finance 직접 링크
+  if (t.endsWith('.KS') || t.endsWith('.KQ')) {
+    const code = t.split('.')[0];
     return `https://finance.naver.com/item/main.naver?code=${code}`;
   }
-  const q = (ticker || name || '').trim() + ' 주가';
-  return `https://search.naver.com/search.naver?query=${encodeURIComponent(q)}`;
+  
+  // 2) 거래소 접미사 있는 종목 (.T/.HK/.SS/.SZ/.L/.PA/.DE/.SW 등)
+  if (t.includes('.')) {
+    const parts = t.split('.');
+    const code = parts[0];
+    const ourSuffix = parts[parts.length - 1].toUpperCase();
+    const naverSuffix = FOREIGN_SUFFIX_MAP[ourSuffix] || ourSuffix;
+    return `https://m.stock.naver.com/worldstock/stock/${code}.${naverSuffix}/total`;
+  }
+  
+  // 3) 미국 종목 (NASDAQ/NYSE) — 매핑으로 거래소 판정, 기본 NASDAQ
+  if (t) {
+    const upper = t.toUpperCase();
+    const ex = US_EXCHANGE[upper] || 'O';
+    return `https://m.stock.naver.com/worldstock/stock/${upper}.${ex}/total`;
+  }
+  
+  // 4) 티커 없음 (history 섹션) → 이름으로 검색
+  const q = encodeURIComponent((name || '') + ' 주가');
+  return `https://search.naver.com/search.naver?query=${q}`;
 }
 
 // 국기 이모지(🇺🇸)를 flagcdn.com SVG 이미지로 변환 — 모든 플랫폼 동일 표시
