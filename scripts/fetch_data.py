@@ -706,6 +706,64 @@ def main():
         encoding="utf-8",
     )
     print(f"[OK] {DATA_PATH} 저장 완료")
+    
+    # ─── 일별 스냅샷 저장 (주간 History 자동 생성용) ───
+    save_daily_snapshot(new_data)
+
+
+def save_daily_snapshot(data):
+    """
+    오늘 날짜의 TOP 20 데이터를 data/snapshots/YYYY-MM-DD.json 으로 저장.
+    주간 변동 비교(weekly_history.py)의 원천 데이터.
+    잠재지배자/변천사 같은 큐레이션 영역은 제외하고 순수 시총 데이터만 보관.
+    """
+    snap_dir = HERE / "data" / "snapshots"
+    snap_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 비교에 필요한 최소 데이터만 추림 (지역별 ticker/name/mc/순위)
+    snapshot = {
+        "date": data.get("meta", {}).get("fetched_date", TODAY_KST.strftime("%Y-%m-%d")),
+        "regions": {},
+    }
+    for region_key, region in data.get("regions", {}).items():
+        stocks = region.get("stocks", [])
+        snapshot["regions"][region_key] = [
+            {
+                "rank": i + 1,
+                "ticker": s.get("ticker", ""),
+                "name": s.get("name", ""),
+                "mc": s.get("mc", 0),
+            }
+            for i, s in enumerate(stocks)
+        ]
+    
+    snap_path = snap_dir / f"{snapshot['date']}.json"
+    snap_path.write_text(
+        json.dumps(snapshot, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(f"[OK] 스냅샷 저장: {snap_path.name}")
+    
+    # 오래된 스냅샷 정리 (최근 90일치만 보관)
+    prune_old_snapshots(snap_dir, keep_days=90)
+
+
+def prune_old_snapshots(snap_dir, keep_days=90):
+    """90일보다 오래된 스냅샷 삭제 (저장소 비대화 방지)."""
+    try:
+        from datetime import timedelta
+        cutoff = (TODAY_KST - timedelta(days=keep_days)).strftime("%Y-%m-%d")
+        removed = 0
+        for f in snap_dir.glob("*.json"):
+            # 파일명이 날짜 형식(YYYY-MM-DD.json)이고 cutoff보다 이전이면 삭제
+            stem = f.stem
+            if len(stem) == 10 and stem[4] == "-" and stem < cutoff:
+                f.unlink()
+                removed += 1
+        if removed:
+            print(f"[정리] 오래된 스냅샷 {removed}개 삭제 (>{keep_days}일)")
+    except Exception as e:
+        print(f"[정리] 스냅샷 정리 중 오류 (무시): {e}")
 
 
 if __name__ == "__main__":
