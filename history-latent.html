@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>잠재지배자 변동 이력 · 우주지배자</title>
+<meta name="description" content="차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+/* 라이트 / 다크 테마 변수는 메인과 동일 */
+:root, [data-theme="light"] {
+  --bg: #FAF6EC; --bg-card: #FFFFFF;
+  --text: #1A2438; --text-secondary: #525F7E;
+  --text-muted: #8590AA;
+  --gold: #9C7A3A; --gold-bg: #F0E6CC;
+  --line: #E8DFC9; --line-strong: #C9BC9A;
+  --up: #16A085; --down: #C0392B;
+}
+[data-theme="dark"] {
+  --bg: #0A0E14; --bg-card: #1C2330;
+  --text: #FFFFFF; --text-secondary: #B5BFD6;
+  --text-muted: #6F7E9E;
+  --gold: #D4A658; --gold-bg: #2A2519;
+  --line: #2A3142; --line-strong: #3A4458;
+  --up: #2ECC71; --down: #E74C3C;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-feature-settings: 'tnum', 'ss01';
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+}
+
+.container { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+/* 헤더 */
+.site-header { padding: 16px 0; border-bottom: 1px solid var(--line); background: var(--header-bg, var(--bg)); }
+
+/* 상단 네비게이션 */
+.site-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.site-nav-inner { display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.site-nav-inner::-webkit-scrollbar { display: none; }
+.nav-tab {
+  flex-shrink: 0; padding: 14px 18px;
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text-muted); text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+}
+.nav-tab:hover { color: var(--text-secondary); }
+.nav-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+@media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } }
+.site-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; letter-spacing: -0.01em; color: var(--text); }
+.brand-star { color: var(--gold); }
+.brand-tag { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.brand a { text-decoration: none; color: inherit; }
+
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.back-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.theme-toggle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+.theme-toggle::before { content: "🌙"; }
+[data-theme="dark"] .theme-toggle::before { content: "☀️"; }
+
+/* 페이지 헤딩 */
+.page-hero { padding: 40px 0 28px; }
+.page-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.page-title {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.page-desc {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  max-width: 600px;
+}
+
+/* 타임라인 */
+.timeline { padding: 12px 0 60px; }
+
+.entry {
+  position: relative;
+  padding: 28px 0 28px 28px;
+  border-left: 2px solid var(--line);
+}
+.entry::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 36px;
+  width: 12px;
+  height: 12px;
+  background: var(--bg);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+}
+.entry:first-child::before {
+  background: var(--gold);
+}
+
+.entry-date {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.entry-period {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+
+.entry-block { margin-top: 18px; }
+.entry-block:first-of-type { margin-top: 14px; }
+
+.entry-block-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.entry-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text);
+  font-weight: 500;
+}
+.entry-items li {
+  padding-left: 14px;
+  position: relative;
+  margin-bottom: 4px;
+}
+.entry-items li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  opacity: 0.7;
+}
+.entry-items li strong {
+  color: var(--text);
+  font-weight: 700;
+}
+.entry-items .em-up { color: var(--up); font-weight: 700; }
+.entry-items .em-down { color: var(--down); font-weight: 700; }
+
+.entry-prose {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.entry-stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.entry-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-right: 4px;
+}
+.entry-stat-val {
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 빈 상태 */
+.empty {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 푸터 */
+.site-footer {
+  padding: 32px 0 60px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  margin-top: 40px;
+}
+.footer-brand {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--gold); }
+.footer-divider { color: var(--text-muted); font-weight: 400; }
+.footer-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 480px) {
+  .page-title { font-size: 28px; }
+  .entry { padding: 22px 0 22px 22px; }
+  .entry-items { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner container">
+    <div class="brand">
+      <a href="index.html"><span class="brand-star">✨</span> Stay hungry. ASI</a>
+      <span class="brand-tag">@stayhungryasi</span>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="site-nav-inner container">
+    <a href="index.html" class="nav-tab ">우주지배자</a>
+    <a href="latent.html" class="nav-tab active">잠재지배자</a>
+    <a href="megatrend.html" class="nav-tab">메가트렌드</a>
+    <a href="research.html" class="nav-tab">리서치</a>
+    <a href="community.html" class="nav-tab">커뮤니티</a>
+    <a href="my-universe.html" class="nav-tab">나의우주</a>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="page-hero">
+    <div class="page-eyebrow">History</div>
+    <h1 class="page-title">잠재지배자 변동 이력</h1>
+    <p class="page-desc">차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스</p>
+  </section>
+
+  <section class="timeline" id="timeline"></section>
+</main>
+
+<footer class="site-footer container">
+  <div class="footer-brand">
+    <span>✨ Stay hungry. ASI</span>
+    <span class="footer-divider">·</span>
+    <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
+  </div>
+  <p class="footer-source">
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 매일 08:00 KST 자동 갱신
+  </p>
+</footer>
+
+<script>
+// 테마 토글
+const savedTheme = localStorage.getItem('ud-theme');
+if (savedTheme) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ud-theme', next);
+}
+
+// 데이터 + 렌더
+const DATA = {
+  "page_title": "잠재지배자 변동 이력",
+  "page_desc": "차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스",
+  "entries": [
+    {
+      "date": "2026.06.03",
+      "period": "5.24 → 6.3 (10일간)",
+      "blocks": [
+        {
+          "type": "items",
+          "label": "★ 졸업 (TOP 20 진입)",
+          "items": [
+            "<strong>Oracle</strong> — <span class='em-up'>$649B, 글로벌 19위</span>",
+            "<strong>Micron</strong> — <span class='em-up'>$1.09T, 글로벌 13위</span>",
+            "<strong>AMD</strong> — <span class='em-up'>$842B, 글로벌 17위</span>"
+          ]
+        },
+        {
+          "type": "items",
+          "label": "★ 신규 편입",
+          "items": [
+            "<strong>Marvell</strong> — 6/2 NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (Computex 2026 키노트). NVIDIA $2B 직접 투자, 1일 <span class='em-up'>+41.84%</span> 폭등. AI 데이터센터 광 인터커넥트 핵심.",
+            "<strong>Dell</strong> — 1일 <span class='em-up'>+32.76%</span> 폭등. AI 서버 공급망 핵심 파트너 (NVIDIA Blackwell 서버)."
+          ]
+        },
+        {
+          "type": "items",
+          "label": "섹터 분포 (9종목)",
+          "items": [
+            "<strong>AI 칩 IP / 실리콘 (3)</strong>: Arm Holdings, Marvell, Cambricon",
+            "<strong>AI 인프라 하드웨어 (3)</strong>: Dell, GE Vernova, Vertiv",
+            "<strong>AI 소프트웨어 / 네트워킹 (2)</strong>: Palantir, Arista Networks",
+            "<strong>AI 투자 / 지주 (1)</strong>: SoftBank"
+          ]
+        },
+        {
+          "type": "items",
+          "label": "관전 포인트",
+          "items": [
+            "<strong>가장 주목 (NEW)</strong>: Marvell — NVIDIA CEO가 공개적으로 \"$1T 갈 회사\"라고 호명한 첫 사례",
+            "<strong>가장 폭발적 (NEW)</strong>: Dell — 1일 +33% 단발 급등, AI 서버 OEM 1위",
+            "<strong>가장 안정적</strong>: Arm Holdings — 모든 AI 칩 CPU IP, SoftBank 88% 보유"
+          ]
+        },
+        {
+          "type": "prose",
+          "label": "역사적 참고 — 2021.1.9 잠재지배자 1위",
+          "text": "당시 NVIDIA는 글로벌 21위, 시가총액 약 $530B. 5년 만에 잠재지배자 1위 → 우주지배자 1위($5.1T)로 등극, 시총 약 10배 상승. 이번 5.24 잠재지배자에서 Oracle / Micron / AMD가 10일 만에 우주지배자로 졸업하는 패턴도 유사 흐름의 축소판."
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,480 (6/3 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.48"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const timeline = document.getElementById('timeline');
+
+function renderBlock(block) {
+  if (!block) return '';
+  if (block.type === 'items') {
+    return `
+      <div class="entry-block">
+        <div class="entry-block-label">${block.label || ''}</div>
+        <ul class="entry-items">
+          ${block.items.map(it => `<li>${it}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+  if (block.type === 'prose') {
+    return `
+      <div class="entry-block">
+        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
+        <p class="entry-prose">${block.text}</p>
+      </div>`;
+  }
+  if (block.type === 'stats') {
+    return `
+      <div class="entry-block">
+        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
+        <div class="entry-stat-row">
+          ${block.items.map(it => `
+            <div><span class="entry-stat-label">${it.k}</span><span class="entry-stat-val">${it.v}</span></div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+  return '';
+}
+
+if (DATA.entries && DATA.entries.length > 0) {
+  timeline.innerHTML = DATA.entries.map(e => `
+    <div class="entry">
+      <div class="entry-date">${e.date || ''}</div>
+      ${e.period ? `<div class="entry-period">${e.period}</div>` : ''}
+      ${(e.blocks || []).map(renderBlock).join('')}
+    </div>
+  `).join('');
+} else {
+  timeline.innerHTML = '<div class="empty">아직 기록이 없습니다.</div>';
+}
+</script>
+</body>
+</html>
