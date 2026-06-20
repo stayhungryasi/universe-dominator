@@ -158,21 +158,52 @@ KOREAN_NAMES = {
     "036570": "엔씨소프트",       "352820": "하이브",
     "041510": "에스엠",           "035900": "JYP Ent.",
     "011170": "롯데케미칼",       "010620": "현대미포조선",
+    "009155": "삼성전기",         "005490": "POSCO홀딩스",
+    "086280": "현대글로비스",     "000720": "현대건설",
+    "030000": "제일기획",         "088980": "맥쿼리인프라",
+    "008770": "호텔신라",         "004020": "현대제철",
+    "138040": "메리츠금융지주",   "071050": "한국금융지주",
+    "010950": "S-Oil",            "009830": "한화솔루션",
+    "018260": "삼성에스디에스",   "021240": "코웨이",
     # KOSDAQ 대형주
     "247540": "에코프로비엠",     "086520": "에코프로",
     "196170": "알테오젠",         "028300": "HLB",
     "263750": "펄어비스",         "022100": "포스코DX",
+    "091990": "셀트리온헬스케어", "293490": "카카오게임즈",
+    "112040": "위메이드",         "067310": "하나마이크론",
+}
+
+
+# 한국 회사의 NYSE ADR 티커 (.KS 접미사 없이 표시되는 경우)
+KOREAN_ADRS = {
+    "KB":   "KB금융",
+    "SHG":  "신한지주",
+    "KEP":  "한국전력",
+    "LPL":  "LG디스플레이",
+    "PKX":  "POSCO홀딩스",
+    "WF":   "우리금융지주",
+    "SKM":  "SK텔레콤",
+    "KT":   "KT",
+    "POSCO": "POSCO홀딩스",
 }
 
 
 def localize_name(name, ticker):
-    """티커가 한국 종목(.KS, .KQ)이면 한국어 이름으로 교체."""
+    """한국 종목이면 한국어 이름으로 교체."""
     if not ticker:
         return name
-    if not (ticker.endswith(".KS") or ticker.endswith(".KQ")):
-        return name
-    code = ticker.split(".")[0]
-    return KOREAN_NAMES.get(code, name)
+    ticker_upper = ticker.upper()
+    
+    # 1) KOSPI/KOSDAQ (.KS, .KQ 접미사)
+    if ticker.endswith(".KS") or ticker.endswith(".KQ"):
+        code = ticker.split(".")[0]
+        return KOREAN_NAMES.get(code, name)
+    
+    # 2) NYSE ADR 티커 (한국 회사이지만 미국 거래소 티커로 표시되는 경우)
+    if ticker_upper in KOREAN_ADRS:
+        return KOREAN_ADRS[ticker_upper]
+    
+    return name
 
 
 # ─────────────────── 환율 ───────────────────
