@@ -883,6 +883,9 @@ regionKeys.forEach((key, idx) => {
 
 // 특정 티커는 개별 URL 매핑 (표준 패턴 예외)
 const STOCK_URL_OVERRIDES = {
+  // Alphabet (Google) — 항상 Class A (GOOGL) 페이지로 통일
+  'GOOG':    'https://m.stock.naver.com/worldstock/stock/GOOGL.O/total',
+  'GOOGL':   'https://m.stock.naver.com/worldstock/stock/GOOGL.O/total',
   // Berkshire Hathaway — Naver는 BRKa/BRKb 형식 사용 (점 없음, 소문자)
   'BRK.A':   'https://m.stock.naver.com/worldstock/stock/BRKa/total',
   'BRK-A':   'https://m.stock.naver.com/worldstock/stock/BRKa/total',
