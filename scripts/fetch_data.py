@@ -365,16 +365,16 @@ def collect():
                 seen.add(key)
     europe.sort(key=lambda x: -x["mc"])
     
-    # ★ 권역 순서: 지구 - 미국 - 한국 - 일본 - 중국 - 홍콩 - 유럽
+    # ★ 지역 순서: 지구 - 미국 - 한국 - 일본 - 유럽 - 중국 - 홍콩
     result = {
         "regions": {
             "earth":  {**REGION_LABELS["earth"],  "stocks": raw.get("global", [])[:TOP_N]},
             "us":     {**REGION_LABELS["us"],     "stocks": raw.get("us", [])[:TOP_N]},
             "korea":  {**REGION_LABELS["korea"],  "stocks": raw.get("korea", [])[:TOP_N]},
             "japan":  {**REGION_LABELS["japan"],  "stocks": raw.get("japan", [])[:TOP_N]},
+            "europe": {**REGION_LABELS["europe"], "stocks": europe[:TOP_N]},
             "china":  {**REGION_LABELS["china"],  "stocks": raw.get("china", [])[:TOP_N]},
             "hk":     {**REGION_LABELS["hk"],     "stocks": raw.get("hk", [])[:TOP_N]},
-            "europe": {**REGION_LABELS["europe"], "stocks": europe[:TOP_N]},
         },
         "meta": {
             "fetched_at": TODAY_KST.isoformat(),
