@@ -252,12 +252,13 @@ body {
 /* 순위 추적 — 매트릭스 */
 .rank-matrix-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-card); }
 .rank-matrix {
-  border-collapse: collapse; width: 100%; min-width: 800px;
+  border-collapse: collapse; width: 100%; min-width: 620px;
   font-variant-numeric: tabular-nums;
 }
 .rank-matrix th, .rank-matrix td {
-  padding: 8px 6px; text-align: center;
+  padding: 8px 4px; text-align: center;
   font-size: 13px; border-bottom: 1px solid var(--line);
+  min-width: 40px;
 }
 .rank-matrix th {
   background: var(--bg);
@@ -265,9 +266,12 @@ body {
   letter-spacing: 0.02em;
 }
 .rank-matrix th:first-child, .rank-matrix td:first-child {
-  text-align: left; padding-left: 14px;
+  text-align: left; padding-left: 14px; padding-right: 8px;
   position: sticky; left: 0;
   font-weight: 700; color: var(--text);
+  width: 108px; min-width: 108px; max-width: 108px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 12px; letter-spacing: -0.02em;
 }
 .rank-matrix td:first-child { background: var(--bg-card); }
 .rank-matrix th:first-child { background: var(--bg); }
@@ -1086,11 +1090,22 @@ function rankClass(r) {
   return 'rout';
 }
 
+// 긴 종목명 → 짧은 표기 (순위 추적 표 종목명 열 폭 절약)
+function shortName(name) {
+  const map = {
+    'Meta (Facebook)': 'Meta',
+    'Berkshire Hathaway': 'Berkshire',
+    'Saudi Aramco': 'Aramco',
+    'Alphabet (Google)': 'Alphabet',
+  };
+  return map[name] || name;
+}
+
 // PANE 1: TOP 10 변천사 (Bump Chart + 매트릭스)
 const top10Html = `
   <div class="cat-pane active" data-pane="top10">
     <h2 class="cat-pane-title">TOP 10 변천사 (2016~2026)</h2>
-    <p class="cat-pane-desc">11년간 글로벌 시가총액 TOP 10의 순위 변화. 선에 마우스를 올리거나 범례를 클릭해 흐름을 따라가 보세요.</p>
+    <p class="cat-pane-desc">11년간 글로벌 시가총액 TOP 10의 순위 변화. 종목명(범례)이나 선을 탭하면 해당 흐름만 강조됩니다.</p>
 
     <div class="bump-section">
       <div class="bump-legend" id="bumpLegend"></div>
@@ -1098,7 +1113,7 @@ const top10Html = `
         <div style="position: relative; width: 100%; overflow: hidden;">
           <svg id="bumpChart" viewBox="0 0 720 460" width="100%" style="display:block;" role="img" aria-label="TOP 10 순위 변화 범프 차트 2016-2026"></svg>
         </div>
-        <div class="bump-hint">점을 클릭하면 그 해의 순위를 확인할 수 있습니다</div>
+        <div class="bump-hint">다시 탭하면 강조가 해제됩니다 · NVIDIA의 상승 곡선을 주목하세요</div>
       </div>
     </div>
 
@@ -1204,7 +1219,7 @@ const rankHtml = `
           <tbody>
             ${DATA.rank_stocks.map(s => `
               <tr>
-                <td>${s.name}</td>
+                <td title="${s.name}">${shortName(s.name)}</td>
                 ${s.ranks.map(r => `<td><span class="${rankClass(r)}">${r}</span></td>`).join('')}
               </tr>
             `).join('')}
@@ -1293,22 +1308,48 @@ function renderBumpChart() {
       .style('opacity', highlight.has(s.name) ? '1' : '0.5');
     item.append('span').attr('class', 'bump-legend-chip').style('background', s.color);
     item.append('span').text(s.name.replace(' (Facebook)', '').replace(' Hathaway', ''));
-    item.on('mouseenter', () => bumpFocus(s.name)).on('mouseleave', bumpClear);
+    // 데스크탑: 호버, 모바일: 탭으로 고정 토글
+    item.on('mouseenter', () => { if (!locked) bumpFocus(s.name); })
+        .on('mouseleave', () => { if (!locked) bumpClear(); })
+        .on('click', () => toggleLock(s.name));
   });
+
+  // 강조 고정 상태 (모바일 터치용)
+  let locked = null;
+  function toggleLock(name) {
+    if (locked === name) {
+      locked = null;
+      bumpClear();
+    } else {
+      locked = name;
+      bumpFocus(name);
+    }
+  }
 
   function bumpFocus(name) {
     d3.selectAll('.bump-ln').attr('stroke-opacity', function () { return this.getAttribute('data-name') === name ? 1 : 0.1; })
       .attr('stroke-width', function () { return this.getAttribute('data-name') === name ? 3 : 1.4; });
     d3.selectAll('.bump-dot').attr('fill-opacity', function () { return this.getAttribute('data-name') === name ? 1 : 0.1; });
     d3.selectAll('.bump-lbl').attr('fill-opacity', function () { return this.getAttribute('data-name') === name ? 1 : 0.15; });
+    // 범례도 강조 동기화
+    d3.selectAll('.bump-legend-item').style('opacity', function () {
+      return this.getAttribute('data-name') === name ? '1' : '0.35';
+    });
   }
   function bumpClear() {
     d3.selectAll('.bump-ln').attr('stroke-opacity', function () { return highlight.has(this.getAttribute('data-name')) ? 1 : 0.3; })
       .attr('stroke-width', function () { return highlight.has(this.getAttribute('data-name')) ? 3 : 1.6; });
     d3.selectAll('.bump-dot').attr('fill-opacity', function () { return highlight.has(this.getAttribute('data-name')) ? 1 : 0.4; });
     d3.selectAll('.bump-lbl').attr('fill-opacity', function () { return highlight.has(this.getAttribute('data-name')) ? 1 : 0.6; });
+    d3.selectAll('.bump-legend-item').style('opacity', function () {
+      return highlight.has(this.getAttribute('data-name')) ? '1' : '0.5';
+    });
   }
-  d3.selectAll('.bump-ln').on('mouseenter', function () { bumpFocus(this.getAttribute('data-name')); }).on('mouseleave', bumpClear);
+  // 선/점 탭도 고정 토글 (모바일)
+  d3.selectAll('.bump-ln')
+    .on('mouseenter', function () { if (!locked) bumpFocus(this.getAttribute('data-name')); })
+    .on('mouseleave', function () { if (!locked) bumpClear(); })
+    .on('click', function () { toggleLock(this.getAttribute('data-name')); });
 }
 
 // ───── 화살표 스크롤 (범용: 여러 매트릭스 표 지원) ─────
