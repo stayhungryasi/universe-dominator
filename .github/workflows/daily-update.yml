@@ -30,7 +30,7 @@ jobs:
         run: python scripts/fetch_data.py
         continue-on-error: false
       
-      - name: Build site (index.html)
+      - name: Build all site pages
         run: python scripts/build_site.py
       
       - name: Commit if changed
@@ -40,7 +40,7 @@ jobs:
           
           if [[ -n "$(git status --porcelain)" ]]; then
             DATE=$(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')
-            git add data/latest.json index.html
+            git add -A
             git commit -m "Auto update: ${DATE}"
             git push
             echo "✓ Updated and pushed"
