@@ -26,9 +26,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Fetch latest market cap data
+      - name: Fetch latest market cap data (+ daily snapshot)
         run: python scripts/fetch_data.py
         continue-on-error: false
+      
+      # 토요일(KST)에만 주간 History 자동 생성
+      # cron이 23:00 UTC = 다음날 08:00 KST 이므로,
+      # 금요일 23:00 UTC 실행분이 토요일 08:00 KST가 됨 → KST 요일로 판정
+      - name: Weekly history (Saturdays KST only)
+        run: |
+          DOW=$(TZ='Asia/Seoul' date +%u)   # 1=월 ... 6=토, 7=일
+          if [ "$DOW" -eq 6 ]; then
+            echo "토요일 — 주간 History 생성"
+            python scripts/weekly_history.py
+          else
+            echo "토요일 아님 (요일=$DOW) — 주간 History 건너뜀"
+          fi
       
       - name: Build all site pages
         run: python scripts/build_site.py
