@@ -140,6 +140,59 @@ body {
 .matrix tr:last-child td { border-bottom: 0; }
 .matrix th:last-child, .matrix td:last-child { border-right: 0; }
 
+/* Bump Chart (순위 변천 그래프) */
+.bump-section { margin-bottom: 28px; }
+.bump-legend {
+  display: flex; flex-wrap: wrap; gap: 8px 14px;
+  margin-bottom: 16px; font-size: 12px; color: var(--text-secondary);
+}
+.bump-legend-item {
+  display: flex; align-items: center; gap: 5px;
+  cursor: pointer; transition: opacity 0.2s;
+  user-select: none;
+}
+.bump-legend-chip { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.bump-wrap {
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg-card); padding: 16px 12px 8px;
+}
+.bump-hint {
+  font-size: 11.5px; color: var(--text-muted);
+  margin-top: 8px; text-align: center;
+}
+
+/* 화살표 스크롤 표 컨테이너 */
+.matrix-viewport { position: relative; }
+.matrix-scroll {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg-card);
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.matrix-scroll::-webkit-scrollbar { display: none; }
+
+.scroll-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--bg-card); border: 1px solid var(--line-strong);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 10;
+  font-size: 20px; color: var(--gold);
+  transition: all 0.2s; user-select: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+.scroll-arrow:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+[data-theme="dark"] .scroll-arrow:hover { color: var(--bg); }
+.scroll-arrow.left { left: -8px; }
+.scroll-arrow.right { right: -8px; }
+.scroll-arrow.hidden { opacity: 0; pointer-events: none; }
+
+@media (max-width: 480px) {
+  .scroll-arrow { width: 34px; height: 34px; font-size: 17px; }
+  .scroll-arrow.left { left: 2px; }
+  .scroll-arrow.right { right: 2px; }
+}
+
 /* 1위 변천 — 타임라인 카드 */
 .throne-list { display: grid; gap: 14px; }
 .throne-card {
@@ -248,6 +301,7 @@ body {
   .theme-num { font-size: 48px; }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 </head>
 <body>
 
@@ -330,28 +384,45 @@ function rankClass(r) {
   return 'rout';
 }
 
-// PANE 1: TOP 10 변천사 매트릭스
+// PANE 1: TOP 10 변천사 (Bump Chart + 매트릭스)
 const top10Html = `
   <div class="cat-pane active" data-pane="top10">
     <h2 class="cat-pane-title">TOP 10 변천사 (2016~2026)</h2>
-    <p class="cat-pane-desc">매년 5월 24일 기준 글로벌 시가총액 TOP 10. 좌우 스크롤로 11년치를 한 눈에.</p>
-    <div class="matrix-wrap">
-      <table class="matrix">
-        <thead>
-          <tr>
-            <th>순위</th>
-            ${DATA.top10_years.map(y => `<th>${y}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${DATA.top10.map((row, i) => `
+    <p class="cat-pane-desc">11년간 글로벌 시가총액 TOP 10의 순위 변화. 선에 마우스를 올리거나 범례를 클릭해 흐름을 따라가 보세요.</p>
+
+    <div class="bump-section">
+      <div class="bump-legend" id="bumpLegend"></div>
+      <div class="bump-wrap">
+        <div style="position: relative; width: 100%; overflow: hidden;">
+          <svg id="bumpChart" viewBox="0 0 720 460" width="100%" style="display:block;" role="img" aria-label="TOP 10 순위 변화 범프 차트 2016-2026"></svg>
+        </div>
+        <div class="bump-hint">점을 클릭하면 그 해의 순위를 확인할 수 있습니다</div>
+      </div>
+    </div>
+
+    <h3 class="cat-pane-title" style="font-size:17px; margin-top:32px;">상세 매트릭스</h3>
+    <p class="cat-pane-desc">시가총액 수치까지 한눈에. 양옆 화살표로 연도를 넘겨보세요.</p>
+    <div class="matrix-viewport">
+      <div class="scroll-arrow left hidden" id="matrixLeft" aria-label="이전 연도">‹</div>
+      <div class="scroll-arrow right" id="matrixRight" aria-label="다음 연도">›</div>
+      <div class="matrix-scroll" id="matrixScroll">
+        <table class="matrix">
+          <thead>
             <tr>
-              <td>${i + 1}</td>
-              ${row.map((cell, j) => `<td class="${i === 0 ? 'rank-1' : ''}">${cell}</td>`).join('')}
+              <th>순위</th>
+              ${DATA.top10_years.map(y => `<th>${y}</th>`).join('')}
             </tr>
-          `).join('')}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            ${DATA.top10.map((row, i) => `
+              <tr>
+                <td>${i + 1}</td>
+                ${row.map((cell, j) => `<td class="${i === 0 ? 'rank-1' : ''}">${cell}</td>`).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 `;
@@ -447,6 +518,126 @@ const rankHtml = `
 
 catContent.innerHTML = top10Html + throneHtml + themesHtml + rankHtml;
 
+// ───── Bump Chart 렌더링 (D3) ─────
+function renderBumpChart() {
+  const cfg = DATA.bump_config || { colors: {}, highlight: [] };
+  const years = DATA.top10_years;
+  const highlight = new Set(cfg.highlight || []);
+  // rank_stocks를 bump 데이터로 변환 ('—' → null)
+  const series = DATA.rank_stocks.map(s => ({
+    name: s.name,
+    color: cfg.colors[s.name] || '#888780',
+    pts: s.ranks.map((r, i) => ({ year: years[i], r: (r === '—' ? null : parseInt(r, 10)) }))
+  }));
+
+  const svg = d3.select('#bumpChart');
+  if (svg.empty() || typeof d3 === 'undefined') return;
+  svg.selectAll('*').remove();
+
+  const W = 720, H = 460, mL = 44, mR = 110, mT = 24, mB = 28;
+  const x = d3.scalePoint().domain(years).range([mL, W - mR]);
+  const y = d3.scaleLinear().domain([1, 10]).range([mT, H - mB]);
+
+  // 가로 그리드 + 순위 라벨
+  for (let r = 1; r <= 10; r++) {
+    svg.append('line').attr('x1', mL).attr('x2', W - mR).attr('y1', y(r)).attr('y2', y(r))
+      .attr('stroke', 'var(--line)').attr('stroke-width', 0.5);
+    svg.append('text').attr('x', mL - 10).attr('y', y(r) + 4).attr('text-anchor', 'end')
+      .attr('font-size', '11').attr('fill', 'var(--text-muted)').text(r);
+  }
+  // 연도 라벨
+  years.forEach(yr => {
+    svg.append('text').attr('x', x(yr)).attr('y', H - 8).attr('text-anchor', 'middle')
+      .attr('font-size', '11').attr('fill', 'var(--text-muted)').text("'" + yr.slice(2));
+  });
+
+  const line = d3.line().defined(d => d.r != null).x(d => x(d.year)).y(d => y(d.r)).curve(d3.curveMonotoneX);
+
+  series.forEach(s => {
+    const hl = highlight.has(s.name);
+    svg.append('path').datum(s.pts).attr('class', 'bump-ln').attr('data-name', s.name)
+      .attr('fill', 'none').attr('stroke', s.color)
+      .attr('stroke-width', hl ? 3 : 1.6).attr('stroke-opacity', hl ? 1 : 0.3)
+      .attr('d', line);
+    s.pts.forEach(p => {
+      if (p.r != null) {
+        svg.append('circle').attr('class', 'bump-dot').attr('data-name', s.name)
+          .attr('cx', x(p.year)).attr('cy', y(p.r)).attr('r', hl ? 3.5 : 2.4)
+          .attr('fill', s.color).attr('fill-opacity', hl ? 1 : 0.4)
+          .style('cursor', 'pointer')
+          .on('click', () => window.open('index.html', '_self'));
+      }
+    });
+    // 끝점 라벨
+    const last = s.pts.filter(p => p.r != null).slice(-1)[0];
+    if (last) {
+      svg.append('text').attr('class', 'bump-lbl').attr('data-name', s.name)
+        .attr('x', x(last.year) + 8).attr('y', y(last.r) + 4)
+        .attr('font-size', hl ? '12' : '11').attr('font-weight', hl ? '700' : '500')
+        .attr('fill', s.color).attr('fill-opacity', hl ? 1 : 0.6)
+        .text(s.name.replace(' (Facebook)', '').replace(' Hathaway', ''));
+    }
+  });
+
+  // 범례
+  const legend = d3.select('#bumpLegend');
+  legend.selectAll('*').remove();
+  series.forEach(s => {
+    const item = legend.append('span').attr('class', 'bump-legend-item').attr('data-name', s.name)
+      .style('opacity', highlight.has(s.name) ? '1' : '0.5');
+    item.append('span').attr('class', 'bump-legend-chip').style('background', s.color);
+    item.append('span').text(s.name.replace(' (Facebook)', '').replace(' Hathaway', ''));
+    item.on('mouseenter', () => bumpFocus(s.name)).on('mouseleave', bumpClear);
+  });
+
+  function bumpFocus(name) {
+    d3.selectAll('.bump-ln').attr('stroke-opacity', function () { return this.getAttribute('data-name') === name ? 1 : 0.1; })
+      .attr('stroke-width', function () { return this.getAttribute('data-name') === name ? 3 : 1.4; });
+    d3.selectAll('.bump-dot').attr('fill-opacity', function () { return this.getAttribute('data-name') === name ? 1 : 0.1; });
+    d3.selectAll('.bump-lbl').attr('fill-opacity', function () { return this.getAttribute('data-name') === name ? 1 : 0.15; });
+  }
+  function bumpClear() {
+    d3.selectAll('.bump-ln').attr('stroke-opacity', function () { return highlight.has(this.getAttribute('data-name')) ? 1 : 0.3; })
+      .attr('stroke-width', function () { return highlight.has(this.getAttribute('data-name')) ? 3 : 1.6; });
+    d3.selectAll('.bump-dot').attr('fill-opacity', function () { return highlight.has(this.getAttribute('data-name')) ? 1 : 0.4; });
+    d3.selectAll('.bump-lbl').attr('fill-opacity', function () { return highlight.has(this.getAttribute('data-name')) ? 1 : 0.6; });
+  }
+  d3.selectAll('.bump-ln').on('mouseenter', function () { bumpFocus(this.getAttribute('data-name')); }).on('mouseleave', bumpClear);
+}
+
+// ───── 화살표 스크롤 (상세 매트릭스) ─────
+function setupMatrixArrows() {
+  const scroll = document.getElementById('matrixScroll');
+  const left = document.getElementById('matrixLeft');
+  const right = document.getElementById('matrixRight');
+  if (!scroll || !left || !right) return;
+
+  const STEP = 220; // 한 번에 약 1.5~2열씩
+  left.addEventListener('click', () => scroll.scrollBy({ left: -STEP, behavior: 'smooth' }));
+  right.addEventListener('click', () => scroll.scrollBy({ left: STEP, behavior: 'smooth' }));
+
+  function updateArrows() {
+    const maxScroll = scroll.scrollWidth - scroll.clientWidth;
+    left.classList.toggle('hidden', scroll.scrollLeft <= 4);
+    right.classList.toggle('hidden', scroll.scrollLeft >= maxScroll - 4);
+  }
+  scroll.addEventListener('scroll', updateArrows);
+  window.addEventListener('resize', updateArrows);
+  updateArrows();
+}
+
+// 초기 렌더 (D3가 로드된 후 실행되도록 약간 지연 안전장치)
+function initTop10() {
+  if (typeof d3 !== 'undefined') {
+    renderBumpChart();
+  } else {
+    // D3 아직 로드 안 됐으면 잠시 후 재시도
+    setTimeout(initTop10, 100);
+  }
+  setupMatrixArrows();
+}
+initTop10();
+
 // 카테고리 탭 전환
 catNav.addEventListener('click', e => {
   const btn = e.target.closest('.cat-btn');
@@ -455,6 +646,8 @@ catNav.addEventListener('click', e => {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
   document.querySelectorAll('.cat-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === cat));
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // TOP 10 탭으로 돌아오면 화살표 상태 갱신
+  if (cat === 'top10') setTimeout(setupMatrixArrows, 50);
 });
 </script>
 </body>
