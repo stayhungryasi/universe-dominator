@@ -73,12 +73,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ────────── HEADER ────────── */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
   background: var(--header-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -90,6 +85,52 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+/* 상단 네비게이션 */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-nav-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.site-nav-inner::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  flex-shrink: 0;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-tab:hover { color: var(--text-secondary); }
+
+.nav-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--gold);
+}
+
+@media (max-width: 480px) {
+  .nav-tab { padding: 12px 14px; font-size: 13px; }
 }
 
 .brand {
@@ -292,12 +333,51 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ────────── SECTION ────────── */
 .section { margin-top: 56px; }
 
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
 .section-title {
   font-size: 28px;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 0;
+}
+
+.history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.history-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.history-btn-arrow {
+  font-size: 11px;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+.history-btn:hover .history-btn-arrow {
+  transform: translateX(2px);
+  opacity: 1;
 }
 
 .section-desc {
@@ -305,6 +385,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-weight: 500;
   color: var(--text-muted);
   margin-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+  .history-btn { padding: 6px 12px; font-size: 11px; }
 }
 
 /* ────────── TABS ────────── */
@@ -785,6 +869,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   </div>
 </header>
 
+<nav class="site-nav">
+  <div class="site-nav-inner container">
+    <a href="index.html" class="nav-tab active">우주지배자</a>
+    <a href="latent.html" class="nav-tab">잠재지배자</a>
+    <a href="megatrend.html" class="nav-tab">메가트렌드</a>
+    <a href="research.html" class="nav-tab">리서치</a>
+    <a href="community.html" class="nav-tab">커뮤니티</a>
+    <a href="my-universe.html" class="nav-tab">나의우주</a>
+  </div>
+</nav>
+
 <main class="container">
 
 <section class="hero">
@@ -811,7 +906,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </section>
 
 <section class="section">
-  <h2 class="section-title">TOP 20</h2>
+  <div class="section-head">
+    <h2 class="section-title">TOP 20</h2>
+    <a href="history-top20.html" class="history-btn">History <span class="history-btn-arrow">→</span></a>
+  </div>
   <p class="section-desc">탭을 눌러서 지역별 전환 가능</p>
   <div class="tabs-wrap">
     <div class="tabs-scroll">
@@ -819,18 +917,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
   </div>
   <div id="stockList" class="stock-list"></div>
-</section>
-
-<section class="section">
-  <h2 class="section-title">잠재지배자</h2>
-  <p class="section-desc">TOP 20 외 강력한 모멘텀 후보군</p>
-  <div class="latent-grid" id="latentGrid"></div>
-</section>
-
-<section class="section">
-  <h2 class="section-title">변천사</h2>
-  <p class="section-desc">매년 글로벌 1위의 흐름</p>
-  <div class="history-list" id="historyList"></div>
 </section>
 
 </main>
@@ -1892,7 +1978,7 @@ const DATA = {
     }
   },
   "meta": {
-    "fetched_at": "2026-06-20T16:31:54.811591+09:00",
+    "fetched_at": "2026-06-20T17:25:57.820701+09:00",
     "fetched_date": "2026-06-20",
     "usd_krw": 1532.31,
     "errors": []
@@ -2243,53 +2329,6 @@ function switchRegion(key) {
 
 const firstRegion = regionKeys.find(k => DATA.regions[k] && DATA.regions[k].stocks && DATA.regions[k].stocks.length > 0);
 if (firstRegion) switchRegion(firstRegion);
-
-const latentGrid = document.getElementById('latentGrid');
-if (DATA.latent && DATA.latent.length > 0) {
-  latentGrid.innerHTML = DATA.latent.map((c) => {
-    const star = c.is_star ? 'star' : '';
-    let badge;
-    if (c.is_star) badge = '<span class="latent-badge star-badge">★ 다음 우주지배자</span>';
-    else if (c.is_new) badge = '<span class="latent-badge new">NEW</span>';
-    else badge = `<span class="latent-badge normal">Rank ${c.rank}</span>`;
-    return `
-      <div class="latent-card ${star}">
-        <div class="latent-header">${badge}</div>
-        <a href="${stockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${c.name}</a>
-        <div class="latent-ticker">
-          <span class="stock-flag">${flagFromEmoji(c.country)}</span>
-          <span>${c.ticker}</span>
-        </div>
-        <div class="latent-theme">${c.theme}</div>
-        <div class="latent-story">${c.story}</div>
-        <div class="latent-stats">
-          <div>
-            <div class="latent-stat-label">시가총액</div>
-            <div class="latent-stat-val">${fmtMC(c.mc)}</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="latent-stat-label">1년 수익률</div>
-            <div class="latent-stat-val gain">+${c.momentum_1y}%</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-const histList = document.getElementById('historyList');
-if (DATA.history && DATA.history.length > 0) {
-  histList.innerHTML = DATA.history.map((h) => `
-    <div class="history-row">
-      <div class="history-year">${h.year}</div>
-      <div class="history-info">
-        <a href="${stockUrl('', h.top)}" target="_blank" rel="noopener" class="history-top">${h.top}</a>
-        <div class="history-key">${h.key}</div>
-      </div>
-      <div class="history-mc">${fmtMC(h.mc)}</div>
-    </div>
-  `).join('');
-}
 
 // 모든 렌더링 끝난 후 국기 이모지 → SVG로 변환 (Windows·Linux 호환)
 parseFlags();
