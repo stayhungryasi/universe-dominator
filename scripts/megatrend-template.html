@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메가트렌드 · 우주지배자</title>
+<meta name="description" content="11년이 들려주는 우주의 변천 — 2016~2026 글로벌 시가총액 TOP 10 분석">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+:root, [data-theme="light"] {
+  --bg: #FAF6EC; --bg-card: #FFFFFF; --header-bg: rgba(250, 246, 236, 0.95);
+  --text: #1A2438; --text-secondary: #525F7E; --text-muted: #8590AA;
+  --gold: #9C7A3A; --gold-bg: #F0E6CC;
+  --line: #E8DFC9; --line-strong: #C9BC9A;
+  --up: #16A085; --down: #C0392B;
+}
+[data-theme="dark"] {
+  --bg: #0A0E14; --bg-card: #1C2330; --header-bg: rgba(10, 14, 20, 0.95);
+  --text: #FFFFFF; --text-secondary: #B5BFD6; --text-muted: #6F7E9E;
+  --gold: #D4A658; --gold-bg: #2A2519;
+  --line: #2A3142; --line-strong: #3A4458;
+  --up: #2ECC71; --down: #E74C3C;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard Variable', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  font-feature-settings: 'tnum', 'ss01';
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+.site-header { background: var(--header-bg); border-bottom: 1px solid var(--line); }
+.site-header-inner { max-width: 720px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; color: var(--text); }
+.brand a { text-decoration: none; color: inherit; display: flex; gap: 8px; align-items: center; }
+.brand-star { color: var(--gold); }
+.brand-tag { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--bg-card);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: inline; }
+
+.site-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+.site-nav-inner { max-width: 720px; margin: 0 auto; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.site-nav-inner::-webkit-scrollbar { display: none; }
+.nav-tab {
+  flex-shrink: 0; padding: 14px 18px;
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text-muted); text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+}
+.nav-tab:hover { color: var(--text-secondary); }
+.nav-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+
+/* 페이지 헤딩 */
+.page-hero { padding: 40px 0 16px; }
+.page-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.page-title { font-size: 38px; font-weight: 800; letter-spacing: -0.03em; color: var(--text); margin-bottom: 10px; }
+.page-desc { font-size: 14px; font-weight: 500; color: var(--text-muted); max-width: 600px; }
+
+/* 카테고리 sub-nav */
+.cat-nav {
+  display: flex; gap: 6px; margin: 28px 0 24px;
+  flex-wrap: wrap;
+}
+.cat-btn {
+  padding: 8px 16px;
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 13px; font-weight: 700;
+  color: var(--text-secondary); cursor: pointer;
+  transition: all 0.2s;
+}
+.cat-btn:hover { border-color: var(--line-strong); }
+.cat-btn.active {
+  background: var(--text); color: var(--bg); border-color: var(--text);
+}
+[data-theme="dark"] .cat-btn.active { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+
+/* 카테고리 본문 */
+.cat-content { padding-bottom: 60px; }
+.cat-pane { display: none; }
+.cat-pane.active { display: block; animation: fadein 0.3s ease; }
+@keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.cat-pane-title {
+  font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--text); margin-bottom: 6px;
+}
+.cat-pane-desc {
+  font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 20px;
+}
+
+/* TOP10 변천사 — 매트릭스 테이블 */
+.matrix-wrap {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg-card);
+}
+.matrix {
+  border-collapse: collapse; width: 100%; min-width: 1100px;
+  font-variant-numeric: tabular-nums;
+}
+.matrix th, .matrix td {
+  padding: 10px 12px; text-align: left;
+  font-size: 12.5px; border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.matrix th {
+  background: var(--bg);
+  font-weight: 800; color: var(--text-secondary);
+  letter-spacing: 0.02em; position: sticky; top: 0;
+}
+.matrix th:first-child, .matrix td:first-child {
+  position: sticky; left: 0;
+  background: var(--bg-card);
+  font-weight: 800; color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  z-index: 1;
+}
+.matrix th:first-child { background: var(--bg); z-index: 2; }
+.matrix td { font-weight: 500; color: var(--text); }
+.matrix .rank-1 { background: var(--gold-bg); color: var(--gold); font-weight: 700; }
+.matrix tr:last-child td { border-bottom: 0; }
+.matrix th:last-child, .matrix td:last-child { border-right: 0; }
+
+/* 1위 변천 — 타임라인 카드 */
+.throne-list { display: grid; gap: 14px; }
+.throne-card {
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px 20px;
+  border-left: 3px solid var(--gold);
+}
+.throne-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.throne-year { font-size: 14px; font-weight: 800; color: var(--gold); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.throne-winner { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+.throne-mc { font-size: 14px; font-weight: 800; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.throne-runners { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; }
+.throne-runners strong { color: var(--text-secondary); font-weight: 700; }
+.throne-narrative { font-size: 13.5px; color: var(--text-secondary); font-weight: 500; line-height: 1.65; }
+
+/* 6대 메가트렌드 — 테마 카드 */
+.themes-grid { display: grid; gap: 16px; }
+.theme-card {
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 22px 24px;
+  position: relative; overflow: hidden;
+}
+.theme-num {
+  position: absolute; top: 16px; right: 20px;
+  font-size: 64px; font-weight: 900; letter-spacing: -0.05em;
+  color: var(--gold); opacity: 0.12;
+  line-height: 1;
+}
+.theme-title { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--text); margin-bottom: 4px; }
+.theme-subtitle { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
+
+.theme-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-bottom: 14px; }
+.theme-stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.theme-stat-k { color: var(--text-muted); font-weight: 600; }
+.theme-stat-v { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.theme-phases { margin-bottom: 14px; }
+.theme-phase {
+  display: grid; grid-template-columns: 110px 1fr; gap: 12px;
+  padding: 6px 0; border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.theme-phase:last-child { border-bottom: 0; }
+.theme-phase-period { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
+.theme-phase-leader { color: var(--text); font-weight: 600; }
+.theme-phase-leader span { color: var(--text-muted); font-weight: 500; margin-left: 6px; }
+
+.theme-insight {
+  margin-top: 12px; padding: 12px 14px;
+  background: var(--gold-bg);
+  border-radius: 8px;
+  font-size: 13px; color: var(--text); font-weight: 600;
+  line-height: 1.6;
+}
+[data-theme="dark"] .theme-insight { background: rgba(212, 166, 88, 0.1); }
+
+/* 순위 추적 — 매트릭스 */
+.rank-matrix-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-card); }
+.rank-matrix {
+  border-collapse: collapse; width: 100%; min-width: 800px;
+  font-variant-numeric: tabular-nums;
+}
+.rank-matrix th, .rank-matrix td {
+  padding: 8px 6px; text-align: center;
+  font-size: 13px; border-bottom: 1px solid var(--line);
+}
+.rank-matrix th {
+  background: var(--bg);
+  font-weight: 800; color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+.rank-matrix th:first-child, .rank-matrix td:first-child {
+  text-align: left; padding-left: 14px;
+  position: sticky; left: 0;
+  font-weight: 700; color: var(--text);
+}
+.rank-matrix td:first-child { background: var(--bg-card); }
+.rank-matrix th:first-child { background: var(--bg); }
+.rank-matrix td .r1 { background: var(--gold); color: white; padding: 3px 8px; border-radius: 4px; font-weight: 800; }
+.rank-matrix td .r23 { background: var(--gold-bg); color: var(--gold); padding: 3px 8px; border-radius: 4px; font-weight: 700; }
+.rank-matrix td .r45 { color: var(--text); font-weight: 700; }
+.rank-matrix td .r610 { color: var(--text-secondary); font-weight: 600; }
+.rank-matrix td .rout { color: var(--text-muted); font-weight: 400; }
+[data-theme="dark"] .rank-matrix td .r1 { color: var(--bg); }
+
+.rank-legend {
+  display: flex; gap: 14px; margin-top: 14px;
+  font-size: 11px; color: var(--text-muted); font-weight: 600;
+  flex-wrap: wrap;
+}
+.rank-legend-item { display: flex; align-items: center; gap: 6px; }
+.rank-legend-chip { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+
+/* 푸터 */
+.site-footer { padding: 32px 0 60px; border-top: 1px solid var(--line); text-align: center; margin-top: 40px; }
+.footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; }
+.footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; transition: color 0.2s; }
+.footer-link:hover { color: var(--gold); }
+.footer-divider { color: var(--text-muted); font-weight: 400; }
+.footer-source { font-size: 11px; color: var(--text-muted); }
+
+@media (max-width: 480px) {
+  .page-title { font-size: 28px; }
+  .nav-tab { padding: 12px 14px; font-size: 13px; }
+  .theme-stats { grid-template-columns: 1fr; }
+  .theme-num { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="brand">
+      <a href="index.html"><span class="brand-star">✨</span><span>Stay hungry. ASI</span></a>
+      <span class="brand-tag">@stayhungryasi</span>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="site-nav-inner container">
+    <a href="index.html" class="nav-tab">우주지배자</a>
+    <a href="latent.html" class="nav-tab">잠재지배자</a>
+    <a href="megatrend.html" class="nav-tab active">메가트렌드</a>
+    <a href="research.html" class="nav-tab">리서치</a>
+    <a href="community.html" class="nav-tab">커뮤니티</a>
+    <a href="my-universe.html" class="nav-tab">나의우주</a>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="page-hero">
+    <div class="page-eyebrow">Megatrend</div>
+    <h1 class="page-title">메가트렌드</h1>
+    <p class="page-desc">11년이 들려주는 우주의 변천 — 2016~2026 글로벌 시가총액 TOP 10 분석</p>
+  </section>
+
+  <div class="cat-nav" id="catNav"></div>
+
+  <div class="cat-content" id="catContent"></div>
+</main>
+
+<footer class="site-footer container">
+  <div class="footer-brand">
+    <span>✨ Stay hungry. ASI</span>
+    <span class="footer-divider">·</span>
+    <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
+  </div>
+  <p class="footer-source">2016~2025 PwC Global Top 100 / 2026 companiesmarketcap.com · 각 연도 5월 24일 기준</p>
+</footer>
+
+<script>
+const savedTheme = localStorage.getItem('ud-theme');
+if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ud-theme', next);
+}
+
+const DATA = {{DATA_JSON}};
+
+// 카테고리 nav 렌더
+const catNav = document.getElementById('catNav');
+catNav.innerHTML = DATA.categories.map((c, i) =>
+  `<button class="cat-btn ${i === 0 ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
+).join('');
+
+// 카테고리 본문 렌더
+const catContent = document.getElementById('catContent');
+
+function rankClass(r) {
+  if (r === '—') return 'rout';
+  const n = parseInt(r, 10);
+  if (n === 1) return 'r1';
+  if (n <= 3) return 'r23';
+  if (n <= 5) return 'r45';
+  if (n <= 10) return 'r610';
+  return 'rout';
+}
+
+// PANE 1: TOP 10 변천사 매트릭스
+const top10Html = `
+  <div class="cat-pane active" data-pane="top10">
+    <h2 class="cat-pane-title">TOP 10 변천사 (2016~2026)</h2>
+    <p class="cat-pane-desc">매년 5월 24일 기준 글로벌 시가총액 TOP 10. 좌우 스크롤로 11년치를 한 눈에.</p>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>순위</th>
+            ${DATA.top10_years.map(y => `<th>${y}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${DATA.top10.map((row, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              ${row.map((cell, j) => `<td class="${i === 0 ? 'rank-1' : ''}">${cell}</td>`).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+`;
+
+// PANE 2: 1위 변천
+const throneHtml = `
+  <div class="cat-pane" data-pane="throne">
+    <h2 class="cat-pane-title">1위 기업 변천사</h2>
+    <p class="cat-pane-desc">누가 11년간 우주를 지배했나 — Apple · Microsoft · Aramco · NVIDIA의 왕좌 이동.</p>
+    <div class="throne-list">
+      ${DATA.throne.map(t => `
+        <div class="throne-card">
+          <div class="throne-header">
+            <span class="throne-year">${t.year}</span>
+            <span class="throne-winner">${t.winner}</span>
+            <span class="throne-mc">${t.mc}</span>
+          </div>
+          <div class="throne-runners">2~3위: <strong>${t.runners}</strong></div>
+          <div class="throne-narrative">${t.narrative}</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+`;
+
+// PANE 3: 6대 메가트렌드
+const themesHtml = `
+  <div class="cat-pane" data-pane="themes">
+    <h2 class="cat-pane-title">11년이 들려주는 6가지 메가트렌드</h2>
+    <p class="cat-pane-desc">시총 거대화부터 NVIDIA 신화까지 — 단순 순위표가 아닌 패권 사이클의 기록.</p>
+    <div class="themes-grid">
+      ${DATA.themes.map(t => {
+        let body = '';
+        if (t.stats) {
+          body = `<div class="theme-stats">${t.stats.map(s => `
+            <div class="theme-stat"><span class="theme-stat-k">${s.k}</span><span class="theme-stat-v">${s.v}</span></div>
+          `).join('')}</div>`;
+        }
+        if (t.phases) {
+          body += `<div class="theme-phases">${t.phases.map(p => `
+            <div class="theme-phase">
+              <span class="theme-phase-period">${p.period}</span>
+              <span class="theme-phase-leader">${p.leader || p.count || ''}${(p.theme || p.members) ? `<span>${p.theme || p.members}</span>` : ''}</span>
+            </div>
+          `).join('')}</div>`;
+        }
+        return `
+          <div class="theme-card">
+            <div class="theme-num">${t.num}</div>
+            <h3 class="theme-title">${t.title}</h3>
+            <div class="theme-subtitle">${t.subtitle}</div>
+            ${body}
+            <div class="theme-insight">${t.insight}</div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  </div>
+`;
+
+// PANE 4: 순위 추적 매트릭스
+const rankHtml = `
+  <div class="cat-pane" data-pane="rank">
+    <h2 class="cat-pane-title">핵심 종목 순위 추적</h2>
+    <p class="cat-pane-desc">14개 핵심 종목의 TOP 10 내 순위 변동 — 11년의 흥망성쇠를 한 화면에.</p>
+    <div class="rank-matrix-wrap">
+      <table class="rank-matrix">
+        <thead>
+          <tr>
+            <th>종목</th>
+            ${DATA.top10_years.map(y => `<th>${y.slice(-2)}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${DATA.rank_stocks.map(s => `
+            <tr>
+              <td>${s.name}</td>
+              ${s.ranks.map(r => `<td><span class="${rankClass(r)}">${r}</span></td>`).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="rank-legend">
+      <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold);"></span>1위</div>
+      <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold-bg);"></span>2~3위</div>
+      <div class="rank-legend-item">4~5위 (Bold)</div>
+      <div class="rank-legend-item">6~10위 (Regular)</div>
+      <div class="rank-legend-item">— TOP 10 밖</div>
+    </div>
+  </div>
+`;
+
+catContent.innerHTML = top10Html + throneHtml + themesHtml + rankHtml;
+
+// 카테고리 탭 전환
+catNav.addEventListener('click', e => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+  const cat = btn.dataset.cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.cat-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === cat));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
