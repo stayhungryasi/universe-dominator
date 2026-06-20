@@ -483,28 +483,32 @@ const themesHtml = `
   </div>
 `;
 
-// PANE 4: 순위 추적 매트릭스
+// PANE 4: 순위 추적 매트릭스 (화살표 스크롤)
 const rankHtml = `
   <div class="cat-pane" data-pane="rank">
     <h2 class="cat-pane-title">핵심 종목 순위 추적</h2>
-    <p class="cat-pane-desc">14개 핵심 종목의 TOP 10 내 순위 변동 — 11년의 흥망성쇠를 한 화면에.</p>
-    <div class="rank-matrix-wrap">
-      <table class="rank-matrix">
-        <thead>
-          <tr>
-            <th>종목</th>
-            ${DATA.top10_years.map(y => `<th>${y.slice(-2)}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${DATA.rank_stocks.map(s => `
+    <p class="cat-pane-desc">14개 핵심 종목의 TOP 10 내 순위 변동 — 11년의 흥망성쇠를 한 화면에. 양옆 화살표로 연도를 넘겨보세요.</p>
+    <div class="matrix-viewport">
+      <div class="scroll-arrow left hidden" id="rankLeft" aria-label="이전 연도">‹</div>
+      <div class="scroll-arrow right" id="rankRight" aria-label="다음 연도">›</div>
+      <div class="matrix-scroll" id="rankScroll">
+        <table class="rank-matrix">
+          <thead>
             <tr>
-              <td>${s.name}</td>
-              ${s.ranks.map(r => `<td><span class="${rankClass(r)}">${r}</span></td>`).join('')}
+              <th>종목</th>
+              ${DATA.top10_years.map(y => `<th>${y.slice(-2)}</th>`).join('')}
             </tr>
-          `).join('')}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            ${DATA.rank_stocks.map(s => `
+              <tr>
+                <td>${s.name}</td>
+                ${s.ranks.map(r => `<td><span class="${rankClass(r)}">${r}</span></td>`).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="rank-legend">
       <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold);"></span>1위</div>
@@ -605,25 +609,36 @@ function renderBumpChart() {
   d3.selectAll('.bump-ln').on('mouseenter', function () { bumpFocus(this.getAttribute('data-name')); }).on('mouseleave', bumpClear);
 }
 
-// ───── 화살표 스크롤 (상세 매트릭스) ─────
-function setupMatrixArrows() {
-  const scroll = document.getElementById('matrixScroll');
-  const left = document.getElementById('matrixLeft');
-  const right = document.getElementById('matrixRight');
+// ───── 화살표 스크롤 (범용: 여러 매트릭스 표 지원) ─────
+function setupArrows(scrollId, leftId, rightId, step) {
+  const scroll = document.getElementById(scrollId);
+  const left = document.getElementById(leftId);
+  const right = document.getElementById(rightId);
   if (!scroll || !left || !right) return;
+  if (scroll.dataset.arrowsBound === '1') {
+    // 이미 바인딩됨 → 상태만 갱신
+    updateState();
+    return;
+  }
+  scroll.dataset.arrowsBound = '1';
 
-  const STEP = 220; // 한 번에 약 1.5~2열씩
+  const STEP = step || 220;
   left.addEventListener('click', () => scroll.scrollBy({ left: -STEP, behavior: 'smooth' }));
   right.addEventListener('click', () => scroll.scrollBy({ left: STEP, behavior: 'smooth' }));
 
-  function updateArrows() {
+  function updateState() {
     const maxScroll = scroll.scrollWidth - scroll.clientWidth;
     left.classList.toggle('hidden', scroll.scrollLeft <= 4);
     right.classList.toggle('hidden', scroll.scrollLeft >= maxScroll - 4);
   }
-  scroll.addEventListener('scroll', updateArrows);
-  window.addEventListener('resize', updateArrows);
-  updateArrows();
+  scroll.addEventListener('scroll', updateState);
+  window.addEventListener('resize', updateState);
+  updateState();
+}
+
+function setupAllArrows() {
+  setupArrows('matrixScroll', 'matrixLeft', 'matrixRight', 220);  // TOP 10 변천사
+  setupArrows('rankScroll', 'rankLeft', 'rankRight', 160);        // 순위 추적
 }
 
 // 초기 렌더 (D3가 로드된 후 실행되도록 약간 지연 안전장치)
@@ -634,7 +649,7 @@ function initTop10() {
     // D3 아직 로드 안 됐으면 잠시 후 재시도
     setTimeout(initTop10, 100);
   }
-  setupMatrixArrows();
+  setupAllArrows();
 }
 initTop10();
 
@@ -646,8 +661,8 @@ catNav.addEventListener('click', e => {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
   document.querySelectorAll('.cat-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === cat));
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  // TOP 10 탭으로 돌아오면 화살표 상태 갱신
-  if (cat === 'top10') setTimeout(setupMatrixArrows, 50);
+  // 탭 전환 시 해당 표 화살표 상태 갱신 (display:none 해제 후 너비 재계산 필요)
+  if (cat === 'top10' || cat === 'rank') setTimeout(setupAllArrows, 50);
 });
 </script>
 </body>
