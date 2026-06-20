@@ -708,7 +708,11 @@ def main():
     print(f"[OK] {DATA_PATH} 저장 완료")
     
     # ─── 일별 스냅샷 저장 (주간 History 자동 생성용) ───
-    save_daily_snapshot(new_data)
+    # 스냅샷은 부가 기능 → 실패해도 메인 업데이트는 정상 완료되도록 보호
+    try:
+        save_daily_snapshot(new_data)
+    except Exception as e:
+        print(f"[경고] 스냅샷 저장 실패 (메인 업데이트는 정상): {e}")
 
 
 def save_daily_snapshot(data):
@@ -718,7 +722,22 @@ def save_daily_snapshot(data):
     잠재지배자/변천사 같은 큐레이션 영역은 제외하고 순수 시총 데이터만 보관.
     """
     snap_dir = HERE / "data" / "snapshots"
-    snap_dir.mkdir(parents=True, exist_ok=True)
+    
+    # snapshots 경로가 파일로 존재하면 (잘못 생성된 경우) 제거 후 폴더로 재생성
+    if snap_dir.exists() and not snap_dir.is_dir():
+        try:
+            snap_dir.unlink()
+            print("[정리] snapshots가 파일로 존재 → 삭제 후 폴더 생성")
+        except Exception as e:
+            print(f"[경고] snapshots 파일 제거 실패: {e}")
+    
+    try:
+        snap_dir.mkdir(parents=True, exist_ok=True)
+    except FileExistsError:
+        # exist_ok=True에도 드물게 발생 → 이미 있으면 그냥 진행
+        if not snap_dir.is_dir():
+            print("[경고] snapshots 폴더 생성 불가 — 스냅샷 저장 건너뜀")
+            return
     
     # 비교에 필요한 최소 데이터만 추림 (지역별 ticker/name/mc/순위)
     snapshot = {
