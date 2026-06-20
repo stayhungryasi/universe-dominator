@@ -2,52 +2,277 @@
   "page_title": "메가트렌드",
   "page_desc": "11년이 들려주는 우주의 변천 — 2016~2026 글로벌 시가총액 TOP 10 분석",
   "categories": [
-    { "id": "top10",    "label": "TOP 10 변천사" },
-    { "id": "throne",   "label": "1위 변천" },
-    { "id": "themes",   "label": "6대 메가트렌드" },
-    { "id": "rank",     "label": "순위 추적" }
+    {
+      "id": "top10",
+      "label": "TOP 10 변천사"
+    },
+    {
+      "id": "throne",
+      "label": "1위 변천"
+    },
+    {
+      "id": "themes",
+      "label": "6대 메가트렌드"
+    },
+    {
+      "id": "rank",
+      "label": "순위 추적"
+    }
   ],
-
-  "top10_years": ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"],
+  "top10_years": [
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
   "top10": [
-    ["Apple $604B", "Apple $754B", "Apple $851B", "Microsoft $905B", "Saudi Aramco $1.60T", "Apple $2.05T", "Apple $2.85T", "Apple $2.61T", "Microsoft $3.13T", "Apple $3.34T", "NVIDIA $4.91T"],
-    ["Alphabet $518B", "Alphabet $579B", "Alphabet $719B", "Apple $895B", "Microsoft $1.20T", "Saudi Aramco $1.92T", "Microsoft $2.31T", "Microsoft $2.15T", "Apple $2.65T", "Microsoft $2.79T", "Alphabet $4.06T"],
-    ["Microsoft $437B", "Microsoft $509B", "Microsoft $714B", "Amazon $875B", "Apple $1.11T", "Microsoft $1.78T", "Saudi Aramco $2.30T", "Saudi Aramco $1.89T", "NVIDIA $2.22T", "NVIDIA $2.64T", "Apple $4.01T"],
-    ["Berkshire $360B", "Amazon $423B", "Amazon $701B", "Alphabet $815B", "Amazon $971B", "Amazon $1.56T", "Alphabet $1.84T", "Alphabet $1.33T", "Saudi Aramco $1.99T", "Amazon $2.02T", "Microsoft $3.11T"],
-    ["ExxonMobil $347B", "Berkshire $411B", "Tencent $540B", "Berkshire $494B", "Alphabet $799B", "Alphabet $1.39T", "Amazon $1.66T", "Amazon $1.06T", "Alphabet $1.88T", "Alphabet $1.89T", "Amazon $2.67T"],
-    ["Facebook $326B", "Facebook $411B", "Facebook $481B", "Facebook $476B", "Alibaba $540B", "Meta $839B", "Tesla $1.11T", "NVIDIA $685B", "Amazon $1.87T", "Saudi Aramco $1.73T", "TSMC $1.90T"],
-    ["J&J $290B", "ExxonMobil $340B", "Berkshire $491B", "Alibaba $471B", "Facebook $475B", "Tencent $753B", "Berkshire $780B", "Berkshire $676B", "Meta $1.24T", "Meta $1.46T", "Broadcom $1.89T"],
-    ["GE $290B", "J&J $338B", "Alibaba $470B", "Tencent $430B", "Tencent $510B", "Tesla $641B", "NVIDIA $684B", "Tesla $659B", "Berkshire $909B", "Berkshire $1.15T", "Saudi Aramco $1.75T"],
-    ["Amazon $280B", "JPMorgan $313B", "JPMorgan $372B", "J&J $372B", "Berkshire $437B", "Alibaba $615B", "Meta $605B", "Meta $550B", "Eli Lilly $701B", "Tesla $834B", "Meta $1.70T"],
-    ["ICBC $228B", "Tencent $280B", "J&J $344B", "JPMorgan $329B", "Visa $350B", "Berkshire $588B", "TSMC $540B", "Visa $464B", "TSMC $632B", "Broadcom $787B", "Tesla $1.47T"]
+    [
+      "Apple $604B",
+      "Apple $754B",
+      "Apple $851B",
+      "Microsoft $905B",
+      "Saudi Aramco $1.60T",
+      "Apple $2.05T",
+      "Apple $2.85T",
+      "Apple $2.61T",
+      "Microsoft $3.13T",
+      "Apple $3.34T",
+      "NVIDIA $4.91T"
+    ],
+    [
+      "Alphabet $518B",
+      "Alphabet $579B",
+      "Alphabet $719B",
+      "Apple $895B",
+      "Microsoft $1.20T",
+      "Saudi Aramco $1.92T",
+      "Microsoft $2.31T",
+      "Microsoft $2.15T",
+      "Apple $2.65T",
+      "Microsoft $2.79T",
+      "Alphabet $4.06T"
+    ],
+    [
+      "Microsoft $437B",
+      "Microsoft $509B",
+      "Microsoft $714B",
+      "Amazon $875B",
+      "Apple $1.11T",
+      "Microsoft $1.78T",
+      "Saudi Aramco $2.30T",
+      "Saudi Aramco $1.89T",
+      "NVIDIA $2.22T",
+      "NVIDIA $2.64T",
+      "Apple $4.01T"
+    ],
+    [
+      "Berkshire $360B",
+      "Amazon $423B",
+      "Amazon $701B",
+      "Alphabet $815B",
+      "Amazon $971B",
+      "Amazon $1.56T",
+      "Alphabet $1.84T",
+      "Alphabet $1.33T",
+      "Saudi Aramco $1.99T",
+      "Amazon $2.02T",
+      "Microsoft $3.11T"
+    ],
+    [
+      "ExxonMobil $347B",
+      "Berkshire $411B",
+      "Tencent $540B",
+      "Berkshire $494B",
+      "Alphabet $799B",
+      "Alphabet $1.39T",
+      "Amazon $1.66T",
+      "Amazon $1.06T",
+      "Alphabet $1.88T",
+      "Alphabet $1.89T",
+      "Amazon $2.67T"
+    ],
+    [
+      "Facebook $326B",
+      "Facebook $411B",
+      "Facebook $481B",
+      "Facebook $476B",
+      "Alibaba $540B",
+      "Meta $839B",
+      "Tesla $1.11T",
+      "NVIDIA $685B",
+      "Amazon $1.87T",
+      "Saudi Aramco $1.73T",
+      "TSMC $1.90T"
+    ],
+    [
+      "J&J $290B",
+      "ExxonMobil $340B",
+      "Berkshire $491B",
+      "Alibaba $471B",
+      "Facebook $475B",
+      "Tencent $753B",
+      "Berkshire $780B",
+      "Berkshire $676B",
+      "Meta $1.24T",
+      "Meta $1.46T",
+      "Broadcom $1.89T"
+    ],
+    [
+      "GE $290B",
+      "J&J $338B",
+      "Alibaba $470B",
+      "Tencent $430B",
+      "Tencent $510B",
+      "Tesla $641B",
+      "NVIDIA $684B",
+      "Tesla $659B",
+      "Berkshire $909B",
+      "Berkshire $1.15T",
+      "Saudi Aramco $1.75T"
+    ],
+    [
+      "Amazon $280B",
+      "JPMorgan $313B",
+      "JPMorgan $372B",
+      "J&J $372B",
+      "Berkshire $437B",
+      "Alibaba $615B",
+      "Meta $605B",
+      "Meta $550B",
+      "Eli Lilly $701B",
+      "Tesla $834B",
+      "Meta $1.70T"
+    ],
+    [
+      "ICBC $228B",
+      "Tencent $280B",
+      "J&J $344B",
+      "JPMorgan $329B",
+      "Visa $350B",
+      "Berkshire $588B",
+      "TSMC $540B",
+      "Visa $464B",
+      "TSMC $632B",
+      "Broadcom $787B",
+      "Tesla $1.47T"
+    ]
   ],
-
   "throne": [
-    { "year": "2016", "winner": "Apple", "mc": "$604B", "runners": "Alphabet, Microsoft", "narrative": "스마트폰 시대 정점, Apple의 5년 연속 1위" },
-    { "year": "2017", "winner": "Apple", "mc": "$754B", "runners": "Alphabet, Microsoft", "narrative": "FAANG 부상, Amazon TOP 5 진입" },
-    { "year": "2018", "winner": "Apple", "mc": "$851B", "runners": "Alphabet, Microsoft", "narrative": "Apple 최초 시총 $1T 돌파 (8월)" },
-    { "year": "2019", "winner": "Microsoft", "mc": "$905B", "runners": "Apple, Amazon", "narrative": "Microsoft, 클라우드(Azure)로 Apple 추월" },
-    { "year": "2020", "winner": "Saudi Aramco", "mc": "$1.60T", "runners": "Microsoft, Apple", "narrative": "Aramco IPO 후 1위, 코로나 빅테크 랠리 시작" },
-    { "year": "2021", "winner": "Apple", "mc": "$2.05T", "runners": "Saudi Aramco, Microsoft", "narrative": "Apple 재탈환, Tesla 1년새 +565% (TOP 10 진입)" },
-    { "year": "2022", "winner": "Apple", "mc": "$2.85T", "runners": "Microsoft, Saudi Aramco", "narrative": "Apple $2.85T 정점, 인플레이션·금리인상 본격화" },
-    { "year": "2023", "winner": "Apple", "mc": "$2.61T", "runners": "Microsoft, Saudi Aramco", "narrative": "Tech 10년만에 첫 YoY 하락, NVIDIA TOP 10 잔류" },
-    { "year": "2024", "winner": "Microsoft", "mc": "$3.13T", "runners": "Apple, NVIDIA", "narrative": "NVIDIA AI 혁명 → TOP 3 진입 (+225% YoY)" },
-    { "year": "2025", "winner": "Apple", "mc": "$3.34T", "runners": "Microsoft, NVIDIA", "narrative": "Apple 재탈환, Trillion Club 8개사 확대" },
-    { "year": "2026", "winner": "NVIDIA", "mc": "$4.91T", "runners": "Alphabet, Apple", "narrative": "NVIDIA 사상 첫 $4T+ 1위, AI 패권 굳히기" }
+    {
+      "year": "2016",
+      "winner": "Apple",
+      "mc": "$604B",
+      "runners": "Alphabet, Microsoft",
+      "narrative": "스마트폰 시대 정점, Apple의 5년 연속 1위"
+    },
+    {
+      "year": "2017",
+      "winner": "Apple",
+      "mc": "$754B",
+      "runners": "Alphabet, Microsoft",
+      "narrative": "FAANG 부상, Amazon TOP 5 진입"
+    },
+    {
+      "year": "2018",
+      "winner": "Apple",
+      "mc": "$851B",
+      "runners": "Alphabet, Microsoft",
+      "narrative": "Apple 최초 시총 $1T 돌파 (8월)"
+    },
+    {
+      "year": "2019",
+      "winner": "Microsoft",
+      "mc": "$905B",
+      "runners": "Apple, Amazon",
+      "narrative": "Microsoft, 클라우드(Azure)로 Apple 추월"
+    },
+    {
+      "year": "2020",
+      "winner": "Saudi Aramco",
+      "mc": "$1.60T",
+      "runners": "Microsoft, Apple",
+      "narrative": "Aramco IPO 후 1위, 코로나 빅테크 랠리 시작"
+    },
+    {
+      "year": "2021",
+      "winner": "Apple",
+      "mc": "$2.05T",
+      "runners": "Saudi Aramco, Microsoft",
+      "narrative": "Apple 재탈환, Tesla 1년새 +565% (TOP 10 진입)"
+    },
+    {
+      "year": "2022",
+      "winner": "Apple",
+      "mc": "$2.85T",
+      "runners": "Microsoft, Saudi Aramco",
+      "narrative": "Apple $2.85T 정점, 인플레이션·금리인상 본격화"
+    },
+    {
+      "year": "2023",
+      "winner": "Apple",
+      "mc": "$2.61T",
+      "runners": "Microsoft, Saudi Aramco",
+      "narrative": "Tech 10년만에 첫 YoY 하락, NVIDIA TOP 10 잔류"
+    },
+    {
+      "year": "2024",
+      "winner": "Microsoft",
+      "mc": "$3.13T",
+      "runners": "Apple, NVIDIA",
+      "narrative": "NVIDIA AI 혁명 → TOP 3 진입 (+225% YoY)"
+    },
+    {
+      "year": "2025",
+      "winner": "Apple",
+      "mc": "$3.34T",
+      "runners": "Microsoft, NVIDIA",
+      "narrative": "Apple 재탈환, Trillion Club 8개사 확대"
+    },
+    {
+      "year": "2026",
+      "winner": "NVIDIA",
+      "mc": "$4.91T",
+      "runners": "Alphabet, Apple",
+      "narrative": "NVIDIA 사상 첫 $4T+ 1위, AI 패권 굳히기"
+    }
   ],
-
   "themes": [
     {
       "num": "1",
       "title": "시총 거대화",
       "subtitle": "단일 기업이 한 국가의 GDP를 능가하는 시대",
       "stats": [
-        { "k": "TOP 100 합계 (2015)", "v": "$16.1T" },
-        { "k": "TOP 100 합계 (2020)", "v": "$21.4T" },
-        { "k": "TOP 100 합계 (2025)", "v": "$42.6T" },
-        { "k": "TOP 100 합계 (2026)", "v": "$51.8T" },
-        { "k": "1위 시총 (2016)", "v": "$604B" },
-        { "k": "1위 시총 (2026)", "v": "$4,911B" }
+        {
+          "k": "TOP 100 합계 (2015)",
+          "v": "$16.1T"
+        },
+        {
+          "k": "TOP 100 합계 (2020)",
+          "v": "$21.4T"
+        },
+        {
+          "k": "TOP 100 합계 (2025)",
+          "v": "$42.6T"
+        },
+        {
+          "k": "TOP 100 합계 (2026)",
+          "v": "$51.8T"
+        },
+        {
+          "k": "1위 시총 (2016)",
+          "v": "$604B"
+        },
+        {
+          "k": "1위 시총 (2026)",
+          "v": "$4,911B"
+        }
       ],
       "insight": "10년 만에 1위 기업 시총은 8배 성장. 단일 기업이 한 국가의 GDP를 능가하는 시대."
     },
@@ -56,13 +281,41 @@
       "title": "1위의 변천",
       "subtitle": "패권 사이클: 모바일 → 클라우드 → 에너지 → AI",
       "phases": [
-        { "period": "2016~2018", "leader": "Apple", "theme": "스마트폰 시대" },
-        { "period": "2019", "leader": "Microsoft", "theme": "첫 1위 (클라우드 시대)" },
-        { "period": "2020", "leader": "Saudi Aramco", "theme": "에너지" },
-        { "period": "2021~2023", "leader": "Apple", "theme": "재탈환 (서비스+에코시스템)" },
-        { "period": "2024", "leader": "Microsoft", "theme": "AI + 클라우드" },
-        { "period": "2025", "leader": "Apple", "theme": "재탈환" },
-        { "period": "2026", "leader": "NVIDIA", "theme": "AI 패권" }
+        {
+          "period": "2016~2018",
+          "leader": "Apple",
+          "theme": "스마트폰 시대"
+        },
+        {
+          "period": "2019",
+          "leader": "Microsoft",
+          "theme": "첫 1위 (클라우드 시대)"
+        },
+        {
+          "period": "2020",
+          "leader": "Saudi Aramco",
+          "theme": "에너지"
+        },
+        {
+          "period": "2021~2023",
+          "leader": "Apple",
+          "theme": "재탈환 (서비스+에코시스템)"
+        },
+        {
+          "period": "2024",
+          "leader": "Microsoft",
+          "theme": "AI + 클라우드"
+        },
+        {
+          "period": "2025",
+          "leader": "Apple",
+          "theme": "재탈환"
+        },
+        {
+          "period": "2026",
+          "leader": "NVIDIA",
+          "theme": "AI 패권"
+        }
       ],
       "insight": "11년간 5번의 1위 교체. 산업 사이클이 시총 1위 자리에 그대로 투영."
     },
@@ -71,11 +324,31 @@
       "title": "Trillion-Dollar Club",
       "subtitle": "조 단위가 더 이상 '특별'하지 않은 시대",
       "phases": [
-        { "period": "2018", "count": "1개사", "members": "Apple 단독" },
-        { "period": "2020", "count": "4개사", "members": "Apple, Microsoft, Aramco, Amazon" },
-        { "period": "2021", "count": "5개사", "members": "+ Alphabet" },
-        { "period": "2025", "count": "8개사", "members": "Apple, MSFT, NVIDIA, Amazon, Alphabet, Aramco, Meta, Berkshire" },
-        { "period": "2026", "count": "12개사", "members": "+ TSMC, Broadcom, Tesla 등" }
+        {
+          "period": "2018",
+          "count": "1개사",
+          "members": "Apple 단독"
+        },
+        {
+          "period": "2020",
+          "count": "4개사",
+          "members": "Apple, Microsoft, Aramco, Amazon"
+        },
+        {
+          "period": "2021",
+          "count": "5개사",
+          "members": "+ Alphabet"
+        },
+        {
+          "period": "2025",
+          "count": "8개사",
+          "members": "Apple, MSFT, NVIDIA, Amazon, Alphabet, Aramco, Meta, Berkshire"
+        },
+        {
+          "period": "2026",
+          "count": "12개사",
+          "members": "+ TSMC, Broadcom, Tesla 등"
+        }
       ],
       "insight": "8년 만에 12배. $1T이 새로운 빅테크 기준선이 됨."
     },
@@ -84,12 +357,30 @@
       "title": "NVIDIA 신화",
       "subtitle": "6년 만에 TOP 10 밖 → 1위로 도약",
       "stats": [
-        { "k": "2016~2021", "v": "TOP 10 밖" },
-        { "k": "2022", "v": "8위 ($684B)" },
-        { "k": "2023", "v": "6위 ($685B)" },
-        { "k": "2024", "v": "3위 ($2.22T, +225%)" },
-        { "k": "2025", "v": "3위 ($2.64T)" },
-        { "k": "2026", "v": "1위 ($4.91T) — 사상 첫 $4T+" }
+        {
+          "k": "2016~2021",
+          "v": "TOP 10 밖"
+        },
+        {
+          "k": "2022",
+          "v": "8위 ($684B)"
+        },
+        {
+          "k": "2023",
+          "v": "6위 ($685B)"
+        },
+        {
+          "k": "2024",
+          "v": "3위 ($2.22T, +225%)"
+        },
+        {
+          "k": "2025",
+          "v": "3위 ($2.64T)"
+        },
+        {
+          "k": "2026",
+          "v": "1위 ($4.91T) — 사상 첫 $4T+"
+        }
       ],
       "insight": "AI 인프라 수요 폭증을 단일 기업이 가장 극적으로 흡수한 사례. 잠재지배자 → 우주지배자 변신의 교과서."
     },
@@ -98,10 +389,26 @@
       "title": "중국 기업의 부침",
       "subtitle": "미중 패권경쟁의 자본시장 반영",
       "phases": [
-        { "period": "2017", "leader": "Tencent", "theme": "TOP 10 첫 진입 (10위, $280B)" },
-        { "period": "2020", "leader": "Alibaba 6위, Tencent 8위", "theme": "정점" },
-        { "period": "2022~", "leader": "—", "theme": "규제·미중갈등으로 TOP 10에서 이탈" },
-        { "period": "2025", "leader": "Tencent 16위까지 회복", "theme": "+60% YoY" }
+        {
+          "period": "2017",
+          "leader": "Tencent",
+          "theme": "TOP 10 첫 진입 (10위, $280B)"
+        },
+        {
+          "period": "2020",
+          "leader": "Alibaba 6위, Tencent 8위",
+          "theme": "정점"
+        },
+        {
+          "period": "2022~",
+          "leader": "—",
+          "theme": "규제·미중갈등으로 TOP 10에서 이탈"
+        },
+        {
+          "period": "2025",
+          "leader": "Tencent 16위까지 회복",
+          "theme": "+60% YoY"
+        }
       ],
       "insight": "지정학적 리스크가 시총 순위에 미치는 영향을 가장 또렷이 보여준 케이스."
     },
@@ -110,31 +417,287 @@
       "title": "에너지 패러다임 전환",
       "subtitle": "Old Energy 후퇴, New Energy (AI 인프라) 부상",
       "phases": [
-        { "period": "2016", "leader": "ExxonMobil 5위", "theme": "$347B" },
-        { "period": "2017", "leader": "ExxonMobil 7위", "theme": "" },
-        { "period": "2018~", "leader": "TOP 10 이탈", "theme": "Big Oil 시대 종료" },
-        { "period": "2020", "leader": "Saudi Aramco 1위", "theme": "$1,601B 등장" },
-        { "period": "2025", "leader": "Aramco 6위", "theme": "$1,726B" },
-        { "period": "2026", "leader": "Aramco 8위", "theme": "$1,754B" }
+        {
+          "period": "2016",
+          "leader": "ExxonMobil 5위",
+          "theme": "$347B"
+        },
+        {
+          "period": "2017",
+          "leader": "ExxonMobil 7위",
+          "theme": ""
+        },
+        {
+          "period": "2018~",
+          "leader": "TOP 10 이탈",
+          "theme": "Big Oil 시대 종료"
+        },
+        {
+          "period": "2020",
+          "leader": "Saudi Aramco 1위",
+          "theme": "$1,601B 등장"
+        },
+        {
+          "period": "2025",
+          "leader": "Aramco 6위",
+          "theme": "$1,726B"
+        },
+        {
+          "period": "2026",
+          "leader": "Aramco 8위",
+          "theme": "$1,754B"
+        }
       ],
       "insight": "에너지의 무게중심이 화석연료 → AI 데이터센터 전력으로 이동."
     }
   ],
-
   "rank_stocks": [
-    { "name": "Apple",              "ranks": ["1","1","1","2","3","1","1","1","2","1","3"] },
-    { "name": "Microsoft",          "ranks": ["3","3","3","1","2","3","2","2","1","2","4"] },
-    { "name": "NVIDIA",             "ranks": ["—","—","—","—","—","—","8","6","3","3","1"] },
-    { "name": "Alphabet",           "ranks": ["2","2","2","4","5","5","4","4","5","5","2"] },
-    { "name": "Amazon",             "ranks": ["9","4","4","3","4","4","5","5","6","4","5"] },
-    { "name": "Meta (Facebook)",    "ranks": ["6","6","6","6","7","6","9","9","7","7","9"] },
-    { "name": "Saudi Aramco",       "ranks": ["—","—","—","—","1","2","3","3","4","6","8"] },
-    { "name": "Tesla",              "ranks": ["—","—","—","—","—","8","6","8","—","9","10"] },
-    { "name": "Berkshire Hathaway", "ranks": ["4","5","7","5","9","10","7","7","8","8","—"] },
-    { "name": "TSMC",               "ranks": ["—","—","—","—","—","—","10","—","10","—","6"] },
-    { "name": "Tencent",            "ranks": ["—","10","5","8","8","7","—","—","—","—","—"] },
-    { "name": "Alibaba",            "ranks": ["—","—","8","7","6","9","—","—","—","—","—"] },
-    { "name": "Broadcom",           "ranks": ["—","—","—","—","—","—","—","—","—","10","7"] },
-    { "name": "ExxonMobil",         "ranks": ["5","7","—","—","—","—","—","—","—","—","—"] }
-  ]
+    {
+      "name": "Apple",
+      "ranks": [
+        "1",
+        "1",
+        "1",
+        "2",
+        "3",
+        "1",
+        "1",
+        "1",
+        "2",
+        "1",
+        "3"
+      ]
+    },
+    {
+      "name": "Microsoft",
+      "ranks": [
+        "3",
+        "3",
+        "3",
+        "1",
+        "2",
+        "3",
+        "2",
+        "2",
+        "1",
+        "2",
+        "4"
+      ]
+    },
+    {
+      "name": "NVIDIA",
+      "ranks": [
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "8",
+        "6",
+        "3",
+        "3",
+        "1"
+      ]
+    },
+    {
+      "name": "Alphabet",
+      "ranks": [
+        "2",
+        "2",
+        "2",
+        "4",
+        "5",
+        "5",
+        "4",
+        "4",
+        "5",
+        "5",
+        "2"
+      ]
+    },
+    {
+      "name": "Amazon",
+      "ranks": [
+        "9",
+        "4",
+        "4",
+        "3",
+        "4",
+        "4",
+        "5",
+        "5",
+        "6",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "name": "Meta (Facebook)",
+      "ranks": [
+        "6",
+        "6",
+        "6",
+        "6",
+        "7",
+        "6",
+        "9",
+        "9",
+        "7",
+        "7",
+        "9"
+      ]
+    },
+    {
+      "name": "Saudi Aramco",
+      "ranks": [
+        "—",
+        "—",
+        "—",
+        "—",
+        "1",
+        "2",
+        "3",
+        "3",
+        "4",
+        "6",
+        "8"
+      ]
+    },
+    {
+      "name": "Tesla",
+      "ranks": [
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "8",
+        "6",
+        "8",
+        "—",
+        "9",
+        "10"
+      ]
+    },
+    {
+      "name": "Berkshire Hathaway",
+      "ranks": [
+        "4",
+        "5",
+        "7",
+        "5",
+        "9",
+        "10",
+        "7",
+        "7",
+        "8",
+        "8",
+        "—"
+      ]
+    },
+    {
+      "name": "TSMC",
+      "ranks": [
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "10",
+        "—",
+        "10",
+        "—",
+        "6"
+      ]
+    },
+    {
+      "name": "Tencent",
+      "ranks": [
+        "—",
+        "10",
+        "5",
+        "8",
+        "8",
+        "7",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—"
+      ]
+    },
+    {
+      "name": "Alibaba",
+      "ranks": [
+        "—",
+        "—",
+        "8",
+        "7",
+        "6",
+        "9",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—"
+      ]
+    },
+    {
+      "name": "Broadcom",
+      "ranks": [
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "10",
+        "7"
+      ]
+    },
+    {
+      "name": "ExxonMobil",
+      "ranks": [
+        "5",
+        "7",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—"
+      ]
+    }
+  ],
+  "bump_config": {
+    "colors": {
+      "Apple": "#888780",
+      "Microsoft": "#378ADD",
+      "NVIDIA": "#639922",
+      "Alphabet": "#D4537E",
+      "Amazon": "#BA7517",
+      "Meta (Facebook)": "#534AB7",
+      "Saudi Aramco": "#1D9E75",
+      "Tesla": "#E24B4A",
+      "Berkshire Hathaway": "#5F5E5A",
+      "TSMC": "#D85A30",
+      "Tencent": "#0F6E56",
+      "Alibaba": "#993C1D",
+      "Broadcom": "#185FA5",
+      "ExxonMobil": "#854F0B"
+    },
+    "highlight": [
+      "NVIDIA",
+      "Apple",
+      "Saudi Aramco"
+    ]
+  }
 }
