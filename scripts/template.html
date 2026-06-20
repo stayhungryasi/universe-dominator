@@ -389,6 +389,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .stock-info { min-width: 0; }
 
 .stock-name {
+  display: block;
   font-size: 18px;
   font-weight: 700;
   color: var(--text);
@@ -396,7 +397,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
 }
+.stock-name:hover { color: var(--gold); }
 
 .stock-meta {
   font-size: 13px;
@@ -498,12 +503,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 [data-theme="dark"] .latent-badge.star-badge { color: var(--bg); }
 
 .latent-name {
+  display: block;
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--text);
   margin-bottom: 4px;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
 }
+.latent-name:hover { color: var(--gold); }
 
 .latent-ticker {
   font-size: 13px;
@@ -592,11 +602,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .history-info { min-width: 0; }
 
 .history-top {
+  display: block;
   font-size: 18px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.02em;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
 }
+.history-top:hover { color: var(--gold); }
 
 .history-key {
   font-size: 13px;
@@ -866,6 +881,18 @@ regionKeys.forEach((key, idx) => {
   tabs.appendChild(btn);
 });
 
+// 네이버 종목 페이지 URL 생성
+// - 한국 종목(.KS/.KQ): Naver Finance 직접 링크
+// - 그 외: 네이버 검색 라우팅 (안정적, 종목 카드 노출)
+function naverStockUrl(ticker, name) {
+  if (ticker && (ticker.endsWith('.KS') || ticker.endsWith('.KQ'))) {
+    const code = ticker.split('.')[0];
+    return `https://finance.naver.com/item/main.naver?code=${code}`;
+  }
+  const q = (ticker || name || '').trim() + ' 주가';
+  return `https://search.naver.com/search.naver?query=${encodeURIComponent(q)}`;
+}
+
 // 국기 이모지(🇺🇸)를 flagcdn.com SVG 이미지로 변환 — 모든 플랫폼 동일 표시
 function flagFromEmoji(emoji) {
   if (!emoji || typeof emoji !== 'string') return '';
@@ -896,7 +923,7 @@ function switchRegion(key) {
       <div class="stock-row">
         <div class="stock-rank">${i+1}</div>
         <div class="stock-info">
-          <div class="stock-name">${name}</div>
+          <a href="${naverStockUrl(ticker, name)}" target="_blank" rel="noopener" class="stock-name">${name}</a>
           <div class="stock-meta">
             <span class="stock-flag">${flagFromEmoji(flag)}</span>
             <span>${ticker}</span>
@@ -926,7 +953,7 @@ if (DATA.latent && DATA.latent.length > 0) {
     return `
       <div class="latent-card ${star}">
         <div class="latent-header">${badge}</div>
-        <div class="latent-name">${c.name}</div>
+        <a href="${naverStockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${c.name}</a>
         <div class="latent-ticker">
           <span class="stock-flag">${flagFromEmoji(c.country)}</span>
           <span>${c.ticker}</span>
@@ -954,7 +981,7 @@ if (DATA.history && DATA.history.length > 0) {
     <div class="history-row">
       <div class="history-year">${h.year}</div>
       <div class="history-info">
-        <div class="history-top">${h.top}</div>
+        <a href="${naverStockUrl('', h.top)}" target="_blank" rel="noopener" class="history-top">${h.top}</a>
         <div class="history-key">${h.key}</div>
       </div>
       <div class="history-mc">${fmtMC(h.mc)}</div>
