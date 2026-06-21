@@ -839,12 +839,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   })();
 </script>
 <style>
-/* 헤더 모바일 일관성 (전 페이지 공통 — build_site.py 주입) */
+/* 헤더 모바일 일관성 + 실시간 시계 (전 페이지 공통 — build_site.py 주입) */
 @media (max-width: 480px) {
   .site-header-inner { flex-wrap: wrap; }
   .brand { flex-shrink: 0; }
 }
+.update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var badge = document.querySelector('.update-badge');
+  if (!badge) return;
+  var dateText = (badge.textContent || '').trim();
+  badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
+  badge.querySelector('.ud-date').textContent = dateText;
+  var clk = badge.querySelector('.ud-clock');
+  function tick() {
+    clk.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
+  }
+  tick();
+  setInterval(tick, 1000);
+});
+</script>
 </head>
 <body>
 
@@ -1985,7 +2001,7 @@ const DATA = {
     }
   },
   "meta": {
-    "fetched_at": "2026-06-21T10:45:34.101558+09:00",
+    "fetched_at": "2026-06-21T17:24:17.674967+09:00",
     "fetched_date": "2026-06-21",
     "usd_krw": 1532.31,
     "errors": []

@@ -116,12 +116,28 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
 </style>
 <style>
-/* 헤더 모바일 일관성 (전 페이지 공통 — build_site.py 주입) */
+/* 헤더 모바일 일관성 + 실시간 시계 (전 페이지 공통 — build_site.py 주입) */
 @media (max-width: 480px) {
   .site-header-inner { flex-wrap: wrap; }
   .brand { flex-shrink: 0; }
 }
+.update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var badge = document.querySelector('.update-badge');
+  if (!badge) return;
+  var dateText = (badge.textContent || '').trim();
+  badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
+  badge.querySelector('.ud-date').textContent = dateText;
+  var clk = badge.querySelector('.ud-clock');
+  function tick() {
+    clk.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
+  }
+  tick();
+  setInterval(tick, 1000);
+});
+</script>
 </head>
 <body>
 
