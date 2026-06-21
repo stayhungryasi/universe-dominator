@@ -19,6 +19,15 @@ DATA_DIR = HERE / "data"
 SCRIPTS_DIR = HERE / "scripts"
 
 
+def _header_meta():
+    """헤더 배지용 날짜·환율 (latest.json meta 기준)"""
+    try:
+        m = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+        return {"fetched_date": m.get("fetched_date"), "usd_krw": m.get("usd_krw")}
+    except Exception:
+        return {}
+
+
 def build_main():
     """index.html — 우주지배자 메인 (TOP 20)"""
     data = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
@@ -68,6 +77,7 @@ def build_megatrend():
     if not template_path.exists() or not data_path.exists():
         print(f"[skip] megatrend 자원 없음"); return
     data = json.loads(data_path.read_text(encoding="utf-8"))
+    data["meta"] = _header_meta()
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
     out = HERE / "megatrend.html"
@@ -112,6 +122,7 @@ def build_history(page_key, active_marker, out_filename):
     if not template_path.exists() or not data_path.exists():
         print(f"[skip] history-{page_key} 자원 없음"); return
     data = json.loads(data_path.read_text(encoding="utf-8"))
+    data["meta"] = _header_meta()
     template = template_path.read_text(encoding="utf-8")
     html = template
     html = html.replace("{{PAGE_TITLE}}", data.get("page_title","History"))
