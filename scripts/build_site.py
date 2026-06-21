@@ -135,6 +135,33 @@ def build_history(page_key, active_marker, out_filename):
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
+HEADER_FIX_CSS = """<style>
+/* 헤더 모바일 일관성 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+</style>"""
+
+
+def inject_header_fix():
+    """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
+    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
+             "community.html", "my-universe.html", "history-top20.html", "history-latent.html"]
+    n = 0
+    for name in pages:
+        f = HERE / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        if "헤더 모바일 일관성" in html or "</head>" not in html:
+            continue
+        html = html.replace("</head>", HEADER_FIX_CSS + "\n</head>", 1)
+        f.write_text(html, encoding="utf-8")
+        n += 1
+    print(f"[OK] 헤더 일관성 CSS 주입: {n}개 페이지")
+
+
 def main():
     print("=" * 50)
     print("우주지배자 사이트 빌드 시작")
@@ -145,6 +172,7 @@ def main():
     build_placeholders()
     build_history("top20",  "home",   "history-top20.html")
     build_history("latent", "latent", "history-latent.html")
+    inject_header_fix()
     print("=" * 50)
     print("빌드 완료")
 
