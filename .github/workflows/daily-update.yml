@@ -30,6 +30,14 @@ jobs:
         run: python scripts/fetch_data.py
         continue-on-error: false
       
+      # 잠재지배자 후보 자동 생성 (완전 자동)
+      # ⚠️ 첫 출시: --preview = 사이트 미반영, data/latent_auto_preview.json 만 생성.
+      #    결과 확인 후 아래 --preview 를 지우면 라이브(latest.json 직접 갱신).
+      # 실패해도 파이프라인 중단 안 됨(continue-on-error) → latent 기존값 유지.
+      - name: Generate latent candidates (auto)
+        run: python scripts/generate_candidates.py --preview
+        continue-on-error: true
+      
       # 토요일(KST)에만 주간 History 자동 생성
       # cron이 23:00 UTC = 다음날 08:00 KST 이므로,
       # 금요일 23:00 UTC 실행분이 토요일 08:00 KST가 됨 → KST 요일로 판정
