@@ -24,6 +24,7 @@ HERE = Path(__file__).parent.parent
 SNAP_DIR = HERE / "data" / "snapshots"
 LATEST_PATH = HERE / "data" / "latest.json"
 HIST_TOP20_PATH = HERE / "data" / "history-top20.json"
+HIST_LATENT_PATH = HERE / "data" / "history-latent.json"
 
 REGION_LABELS = {
     "earth": "지구", "us": "미국", "korea": "한국", "japan": "일본",
@@ -162,11 +163,134 @@ def build_items(curr_snap, prev_snap):
     return items
 
 
+
+# ───────────────────────── 잠재지배자(latent) 자동 비교 ─────────────────────────
+
+def _earth_tickers(snap):
+    return {s.get("ticker"): s.get("rank")
+            for s in snap.get("regions", {}).get("earth", []) if s.get("ticker")}
+
+
+def diff_latent(prev_latent, curr_latent):
+    """잠재지배자 목록 이전/현재 비교 (ticker 기준)."""
+    prev_by = {s["ticker"]: s for s in prev_latent if s.get("ticker")}
+    curr_by = {s["ticker"]: s for s in curr_latent if s.get("ticker")}
+    prev_t, curr_t = set(prev_by), set(curr_by)
+
+    entered = [curr_by[x] for x in curr_t - prev_t]
+    entered.sort(key=lambda s: s.get("rank") or 999)
+    exited = [prev_by[x] for x in prev_t - curr_t]
+    exited.sort(key=lambda s: s.get("rank") or 999)
+
+    rank_moves, mom_moves, mc_moves = [], [], []
+    for x in curr_t & prev_t:
+        ps, cs = prev_by[x], curr_by[x]
+        pr, cr = ps.get("rank"), cs.get("rank")
+        if pr and cr and abs(pr - cr) >= 3:
+            rank_moves.append((cs, pr, cr))
+        pm, cm = ps.get("momentum_1y"), cs.get("momentum_1y")
+        if pm is not None and cm is not None and abs(cm - pm) >= 15:
+            mom_moves.append((cs, pm, cm))
+        pmc, cmc = ps.get("mc"), cs.get("mc")
+        if pmc and cmc:
+            pct = (cmc - pmc) / pmc * 100
+            if abs(pct) >= 15:
+                mc_moves.append((cs, pmc, cmc, pct))
+
+    return {"entered": entered, "exited": exited, "rank_moves": rank_moves,
+            "mom_moves": mom_moves, "mc_moves": mc_moves}
+
+
+def build_latent_items(d, curr_snap):
+    """잠재지배자 변동 items 생성. 이탈 종목이 TOP 20에 있으면 '졸업'으로 구분."""
+    items = []
+    earth = _earth_tickers(curr_snap)
+
+    for s in d["entered"]:
+        mom = s.get("momentum_1y")
+        mom_str = f", 1Y +{mom}%" if mom is not None else ""
+        items.append(
+            f"<strong>{s['name']}</strong> 잠재지배자 신규 편입 "
+            f"(<span class='em-up'>{s.get('rank','?')}위, {fmt_mc(s.get('mc',0))}{mom_str}</span>)"
+        )
+
+    for s in d["exited"]:
+        tk = s.get("ticker")
+        if tk in earth:
+            gr = earth[tk]
+            items.append(
+                f"<strong>{s['name']}</strong> — "
+                f"<span class='em-up'>★ TOP 20 졸업 (글로벌 {gr}위)</span>"
+            )
+        else:
+            items.append(f"<strong>{s['name']}</strong> 잠재지배자 목록에서 제외")
+
+    for cs, pr, cr in sorted(d["rank_moves"], key=lambda x: x[0].get("rank") or 999):
+        up = cr < pr
+        cls = "em-up" if up else "em-down"
+        word = "상승" if up else "하락"
+        items.append(
+            f"<strong>{cs['name']}</strong> 잠재 순위 "
+            f"<span class='{cls}'>{pr}위 → {cr}위 {word}</span>"
+        )
+
+    for cs, pm, cm in d["mom_moves"]:
+        cls = "em-up" if cm >= pm else "em-down"
+        items.append(
+            f"<strong>{cs['name']}</strong> 1Y 모멘텀 "
+            f"<span class='{cls}'>{pm}% → {cm}%</span>"
+        )
+
+    for cs, pmc, cmc, pct in sorted(d["mc_moves"], key=lambda x: -abs(x[3]))[:5]:
+        cls = "em-up" if pct >= 0 else "em-down"
+        items.append(
+            f"<strong>{cs['name']}</strong> 시총 "
+            f"<span class='{cls}'>{fmt_pct(pmc, cmc)}</span> "
+            f"({fmt_mc(pmc)} → {fmt_mc(cmc)})"
+        )
+
+    return items
+
+
+# ───────────────────────── 공통 헬퍼 ─────────────────────────
+
+def _make_entry(items, prev_date, curr_date, label):
+    def short(dstr):
+        dt = datetime.strptime(dstr, "%Y-%m-%d")
+        return f"{dt.month}.{dt.day}"
+    return {
+        "date": curr_date.replace("-", "."),
+        "period": f"{short(prev_date)} → {short(curr_date)} (주간)",
+        "auto": True,
+        "blocks": [{"type": "items", "label": label, "items": items}],
+    }
+
+
+def _write_history(path, default, new_entry):
+    if path.exists():
+        hist = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        hist = default
+    date_label = new_entry["date"]
+    entries = [e for e in hist.get("entries", [])
+               if not (e.get("date") == date_label and e.get("auto"))]
+    entries.insert(0, new_entry)
+    hist["entries"] = entries
+    path.write_text(json.dumps(hist, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _preview(tag, items):
+    import re
+    print(f"[OK] {tag} entry 추가 ({len(items)}개 변동)")
+    for it in items:
+        print(f"   • {re.sub(r'<[^>]+>', '', it)}")
+
+
 def main():
     curr_date = TODAY_KST.strftime("%Y-%m-%d")
     curr_snap = load_snapshot(curr_date)
     if not curr_snap:
-        # 오늘 스냅샷이 아직이면 latest.json에서 즉석 생성
+        # 오늘 스냅샷이 아직이면 latest.json에서 즉석 생성 (latent 포함)
         if LATEST_PATH.exists():
             latest = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
             curr_snap = {
@@ -179,69 +303,54 @@ def main():
                     ]
                     for rk, r in latest.get("regions", {}).items()
                 },
+                "latent": latest.get("latent", []),
             }
         else:
             print("[중단] 오늘 스냅샷도 latest.json도 없음")
             sys.exit(0)
-    
+
     # 7일 전 스냅샷 찾기
     target = (TODAY_KST - timedelta(days=7)).strftime("%Y-%m-%d")
     prev_snap, prev_date = find_prev_snapshot(target)
-    
     if not prev_snap:
         print(f"[중단] 비교할 과거 스냅샷 없음 (7일 전 ≈ {target}). 첫 주는 건너뜀.")
         sys.exit(0)
-    
+
     print(f"[비교] {prev_date} → {curr_date}")
-    
+
+    # ── 우주지배자 (TOP 20) ──
     items = build_items(curr_snap, prev_snap)
-    
-    if not items:
-        print("[정보] 이번 주 유의미한 변동 없음 — entry 생성 안 함")
-        sys.exit(0)
-    
-    # 기간 라벨 (6.13 → 6.20 형식)
-    def short(d):
-        dt = datetime.strptime(d, "%Y-%m-%d")
-        return f"{dt.month}.{dt.day}"
-    period = f"{short(prev_date)} → {short(curr_date)} (주간)"
-    date_label = curr_date.replace("-", ".")
-    
-    new_entry = {
-        "date": date_label,
-        "period": period,
-        "auto": True,
-        "blocks": [
-            {"type": "items", "label": "주간 변동 사항 (자동 감지)", "items": items}
-        ],
-    }
-    
-    # history-top20.json 로드 후 맨 앞에 추가
-    if HIST_TOP20_PATH.exists():
-        hist = json.loads(HIST_TOP20_PATH.read_text(encoding="utf-8"))
-    else:
-        hist = {
+    if items:
+        entry = _make_entry(items, prev_date, curr_date, "주간 변동 사항 (자동 감지)")
+        _write_history(HIST_TOP20_PATH, {
             "page_title": "우주지배자 변동 이력",
             "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록",
             "entries": [],
-        }
-    
-    # 같은 날짜 auto entry가 이미 있으면 교체 (중복 방지)
-    entries = hist.get("entries", [])
-    entries = [e for e in entries if not (e.get("date") == date_label and e.get("auto"))]
-    entries.insert(0, new_entry)
-    hist["entries"] = entries
-    
-    HIST_TOP20_PATH.write_text(
-        json.dumps(hist, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    print(f"[OK] History entry 추가: {date_label} ({len(items)}개 변동)")
-    for it in items:
-        # 태그 제거하고 콘솔 미리보기
-        import re
-        clean = re.sub(r"<[^>]+>", "", it)
-        print(f"   • {clean}")
+        }, entry)
+        _preview("우주지배자 History", items)
+    else:
+        print("[정보] 우주지배자: 이번 주 유의미한 변동 없음")
+
+    # ── 잠재지배자 (latent) ──
+    prev_latent = prev_snap.get("latent", [])
+    curr_latent = curr_snap.get("latent", [])
+    if not prev_latent:
+        print("[정보] 잠재지배자: 지난주 스냅샷에 latent 없음 — 다음 주부터 자동 기록 시작")
+    elif not curr_latent:
+        print("[정보] 잠재지배자: 현재 목록 비어있음 — 건너뜀")
+    else:
+        dl = diff_latent(prev_latent, curr_latent)
+        litems = build_latent_items(dl, curr_snap)
+        if litems:
+            lentry = _make_entry(litems, prev_date, curr_date, "잠재지배자 주간 변동 (자동 감지)")
+            _write_history(HIST_LATENT_PATH, {
+                "page_title": "잠재지배자 변동 이력",
+                "page_desc": "차세대 우주지배자 후보의 시점별 변동 기록",
+                "entries": [],
+            }, lentry)
+            _preview("잠재지배자 History", litems)
+        else:
+            print("[정보] 잠재지배자: 이번 주 변동 없음")
 
 
 if __name__ == "__main__":
