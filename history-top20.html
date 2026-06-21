@@ -314,6 +314,13 @@ body {
   .entry-items { font-size: 13px; }
 }
 </style>
+<style>
+/* 헤더 모바일 일관성 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+</style>
 </head>
 <body>
 

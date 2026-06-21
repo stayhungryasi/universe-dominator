@@ -202,6 +202,13 @@ body {
   .nav-tab { padding: 12px 14px; font-size: 13px; }
 }
 </style>
+<style>
+/* 헤더 모바일 일관성 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+</style>
 </head>
 <body>
 
@@ -1298,7 +1305,7 @@ const DATA = {
     }
   },
   "meta": {
-    "fetched_at": "2026-06-21T10:37:01.649148+09:00",
+    "fetched_at": "2026-06-21T10:45:34.101558+09:00",
     "fetched_date": "2026-06-21",
     "usd_krw": 1532.31,
     "errors": []

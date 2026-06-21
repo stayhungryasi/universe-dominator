@@ -115,6 +115,13 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
 </style>
+<style>
+/* 헤더 모바일 일관성 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+</style>
 </head>
 <body>
 
