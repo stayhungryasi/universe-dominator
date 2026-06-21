@@ -39,6 +39,37 @@ body {
 .brand-star { color: var(--gold); }
 .brand-tag { font-size: 13px; font-weight: 500; color: var(--text-muted); }
 .header-right { display: flex; align-items: center; gap: 10px; }
+
+.update-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; background: var(--gold-bg);
+  border-radius: 100px; font-size: 12px; font-weight: 700;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .update-badge { border: 1px solid rgba(212,166,88,0.3); }
+.update-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse 2s ease-in-out infinite;
+}
+[data-theme="dark"] .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.rate-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 12px; background: var(--bg-card);
+  border: 1px solid var(--line); border-radius: 100px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+  white-space: nowrap; text-decoration: none; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.rate-badge:hover { border-color: var(--gold); }
+.rate-badge:hover #usdKrwDisplay, .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.rate-badge-arrow { font-size: 10px; margin-left: 2px; color: var(--text-muted); opacity: 0.7; transition: color 0.2s, opacity 0.2s; }
+.rate-badge:hover .rate-badge-arrow { opacity: 1; }
+.rate-badge #usdKrwDisplay { color: var(--text); font-weight: 800; }
+@media (max-width: 480px) { .rate-badge { font-size: 11px; padding: 5px 10px; } .update-badge { font-size: 11px; padding: 5px 10px; } }
+@media (max-width: 380px) { .update-badge::before { display: none; } }
+
 .theme-toggle {
   width: 36px; height: 36px; border-radius: 50%;
   border: 1px solid var(--line); background: var(--bg-card);
@@ -316,6 +347,12 @@ body {
       <span class="brand-tag">@stayhungryasi</span>
     </div>
     <div class="header-right">
+      <span class="update-badge" id="updateDate">—</span>
+      <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
+         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+        USD/KRW <span id="usdKrwDisplay">—</span>
+        <span class="rate-badge-arrow" aria-hidden="true">↗</span>
+      </a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -1070,6 +1107,15 @@ const DATA = {
     ]
   }
 };
+
+(function(){
+  var m = (typeof DATA !== 'undefined' && DATA && DATA.meta) || {};
+  var de = document.getElementById('updateDate');
+  if (de && m.fetched_date) de.textContent = String(m.fetched_date).replace(/-/g, '.');
+  var re = document.getElementById('usdKrwDisplay');
+  if (re && m.usd_krw != null) re.textContent = Number(m.usd_krw).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+})();
+
 
 // 카테고리 nav 렌더
 const catNav = document.getElementById('catNav');
