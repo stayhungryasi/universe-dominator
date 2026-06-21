@@ -756,6 +756,18 @@ def save_daily_snapshot(data):
             for i, s in enumerate(stocks)
         ]
     
+    # 잠재지배자 큐레이션 목록도 스냅샷에 보관 (주간 변동 자동 감지용)
+    snapshot["latent"] = [
+        {
+            "ticker": s.get("ticker", ""),
+            "name": s.get("name", ""),
+            "rank": s.get("rank"),
+            "mc": s.get("mc", 0),
+            "momentum_1y": s.get("momentum_1y"),
+        }
+        for s in data.get("latent", [])
+    ]
+    
     snap_path = snap_dir / f"{snapshot['date']}.json"
     snap_path.write_text(
         json.dumps(snapshot, ensure_ascii=False, indent=2),
