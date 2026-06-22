@@ -1,18 +1,21 @@
 """
-generate_candidates.py — 잠재지배자 후보 완전 자동 생성
+generate_candidates.py — 잠재지배자 후보 생성 (감독추천 고정 + 자동발굴)
 
-파이프라인 (모두 companiesmarketcap 한 소스 — GitHub Actions에서 차단 안 됨):
-  ① 글로벌 랭킹 스크래핑 → 글로벌 순위 21~100위 (+ 각 종목 페이지 URL)
-  ② AI/반도체/소프트웨어 카테고리 → AI 가치사슬 종목 집합 (섹터 태그)
-  ③ 각 후보의 개별 종목 페이지에서 'Change (1 year)' 파싱 → +60% 이상만
-  ④ 순위 정렬 → 상위 N개를 latest.json 의 latent 로 자동 기록
+[감독추천 고정]  data/latent_overrides.json 의 "keep": true 항목
+  → 기준(순위·모멘텀·섹터) 무시하고 항상 카드로 유지. 부장님 손글씨 그대로.
+  → MLB 올스타의 감독추천/팬투표 고정픽에 해당.
 
-  ※ 해설(story)·테마(theme)는 자동 템플릿. data/latent_overrides.json 에
-    종목별 수동 해설이 있으면 그것을 우선 사용 → 완전 자동이되 개별 카드 보완 가능.
+[자동발굴 — 팬투표]
+  ① AI 가치사슬 카테고리 유니버스 (반도체·소프트웨어·AI·테크·전력·인터넷)
+  ② 시총 밴드로 글로벌 ~21~200위권 후보 압축 + 지역 TOP 20(이미 우주지배자) 제외
+  ③ 각 후보 종목 페이지에서 글로벌순위·1년모멘텀·시총·국가 파싱
+  ④ 순위 21~200위 + 모멘텀 +80% 이상만 통과 → 순위순 카드화
 
-  데모(네트워크 없이 로직 검증):  python generate_candidates.py --demo
-  미리보기(사이트 미반영, 파일만):  python generate_candidates.py --preview
-  라이브(latest.json 직접 갱신):     python generate_candidates.py
+  최종 = 감독추천 고정 + 자동발굴 (티커 중복 시 감독추천 우선), 순위순.
+
+  데모:      python generate_candidates.py --demo
+  미리보기:  python generate_candidates.py --preview   (사이트 미반영, 파일만)
+  라이브:    python generate_candidates.py             (latest.json 갱신)
 """
 import sys
 import json
@@ -34,18 +37,23 @@ LATEST_PATH = DATA_DIR / "latest.json"
 OVERRIDES_PATH = DATA_DIR / "latent_overrides.json"
 PREVIEW_PATH = DATA_DIR / "latent_auto_preview.json"
 
-RANK_LO = 21          # ① 글로벌 순위 하한 (TOP 20 바로 밖)
-RANK_HI = 100         # ① 상한 (글로벌 페이지 1장 ≈ 100위)
-MOM_MIN = 60          # ②③ 1년 모멘텀 최소 (%)
-MAX_CANDIDATES = 12   # ④ 최종 카드 최대 개수
-FETCH_DELAY = 1.2     # 종목 페이지 사이 예의상 간격(초)
+RANK_LO = 21           # ① 글로벌 순위 하한 (TOP 20 바로 밖)
+RANK_HI = 200          # ① 상한 (확대: 200위까지)
+MOM_MIN = 80           # ②③ 1년 모멘텀 최소 (%)
+MC_FLOOR = 70          # 자동발굴 시총 하한($B, ≈글로벌 200위권). 너무 작은 종목 컷
+MAX_CANDIDATES = 14    # 최종 카드 최대 개수
+MAX_AUTO_FETCH = 55    # 자동발굴 시 종목 페이지 받을 최대 개수(부하 제한)
+FETCH_DELAY = 1.0      # 종목 페이지 사이 간격(초)
 
 BASE = "https://companiesmarketcap.com"
-GLOBAL_URL = BASE + "/"
-SECTOR_URLS = {  # key = 화면 테마, value = 카테고리 URL (먼저 매칭된 섹터 우선)
+# AI 가치사슬 유니버스 (먼저 매칭된 섹터가 테마로)
+CATEGORY_URLS = {
     "AI 반도체":     BASE + "/semiconductors/largest-semiconductor-companies-by-market-cap/",
     "AI 소프트웨어": BASE + "/software/largest-software-companies-by-market-cap/",
     "AI":           BASE + "/artificial-intelligence/largest-ai-companies-by-marketcap/",
+    "AI 테크":       BASE + "/tech/largest-tech-companies-by-market-cap/",
+    "AI 전력 인프라": BASE + "/electricity/largest-electricity-companies-by-market-cap/",
+    "AI 인터넷":     BASE + "/internet/largest-internet-companies-by-market-cap/",
 }
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -54,9 +62,24 @@ HEADERS = {"User-Agent": UA, "Accept-Language": "en-US,en;q=0.9", "Cache-Control
 FLAG_RE = re.compile(r"[\U0001F1E6-\U0001F1FF]{2}")
 MC_RE = re.compile(r"[\d.]+\s*[TB]")
 URL_RE = re.compile(r"/[^/]+/marketcap/?$")
-# 종목 페이지의 1년 변동률 (숫자가 라벨 앞/뒤 양쪽 대응)
+COUNTRY_RE = re.compile(r"([\U0001F1E6-\U0001F1FF]{2})\s+[\w .&'\-]+?\s+Country\b")
+RANK_RE = re.compile(r"#(\d+)\s+Rank")
+PAGE_MC_RE = re.compile(r"\$\s*([\d.]+)\s*([TB])\s+Marketcap")
 Y1_RE_A = re.compile(r"(-?\d+(?:\.\d+)?)\s*%\s*Change\s*\(1\s*year\)", re.I)
 Y1_RE_B = re.compile(r"Change\s*\(1\s*year\)\s*(-?\d+(?:\.\d+)?)\s*%", re.I)
+
+SUFFIX_FLAG = {".TW": "🇹🇼", ".T": "🇯🇵", ".HK": "🇭🇰", ".SS": "🇨🇳", ".SZ": "🇨🇳",
+               ".L": "🇬🇧", ".KS": "🇰🇷", ".KQ": "🇰🇷", ".DE": "🇩🇪", ".PA": "🇫🇷",
+               ".SW": "🇨🇭", ".AS": "🇳🇱", ".TO": "🇨🇦", ".SR": "🇸🇦", ".MI": "🇮🇹",
+               ".MC": "🇪🇸", ".ST": "🇸🇪", ".HE": "🇫🇮"}
+
+
+def suffix_flag(ticker):
+    tk = (ticker or "").upper()
+    for suf, fl in SUFFIX_FLAG.items():
+        if tk.endswith(suf):
+            return fl
+    return "🇺🇸" if tk and "." not in tk else None
 
 
 # ───────────────────────── 네트워크 ─────────────────────────
@@ -85,8 +108,7 @@ def parse_mc(text):
     return v * 1000 if m.group(2) == "T" else v
 
 
-def parse_company_list(html, limit=100):
-    """목록 테이블 → [{rank, name, ticker, mc, flag, url}]  (url = 종목 페이지)"""
+def parse_company_list(html, limit=300):
     soup = BeautifulSoup(html, "html.parser")
     table = soup.find("table") or soup
     rows = []
@@ -108,56 +130,92 @@ def parse_company_list(html, limit=100):
                 break
         if mc == 0:
             continue
-        fm = FLAG_RE.search(tr.get_text(" ", strip=True))
-        flag = fm.group(0) if fm else "🌐"
         link = tr.find("a", href=URL_RE)
         url = None
         if link and link.get("href"):
             href = link["href"]
             url = href if href.startswith("http") else BASE + href
-        rows.append({"name": name, "ticker": ticker or "", "mc": round(mc, 2),
-                     "flag": flag, "url": url})
+        rows.append({"name": name, "ticker": ticker or "", "mc": round(mc, 2), "url": url})
         if len(rows) >= limit:
             break
-    for i, r in enumerate(rows):
-        r["rank"] = i + 1
     return rows
 
 
-def scrape_ai_sectors():
-    """섹터 카테고리들 → {ticker(대문자): theme}. AI 가치사슬 종목 집합."""
-    info = {}
-    for theme, url in SECTOR_URLS.items():
+def scrape_universe():
+    """AI 가치사슬 카테고리 합집합 → {ticker(대문자): {name, mc, url, theme}}."""
+    uni = {}
+    for theme, url in CATEGORY_URLS.items():
         html = fetch(url)
         if not html:
             continue
         for r in parse_company_list(html, limit=300):
             tk = (r["ticker"] or "").upper()
-            if tk and tk not in info:
-                info[tk] = {"theme": theme, "url": r.get("url")}
+            if tk and tk not in uni and r.get("url"):
+                uni[tk] = {"name": r["name"], "ticker": r["ticker"], "mc": r["mc"],
+                           "url": r["url"], "theme": theme}
         time.sleep(1)
-    return info
+    return uni
 
 
-def momentum_1y(row):
-    """종목 페이지에서 'Change (1 year)' 파싱 → 정수 %. 실패 시 None."""
+def stock_stats(row):
+    """종목 페이지 → {rank, momentum, flag, mc}. 실패 항목은 None."""
+    out = {"rank": None, "momentum": None, "flag": None, "mc": None}
     url = row.get("url")
     if not url:
-        return None
+        return out
     html = fetch(url, retries=2, delay=2)
     if not html:
-        return None
+        return out
     text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
     m = Y1_RE_A.search(text) or Y1_RE_B.search(text)
-    if not m:
-        return None
+    if m:
+        try:
+            out["momentum"] = round(float(m.group(1)))
+        except Exception:
+            pass
+    rm = RANK_RE.search(text)
+    if rm:
+        out["rank"] = int(rm.group(1))
+    fm = COUNTRY_RE.search(text)
+    if fm:
+        out["flag"] = fm.group(1)
+    mm = PAGE_MC_RE.search(text)
+    if mm:
+        out["mc"] = round(float(mm.group(1)) * (1000 if mm.group(2) == "T" else 1), 2)
+    return out
+
+
+# ───────────────────────── 기준 데이터 ─────────────────────────
+def regional_top20_tickers():
+    """모든 지역 TOP 20 티커 → 이미 우주지배자라 제외."""
+    keys = set()
     try:
-        return round(float(m.group(1)))
+        data = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
+        for region in data.get("regions", {}).values():
+            stocks = region.get("stocks", region) if isinstance(region, dict) else region
+            for s in (stocks or []):
+                tk = (s.get("ticker") or "").upper().strip()
+                if tk:
+                    keys.add(tk)
     except Exception:
-        return None
+        pass
+    return keys
 
 
-# ───────────────────────── 해설 / override ─────────────────────────
+def top20_cutoff(default=480.0):
+    """글로벌 TOP 20 의 최소 시총($B) — 이보다 크면 사실상 TOP 20 권이라 자동발굴서 제외."""
+    try:
+        data = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
+        earth = data["regions"]["earth"]
+        stocks = earth.get("stocks", earth) if isinstance(earth, dict) else earth
+        mcs = [s.get("mc", 0) for s in stocks if s.get("mc")]
+        if mcs:
+            return min(mcs)
+    except Exception:
+        pass
+    return default
+
+
 def load_overrides():
     if OVERRIDES_PATH.exists():
         try:
@@ -167,12 +225,13 @@ def load_overrides():
     return {}
 
 
+# ───────────────────────── 카드 ─────────────────────────
 def template_story(c):
     return (f"{c['theme']} 분야 폭발 성장 모멘텀 — 글로벌 {c['rank']}위, "
             f"1년 +{c['momentum_1y']}%. AI 가치사슬 핵심 후보.")
 
 
-def build_card(c, overrides):
+def build_auto_card(c, overrides):
     ov = overrides.get((c["ticker"] or "").upper(), {})
     return {
         "rank": c["rank"], "ticker": c["ticker"], "name": c["name"],
@@ -183,40 +242,40 @@ def build_card(c, overrides):
     }
 
 
-# ───────────────────────── 스크리닝 ─────────────────────────
-def screen(global_rows, theme_by_ticker, momentum_fn, delay=0.0):
-    cands = []
-    for r in global_rows:
-        if not (RANK_LO <= r["rank"] <= RANK_HI):       # ①
-            continue
-        tk = (r["ticker"] or "").upper()
-        info = theme_by_ticker.get(tk)
-        if not info:                                     # ④ AI 가치사슬만
-            continue
-        theme = info["theme"]
-        if not r.get("url"):                             # 글로벌에 링크 없으면 AI쪽 URL 사용
-            r["url"] = info.get("url")
-        mom = momentum_fn(r)                             # ②③ (종목 페이지)
-        if delay:
-            time.sleep(delay)
-        if mom is None:
-            print(f"  [skip] {r['name']}: 1년 변동률 파싱 실패")
-            continue
-        if mom < MOM_MIN:
-            print(f"  [skip] {r['name']}: 1Y {mom:+}% (미달)")
-            continue
-        r2 = dict(r); r2["theme"] = theme; r2["momentum_1y"] = mom
-        cands.append(r2)
-        print(f"  [pass] {r['rank']}위 {r['name']} ({theme}) 1Y +{mom}%")
-    cands.sort(key=lambda c: c["rank"])
-    return cands[:MAX_CANDIDATES]
+def build_keep_card(tk, ov):
+    """감독추천 고정 카드 — override 의 전체 데이터로 구성 (스크래핑 불필요)."""
+    return {
+        "rank": ov.get("rank"), "ticker": ov.get("ticker", tk), "name": ov.get("name", tk),
+        "country": ov.get("country", "🌐"), "mc": ov.get("mc", 0),
+        "momentum_1y": ov.get("momentum_1y"),
+        "theme": ov.get("theme", ""), "story": ov.get("story", ""),
+        "auto": False, "keep": True,
+    }
 
 
+def merge_cards(keeps, autos):
+    seen, out = set(), []
+    for c in keeps:                       # 감독추천 우선, 항상 포함
+        tk = (c["ticker"] or "").upper()
+        if tk and tk not in seen:
+            seen.add(tk); out.append(c)
+    for c in autos:                       # 자동발굴은 남는 자리 채움
+        tk = (c["ticker"] or "").upper()
+        if tk in seen:
+            continue
+        if len(out) >= MAX_CANDIDATES:
+            break
+        seen.add(tk); out.append(c)
+    out.sort(key=lambda c: c["rank"] if c.get("rank") is not None else 9999)
+    return out
+
+
+# ───────────────────────── 출력 ─────────────────────────
 def write_latent(cards):
     data = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
     data["latent"] = cards
     LATEST_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[OK] latest.json latent 갱신: {len(cards)}개 후보")
+    print(f"[OK] latest.json latent 갱신: {len(cards)}개")
 
 
 def write_preview(cards):
@@ -230,39 +289,100 @@ def write_preview(cards):
 # ───────────────────────── 실행 ─────────────────────────
 def run_live(preview=False):
     print(f"[generate] 시작 {TODAY.isoformat()} ({'미리보기' if preview else '라이브'})")
-    html = fetch(GLOBAL_URL)
-    if not html:
-        print("[중단] 글로벌 랭킹 스크래핑 실패"); sys.exit(1)
-    global_rows = parse_company_list(html, limit=RANK_HI)
-    print(f"  글로벌 {len(global_rows)}위까지 수집")
-    theme_by_ticker = scrape_ai_sectors()
-    print(f"  AI 가치사슬 종목 {len(theme_by_ticker)}개 식별")
-    cands = screen(global_rows, theme_by_ticker, momentum_1y, delay=FETCH_DELAY)
-    if not cands:
-        print("[정보] 조건 통과 후보 0개 — latent 유지(덮어쓰지 않음)")
+    overrides = load_overrides()
+    excluded = regional_top20_tickers()
+    cutoff = top20_cutoff()
+    print(f"  지역 TOP 20 제외 {len(excluded)}개 · TOP20 시총컷 ≈ ${cutoff:.0f}B")
+
+    # 1) 감독추천 고정
+    keeps = [build_keep_card(tk, ov) for tk, ov in overrides.items() if ov.get("keep")]
+    keep_tk = {(k["ticker"] or "").upper() for k in keeps}
+    print(f"  감독추천 고정 {len(keeps)}개: {sorted(keep_tk)}")
+
+    # 2) 자동발굴 유니버스 → 시총밴드 압축
+    uni = scrape_universe()
+    print(f"  AI 가치사슬 유니버스 {len(uni)}개")
+    pool = [c for tk, c in uni.items()
+            if tk not in excluded and tk not in keep_tk and MC_FLOOR <= c["mc"] < cutoff]
+    pool.sort(key=lambda c: -c["mc"])
+    pool = pool[:MAX_AUTO_FETCH]
+    print(f"  모멘텀 확인 대상 {len(pool)}개")
+
+    # 3) 종목 페이지에서 순위·모멘텀 확인
+    auto = []
+    for c in pool:
+        s = stock_stats(c)
+        time.sleep(FETCH_DELAY)
+        rank, mom = s["rank"], s["momentum"]
+        if rank is None or mom is None:
+            print(f"  [skip] {c['name']}: 데이터 파싱 실패")
+            continue
+        if not (RANK_LO <= rank <= RANK_HI):
+            print(f"  [skip] {c['name']}: {rank}위 (범위 밖)")
+            continue
+        if mom < MOM_MIN:
+            print(f"  [skip] {c['name']}: 1Y {mom:+}% (미달)")
+            continue
+        c2 = dict(c)
+        c2["rank"] = rank
+        c2["momentum_1y"] = mom
+        c2["mc"] = s["mc"] or c["mc"]
+        c2["flag"] = s["flag"] or suffix_flag(c["ticker"]) or "🌐"
+        auto.append(c2)
+        print(f"  [pass] {rank}위 {c['name']} ({c['theme']}) 1Y +{mom}%")
+    auto.sort(key=lambda c: c["rank"])
+    auto_cards = [build_auto_card(c, overrides) for c in auto]
+
+    cards = merge_cards(keeps, auto_cards)
+    print(f"  최종 {len(cards)}개 (고정 {len(keeps)} + 자동 {len(cards)-len(keeps)})")
+    if not cards:
+        print("[정보] 결과 0개 — latent 유지(덮어쓰지 않음)")
         return
-    cards = [build_card(c, load_overrides()) for c in cands]
     (write_preview if preview else write_latent)(cards)
 
 
 def run_demo():
     print("[DEMO] 모의 데이터로 로직 검증\n")
-    rows = [
-        {"rank": 18, "name": "Broadcom",   "ticker": "AVGO", "mc": 1200, "flag": "🇺🇸", "url": "u"},
-        {"rank": 25, "name": "Palantir",   "ticker": "PLTR", "mc": 480,  "flag": "🇺🇸", "url": "u"},
-        {"rank": 31, "name": "Arm Holdings","ticker": "ARM", "mc": 390,  "flag": "🇬🇧", "url": "u"},
-        {"rank": 38, "name": "AMD",        "ticker": "AMD",  "mc": 320,  "flag": "🇺🇸", "url": "u"},
-        {"rank": 52, "name": "CoreWeave",  "ticker": "CRWV", "mc": 120,  "flag": "🇺🇸", "url": "u"},
-        {"rank": 70, "name": "KB Financial","ticker": "KB",  "mc": 60,   "flag": "🇰🇷", "url": "u"},
-    ]
-    theme_by_ticker = {k: {"theme": v, "url": "u"} for k, v in
-                       {"AVGO": "AI 반도체", "PLTR": "AI 소프트웨어", "ARM": "AI 반도체",
-                        "AMD": "AI 반도체", "CRWV": "AI"}.items()}
-    mock = {"PLTR": 155, "ARM": 98, "AMD": 72, "CRWV": 210, "AVGO": 80}
-    cands = screen(rows, theme_by_ticker, lambda r: mock.get((r["ticker"] or "").upper()))
-    overrides = {"PLTR": {"theme": "AI 소프트웨어", "story": "(수동 해설 예시) AIP 엔터프라이즈 표준."}}
-    print("\n생성된 카드:")
-    print(json.dumps([build_card(c, overrides) for c in cands], ensure_ascii=False, indent=2))
+    overrides = {
+        "9984": {"keep": True, "rank": 48, "ticker": "9984", "name": "SoftBank Group",
+                 "country": "🇯🇵", "mc": 307, "momentum_1y": 89,
+                 "theme": "AI 투자 컨글로머릿", "story": "(고정) Arm·OpenAI·Stargate 익스포저."},
+        "MRVL": {"theme": "AI 광 인터커넥트", "story": "(폴리시) 젠슨 황 지목."},
+    }
+    uni = {
+        "INTC": {"name": "Intel", "ticker": "INTC", "mc": 673, "url": "u", "theme": "AI 반도체"},
+        "GEV":  {"name": "GE Vernova", "ticker": "GEV", "mc": 260, "url": "u", "theme": "AI 전력 인프라"},
+        "ANET": {"name": "Arista", "ticker": "ANET", "mc": 200, "url": "u", "theme": "AI 테크"},
+        "VRT":  {"name": "Vertiv", "ticker": "VRT", "mc": 142, "url": "u", "theme": "AI 테크"},
+        "MRVL": {"name": "Marvell", "ticker": "MRVL", "mc": 254, "url": "u", "theme": "AI 반도체"},
+        "DELL": {"name": "Dell", "ticker": "DELL", "mc": 273, "url": "u", "theme": "AI 테크"},
+    }
+    mock = {  # 종목 페이지 파싱 결과 모의 (rank, momentum)
+        "INTC": (21, 536), "GEV": (65, 145), "ANET": (92, 120),
+        "VRT": (110, 270), "MRVL": (66, 87), "DELL": (60, 62),
+    }
+    excluded = {"INTC"}  # 미국 TOP 20 가정
+    cutoff = 480
+    keeps = [build_keep_card(tk, ov) for tk, ov in overrides.items() if ov.get("keep")]
+    keep_tk = {(k["ticker"] or "").upper() for k in keeps}
+    pool = [c for tk, c in uni.items()
+            if tk not in excluded and tk not in keep_tk and MC_FLOOR <= c["mc"] < cutoff]
+    auto = []
+    for c in pool:
+        rank, mom = mock[c["ticker"]]
+        if not (RANK_LO <= rank <= RANK_HI):
+            print(f"  [skip] {c['name']}: {rank}위 범위밖"); continue
+        if mom < MOM_MIN:
+            print(f"  [skip] {c['name']}: 1Y {mom:+}% 미달"); continue
+        c2 = dict(c); c2["rank"] = rank; c2["momentum_1y"] = mom; c2["flag"] = "🇺🇸"
+        auto.append(c2)
+        print(f"  [pass] {rank}위 {c['name']} 1Y +{mom}%")
+    cards = merge_cards(keeps, [build_auto_card(c, overrides) for c in auto])
+    print("\n최종 카드 (고정+자동, 순위순):")
+    for c in cards:
+        tag = "[고정]" if c.get("keep") else "[자동]"
+        print(f"  {tag} {c['rank']}위 {c['name']} ({c['theme']}) 1Y "
+              f"{('+'+str(c['momentum_1y'])+'%') if c['momentum_1y'] is not None else '-'}")
 
 
 if __name__ == "__main__":
