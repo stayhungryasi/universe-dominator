@@ -3,6 +3,30 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.06.27",
+      "period": "6.20 → 6.27 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>SpaceX</strong> 시총 <span class='em-down'>-17%</span> ($2.44T → $2.02T)",
+            "[미국] <strong>Lam Research</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $474B</span>)",
+            "[미국] <strong>Oracle</strong> TOP 20 이탈",
+            "[한국] <strong>LG전자</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $23B</span>)",
+            "[한국] <strong>한화오션</strong> TOP 20 이탈",
+            "[일본] <strong>Chugai Pharmaceutical</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $76B</span>)",
+            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 이탈",
+            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $172B</span>)",
+            "[유럽] <strong>TotalEnergies</strong> TOP 20 이탈",
+            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $109B</span>)",
+            "[중국] <strong>BYD</strong> TOP 20 이탈"
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.06.03",
       "period": "5.24 → 6.3 (10일간)",
       "blocks": [
@@ -25,8 +49,14 @@
           "type": "stats",
           "label": "환율 · 환산",
           "items": [
-            {"k": "USD/KRW", "v": "1,480 (6/3 기준, 30일 평균)"},
-            {"k": "환산식", "v": "시총(조원) = 시총(USD bn) × 1.48"}
+            {
+              "k": "USD/KRW",
+              "v": "1,480 (6/3 기준, 30일 평균)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.48"
+            }
           ]
         },
         {
