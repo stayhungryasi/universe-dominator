@@ -2,7 +2,9 @@ name: Daily Universe Dominator Update
 
 on:
   schedule:
-    - cron: '0 23 * * *'
+    # 정각은 GitHub 부하로 자주 건너뜀 → 정각 피하고 하루 2회(백업)
+    - cron: '17 23 * * *'   # 08:17 KST (다음날)
+    - cron: '17 3 * * *'    # 12:17 KST (아침 실행이 잘렸을 때 백업)
   workflow_dispatch:
 
 jobs:
