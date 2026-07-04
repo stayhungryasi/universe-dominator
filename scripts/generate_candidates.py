@@ -267,6 +267,21 @@ def write_latent(cards):
     data["latent"] = cards
     LATEST_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[OK] latest.json latent 갱신: {len(cards)}개")
+    # 오늘 스냅샷의 latent 도 동기화 → 주간 히스토리 비교가 당일 목록 기준으로 정확해짐
+    snap = DATA_DIR / "snapshots" / f"{TODAY.strftime('%Y-%m-%d')}.json"
+    if snap.exists():
+        try:
+            sd = json.loads(snap.read_text(encoding="utf-8"))
+            sd["latent"] = [
+                {"ticker": c.get("ticker",""), "name": c.get("name",""),
+                 "rank": c.get("rank"), "mc": c.get("mc", 0),
+                 "momentum_1y": c.get("momentum_1y")}
+                for c in cards
+            ]
+            snap.write_text(json.dumps(sd, ensure_ascii=False, indent=2), encoding="utf-8")
+            print(f"[OK] 오늘 스냅샷 latent 동기화: {snap.name}")
+        except Exception as e:
+            print(f"[warn] 스냅샷 동기화 실패(무시): {e}")
 
 
 def write_preview(cards):
