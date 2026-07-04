@@ -37,7 +37,7 @@ jobs:
       #    결과 확인 후 아래 --preview 를 지우면 라이브(latest.json 직접 갱신).
       # 실패해도 파이프라인 중단 안 됨(continue-on-error) → latent 기존값 유지.
       - name: Generate latent candidates (auto)
-        run: python scripts/generate_candidates.py --preview
+        run: python scripts/generate_candidates.py
         continue-on-error: true
       
       # 토요일(KST)에만 주간 History 자동 생성
