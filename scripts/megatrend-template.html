@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메가트렌드 · 우주지배자</title>
-<meta name="description" content="11년이 들려주는 우주의 변천 — 2016~2026 글로벌 시가총액 TOP 10 분석">
+<meta name="description" content="20년이 들려주는 우주의 변천 — 2006~2026 글로벌 시가총액 TOP 10 분석">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -376,7 +376,7 @@ body {
   <section class="page-hero">
     <div class="page-eyebrow">Megatrend</div>
     <h1 class="page-title">메가트렌드</h1>
-    <p class="page-desc">11년이 들려주는 우주의 변천 — 2016~2026 글로벌 시가총액 TOP 10 분석</p>
+    <p class="page-desc">20년이 들려주는 우주의 변천 — 2006~2026 글로벌 시가총액 TOP 10 분석</p>
   </section>
 
   <div class="cat-nav" id="catNav"></div>
@@ -448,14 +448,14 @@ function shortName(name) {
 // PANE 1: TOP 10 변천사 (Bump Chart + 매트릭스)
 const top10Html = `
   <div class="cat-pane active" data-pane="top10">
-    <h2 class="cat-pane-title">TOP 10 변천사 (2016~2026)</h2>
-    <p class="cat-pane-desc">11년간 글로벌 시가총액 TOP 10의 순위 변화. 종목명(범례)이나 선을 탭하면 해당 흐름만 강조됩니다.</p>
+    <h2 class="cat-pane-title">TOP 10 변천사 (2006~2026)</h2>
+    <p class="cat-pane-desc">20년간 글로벌 시가총액 TOP 10의 순위 변화. 종목명(범례)이나 선을 탭하면 해당 흐름만 강조됩니다.</p>
 
     <div class="bump-section">
       <div class="bump-legend" id="bumpLegend"></div>
       <div class="bump-wrap">
         <div style="position: relative; width: 100%; overflow: hidden;">
-          <svg id="bumpChart" viewBox="0 0 720 460" width="100%" style="display:block;" role="img" aria-label="TOP 10 순위 변화 범프 차트 2016-2026"></svg>
+          <svg id="bumpChart" viewBox="0 0 720 460" width="100%" style="display:block;" role="img" aria-label="TOP 10 순위 변화 범프 차트 2006-2026"></svg>
         </div>
         <div class="bump-hint">다시 탭하면 강조가 해제됩니다 · NVIDIA의 상승 곡선을 주목하세요</div>
       </div>
@@ -492,7 +492,7 @@ const top10Html = `
 const throneHtml = `
   <div class="cat-pane" data-pane="throne">
     <h2 class="cat-pane-title">1위 기업 변천사</h2>
-    <p class="cat-pane-desc">누가 11년간 우주를 지배했나 — Apple · Microsoft · Aramco · NVIDIA의 왕좌 이동.</p>
+    <p class="cat-pane-desc">누가 20년간 우주를 지배했나 — ExxonMobil·PetroChina에서 Apple, NVIDIA로 이어진 왕좌 이동.</p>
     <div class="throne-list">
       ${DATA.throne.map(t => `
         <div class="throne-card">
@@ -512,7 +512,7 @@ const throneHtml = `
 // PANE 3: 6대 메가트렌드
 const themesHtml = `
   <div class="cat-pane" data-pane="themes">
-    <h2 class="cat-pane-title">11년이 들려주는 6가지 메가트렌드</h2>
+    <h2 class="cat-pane-title">20년이 들려주는 6가지 메가트렌드</h2>
     <p class="cat-pane-desc">시총 거대화부터 NVIDIA 신화까지 — 단순 순위표가 아닌 패권 사이클의 기록.</p>
     <div class="themes-grid">
       ${DATA.themes.map(t => {
@@ -548,7 +548,7 @@ const themesHtml = `
 const rankHtml = `
   <div class="cat-pane" data-pane="rank">
     <h2 class="cat-pane-title">핵심 종목 순위 추적</h2>
-    <p class="cat-pane-desc">14개 핵심 종목의 TOP 10 내 순위 변동 — 11년의 흥망성쇠를 한 화면에. 양옆 화살표로 연도를 넘겨보세요.</p>
+    <p class="cat-pane-desc">18개 핵심 종목의 TOP 10 내 순위 변동 — 20년의 흥망성쇠를 한 화면에. 양옆 화살표로 연도를 넘겨보세요.</p>
     <div class="matrix-viewport">
       <div class="scroll-arrow left hidden" id="rankLeft" aria-label="이전 연도">‹</div>
       <div class="scroll-arrow right" id="rankRight" aria-label="다음 연도">›</div>
