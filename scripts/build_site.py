@@ -136,7 +136,7 @@ def build_history(page_key, active_marker, out_filename):
 
 
 HEADER_FIX_CSS = """<style>
-/* 헤더 모바일 일관성 + 실시간 시계 (전 페이지 공통 — build_site.py 주입) */
+/* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
 @media (max-width: 480px) {
   .site-header-inner { flex-wrap: wrap; }
   .brand { flex-shrink: 0; }
@@ -147,12 +147,13 @@ HEADER_FIX_CSS = """<style>
 document.addEventListener('DOMContentLoaded', function () {
   var badge = document.querySelector('.update-badge');
   if (!badge) return;
-  var dateText = (badge.textContent || '').trim();
   badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
-  badge.querySelector('.ud-date').textContent = dateText;
+  var dt = badge.querySelector('.ud-date');
   var clk = badge.querySelector('.ud-clock');
   function tick() {
-    clk.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
+    var now = new Date();
+    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).replace(/-/g, '.');
+    clk.textContent = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
   }
   tick();
   setInterval(tick, 1000);
