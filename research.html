@@ -107,6 +107,27 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .placeholder-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.6; }
 .placeholder-note { font-size: 12px; color: var(--text-muted); margin-top: 18px; }
 
+/* ── 리서치 목록 ── */
+main.research-main { display: block; align-items: stretch; padding: 36px 0 60px; }
+.page-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.page-title { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+.page-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
+.gen-label { font-size: 12px; color: var(--text-muted); margin-bottom: 22px; }
+.group-tabs { display: flex; gap: 8px; margin: 18px 0 22px; }
+.group-tab { padding: 8px 16px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 13px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.group-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.stock-block { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
+.stock-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.stock-rank { font-size: 12px; font-weight: 800; color: var(--gold); }
+.stock-name { font-size: 16px; font-weight: 800; }
+.stock-ticker { font-size: 12px; color: var(--text-muted); }
+.art { display: block; padding: 9px 0; border-top: 1px solid var(--line); text-decoration: none; }
+.art:hover .art-title { color: var(--gold); }
+.art-title { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.45; transition: color 0.15s; }
+.art-meta { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+.no-art { font-size: 12.5px; color: var(--text-muted); padding: 6px 0; }
+@media (max-width: 480px) { .page-title { font-size: 24px; } .stock-block { padding: 14px 16px; } }
+
 .site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
 .footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
 .footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
@@ -174,15 +195,17 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </nav>
 
-<main>
+<main class="research-main">
   <div class="container">
-    <div class="placeholder-card">
-      <div class="placeholder-icon">📊</div>
-      <div class="placeholder-eyebrow">Coming Soon</div>
-      <h1 class="placeholder-title">리서치</h1>
-      <p class="placeholder-desc">종목별 심층 분석, 산업 보고서, 시황 인사이트.</p>
-      <p class="placeholder-note">곧 만나뵙겠습니다 — 텔레그램 채널에서 먼저 소식을 받아보세요.</p>
+    <div class="page-eyebrow">RESEARCH</div>
+    <h1 class="page-title">리서치</h1>
+    <p class="page-desc">우주지배자 · 잠재지배자 종목의 글로벌 리서치·분석 기사 — 매일 자동 수집.</p>
+    <div class="gen-label" id="genLabel"></div>
+    <div class="group-tabs">
+      <button class="group-tab active" data-g="universe" onclick="setGroup('universe', this)">우주지배자</button>
+      <button class="group-tab" data-g="latent" onclick="setGroup('latent', this)">잠재지배자</button>
     </div>
+    <div id="list"></div>
   </div>
 </main>
 
@@ -206,6 +229,51 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('ud-theme', next);
 }
+</script>
+
+<script>
+const DATA = {"generated_label": "", "stocks": []};
+
+function esc(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function render(group) {
+  const list = document.getElementById('list');
+  const stocks = (DATA.stocks || []).filter(s => s.group === group);
+  if (!stocks.length) {
+    list.innerHTML = '<div class="no-art">수집된 리서치가 아직 없습니다 — 다음 자동 갱신을 기다려 주세요.</div>';
+    return;
+  }
+  list.innerHTML = stocks.map(s => {
+    const arts = (s.articles || []).map(a =>
+      '<a class="art" href="' + esc(a.link) + '" target="_blank" rel="noopener">' +
+        '<div class="art-title">' + esc(a.title) + '</div>' +
+        '<div class="art-meta">' + esc(a.source) + (a.date_label ? ' · ' + esc(a.date_label) : '') + '</div>' +
+      '</a>').join('');
+    return '<div class="stock-block">' +
+      '<div class="stock-head">' +
+        (s.rank ? '<span class="stock-rank">' + esc(s.rank) + '위</span>' : '') +
+        '<span class="stock-name">' + esc(s.name) + '</span>' +
+        '<span class="stock-ticker">' + esc(s.ticker) + '</span>' +
+      '</div>' +
+      (arts || '<div class="no-art">최근 2주 내 수집된 기사 없음</div>') +
+    '</div>';
+  }).join('');
+}
+
+function setGroup(g, btn) {
+  document.querySelectorAll('.group-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render(g);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (DATA.generated_label) {
+    document.getElementById('genLabel').textContent = '마지막 수집: ' + DATA.generated_label + ' KST';
+  }
+  render('universe');
+});
 </script>
 </body>
 </html>
