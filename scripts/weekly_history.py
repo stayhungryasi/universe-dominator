@@ -217,6 +217,7 @@ def build_latent_items(d, curr_snap):
     for s in d["exited"]:
         tk = s.get("ticker")
         if tk in earth:
+            s["_grad"] = True
             gr = earth[tk]
             items.append(
                 f"<strong>{s['name']}</strong> — "
@@ -252,18 +253,65 @@ def build_latent_items(d, curr_snap):
     return items
 
 
+def build_latent_extra_blocks(curr_latent, d):
+    """잠재지배자 부가 블록: 섹터 분포 + 관전 포인트 (모두 데이터 기반 자동)."""
+    blocks = []
+    # 섹터 분포 (theme 집계)
+    themes = {}
+    for s in curr_latent:
+        th = s.get("theme") or "기타"
+        themes.setdefault(th, []).append(s.get("name", ""))
+    if themes:
+        items = [f"<strong>{th} ({len(names)})</strong>: {', '.join(names)}"
+                 for th, names in sorted(themes.items(), key=lambda kv: -len(kv[1]))]
+        blocks.append({"type": "items", "label": f"섹터 분포 ({len(curr_latent)}종목)", "items": items})
+    # 관전 포인트 (숫자 기반)
+    pts = []
+    moms = [s for s in curr_latent if s.get("momentum_1y") is not None]
+    if moms:
+        hot = max(moms, key=lambda s: s["momentum_1y"])
+        pts.append(f"<strong>가장 폭발적</strong>: {hot['name']} — 1Y <span class='em-up'>+{hot['momentum_1y']}%</span>")
+    if d.get("entered"):
+        top_new = min(d["entered"], key=lambda s: s.get("rank") or 999)
+        pts.append(f"<strong>신규 중 최고 순위</strong>: {top_new['name']} — 글로벌 {top_new.get('rank','?')}위 데뷔")
+    grads = [s for s in d.get("exited", []) if s.get("_grad")]
+    if grads:
+        pts.append(f"<strong>졸업</strong>: {', '.join(s['name'] for s in grads)} — TOP 20 진입")
+    if pts:
+        blocks.append({"type": "items", "label": "관전 포인트", "items": pts})
+    return blocks
+
+
 # ───────────────────────── 공통 헬퍼 ─────────────────────────
+
+def _fx_block():
+    """환율·환산 블록 (latest.json meta 기준). 없으면 None."""
+    try:
+        m = json.loads(LATEST_PATH.read_text(encoding="utf-8")).get("meta", {})
+        fx = m.get("usd_krw")
+        if not fx:
+            return None
+        date_label = m.get("fetched_date", "")[-5:].replace("-", "/")
+        rate_disp = f"{fx:,.0f}"
+        mult = f"{fx/1000:.2f}"
+        return {"type": "stats", "label": "환율 · 환산",
+                "items": [{"k": "USD/KRW", "v": f"{rate_disp} ({date_label} 기준)"},
+                          {"k": "환산식", "v": f"시총(조원) = 시총(USD bn) × {mult}"}]}
+    except Exception:
+        return None
+
 
 def _make_entry(items, prev_date, curr_date, label):
     def short(dstr):
         dt = datetime.strptime(dstr, "%Y-%m-%d")
         return f"{dt.month}.{dt.day}"
-    return {
+    entry = {
         "date": curr_date.replace("-", "."),
         "period": f"{short(prev_date)} → {short(curr_date)} (주간)",
         "auto": True,
         "blocks": [{"type": "items", "label": label, "items": items}],
     }
+    return entry
 
 
 def _write_history(path, default, new_entry):
@@ -322,6 +370,9 @@ def main():
     items = build_items(curr_snap, prev_snap)
     if items:
         entry = _make_entry(items, prev_date, curr_date, "주간 변동 사항 (자동 감지)")
+        fx = _fx_block()
+        if fx:
+            entry["blocks"].append(fx)
         _write_history(HIST_TOP20_PATH, {
             "page_title": "우주지배자 변동 이력",
             "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록",
@@ -343,6 +394,10 @@ def main():
         litems = build_latent_items(dl, curr_snap)
         if litems:
             lentry = _make_entry(litems, prev_date, curr_date, "잠재지배자 주간 변동 (자동 감지)")
+            lentry["blocks"].extend(build_latent_extra_blocks(curr_latent, dl))
+            fx = _fx_block()
+            if fx:
+                lentry["blocks"].append(fx)
             _write_history(HIST_LATENT_PATH, {
                 "page_title": "잠재지배자 변동 이력",
                 "page_desc": "차세대 우주지배자 후보의 시점별 변동 기록",
