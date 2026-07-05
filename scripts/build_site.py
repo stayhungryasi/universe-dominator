@@ -86,10 +86,37 @@ def build_megatrend():
 
 
 PLACEHOLDERS = [
-    {"filename":"research.html",    "title":"리서치",   "desc":"종목별 심층 분석, 산업 보고서, 시황 인사이트.",            "icon":"📊", "active":"research"},
     {"filename":"community.html",   "title":"커뮤니티", "desc":"구독자 토론, Q&A, 종목 공유 공간.",                       "icon":"💬", "active":"community"},
     {"filename":"my-universe.html", "title":"나의우주", "desc":"관심 종목 핀, 보유 종목 트래킹, 개인화 대시보드.",          "icon":"👤", "active":"my"},
 ]
+
+
+def build_research():
+    """research.html — 종목 리서치·분석 기사 (자동 수집)"""
+    template_path = SCRIPTS_DIR / "research-template.html"
+    if not template_path.exists():
+        print("[skip] research-template.html 없음"); return
+    data_path = DATA_DIR / "research.json"
+    if data_path.exists():
+        rdata = json.loads(data_path.read_text(encoding="utf-8"))
+    else:
+        rdata = {"generated_label": "", "stocks": []}
+    template = template_path.read_text(encoding="utf-8")
+    # 헤더 배지 값 (placeholder 방식과 동일)
+    meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    usd_krw_str = f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—"
+    html = template
+    html = html.replace("{{PAGE_TITLE}}", "리서치")
+    html = html.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}", usd_krw_str)
+    html = html.replace("{{DATA_JSON}}", json.dumps(rdata, ensure_ascii=False))
+    for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
+        html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "RESEARCH" else "")
+    out = HERE / "research.html"
+    out.write_text(html, encoding="utf-8")
+    print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
 def build_placeholders():
@@ -187,6 +214,7 @@ def main():
     build_latent()
     build_megatrend()
     build_placeholders()
+    build_research()
     build_history("top20",  "home",   "history-top20.html")
     build_history("latent", "latent", "history-latent.html")
     inject_header_fix()
