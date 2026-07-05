@@ -44,6 +44,8 @@ jobs:
       # 실패해도 파이프라인 중단 안 됨 → 기존 research.json 유지
       - name: Fetch research articles (auto)
         run: python scripts/fetch_research.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         continue-on-error: true
       
       # 토요일(KST)에만 주간 History 자동 생성
