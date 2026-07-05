@@ -22,6 +22,11 @@ from datetime import datetime, timedelta, timezone
 import requests
 from bs4 import BeautifulSoup
 
+try:
+    from googlenewsdecoder import gnewsdecoder   # 구글뉴스 링크 → 원문 URL 해석
+except Exception:
+    gnewsdecoder = None
+
 KST = timezone(timedelta(hours=9))
 TODAY = datetime.now(KST)
 
@@ -128,31 +133,39 @@ def query_for(name):
     return name + QUERY_SUFFIX, "en"
 
 
-def fetch_article_body(link):
-    """기사 원문 본문 추출. 실패/유료벽/리다이렉트 미해결 시 None."""
+def resolve_gnews_url(link):
+    """구글뉴스 래핑 링크 → 실제 원문 URL. 실패 시 None."""
+    if "news.google.com" not in link or gnewsdecoder is None:
+        return None
     try:
-        r = requests.get(link, headers=HEADERS, timeout=12, allow_redirects=True)
+        res = gnewsdecoder(link, interval=1)
+        if isinstance(res, dict) and res.get("status") and res.get("decoded_url"):
+            return res["decoded_url"]
+    except Exception:
+        pass
+    return None
+
+
+def fetch_article_body(link):
+    """기사 원문 본문 추출 → (본문, 원문URL). 실패 시 (None, 해석된URL 또는 None)."""
+    real = resolve_gnews_url(link)
+    target = real or link
+    try:
+        r = requests.get(target, headers=HEADERS, timeout=12, allow_redirects=True)
         if r.status_code != 200:
-            return None
+            return None, real
         soup = BeautifulSoup(r.text, "html.parser")
-        # 구글 중간 페이지에 머문 경우: 원문 링크 후보 탐색
         if "news.google.com" in (r.url or ""):
-            a = soup.find("a", href=re.compile(r"^https?://(?!news\.google)"))
-            if not a:
-                return None
-            r = requests.get(a["href"], headers=HEADERS, timeout=12, allow_redirects=True)
-            if r.status_code != 200:
-                return None
-            soup = BeautifulSoup(r.text, "html.parser")
+            return None, real   # 여전히 구글 페이지 → 본문 없음
         for bad in soup(["script", "style", "nav", "header", "footer", "aside"]):
             bad.decompose()
         paras = [pg.get_text(" ", strip=True) for pg in soup.find_all("p")]
         body = " ".join(x for x in paras if len(x) > 40)
         if len(body) < BODY_MIN:
-            return None
-        return body[:BODY_MAX]
+            return None, real
+        return body[:BODY_MAX], real
     except Exception:
-        return None
+        return None, real
 
 
 def summarize_articles_ko(stocks_out):
@@ -166,8 +179,10 @@ def summarize_articles_ko(stocks_out):
     todo = []
     for s in stocks_out:
         for a in s.get("articles", [])[:SUMMARIZE_PER_STOCK]:
-            body = fetch_article_body(a.get("link", ""))
+            body, real_url = fetch_article_body(a.get("link", ""))
             time.sleep(0.3)
+            if real_url:
+                a["link"] = real_url   # 클릭 시 구글 경유 없이 원문으로
             if body:
                 todo.append({"a": a, "body": body})
     print(f"  [요약] 본문 확보 {len(todo)}건 (대상 중 접근 실패분 제외)")
