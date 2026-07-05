@@ -125,6 +125,7 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .art:hover .art-title { color: var(--gold); }
 .art-title { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.45; transition: color 0.15s; }
 .art-meta { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+.art-orig { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; font-style: italic; }
 .no-art { font-size: 12.5px; color: var(--text-muted); padding: 6px 0; }
 @media (max-width: 480px) { .page-title { font-size: 24px; } .stock-block { padding: 14px 16px; } }
 
@@ -222,11 +223,14 @@ function render(group) {
     return;
   }
   list.innerHTML = stocks.map(s => {
-    const arts = (s.articles || []).map(a =>
-      '<a class="art" href="' + esc(a.link) + '" target="_blank" rel="noopener">' +
-        '<div class="art-title">' + esc(a.title) + '</div>' +
+    const arts = (s.articles || []).map(a => {
+      const hasKo = a.title_ko && a.title_ko !== a.title;
+      return '<a class="art" href="' + esc(a.link) + '" target="_blank" rel="noopener">' +
+        '<div class="art-title">' + esc(hasKo ? a.title_ko : a.title) + '</div>' +
+        (hasKo ? '<div class="art-orig">' + esc(a.title) + '</div>' : '') +
         '<div class="art-meta">' + esc(a.source) + (a.date_label ? ' · ' + esc(a.date_label) : '') + '</div>' +
-      '</a>').join('');
+      '</a>';
+    }).join('');
     return '<div class="stock-block">' +
       '<div class="stock-head">' +
         (s.rank ? '<span class="stock-rank">' + esc(s.rank) + '위</span>' : '') +
