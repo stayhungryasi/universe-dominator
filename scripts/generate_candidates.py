@@ -275,7 +275,7 @@ def write_latent(cards):
             sd["latent"] = [
                 {"ticker": c.get("ticker",""), "name": c.get("name",""),
                  "rank": c.get("rank"), "mc": c.get("mc", 0),
-                 "momentum_1y": c.get("momentum_1y")}
+                 "momentum_1y": c.get("momentum_1y"), "theme": c.get("theme", "")}
                 for c in cards
             ]
             snap.write_text(json.dumps(sd, ensure_ascii=False, indent=2), encoding="utf-8")
