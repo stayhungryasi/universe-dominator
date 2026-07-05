@@ -39,6 +39,12 @@ jobs:
       - name: Generate latent candidates (auto)
         run: python scripts/generate_candidates.py
         continue-on-error: true
+
+      # 종목 리서치·분석 기사 자동 수집 (Google News RSS)
+      # 실패해도 파이프라인 중단 안 됨 → 기존 research.json 유지
+      - name: Fetch research articles (auto)
+        run: python scripts/fetch_research.py
+        continue-on-error: true
       
       # 토요일(KST)에만 주간 History 자동 생성
       # cron이 23:00 UTC = 다음날 08:00 KST 이므로,
