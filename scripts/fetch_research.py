@@ -20,6 +20,7 @@ from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
 import requests
+from bs4 import BeautifulSoup
 
 KST = timezone(timedelta(hours=9))
 TODAY = datetime.now(KST)
@@ -30,6 +31,9 @@ LATEST_PATH = DATA_DIR / "latest.json"
 OUT_PATH = DATA_DIR / "research.json"
 
 PER_STOCK = 4          # 종목당 기사 수
+SUMMARIZE_PER_STOCK = 2  # 종목당 본문 요약 대상 (상위 N건, 비용·시간 관리)
+BODY_MIN = 400           # 본문 최소 길이(자) — 이보다 짧으면 요약 스킵
+BODY_MAX = 2800          # Claude 에 보낼 본문 최대 길이
 MAX_AGE_DAYS = 14      # 최근 2주 내 기사만
 FETCH_DELAY = 0.6
 
@@ -124,6 +128,92 @@ def query_for(name):
     return name + QUERY_SUFFIX, "en"
 
 
+def fetch_article_body(link):
+    """기사 원문 본문 추출. 실패/유료벽/리다이렉트 미해결 시 None."""
+    try:
+        r = requests.get(link, headers=HEADERS, timeout=12, allow_redirects=True)
+        if r.status_code != 200:
+            return None
+        soup = BeautifulSoup(r.text, "html.parser")
+        # 구글 중간 페이지에 머문 경우: 원문 링크 후보 탐색
+        if "news.google.com" in (r.url or ""):
+            a = soup.find("a", href=re.compile(r"^https?://(?!news\.google)"))
+            if not a:
+                return None
+            r = requests.get(a["href"], headers=HEADERS, timeout=12, allow_redirects=True)
+            if r.status_code != 200:
+                return None
+            soup = BeautifulSoup(r.text, "html.parser")
+        for bad in soup(["script", "style", "nav", "header", "footer", "aside"]):
+            bad.decompose()
+        paras = [pg.get_text(" ", strip=True) for pg in soup.find_all("p")]
+        body = " ".join(x for x in paras if len(x) > 40)
+        if len(body) < BODY_MIN:
+            return None
+        return body[:BODY_MAX]
+    except Exception:
+        return None
+
+
+def summarize_articles_ko(stocks_out):
+    """종목당 상위 N건의 기사 본문을 Claude(Haiku)로 2~3줄 한글 불릿 요약 → summary_ko.
+    API 키 없거나 본문 접근 실패 시 조용히 건너뜀."""
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    if not api_key:
+        print("  [요약] API 키 없음 — 본문 요약 건너뜀")
+        return
+    # 요약 대상: 종목당 상위 SUMMARIZE_PER_STOCK 건, 본문 확보 성공분만
+    todo = []
+    for s in stocks_out:
+        for a in s.get("articles", [])[:SUMMARIZE_PER_STOCK]:
+            body = fetch_article_body(a.get("link", ""))
+            time.sleep(0.3)
+            if body:
+                todo.append({"a": a, "body": body})
+    print(f"  [요약] 본문 확보 {len(todo)}건 (대상 중 접근 실패분 제외)")
+    if not todo:
+        return
+    done = 0
+    BATCH = 8
+    for i in range(0, len(todo), BATCH):
+        batch = todo[i:i + BATCH]
+        payload = [{"i": j, "title": x["a"]["title"], "body": x["body"]}
+                   for j, x in enumerate(batch)]
+        prompt = (
+            "다음 주식 리서치 기사들을 각각 한국어 불릿 2~3개로 요약하세요. "
+            "각 불릿은 한 문장, 핵심 수치(목표주가·등락률·시총 등)를 우선 포함. "
+            "기업명·티커는 원문 그대로. 반드시 JSON 배열만 출력: "
+            '[{"i": 인덱스, "bullets": ["...", "..."]}]\n\n'
+            + json.dumps(payload, ensure_ascii=False)
+        )
+        try:
+            r = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
+                         "content-type": "application/json"},
+                json={"model": "claude-haiku-4-5", "max_tokens": 8000,
+                      "messages": [{"role": "user", "content": prompt}]},
+                timeout=180,
+            )
+            if r.status_code != 200:
+                print(f"  [요약] API 오류 HTTP {r.status_code} — 배치 건너뜀", file=sys.stderr)
+                continue
+            text = "".join(b.get("text", "") for b in r.json().get("content", []))
+            i1, i2 = text.find("["), text.rfind("]")
+            if i1 == -1 or i2 <= i1:
+                continue
+            results = json.loads(text[i1:i2 + 1])
+            for item in results:
+                idx = item.get("i")
+                bl = [str(b).strip()[:180] for b in item.get("bullets", []) if str(b).strip()]
+                if isinstance(idx, int) and 0 <= idx < len(batch) and bl:
+                    batch[idx]["a"]["summary_ko"] = bl[:3]
+                    done += 1
+        except Exception as e:
+            print(f"  [요약] 배치 실패(무시): {e}", file=sys.stderr)
+    print(f"  [요약] 완료: {done}건")
+
+
 def translate_titles_ko(stocks_out):
     """영어 기사 제목을 Claude API(Haiku)로 일괄 한글 번역 → title_ko 필드 추가.
     ANTHROPIC_API_KEY 환경변수가 없거나 호출 실패 시 조용히 건너뜀 (영문만 표시)."""
@@ -200,6 +290,7 @@ def main():
         sys.exit(0)
 
     translate_titles_ko(stocks_out)
+    summarize_articles_ko(stocks_out)
 
     out = {"generated_at": TODAY.isoformat(),
            "generated_label": TODAY.strftime("%Y.%m.%d %H:%M"),
