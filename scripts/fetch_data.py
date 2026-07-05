@@ -764,6 +764,7 @@ def save_daily_snapshot(data):
             "rank": s.get("rank"),
             "mc": s.get("mc", 0),
             "momentum_1y": s.get("momentum_1y"),
+            "theme": s.get("theme", ""),
         }
         for s in data.get("latent", [])
     ]
