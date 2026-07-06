@@ -91,6 +91,26 @@ PLACEHOLDERS = [
 ]
 
 
+def build_about():
+    """about.html — UNIVERTRIX 브랜드 스토리"""
+    template_path = SCRIPTS_DIR / "about-template.html"
+    if not template_path.exists():
+        print("[skip] about-template.html 없음"); return
+    template = template_path.read_text(encoding="utf-8")
+    meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    usd_krw_str = f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—"
+    html = template
+    html = html.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}", usd_krw_str)
+    for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
+        html = html.replace("{{ACTIVE_" + key + "}}", "")  # About은 어느 탭도 비활성
+    out = HERE / "about.html"
+    out.write_text(html, encoding="utf-8")
+    print(f"[OK] {out.name} ({len(html):,} chars)")
+
+
 def build_research():
     """research.html — 종목 리서치·분석 기사 (자동 수집)"""
     template_path = SCRIPTS_DIR / "research-template.html"
@@ -191,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 def inject_header_fix():
     """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "my-universe.html", "history-top20.html", "history-latent.html"]
+             "community.html", "my-universe.html", "history-top20.html", "history-latent.html", "about.html"]
     n = 0
     for name in pages:
         f = HERE / name
@@ -215,6 +235,7 @@ def main():
     build_megatrend()
     build_placeholders()
     build_research()
+    build_about()
     build_history("top20",  "home",   "history-top20.html")
     build_history("latent", "latent", "history-latent.html")
     inject_header_fix()
