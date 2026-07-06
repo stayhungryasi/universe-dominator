@@ -263,6 +263,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ────────── HERO ────────── */
 .hero { padding: 48px 0 32px; }
+.hero-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.about-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 100px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary); text-decoration: none;
+  transition: border-color 0.2s, color 0.2s; white-space: nowrap; }
+.about-btn:hover { border-color: var(--gold); color: var(--gold); }
+.about-btn-arrow { font-size: 11px; transition: transform 0.2s; }
+.about-btn:hover .about-btn-arrow { transform: translateX(2px); }
+@media (max-width: 480px) { .about-btn { padding: 6px 12px; font-size: 11px; } }
 
 .hero-title {
   font-size: clamp(40px, 8vw, 56px);
@@ -883,7 +892,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <main class="container">
 
 <section class="hero">
-  <h1 class="hero-title">우주지배자</h1>
+  <div class="hero-title-row">
+    <h1 class="hero-title">우주지배자</h1>
+    <a href="about.html" class="about-btn">About <span class="about-btn-arrow">→</span></a>
+  </div>
   <p class="hero-sub">글로벌 시가총액 TOP 종목, 매일 갱신</p>
 
   <div class="stats-grid">
