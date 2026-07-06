@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About · 우주지배자</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+:root, [data-theme="light"] {
+  --bg: #FAF6EC; --bg-card: #FFFFFF; --header-bg: rgba(250, 246, 236, 0.95);
+  --text: #1A2438; --text-secondary: #525F7E; --text-muted: #8590AA;
+  --gold: #9C7A3A; --gold-bg: #F0E6CC;
+  --line: #E8DFC9; --line-strong: #C9BC9A;
+}
+[data-theme="dark"] {
+  --bg: #0A0E14; --bg-card: #1C2330; --header-bg: rgba(10, 14, 20, 0.95);
+  --text: #FFFFFF; --text-secondary: #B5BFD6; --text-muted: #6F7E9E;
+  --gold: #D4A658; --gold-bg: #2A2519;
+  --line: #2A3142; --line-strong: #3A4458;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard Variable', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  font-feature-settings: 'tnum', 'ss01'; line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+.site-header { background: var(--header-bg); border-bottom: 1px solid var(--line); }
+.site-header-inner { max-width: 720px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; color: var(--text); }
+.brand a { text-decoration: none; color: inherit; display: flex; gap: 8px; align-items: center; }
+.brand-star { color: var(--gold); }
+.brand-tag { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.update-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; background: var(--gold-bg);
+  border-radius: 100px; font-size: 12px; font-weight: 700;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .update-badge { border: 1px solid rgba(212,166,88,0.3); }
+.update-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse 2s ease-in-out infinite;
+}
+[data-theme="dark"] .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.rate-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 12px; background: var(--bg-card);
+  border: 1px solid var(--line); border-radius: 100px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+  white-space: nowrap; text-decoration: none; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.rate-badge:hover { border-color: var(--gold); }
+.rate-badge:hover #usdKrwDisplay, .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.rate-badge-arrow { font-size: 10px; margin-left: 2px; color: var(--text-muted); opacity: 0.7; transition: color 0.2s, opacity 0.2s; }
+.rate-badge:hover .rate-badge-arrow { opacity: 1; }
+.rate-badge #usdKrwDisplay { color: var(--text); font-weight: 800; }
+@media (max-width: 480px) { .rate-badge { font-size: 11px; padding: 5px 10px; } .update-badge { font-size: 11px; padding: 5px 10px; } }
+@media (max-width: 380px) { .update-badge::before { display: none; } }
+
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--bg-card);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: inline; }
+
+.site-nav { position: sticky; top: 0; z-index: 50; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+.site-nav-inner { max-width: 720px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.site-nav-inner::-webkit-scrollbar { display: none; }
+.nav-tab { flex-shrink: 0; padding: 14px 18px; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.nav-tab:hover { color: var(--text-secondary); }
+.nav-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+
+main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 0; }
+
+.placeholder-card {
+  text-align: center;
+  padding: 56px 32px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 16px;
+  background: var(--bg-card);
+  max-width: 480px;
+  width: 100%;
+}
+.placeholder-icon { font-size: 56px; margin-bottom: 16px; }
+.placeholder-eyebrow {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.placeholder-title {
+  font-size: 30px; font-weight: 800; letter-spacing: -0.03em;
+  color: var(--text); margin-bottom: 12px;
+}
+.placeholder-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.6; }
+.placeholder-note { font-size: 12px; color: var(--text-muted); margin-top: 18px; }
+
+/* ── About ── */
+main.about-main { display: block; padding: 52px 0 72px; }
+.about-wrap { max-width: 640px; margin: 0 auto; }
+.about-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 14px; }
+.about-brand { font-size: 34px; font-weight: 800; letter-spacing: 0.34em; text-align: center; margin-bottom: 10px; text-indent: 0.34em; }
+.about-brand .v { color: var(--gold); }
+.about-motto { font-size: 13px; font-style: italic; color: var(--text-muted); text-align: center; margin-bottom: 44px; letter-spacing: 0.04em; }
+.about-sec { margin-bottom: 40px; }
+.about-sec h2 { font-size: 14px; font-weight: 800; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+.about-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin-bottom: 10px; }
+.about-sec p strong { color: var(--text); }
+.about-quote { border-left: 2px solid var(--gold); padding: 4px 0 4px 18px; margin: 26px 0; font-size: 15px; line-height: 1.8; color: var(--text); font-weight: 600; }
+.about-name { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin: 8px 0 0; }
+.about-name .nm { font-size: 16px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 8px; }
+.about-name .nm .v { color: var(--gold); }
+.about-name p { font-size: 13.5px; line-height: 1.75; color: var(--text-secondary); margin: 0 0 6px; }
+.about-cta { text-align: center; margin-top: 48px; }
+.about-cta a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; background: var(--text); color: var(--bg); border-radius: 100px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.about-back { text-align: center; margin-top: 16px; }
+.about-back a { font-size: 12.5px; color: var(--text-muted); text-decoration: none; }
+.about-back a:hover { color: var(--gold); }
+@media (max-width: 480px) { .about-brand { font-size: 24px; } main.about-main { padding: 36px 0 56px; } }
+
+.site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
+.footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
+.footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
+.footer-link:hover { color: var(--gold); }
+.footer-divider { color: var(--text-muted); font-weight: 400; }
+
+@media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="brand">
+      <a href="index.html"><span class="brand-star">✨</span><span>Stay hungry. ASI</span></a>
+      <span class="brand-tag">@stayhungryasi</span>
+    </div>
+    <div class="header-right">
+      <span class="update-badge">{{FETCHED_DATE}}</span>
+      <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
+         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+        USD/KRW <span id="usdKrwDisplay">{{USD_KRW}}</span>
+        <span class="rate-badge-arrow" aria-hidden="true">↗</span>
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="site-nav-inner container">
+    <a href="index.html" class="nav-tab {{ACTIVE_HOME}}">우주지배자</a>
+    <a href="latent.html" class="nav-tab {{ACTIVE_LATENT}}">잠재지배자</a>
+    <a href="megatrend.html" class="nav-tab {{ACTIVE_MEGA}}">메가트렌드</a>
+    <a href="research.html" class="nav-tab {{ACTIVE_RESEARCH}}">리서치</a>
+    <a href="community.html" class="nav-tab {{ACTIVE_COMMUNITY}}">커뮤니티</a>
+    <a href="my-universe.html" class="nav-tab {{ACTIVE_MY}}">나의우주</a>
+  </div>
+</nav>
+
+<main class="about-main">
+  <div class="container">
+    <div class="about-wrap">
+      <div class="about-eyebrow">About</div>
+      <div class="about-brand">UNI<span class="v">V</span>ERTRIX</div>
+      <div class="about-motto">Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다</div>
+
+      <div class="about-sec">
+        <h2>왜 우주지배자인가</h2>
+        <p>폭발적으로 성장하는 기업은 지구를 지배하고, 전지구적 지배 기업은 결국 <strong>우주 전체로 그 영향력을 확장</strong>합니다. 이미 궤도 위에서 사업을 운영하는 기업들이 그 서막입니다.</p>
+        <p>우리는 AI가 스스로를 가속하는 <strong>특이점의 문턱</strong>에 서 있습니다. 시가총액 순위는 단순한 숫자가 아니라, 어떤 힘이 다음 시대를 지배할지 보여주는 가장 정직한 지도입니다.</p>
+        <div class="about-quote">왕좌를 차지하는 것은 거인들의 일이고,<br>빠짐없이 적어두는 것은 우리의 일입니다.</div>
+      </div>
+
+      <div class="about-sec">
+        <h2>무엇을 기록하는가</h2>
+        <p><strong>매일 세 번</strong>, 사람의 손을 거치지 않고 자동으로 — 7개 권역의 시가총액 TOP 20(우주지배자), 규칙으로 선별한 차세대 후보(잠재지배자), 20년의 왕좌 이동(메가트렌드), 그리고 종목별 글로벌 리서치를 수집·번역·요약해 기록합니다.</p>
+        <p>모든 변동은 매주 히스토리로 남습니다. 우주는 돌지만, 기록은 남으니까요.</p>
+      </div>
+
+      <div class="about-sec">
+        <h2>이름의 비밀</h2>
+        <div class="about-name">
+          <div class="nm">UNI<span class="v">V</span>ERTRIX</div>
+          <p><strong>UNIVERSE + -trix</strong> — 라틴어 행위자 접미사 <em>-trix</em>, "~하는 자". 우주를 기록하는 자.</p>
+          <p>그리고 그 안에는 라틴어 <strong><em>vertere</em>(돌다)</strong>가 숨어 있습니다. UNI<strong>VERT</strong>RIX — 도는 우주, 남는 기록.</p>
+        </div>
+      </div>
+
+      <div class="about-cta">
+        <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener">텔레그램에서 매일 브리핑 받기 →</a>
+      </div>
+      <div class="about-back"><a href="index.html">← 우주지배자로 돌아가기</a></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-brand">
+      <span>✨ Stay hungry. ASI</span>
+      <span class="footer-divider">·</span>
+      <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const savedTheme = localStorage.getItem('ud-theme');
+if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ud-theme', next);
+}
+</script>
+</body>
+</html>
