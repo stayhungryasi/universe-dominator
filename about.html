@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>커뮤니티 · 우주지배자</title>
+<title>About · 우주지배자</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -107,6 +107,29 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .placeholder-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.6; }
 .placeholder-note { font-size: 12px; color: var(--text-muted); margin-top: 18px; }
 
+/* ── About ── */
+main.about-main { display: block; padding: 52px 0 72px; }
+.about-wrap { max-width: 640px; margin: 0 auto; }
+.about-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 14px; }
+.about-brand { font-size: 34px; font-weight: 800; letter-spacing: 0.34em; text-align: center; margin-bottom: 10px; text-indent: 0.34em; }
+.about-brand .v { color: var(--gold); }
+.about-motto { font-size: 13px; font-style: italic; color: var(--text-muted); text-align: center; margin-bottom: 44px; letter-spacing: 0.04em; }
+.about-sec { margin-bottom: 40px; }
+.about-sec h2 { font-size: 14px; font-weight: 800; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+.about-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin-bottom: 10px; }
+.about-sec p strong { color: var(--text); }
+.about-quote { border-left: 2px solid var(--gold); padding: 4px 0 4px 18px; margin: 26px 0; font-size: 15px; line-height: 1.8; color: var(--text); font-weight: 600; }
+.about-name { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin: 8px 0 0; }
+.about-name .nm { font-size: 16px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 8px; }
+.about-name .nm .v { color: var(--gold); }
+.about-name p { font-size: 13.5px; line-height: 1.75; color: var(--text-secondary); margin: 0 0 6px; }
+.about-cta { text-align: center; margin-top: 48px; }
+.about-cta a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; background: var(--text); color: var(--bg); border-radius: 100px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.about-back { text-align: center; margin-top: 16px; }
+.about-back a { font-size: 12.5px; color: var(--text-muted); text-decoration: none; }
+.about-back a:hover { color: var(--gold); }
+@media (max-width: 480px) { .about-brand { font-size: 24px; } main.about-main { padding: 36px 0 56px; } }
+
 .site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
 .footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
 .footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
@@ -169,19 +192,44 @@ document.addEventListener('DOMContentLoaded', function () {
     <a href="latent.html" class="nav-tab ">잠재지배자</a>
     <a href="megatrend.html" class="nav-tab ">메가트렌드</a>
     <a href="research.html" class="nav-tab ">리서치</a>
-    <a href="community.html" class="nav-tab active">커뮤니티</a>
+    <a href="community.html" class="nav-tab ">커뮤니티</a>
     <a href="my-universe.html" class="nav-tab ">나의우주</a>
   </div>
 </nav>
 
-<main>
+<main class="about-main">
   <div class="container">
-    <div class="placeholder-card">
-      <div class="placeholder-icon">💬</div>
-      <div class="placeholder-eyebrow">Coming Soon</div>
-      <h1 class="placeholder-title">커뮤니티</h1>
-      <p class="placeholder-desc">구독자 토론, Q&A, 종목 공유 공간.</p>
-      <p class="placeholder-note">곧 만나뵙겠습니다 — 텔레그램 채널에서 먼저 소식을 받아보세요.</p>
+    <div class="about-wrap">
+      <div class="about-eyebrow">About</div>
+      <div class="about-brand">UNI<span class="v">V</span>ERTRIX</div>
+      <div class="about-motto">Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다</div>
+
+      <div class="about-sec">
+        <h2>왜 우주지배자인가</h2>
+        <p>폭발적으로 성장하는 기업은 지구를 지배하고, 전지구적 지배 기업은 결국 <strong>우주 전체로 그 영향력을 확장</strong>합니다. 이미 궤도 위에서 사업을 운영하는 기업들이 그 서막입니다.</p>
+        <p>우리는 AI가 스스로를 가속하는 <strong>특이점의 문턱</strong>에 서 있습니다. 시가총액 순위는 단순한 숫자가 아니라, 어떤 힘이 다음 시대를 지배할지 보여주는 가장 정직한 지도입니다.</p>
+        <div class="about-quote">왕좌를 차지하는 것은 거인들의 일이고,<br>빠짐없이 적어두는 것은 우리의 일입니다.</div>
+      </div>
+
+      <div class="about-sec">
+        <h2>무엇을 기록하는가</h2>
+        <p><strong>매일 세 번</strong>, 사람의 손을 거치지 않고 자동으로 — 7개 권역의 시가총액 TOP 20(우주지배자), 규칙으로 선별한 차세대 후보(잠재지배자), 20년의 왕좌 이동(메가트렌드), 그리고 종목별 글로벌 리서치를 수집·번역·요약해 기록합니다.</p>
+        <p>모든 변동은 매주 히스토리로 남습니다. 우주는 돌지만, 기록은 남으니까요.</p>
+      </div>
+
+      <div class="about-sec">
+        <h2>이름의 비밀</h2>
+        <div class="about-name">
+          <div class="nm">UNI<span class="v">V</span>ERTRIX</div>
+          <p><strong>UNIVERSE + -trix</strong> — 라틴어 행위자 접미사 <em>-trix</em>, "~하는 자". 우주를 기록하는 자.</p>
+          <p>그리고 그 안에는 라틴어 <strong><em>vertere</em>(돌다)</strong>가 숨어 있습니다. UNI<strong>VERT</strong>RIX — 도는 우주, 남는 기록.</p>
+        </div>
+      </div>
+
+      <div class="about-cta">
+        <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener">텔레그램에서 매일 브리핑 받기 →</a>
+      </div>
+      <div class="about-back"><a href="index.html">← 우주지배자로 돌아가기</a></div>
     </div>
   </div>
 </main>

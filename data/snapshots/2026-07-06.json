@@ -1,0 +1,925 @@
+{
+  "date": "2026-07-06",
+  "regions": {
+    "earth": [
+      {
+        "rank": 1,
+        "ticker": "NVDA",
+        "name": "NVIDIA",
+        "mc": 4718.0
+      },
+      {
+        "rank": 2,
+        "ticker": "AAPL",
+        "name": "Apple",
+        "mc": 4532.0
+      },
+      {
+        "rank": 3,
+        "ticker": "GOOG",
+        "name": "Alphabet (Google)",
+        "mc": 4346.0
+      },
+      {
+        "rank": 4,
+        "ticker": "MSFT",
+        "name": "Microsoft",
+        "mc": 2900.0
+      },
+      {
+        "rank": 5,
+        "ticker": "AMZN",
+        "name": "Amazon",
+        "mc": 2610.0
+      },
+      {
+        "rank": 6,
+        "ticker": "TSM",
+        "name": "TSMC",
+        "mc": 2251.0
+      },
+      {
+        "rank": 7,
+        "ticker": "SPCX",
+        "name": "SpaceX",
+        "mc": 2134.0
+      },
+      {
+        "rank": 8,
+        "ticker": "AVGO",
+        "name": "Broadcom",
+        "mc": 1714.0
+      },
+      {
+        "rank": 9,
+        "ticker": "2222.SR",
+        "name": "Saudi Aramco",
+        "mc": 1685.0
+      },
+      {
+        "rank": 10,
+        "ticker": "META",
+        "name": "Meta Platforms (Facebook)",
+        "mc": 1479.0
+      },
+      {
+        "rank": 11,
+        "ticker": "TSLA",
+        "name": "Tesla",
+        "mc": 1477.0
+      },
+      {
+        "rank": 12,
+        "ticker": "005930.KS",
+        "name": "삼성전자",
+        "mc": 1362.0
+      },
+      {
+        "rank": 13,
+        "ticker": "MU",
+        "name": "Micron Technology",
+        "mc": 1101.0
+      },
+      {
+        "rank": 14,
+        "ticker": "BRK-B",
+        "name": "Berkshire Hathaway",
+        "mc": 1095.0
+      },
+      {
+        "rank": 15,
+        "ticker": "000660.KS",
+        "name": "SK하이닉스",
+        "mc": 1085.0
+      },
+      {
+        "rank": 16,
+        "ticker": "LLY",
+        "name": "Eli Lilly",
+        "mc": 1082.0
+      },
+      {
+        "rank": 17,
+        "ticker": "JPM",
+        "name": "JPMorgan Chase",
+        "mc": 896.21
+      },
+      {
+        "rank": 18,
+        "ticker": "WMT",
+        "name": "Walmart",
+        "mc": 890.03
+      },
+      {
+        "rank": 19,
+        "ticker": "V",
+        "name": "Visa",
+        "mc": 688.67
+      },
+      {
+        "rank": 20,
+        "ticker": "JNJ",
+        "name": "Johnson & Johnson",
+        "mc": 633.19
+      }
+    ],
+    "us": [
+      {
+        "rank": 1,
+        "ticker": "NVDA",
+        "name": "NVIDIA",
+        "mc": 4718.0
+      },
+      {
+        "rank": 2,
+        "ticker": "AAPL",
+        "name": "Apple",
+        "mc": 4532.0
+      },
+      {
+        "rank": 3,
+        "ticker": "GOOG",
+        "name": "Alphabet (Google)",
+        "mc": 4346.0
+      },
+      {
+        "rank": 4,
+        "ticker": "MSFT",
+        "name": "Microsoft",
+        "mc": 2900.0
+      },
+      {
+        "rank": 5,
+        "ticker": "AMZN",
+        "name": "Amazon",
+        "mc": 2610.0
+      },
+      {
+        "rank": 6,
+        "ticker": "SPCX",
+        "name": "SpaceX",
+        "mc": 2134.0
+      },
+      {
+        "rank": 7,
+        "ticker": "AVGO",
+        "name": "Broadcom",
+        "mc": 1714.0
+      },
+      {
+        "rank": 8,
+        "ticker": "META",
+        "name": "Meta Platforms (Facebook)",
+        "mc": 1479.0
+      },
+      {
+        "rank": 9,
+        "ticker": "TSLA",
+        "name": "Tesla",
+        "mc": 1477.0
+      },
+      {
+        "rank": 10,
+        "ticker": "MU",
+        "name": "Micron Technology",
+        "mc": 1101.0
+      },
+      {
+        "rank": 11,
+        "ticker": "BRK-B",
+        "name": "Berkshire Hathaway",
+        "mc": 1095.0
+      },
+      {
+        "rank": 12,
+        "ticker": "LLY",
+        "name": "Eli Lilly",
+        "mc": 1082.0
+      },
+      {
+        "rank": 13,
+        "ticker": "JPM",
+        "name": "JPMorgan Chase",
+        "mc": 896.21
+      },
+      {
+        "rank": 14,
+        "ticker": "WMT",
+        "name": "Walmart",
+        "mc": 890.03
+      },
+      {
+        "rank": 15,
+        "ticker": "V",
+        "name": "Visa",
+        "mc": 688.67
+      },
+      {
+        "rank": 16,
+        "ticker": "JNJ",
+        "name": "Johnson & Johnson",
+        "mc": 633.19
+      },
+      {
+        "rank": 17,
+        "ticker": "INTC",
+        "name": "Intel",
+        "mc": 604.87
+      },
+      {
+        "rank": 18,
+        "ticker": "XOM",
+        "name": "Exxon Mobil",
+        "mc": 568.23
+      },
+      {
+        "rank": 19,
+        "ticker": "AMAT",
+        "name": "Applied Materials",
+        "mc": 478.78
+      },
+      {
+        "rank": 20,
+        "ticker": "MA",
+        "name": "Mastercard",
+        "mc": 476.59
+      }
+    ],
+    "korea": [
+      {
+        "rank": 1,
+        "ticker": "005930.KS",
+        "name": "삼성전자",
+        "mc": 1362.0
+      },
+      {
+        "rank": 2,
+        "ticker": "000660.KS",
+        "name": "SK하이닉스",
+        "mc": 1085.0
+      },
+      {
+        "rank": 3,
+        "ticker": "402340.KS",
+        "name": "SK스퀘어",
+        "mc": 128.58
+      },
+      {
+        "rank": 4,
+        "ticker": "005380.KS",
+        "name": "현대차",
+        "mc": 85.76
+      },
+      {
+        "rank": 5,
+        "ticker": "373220.KS",
+        "name": "LG에너지솔루션",
+        "mc": 54.12
+      },
+      {
+        "rank": 6,
+        "ticker": "028260.KS",
+        "name": "삼성물산",
+        "mc": 47.99
+      },
+      {
+        "rank": 7,
+        "ticker": "032830.KS",
+        "name": "삼성생명",
+        "mc": 46.1
+      },
+      {
+        "rank": 8,
+        "ticker": "207940.KS",
+        "name": "삼성바이오로직스",
+        "mc": 42.43
+      },
+      {
+        "rank": 9,
+        "ticker": "000270.KS",
+        "name": "기아",
+        "mc": 40.75
+      },
+      {
+        "rank": 10,
+        "ticker": "329180.KS",
+        "name": "HD현대중공업",
+        "mc": 39.91
+      },
+      {
+        "rank": 11,
+        "ticker": "012450.KS",
+        "name": "한화에어로스페이스",
+        "mc": 38.9
+      },
+      {
+        "rank": 12,
+        "ticker": "KB",
+        "name": "KB금융",
+        "mc": 38.78
+      },
+      {
+        "rank": 13,
+        "ticker": "034020.KS",
+        "name": "두산에너빌리티",
+        "mc": 35.65
+      },
+      {
+        "rank": 14,
+        "ticker": "009155.KS",
+        "name": "삼성전기",
+        "mc": 32.53
+      },
+      {
+        "rank": 15,
+        "ticker": "SHG",
+        "name": "신한지주",
+        "mc": 31.49
+      },
+      {
+        "rank": 16,
+        "ticker": "012330.KS",
+        "name": "현대모비스",
+        "mc": 29.96
+      },
+      {
+        "rank": 17,
+        "ticker": "068270.KS",
+        "name": "셀트리온",
+        "mc": 26.32
+      },
+      {
+        "rank": 18,
+        "ticker": "034730.KS",
+        "name": "SK",
+        "mc": 23.73
+      },
+      {
+        "rank": 19,
+        "ticker": "042660.KS",
+        "name": "한화오션",
+        "mc": 23.2
+      },
+      {
+        "rank": 20,
+        "ticker": "086790.KS",
+        "name": "하나금융지주",
+        "mc": 21.84
+      }
+    ],
+    "japan": [
+      {
+        "rank": 1,
+        "ticker": "285A.T",
+        "name": "KIOXIA Holdings Corporation",
+        "mc": 274.96
+      },
+      {
+        "rank": 2,
+        "ticker": "MUFG",
+        "name": "Mitsubishi UFJ Financial",
+        "mc": 232.41
+      },
+      {
+        "rank": 3,
+        "ticker": "9984.T",
+        "name": "SoftBank Group Corp.",
+        "mc": 209.84
+      },
+      {
+        "rank": 4,
+        "ticker": "TM",
+        "name": "Toyota",
+        "mc": 206.73
+      },
+      {
+        "rank": 5,
+        "ticker": "8035.T",
+        "name": "Tokyo Electron",
+        "mc": 202.58
+      },
+      {
+        "rank": 6,
+        "ticker": "9983.T",
+        "name": "Fast Retailing",
+        "mc": 164.26
+      },
+      {
+        "rank": 7,
+        "ticker": "SMFG",
+        "name": "Sumitomo Mitsui Financial Group",
+        "mc": 155.84
+      },
+      {
+        "rank": 8,
+        "ticker": "6501.T",
+        "name": "Hitachi",
+        "mc": 133.06
+      },
+      {
+        "rank": 9,
+        "ticker": "6857.T",
+        "name": "Advantest",
+        "mc": 131.96
+      },
+      {
+        "rank": 10,
+        "ticker": "SONY",
+        "name": "Sony",
+        "mc": 122.45
+      },
+      {
+        "rank": 11,
+        "ticker": "MFG",
+        "name": "Mizuho Financial Group",
+        "mc": 121.09
+      },
+      {
+        "rank": 12,
+        "ticker": "6861.T",
+        "name": "Keyence",
+        "mc": 120.84
+      },
+      {
+        "rank": 13,
+        "ticker": "6981.T",
+        "name": "Murata Manufacturing (Murata Seisakusho)",
+        "mc": 114.9
+      },
+      {
+        "rank": 14,
+        "ticker": "6098.T",
+        "name": "Recruit",
+        "mc": 101.97
+      },
+      {
+        "rank": 15,
+        "ticker": "8058.T",
+        "name": "Mitsubishi Corporation",
+        "mc": 101.62
+      },
+      {
+        "rank": 16,
+        "ticker": "8766.T",
+        "name": "Tokio Marine",
+        "mc": 91.94
+      },
+      {
+        "rank": 17,
+        "ticker": "7011.T",
+        "name": "Mitsubishi Heavy Industries",
+        "mc": 85.05
+      },
+      {
+        "rank": 18,
+        "ticker": "4063.T",
+        "name": "Shin-Etsu Chemical",
+        "mc": 84.91
+      },
+      {
+        "rank": 19,
+        "ticker": "8001.T",
+        "name": "Itōchū Shōji",
+        "mc": 81.5
+      },
+      {
+        "rank": 20,
+        "ticker": "8031.T",
+        "name": "Mitsui Bussan",
+        "mc": 81.45
+      }
+    ],
+    "europe": [
+      {
+        "rank": 1,
+        "ticker": "RO.SW",
+        "name": "Roche",
+        "mc": 336.75
+      },
+      {
+        "rank": 2,
+        "ticker": "ARM",
+        "name": "Arm Holdings",
+        "mc": 336.74
+      },
+      {
+        "rank": 3,
+        "ticker": "NVS",
+        "name": "Novartis",
+        "mc": 305.1
+      },
+      {
+        "rank": 4,
+        "ticker": "AZN",
+        "name": "AstraZeneca",
+        "mc": 302.65
+      },
+      {
+        "rank": 5,
+        "ticker": "MC.PA",
+        "name": "LVMH",
+        "mc": 281.44
+      },
+      {
+        "rank": 6,
+        "ticker": "NESN.SW",
+        "name": "Nestlé",
+        "mc": 268.6
+      },
+      {
+        "rank": 7,
+        "ticker": "LIN",
+        "name": "Linde",
+        "mc": 252.73
+      },
+      {
+        "rank": 8,
+        "ticker": "SIE.DE",
+        "name": "Siemens",
+        "mc": 243.66
+      },
+      {
+        "rank": 9,
+        "ticker": "OR.PA",
+        "name": "L'Oréal",
+        "mc": 233.35
+      },
+      {
+        "rank": 10,
+        "ticker": "NVO",
+        "name": "Novo Nordisk",
+        "mc": 223.19
+      },
+      {
+        "rank": 11,
+        "ticker": "SHEL",
+        "name": "Shell",
+        "mc": 216.2
+      },
+      {
+        "rank": 12,
+        "ticker": "ITX.MC",
+        "name": "Inditex",
+        "mc": 202.72
+      },
+      {
+        "rank": 13,
+        "ticker": "SAN",
+        "name": "Santander",
+        "mc": 199.87
+      },
+      {
+        "rank": 14,
+        "ticker": "RMS.PA",
+        "name": "Hermès",
+        "mc": 196.29
+      },
+      {
+        "rank": 15,
+        "ticker": "ABBN.SW",
+        "name": "ABB",
+        "mc": 192.62
+      },
+      {
+        "rank": 16,
+        "ticker": "PRX.AS",
+        "name": "Prosus",
+        "mc": 191.41
+      },
+      {
+        "rank": 17,
+        "ticker": "AIR.PA",
+        "name": "Airbus",
+        "mc": 188.13
+      },
+      {
+        "rank": 18,
+        "ticker": "STX",
+        "name": "Seagate Technology",
+        "mc": 183.9
+      },
+      {
+        "rank": 19,
+        "ticker": "ALV.DE",
+        "name": "Allianz SE",
+        "mc": 182.49
+      },
+      {
+        "rank": 20,
+        "ticker": "SU.PA",
+        "name": "Schneider Electric",
+        "mc": 177.36
+      }
+    ],
+    "china": [
+      {
+        "rank": 1,
+        "ticker": "TCEHY",
+        "name": "Tencent",
+        "mc": 498.5
+      },
+      {
+        "rank": 2,
+        "ticker": "601939.SS",
+        "name": "China Construction Bank",
+        "mc": 372.41
+      },
+      {
+        "rank": 3,
+        "ticker": "601288.SS",
+        "name": "Agricultural Bank of China",
+        "mc": 307.59
+      },
+      {
+        "rank": 4,
+        "ticker": "1398.HK",
+        "name": "ICBC",
+        "mc": 292.2
+      },
+      {
+        "rank": 5,
+        "ticker": "601988.SS",
+        "name": "Bank of China",
+        "mc": 267.53
+      },
+      {
+        "rank": 6,
+        "ticker": "300750.SZ",
+        "name": "CATL",
+        "mc": 255.08
+      },
+      {
+        "rank": 7,
+        "ticker": "BABA",
+        "name": "Alibaba",
+        "mc": 230.69
+      },
+      {
+        "rank": 8,
+        "ticker": "600519.SS",
+        "name": "Kweichow Moutai",
+        "mc": 222.11
+      },
+      {
+        "rank": 9,
+        "ticker": "0941.HK",
+        "name": "China Mobile",
+        "mc": 212.92
+      },
+      {
+        "rank": 10,
+        "ticker": "0857.HK",
+        "name": "PetroChina",
+        "mc": 207.92
+      },
+      {
+        "rank": 11,
+        "ticker": "601138.SS",
+        "name": "Foxconn Industrial Internet",
+        "mc": 185.77
+      },
+      {
+        "rank": 12,
+        "ticker": "300308.SZ",
+        "name": "Zhongji Innolight",
+        "mc": 180.42
+      },
+      {
+        "rank": 13,
+        "ticker": "601628.SS",
+        "name": "China Life Insurance",
+        "mc": 161.36
+      },
+      {
+        "rank": 14,
+        "ticker": "3968.HK",
+        "name": "CM Bank",
+        "mc": 145.86
+      },
+      {
+        "rank": 15,
+        "ticker": "601088.SS",
+        "name": "China Shenhua Energy",
+        "mc": 133.82
+      },
+      {
+        "rank": 16,
+        "ticker": "601318.SS",
+        "name": "Ping An Insurance",
+        "mc": 133.55
+      },
+      {
+        "rank": 17,
+        "ticker": "0883.HK",
+        "name": "CNOOC",
+        "mc": 127.51
+      },
+      {
+        "rank": 18,
+        "ticker": "688256.SS",
+        "name": "Cambricon Technologies",
+        "mc": 126.69
+      },
+      {
+        "rank": 19,
+        "ticker": "002594.SZ",
+        "name": "BYD",
+        "mc": 117.49
+      },
+      {
+        "rank": 20,
+        "ticker": "PDD",
+        "name": "PDD Holdings (Pinduoduo)",
+        "mc": 117.27
+      }
+    ],
+    "hk": [
+      {
+        "rank": 1,
+        "ticker": "1299.HK",
+        "name": "AIA",
+        "mc": 97.23
+      },
+      {
+        "rank": 2,
+        "ticker": "0388.HK",
+        "name": "Hong Kong Exchanges & Clearing",
+        "mc": 60.66
+      },
+      {
+        "rank": 3,
+        "ticker": "2388.HK",
+        "name": "Bank of China (Hong Kong)",
+        "mc": 57.91
+      },
+      {
+        "rank": 4,
+        "ticker": "J36.SI",
+        "name": "Jardine Matheson",
+        "mc": 45.29
+      },
+      {
+        "rank": 5,
+        "ticker": "0016.HK",
+        "name": "Sun Hung Kai Properties",
+        "mc": 42.52
+      },
+      {
+        "rank": 6,
+        "ticker": "0019.HK",
+        "name": "Swire Pacific",
+        "mc": 38.48
+      },
+      {
+        "rank": 7,
+        "ticker": "2259.HK",
+        "name": "Zijin Gold International Company Limited",
+        "mc": 36.75
+      },
+      {
+        "rank": 8,
+        "ticker": "0992.HK",
+        "name": "Lenovo",
+        "mc": 32.36
+      },
+      {
+        "rank": 9,
+        "ticker": "0001.HK",
+        "name": "CK Hutchison Holdings",
+        "mc": 31.59
+      },
+      {
+        "rank": 10,
+        "ticker": "0669.HK",
+        "name": "Techtronic Industries",
+        "mc": 29.97
+      },
+      {
+        "rank": 11,
+        "ticker": "1109.HK",
+        "name": "China Resources Land",
+        "mc": 29.22
+      },
+      {
+        "rank": 12,
+        "ticker": "0066.HK",
+        "name": "MTR Corporation",
+        "mc": 25.24
+      },
+      {
+        "rank": 13,
+        "ticker": "0762.HK",
+        "name": "China Unicom",
+        "mc": 24.34
+      },
+      {
+        "rank": 14,
+        "ticker": "0002.HK",
+        "name": "CLP Group",
+        "mc": 24.11
+      },
+      {
+        "rank": 15,
+        "ticker": "1113.HK",
+        "name": "CK Asset Holdings",
+        "mc": 19.73
+      },
+      {
+        "rank": 16,
+        "ticker": "1038.HK",
+        "name": "CK Infrastructure",
+        "mc": 19.03
+      },
+      {
+        "rank": 17,
+        "ticker": "0688.HK",
+        "name": "China Overseas Land & Investment",
+        "mc": 17.5
+      },
+      {
+        "rank": 18,
+        "ticker": "0027.HK",
+        "name": "Galaxy Entertainment",
+        "mc": 16.96
+      },
+      {
+        "rank": 19,
+        "ticker": "0012.HK",
+        "name": "Henderson Land Development",
+        "mc": 15.81
+      },
+      {
+        "rank": 20,
+        "ticker": "1972.HK",
+        "name": "Swire Properties",
+        "mc": 15.54
+      }
+    ]
+  },
+  "latent": [
+    {
+      "ticker": "LRCX",
+      "name": "Lam Research",
+      "rank": 31,
+      "mc": 439.46,
+      "momentum_1y": 258,
+      "theme": "AI 반도체"
+    },
+    {
+      "ticker": "GEV",
+      "name": "GE Vernova",
+      "rank": 54,
+      "mc": 299.11,
+      "momentum_1y": 110,
+      "theme": "AI 전력 인프라"
+    },
+    {
+      "ticker": "SNDK",
+      "name": "Sandisk",
+      "rank": 67,
+      "mc": 258.41,
+      "momentum_1y": 759,
+      "theme": "AI 테크"
+    },
+    {
+      "ticker": "DELL",
+      "name": "Dell",
+      "rank": 69,
+      "mc": 254.78,
+      "momentum_1y": 217,
+      "theme": "AI 서버 OEM"
+    },
+    {
+      "ticker": "MRVL",
+      "name": "Marvell Technology",
+      "rank": 81,
+      "mc": 214.76,
+      "momentum_1y": 243,
+      "theme": "AI 광 인터커넥트"
+    },
+    {
+      "ticker": "2454.TW",
+      "name": "MediaTek",
+      "rank": 87,
+      "mc": 205.53,
+      "momentum_1y": 192,
+      "theme": "AI 반도체"
+    },
+    {
+      "ticker": "2308.TW",
+      "name": "Delta Electronics",
+      "rank": 134,
+      "mc": 161.77,
+      "momentum_1y": 302,
+      "theme": "AI 테크"
+    },
+    {
+      "ticker": "DELTA.BK",
+      "name": "Delta Electronics (Thailand)",
+      "rank": 191,
+      "mc": 119.42,
+      "momentum_1y": 182,
+      "theme": "AI 테크"
+    }
+  ]
+}
