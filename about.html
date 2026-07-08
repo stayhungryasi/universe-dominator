@@ -145,6 +145,12 @@ main.about-main { display: block; padding: 52px 0 72px; }
   .brand { flex-shrink: 0; }
 }
 .update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+/* UNIVERTRIX 로고 (build_site.py 주입) */
+.brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.ud-logo-mark { display: block; height: 26px; width: auto; }
+.ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
+.ud-logo-word .v { color: var(--gold); }
+@media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -167,10 +173,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <header class="site-header">
   <div class="site-header-inner">
-    <div class="brand">
-      <a href="index.html"><span class="brand-star">✨</span><span>Stay hungry. ASI</span></a>
-      <span class="brand-tag">@stayhungryasi</span>
-    </div>
+    <a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX 홈">
+      <svg class="ud-logo-mark" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 3 H4 V27 H9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M25 3 H30 V27 H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="17" cy="15" rx="6.2" ry="10" stroke="var(--gold)" stroke-width="1.8"/>
+        <circle cx="17" cy="15" r="2.6" fill="var(--gold)"/>
+      </svg>
+      <span class="ud-logo-word">UNI<span class="v">V</span>ERTRIX</span>
+    </a>
     <div class="header-right">
       <span class="update-badge">2026.07.08</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
@@ -237,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <footer class="site-footer">
   <div class="container">
     <div class="footer-brand">
-      <span>✨ Stay hungry. ASI</span>
+      <span>UNI<span style="color:var(--gold)">V</span>ERTRIX</span>
       <span class="footer-divider">·</span>
       <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
     </div>
