@@ -12,6 +12,7 @@ build_site.py — 멀티페이지 사이트 빌드
   8. history-latent.html — 잠재지배자 변동 이력
 """
 import json
+import re
 from pathlib import Path
 
 HERE = Path(__file__).parent.parent
@@ -182,6 +183,16 @@ def build_history(page_key, active_marker, out_filename):
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
+LOGO_HTML = """<a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX 홈">
+      <svg class="ud-logo-mark" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 3 H4 V27 H9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M25 3 H30 V27 H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="17" cy="15" rx="6.2" ry="10" stroke="var(--gold)" stroke-width="1.8"/>
+        <circle cx="17" cy="15" r="2.6" fill="var(--gold)"/>
+      </svg>
+      <span class="ud-logo-word">UNI<span class="v">V</span>ERTRIX</span>
+    </a>"""
+
 HEADER_FIX_CSS = """<style>
 /* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
 @media (max-width: 480px) {
@@ -189,6 +200,12 @@ HEADER_FIX_CSS = """<style>
   .brand { flex-shrink: 0; }
 }
 .update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+/* UNIVERTRIX 로고 (build_site.py 주입) */
+.brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.ud-logo-mark { display: block; height: 26px; width: auto; }
+.ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
+.ud-logo-word .v { color: var(--gold); }
+@media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -220,6 +237,16 @@ def inject_header_fix():
         html = f.read_text(encoding="utf-8")
         if "헤더 모바일 일관성" in html or "</head>" not in html:
             continue
+        # 브랜드 → UNIVERTRIX 로고 교체 (CSS 주입 전에 — 멱등 체크는 마크업 기준)
+        if 'class="brand ud-logo"' not in html:
+            html = re.sub(
+                r'<div class="brand">.*?</div>',
+                lambda m: LOGO_HTML,
+                html, count=1, flags=re.S,
+            )
+        # 푸터 브랜드도 통일
+        html = html.replace("✨ Stay hungry. ASI",
+                            'UNI<span style="color:var(--gold)">V</span>ERTRIX')
         html = html.replace("</head>", HEADER_FIX_CSS + "\n</head>", 1)
         f.write_text(html, encoding="utf-8")
         n += 1
