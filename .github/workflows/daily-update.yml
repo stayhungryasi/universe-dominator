@@ -78,13 +78,19 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          if [[ -n "$(git status --porcelain)" ]]; then
-            DATE=$(TZ='Asia/Seoul' date +'%Y-%m-%d %H:%M KST')
-            git add -A
-            git commit -m "Auto update: ${DATE}"
-            git push
-            echo "✓ Updated and pushed"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 커밋 생략"
           else
-            echo "변경 사항 없음 — 커밋 스킵"
+            git commit -m "Auto update: $(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')"
+            # 동시 실행 충돌 대비: 최대 3회 rebase 후 push 재시도
+            for i in 1 2 3; do
+              if git push; then
+                echo "push 성공"
+                break
+              fi
+              echo "push 거부 — 원격 변경 반영 후 재시도 ($i/3)"
+              git pull --rebase origin main || git rebase --abort
+              sleep $((i * 3))
+            done
           fi
