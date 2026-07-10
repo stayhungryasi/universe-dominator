@@ -49,6 +49,14 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         continue-on-error: true
+
+      # 시장 주요일정 수집 (FOMC 고정 + Finnhub 실적 + 뉴스 이벤트)
+      - name: Fetch market calendar (auto)
+        run: python scripts/fetch_calendar.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        continue-on-error: true
       
       # 토요일(KST)에만 주간 History 자동 생성
       # cron이 23:00 UTC = 다음날 08:00 KST 이므로,
