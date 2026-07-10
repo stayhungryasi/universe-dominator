@@ -129,6 +129,16 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .art-summary { margin: 7px 0 2px; padding-left: 2px; list-style: none; }
 .art-summary li { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; padding-left: 12px; position: relative; margin-bottom: 3px; }
 .art-summary li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+/* ── 주요일정 ── */
+.cal-item { display: flex; align-items: flex-start; gap: 14px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.cal-date { min-width: 76px; text-align: center; }
+.cal-date .d { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.cal-date .dday { display: inline-block; margin-top: 3px; font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 100px; background: var(--gold-bg); color: var(--gold); }
+.cal-date .dday.today { background: var(--gold); color: #fff; }
+.cal-body { flex: 1; }
+.cal-title { font-size: 13.5px; font-weight: 600; line-height: 1.5; }
+.cal-type { display: inline-block; margin-top: 4px; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 100px; border: 1px solid var(--line); color: var(--text-muted); }
+.cal-type.macro { border-color: var(--gold); color: var(--gold); }
 .no-art { font-size: 12.5px; color: var(--text-muted); padding: 6px 0; }
 @media (max-width: 480px) { .page-title { font-size: 24px; } .stock-block { padding: 14px 16px; } }
 
@@ -184,6 +194,7 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
     <div class="group-tabs">
       <button class="group-tab active" data-g="universe" onclick="setGroup('universe', this)">우주지배자</button>
       <button class="group-tab" data-g="latent" onclick="setGroup('latent', this)">잠재지배자</button>
+      <button class="group-tab" data-g="calendar" onclick="setGroup('calendar', this)">주요일정</button>
     </div>
     <div id="list"></div>
   </div>
@@ -247,10 +258,33 @@ function render(group) {
   }).join('');
 }
 
+function renderCalendar() {
+  const list = document.getElementById('list');
+  const evs = (DATA.calendar && DATA.calendar.events) || [];
+  if (!evs.length) {
+    list.innerHTML = '<div class="no-art">수집된 일정이 아직 없습니다 — 다음 자동 갱신을 기다려 주세요.</div>';
+    return;
+  }
+  const today = new Date(new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }));
+  const typeLabel = { macro: 'FOMC·매크로', earnings: '실적 발표', event: '이벤트' };
+  list.innerHTML = evs.map(e => {
+    const d = new Date(e.date);
+    const diff = Math.round((d - today) / 86400000);
+    const dday = diff === 0 ? 'TODAY' : (diff > 0 ? 'D-' + diff : 'D+' + Math.abs(diff));
+    const md = (d.getMonth() + 1) + '/' + d.getDate();
+    return '<div class="cal-item">' +
+      '<div class="cal-date"><div class="d">' + md + '</div>' +
+      '<span class="dday' + (diff === 0 ? ' today' : '') + '">' + dday + '</span></div>' +
+      '<div class="cal-body"><div class="cal-title">' + esc(e.title) + '</div>' +
+      '<span class="cal-type ' + esc(e.type || '') + '">' + (typeLabel[e.type] || '일정') + '</span></div>' +
+    '</div>';
+  }).join('');
+}
+
 function setGroup(g, btn) {
   document.querySelectorAll('.group-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  render(g);
+  if (g === 'calendar') renderCalendar(); else render(g);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
