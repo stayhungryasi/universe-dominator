@@ -20,6 +20,9 @@ from pathlib import Path
 from datetime import datetime, timedelta, timezone, date
 
 import requests
+import html as html_mod
+import urllib.parse
+import xml.etree.ElementTree as ET
 
 KST = timezone(timedelta(hours=9))
 TODAY = datetime.now(KST)
@@ -112,6 +115,107 @@ def fetch_earnings(watch):
     return out
 
 
+# ──────────────── ②-보강: 주요 종목 실적일 정조준 검색 ────────────────
+EARNINGS_TARGET_MAX = 18   # 정조준 검색 종목 수 (우주 상위 + 잠재 상위)
+
+
+def _rss_titles(query, lang="en", limit=5):
+    q = urllib.parse.quote(query)
+    url = (f"https://news.google.com/rss/search?q={q}&hl=ko&gl=KR&ceid=KR:ko" if lang == "ko"
+           else f"https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en")
+    try:
+        r = requests.get(url, headers={"User-Agent": UA}, timeout=15)
+        if r.status_code != 200:
+            return []
+        root = ET.fromstring(r.text)
+        out = []
+        for item in root.iter("item"):
+            ti = html_mod.unescape((item.findtext("title") or "").strip())
+            pub = (item.findtext("pubDate") or "")[:16]
+            if ti:
+                out.append(f"[{pub}] {ti}")
+            if len(out) >= limit:
+                break
+        return out
+    except Exception:
+        return []
+
+
+def earnings_targets():
+    """정조준 대상: 지구 TOP 20 + 잠재 (한국 종목 포함)."""
+    targets = []
+    try:
+        d = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
+        earth = d["regions"]["earth"]
+        stocks = earth.get("stocks", earth) if isinstance(earth, dict) else earth
+        for s in (stocks or []):
+            targets.append(s.get("name", ""))
+        for s in d.get("latent", []):
+            targets.append(s.get("name", ""))
+    except Exception:
+        pass
+    seen, out = set(), []
+    for n in targets:
+        if n and n not in seen:
+            seen.add(n); out.append(n)
+    return out[:EARNINGS_TARGET_MAX]
+
+
+def fetch_earnings_via_news():
+    """종목별 '실적 발표일' 뉴스 검색 → Claude 가 날짜 추출. Finnhub 무관 커버리지."""
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    if not api_key:
+        print("  [실적검색] API 키 없음 — 건너뜀")
+        return []
+    names = earnings_targets()
+    corpus = []
+    for name in names:
+        kr = bool(re.search(r"[가-힣]", name))
+        q = f"{name} 실적 발표 일정" if kr else f"{name} earnings date report"
+        titles = _rss_titles(q, lang="ko" if kr else "en", limit=4)
+        time.sleep(0.5)
+        if titles:
+            corpus.append({"stock": name, "headlines": titles})
+    print(f"  [실적검색] {len(corpus)}/{len(names)}개 종목 헤드라인 수집")
+    if not corpus:
+        return []
+    prompt = (
+        f"오늘은 {TODAY_D.isoformat()} 입니다. 아래는 종목별 최신 뉴스 헤드라인입니다. "
+        "각 종목의 **다음 실적 발표 예정일**이 헤드라인에 명시돼 있으면 추출하세요. "
+        "규칙: 미래 날짜만, 헤드라인에 날짜가 명시된 경우만, 추측 절대 금지. 없으면 그 종목은 생략. "
+        'JSON 배열만: [{"date":"YYYY-MM-DD","stock":"이름","note":"장후 등 부가정보(없으면 빈문자열)"}]\n\n'
+        + json.dumps(corpus, ensure_ascii=False)
+    )
+    try:
+        r = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
+                     "content-type": "application/json"},
+            json={"model": "claude-haiku-4-5", "max_tokens": 2500,
+                  "messages": [{"role": "user", "content": prompt}]},
+            timeout=120,
+        )
+        if r.status_code != 200:
+            print(f"  [실적검색] API HTTP {r.status_code}", file=sys.stderr)
+            return []
+        text = "".join(b.get("text", "") for b in r.json().get("content", []))
+        i, j = text.find("["), text.rfind("]")
+        if i == -1 or j <= i:
+            return []
+        rows = json.loads(text[i:j + 1])
+    except Exception as e:
+        print(f"  [실적검색] 실패(무시): {e}", file=sys.stderr)
+        return []
+    out = []
+    for x in rows:
+        if isinstance(x, dict) and in_horizon(x.get("date", "")) and x.get("stock"):
+            note = f" · {x['note']}" if x.get("note") else ""
+            out.append({"date": x["date"], "type": "earnings",
+                        "title": f"{x['stock']} 실적 발표{note}"})
+    print(f"  [실적검색] {len(out)}건 확정 추출")
+    return out
+
+
 # ───────────────────────── ③ 뉴스 이벤트 (Claude) ─────────────────────────
 def extract_news_events():
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
@@ -174,6 +278,7 @@ def main():
     events = []
     events += load_fixed()
     events += fetch_earnings(watch)
+    events += fetch_earnings_via_news()
     events += extract_news_events()
 
     # 중복 제거 (date+title 유사) 후 날짜순
