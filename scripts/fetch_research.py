@@ -87,6 +87,11 @@ def parse_rss(xml_text, limit=PER_STOCK):
         if source and title.endswith(" - " + source):
             title = title[: -(len(source) + 3)].strip()
         title = html_mod.unescape(title)
+        # 깨진 소스 필터: 템플릿 변수 노출(META_TITLE_QUOTE 등)·플레이스홀더·너무 짧은 제목
+        if (re.fullmatch(r"[A-Z0-9_\-]{6,}", title)
+                or "{{" in title or "}}" in title
+                or len(title) < 12):
+            continue
         dt = None
         try:
             dt = datetime.strptime(pub, "%a, %d %b %Y %H:%M:%S %Z").replace(tzinfo=timezone.utc)
