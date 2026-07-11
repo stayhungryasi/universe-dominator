@@ -81,6 +81,44 @@ def load_fixed():
         return []
 
 
+# ──────────────── ①-자동: 미국 경제지표 (BLS 공식 iCal) ────────────────
+BLS_ICS_URL = "https://www.bls.gov/schedule/news_release/bls.ics"
+BLS_WANT = {  # SUMMARY 매칭 키워드 → 한글 표기
+    "Consumer Price Index": "미국 CPI 발표",
+    "Employment Situation": "미국 고용보고서 발표",
+    "Producer Price Index": "미국 PPI 발표",
+}
+
+
+def fetch_bls_ics():
+    """BLS 공식 iCal → CPI·고용·PPI 일정 자동 수집. 실패 시 빈 목록."""
+    try:
+        r = requests.get(BLS_ICS_URL, headers={"User-Agent": UA}, timeout=20)
+        if r.status_code != 200:
+            print(f"  [BLS] HTTP {r.status_code} — 건너뜀", file=sys.stderr)
+            return []
+        text = r.text
+    except Exception as e:
+        print(f"  [BLS] 실패: {e}", file=sys.stderr)
+        return []
+    out = []
+    for block in text.split("BEGIN:VEVENT")[1:]:
+        m_dt = re.search(r"DTSTART[^:]*:(\d{8})", block)
+        m_sm = re.search(r"SUMMARY[^:]*:(.+)", block)
+        if not m_dt or not m_sm:
+            continue
+        raw = m_dt.group(1)
+        dstr = f"{raw[:4]}-{raw[4:6]}-{raw[6:8]}"
+        summary = m_sm.group(1).strip()
+        for key, label in BLS_WANT.items():
+            if key.lower() in summary.lower() and in_horizon(dstr):
+                out.append({"date": dstr, "type": "macro",
+                            "title": f"{label} — 밤 9:30 KST (BLS)"})
+                break
+    print(f"  [BLS] 공식 캘린더에서 {len(out)}건 (CPI·고용·PPI)")
+    return out
+
+
 # ───────────────────────── ② 실적발표 (Finnhub) ─────────────────────────
 def fetch_earnings(watch):
     key = os.environ.get("FINNHUB_API_KEY", "").strip()
@@ -89,29 +127,29 @@ def fetch_earnings(watch):
         return []
     frm = TODAY_D.strftime("%Y-%m-%d")
     to = (TODAY_D + timedelta(days=HORIZON_DAYS)).strftime("%Y-%m-%d")
-    url = f"https://finnhub.io/api/v1/calendar/earnings?from={frm}&to={to}&token={key}"
-    try:
-        r = requests.get(url, headers={"User-Agent": UA}, timeout=30)
-        if r.status_code != 200:
-            print(f"  [실적] HTTP {r.status_code} — 건너뜀", file=sys.stderr)
-            return []
-        rows = r.json().get("earningsCalendar", [])
-    except Exception as e:
-        print(f"  [실적] 실패: {e}", file=sys.stderr)
-        return []
-    out, seen = [], set()
-    for x in rows:
-        sym = (x.get("symbol") or "").upper()
-        dstr = x.get("date") or ""
-        if sym in watch and in_horizon(dstr) and (sym, dstr) not in seen:
-            seen.add((sym, dstr))
-            hour = {"bmo": "장전", "amc": "장후", "dmh": "장중"}.get(x.get("hour", ""), "")
-            out.append({
-                "date": dstr, "type": "earnings",
-                "title": f"{watch[sym]} ({sym}) 실적 발표" + (f" · {hour}" if hour else ""),
-                "ticker": sym,
-            })
-    print(f"  [실적] 관심종목 {len(out)}건 / 전체 {len(rows)}건")
+    out, seen, fail = [], set(), 0
+    for sym, name in watch.items():   # 종목별 조회 — 무료 플랜에서 더 안정적
+        url = (f"https://finnhub.io/api/v1/calendar/earnings"
+               f"?from={frm}&to={to}&symbol={sym}&token={key}")
+        try:
+            r = requests.get(url, headers={"User-Agent": UA}, timeout=15)
+            time.sleep(1.1)   # 무료 60 call/min 준수
+            if r.status_code != 200:
+                fail += 1
+                continue
+            rows = r.json().get("earningsCalendar", [])
+        except Exception:
+            fail += 1
+            continue
+        for x in rows:
+            dstr = x.get("date") or ""
+            if in_horizon(dstr) and (sym, dstr) not in seen:
+                seen.add((sym, dstr))
+                hour = {"bmo": "장전", "amc": "장후", "dmh": "장중"}.get(x.get("hour", ""), "")
+                out.append({"date": dstr, "type": "earnings",
+                            "title": f"{name} ({sym}) 실적 발표" + (f" · {hour}" if hour else ""),
+                            "ticker": sym})
+    print(f"  [실적] 종목별 조회: {len(out)}건 확보 (실패 {fail}/{len(watch)})")
     return out
 
 
@@ -277,6 +315,7 @@ def main():
 
     events = []
     events += load_fixed()
+    events += fetch_bls_ics()
     events += fetch_earnings(watch)
     events += fetch_earnings_via_news()
     events += extract_news_events()
@@ -284,7 +323,9 @@ def main():
     # 중복 제거 (date+title 유사) 후 날짜순
     seen, dedup = set(), []
     for e in events:
-        k = (e["date"], re.sub(r"\s+", "", e["title"])[:40])
+        # 같은 날·같은 유형·첫 단어(종목명) 일치 → 중복 (fixed 와 자동층 병합)
+        first_word = e["title"].split()[0].lower() if e["title"].split() else ""
+        k = (e["date"], e.get("type", ""), first_word)
         if k not in seen:
             seen.add(k)
             dedup.append(e)
