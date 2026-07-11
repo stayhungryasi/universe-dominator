@@ -58,6 +58,12 @@ jobs:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         continue-on-error: true
       
+      # 거인의 어깨 — 투자 거인 13F 포트폴리오 (SEC EDGAR, 키 불필요)
+      # 실패해도 파이프라인 중단 안 됨 → 기존 gurus.json 유지
+      - name: Fetch guru portfolios (13F)
+        run: python scripts/fetch_gurus.py
+        continue-on-error: true
+
       # 토요일(KST)에만 주간 History 자동 생성
       # cron이 23:00 UTC = 다음날 08:00 KST 이므로,
       # 금요일 23:00 UTC 실행분이 토요일 08:00 KST가 됨 → KST 요일로 판정
