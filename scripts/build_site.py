@@ -124,6 +124,8 @@ def build_research():
         rdata = {"generated_label": "", "stocks": []}
     cal_path = DATA_DIR / "calendar.json"
     rdata["calendar"] = json.loads(cal_path.read_text(encoding="utf-8")) if cal_path.exists() else {"events": []}
+    gurus_path = DATA_DIR / "gurus.json"
+    rdata["gurus"] = json.loads(gurus_path.read_text(encoding="utf-8")) if gurus_path.exists() else {"gurus": []}
     template = template_path.read_text(encoding="utf-8")
     # 헤더 배지 값 (placeholder 방식과 동일)
     meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
