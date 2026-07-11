@@ -148,6 +148,27 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .footer-link:hover { color: var(--gold); }
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 
+/* ── 거인의 어깨 ── */
+.guru-block { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 18px; }
+.guru-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 2px; }
+.guru-name { font-size: 17px; font-weight: 800; }
+.guru-person { font-size: 13px; color: var(--gold); font-weight: 700; }
+.guru-tagline { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; }
+.guru-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-variant-numeric: tabular-nums; }
+.guru-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.guru-rank { width: 22px; color: var(--text-muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.guru-issuer { flex: 1; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guru-bar-wrap { flex: 0 0 90px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.guru-bar { height: 100%; background: var(--gold); border-radius: 3px; }
+.guru-pct { width: 48px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; flex-shrink: 0; }
+.guru-chg { width: 52px; text-align: right; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-muted); flex-shrink: 0; }
+.guru-chg.new { color: var(--gold); font-weight: 800; }
+.guru-chg.up { color: #1a9850; }
+.guru-chg.down { color: #d73027; }
+.guru-exits { margin-top: 12px; font-size: 12.5px; color: var(--text-muted); }
+.guru-exits b { color: var(--text-secondary); }
+.guru-note { font-size: 12px; color: var(--text-muted); margin: 4px 0 18px; line-height: 1.6; }
+@media (max-width: 520px) { .guru-bar-wrap { display: none; } .guru-chg { width: 44px; } }
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
 </style>
 </head>
@@ -195,6 +216,7 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
       <button class="group-tab active" data-g="universe" onclick="setGroup('universe', this)">우주지배자</button>
       <button class="group-tab" data-g="latent" onclick="setGroup('latent', this)">잠재지배자</button>
       <button class="group-tab" data-g="calendar" onclick="setGroup('calendar', this)">주요일정</button>
+      <button class="group-tab" data-g="gurus" onclick="setGroup('gurus', this)">거인의 어깨</button>
     </div>
     <div id="list"></div>
   </div>
@@ -281,10 +303,49 @@ function renderCalendar() {
   }).join('');
 }
 
+function renderGurus() {
+  const list = document.getElementById('list');
+  const gs = (DATA.gurus && DATA.gurus.gurus) || [];
+  if (!gs.length) {
+    list.innerHTML = '<div class="no-art">거인 포트폴리오가 아직 수집되지 않았습니다 — 다음 자동 갱신을 기다려 주세요.</div>';
+    return;
+  }
+  const note = '<div class="guru-note">SEC 13F 공시 기준 — 분기 1회 · 최대 45일 지연 공시 · 미국 상장 롱포지션만 포함됩니다. ' +
+    '실제 현재 보유와 다를 수 있으며, 투자 권유가 아닙니다.' +
+    (DATA.gurus.generated_label ? ' <span style="white-space:nowrap">(수집: ' + esc(DATA.gurus.generated_label) + ' KST)</span>' : '') + '</div>';
+  list.innerHTML = note + gs.map(g => {
+    const rows = (g.holdings || []).map((h, i) => {
+      let cls = '', txt = h.chg || '―';
+      if (txt === 'NEW') { cls = 'new'; txt = '신규'; }
+      else if (txt.startsWith('+')) cls = 'up';
+      else if (txt.startsWith('-')) cls = 'down';
+      const bw = Math.min(100, (h.pct / (g.holdings[0].pct || 1)) * 100);
+      return '<div class="guru-row">' +
+        '<span class="guru-rank">' + (i + 1) + '</span>' +
+        '<span class="guru-issuer">' + esc(h.name) + '</span>' +
+        '<span class="guru-bar-wrap"><span class="guru-bar" style="width:' + bw + '%"></span></span>' +
+        '<span class="guru-pct">' + h.pct + '%</span>' +
+        '<span class="guru-chg ' + cls + '">' + esc(txt) + '</span>' +
+      '</div>';
+    }).join('');
+    const exits = (g.exits && g.exits.length)
+      ? '<div class="guru-exits"><b>전량 매도:</b> ' + g.exits.map(esc).join(' · ') + '</div>' : '';
+    return '<div class="guru-block">' +
+      '<div class="guru-head"><span class="guru-name">' + esc(g.name_ko) + '</span>' +
+      '<span class="guru-person">' + esc(g.person) + '</span></div>' +
+      '<div class="guru-tagline">' + esc(g.tagline) + '</div>' +
+      '<div class="guru-meta">' + esc(g.period_label) + ' 보고 (공시 ' + esc(g.filed) + ') · 운용 $' +
+        Number(g.total_b).toLocaleString() + 'B · ' + g.positions + '종목 중 TOP ' + (g.holdings || []).length +
+        ' · 지분 증감은 전분기 대비</div>' +
+      rows + exits +
+    '</div>';
+  }).join('');
+}
+
 function setGroup(g, btn) {
   document.querySelectorAll('.group-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (g === 'calendar') renderCalendar(); else render(g);
+  if (g === 'calendar') renderCalendar(); else if (g === 'gurus') renderGurus(); else render(g);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
