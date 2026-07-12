@@ -20,6 +20,8 @@
 import json
 import sys
 import time
+import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
@@ -32,20 +34,40 @@ OUT_PATH = DATA_DIR / "gurus.json"
 
 KST = timezone(timedelta(hours=9))
 # SEC는 User-Agent 없는 요청을 차단함 — 연락 가능한 형태 필수
-UA = "UNIVERTRIX market-cap dashboard (univertrix.com; contact via t.me/stayhungryasi)"
+UA = "UNIVERTRIX univertrix.com contact@univertrix.com"
 SLEEP = 0.5  # SEC 권고: 초당 10회 이하 — 넉넉하게
 
 
+def _get(url, timeout):
+    """SEC 요청 공통: 403/429/5xx·일시 오류 시 3회 재시도 (5s→15s→30s)"""
+    last = None
+    for i, wait in enumerate([0, 5, 15, 30]):
+        if wait:
+            print(f"    재시도 {i}/3 ({wait}s 대기) ← {last}", file=sys.stderr)
+            time.sleep(wait)
+        try:
+            req = urllib.request.Request(url, headers={
+                "User-Agent": UA,
+                "Accept-Encoding": "identity",
+                "Host": urllib.parse.urlparse(url).netloc,
+            })
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            last = f"HTTP {e.code} {e.reason}"
+            if e.code not in (403, 429, 500, 502, 503, 504):
+                break  # 404 등은 재시도 무의미
+        except Exception as e:
+            last = f"{type(e).__name__}: {e}"
+    raise RuntimeError(f"{last} — {url}")
+
+
 def http_json(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Encoding": "identity"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))
+    return json.loads(_get(url, 30).decode("utf-8"))
 
 
 def http_text(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Encoding": "identity"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return r.read().decode("utf-8", errors="replace")
+    return _get(url, 90).decode("utf-8", errors="replace")
 
 
 def localname(tag):
