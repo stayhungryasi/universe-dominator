@@ -158,6 +158,11 @@ def fetch_guru(cfg, top_n):
     time.sleep(SLEEP)
     entity_name = sub.get("name", "?")
 
+    # 안전장치: CIK가 가리키는 SEC 실명이 예상과 다르면 수집 거부 (엉뚱한 펀드 오표시 방지)
+    expect = cfg.get("match", "").upper()
+    if expect and expect not in entity_name.upper():
+        raise RuntimeError(f"CIK 불일치 — SEC 실명 '{entity_name}' ≠ 예상 '{expect}'")
+
     recent = sub.get("filings", {}).get("recent", {})
     forms = recent.get("form", [])
     accs = recent.get("accessionNumber", [])
