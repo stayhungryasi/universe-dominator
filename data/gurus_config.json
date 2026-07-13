@@ -1,48 +1,33 @@
 {
-  "_설명": "거인의 어깨 — SEC EDGAR 13F 자동 수집 대상. cik만 정확하면 나머지는 자동. 거인 추가 = 여기 한 블록 추가. top_n = 보여줄 상위 보유종목 수.",
+  "_설명": "거인의 어깨 — SEC EDGAR 13F 자동 수집 대상. 거인 추가 = 블록 하나 추가 (cik + match 필수). match = SEC 등록 실명에 반드시 포함될 키워드 — 다르면 수집 거부(오표시 방지). 표시 순서 = 이 배열 순서.",
   "top_n": 15,
   "gurus": [
-    {
-      "cik": "1067983",
-      "name_ko": "버크셔 해서웨이",
-      "person": "워런 버핏",
-      "tagline": "가치투자의 제왕 — 영원한 복리 기계"
-    },
-    {
-      "cik": "1037389",
-      "name_ko": "르네상스 테크놀로지",
-      "person": "짐 시몬스 (설립)",
-      "tagline": "수학이 시장을 이긴다 — 퀀트의 정점"
-    },
-    {
-      "cik": "1088875",
-      "name_ko": "베일리 기포드",
-      "person": "스코틀랜드의 장기 성장주 명가",
-      "tagline": "10년 뒤 세상을 바꿀 기업에만 투자"
-    },
-    {
-      "cik": "949509",
-      "name_ko": "오크트리 캐피털",
-      "person": "하워드 막스",
-      "tagline": "시장 사이클과 위험의 대가"
-    },
-    {
-      "cik": "1649339",
-      "name_ko": "사이언 자산운용",
-      "person": "마이클 버리",
-      "tagline": "빅쇼트 — 역발상의 화신"
-    },
-    {
-      "cik": "1350694",
-      "name_ko": "브리지워터",
-      "person": "레이 달리오 (설립)",
-      "tagline": "세계 최대 헤지펀드 — 올웨더의 창시"
-    },
-    {
-      "cik": "1336528",
-      "name_ko": "퍼싱 스퀘어",
-      "person": "빌 애크먼",
-      "tagline": "집중투자 행동주의의 아이콘"
-    }
+    { "cik": "1067983", "match": "BERKSHIRE", "name_ko": "버크셔 해서웨이", "person": "워런 버핏", "tagline": "가치투자의 제왕 — 영원한 복리 기계" },
+    { "cik": "1037389", "match": "RENAISSANCE", "name_ko": "르네상스 테크놀로지", "person": "짐 시몬스 (설립)", "tagline": "수학이 시장을 이긴다 — 퀀트의 정점" },
+    { "cik": "1536411", "match": "DUQUESNE", "name_ko": "듀케인 패밀리 오피스", "person": "스탠리 드러켄밀러", "tagline": "45년 무손실 연도의 전설 — 매크로의 거장" },
+    { "cik": "1088875", "match": "BAILLIE", "name_ko": "베일리 기포드", "person": "스코틀랜드 장기 성장주 명가", "tagline": "10년 뒤 세상을 바꿀 기업에만 투자" },
+    { "cik": "949509", "match": "OAKTREE", "name_ko": "오크트리 캐피털", "person": "하워드 막스", "tagline": "시장 사이클과 위험의 대가" },
+    { "cik": "1350694", "match": "BRIDGEWATER", "name_ko": "브리지워터", "person": "레이 달리오 (설립)", "tagline": "세계 최대 헤지펀드 — 올웨더의 창시" },
+    { "cik": "1336528", "match": "PERSHING", "name_ko": "퍼싱 스퀘어", "person": "빌 애크먼", "tagline": "집중투자 행동주의의 아이콘" },
+    { "cik": "1656456", "match": "APPALOOSA", "name_ko": "아팔루사", "person": "데이비드 테퍼", "tagline": "위기에서 사는 남자 — 역발상 매크로" },
+    { "cik": "1029160", "match": "SOROS", "name_ko": "소로스 펀드", "person": "조지 소로스", "tagline": "영란은행을 무너뜨린 반사성 이론" },
+    { "cik": "921669", "match": "ICAHN", "name_ko": "칼 아이칸", "person": "행동주의의 원조", "tagline": "월가가 가장 두려워한 이름" },
+    { "cik": "1791786", "match": "ELLIOTT", "name_ko": "엘리엇", "person": "폴 싱어", "tagline": "국가와도 싸우는 행동주의 제국" },
+    { "cik": "1040273", "match": "THIRD POINT", "name_ko": "서드 포인트", "person": "댄 러브", "tagline": "날카로운 주주서한의 행동주의자" },
+    { "cik": "1079114", "match": "GREENLIGHT", "name_ko": "그린라이트 캐피털", "person": "데이비드 아인혼", "tagline": "리먼 붕괴를 예언한 공매도 명가" },
+    { "cik": "1649339", "match": "SCION", "name_ko": "사이언 자산운용", "person": "마이클 버리", "tagline": "빅쇼트 — 역발상의 화신" },
+    { "cik": "1423053", "match": "CITADEL", "name_ko": "시타델", "person": "켄 그리핀", "tagline": "역사상 가장 많이 번 헤지펀드" },
+    { "cik": "1273087", "match": "MILLENNIUM", "name_ko": "밀레니엄", "person": "이지 잉글랜더", "tagline": "멀티매니저 팟 시스템의 완성형" },
+    { "cik": "1009207", "match": "SHAW", "name_ko": "D.E. 쇼", "person": "데이비드 쇼 (설립)", "tagline": "계산과학이 만든 퀀트 명가" },
+    { "cik": "1179392", "match": "TWO SIGMA", "name_ko": "투시그마", "person": "데이터 사이언스 헤지펀드", "tagline": "머신러닝으로 시장을 읽다" },
+    { "cik": "1603466", "match": "POINT72", "name_ko": "포인트72", "person": "스티브 코헨", "tagline": "전설의 트레이더가 세운 멀티전략" },
+    { "cik": "1167483", "match": "TIGER GLOBAL", "name_ko": "타이거 글로벌", "person": "체이스 콜먼", "tagline": "타이거 컵스의 대표주자 — 테크 성장주" },
+    { "cik": "1135730", "match": "COATUE", "name_ko": "코아추", "person": "필리프 라퐁", "tagline": "기술주 크로스오버 투자의 강자" },
+    { "cik": "1061165", "match": "LONE PINE", "name_ko": "론 파인", "person": "스티븐 만델 (설립)", "tagline": "타이거 컵스 — 펀더멘털 성장주 장인" },
+    { "cik": "1103804", "match": "VIKING", "name_ko": "바이킹 글로벌", "person": "안드레아스 할보르센", "tagline": "타이거 컵스 — 롱숏의 교과서" },
+    { "cik": "1647251", "match": "TCI", "name_ko": "TCI 펀드", "person": "크리스 혼", "tagline": "초집중 포트폴리오의 유럽 거인" },
+    { "cik": "1697748", "match": "ARK INVESTMENT", "name_ko": "아크 인베스트", "person": "캐시 우드", "tagline": "파괴적 혁신에 올인하는 낙관주의" },
+    { "cik": "1541617", "match": "ALTIMETER", "name_ko": "알티미터", "person": "브래드 거스트너", "tagline": "실리콘밸리와 가장 가까운 투자자" },
+    { "cik": "850529", "match": "FISHER", "name_ko": "피셔 인베스트먼트", "person": "켄 피셔", "tagline": "슈퍼 스톡스 — 초대형 자산운용" }
   ]
 }
