@@ -149,11 +149,18 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 
 /* ── 거인의 어깨 ── */
-.guru-block { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 18px; }
+.guru-block { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 12px; cursor: pointer; transition: border-color 0.15s; }
+.guru-block:hover { border-color: var(--gold); }
+.guru-block.open { cursor: default; padding-bottom: 20px; }
 .guru-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 2px; }
 .guru-name { font-size: 17px; font-weight: 800; }
 .guru-person { font-size: 13px; color: var(--gold); font-weight: 700; }
-.guru-tagline { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; }
+.guru-toggle { margin-left: auto; font-size: 12px; color: var(--text-muted); transition: transform 0.2s; }
+.guru-block.open .guru-toggle { transform: rotate(180deg); }
+.guru-tagline { font-size: 12.5px; color: var(--text-muted); }
+.guru-body { display: none; }
+.guru-block.open .guru-body { display: block; }
+.guru-block.open .guru-tagline { margin-bottom: 10px; }
 .guru-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-variant-numeric: tabular-nums; }
 .guru-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
 .guru-rank { width: 22px; color: var(--text-muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
@@ -313,7 +320,7 @@ function renderGurus() {
   const note = '<div class="guru-note">SEC 13F 공시 기준 — 분기 1회 · 최대 45일 지연 공시 · 미국 상장 롱포지션만 포함됩니다. ' +
     '실제 현재 보유와 다를 수 있으며, 투자 권유가 아닙니다.' +
     (DATA.gurus.generated_label ? ' <span style="white-space:nowrap">(수집: ' + esc(DATA.gurus.generated_label) + ' KST)</span>' : '') + '</div>';
-  list.innerHTML = note + gs.map(g => {
+  list.innerHTML = note + gs.map((g, gi) => {
     const rows = (g.holdings || []).map((h, i) => {
       let cls = '', txt = h.chg || '―';
       if (txt === 'NEW') { cls = 'new'; txt = '신규'; }
@@ -330,16 +337,26 @@ function renderGurus() {
     }).join('');
     const exits = (g.exits && g.exits.length)
       ? '<div class="guru-exits"><b>전량 매도:</b> ' + g.exits.map(esc).join(' · ') + '</div>' : '';
-    return '<div class="guru-block">' +
+    return '<div class="guru-block" id="guru-' + gi + '" onclick="toggleGuru(' + gi + ')">' +
       '<div class="guru-head"><span class="guru-name">' + esc(g.name_ko) + '</span>' +
-      '<span class="guru-person">' + esc(g.person) + '</span></div>' +
+      '<span class="guru-person">' + esc(g.person) + '</span>' +
+      '<span class="guru-toggle">▼</span></div>' +
       '<div class="guru-tagline">' + esc(g.tagline) + '</div>' +
-      '<div class="guru-meta">' + esc(g.period_label) + ' 보고 (공시 ' + esc(g.filed) + ') · 운용 $' +
-        Number(g.total_b).toLocaleString() + 'B · ' + g.positions + '종목 중 TOP ' + (g.holdings || []).length +
-        ' · 지분 증감은 전분기 대비</div>' +
-      rows + exits +
+      '<div class="guru-body">' +
+        '<div class="guru-meta">' + esc(g.period_label) + ' 보고 (공시 ' + esc(g.filed) + ') · 운용 $' +
+          Number(g.total_b).toLocaleString() + 'B · ' + g.positions + '종목 중 TOP ' + (g.holdings || []).length +
+          ' · 지분 증감은 전분기 대비</div>' +
+        rows + exits +
+      '</div>' +
     '</div>';
   }).join('');
+}
+
+function toggleGuru(gi) {
+  const el = document.getElementById('guru-' + gi);
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.guru-block.open').forEach(b => b.classList.remove('open'));
+  if (!wasOpen) { el.classList.add('open'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
 }
 
 function setGroup(g, btn) {
