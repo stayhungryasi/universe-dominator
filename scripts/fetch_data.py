@@ -119,14 +119,24 @@ def clean_name(name, ticker):
         return name
     
     # "NVIDIANVDA" → "NVIDIA", "Samsung005930.KS" → "Samsung"
+    # 주의 ①: 회사명 자체가 티커와 같은 기업(AMD, ASML, SAP, HSBC 등)은
+    #   제거 결과가 빈 문자열 → 종목이 통째로 탈락하는 사고가 있었음(2026-07 AMD 누락).
+    #   제거 후가 비면 원래 이름을 유지한다.
+    # 주의 ②: 한 글자 티커(T, V, F 등)는 이름 끝 글자를 오려낼 위험("AT&T"→"AT&")
+    #   → 두 글자 이상 티커만 제거 대상.
     ticker_str = ticker.strip()
-    if name.endswith(ticker_str):
-        name = name[:-len(ticker_str)].strip()
+    if len(ticker_str) >= 2 and name.endswith(ticker_str):
+        stripped = name[:-len(ticker_str)].strip()
+        if stripped:
+            name = stripped
     
     # 점 없는 변형 ("AppleAAPL" → "Apple")
     ticker_base = ticker_str.split(".")[0]
-    if ticker_base and ticker_base != ticker_str and name.endswith(ticker_base):
-        name = name[:-len(ticker_base)].strip()
+    if (len(ticker_base) >= 2 and ticker_base != ticker_str
+            and name.endswith(ticker_base)):
+        stripped = name[:-len(ticker_base)].strip()
+        if stripped:
+            name = stripped
     
     return name
 
