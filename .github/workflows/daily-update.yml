@@ -30,9 +30,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
+      # 자가진단 — 핵심 로직 회귀 테스트. 실패 시 수집 중단 (오염 방지, 2026-07 AMD 사고 이후)
+      - name: Selftest (core logic regression)
+        run: python scripts/selftest.py
+        continue-on-error: false
+
       - name: Fetch latest market cap data (+ daily snapshot)
         run: python scripts/fetch_data.py
         continue-on-error: false
+
+      # 데이터 무결성 검증 — 종목 수·중복·정렬·전일 대비 실종 감시 → quality_report.json
+      - name: Validate data integrity
+        run: python scripts/validate_data.py
+        continue-on-error: true
       
       # 잠재지배자 후보 자동 생성 (완전 자동)
       # ⚠️ 첫 출시: --preview = 사이트 미반영, data/latent_auto_preview.json 만 생성.
