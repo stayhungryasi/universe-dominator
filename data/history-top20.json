@@ -3,6 +3,52 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.07.18",
+      "period": "7.11 → 7.18 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>AMD</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $808B</span>)",
+            "<strong>Johnson & Johnson</strong> TOP 20 이탈",
+            "<strong>SpaceX</strong> <span class='em-down'>7위 → 10위 하락</span>",
+            "[미국] <strong>AMD</strong> TOP 20 신규 진입 (<span class='em-up'>15위, $808B</span>)",
+            "[미국] <strong>Mastercard</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $480B</span>)",
+            "[미국] <strong>Applied Materials</strong> TOP 20 이탈",
+            "[미국] <strong>Cisco</strong> TOP 20 이탈",
+            "[유럽] <strong>ASML</strong> TOP 20 신규 진입 (<span class='em-up'>1위, $671B</span>)",
+            "[유럽] <strong>HSBC</strong> TOP 20 신규 진입 (<span class='em-up'>2위, $345B</span>)",
+            "[유럽] <strong>SAP</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $187B</span>)",
+            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
+            "[유럽] <strong>ABB</strong> TOP 20 이탈",
+            "[유럽] <strong>Airbus</strong> TOP 20 이탈",
+            "[중국] <strong>Zijin Mining</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $111B</span>)",
+            "[중국] <strong>Cambricon Technologies</strong> TOP 20 이탈",
+            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $17B</span>)",
+            "[홍콩] <strong>Swire Properties</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $16B</span>)",
+            "[홍콩] <strong>Power Assets</strong> TOP 20 이탈",
+            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,485 (07/18 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.49"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.07.11",
       "period": "7.4 → 7.11 (주간)",
       "auto": true,
