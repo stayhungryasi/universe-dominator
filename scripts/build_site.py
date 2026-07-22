@@ -87,7 +87,6 @@ def build_megatrend():
 
 
 PLACEHOLDERS = [
-    {"filename":"community.html",   "title":"커뮤니티", "desc":"구독자 토론, Q&A, 종목 공유 공간.",                       "icon":"💬", "active":"community"},
     {"filename":"my-universe.html", "title":"나의우주", "desc":"관심 종목 핀, 보유 종목 트래킹, 개인화 대시보드.",          "icon":"👤", "active":"my"},
 ]
 
@@ -140,6 +139,26 @@ def build_research():
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "RESEARCH" else "")
     out = HERE / "research.html"
+    out.write_text(html, encoding="utf-8")
+    print(f"[OK] {out.name} ({len(html):,} chars)")
+
+
+def build_community():
+    """community.html — 커뮤니티 (Firebase 교신 피드)"""
+    template_path = SCRIPTS_DIR / "community-template.html"
+    if not template_path.exists():
+        print("[skip] community-template.html 없음"); return
+    template = template_path.read_text(encoding="utf-8")
+    meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    usd_krw_str = f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—"
+    html = template
+    html = html.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}", usd_krw_str)
+    for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
+        html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "COMMUNITY" else "")
+    out = HERE / "community.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -229,6 +248,70 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>"""
 
 
+# ── 실시간 접속자 카운터 (Firebase 프레즌스) ──
+# 방문자마다 익명 하트비트를 남기고, 최근 2분 내 신호 수를 푸터에 표시.
+# firebase_config.json이 비어 있으면 아무것도 표시하지 않는다 (우아한 대기).
+PRESENCE_SNIPPET = """<!-- uv-presence -->
+<script type="module">
+(async () => {
+  try {
+    const cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json();
+    if (!cfg || !cfg.apiKey) return;
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const db = getFirestore(initializeApp(cfg, 'presence'));
+
+    let pid = localStorage.getItem('uv_pid');
+    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
+
+    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
+    const count = async () => {
+      try {
+        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
+        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
+        const n = snap.data().count;
+        if (n > 0) {
+          let el = document.getElementById('uvPresence');
+          if (!el) {
+            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
+            if (!ft) return;
+            el = document.createElement('div');
+            el.id = 'uvPresence';
+            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
+            ft.appendChild(el);
+          }
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">\u2726</span> 지금 ' + n + '\uba85\uc774 \uc6b0\uc8fc\ub97c \uad00\uce21 \uc911';
+        }
+      } catch (e) {}
+    };
+    await beat(); await count();
+    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
+    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
+  } catch (e) {}
+})();
+</script>"""
+
+
+def inject_presence():
+    """전 페이지 </body> 직전에 접속자 카운터 스니펫 주입 (멱등)"""
+    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
+             "community.html", "my-universe.html", "history-top20.html",
+             "history-latent.html", "about.html"]
+    n = 0
+    for name in pages:
+        f = HERE / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        if "uv-presence" in html or "</body>" not in html:
+            continue
+        html = html.replace("</body>", PRESENCE_SNIPPET + "\n</body>", 1)
+        f.write_text(html, encoding="utf-8")
+        n += 1
+    print(f"[OK] 접속자 카운터 주입: {n}개 페이지")
+
+
 def inject_header_fix():
     """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
@@ -265,11 +348,13 @@ def main():
     build_latent()
     build_megatrend()
     build_placeholders()
+    build_community()
     build_research()
     build_about()
     build_history("top20",  "home",   "history-top20.html")
     build_history("latent", "latent", "history-latent.html")
     inject_header_fix()
+    inject_presence()
     print("=" * 50)
     print("빌드 완료")
 
