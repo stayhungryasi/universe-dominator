@@ -218,5 +218,45 @@ function toggleTheme() {
   localStorage.setItem('ud-theme', next);
 }
 </script>
+<!-- uv-presence -->
+<script type="module">
+(async () => {
+  try {
+    const cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json();
+    if (!cfg || !cfg.apiKey) return;
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const db = getFirestore(initializeApp(cfg, 'presence'));
+
+    let pid = localStorage.getItem('uv_pid');
+    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
+
+    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
+    const count = async () => {
+      try {
+        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
+        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
+        const n = snap.data().count;
+        if (n > 0) {
+          let el = document.getElementById('uvPresence');
+          if (!el) {
+            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
+            if (!ft) return;
+            el = document.createElement('div');
+            el.id = 'uvPresence';
+            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
+            ft.appendChild(el);
+          }
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> 지금 ' + n + '명이 우주를 관측 중';
+        }
+      } catch (e) {}
+    };
+    await beat(); await count();
+    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
+    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

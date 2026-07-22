@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>커뮤니티 · 우주지배자</title>
+<title>커뮤니티 · UNIVERTRIX</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -114,6 +114,49 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
+
+/* ── 커뮤니티 (관제센터) ── */
+.comm-hero { padding: 36px 0 6px; }
+.comm-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: var(--gold); }
+.comm-title { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 6px; }
+.comm-desc { font-size: 14.5px; color: var(--text-secondary); }
+.auth-bar { display: flex; align-items: center; gap: 10px; margin: 18px 0 14px; flex-wrap: wrap; }
+.btn { border: none; cursor: pointer; font-family: inherit; font-weight: 700; border-radius: 10px; transition: opacity 0.15s; }
+.btn:hover { opacity: 0.85; }
+.btn-gold { background: var(--gold); color: #fff; padding: 10px 18px; font-size: 14px; }
+.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--line); padding: 8px 14px; font-size: 13px; }
+.me { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold-bg); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; overflow: hidden; flex-shrink: 0; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.composer { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
+.composer textarea { width: 100%; border: none; background: transparent; resize: vertical; min-height: 74px; font-family: inherit; font-size: 14.5px; color: var(--text); outline: none; line-height: 1.6; }
+.composer-foot { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.composer input { flex: 1; min-width: 160px; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 8px 10px; font-family: inherit; font-size: 13px; color: var(--text); outline: none; }
+.char-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.char-count.over { color: #d73027; font-weight: 800; }
+.sort-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.sort-tab { padding: 8px 16px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 13px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.sort-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.post { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; }
+.post-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.post-name { font-weight: 800; font-size: 14px; }
+.post-time { font-size: 12px; color: var(--text-muted); }
+.post-del { margin-left: auto; background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; font-family: inherit; }
+.post-del:hover { color: #d73027; }
+.post-text { font-size: 14.5px; white-space: pre-wrap; word-break: break-word; }
+.post-tags { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+.tag-chip { font-size: 12px; font-weight: 700; color: var(--gold); background: var(--gold-bg); border-radius: 100px; padding: 3px 10px; }
+.post-foot { display: flex; gap: 14px; margin-top: 10px; align-items: center; }
+.act { background: none; border: none; cursor: pointer; font-family: inherit; font-size: 13px; color: var(--text-muted); font-weight: 700; display: inline-flex; gap: 5px; align-items: center; }
+.act.on { color: var(--gold); }
+.comments { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+.comment { display: flex; gap: 8px; padding: 6px 0; font-size: 13.5px; }
+.comment .avatar { width: 26px; height: 26px; font-size: 11px; }
+.comment-body b { font-size: 13px; margin-right: 6px; }
+.comment-form { display: flex; gap: 8px; margin-top: 8px; }
+.comment-form input { flex: 1; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 8px 10px; font-family: inherit; font-size: 13px; color: var(--text); outline: none; }
+.comm-note { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
+.comm-guide { font-size: 12px; color: var(--text-muted); margin: 0 0 16px; }
 </style>
 <style>
 /* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
@@ -187,15 +230,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <main>
   <div class="container">
-    <div class="placeholder-card">
-      <div class="placeholder-icon">💬</div>
-      <div class="placeholder-eyebrow">Coming Soon</div>
-      <h1 class="placeholder-title">커뮤니티</h1>
-      <p class="placeholder-desc">구독자 토론, Q&A, 종목 공유 공간.</p>
-      <p class="placeholder-note">곧 만나뵙겠습니다 — 텔레그램 채널에서 먼저 소식을 받아보세요.</p>
+    <div class="comm-hero">
+      <div class="comm-eyebrow">COMMUNITY</div>
+      <h1 class="comm-title">커뮤니티</h1>
+      <p class="comm-desc">우주를 지켜보는 사람들의 교신 — 오늘의 관측과 생각을 자유롭게 남겨 주세요.</p>
     </div>
+    <div class="auth-bar" id="authBar"></div>
+    <div id="composerWrap"></div>
+    <div class="sort-tabs" id="sortTabs" style="display:none">
+      <button class="sort-tab active" data-s="new" onclick="setSort('new',this)">최신</button>
+      <button class="sort-tab" data-s="gravity" onclick="setSort('gravity',this)">중력순 ✦</button>
+    </div>
+    <div id="feed"><div class="comm-note">관제센터 개설 준비 중입니다 — 곧 교신이 시작됩니다.</div></div>
   </div>
 </main>
+
 
 <footer class="site-footer">
   <div class="container">
@@ -217,6 +266,185 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('ud-theme', next);
 }
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, setDoc, deleteDoc, doc, query, orderBy, limit, serverTimestamp, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = id => document.getElementById(id);
+let app, auth, db, me = null, posts = [], sortMode = 'new';
+
+function rel(ts){ if(!ts) return '방금'; const s=(Date.now()-ts.toDate().getTime())/1000;
+  if(s<60) return '방금'; if(s<3600) return Math.floor(s/60)+'분 전'; if(s<86400) return Math.floor(s/3600)+'시간 전';
+  if(s<604800) return Math.floor(s/86400)+'일 전'; const d=ts.toDate(); return (d.getMonth()+1)+'/'+d.getDate(); }
+function avatarHtml(name, photo){ return photo ? '<span class="avatar"><img src="'+esc(photo)+'" alt="" referrerpolicy="no-referrer"></span>'
+  : '<span class="avatar">'+esc((name||'?').charAt(0))+'</span>'; }
+
+function renderAuth(){
+  const bar = $('authBar'), cw = $('composerWrap');
+  if(me){
+    bar.innerHTML = '<span class="me">'+avatarHtml(me.displayName, me.photoURL)+esc(me.displayName||'우주인')+'</span>'+
+      '<button class="btn btn-ghost" id="btnOut">로그아웃</button>';
+    $('btnOut').onclick = () => signOut(auth);
+    cw.innerHTML = '<div class="composer"><textarea id="txt" maxlength="600" placeholder="오늘의 관측을 남겨 주세요 (최대 500자)"></textarea>'+
+      '<div class="composer-foot"><input id="tags" maxlength="60" placeholder="종목 태그 (선택 · 쉼표로 최대 3개, 예: 엔비디아, SK하이닉스)">'+
+      '<span class="char-count" id="cc">0/500</span><button class="btn btn-gold" id="btnSend">교신 보내기</button></div></div>';
+    $('txt').addEventListener('input', ()=>{ const n=$('txt').value.length; $('cc').textContent=n+'/500'; $('cc').className='char-count'+(n>500?' over':''); });
+    $('btnSend').onclick = sendPost;
+  } else {
+    bar.innerHTML = '<button class="btn btn-gold" id="btnIn">구글로 시작하기</button>'+
+      '<span class="comm-guide">로그인하면 누구나 자유롭게 글을 남길 수 있습니다.</span>';
+    $('btnIn').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e=>alert('로그인 실패: '+e.message));
+    cw.innerHTML = '';
+  }
+}
+
+async function sendPost(){
+  const text = $('txt').value.trim();
+  if(!text) return; if(text.length>500){ alert('500자를 넘었습니다.'); return; }
+  const tags = $('tags').value.split(',').map(t=>t.trim()).filter(Boolean).slice(0,3);
+  $('btnSend').disabled = true;
+  try{
+    await addDoc(collection(db,'posts'), { uid: me.uid, name: me.displayName||'우주인', photo: me.photoURL||'', text, tags, created: serverTimestamp() });
+    $('txt').value=''; $('tags').value=''; $('cc').textContent='0/500';
+    await loadFeed();
+  }catch(e){ alert('전송 실패: '+e.message); }
+  $('btnSend').disabled = false;
+}
+
+async function loadFeed(){
+  const snap = await getDocs(query(collection(db,'posts'), orderBy('created','desc'), limit(50)));
+  posts = [];
+  for(const d of snap.docs){
+    const p = { id: d.id, ...d.data(), stars: 0, comments: 0, mine: false };
+    try{
+      const [sc, cc] = await Promise.all([
+        getCountFromServer(collection(db,'posts',d.id,'stars')),
+        getCountFromServer(collection(db,'posts',d.id,'comments'))]);
+      p.stars = sc.data().count; p.comments = cc.data().count;
+      if(me){ p.mine = (await getDoc(doc(db,'posts',d.id,'stars',me.uid))).exists(); }
+    }catch(e){}
+    posts.push(p);
+  }
+  $('sortTabs').style.display = 'flex';
+  renderFeed();
+}
+
+function renderFeed(){
+  const list = [...posts];
+  if(sortMode==='gravity') list.sort((a,b)=> b.stars-a.stars || (b.created?.seconds||0)-(a.created?.seconds||0));
+  $('feed').innerHTML = list.length ? list.map(p =>
+    '<div class="post" id="p-'+p.id+'">'+
+      '<div class="post-head">'+avatarHtml(p.name,p.photo)+'<span class="post-name">'+esc(p.name)+'</span>'+
+      '<span class="post-time">'+rel(p.created)+'</span>'+
+      (me && me.uid===p.uid ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
+      '<div class="post-text">'+esc(p.text)+'</div>'+
+      (p.tags && p.tags.length ? '<div class="post-tags">'+p.tags.map(t=>'<span class="tag-chip">'+esc(t)+'</span>').join('')+'</div>' : '')+
+      '<div class="post-foot">'+
+        '<button class="act'+(p.mine?' on':'')+'" data-star="'+p.id+'">✦ 중력 '+p.stars+'</button>'+
+        '<button class="act" data-cmt="'+p.id+'">💬 '+p.comments+'</button>'+
+      '</div><div class="comments" id="c-'+p.id+'" style="display:none"></div></div>'
+  ).join('') : '<div class="comm-note">아직 교신이 없습니다 — 첫 기록을 남겨 주세요.</div>';
+  $('feed').querySelectorAll('[data-star]').forEach(b=> b.onclick = ()=>toggleStar(b.dataset.star));
+  $('feed').querySelectorAll('[data-cmt]').forEach(b=> b.onclick = ()=>toggleComments(b.dataset.cmt));
+  $('feed').querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>delPost(b.dataset.del));
+}
+
+async function toggleStar(id){
+  if(!me){ alert('로그인 후 이용할 수 있습니다.'); return; }
+  const p = posts.find(x=>x.id===id); if(!p) return;
+  const ref = doc(db,'posts',id,'stars',me.uid);
+  try{
+    if(p.mine){ await deleteDoc(ref); p.mine=false; p.stars--; }
+    else { await setDoc(ref,{t:serverTimestamp()}); p.mine=true; p.stars++; }
+    renderFeed();
+  }catch(e){ alert('실패: '+e.message); }
+}
+
+async function delPost(id){
+  if(!confirm('이 교신을 삭제할까요?')) return;
+  try{ await deleteDoc(doc(db,'posts',id)); posts = posts.filter(p=>p.id!==id); renderFeed(); }
+  catch(e){ alert('삭제 실패: '+e.message); }
+}
+
+async function toggleComments(id){
+  const box = $('c-'+id);
+  if(box.style.display!=='none'){ box.style.display='none'; return; }
+  box.style.display='block'; box.innerHTML='<span class="comm-guide">불러오는 중…</span>';
+  const snap = await getDocs(query(collection(db,'posts',id,'comments'), orderBy('created','asc'), limit(100)));
+  const rows = snap.docs.map(d=>{ const c=d.data(); return '<div class="comment">'+avatarHtml(c.name,c.photo)+
+    '<div class="comment-body"><b>'+esc(c.name)+'</b>'+esc(c.text)+
+    (me&&me.uid===c.uid?' <button class="post-del" data-cdel="'+id+'/'+d.id+'">삭제</button>':'')+'</div></div>'; }).join('');
+  box.innerHTML = (rows || '<span class="comm-guide">첫 댓글을 남겨 주세요.</span>') +
+    (me ? '<div class="comment-form"><input id="ci-'+id+'" maxlength="300" placeholder="댓글 남기기 (최대 300자)"><button class="btn btn-gold" data-csend="'+id+'">등록</button></div>'
+        : '<div class="comm-guide">댓글은 로그인 후 작성할 수 있습니다.</div>');
+  box.querySelectorAll('[data-csend]').forEach(b=> b.onclick = async ()=>{
+    const inp = $('ci-'+id), t = inp.value.trim(); if(!t) return;
+    try{ await addDoc(collection(db,'posts',id,'comments'), { uid:me.uid, name:me.displayName||'우주인', photo:me.photoURL||'', text:t, created:serverTimestamp() });
+      const p=posts.find(x=>x.id===id); if(p) p.comments++;
+      box.style.display='none'; renderFeed(); toggleComments(id);
+    }catch(e){ alert('실패: '+e.message); } });
+  box.querySelectorAll('[data-cdel]').forEach(b=> b.onclick = async ()=>{
+    const [pid,cid]=b.dataset.cdel.split('/');
+    try{ await deleteDoc(doc(db,'posts',pid,'comments',cid));
+      const p=posts.find(x=>x.id===pid); if(p) p.comments--;
+      box.style.display='none'; renderFeed(); toggleComments(pid);
+    }catch(e){ alert('실패: '+e.message); } });
+}
+
+window.setSort = (s, btn)=>{ sortMode=s;
+  document.querySelectorAll('.sort-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderFeed(); };
+
+(async function init(){
+  let cfg = null;
+  try{ cfg = await (await fetch('data/firebase_config.json?v='+Date.now())).json(); }catch(e){}
+  if(!cfg || !cfg.apiKey){ return; } // 설정 전 — 준비중 카드 유지
+  app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
+  onAuthStateChanged(auth, async u => { me = u; renderAuth(); await loadFeed(); });
+})();
+</script>
+<!-- uv-presence -->
+<script type="module">
+(async () => {
+  try {
+    const cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json();
+    if (!cfg || !cfg.apiKey) return;
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const db = getFirestore(initializeApp(cfg, 'presence'));
+
+    let pid = localStorage.getItem('uv_pid');
+    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
+
+    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
+    const count = async () => {
+      try {
+        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
+        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
+        const n = snap.data().count;
+        if (n > 0) {
+          let el = document.getElementById('uvPresence');
+          if (!el) {
+            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
+            if (!ft) return;
+            el = document.createElement('div');
+            el.id = 'uvPresence';
+            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
+            ft.appendChild(el);
+          }
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> 지금 ' + n + '명이 우주를 관측 중';
+        }
+      } catch (e) {}
+    };
+    await beat(); await count();
+    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
+    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
+  } catch (e) {}
+})();
 </script>
 </body>
 </html>
