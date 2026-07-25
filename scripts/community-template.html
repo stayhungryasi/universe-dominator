@@ -156,6 +156,16 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .comment-form { display: flex; gap: 8px; margin-top: 8px; }
 .comment-form input { flex: 1; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 8px 10px; font-family: inherit; font-size: 13px; color: var(--text); outline: none; }
 .comm-note { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
+.emoji-bar { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+.emoji-btn { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; font-size: 16px; padding: 3px 7px; cursor: pointer; }
+.emoji-btn:hover { border-color: var(--gold); }
+.pin-label { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--gold); font-weight: 700; cursor: pointer; }
+.post.pinned { border-color: var(--gold); border-width: 1.5px; }
+.badge { font-size: 11px; font-weight: 800; border-radius: 100px; padding: 2px 9px; margin-right: 6px; }
+.badge.notice { background: var(--gold); color: #fff; }
+.badge.hot { background: var(--gold-bg); color: var(--gold); }
+.post-img { margin-top: 10px; }
+.post-img img { max-width: 100%; max-height: 340px; border-radius: 10px; border: 1px solid var(--line); cursor: pointer; }
 .comm-guide { font-size: 12px; color: var(--text-muted); margin: 0 0 16px; }
 </style>
 </head>
@@ -237,6 +247,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, getDoc, setDoc, deleteDoc, doc, query, orderBy, limit, serverTimestamp, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const IMG_HOSTS = ['tenor.com','giphy.com','imgur.com','ibb.co','postimg.cc'];
+const imgOk = u => { try { const h = new URL(u).hostname; return IMG_HOSTS.some(d => h === d || h.endsWith('.' + d)); } catch(e){ return false; } };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $ = id => document.getElementById(id);
 let app, auth, db, me = null, posts = [], sortMode = 'new';
@@ -253,9 +265,20 @@ function renderAuth(){
     bar.innerHTML = '<span class="me">'+avatarHtml(me.displayName, me.photoURL)+esc(me.displayName||'우주인')+'</span>'+
       '<button class="btn btn-ghost" id="btnOut">로그아웃</button>';
     $('btnOut').onclick = () => signOut(auth);
+    const isAdmin = window.__cfg && window.__cfg.adminUid && me.uid === window.__cfg.adminUid;
     cw.innerHTML = '<div class="composer"><textarea id="txt" maxlength="600" placeholder="오늘의 관측을 남겨 주세요 (최대 500자)"></textarea>'+
+      '<div class="emoji-bar">'+['🚀','📈','📉','✦','🌕','🔥','💎','😂','👍','🙌'].map(e=>'<button type="button" class="emoji-btn" data-e="'+e+'">'+e+'</button>').join('')+'</div>'+
+      '<div class="composer-foot"><input id="imgUrl" maxlength="500" placeholder="GIF·이미지 링크 (선택 · tenor / giphy / imgur / ibb / postimg)"></div>'+
       '<div class="composer-foot"><input id="tags" maxlength="60" placeholder="종목 태그 (선택 · 쉼표로 최대 3개, 예: 엔비디아, SK하이닉스)">'+
-      '<span class="char-count" id="cc">0/500</span><button class="btn btn-gold" id="btnSend">교신 보내기</button></div></div>';
+      '<span class="char-count" id="cc">0/500</span>'+
+      (isAdmin ? '<label class="pin-label"><input type="checkbox" id="pinChk"> 📌 공지로 고정</label>' : '')+
+      '<button class="btn btn-gold" id="btnSend">교신 보내기</button></div></div>';
+    document.querySelectorAll('.emoji-btn').forEach(b => b.onclick = () => {
+      const t = $('txt'), s = t.selectionStart || t.value.length;
+      t.value = t.value.slice(0, s) + b.dataset.e + t.value.slice(t.selectionEnd || s);
+      t.focus(); t.selectionStart = t.selectionEnd = s + b.dataset.e.length;
+      t.dispatchEvent(new Event('input'));
+    });
     $('txt').addEventListener('input', ()=>{ const n=$('txt').value.length; $('cc').textContent=n+'/500'; $('cc').className='char-count'+(n>500?' over':''); });
     $('btnSend').onclick = sendPost;
   } else {
@@ -270,10 +293,13 @@ async function sendPost(){
   const text = $('txt').value.trim();
   if(!text) return; if(text.length>500){ alert('500자를 넘었습니다.'); return; }
   const tags = $('tags').value.split(',').map(t=>t.trim()).filter(Boolean).slice(0,3);
+  const img = ($('imgUrl').value || '').trim();
+  if (img && !imgOk(img)) { alert('이미지 링크는 tenor / giphy / imgur / ibb / postimg 만 붙일 수 있습니다.'); return; }
+  const pinned = !!(document.getElementById('pinChk') && document.getElementById('pinChk').checked);
   $('btnSend').disabled = true;
   try{
-    await addDoc(collection(db,'posts'), { uid: me.uid, name: me.displayName||'우주인', photo: me.photoURL||'', text, tags, created: serverTimestamp() });
-    $('txt').value=''; $('tags').value=''; $('cc').textContent='0/500';
+    await addDoc(collection(db,'posts'), { uid: me.uid, name: me.displayName||'우주인', photo: me.photoURL||'', text, tags, img, pinned, created: serverTimestamp() });
+    $('txt').value=''; $('tags').value=''; $('imgUrl').value=''; $('cc').textContent='0/500';
     await loadFeed();
   }catch(e){ alert('전송 실패: '+e.message); }
   $('btnSend').disabled = false;
@@ -297,15 +323,26 @@ async function loadFeed(){
   renderFeed();
 }
 
+function isToday(ts){ if(!ts) return true; const d=ts.toDate(), n=new Date();
+  return d.getFullYear()===n.getFullYear() && d.getMonth()===n.getMonth() && d.getDate()===n.getDate(); }
+
 function renderFeed(){
-  const list = [...posts];
-  if(sortMode==='gravity') list.sort((a,b)=> b.stars-a.stars || (b.created?.seconds||0)-(a.created?.seconds||0));
+  const pinnedPosts = posts.filter(p=>p.pinned);
+  const hotIds = posts.filter(p=>!p.pinned && isToday(p.created) && (p.stars*2+p.comments)>0)
+    .sort((a,b)=>(b.stars*2+b.comments)-(a.stars*2+a.comments)).slice(0,3).map(p=>p.id);
+  let rest = posts.filter(p=>!p.pinned && !hotIds.includes(p.id));
+  if(sortMode==='gravity') rest.sort((a,b)=> b.stars-a.stars || (b.created?.seconds||0)-(a.created?.seconds||0));
+  const hot = posts.filter(p=>hotIds.includes(p.id)).sort((a,b)=>hotIds.indexOf(a.id)-hotIds.indexOf(b.id));
+  const list = [...pinnedPosts, ...hot, ...rest];
   $('feed').innerHTML = list.length ? list.map(p =>
-    '<div class="post" id="p-'+p.id+'">'+
-      '<div class="post-head">'+avatarHtml(p.name,p.photo)+'<span class="post-name">'+esc(p.name)+'</span>'+
+    '<div class="post'+(p.pinned?' pinned':'')+'" id="p-'+p.id+'">'+
+      '<div class="post-head">'+
+      (p.pinned ? '<span class="badge notice">📌 공지</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 오늘의 인기 '+(hotIds.indexOf(p.id)+1)+'위</span>' : ''))+
+      avatarHtml(p.name,p.photo)+'<span class="post-name">'+esc(p.name)+'</span>'+
       '<span class="post-time">'+rel(p.created)+'</span>'+
       (me && me.uid===p.uid ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
       '<div class="post-text">'+esc(p.text)+'</div>'+
+      (p.img && imgOk(p.img) ? '<div class="post-img"><a href="'+esc(p.img)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.parentNode.style.display=\'none\'"></a></div>' : '')+
       (p.tags && p.tags.length ? '<div class="post-tags">'+p.tags.map(t=>'<span class="tag-chip">'+esc(t)+'</span>').join('')+'</div>' : '')+
       '<div class="post-foot">'+
         '<button class="act'+(p.mine?' on':'')+'" data-star="'+p.id+'">✦ 중력 '+p.stars+'</button>'+
@@ -367,6 +404,7 @@ window.setSort = (s, btn)=>{ sortMode=s;
   let cfg = null;
   try{ cfg = await (await fetch('data/firebase_config.json?v='+Date.now())).json(); }catch(e){}
   if(!cfg || !cfg.apiKey){ return; } // 설정 전 — 준비중 카드 유지
+  window.__cfg = cfg;
   app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
   onAuthStateChanged(auth, async u => { me = u; renderAuth(); await loadFeed(); });
 })();
