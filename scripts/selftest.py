@@ -45,6 +45,13 @@ def main():
     check("parse_mc: 조 단위", parse_mc("$5.109 T"), 5109.0)
     check("parse_mc: 십억 단위", parse_mc("$909.69 B"), 909.69)
 
+    # ── suffix_flag: 2026-07 DELTA.BK 태국 국기 누락 재발 방지 ──
+    from generate_candidates import suffix_flag
+    check("suffix_flag: 태국(.BK)", suffix_flag("DELTA.BK"), "🇹🇭")
+    check("suffix_flag: 대만(.TW)", suffix_flag("2308.TW"), "🇹🇼")
+    check("suffix_flag: 인도(.NS)", suffix_flag("RELIANCE.NS"), "🇮🇳")
+    check("suffix_flag: 미국(무접미)", suffix_flag("NVDA"), "🇺🇸")
+
     # ── check_rank_gaps: 행 탈락 감시망 자체 검증 ──
     rows_ok = [{"_rank": i} for i in range(1, 21)]
     check("rank_gaps: 정상(구멍 없음)", check_rank_gaps(rows_ok, "test"), [])
