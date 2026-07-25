@@ -286,7 +286,8 @@ const IMG_HOSTS = ['tenor.com','giphy.com','imgur.com','ibb.co','postimg.cc'];
 const imgOk = u => { try { const h = new URL(u).hostname; return IMG_HOSTS.some(d => h === d || h.endsWith('.' + d)); } catch(e){ return false; } };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $ = id => document.getElementById(id);
-let app, auth, db, me = null, posts = [], sortMode = 'new';
+let app, auth, db, me = null, posts = [], sortMode = 'new', myNick = null;
+const nickCache = {};  // uid → 닉네임 (없으면 null)
 
 function rel(ts){ if(!ts) return '방금'; const s=(Date.now()-ts.toDate().getTime())/1000;
   if(s<60) return '방금'; if(s<3600) return Math.floor(s/60)+'분 전'; if(s<86400) return Math.floor(s/3600)+'시간 전';
@@ -294,11 +295,36 @@ function rel(ts){ if(!ts) return '방금'; const s=(Date.now()-ts.toDate().getTi
 function avatarHtml(name, photo){ return photo ? '<span class="avatar"><img src="'+esc(photo)+'" alt="" referrerpolicy="no-referrer"></span>'
   : '<span class="avatar">'+esc((name||'?').charAt(0))+'</span>'; }
 
+async function fetchNicks(uids){
+  const need = [...new Set(uids)].filter(u => u && !(u in nickCache)).slice(0, 30);
+  await Promise.all(need.map(async u => {
+    try { const s = await getDoc(doc(db, 'users', u)); nickCache[u] = s.exists() ? (s.data().nick || null) : null; }
+    catch(e){ nickCache[u] = null; }
+  }));
+}
+const shownName = (uid, fallback) => nickCache[uid] || fallback || '우주인';
+
+async function changeNick(){
+  const cur = myNick || me.displayName || '';
+  const v = prompt('커뮤니티에 표시할 이름 (2~20자)', cur);
+  if (v === null) return;
+  const nick = v.trim();
+  if (nick.length < 2 || nick.length > 20) { alert('2~20자로 입력해 주세요.'); return; }
+  try {
+    await setDoc(doc(db, 'users', me.uid), { nick });
+    myNick = nick; nickCache[me.uid] = nick;
+    renderAuth(); renderFeed();
+  } catch(e){ alert('저장 실패: ' + e.message); }
+}
+
 function renderAuth(){
   const bar = $('authBar'), cw = $('composerWrap');
   if(me){
-    bar.innerHTML = '<span class="me">'+avatarHtml(me.displayName, me.photoURL)+esc(me.displayName||'우주인')+'</span>'+
+    const dispName = myNick || me.displayName || '우주인';
+    bar.innerHTML = '<span class="me">'+avatarHtml(dispName, me.photoURL)+esc(dispName)+'</span>'+
+      '<button class="btn btn-ghost" id="btnNick" title="표시 이름 변경">✏️ 이름 변경</button>'+
       '<button class="btn btn-ghost" id="btnOut">로그아웃</button>';
+    $('btnNick').onclick = changeNick;
     $('btnOut').onclick = () => signOut(auth);
     const isAdmin = window.__cfg && window.__cfg.adminUid && me.uid === window.__cfg.adminUid;
     cw.innerHTML = '<div class="composer"><textarea id="txt" maxlength="600" placeholder="오늘의 관측을 남겨 주세요 (최대 500자)"></textarea>'+
@@ -333,7 +359,7 @@ async function sendPost(){
   const pinned = !!(document.getElementById('pinChk') && document.getElementById('pinChk').checked);
   $('btnSend').disabled = true;
   try{
-    await addDoc(collection(db,'posts'), { uid: me.uid, name: me.displayName||'우주인', photo: me.photoURL||'', text, tags, img, pinned, created: serverTimestamp() });
+    await addDoc(collection(db,'posts'), { uid: me.uid, name: myNick || me.displayName || '우주인', photo: me.photoURL||'', text, tags, img, pinned, created: serverTimestamp() });
     $('txt').value=''; $('tags').value=''; $('imgUrl').value=''; $('cc').textContent='0/500';
     await loadFeed();
   }catch(e){ alert('전송 실패: '+e.message); }
@@ -354,6 +380,7 @@ async function loadFeed(){
     }catch(e){}
     posts.push(p);
   }
+  await fetchNicks(posts.map(p => p.uid));
   $('sortTabs').style.display = 'flex';
   renderFeed();
 }
@@ -373,7 +400,7 @@ function renderFeed(){
     '<div class="post'+(p.pinned?' pinned':'')+'" id="p-'+p.id+'">'+
       '<div class="post-head">'+
       (p.pinned ? '<span class="badge notice">📌 공지</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 오늘의 인기 '+(hotIds.indexOf(p.id)+1)+'위</span>' : ''))+
-      avatarHtml(p.name,p.photo)+'<span class="post-name">'+esc(p.name)+'</span>'+
+      avatarHtml(shownName(p.uid,p.name),p.photo)+'<span class="post-name">'+esc(shownName(p.uid,p.name))+'</span>'+
       '<span class="post-time">'+rel(p.created)+'</span>'+
       (me && me.uid===p.uid ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
       '<div class="post-text">'+esc(p.text)+'</div>'+
@@ -411,15 +438,16 @@ async function toggleComments(id){
   if(box.style.display!=='none'){ box.style.display='none'; return; }
   box.style.display='block'; box.innerHTML='<span class="comm-guide">불러오는 중…</span>';
   const snap = await getDocs(query(collection(db,'posts',id,'comments'), orderBy('created','asc'), limit(100)));
-  const rows = snap.docs.map(d=>{ const c=d.data(); return '<div class="comment">'+avatarHtml(c.name,c.photo)+
-    '<div class="comment-body"><b>'+esc(c.name)+'</b>'+esc(c.text)+
+  await fetchNicks(snap.docs.map(d=>d.data().uid));
+  const rows = snap.docs.map(d=>{ const c=d.data(); return '<div class="comment">'+avatarHtml(shownName(c.uid,c.name),c.photo)+
+    '<div class="comment-body"><b>'+esc(shownName(c.uid,c.name))+'</b>'+esc(c.text)+
     (me&&me.uid===c.uid?' <button class="post-del" data-cdel="'+id+'/'+d.id+'">삭제</button>':'')+'</div></div>'; }).join('');
   box.innerHTML = (rows || '<span class="comm-guide">첫 댓글을 남겨 주세요.</span>') +
     (me ? '<div class="comment-form"><input id="ci-'+id+'" maxlength="300" placeholder="댓글 남기기 (최대 300자)"><button class="btn btn-gold" data-csend="'+id+'">등록</button></div>'
         : '<div class="comm-guide">댓글은 로그인 후 작성할 수 있습니다.</div>');
   box.querySelectorAll('[data-csend]').forEach(b=> b.onclick = async ()=>{
     const inp = $('ci-'+id), t = inp.value.trim(); if(!t) return;
-    try{ await addDoc(collection(db,'posts',id,'comments'), { uid:me.uid, name:me.displayName||'우주인', photo:me.photoURL||'', text:t, created:serverTimestamp() });
+    try{ await addDoc(collection(db,'posts',id,'comments'), { uid:me.uid, name: myNick || me.displayName || '우주인', photo:me.photoURL||'', text:t, created:serverTimestamp() });
       const p=posts.find(x=>x.id===id); if(p) p.comments++;
       box.style.display='none'; renderFeed(); toggleComments(id);
     }catch(e){ alert('실패: '+e.message); } });
@@ -441,7 +469,11 @@ window.setSort = (s, btn)=>{ sortMode=s;
   if(!cfg || !cfg.apiKey){ return; } // 설정 전 — 준비중 카드 유지
   window.__cfg = cfg;
   app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
-  onAuthStateChanged(auth, async u => { me = u; renderAuth(); await loadFeed(); });
+  onAuthStateChanged(auth, async u => {
+    me = u; myNick = null;
+    if (u) { try { const s = await getDoc(doc(db, 'users', u.uid)); if (s.exists()) myNick = s.data().nick || null; nickCache[u.uid] = myNick; } catch(e){} }
+    renderAuth(); await loadFeed();
+  });
 })();
 </script>
 <!-- uv-presence -->
