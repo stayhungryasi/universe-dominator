@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About · 우주지배자</title>
+<title>데이터 천문대 · UNIVERTRIX</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -107,29 +107,6 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .placeholder-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.6; }
 .placeholder-note { font-size: 12px; color: var(--text-muted); margin-top: 18px; }
 
-/* ── About ── */
-main.about-main { display: block; padding: 52px 0 72px; }
-.about-wrap { max-width: 640px; margin: 0 auto; }
-.about-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 14px; }
-.about-brand { font-size: 34px; font-weight: 800; letter-spacing: 0.34em; text-align: center; margin-bottom: 10px; text-indent: 0.34em; }
-.about-brand .v { color: var(--gold); }
-.about-motto { font-size: 13px; font-style: italic; color: var(--text-muted); text-align: center; margin-bottom: 44px; letter-spacing: 0.04em; }
-.about-sec { margin-bottom: 40px; }
-.about-sec h2 { font-size: 14px; font-weight: 800; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
-.about-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin-bottom: 10px; }
-.about-sec p strong { color: var(--text); }
-.about-quote { border-left: 2px solid var(--gold); padding: 4px 0 4px 18px; margin: 26px 0; font-size: 15px; line-height: 1.8; color: var(--text); font-weight: 600; }
-.about-name { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin: 8px 0 0; }
-.about-name .nm { font-size: 16px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 8px; }
-.about-name .nm .v { color: var(--gold); }
-.about-name p { font-size: 13.5px; line-height: 1.75; color: var(--text-secondary); margin: 0 0 6px; }
-.about-cta { text-align: center; margin-top: 48px; }
-.about-cta a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; background: var(--text); color: var(--bg); border-radius: 100px; font-size: 13px; font-weight: 700; text-decoration: none; }
-.about-back { text-align: center; margin-top: 16px; }
-.about-back a { font-size: 12.5px; color: var(--text-muted); text-decoration: none; }
-.about-back a:hover { color: var(--gold); }
-@media (max-width: 480px) { .about-brand { font-size: 24px; } main.about-main { padding: 36px 0 56px; } }
-
 .site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
 .footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
 .footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
@@ -137,6 +114,31 @@ main.about-main { display: block; padding: 52px 0 72px; }
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
+
+/* ── 데이터 천문대 ── */
+.obs-hero { padding: 36px 0 6px; }
+.obs-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: var(--gold); }
+.obs-title { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 6px; }
+.obs-desc { font-size: 14.5px; color: var(--text-secondary); margin-bottom: 18px; }
+.obs-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+.obs-tab { padding: 9px 18px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 13.5px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.obs-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.solar-wrap { background: #10141f; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; position: relative; }
+.solar-wrap svg { display: block; width: 100%; height: auto; }
+.solar-legend { font-size: 12px; color: var(--text-muted); margin-top: 10px; text-align: center; }
+.solar-tip { position: absolute; pointer-events: none; background: rgba(20,25,40,0.95); color: #f5f1e6; border: 1px solid #9C7A3A; border-radius: 10px; padding: 8px 12px; font-size: 12.5px; display: none; max-width: 220px; z-index: 5; }
+.solar-tip b { color: #d4b06a; }
+.col-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; cursor: pointer; transition: border-color 0.15s; }
+.col-card:hover { border-color: var(--gold); }
+.col-card.open { cursor: default; }
+.col-date { font-size: 12px; color: var(--gold); font-weight: 800; letter-spacing: 0.06em; }
+.col-title { font-size: 18px; font-weight: 800; margin: 4px 0 6px; }
+.col-summary { font-size: 13.5px; color: var(--text-secondary); }
+.col-body { display: none; margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 14.5px; line-height: 1.85; }
+.col-card.open .col-body { display: block; }
+.col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
+.col-body p { margin: 0 0 10px; }
+.obs-note { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
 </style>
 <style>
 /* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
@@ -204,46 +206,25 @@ document.addEventListener('DOMContentLoaded', function () {
     <a href="megatrend.html" class="nav-tab ">메가트렌드</a>
     <a href="research.html" class="nav-tab ">리서치</a>
     <a href="community.html" class="nav-tab ">커뮤니티</a>
-    <a href="observatory.html" class="nav-tab ">데이터 천문대</a>
+    <a href="observatory.html" class="nav-tab active">데이터 천문대</a>
   </div>
 </nav>
 
-<main class="about-main">
+<main>
   <div class="container">
-    <div class="about-wrap">
-      <div class="about-eyebrow">About</div>
-      <div class="about-brand">UNI<span class="v">V</span>ERTRIX</div>
-      <div class="about-motto">Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다</div>
-
-      <div class="about-sec">
-        <h2>왜 우주지배자인가</h2>
-        <p>폭발적으로 성장하는 기업은 지구를 지배하고, 전지구적 지배 기업은 결국 <strong>우주 전체로 그 영향력을 확장</strong>합니다. 이미 궤도 위에서 사업을 운영하는 기업들이 그 서막입니다.</p>
-        <p>우리는 AI가 스스로를 가속하는 <strong>특이점의 문턱</strong>에 서 있습니다. 시가총액 순위는 단순한 숫자가 아니라, 어떤 힘이 다음 시대를 지배할지 보여주는 가장 정직한 지도입니다.</p>
-        <div class="about-quote">왕좌를 차지하는 것은 거인들의 일이고,<br>빠짐없이 적어두는 것은 우리의 일입니다.</div>
-      </div>
-
-      <div class="about-sec">
-        <h2>무엇을 기록하는가</h2>
-        <p><strong>매일 세 번</strong>, 사람의 손을 거치지 않고 자동으로 — 7개 권역의 시가총액 TOP 20(우주지배자), 규칙으로 선별한 차세대 후보(잠재지배자), 20년의 왕좌 이동(메가트렌드), 그리고 종목별 글로벌 리서치를 수집·번역·요약해 기록합니다.</p>
-        <p>모든 변동은 매주 히스토리로 남습니다. 우주는 돌지만, 기록은 남으니까요.</p>
-      </div>
-
-      <div class="about-sec">
-        <h2>이름의 비밀</h2>
-        <div class="about-name">
-          <div class="nm">UNI<span class="v">V</span>ERTRIX</div>
-          <p><strong>UNIVERSE + -trix</strong> — 라틴어 행위자 접미사 <em>-trix</em>, "~하는 자". 우주를 기록하는 자.</p>
-          <p>그리고 그 안에는 라틴어 <strong><em>vertere</em>(돌다)</strong>가 숨어 있습니다. UNI<strong>VERT</strong>RIX — 도는 우주, 남는 기록.</p>
-        </div>
-      </div>
-
-      <div class="about-cta">
-        <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener">텔레그램에서 매일 브리핑 받기 →</a>
-      </div>
-      <div class="about-back"><a href="index.html">← 우주지배자로 돌아가기</a></div>
+    <div class="obs-hero">
+      <div class="obs-eyebrow">OBSERVATORY</div>
+      <h1 class="obs-title">데이터 천문대</h1>
+      <p class="obs-desc">숫자로 우주를 관측하는 곳 — 시장의 구조와 신호를 실험적으로 전시합니다.</p>
     </div>
+    <div class="obs-tabs">
+      <button class="obs-tab active" data-t="solar" onclick="setObsTab('solar', this)">오늘의 태양계</button>
+      <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">관측일지</button>
+    </div>
+    <div id="obsBody"></div>
   </div>
 </main>
+
 
 <footer class="site-footer">
   <div class="container">
@@ -265,6 +246,104 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('ud-theme', next);
 }
+</script>
+<script>
+const DATA = {"earth": [{"name": "NVIDIA", "ticker": "NVDA", "flag": "🇺🇸", "mc": 5009.0, "desc": "AI 가속기 패권자"}, {"name": "Apple", "ticker": "AAPL", "flag": "🇺🇸", "mc": 4891.0, "desc": "프리미엄 디바이스·서비스"}, {"name": "Alphabet (Google)", "ticker": "GOOG", "flag": "🇺🇸", "mc": 3902.0, "desc": "검색·광고 + Gemini AI"}, {"name": "Microsoft", "ticker": "MSFT", "flag": "🇺🇸", "mc": 2835.0, "desc": "엔터프라이즈 + Azure 클라우드"}, {"name": "Amazon", "ticker": "AMZN", "flag": "🇺🇸", "mc": 2496.0, "desc": "전자상거래 + AWS 클라우드"}, {"name": "TSMC", "ticker": "TSM", "flag": "🇹🇼", "mc": 2092.0, "desc": "세계 1위 파운드리"}, {"name": "Broadcom", "ticker": "AVGO", "flag": "🇺🇸", "mc": 1817.0, "desc": "통신·AI 반도체 거인"}, {"name": "Saudi Aramco", "ticker": "2222.SR", "flag": "🇸🇦", "mc": 1729.0, "desc": "세계 최대 석유 기업"}, {"name": "SpaceX", "ticker": "SPCX", "flag": "🇺🇸", "mc": 1515.0, "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"}, {"name": "Meta Platforms (Facebook)", "ticker": "META", "flag": "🇺🇸", "mc": 1510.0, "desc": "글로벌 SNS·광고 1위"}, {"name": "Tesla", "ticker": "TSLA", "flag": "🇺🇸", "mc": 1236.0, "desc": "EV·자율주행·로봇"}, {"name": "삼성전자", "ticker": "005930.KS", "flag": "🇰🇷", "mc": 1123.0, "desc": "메모리·스마트폰 글로벌 1위"}, {"name": "Berkshire Hathaway", "ticker": "BRK-B", "flag": "🇺🇸", "mc": 1067.0, "desc": "워런 버핏의 투자 제국"}, {"name": "Eli Lilly", "ticker": "LLY", "flag": "🇺🇸", "mc": 1066.0, "desc": "GLP-1 비만약 美 선두"}, {"name": "Micron Technology", "ticker": "MU", "flag": "🇺🇸", "mc": 1040.0, "desc": "美 최대 메모리 반도체"}, {"name": "JPMorgan Chase", "ticker": "JPM", "flag": "🇺🇸", "mc": 938.9, "desc": "美 최대 은행"}, {"name": "Walmart", "ticker": "WMT", "flag": "🇺🇸", "mc": 871.17, "desc": "美 1위 소매유통"}, {"name": "SK하이닉스", "ticker": "000660.KS", "flag": "🇰🇷", "mc": 856.06, "desc": "HBM·D램 강자"}, {"name": "AMD", "ticker": "AMD", "flag": "🇺🇸", "mc": 851.09, "desc": "CPU·GPU 추격자"}, {"name": "Visa", "ticker": "V", "flag": "🇺🇸", "mc": 676.52, "desc": "글로벌 결제 네트워크 1위"}], "fetched": "2026-07-26", "columns": [{"date": "2026.07.26", "title": "데이터 천문대 개관 — 숫자로 우주를 관측하는 이유", "summary": "왕좌를 차지하는 것은 거인들의 일이고, 빠짐없이 적어두는 것은 우리의 일입니다. 천문대는 그 기록을 실험대에 올리는 곳입니다.", "body": "<p>매일 아침 8시, 우주지배자는 지구에서 가장 비싼 기업들의 질서를 새로 기록합니다. 데이터 천문대는 그 기록을 한 걸음 물러나서 바라보는 곳입니다 — 순위표가 <b>오늘</b>을 말한다면, 천문대는 <b>구조와 흐름</b>을 말합니다.</p><h3>첫 전시물: 오늘의 태양계</h3><p>시가총액을 행성의 크기로 옮겨 그렸습니다. 태양은 현재의 왕좌, 궤도를 도는 행성들은 그 뒤를 쫓는 거인들입니다. 어제와 오늘의 태양계가 미묘하게 다른 것 — 그것이 우리가 매일 기록하는 이유입니다.</p><h3>앞으로 이곳에 쌓일 것들</h3><p>관측일지에는 하나의 질문을 깊게 파는 분석이 쌓입니다. 특정 산업의 매출 추정, 시장 제도의 통계적 흔적, 거인들의 이동 경로 같은 것들. 질문은 관제센터(커뮤니티)에서도 받습니다 — 궁금한 우주가 있다면 교신을 남겨 주세요.</p><p><i>Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다.</i></p>"}]};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let solarRAF = null;
+
+function setObsTab(t, btn){
+  document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if (solarRAF) { cancelAnimationFrame(solarRAF); solarRAF = null; }
+  if (t === 'solar') renderSolar(); else renderColumns();
+}
+
+/* ── 오늘의 태양계 ── */
+function renderSolar(){
+  const stocks = (DATA.earth || []).slice(0, 20);
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
+  const sun = stocks[0], planets = stocks.slice(1);
+  const W = 760, H = 560, cx = W/2, cy = H/2;
+  const maxMc = sun.mc;
+  const rOf = mc => 5 + Math.sqrt(mc / maxMc) * 26;
+  const sunR = rOf(sun.mc) + 8;
+  const orbitBase = sunR + 26, orbitStep = (Math.min(W,H)/2 - orbitBase - 20) / planets.length;
+
+  let svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<defs><radialGradient id="sunG"><stop offset="0%" stop-color="#ffe9b3"/><stop offset="60%" stop-color="#d4a63f"/><stop offset="100%" stop-color="#9C7A3A"/></radialGradient></defs>';
+  // 별 배경
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 90; i++) svg += '<circle cx="'+(rnd()*W).toFixed(1)+'" cy="'+(rnd()*H).toFixed(1)+'" r="'+(rnd()*1.1+0.2).toFixed(2)+'" fill="#f5f1e6" opacity="'+(rnd()*0.5+0.15).toFixed(2)+'"/>';
+  // 궤도
+  planets.forEach((p, i) => { const orbR = orbitBase + orbitStep*(i+1);
+    svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+orbR.toFixed(1)+'" fill="none" stroke="#2a3350" stroke-width="1"/>'; });
+  // 태양
+  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+sunR+'" fill="url(#sunG)" data-i="0" class="pl"/>';
+  svg += '<text x="'+cx+'" y="'+(cy+sunR+16)+'" text-anchor="middle" fill="#d4b06a" font-size="13" font-weight="800">'+esc(sun.name)+'</text>';
+  // 행성
+  planets.forEach((p, i) => {
+    const orbR = orbitBase + orbitStep*(i+1);
+    const ang = (i * 137.5) * Math.PI / 180;  // 황금각 분산
+    svg += '<g class="orb" data-r="'+orbR.toFixed(1)+'" data-a="'+ang.toFixed(3)+'" data-s="'+(0.0012/(1+i*0.28)).toFixed(6)+'">';
+    svg += '<circle r="'+rOf(p.mc).toFixed(1)+'" fill="'+(i%2?'#7a89b8':'#a8b4d8')+'" data-i="'+(i+1)+'" class="pl" stroke="#10141f" stroke-width="1.5"/>';
+    if (i < 5) svg += '<text y="'+(-rOf(p.mc)-5)+'" text-anchor="middle" fill="#8a94b8" font-size="10.5" font-weight="700">'+esc(p.ticker)+'</text>';
+    svg += '</g>';
+  });
+  svg += '</svg>';
+
+  document.getElementById('obsBody').innerHTML =
+    '<div class="solar-wrap">'+svg+'<div class="solar-tip" id="solarTip"></div></div>'+
+    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+
+  const wrap = document.querySelector('.solar-wrap');
+  const tip = document.getElementById('solarTip');
+  let paused = false;
+  wrap.addEventListener('mousemove', e => {
+    const t = e.target;
+    if (t.classList && t.classList.contains('pl')) {
+      const s = stocks[+t.dataset.i];
+      const rect = wrap.getBoundingClientRect();
+      tip.style.display = 'block';
+      tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
+      tip.style.top = (e.clientY - rect.top + 14) + 'px';
+      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>$'+(s.mc>=1000?(s.mc/1000).toFixed(2)+'T':s.mc+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      paused = true;
+    } else { tip.style.display = 'none'; paused = false; }
+  });
+  wrap.addEventListener('mouseleave', () => { tip.style.display = 'none'; paused = false; });
+
+  const orbs = [...document.querySelectorAll('.orb')].map(g => ({ g, r: +g.dataset.r, a: +g.dataset.a, s: +g.dataset.s }));
+  const step = () => {
+    if (!paused) orbs.forEach(o => { o.a += o.s;
+      o.g.setAttribute('transform', 'translate(' + (cx + o.r*Math.cos(o.a)).toFixed(1) + ',' + (cy + o.r*Math.sin(o.a)).toFixed(1) + ')'); });
+    solarRAF = requestAnimationFrame(step);
+  };
+  step();
+}
+
+/* ── 관측일지 ── */
+function renderColumns(){
+  const cols = (DATA.columns || []);
+  if (!cols.length) { document.getElementById('obsBody').innerHTML =
+    '<div class="obs-note">첫 관측일지를 준비 중입니다 — 곧 기록이 시작됩니다.</div>'; return; }
+  document.getElementById('obsBody').innerHTML = cols.map((c, i) =>
+    '<div class="col-card" id="col-'+i+'" onclick="toggleCol('+i+')">'+
+      '<div class="col-date">'+esc(c.date)+'</div>'+
+      '<div class="col-title">'+esc(c.title)+'</div>'+
+      '<div class="col-summary">'+esc(c.summary)+'</div>'+
+      '<div class="col-body">'+c.body+'</div>'+
+    '</div>').join('');
+}
+function toggleCol(i){
+  const el = document.getElementById('col-'+i);
+  const was = el.classList.contains('open');
+  document.querySelectorAll('.col-card.open').forEach(c=>c.classList.remove('open'));
+  if (!was) el.classList.add('open');
+}
+
+renderSolar();
 </script>
 <!-- uv-presence -->
 <script type="module">
