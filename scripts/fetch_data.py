@@ -39,6 +39,7 @@ REGION_URLS = {
     "eu":      "https://companiesmarketcap.com/european-union/largest-companies-in-the-eu-by-market-cap/",
     "uk":      "https://companiesmarketcap.com/united-kingdom/largest-companies-in-the-uk-by-market-cap/",
     "ch":      "https://companiesmarketcap.com/switzerland/largest-companies-in-switzerland-by-market-cap/",
+    "taiwan":  "https://companiesmarketcap.com/taiwan/largest-companies-in-taiwan-by-market-cap/",
 }
 
 REGION_LABELS = {
@@ -49,6 +50,7 @@ REGION_LABELS = {
     "china":  {"label": "중국",   "subtitle": "Mainland (SH·SZ)"},
     "hk":     {"label": "홍콩",   "subtitle": "HKEX"},
     "europe": {"label": "유럽",   "subtitle": "EU + UK + CH"},
+    "taiwan": {"label": "대만",   "subtitle": "TWSE"},
 }
 
 TOP_N = 20
@@ -218,6 +220,14 @@ def localize_name(name, ticker):
 
 # ─────────────────── 종목 한 줄 설명 ───────────────────
 STOCK_DESCRIPTIONS = {
+    # 대만 TWSE (2026-07 대만 탭 신설)
+    "2330.TW": "파운드리 절대왕좌 — 지구의 실리콘 심장",
+    "2317.TW": "폭스콘 — 세계의 조립공장, AI 서버로 변신",
+    "2308.TW": "AI 서버 전원·냉각의 숨은 지배자",
+    "2382.TW": "AI 서버 조립 강자 콴타",
+    "2412.TW": "대만 통신 1위 중화텔레콤",
+    "2891.TW": "대만 금융지주 CTBC",
+    "3711.TW": "반도체 후공정(OSAT) 세계 1위 ASE",
     # ===== 미국 NASDAQ/NYSE =====
     "NVDA": "AI 가속기 패권자",
     "AAPL": "프리미엄 디바이스·서비스",
@@ -732,6 +742,7 @@ def collect():
             "korea":  {**REGION_LABELS["korea"],  "stocks": raw.get("korea", [])[:TOP_N]},
             "japan":  {**REGION_LABELS["japan"],  "stocks": raw.get("japan", [])[:TOP_N]},
             "europe": {**REGION_LABELS["europe"], "stocks": europe[:TOP_N]},
+            "taiwan": {**REGION_LABELS["taiwan"], "stocks": raw.get("taiwan", [])[:TOP_N]},
             "china":  {**REGION_LABELS["china"],  "stocks": raw.get("china", [])[:TOP_N]},
             "hk":     {**REGION_LABELS["hk"],     "stocks": raw.get("hk", [])[:TOP_N]},
         },
