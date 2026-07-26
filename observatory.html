@@ -128,6 +128,8 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .solar-legend { font-size: 12px; color: var(--text-muted); margin-top: 10px; text-align: center; }
 .solar-tip { position: absolute; pointer-events: none; background: rgba(20,25,40,0.95); color: #f5f1e6; border: 1px solid #9C7A3A; border-radius: 10px; padding: 8px 12px; font-size: 12.5px; display: none; max-width: 220px; z-index: 5; }
 .solar-tip b { color: #d4b06a; }
+.pl { cursor: pointer; }
+.pl:hover { stroke: #ffd873; stroke-width: 2px; }
 .col-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; cursor: pointer; transition: border-color 0.15s; }
 .col-card:hover { border-color: var(--gold); }
 .col-card.open { cursor: default; }
@@ -138,6 +140,15 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .col-card.open .col-body { display: block; }
 .col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
 .col-body p { margin: 0 0 10px; }
+.map-wrap { background: #10141f; border: 1px solid var(--line); border-radius: 16px; padding: 10px; position: relative; }
+.map-grid { position: relative; width: 100%; height: 640px; }
+.map-tile { position: absolute; overflow: hidden; border: 1px solid #10141f; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #eef2ff; cursor: pointer; transition: filter 0.1s; }
+.map-tile:hover { filter: brightness(1.25); z-index: 3; }
+.map-tile .tk { font-weight: 800; line-height: 1.1; }
+.map-tile .pc { font-weight: 700; opacity: 0.9; }
+.map-head { position: absolute; font-size: 10.5px; font-weight: 800; color: #8a94b8; letter-spacing: 0.06em; padding: 2px 4px; z-index: 2; text-shadow: 0 1px 2px #10141f; }
+.map-legend { display: flex; justify-content: center; align-items: center; gap: 2px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+.map-legend span { padding: 3px 9px; border-radius: 4px; color: #fff; font-weight: 700; }
 .obs-note { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
 </style>
 <style>
@@ -219,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div class="obs-tabs">
       <button class="obs-tab active" data-t="solar" onclick="setObsTab('solar', this)">오늘의 태양계</button>
+      <button class="obs-tab" data-t="map" onclick="setObsTab('map', this)">우주 지도</button>
       <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">관측일지</button>
     </div>
     <div id="obsBody"></div>
@@ -248,7 +260,7 @@ function toggleTheme() {
 }
 </script>
 <script>
-const DATA = {"earth": [{"name": "NVIDIA", "ticker": "NVDA", "flag": "🇺🇸", "mc": 5009.0, "desc": "AI 가속기 패권자"}, {"name": "Apple", "ticker": "AAPL", "flag": "🇺🇸", "mc": 4891.0, "desc": "프리미엄 디바이스·서비스"}, {"name": "Alphabet (Google)", "ticker": "GOOG", "flag": "🇺🇸", "mc": 3902.0, "desc": "검색·광고 + Gemini AI"}, {"name": "Microsoft", "ticker": "MSFT", "flag": "🇺🇸", "mc": 2835.0, "desc": "엔터프라이즈 + Azure 클라우드"}, {"name": "Amazon", "ticker": "AMZN", "flag": "🇺🇸", "mc": 2496.0, "desc": "전자상거래 + AWS 클라우드"}, {"name": "TSMC", "ticker": "TSM", "flag": "🇹🇼", "mc": 2092.0, "desc": "세계 1위 파운드리"}, {"name": "Broadcom", "ticker": "AVGO", "flag": "🇺🇸", "mc": 1817.0, "desc": "통신·AI 반도체 거인"}, {"name": "Saudi Aramco", "ticker": "2222.SR", "flag": "🇸🇦", "mc": 1729.0, "desc": "세계 최대 석유 기업"}, {"name": "SpaceX", "ticker": "SPCX", "flag": "🇺🇸", "mc": 1515.0, "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"}, {"name": "Meta Platforms (Facebook)", "ticker": "META", "flag": "🇺🇸", "mc": 1510.0, "desc": "글로벌 SNS·광고 1위"}, {"name": "Tesla", "ticker": "TSLA", "flag": "🇺🇸", "mc": 1236.0, "desc": "EV·자율주행·로봇"}, {"name": "삼성전자", "ticker": "005930.KS", "flag": "🇰🇷", "mc": 1123.0, "desc": "메모리·스마트폰 글로벌 1위"}, {"name": "Berkshire Hathaway", "ticker": "BRK-B", "flag": "🇺🇸", "mc": 1067.0, "desc": "워런 버핏의 투자 제국"}, {"name": "Eli Lilly", "ticker": "LLY", "flag": "🇺🇸", "mc": 1066.0, "desc": "GLP-1 비만약 美 선두"}, {"name": "Micron Technology", "ticker": "MU", "flag": "🇺🇸", "mc": 1040.0, "desc": "美 최대 메모리 반도체"}, {"name": "JPMorgan Chase", "ticker": "JPM", "flag": "🇺🇸", "mc": 938.9, "desc": "美 최대 은행"}, {"name": "Walmart", "ticker": "WMT", "flag": "🇺🇸", "mc": 871.17, "desc": "美 1위 소매유통"}, {"name": "SK하이닉스", "ticker": "000660.KS", "flag": "🇰🇷", "mc": 856.06, "desc": "HBM·D램 강자"}, {"name": "AMD", "ticker": "AMD", "flag": "🇺🇸", "mc": 851.09, "desc": "CPU·GPU 추격자"}, {"name": "Visa", "ticker": "V", "flag": "🇺🇸", "mc": 676.52, "desc": "글로벌 결제 네트워크 1위"}], "fetched": "2026-07-26", "columns": [{"date": "2026.07.26", "title": "데이터 천문대 개관 — 숫자로 우주를 관측하는 이유", "summary": "왕좌를 차지하는 것은 거인들의 일이고, 빠짐없이 적어두는 것은 우리의 일입니다. 천문대는 그 기록을 실험대에 올리는 곳입니다.", "body": "<p>매일 아침 8시, 우주지배자는 지구에서 가장 비싼 기업들의 질서를 새로 기록합니다. 데이터 천문대는 그 기록을 한 걸음 물러나서 바라보는 곳입니다 — 순위표가 <b>오늘</b>을 말한다면, 천문대는 <b>구조와 흐름</b>을 말합니다.</p><h3>첫 전시물: 오늘의 태양계</h3><p>시가총액을 행성의 크기로 옮겨 그렸습니다. 태양은 현재의 왕좌, 궤도를 도는 행성들은 그 뒤를 쫓는 거인들입니다. 어제와 오늘의 태양계가 미묘하게 다른 것 — 그것이 우리가 매일 기록하는 이유입니다.</p><h3>앞으로 이곳에 쌓일 것들</h3><p>관측일지에는 하나의 질문을 깊게 파는 분석이 쌓입니다. 특정 산업의 매출 추정, 시장 제도의 통계적 흔적, 거인들의 이동 경로 같은 것들. 질문은 관제센터(커뮤니티)에서도 받습니다 — 궁금한 우주가 있다면 교신을 남겨 주세요.</p><p><i>Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다.</i></p>"}]};
+const DATA = {"earth": [{"name": "NVIDIA", "ticker": "NVDA", "flag": "🇺🇸", "mc": 5009.0, "desc": "AI 가속기 패권자"}, {"name": "Apple", "ticker": "AAPL", "flag": "🇺🇸", "mc": 4891.0, "desc": "프리미엄 디바이스·서비스"}, {"name": "Alphabet (Google)", "ticker": "GOOG", "flag": "🇺🇸", "mc": 3902.0, "desc": "검색·광고 + Gemini AI"}, {"name": "Microsoft", "ticker": "MSFT", "flag": "🇺🇸", "mc": 2835.0, "desc": "엔터프라이즈 + Azure 클라우드"}, {"name": "Amazon", "ticker": "AMZN", "flag": "🇺🇸", "mc": 2496.0, "desc": "전자상거래 + AWS 클라우드"}, {"name": "TSMC", "ticker": "TSM", "flag": "🇹🇼", "mc": 2092.0, "desc": "세계 1위 파운드리"}, {"name": "Broadcom", "ticker": "AVGO", "flag": "🇺🇸", "mc": 1817.0, "desc": "통신·AI 반도체 거인"}, {"name": "Saudi Aramco", "ticker": "2222.SR", "flag": "🇸🇦", "mc": 1729.0, "desc": "세계 최대 석유 기업"}, {"name": "SpaceX", "ticker": "SPCX", "flag": "🇺🇸", "mc": 1515.0, "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"}, {"name": "Meta Platforms (Facebook)", "ticker": "META", "flag": "🇺🇸", "mc": 1510.0, "desc": "글로벌 SNS·광고 1위"}, {"name": "Tesla", "ticker": "TSLA", "flag": "🇺🇸", "mc": 1236.0, "desc": "EV·자율주행·로봇"}, {"name": "삼성전자", "ticker": "005930.KS", "flag": "🇰🇷", "mc": 1123.0, "desc": "메모리·스마트폰 글로벌 1위"}, {"name": "Berkshire Hathaway", "ticker": "BRK-B", "flag": "🇺🇸", "mc": 1067.0, "desc": "워런 버핏의 투자 제국"}, {"name": "Eli Lilly", "ticker": "LLY", "flag": "🇺🇸", "mc": 1066.0, "desc": "GLP-1 비만약 美 선두"}, {"name": "Micron Technology", "ticker": "MU", "flag": "🇺🇸", "mc": 1040.0, "desc": "美 최대 메모리 반도체"}, {"name": "JPMorgan Chase", "ticker": "JPM", "flag": "🇺🇸", "mc": 938.9, "desc": "美 최대 은행"}, {"name": "Walmart", "ticker": "WMT", "flag": "🇺🇸", "mc": 871.17, "desc": "美 1위 소매유통"}, {"name": "SK하이닉스", "ticker": "000660.KS", "flag": "🇰🇷", "mc": 856.06, "desc": "HBM·D램 강자"}, {"name": "AMD", "ticker": "AMD", "flag": "🇺🇸", "mc": 851.09, "desc": "CPU·GPU 추격자"}, {"name": "Visa", "ticker": "V", "flag": "🇺🇸", "mc": 676.52, "desc": "글로벌 결제 네트워크 1위"}], "fetched": "2026-07-26", "columns": [{"date": "2026.07.26", "title": "데이터 천문대 개관 — 숫자로 우주를 관측하는 이유", "summary": "왕좌를 차지하는 것은 거인들의 일이고, 빠짐없이 적어두는 것은 우리의 일입니다. 천문대는 그 기록을 실험대에 올리는 곳입니다.", "body": "<p>매일 아침 8시, 우주지배자는 지구에서 가장 비싼 기업들의 질서를 새로 기록합니다. 데이터 천문대는 그 기록을 한 걸음 물러나서 바라보는 곳입니다 — 순위표가 <b>오늘</b>을 말한다면, 천문대는 <b>구조와 흐름</b>을 말합니다.</p><h3>첫 전시물: 오늘의 태양계</h3><p>시가총액을 행성의 크기로 옮겨 그렸습니다. 태양은 현재의 왕좌, 궤도를 도는 행성들은 그 뒤를 쫓는 거인들입니다. 어제와 오늘의 태양계가 미묘하게 다른 것 — 그것이 우리가 매일 기록하는 이유입니다.</p><h3>앞으로 이곳에 쌓일 것들</h3><p>관측일지에는 하나의 질문을 깊게 파는 분석이 쌓입니다. 특정 산업의 매출 추정, 시장 제도의 통계적 흔적, 거인들의 이동 경로 같은 것들. 질문은 관제센터(커뮤니티)에서도 받습니다 — 궁금한 우주가 있다면 교신을 남겨 주세요.</p><p><i>Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다.</i></p>"}], "tiles": [{"t": "NVDA", "n": "NVIDIA", "mc": 5009.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "AAPL", "n": "Apple", "mc": 4891.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "GOOG", "n": "Alphabet (Google)", "mc": 3902.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "MSFT", "n": "Microsoft", "mc": 2835.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "AMZN", "n": "Amazon", "mc": 2496.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "TSM", "n": "TSMC", "mc": 2092.0, "chg": 0.0, "g": "대만", "f": "🇹🇼"}, {"t": "AVGO", "n": "Broadcom", "mc": 1817.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "2222.SR", "n": "Saudi Aramco", "mc": 1729.0, "chg": 0.0, "g": "사우디", "f": "🇸🇦"}, {"t": "SPCX", "n": "SpaceX", "mc": 1515.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "META", "n": "Meta Platforms (Facebook)", "mc": 1510.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "TSLA", "n": "Tesla", "mc": 1236.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "005930.KS", "n": "삼성전자", "mc": 1123.0, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "BRK-B", "n": "Berkshire Hathaway", "mc": 1067.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "LLY", "n": "Eli Lilly", "mc": 1066.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "MU", "n": "Micron Technology", "mc": 1040.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "JPM", "n": "JPMorgan Chase", "mc": 938.9, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "WMT", "n": "Walmart", "mc": 871.17, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "000660.KS", "n": "SK하이닉스", "mc": 856.06, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "AMD", "n": "AMD", "mc": 851.09, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "V", "n": "Visa", "mc": 676.52, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "XOM", "n": "Exxon Mobil", "mc": 650.5, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "JNJ", "n": "Johnson & Johnson", "mc": 634.06, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "MA", "n": "Mastercard", "mc": 476.83, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "INTC", "n": "Intel", "mc": 464.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "402340.KS", "n": "SK스퀘어", "mc": 100.21, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "005380.KS", "n": "현대차", "mc": 71.98, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "373220.KS", "n": "LG에너지솔루션", "mc": 52.86, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "207940.KS", "n": "삼성바이오로직스", "mc": 48.17, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "KB", "n": "KB금융", "mc": 41.23, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "032830.KS", "n": "삼성생명", "mc": 39.15, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "028260.KS", "n": "삼성물산", "mc": 38.36, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "329180.KS", "n": "HD현대중공업", "mc": 34.92, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "000270.KS", "n": "기아", "mc": 34.77, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "012450.KS", "n": "한화에어로스페이스", "mc": 34.53, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "SHG", "n": "신한지주", "mc": 33.66, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "034020.KS", "n": "두산에너빌리티", "mc": 31.59, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "012330.KS", "n": "현대모비스", "mc": 29.47, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "068270.KS", "n": "셀트리온", "mc": 27.92, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "086790.KS", "n": "하나금융지주", "mc": 24.35, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "009155.KS", "n": "삼성전기", "mc": 24.11, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "034730.KS", "n": "SK", "mc": 23.55, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "035420.KS", "n": "NAVER", "mc": 21.27, "chg": 0.0, "g": "한국", "f": "🇰🇷"}, {"t": "MUFG", "n": "Mitsubishi UFJ Financial", "mc": 258.12, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "TM", "n": "Toyota", "mc": 210.08, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "9984.T", "n": "SoftBank Group Corp.", "mc": 191.33, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "285A.T", "n": "KIOXIA Holdings Corporation", "mc": 187.09, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "8035.T", "n": "Tokyo Electron", "mc": 173.89, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "SMFG", "n": "Sumitomo Mitsui Financial Group", "mc": 166.33, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "9983.T", "n": "Fast Retailing", "mc": 142.76, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "6501.T", "n": "Hitachi", "mc": 132.76, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "MFG", "n": "Mizuho Financial Group", "mc": 129.49, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "6857.T", "n": "Advantest", "mc": 127.91, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "SONY", "n": "Sony", "mc": 123.2, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "8058.T", "n": "Mitsubishi Corporation", "mc": 109.91, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "6861.T", "n": "Keyence", "mc": 106.32, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "6098.T", "n": "Recruit", "mc": 102.44, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "8766.T", "n": "Tokio Marine", "mc": 94.11, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "6981.T", "n": "Murata Manufacturing (Murata Seisakusho)", "mc": 92.34, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "8031.T", "n": "Mitsui Bussan", "mc": 85.91, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "8001.T", "n": "Itōchū Shōji", "mc": 83.52, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "7011.T", "n": "Mitsubishi Heavy Industries", "mc": 80.91, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "4063.T", "n": "Shin-Etsu Chemical", "mc": 76.08, "chg": 0.0, "g": "일본", "f": "🇯🇵"}, {"t": "ASML", "n": "ASML", "mc": 674.89, "chg": 0.0, "g": "네덜란드", "f": "🇳🇱"}, {"t": "HSBC", "n": "HSBC", "mc": 354.62, "chg": 0.0, "g": "영국", "f": "🇬🇧"}, {"t": "RO.SW", "n": "Roche", "mc": 350.5, "chg": 0.0, "g": "스위스", "f": "🇨🇭"}, {"t": "NVS", "n": "Novartis", "mc": 294.62, "chg": 0.0, "g": "스위스", "f": "🇨🇭"}, {"t": "ARM", "n": "Arm Holdings", "mc": 277.71, "chg": 0.0, "g": "영국", "f": "🇬🇧"}, {"t": "AZN", "n": "AstraZeneca", "mc": 262.5, "chg": 0.0, "g": "영국", "f": "🇬🇧"}, {"t": "MC.PA", "n": "LVMH", "mc": 258.91, "chg": 0.0, "g": "프랑스", "f": "🇫🇷"}, {"t": "NESN.SW", "n": "Nestlé", "mc": 253.56, "chg": 0.0, "g": "스위스", "f": "🇨🇭"}, {"t": "SHEL", "n": "Shell", "mc": 244.53, "chg": 0.0, "g": "영국", "f": "🇬🇧"}, {"t": "LIN", "n": "Linde", "mc": 236.85, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "SIE.DE", "n": "Siemens", "mc": 236.16, "chg": 0.0, "g": "독일", "f": "🇩🇪"}, {"t": "OR.PA", "n": "L'Oréal", "mc": 226.87, "chg": 0.0, "g": "프랑스", "f": "🇫🇷"}, {"t": "NVO", "n": "Novo Nordisk", "mc": 215.7, "chg": 0.0, "g": "덴마크", "f": "🇩🇰"}, {"t": "RMS.PA", "n": "Hermès", "mc": 195.7, "chg": 0.0, "g": "프랑스", "f": "🇫🇷"}, {"t": "SAN", "n": "Santander", "mc": 194.0, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "ITX.MC", "n": "Inditex", "mc": 192.82, "chg": 0.0, "g": "스페인", "f": "🇪🇸"}, {"t": "TTE", "n": "TotalEnergies", "mc": 192.72, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "STX", "n": "Seagate Technology", "mc": 190.97, "chg": 0.0, "g": "미국", "f": "🇺🇸"}, {"t": "SAP", "n": "SAP", "mc": 188.62, "chg": 0.0, "g": "독일", "f": "🇩🇪"}, {"t": "AIR.PA", "n": "Airbus", "mc": 184.47, "chg": 0.0, "g": "프랑스", "f": "🇫🇷"}, {"t": "2454.TW", "n": "MediaTek", "mc": 185.21, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2308.TW", "n": "Delta Electronics", "mc": 143.47, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2317.TW", "n": "Foxconn (Hon Hai Precision Industry)", "mc": 109.4, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "6669.TW", "n": "Wiwynn", "mc": 98.85, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "ASX", "n": "ASE Group", "mc": 80.82, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2881.TW", "n": "Fubon Financial", "mc": 53.91, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "UMC", "n": "United Microelectronics", "mc": 48.88, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2882.TW", "n": "Cathay Financial Holding", "mc": 44.03, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "1303.TW", "n": "Nan Ya Plastics", "mc": 43.56, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2327.TW", "n": "Yageo", "mc": 40.89, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "3037.TW", "n": "Unimicron", "mc": 40.86, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2382.TW", "n": "Quanta Computer", "mc": 39.12, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2891.TW", "n": "CTBC Financial Holding", "mc": 38.72, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2408.TW", "n": "Nanya Technology", "mc": 38.44, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2345.TW", "n": "Accton Technology", "mc": 38.39, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "CHT", "n": "Chunghwa Telecom", "mc": 33.16, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2360.TW", "n": "Chroma ATE Inc.", "mc": 27.26, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2887.TW", "n": "Taishin Financial Holdings", "mc": 26.54, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "2885.TW", "n": "Yuanta Financial Holding", "mc": 26.03, "chg": null, "g": "대만", "f": "🇹🇼"}, {"t": "TCEHY", "n": "Tencent", "mc": 500.49, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601939.SS", "n": "China Construction Bank", "mc": 397.05, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601288.SS", "n": "Agricultural Bank of China", "mc": 344.81, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "1398.HK", "n": "ICBC", "mc": 326.77, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601988.SS", "n": "Bank of China", "mc": 286.47, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "BABA", "n": "Alibaba", "mc": 268.78, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "300750.SZ", "n": "CATL", "mc": 262.14, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "600519.SS", "n": "Kweichow Moutai", "mc": 239.92, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "0857.HK", "n": "PetroChina", "mc": 238.28, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "0941.HK", "n": "China Mobile", "mc": 225.64, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601138.SS", "n": "Foxconn Industrial Internet", "mc": 176.87, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "300308.SZ", "n": "Zhongji Innolight", "mc": 172.65, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601628.SS", "n": "China Life Insurance", "mc": 168.54, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "3968.HK", "n": "CM Bank", "mc": 156.81, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601088.SS", "n": "China Shenhua Energy", "mc": 146.63, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601318.SS", "n": "Ping An Insurance", "mc": 144.36, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "0883.HK", "n": "CNOOC", "mc": 142.79, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "601899.SS", "n": "Zijin Mining", "mc": 123.94, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "002594.SZ", "n": "BYD", "mc": 123.93, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "PDD", "n": "PDD Holdings (Pinduoduo)", "mc": 117.65, "chg": 0.0, "g": "중국", "f": "🇨🇳"}, {"t": "1299.HK", "n": "AIA", "mc": 102.63, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "2388.HK", "n": "Bank of China (Hong Kong)", "mc": 69.09, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0388.HK", "n": "Hong Kong Exchanges & Clearing", "mc": 64.31, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "J36.SI", "n": "Jardine Matheson", "mc": 45.87, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0016.HK", "n": "Sun Hung Kai Properties", "mc": 44.6, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0019.HK", "n": "Swire Pacific", "mc": 43.64, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "2259.HK", "n": "Zijin Gold International Company Limited", "mc": 39.24, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0992.HK", "n": "Lenovo", "mc": 38.5, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0001.HK", "n": "CK Hutchison Holdings", "mc": 35.16, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0669.HK", "n": "Techtronic Industries", "mc": 29.85, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "1109.HK", "n": "China Resources Land", "mc": 29.71, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0762.HK", "n": "China Unicom", "mc": 25.75, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0066.HK", "n": "MTR Corporation", "mc": 25.53, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0002.HK", "n": "CLP Group", "mc": 24.98, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "1113.HK", "n": "CK Asset Holdings", "mc": 21.37, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "1038.HK", "n": "CK Infrastructure", "mc": 20.09, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0688.HK", "n": "China Overseas Land & Investment", "mc": 18.53, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0027.HK", "n": "Galaxy Entertainment", "mc": 17.65, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0012.HK", "n": "Henderson Land Development", "mc": 16.99, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}, {"t": "0003.HK", "n": "Hong Kong and China Gas", "mc": 16.6, "chg": 0.0, "g": "홍콩", "f": "🇭🇰"}]};
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let solarRAF = null;
 
@@ -256,46 +268,86 @@ function setObsTab(t, btn){
   document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   if (solarRAF) { cancelAnimationFrame(solarRAF); solarRAF = null; }
-  if (t === 'solar') renderSolar(); else renderColumns();
+  if (t === 'solar') renderSolar(); else if (t === 'map') renderMap(); else renderColumns();
 }
 
 /* ── 오늘의 태양계 ── */
+const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','#2e9d87'], '🇰🇷': ['#ffd88a','#c99544'],
+  '🇸🇦': ['#9fe89f','#4d9e4d'], '🇨🇳': ['#f2a0a0','#c05555'], '🇳🇱': ['#f0c9a0','#c48a4e'], '🇯🇵': ['#f0a9c8','#c45b8a'] };
+const flagColor = f => FLAG_COLOR[f] || ['#c3b8f0','#7a6cc4'];
+
 function renderSolar(){
   const stocks = (DATA.earth || []).slice(0, 20);
   if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
   const sun = stocks[0], planets = stocks.slice(1);
-  const W = 760, H = 560, cx = W/2, cy = H/2;
+  const W = 800, H = 600, cx = W/2, cy = H/2;
   const maxMc = sun.mc;
-  const rOf = mc => 5 + Math.sqrt(mc / maxMc) * 26;
-  const sunR = rOf(sun.mc) + 8;
-  const orbitBase = sunR + 26, orbitStep = (Math.min(W,H)/2 - orbitBase - 20) / planets.length;
+  const rOf = mc => 4.5 + Math.pow(mc / maxMc, 0.6) * 30;
+  const sunR = 40;
+  const orbitBase = sunR + 30, orbitStep = (Math.min(W,H)/2 - orbitBase - 24) / planets.length;
+  const fmt = mc => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
 
-  let svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
-  svg += '<defs><radialGradient id="sunG"><stop offset="0%" stop-color="#ffe9b3"/><stop offset="60%" stop-color="#d4a63f"/><stop offset="100%" stop-color="#9C7A3A"/></radialGradient></defs>';
-  // 별 배경
+  let defs = '<defs>';
+  defs += '<radialGradient id="space" cx="50%" cy="42%" r="75%"><stop offset="0%" stop-color="#1a2140"/><stop offset="55%" stop-color="#121729"/><stop offset="100%" stop-color="#0a0d18"/></radialGradient>';
+  defs += '<radialGradient id="sunCore" cx="38%" cy="34%" r="80%"><stop offset="0%" stop-color="#fff6d8"/><stop offset="40%" stop-color="#ffd873"/><stop offset="78%" stop-color="#e0a93f"/><stop offset="100%" stop-color="#a87c2e"/></radialGradient>';
+  defs += '<radialGradient id="sunGlow"><stop offset="0%" stop-color="#ffd873" stop-opacity="0.55"/><stop offset="45%" stop-color="#e0a93f" stop-opacity="0.18"/><stop offset="100%" stop-color="#e0a93f" stop-opacity="0"/></radialGradient>';
+  defs += '<radialGradient id="neb1"><stop offset="0%" stop-color="#5a4a9e" stop-opacity="0.22"/><stop offset="100%" stop-color="#5a4a9e" stop-opacity="0"/></radialGradient>';
+  defs += '<radialGradient id="neb2"><stop offset="0%" stop-color="#2e6d8a" stop-opacity="0.18"/><stop offset="100%" stop-color="#2e6d8a" stop-opacity="0"/></radialGradient>';
+  planets.forEach((p, i) => { const [hi, lo] = flagColor(p.flag);
+    defs += '<radialGradient id="pg'+i+'" cx="34%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="22%" stop-color="'+hi+'"/><stop offset="100%" stop-color="'+lo+'"/></radialGradient>'; });
+  defs += '</defs>';
+
+  let svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">' + defs;
+  svg += '<rect width="'+W+'" height="'+H+'" fill="url(#space)"/>';
+  svg += '<ellipse cx="'+(W*0.22)+'" cy="'+(H*0.24)+'" rx="220" ry="150" fill="url(#neb1)"/>';
+  svg += '<ellipse cx="'+(W*0.82)+'" cy="'+(H*0.78)+'" rx="260" ry="170" fill="url(#neb2)"/>';
+
+  // 별 — 일부는 반짝임
   let seed = 7;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < 90; i++) svg += '<circle cx="'+(rnd()*W).toFixed(1)+'" cy="'+(rnd()*H).toFixed(1)+'" r="'+(rnd()*1.1+0.2).toFixed(2)+'" fill="#f5f1e6" opacity="'+(rnd()*0.5+0.15).toFixed(2)+'"/>';
+  for (let i = 0; i < 130; i++) {
+    const x=(rnd()*W).toFixed(1), y=(rnd()*H).toFixed(1), r=(rnd()*1.2+0.2).toFixed(2), o=(rnd()*0.55+0.15).toFixed(2);
+    if (i % 6 === 0) {
+      const dur=(rnd()*3+2).toFixed(1);
+      svg += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#f5f1e6"><animate attributeName="opacity" values="'+o+';0.05;'+o+'" dur="'+dur+'s" repeatCount="indefinite"/></circle>';
+    } else svg += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#f5f1e6" opacity="'+o+'"/>';
+  }
+
   // 궤도
   planets.forEach((p, i) => { const orbR = orbitBase + orbitStep*(i+1);
-    svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+orbR.toFixed(1)+'" fill="none" stroke="#2a3350" stroke-width="1"/>'; });
-  // 태양
-  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+sunR+'" fill="url(#sunG)" data-i="0" class="pl"/>';
-  svg += '<text x="'+cx+'" y="'+(cy+sunR+16)+'" text-anchor="middle" fill="#d4b06a" font-size="13" font-weight="800">'+esc(sun.name)+'</text>';
+    svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+orbR.toFixed(1)+'" fill="none" stroke="#3a4568" stroke-opacity="0.45" stroke-width="0.8" stroke-dasharray="1 5"/>'; });
+
+  // 태양 (광륜 + 맥동)
+  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(sunR*2.6)+'" fill="url(#sunGlow)"><animate attributeName="r" values="'+(sunR*2.6)+';'+(sunR*2.9)+';'+(sunR*2.6)+'" dur="5s" repeatCount="indefinite"/></circle>';
+  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+sunR+'" fill="url(#sunCore)" data-i="0" class="pl"/>';
+  svg += '<text x="'+cx+'" y="'+(cy+sunR+20)+'" text-anchor="middle" fill="#ffd873" font-size="14" font-weight="800">'+esc(sun.name)+'</text>';
+  svg += '<text x="'+cx+'" y="'+(cy+sunR+36)+'" text-anchor="middle" fill="#c9a45a" font-size="11.5" font-weight="700">'+fmt(sun.mc)+'</text>';
+
   // 행성
   planets.forEach((p, i) => {
     const orbR = orbitBase + orbitStep*(i+1);
-    const ang = (i * 137.5) * Math.PI / 180;  // 황금각 분산
-    svg += '<g class="orb" data-r="'+orbR.toFixed(1)+'" data-a="'+ang.toFixed(3)+'" data-s="'+(0.0012/(1+i*0.28)).toFixed(6)+'">';
-    svg += '<circle r="'+rOf(p.mc).toFixed(1)+'" fill="'+(i%2?'#7a89b8':'#a8b4d8')+'" data-i="'+(i+1)+'" class="pl" stroke="#10141f" stroke-width="1.5"/>';
-    if (i < 5) svg += '<text y="'+(-rOf(p.mc)-5)+'" text-anchor="middle" fill="#8a94b8" font-size="10.5" font-weight="700">'+esc(p.ticker)+'</text>';
+    const ang = (i * 137.5) * Math.PI / 180;
+    const r = rOf(p.mc);
+    svg += '<g class="orb" data-r="'+orbR.toFixed(1)+'" data-a="'+ang.toFixed(3)+'" data-s="'+(0.0011/(1+i*0.26)).toFixed(6)+'">';
+    if (i === 0) svg += '<ellipse rx="'+(r*1.75)+'" ry="'+(r*0.5)+'" fill="none" stroke="#d8c9a0" stroke-opacity="0.6" stroke-width="1.6" transform="rotate(-18)"/>';
+    svg += '<circle r="'+r.toFixed(1)+'" fill="url(#pg'+i+')" data-i="'+(i+1)+'" class="pl"/>';
+    if (i < 6) {
+      svg += '<text y="'+(-r-8)+'" text-anchor="middle" fill="#c8d0ea" font-size="11" font-weight="800">'+esc(p.ticker)+'</text>';
+      svg += '<text y="'+(r+14)+'" text-anchor="middle" fill="#7c88ac" font-size="9.5" font-weight="700">'+fmt(p.mc)+'</text>';
+    }
     svg += '</g>';
   });
   svg += '</svg>';
 
+  // 국가별 색 범례
+  const flagsUsed = [...new Set(planets.map(p=>p.flag).filter(f=>FLAG_COLOR[f]))];
+  const legend = flagsUsed.map(f => '<span style="display:inline-flex;align-items:center;gap:4px;margin:0 7px">' +
+    '<span style="width:9px;height:9px;border-radius:50%;background:'+flagColor(f)[0]+';display:inline-block"></span>'+f+'</span>').join('');
+
   document.getElementById('obsBody').innerHTML =
     '<div class="solar-wrap">'+svg+'<div class="solar-tip" id="solarTip"></div></div>'+
-    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 행성 색 = 국적 '+legend+'</div>'+
+    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
 
   const wrap = document.querySelector('.solar-wrap');
   const tip = document.getElementById('solarTip');
@@ -308,7 +360,7 @@ function renderSolar(){
       tip.style.display = 'block';
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
       tip.style.top = (e.clientY - rect.top + 14) + 'px';
-      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>$'+(s.mc>=1000?(s.mc/1000).toFixed(2)+'T':s.mc+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+fmt(s.mc)+(s.desc?'<br>'+esc(s.desc):'');
       paused = true;
     } else { tip.style.display = 'none'; paused = false; }
   });
@@ -321,6 +373,99 @@ function renderSolar(){
     solarRAF = requestAnimationFrame(step);
   };
   step();
+}
+
+/* ── 우주 지도 (트리맵) ── */
+function chgColor(chg){
+  if (chg === null || chg === undefined) return '#39415e';
+  const v = Math.max(-3, Math.min(3, chg)) / 3;
+  const mix = (a, b, t) => Math.round(a + (b - a) * t);
+  const base = [46, 54, 84];
+  const to = v >= 0 ? [23, 145, 94] : [188, 62, 62];
+  const t = Math.abs(v);
+  return 'rgb(' + mix(base[0], to[0], t) + ',' + mix(base[1], to[1], t) + ',' + mix(base[2], to[2], t) + ')';
+}
+
+function squarify(items, x, y, w, h, out){
+  // items: [{v, ...}] 내림차순 — 고전 squarified treemap
+  if (!items.length) return;
+  const total = items.reduce((s, i) => s + i.v, 0);
+  let row = [], rest = items.slice(), best = Infinity;
+  const vertical = w < h;
+  const side = vertical ? w : h;
+  while (rest.length) {
+    const cand = row.concat([rest[0]]);
+    const sum = cand.reduce((s, i) => s + i.v, 0);
+    const area = sum / total * w * h;
+    const thick = area / side;
+    let worst = 0;
+    cand.forEach(i => { const len = (i.v / sum) * side;
+      worst = Math.max(worst, Math.max(thick / len, len / thick)); });
+    if (worst <= best) { row = cand; rest.shift(); best = worst; }
+    else break;
+  }
+  const sum = row.reduce((s, i) => s + i.v, 0);
+  const thick = (sum / total * w * h) / side;
+  let off = 0;
+  row.forEach(i => {
+    const len = (i.v / sum) * side;
+    if (vertical) out.push({ ...i, x: x + off, y: y, w: len, h: thick });
+    else out.push({ ...i, x: x, y: y + off, w: thick, h: len });
+    off += len;
+  });
+  if (vertical) squarify(rest, x, y + thick, w, h - thick, out);
+  else squarify(rest, x + thick, y, w - thick, h, out);
+}
+
+function renderMap(){
+  const tiles = (DATA.tiles || []).filter(t => t.mc > 0);
+  if (!tiles.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">지도 데이터 대기 중입니다.</div>'; return; }
+  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1100) || 900, H = 640;
+  // 국가 그룹: 시총 합 내림차순
+  const groups = {};
+  tiles.forEach(t => { (groups[t.g] = groups[t.g] || { name: t.g, f: t.f, v: 0, items: [] }); groups[t.g].v += t.mc; groups[t.g].items.push({ ...t, v: t.mc }); });
+  const glist = Object.values(groups).sort((a, b) => b.v - a.v);
+  glist.forEach(g => g.items.sort((a, b) => b.v - a.v));
+  // 1단계: 국가 블록 배치 → 2단계: 블록 내 종목 배치
+  const gout = [];
+  squarify(glist.map(g => ({ v: g.v, g })), 0, 0, W, H, gout);
+  let html = '';
+  gout.forEach(gb => {
+    const inner = [];
+    squarify(gb.g.items, gb.x + 1, gb.y + 14, gb.w - 2, gb.h - 15, inner);
+    if (gb.w > 46 && gb.h > 26)
+      html += '<div class="map-head" style="left:' + gb.x + 'px;top:' + gb.y + 'px">' + esc(gb.g.f + ' ' + gb.g.name) + '</div>';
+    inner.forEach(t => {
+      const big = t.w > 52 && t.h > 34, mid = t.w > 34 && t.h > 22;
+      const fs = Math.max(9, Math.min(20, Math.sqrt(t.w * t.h) / 5.2));
+      html += '<div class="map-tile" style="left:' + t.x.toFixed(1) + 'px;top:' + t.y.toFixed(1) + 'px;width:' + Math.max(0, t.w - 1).toFixed(1) + 'px;height:' + Math.max(0, t.h - 1).toFixed(1) + 'px;background:' + chgColor(t.chg) + '"' +
+        ' data-tip="' + esc(t.n) + '|' + esc(t.f) + '|' + t.mc + '|' + (t.chg === null ? '' : t.chg) + '">' +
+        (mid ? '<span class="tk" style="font-size:' + fs + 'px">' + esc(t.t) + '</span>' : '') +
+        (big && t.chg !== null ? '<span class="pc" style="font-size:' + Math.max(9, fs * 0.62) + 'px">' + (t.chg > 0 ? '+' : '') + t.chg + '%</span>' : '') +
+      '</div>';
+    });
+  });
+  const scale = [-3, -2, -1, 0, 1, 2, 3].map(v =>
+    '<span style="background:' + chgColor(v) + '">' + (v > 0 ? '+' : '') + v + '%</span>').join('');
+  document.getElementById('obsBody').innerHTML =
+    '<div class="map-wrap"><div class="map-grid" style="height:' + H + 'px">' + html + '</div>' +
+    '<div class="solar-tip" id="mapTip"></div></div>' +
+    '<div class="map-legend">' + scale + '</div>' +
+    '<div class="solar-legend">칸 크기 = 시가총액 · 색 = 전일 대비 시총 증감 · 8개 권역 통합 (' + esc(DATA.fetched || '') + ' 관측)</div>';
+  const wrap = document.querySelector('.map-wrap'), tip = document.getElementById('mapTip');
+  wrap.addEventListener('mousemove', e => {
+    const t = e.target.closest('.map-tile');
+    if (t) {
+      const [n, f, mc, chg] = t.dataset.tip.split('|');
+      const rect = wrap.getBoundingClientRect();
+      tip.style.display = 'block';
+      tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
+      tip.style.top = (e.clientY - rect.top + 14) + 'px';
+      tip.innerHTML = '<b>' + esc(n) + '</b> ' + esc(f) + '<br>' + (mc >= 1000 ? '$' + (mc / 1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B') +
+        (chg !== '' ? '<br>전일 대비 ' + (chg > 0 ? '+' : '') + chg + '%' : '<br>전일 비교 데이터 없음');
+    } else tip.style.display = 'none';
+  });
+  wrap.addEventListener('mouseleave', () => tip.style.display = 'none');
 }
 
 /* ── 관측일지 ── */
