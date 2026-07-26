@@ -241,42 +241,52 @@ const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','
   '🇸🇦': ['#9fe89f','#4d9e4d'], '🇨🇳': ['#f2a0a0','#c05555'], '🇳🇱': ['#f0c9a0','#c48a4e'], '🇯🇵': ['#f0a9c8','#c45b8a'] };
 const flagColor = f => FLAG_COLOR[f] || ['#c3b8f0','#7a6cc4'];
 
+const SHORT_NAME = {'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
+  '005930.KS':'삼성전자','000660.KS':'SK하이닉스','TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
+  'LLY':'Eli Lilly','XOM':'엑슨모빌','JNJ':'J&J','WMT':'월마트','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'};
+function shortName(s){
+  if (SHORT_NAME[s.ticker]) return SHORT_NAME[s.ticker];
+  let n = (s.name || '').replace(/\s*\(.*\)/, '').split(' ')[0];
+  return (n && n.length <= 11) ? n : (n ? n.slice(0, 11) : s.ticker);
+}
+
 function renderSolar(){
   const stocks = (DATA.earth || []).slice(0, 20);
   if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
   const sun = stocks[0], planets = stocks.slice(1);
-  const W = 860, H = 660, cx = W/2, cy = H/2;
+  const W = 880, H = 660, cx = W/2, cy = H/2 + 10;
+  const TILT = 0.62;  // 궤도 기울기 (관측 시점)
   const maxMc = sun.mc;
-  const rOf = mc => 5 + Math.pow(mc / maxMc, 0.58) * 32;
-  const sunR = 42;
-  const orbitBase = sunR + 34, orbitStep = (Math.min(W,H)/2 - orbitBase - 30) / planets.length;
+  const rOf = mc => 5 + Math.pow(mc / maxMc, 0.58) * 30;
+  const sunR = 40;
+  const orbitBase = sunR + 46, orbitStep = (W/2 - orbitBase - 36) / planets.length;
   const fmt = mc => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
-  const halo = ' style="paint-order:stroke" stroke="#0a0d18" stroke-width="3"';
+  const halo = ' style="paint-order:stroke" stroke="#0a0d18" stroke-width="3.2"';
 
   let defs = '<defs>';
-  defs += '<radialGradient id="space" cx="50%" cy="40%" r="80%"><stop offset="0%" stop-color="#1b2244"/><stop offset="55%" stop-color="#121729"/><stop offset="100%" stop-color="#090c16"/></radialGradient>';
-  defs += '<linearGradient id="milky" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8a94c8" stop-opacity="0"/><stop offset="45%" stop-color="#aab4dc" stop-opacity="0.10"/><stop offset="55%" stop-color="#c8d0ea" stop-opacity="0.13"/><stop offset="100%" stop-color="#8a94c8" stop-opacity="0"/></linearGradient>';
-  defs += '<radialGradient id="sunCore" cx="36%" cy="32%" r="85%"><stop offset="0%" stop-color="#fff9e0"/><stop offset="35%" stop-color="#ffd873"/><stop offset="72%" stop-color="#e0a93f"/><stop offset="100%" stop-color="#9c6f26"/></radialGradient>';
-  defs += '<radialGradient id="sunGlow"><stop offset="0%" stop-color="#ffd873" stop-opacity="0.6"/><stop offset="40%" stop-color="#e0a93f" stop-opacity="0.2"/><stop offset="100%" stop-color="#e0a93f" stop-opacity="0"/></radialGradient>';
-  defs += '<radialGradient id="shade" cx="72%" cy="72%" r="85%"><stop offset="0%" stop-color="#0a0d18" stop-opacity="0.55"/><stop offset="45%" stop-color="#0a0d18" stop-opacity="0.22"/><stop offset="100%" stop-color="#0a0d18" stop-opacity="0"/></radialGradient>';
-  defs += '<radialGradient id="neb1"><stop offset="0%" stop-color="#5a4a9e" stop-opacity="0.25"/><stop offset="100%" stop-color="#5a4a9e" stop-opacity="0"/></radialGradient>';
+  defs += '<radialGradient id="space" cx="50%" cy="40%" r="82%"><stop offset="0%" stop-color="#1c2346"/><stop offset="55%" stop-color="#121729"/><stop offset="100%" stop-color="#080b14"/></radialGradient>';
+  defs += '<linearGradient id="milky" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8a94c8" stop-opacity="0"/><stop offset="45%" stop-color="#aab4dc" stop-opacity="0.10"/><stop offset="55%" stop-color="#c8d0ea" stop-opacity="0.14"/><stop offset="100%" stop-color="#8a94c8" stop-opacity="0"/></linearGradient>';
+  defs += '<radialGradient id="sunCore" cx="36%" cy="32%" r="85%"><stop offset="0%" stop-color="#fffbe8"/><stop offset="30%" stop-color="#ffd873"/><stop offset="70%" stop-color="#e0a93f"/><stop offset="100%" stop-color="#96691f"/></radialGradient>';
+  defs += '<radialGradient id="sunGlow"><stop offset="0%" stop-color="#ffd873" stop-opacity="0.65"/><stop offset="42%" stop-color="#e0a93f" stop-opacity="0.2"/><stop offset="100%" stop-color="#e0a93f" stop-opacity="0"/></radialGradient>';
+  defs += '<linearGradient id="flare" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="0%" stop-color="#ffd873" stop-opacity="0"/><stop offset="50%" stop-color="#fff0c8" stop-opacity="0.5"/><stop offset="100%" stop-color="#ffd873" stop-opacity="0"/></linearGradient>';
+  defs += '<radialGradient id="shade" cx="74%" cy="74%" r="88%"><stop offset="0%" stop-color="#080b14" stop-opacity="0.6"/><stop offset="45%" stop-color="#080b14" stop-opacity="0.24"/><stop offset="100%" stop-color="#080b14" stop-opacity="0"/></radialGradient>';
+  defs += '<radialGradient id="neb1"><stop offset="0%" stop-color="#5a4a9e" stop-opacity="0.26"/><stop offset="100%" stop-color="#5a4a9e" stop-opacity="0"/></radialGradient>';
   defs += '<radialGradient id="neb2"><stop offset="0%" stop-color="#2e6d8a" stop-opacity="0.2"/><stop offset="100%" stop-color="#2e6d8a" stop-opacity="0"/></radialGradient>';
   planets.forEach((p, i) => { const [hi, lo] = flagColor(p.flag);
-    defs += '<radialGradient id="pg'+i+'" cx="32%" cy="28%" r="85%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="20%" stop-color="'+hi+'"/><stop offset="100%" stop-color="'+lo+'"/></radialGradient>'; });
+    defs += '<radialGradient id="pg'+i+'" cx="32%" cy="28%" r="85%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="20%" stop-color="'+hi+'"/><stop offset="100%" stop-color="'+lo+'"/></radialGradient>';
+    defs += '<clipPath id="pc'+i+'"><circle r="'+rOf(p.mc).toFixed(1)+'"/></clipPath>'; });
   defs += '</defs>';
 
   let svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">' + defs;
   svg += '<rect width="'+W+'" height="'+H+'" fill="url(#space)"/>';
-  // 은하수 띠
-  svg += '<ellipse cx="'+(W*0.5)+'" cy="'+(H*0.5)+'" rx="'+(W*0.85)+'" ry="'+(H*0.22)+'" fill="url(#milky)" transform="rotate(-24 '+(W*0.5)+' '+(H*0.5)+')"/>';
-  svg += '<ellipse cx="'+(W*0.18)+'" cy="'+(H*0.2)+'" rx="230" ry="150" fill="url(#neb1)"/>';
-  svg += '<ellipse cx="'+(W*0.85)+'" cy="'+(H*0.82)+'" rx="270" ry="170" fill="url(#neb2)"/>';
+  svg += '<ellipse cx="'+(W*0.5)+'" cy="'+(H*0.5)+'" rx="'+(W*0.85)+'" ry="'+(H*0.22)+'" fill="url(#milky)" transform="rotate(-22 '+(W*0.5)+' '+(H*0.5)+')"/>';
+  svg += '<ellipse cx="'+(W*0.16)+'" cy="'+(H*0.2)+'" rx="230" ry="150" fill="url(#neb1)"/>';
+  svg += '<ellipse cx="'+(W*0.86)+'" cy="'+(H*0.83)+'" rx="270" ry="170" fill="url(#neb2)"/>';
 
-  // 별 — 다층 + 반짝임 + 색별
   let seed = 7;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const starCol = ['#f5f1e6','#f5f1e6','#f5f1e6','#cfe0ff','#ffe0c9'];
-  for (let i = 0; i < 170; i++) {
+  for (let i = 0; i < 180; i++) {
     const x=(rnd()*W).toFixed(1), y=(rnd()*H).toFixed(1), r=(rnd()*1.3+0.2).toFixed(2), o=(rnd()*0.6+0.12).toFixed(2);
     const c = starCol[Math.floor(rnd()*starCol.length)];
     if (i % 5 === 0) {
@@ -284,61 +294,70 @@ function renderSolar(){
       svg += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+c+'"><animate attributeName="opacity" values="'+o+';0.04;'+o+'" dur="'+dur+'s" repeatCount="indefinite"/></circle>';
     } else svg += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+c+'" opacity="'+o+'"/>';
   }
-  // 별똥별 2개 (간헐)
-  [[0,'M -40 60 L '+(W*0.55)+' '+(H*0.34),'11s'],[1,'M '+(W+40)+' '+(H*0.15)+' L '+(W*0.35)+' '+(H*0.62),'17s']].forEach(([k,path,dur]) => {
+  [[0,'M -40 60 L '+(W*0.55)+' '+(H*0.32),'11s'],[1,'M '+(W+40)+' '+(H*0.14)+' L '+(W*0.35)+' '+(H*0.62),'17s']].forEach(([k,path,dur]) => {
     svg += '<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.86;0.9;1" dur="'+dur+'" repeatCount="indefinite"/>' +
       '<circle r="1.6" fill="#fff"><animateMotion path="'+path+'" dur="'+dur+'" repeatCount="indefinite"/></circle></g>';
   });
 
-  // 궤도
+  // 기울어진 궤도 (타원)
   planets.forEach((p, i) => { const orbR = orbitBase + orbitStep*(i+1);
-    svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+orbR.toFixed(1)+'" fill="none" stroke="#4a5578" stroke-opacity="0.5" stroke-width="0.9" stroke-dasharray="1 6"/>'; });
+    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+orbR.toFixed(1)+'" ry="'+(orbR*TILT).toFixed(1)+'" fill="none" stroke="#4a5578" stroke-opacity="0.5" stroke-width="0.9" stroke-dasharray="1 6"/>'; });
 
-  // 태양: 코로나 광선(느린 회전) + 광륜(맥동) + 코어
-  let rays = '<g opacity="0.35"><animateTransform attributeName="transform" type="rotate" from="0 '+cx+' '+cy+'" to="360 '+cx+' '+cy+'" dur="120s" repeatCount="indefinite"/>';
+  // 뒤층 → 태양 → 앞층 (행성이 태양 뒤로 실제로 돌아감)
+  svg += '<g id="backLayer"></g>';
+  let rays = '<g opacity="0.32"><animateTransform attributeName="transform" type="rotate" from="0 '+cx+' '+cy+'" to="360 '+cx+' '+cy+'" dur="120s" repeatCount="indefinite"/>';
   for (let k = 0; k < 12; k++) { const a = k * 30 * Math.PI/180, L = sunR*2.4;
     rays += '<polygon points="'+cx+','+cy+' '+(cx+Math.cos(a-0.045)*L)+','+(cy+Math.sin(a-0.045)*L)+' '+(cx+Math.cos(a+0.045)*L)+','+(cy+Math.sin(a+0.045)*L)+'" fill="#e0a93f" opacity="0.22"/>'; }
   rays += '</g>';
   svg += rays;
-  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(sunR*2.7)+'" fill="url(#sunGlow)"><animate attributeName="r" values="'+(sunR*2.7)+';'+(sunR*3.0)+';'+(sunR*2.7)+'" dur="5s" repeatCount="indefinite"/></circle>';
+  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(sunR*2.7)+'" fill="url(#sunGlow)"><animate attributeName="r" values="'+(sunR*2.7)+';'+(sunR*3.05)+';'+(sunR*2.7)+'" dur="5s" repeatCount="indefinite"/></circle>';
+  svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(sunR*3.4)+'" ry="2.2" fill="url(#flare)" opacity="0.8"/>';
   svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+sunR+'" fill="url(#sunCore)" data-i="0" class="pl"/>';
-  svg += '<text x="'+cx+'" y="'+(cy+sunR+21)+'" text-anchor="middle" fill="#ffd873" font-size="15" font-weight="800"'+halo+'>'+esc(sun.name)+'</text>';
-  svg += '<text x="'+cx+'" y="'+(cy+sunR+38)+'" text-anchor="middle" fill="#d4b06a" font-size="12" font-weight="700"'+halo+'>'+fmt(sun.mc)+'</text>';
-
-  // 행성: 그믐 음영 + 림 글로우 + 고리 + 전 종목 라벨
-  planets.forEach((p, i) => {
-    const orbR = orbitBase + orbitStep*(i+1);
-    const ang = (i * 137.5) * Math.PI / 180;
-    const r = rOf(p.mc);
-    const [hi] = flagColor(p.flag);
-    svg += '<g class="orb" data-r="'+orbR.toFixed(1)+'" data-a="'+ang.toFixed(3)+'" data-s="'+(0.0010/(1+i*0.24)).toFixed(6)+'">';
-    if (i === 0) svg += '<ellipse rx="'+(r*1.8)+'" ry="'+(r*0.52)+'" fill="none" stroke="#d8c9a0" stroke-opacity="0.35" stroke-width="3.5" transform="rotate(-18)"/><ellipse rx="'+(r*1.8)+'" ry="'+(r*0.52)+'" fill="none" stroke="#f0e2c0" stroke-opacity="0.7" stroke-width="1.2" transform="rotate(-18)"/>';
-    if (i < 3) svg += '<circle r="'+(r+2.5)+'" fill="none" stroke="'+hi+'" stroke-opacity="0.35" stroke-width="2"/>';
-    svg += '<circle r="'+r.toFixed(1)+'" fill="url(#pg'+i+')" data-i="'+(i+1)+'" class="pl"/>';
-    svg += '<circle r="'+r.toFixed(1)+'" fill="url(#shade)" pointer-events="none"/>';
-    const fs = Math.max(9.5, Math.min(12.5, r*0.6));
-    svg += '<text y="'+(r+12)+'" text-anchor="middle" fill="#dfe5f7" font-size="'+fs.toFixed(1)+'" font-weight="800"'+halo+'>'+esc(p.ticker)+'</text>';
-    if (i < 8) svg += '<text y="'+(r+24)+'" text-anchor="middle" fill="#93a0c6" font-size="'+(fs*0.82).toFixed(1)+'" font-weight="700"'+halo+'>'+fmt(p.mc)+'</text>';
-    svg += '</g>';
-  });
+  svg += '<text x="'+cx+'" y="'+(cy+sunR+22)+'" text-anchor="middle" fill="#ffd873" font-size="15.5" font-weight="800"'+halo+'>'+esc(shortName(sun))+'</text>';
+  svg += '<text x="'+cx+'" y="'+(cy+sunR+39)+'" text-anchor="middle" fill="#d4b06a" font-size="12" font-weight="700"'+halo+'>'+fmt(sun.mc)+'</text>';
+  svg += '<g id="frontLayer"></g>';
   svg += '</svg>';
 
-  const flagsUsed = [...new Set(planets.map(p=>p.flag).filter(f=>FLAG_COLOR[f]))];
-  const legend = flagsUsed.map(f => '<span style="display:inline-flex;align-items:center;gap:4px;margin:0 7px">' +
-    '<span style="width:9px;height:9px;border-radius:50%;background:'+flagColor(f)[0]+';display:inline-block"></span>'+f+'</span>').join('');
-
+  // 행성 노드 생성 (문자열이 아닌 DOM으로 — 층 이동을 위해)
   document.getElementById('obsBody').innerHTML =
     '<div class="solar-wrap">'+svg+'<div class="solar-tip" id="solarTip"></div></div>'+
-    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 행성 색 = 국적 '+legend+'</div>'+
-    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 행성 색 = 국적 ' +
+      [...new Set(planets.map(p=>p.flag).filter(f=>FLAG_COLOR[f]))].map(f =>
+        '<span style="display:inline-flex;align-items:center;gap:4px;margin:0 7px"><span style="width:9px;height:9px;border-radius:50%;background:'+flagColor(f)[0]+';display:inline-block"></span>'+f+'</span>').join('') +
+    '</div><div class="solar-legend" style="margin-top:4px">행성은 태양 뒤로도 돕니다 — 매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const back = document.getElementById('backLayer'), front = document.getElementById('frontLayer');
+  const orbs = planets.map((p, i) => {
+    const r = rOf(p.mc);
+    const [hi] = flagColor(p.flag);
+    const g = document.createElementNS(NS, 'g');
+    let inner = '';
+    if (i === 0) inner += '<ellipse rx="'+(r*1.8)+'" ry="'+(r*0.5)+'" fill="none" stroke="#d8c9a0" stroke-opacity="0.35" stroke-width="3.5" transform="rotate(-18)"/><ellipse rx="'+(r*1.8)+'" ry="'+(r*0.5)+'" fill="none" stroke="#f0e2c0" stroke-opacity="0.7" stroke-width="1.2" transform="rotate(-18)"/>';
+    if (i < 3) inner += '<circle r="'+(r+2.5)+'" fill="none" stroke="'+hi+'" stroke-opacity="0.35" stroke-width="2"/>';
+    inner += '<circle r="'+r.toFixed(1)+'" fill="url(#pg'+i+')" data-i="'+(i+1)+'" class="pl"/>';
+    if (r > 15) inner += '<g clip-path="url(#pc'+i+')" pointer-events="none" opacity="0.16">' +
+      '<ellipse cy="'+(-r*0.34)+'" rx="'+r+'" ry="'+(r*0.14)+'" fill="#0a0d18" transform="rotate(-8)"/>' +
+      '<ellipse cy="'+(r*0.08)+'" rx="'+r+'" ry="'+(r*0.11)+'" fill="#ffffff" transform="rotate(-8)"/>' +
+      '<ellipse cy="'+(r*0.44)+'" rx="'+r+'" ry="'+(r*0.13)+'" fill="#0a0d18" transform="rotate(-8)"/></g>';
+    inner += '<circle r="'+r.toFixed(1)+'" fill="url(#shade)" pointer-events="none"/>';
+    const fs = Math.max(10, Math.min(13, r*0.62));
+    inner += '<text y="'+(r+13)+'" text-anchor="middle" fill="#e6ebfa" font-size="'+fs.toFixed(1)+'" font-weight="800"'+halo+'>'+esc(shortName(p))+'</text>';
+    if (i < 8) inner += '<text y="'+(r+26)+'" text-anchor="middle" fill="#93a0c6" font-size="'+(fs*0.8).toFixed(1)+'" font-weight="700"'+halo+'>'+fmt(p.mc)+'</text>';
+    g.innerHTML = inner;
+    front.appendChild(g);
+    return { g, orbR: orbitBase + orbitStep*(i+1), a: (i * 137.5) * Math.PI/180,
+             s: 0.0010/(1+i*0.24), inFront: true };
+  });
 
   const wrap = document.querySelector('.solar-wrap');
   const tip = document.getElementById('solarTip');
+  const stocksAll = stocks;
   let paused = false;
   wrap.addEventListener('mousemove', e => {
     const t = e.target;
     if (t.classList && t.classList.contains('pl')) {
-      const s = stocks[+t.dataset.i];
+      const s = stocksAll[+t.dataset.i];
       const rect = wrap.getBoundingClientRect();
       tip.style.display = 'block';
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
@@ -349,10 +368,19 @@ function renderSolar(){
   });
   wrap.addEventListener('mouseleave', () => { tip.style.display = 'none'; paused = false; });
 
-  const orbs = [...document.querySelectorAll('.orb')].map(g => ({ g, r: +g.dataset.r, a: +g.dataset.a, s: +g.dataset.s }));
   const step = () => {
-    if (!paused) orbs.forEach(o => { o.a += o.s;
-      o.g.setAttribute('transform', 'translate(' + (cx + o.r*Math.cos(o.a)).toFixed(1) + ',' + (cy + o.r*Math.sin(o.a)).toFixed(1) + ')'); });
+    if (!paused) orbs.forEach(o => {
+      o.a += o.s;
+      const sin = Math.sin(o.a);
+      const x = cx + o.orbR * Math.cos(o.a);
+      const y = cy + o.orbR * TILT * sin;
+      const depth = (sin + 1) / 2;                 // 0 = 맨 뒤, 1 = 맨 앞
+      const sc = 0.72 + depth * 0.42;
+      o.g.setAttribute('transform', 'translate('+x.toFixed(1)+','+y.toFixed(1)+') scale('+sc.toFixed(3)+')');
+      o.g.setAttribute('opacity', (0.72 + depth * 0.28).toFixed(2));
+      const nowFront = sin >= 0;
+      if (nowFront !== o.inFront) { (nowFront ? front : back).appendChild(o.g); o.inFront = nowFront; }
+    });
     solarRAF = requestAnimationFrame(step);
   };
   step();
