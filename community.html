@@ -166,6 +166,12 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .badge.hot { background: var(--gold-bg); color: var(--gold); }
 .post-img { margin-top: 10px; }
 .post-img img { max-width: 100%; max-height: 340px; border-radius: 10px; border: 1px solid var(--line); cursor: pointer; }
+.img-prev { position: relative; display: inline-block; margin-top: 8px; }
+.img-prev img { max-height: 110px; border-radius: 8px; border: 1px solid var(--line); }
+.img-prev button { position: absolute; top: -8px; right: -8px; background: var(--text); color: var(--bg); border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; line-height: 1; }
+.composer.dragging { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-bg); }
+.btn-photo { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: inherit; color: var(--text-secondary); font-weight: 700; }
+.btn-photo:hover { border-color: var(--gold); }
 .comm-guide { font-size: 12px; color: var(--text-muted); margin: 0 0 16px; }
 </style>
 <style>
@@ -303,6 +309,39 @@ async function fetchNicks(uids){
   }));
 }
 const shownName = (uid, fallback) => nickCache[uid] || fallback || '우주인';
+let pendingImg = null;  // 업로드 대기 중인 압축 이미지 (dataURL)
+const imageCache = {};  // imgId → dataURL
+
+async function compressImage(file){
+  if (!file || !file.type.startsWith('image/')) throw new Error('이미지 파일만 첨부할 수 있습니다.');
+  if (file.type === 'image/gif') throw new Error('움직이는 GIF는 링크 칸을 이용해 주세요 (압축 시 애니메이션이 사라집니다).');
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('이미지를 읽지 못했습니다.')); i.src = url; });
+    for (const [maxW, q] of [[900, 0.72], [700, 0.55], [550, 0.42]]) {
+      const scale = Math.min(1, maxW / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.width * scale));
+      c.height = Math.max(1, Math.round(img.height * scale));
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      const data = c.toDataURL('image/jpeg', q);
+      if (data.length < 350000) return data;
+    }
+    throw new Error('사진 용량이 너무 큽니다 — 더 작은 사진으로 시도해 주세요.');
+  } finally { URL.revokeObjectURL(url); }
+}
+
+async function attachFile(file){
+  try { pendingImg = await compressImage(file); renderImgPrev(); }
+  catch(e){ alert(e.message); }
+}
+
+function renderImgPrev(){
+  const box = $('imgPrev'); if (!box) return;
+  box.innerHTML = pendingImg
+    ? '<div class="img-prev"><img src="' + pendingImg + '" alt=""><button type="button" id="imgRm">✕</button></div>' : '';
+  const rm = $('imgRm'); if (rm) rm.onclick = () => { pendingImg = null; renderImgPrev(); };
+}
 
 async function changeNick(){
   const cur = myNick || me.displayName || '';
@@ -328,8 +367,13 @@ function renderAuth(){
     $('btnOut').onclick = () => signOut(auth);
     const isAdmin = window.__cfg && window.__cfg.adminUid && me.uid === window.__cfg.adminUid;
     cw.innerHTML = '<div class="composer"><textarea id="txt" maxlength="600" placeholder="오늘의 관측을 남겨 주세요 (최대 500자)"></textarea>'+
-      '<div class="emoji-bar">'+['🚀','📈','📉','✦','🌕','🔥','💎','😂','👍','🙌'].map(e=>'<button type="button" class="emoji-btn" data-e="'+e+'">'+e+'</button>').join('')+'</div>'+
-      '<div class="composer-foot"><input id="imgUrl" maxlength="500" placeholder="GIF·이미지 링크 (선택 · tenor / giphy / imgur / ibb / postimg)"></div>'+
+      '<div class="emoji-bar">'+['🚀','📈','📉','✦','🌕','🔥','💎','😂','👍','🙌','💰','🤔','😱','🎯','⚡','🌍','🪐','☄️','📊','🐂','🐻','🤝','🧨','🎉'].map(e=>'<button type="button" class="emoji-btn" data-e="'+e+'">'+e+'</button>').join('')+'</div>'+
+      '<div class="composer-foot"><button type="button" class="btn-photo" id="btnPhoto">📷 사진 첨부</button>'+
+      '<input type="file" id="fileInp" accept="image/*" style="display:none">'+
+      '<span class="comm-guide" style="margin:0">드래그해서 놓거나, 붙여넣기(Ctrl+V)도 됩니다</span></div>'+
+      '<div id="imgPrev"></div>'+
+      '<details style="margin-top:6px"><summary class="comm-guide" style="cursor:pointer">움직이는 GIF는 링크로 (tenor·giphy 등)</summary>'+
+      '<div class="composer-foot"><input id="imgUrl" maxlength="500" placeholder="GIF 링크 붙여넣기 (tenor / giphy / imgur / ibb / postimg)"></div></details>'+
       '<div class="composer-foot"><input id="tags" maxlength="60" placeholder="종목 태그 (선택 · 쉼표로 최대 3개, 예: 엔비디아, SK하이닉스)">'+
       '<span class="char-count" id="cc">0/500</span>'+
       (isAdmin ? '<label class="pin-label"><input type="checkbox" id="pinChk"> 📌 공지로 고정</label>' : '')+
@@ -341,6 +385,17 @@ function renderAuth(){
       t.dispatchEvent(new Event('input'));
     });
     $('txt').addEventListener('input', ()=>{ const n=$('txt').value.length; $('cc').textContent=n+'/500'; $('cc').className='char-count'+(n>500?' over':''); });
+    $('btnPhoto').onclick = () => $('fileInp').click();
+    $('fileInp').onchange = e => { if (e.target.files[0]) attachFile(e.target.files[0]); e.target.value = ''; };
+    const comp = cw.querySelector('.composer');
+    comp.addEventListener('dragover', e => { e.preventDefault(); comp.classList.add('dragging'); });
+    comp.addEventListener('dragleave', () => comp.classList.remove('dragging'));
+    comp.addEventListener('drop', e => { e.preventDefault(); comp.classList.remove('dragging');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) attachFile(e.dataTransfer.files[0]); });
+    $('txt').addEventListener('paste', e => {
+      const it = [...(e.clipboardData.items || [])].find(i => i.type.startsWith('image/'));
+      if (it) { e.preventDefault(); attachFile(it.getAsFile()); }
+    });
     $('btnSend').onclick = sendPost;
   } else {
     bar.innerHTML = '<button class="btn btn-gold" id="btnIn">구글로 시작하기</button>'+
@@ -359,8 +414,14 @@ async function sendPost(){
   const pinned = !!(document.getElementById('pinChk') && document.getElementById('pinChk').checked);
   $('btnSend').disabled = true;
   try{
-    await addDoc(collection(db,'posts'), { uid: me.uid, name: myNick || me.displayName || '우주인', photo: me.photoURL||'', text, tags, img, pinned, created: serverTimestamp() });
+    let imgId = '';
+    if (pendingImg) {
+      const ref = await addDoc(collection(db,'images'), { uid: me.uid, data: pendingImg, created: serverTimestamp() });
+      imgId = ref.id; imageCache[imgId] = pendingImg;
+    }
+    await addDoc(collection(db,'posts'), { uid: me.uid, name: myNick || me.displayName || '우주인', photo: me.photoURL||'', text, tags, img, imgId, pinned, created: serverTimestamp() });
     $('txt').value=''; $('tags').value=''; $('imgUrl').value=''; $('cc').textContent='0/500';
+    pendingImg = null; renderImgPrev();
     await loadFeed();
   }catch(e){ alert('전송 실패: '+e.message); }
   $('btnSend').disabled = false;
@@ -404,7 +465,8 @@ function renderFeed(){
       '<span class="post-time">'+rel(p.created)+'</span>'+
       (me && me.uid===p.uid ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
       '<div class="post-text">'+esc(p.text)+'</div>'+
-      (p.img && imgOk(p.img) ? '<div class="post-img"><a href="'+esc(p.img)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.parentNode.style.display=\'none\'"></a></div>' : '')+
+      (p.imgId ? '<div class="post-img" data-imgid="'+esc(p.imgId)+'">'+(imageCache[p.imgId]?'<img src="'+imageCache[p.imgId]+'" alt="">':'<span class="comm-guide">사진 불러오는 중…</span>')+'</div>'
+        : (p.img && imgOk(p.img) ? '<div class="post-img"><a href="'+esc(p.img)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.parentNode.style.display=\'none\'"></a></div>' : ''))+
       (p.tags && p.tags.length ? '<div class="post-tags">'+p.tags.map(t=>'<span class="tag-chip">'+esc(t)+'</span>').join('')+'</div>' : '')+
       '<div class="post-foot">'+
         '<button class="act'+(p.mine?' on':'')+'" data-star="'+p.id+'">✦ 중력 '+p.stars+'</button>'+
@@ -414,6 +476,14 @@ function renderFeed(){
   $('feed').querySelectorAll('[data-star]').forEach(b=> b.onclick = ()=>toggleStar(b.dataset.star));
   $('feed').querySelectorAll('[data-cmt]').forEach(b=> b.onclick = ()=>toggleComments(b.dataset.cmt));
   $('feed').querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>delPost(b.dataset.del));
+  $('feed').querySelectorAll('[data-imgid]').forEach(async box => {
+    const id = box.dataset.imgid;
+    if (imageCache[id]) return;
+    try { const s = await getDoc(doc(db,'images',id));
+      if (s.exists()) { imageCache[id] = s.data().data; box.innerHTML = '<img src="'+imageCache[id]+'" alt="">'; }
+      else box.style.display = 'none';
+    } catch(e){ box.style.display = 'none'; }
+  });
 }
 
 async function toggleStar(id){
