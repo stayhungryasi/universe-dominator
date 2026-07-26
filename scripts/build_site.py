@@ -172,10 +172,45 @@ def build_observatory():
     cols_path = DATA_DIR / "columns.json"
     cols = json.loads(cols_path.read_text(encoding="utf-8")).get("columns", []) if cols_path.exists() else []
     meta = latest.get("meta", {})
+    # ── 우주 지도 타일: 전 지역 고유 종목 + 전일 대비 시총 증감 ──
+    FLAG_KO = {"🇺🇸": "미국", "🇰🇷": "한국", "🇯🇵": "일본", "🇹🇼": "대만", "🇨🇳": "중국",
+               "🇭🇰": "홍콩", "🇬🇧": "영국", "🇩🇪": "독일", "🇫🇷": "프랑스", "🇨🇭": "스위스",
+               "🇳🇱": "네덜란드", "🇸🇦": "사우디", "🇩🇰": "덴마크", "🇸🇪": "스웨덴",
+               "🇮🇪": "아일랜드", "🇪🇸": "스페인", "🇮🇹": "이탈리아", "🇹🇭": "태국"}
+    prev_mc = {}
+    snap_dir = DATA_DIR / "snapshots"
+    today = meta.get("fetched_date", "")
+    if snap_dir.exists():
+        for s in sorted(snap_dir.glob("*.json"), reverse=True):
+            if today and today in s.name:
+                continue
+            try:
+                prev = json.loads(s.read_text(encoding="utf-8"))
+                for reg in prev.get("regions", {}).values():
+                    rows = reg if isinstance(reg, list) else reg.get("stocks", [])
+                    for r in rows:
+                        if r.get("ticker") and r.get("mc"):
+                            prev_mc.setdefault(r["ticker"], r["mc"])
+                break
+            except Exception:
+                continue
+    tiles, seen = [], set()
+    for reg in latest.get("regions", {}).values():
+        for s in reg.get("stocks", []):
+            tk = s.get("ticker")
+            if not tk or tk in seen or not s.get("mc"):
+                continue
+            seen.add(tk)
+            pm = prev_mc.get(tk)
+            chg = round((s["mc"] - pm) / pm * 100, 2) if pm else None
+            tiles.append({"t": tk, "n": s["name"], "mc": s["mc"], "chg": chg,
+                          "g": FLAG_KO.get(s.get("flag", ""), "기타"),
+                          "f": s.get("flag", "")})
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
         "columns": cols,
+        "tiles": tiles,
     }
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
