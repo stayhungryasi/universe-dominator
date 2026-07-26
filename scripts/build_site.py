@@ -87,7 +87,6 @@ def build_megatrend():
 
 
 PLACEHOLDERS = [
-    {"filename":"my-universe.html", "title":"나의우주", "desc":"관심 종목 핀, 보유 종목 트래킹, 개인화 대시보드.",          "icon":"👤", "active":"my"},
 ]
 
 
@@ -161,6 +160,54 @@ def build_community():
     out = HERE / "community.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
+
+
+def build_observatory():
+    """observatory.html — 데이터 천문대 (오늘의 태양계 + 관측일지)"""
+    template_path = SCRIPTS_DIR / "observatory-template.html"
+    if not template_path.exists():
+        print("[skip] observatory-template.html 없음"); return
+    template = template_path.read_text(encoding="utf-8")
+    latest = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
+    cols_path = DATA_DIR / "columns.json"
+    cols = json.loads(cols_path.read_text(encoding="utf-8")).get("columns", []) if cols_path.exists() else []
+    meta = latest.get("meta", {})
+    obs_data = {
+        "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
+        "fetched": meta.get("fetched_date", ""),
+        "columns": cols,
+    }
+    html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    html = html.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
+    for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
+        html = html.replace("{{ACTIVE_" + key + "}}", "")
+    (HERE / "observatory.html").write_text(html, encoding="utf-8")
+    print(f"[OK] observatory.html ({len(html):,} chars)")
+    # 구주소 리다이렉트 (북마크 보호)
+    (HERE / "my-universe.html").write_text(
+        '<!doctype html><meta charset="utf-8">'
+        '<meta http-equiv="refresh" content="0; url=observatory.html">'
+        '<a href="observatory.html">데이터 천문대로 이동</a>', encoding="utf-8")
+    print("[OK] my-universe.html → observatory.html 리다이렉트")
+
+
+def swap_nav_to_observatory():
+    """전 페이지 nav의 나의우주 → 데이터 천문대 (멱등 치환)"""
+    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
+             "community.html", "history-top20.html", "history-latent.html", "about.html"]
+    n = 0
+    for name in pages:
+        f = HERE / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        new = html.replace('href="my-universe.html"', 'href="observatory.html"').replace(">나의우주<", ">데이터 천문대<")
+        if new != html:
+            f.write_text(new, encoding="utf-8"); n += 1
+    print(f"[OK] nav 교체(천문대): {n}개 페이지")
 
 
 def build_placeholders():
@@ -296,7 +343,7 @@ PRESENCE_SNIPPET = """<!-- uv-presence -->
 def inject_presence():
     """전 페이지 </body> 직전에 접속자 카운터 스니펫 주입 (멱등)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "my-universe.html", "history-top20.html",
+             "community.html", "observatory.html", "history-top20.html",
              "history-latent.html", "about.html"]
     n = 0
     for name in pages:
@@ -315,7 +362,7 @@ def inject_presence():
 def inject_header_fix():
     """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "my-universe.html", "history-top20.html", "history-latent.html", "about.html"]
+             "community.html", "observatory.html", "history-top20.html", "history-latent.html", "about.html"]
     n = 0
     for name in pages:
         f = HERE / name
@@ -349,12 +396,14 @@ def main():
     build_megatrend()
     build_placeholders()
     build_community()
+    build_observatory()
     build_research()
     build_about()
     build_history("top20",  "home",   "history-top20.html")
     build_history("latent", "latent", "history-latent.html")
     inject_header_fix()
     inject_presence()
+    swap_nav_to_observatory()
     print("=" * 50)
     print("빌드 완료")
 
