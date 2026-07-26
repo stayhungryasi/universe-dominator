@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데이터 천문대 · UNIVERTRIX</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+:root, [data-theme="light"] {
+  --bg: #FAF6EC; --bg-card: #FFFFFF; --header-bg: rgba(250, 246, 236, 0.95);
+  --text: #1A2438; --text-secondary: #525F7E; --text-muted: #8590AA;
+  --gold: #9C7A3A; --gold-bg: #F0E6CC;
+  --line: #E8DFC9; --line-strong: #C9BC9A;
+}
+[data-theme="dark"] {
+  --bg: #0A0E14; --bg-card: #1C2330; --header-bg: rgba(10, 14, 20, 0.95);
+  --text: #FFFFFF; --text-secondary: #B5BFD6; --text-muted: #6F7E9E;
+  --gold: #D4A658; --gold-bg: #2A2519;
+  --line: #2A3142; --line-strong: #3A4458;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard Variable', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  font-feature-settings: 'tnum', 'ss01'; line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+.site-header { background: var(--header-bg); border-bottom: 1px solid var(--line); }
+.site-header-inner { max-width: 720px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; color: var(--text); }
+.brand a { text-decoration: none; color: inherit; display: flex; gap: 8px; align-items: center; }
+.brand-star { color: var(--gold); }
+.brand-tag { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.update-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; background: var(--gold-bg);
+  border-radius: 100px; font-size: 12px; font-weight: 700;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .update-badge { border: 1px solid rgba(212,166,88,0.3); }
+.update-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse 2s ease-in-out infinite;
+}
+[data-theme="dark"] .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.rate-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 12px; background: var(--bg-card);
+  border: 1px solid var(--line); border-radius: 100px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+  white-space: nowrap; text-decoration: none; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.rate-badge:hover { border-color: var(--gold); }
+.rate-badge:hover #usdKrwDisplay, .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.rate-badge-arrow { font-size: 10px; margin-left: 2px; color: var(--text-muted); opacity: 0.7; transition: color 0.2s, opacity 0.2s; }
+.rate-badge:hover .rate-badge-arrow { opacity: 1; }
+.rate-badge #usdKrwDisplay { color: var(--text); font-weight: 800; }
+@media (max-width: 480px) { .rate-badge { font-size: 11px; padding: 5px 10px; } .update-badge { font-size: 11px; padding: 5px 10px; } }
+@media (max-width: 380px) { .update-badge::before { display: none; } }
+
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--bg-card);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: inline; }
+
+.site-nav { position: sticky; top: 0; z-index: 50; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+.site-nav-inner { max-width: 720px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.site-nav-inner::-webkit-scrollbar { display: none; }
+.nav-tab { flex-shrink: 0; padding: 14px 18px; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.nav-tab:hover { color: var(--text-secondary); }
+.nav-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+
+main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 0; }
+
+.placeholder-card {
+  text-align: center;
+  padding: 56px 32px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 16px;
+  background: var(--bg-card);
+  max-width: 480px;
+  width: 100%;
+}
+.placeholder-icon { font-size: 56px; margin-bottom: 16px; }
+.placeholder-eyebrow {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.placeholder-title {
+  font-size: 30px; font-weight: 800; letter-spacing: -0.03em;
+  color: var(--text); margin-bottom: 12px;
+}
+.placeholder-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.6; }
+.placeholder-note { font-size: 12px; color: var(--text-muted); margin-top: 18px; }
+
+.site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
+.footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
+.footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
+.footer-link:hover { color: var(--gold); }
+.footer-divider { color: var(--text-muted); font-weight: 400; }
+
+@media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
+
+/* ── 데이터 천문대 ── */
+.obs-hero { padding: 36px 0 6px; }
+.obs-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: var(--gold); }
+.obs-title { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 6px; }
+.obs-desc { font-size: 14.5px; color: var(--text-secondary); margin-bottom: 18px; }
+.obs-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+.obs-tab { padding: 9px 18px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 13.5px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.obs-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.solar-wrap { background: #10141f; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; position: relative; }
+.solar-wrap svg { display: block; width: 100%; height: auto; }
+.solar-legend { font-size: 12px; color: var(--text-muted); margin-top: 10px; text-align: center; }
+.solar-tip { position: absolute; pointer-events: none; background: rgba(20,25,40,0.95); color: #f5f1e6; border: 1px solid #9C7A3A; border-radius: 10px; padding: 8px 12px; font-size: 12.5px; display: none; max-width: 220px; z-index: 5; }
+.solar-tip b { color: #d4b06a; }
+.col-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; cursor: pointer; transition: border-color 0.15s; }
+.col-card:hover { border-color: var(--gold); }
+.col-card.open { cursor: default; }
+.col-date { font-size: 12px; color: var(--gold); font-weight: 800; letter-spacing: 0.06em; }
+.col-title { font-size: 18px; font-weight: 800; margin: 4px 0 6px; }
+.col-summary { font-size: 13.5px; color: var(--text-secondary); }
+.col-body { display: none; margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 14.5px; line-height: 1.85; }
+.col-card.open .col-body { display: block; }
+.col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
+.col-body p { margin: 0 0 10px; }
+.obs-note { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="brand">
+      <a href="index.html"><span class="brand-star">✨</span><span>Stay hungry. ASI</span></a>
+      <span class="brand-tag">@stayhungryasi</span>
+    </div>
+    <div class="header-right">
+      <span class="update-badge">{{FETCHED_DATE}}</span>
+      <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
+         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+        USD/KRW <span id="usdKrwDisplay">{{USD_KRW}}</span>
+        <span class="rate-badge-arrow" aria-hidden="true">↗</span>
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="site-nav-inner container">
+    <a href="index.html" class="nav-tab {{ACTIVE_HOME}}">우주지배자</a>
+    <a href="latent.html" class="nav-tab {{ACTIVE_LATENT}}">잠재지배자</a>
+    <a href="megatrend.html" class="nav-tab {{ACTIVE_MEGA}}">메가트렌드</a>
+    <a href="research.html" class="nav-tab {{ACTIVE_RESEARCH}}">리서치</a>
+    <a href="community.html" class="nav-tab {{ACTIVE_COMMUNITY}}">커뮤니티</a>
+    <a href="observatory.html" class="nav-tab active">데이터 천문대</a>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="obs-hero">
+      <div class="obs-eyebrow">OBSERVATORY</div>
+      <h1 class="obs-title">데이터 천문대</h1>
+      <p class="obs-desc">숫자로 우주를 관측하는 곳 — 시장의 구조와 신호를 실험적으로 전시합니다.</p>
+    </div>
+    <div class="obs-tabs">
+      <button class="obs-tab active" data-t="solar" onclick="setObsTab('solar', this)">오늘의 태양계</button>
+      <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">관측일지</button>
+    </div>
+    <div id="obsBody"></div>
+  </div>
+</main>
+
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-brand">
+      <span>✨ Stay hungry. ASI</span>
+      <span class="footer-divider">·</span>
+      <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const savedTheme = localStorage.getItem('ud-theme');
+if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ud-theme', next);
+}
+</script>
+<script>
+const DATA = {{OBS_DATA}};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let solarRAF = null;
+
+function setObsTab(t, btn){
+  document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if (solarRAF) { cancelAnimationFrame(solarRAF); solarRAF = null; }
+  if (t === 'solar') renderSolar(); else renderColumns();
+}
+
+/* ── 오늘의 태양계 ── */
+function renderSolar(){
+  const stocks = (DATA.earth || []).slice(0, 20);
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
+  const sun = stocks[0], planets = stocks.slice(1);
+  const W = 760, H = 560, cx = W/2, cy = H/2;
+  const maxMc = sun.mc;
+  const rOf = mc => 5 + Math.sqrt(mc / maxMc) * 26;
+  const sunR = rOf(sun.mc) + 8;
+  const orbitBase = sunR + 26, orbitStep = (Math.min(W,H)/2 - orbitBase - 20) / planets.length;
+
+  let svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<defs><radialGradient id="sunG"><stop offset="0%" stop-color="#ffe9b3"/><stop offset="60%" stop-color="#d4a63f"/><stop offset="100%" stop-color="#9C7A3A"/></radialGradient></defs>';
+  // 별 배경
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 90; i++) svg += '<circle cx="'+(rnd()*W).toFixed(1)+'" cy="'+(rnd()*H).toFixed(1)+'" r="'+(rnd()*1.1+0.2).toFixed(2)+'" fill="#f5f1e6" opacity="'+(rnd()*0.5+0.15).toFixed(2)+'"/>';
+  // 궤도
+  planets.forEach((p, i) => { const orbR = orbitBase + orbitStep*(i+1);
+    svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+orbR.toFixed(1)+'" fill="none" stroke="#2a3350" stroke-width="1"/>'; });
+  // 태양
+  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+sunR+'" fill="url(#sunG)" data-i="0" class="pl"/>';
+  svg += '<text x="'+cx+'" y="'+(cy+sunR+16)+'" text-anchor="middle" fill="#d4b06a" font-size="13" font-weight="800">'+esc(sun.name)+'</text>';
+  // 행성
+  planets.forEach((p, i) => {
+    const orbR = orbitBase + orbitStep*(i+1);
+    const ang = (i * 137.5) * Math.PI / 180;  // 황금각 분산
+    svg += '<g class="orb" data-r="'+orbR.toFixed(1)+'" data-a="'+ang.toFixed(3)+'" data-s="'+(0.0012/(1+i*0.28)).toFixed(6)+'">';
+    svg += '<circle r="'+rOf(p.mc).toFixed(1)+'" fill="'+(i%2?'#7a89b8':'#a8b4d8')+'" data-i="'+(i+1)+'" class="pl" stroke="#10141f" stroke-width="1.5"/>';
+    if (i < 5) svg += '<text y="'+(-rOf(p.mc)-5)+'" text-anchor="middle" fill="#8a94b8" font-size="10.5" font-weight="700">'+esc(p.ticker)+'</text>';
+    svg += '</g>';
+  });
+  svg += '</svg>';
+
+  document.getElementById('obsBody').innerHTML =
+    '<div class="solar-wrap">'+svg+'<div class="solar-tip" id="solarTip"></div></div>'+
+    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+
+  const wrap = document.querySelector('.solar-wrap');
+  const tip = document.getElementById('solarTip');
+  let paused = false;
+  wrap.addEventListener('mousemove', e => {
+    const t = e.target;
+    if (t.classList && t.classList.contains('pl')) {
+      const s = stocks[+t.dataset.i];
+      const rect = wrap.getBoundingClientRect();
+      tip.style.display = 'block';
+      tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
+      tip.style.top = (e.clientY - rect.top + 14) + 'px';
+      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>$'+(s.mc>=1000?(s.mc/1000).toFixed(2)+'T':s.mc+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      paused = true;
+    } else { tip.style.display = 'none'; paused = false; }
+  });
+  wrap.addEventListener('mouseleave', () => { tip.style.display = 'none'; paused = false; });
+
+  const orbs = [...document.querySelectorAll('.orb')].map(g => ({ g, r: +g.dataset.r, a: +g.dataset.a, s: +g.dataset.s }));
+  const step = () => {
+    if (!paused) orbs.forEach(o => { o.a += o.s;
+      o.g.setAttribute('transform', 'translate(' + (cx + o.r*Math.cos(o.a)).toFixed(1) + ',' + (cy + o.r*Math.sin(o.a)).toFixed(1) + ')'); });
+    solarRAF = requestAnimationFrame(step);
+  };
+  step();
+}
+
+/* ── 관측일지 ── */
+function renderColumns(){
+  const cols = (DATA.columns || []);
+  if (!cols.length) { document.getElementById('obsBody').innerHTML =
+    '<div class="obs-note">첫 관측일지를 준비 중입니다 — 곧 기록이 시작됩니다.</div>'; return; }
+  document.getElementById('obsBody').innerHTML = cols.map((c, i) =>
+    '<div class="col-card" id="col-'+i+'" onclick="toggleCol('+i+')">'+
+      '<div class="col-date">'+esc(c.date)+'</div>'+
+      '<div class="col-title">'+esc(c.title)+'</div>'+
+      '<div class="col-summary">'+esc(c.summary)+'</div>'+
+      '<div class="col-body">'+c.body+'</div>'+
+    '</div>').join('');
+}
+function toggleCol(i){
+  const el = document.getElementById('col-'+i);
+  const was = el.classList.contains('open');
+  document.querySelectorAll('.col-card.open').forEach(c=>c.classList.remove('open'));
+  if (!was) el.classList.add('open');
+}
+
+renderSolar();
+</script>
+</body>
+</html>
