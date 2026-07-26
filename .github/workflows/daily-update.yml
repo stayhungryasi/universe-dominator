@@ -90,6 +90,13 @@ jobs:
       - name: Build all site pages
         run: python scripts/build_site.py
       
+      # 관제탑 봇 — 사이트 변동을 커뮤니티에 자동 공지 (변동 없으면 침묵)
+      - name: Community notice bot
+        run: python scripts/post_community_notice.py
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        continue-on-error: true
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
