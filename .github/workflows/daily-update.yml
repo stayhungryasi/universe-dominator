@@ -97,6 +97,14 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         continue-on-error: true
 
+      # 텔레그램 모닝브리핑 — 하루 1회, 매일 첫 실행에서 채널로 발사
+      - name: Telegram morning briefing
+        run: python scripts/send_telegram_briefing.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        continue-on-error: true
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
