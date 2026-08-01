@@ -245,6 +245,49 @@ def swap_nav_to_observatory():
     print(f"[OK] nav 교체(천문대): {n}개 페이지")
 
 
+def build_policies():
+    """policies.html — 이용약관·개인정보·운영정책·면책"""
+    template_path = SCRIPTS_DIR / "policies-template.html"
+    if not template_path.exists():
+        print("[skip] policies-template.html 없음"); return
+    template = template_path.read_text(encoding="utf-8")
+    meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    html = template.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
+    for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
+        html = html.replace("{{ACTIVE_" + key + "}}", "")
+    (HERE / "policies.html").write_text(html, encoding="utf-8")
+    print(f"[OK] policies.html ({len(html):,} chars)")
+
+
+def inject_footer_links():
+    """전 페이지 푸터에 정책 링크 줄 주입 (멱등)"""
+    snippet = ('<div class="uv-policy-links" style="margin-top:10px;font-size:12px;">'
+               '<a href="about.html" style="color:inherit;margin:0 7px">사이트 소개</a>·'
+               '<a href="policies.html#terms" style="color:inherit;margin:0 7px">이용약관</a>·'
+               '<a href="policies.html#privacy" style="color:inherit;margin:0 7px">개인정보처리방침</a>·'
+               '<a href="policies.html#community" style="color:inherit;margin:0 7px">커뮤니티 운영정책</a>·'
+               '<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·'
+               '<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>')
+    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
+             "community.html", "observatory.html", "history-top20.html",
+             "history-latent.html", "about.html", "policies.html"]
+    n = 0
+    for name in pages:
+        f = HERE / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        if "uv-policy-links" in html or "</footer>" not in html:
+            continue
+        html = html.replace("</footer>", snippet + "\n</footer>", 1)
+        f.write_text(html, encoding="utf-8")
+        n += 1
+    print(f"[OK] 푸터 정책 링크 주입: {n}개 페이지")
+
+
 def build_placeholders():
     template_path = SCRIPTS_DIR / "placeholder-template.html"
     if not template_path.exists():
@@ -432,6 +475,7 @@ def main():
     build_placeholders()
     build_community()
     build_observatory()
+    build_policies()
     build_research()
     build_about()
     build_history("top20",  "home",   "history-top20.html")
@@ -439,6 +483,7 @@ def main():
     inject_header_fix()
     inject_presence()
     swap_nav_to_observatory()
+    inject_footer_links()
     print("=" * 50)
     print("빌드 완료")
 
