@@ -140,7 +140,10 @@ def main():
 
     entry = {"date": now.strftime("%Y.%m.%d"), "title": col["title"][:80],
              "summary": (col.get("summary") or "")[:120], "body": col["body"],
-             "auto": True}
+             "auto": True,
+             "viz": {"type": "solar",
+                     "planets": [{"n": t["name"], "mc": t["mc_t"]}
+                                 for t in digest.get("top5", [])]}}
     cols_data["columns"] = [entry] + cols_data.get("columns", [])
     COLS_PATH.write_text(json.dumps(cols_data, ensure_ascii=False, indent=1),
                          encoding="utf-8")
