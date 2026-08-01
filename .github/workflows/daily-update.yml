@@ -83,10 +83,13 @@ jobs:
           if [ "$DOW" -eq 6 ]; then
             echo "토요일 — 주간 History 생성"
             python scripts/weekly_history.py
+            python scripts/weekly_column.py
           else
             echo "토요일 아님 (요일=$DOW) — 주간 History 건너뜀"
           fi
-      
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
       - name: Build all site pages
         run: python scripts/build_site.py
       
