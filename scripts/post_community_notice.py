@@ -130,8 +130,16 @@ def save_state(state):
                           encoding="utf-8")
 
 
-def sig(text):
-    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:12]
+def sig(kind, msg, today):
+    """발행 이력 서명 — 문구가 아니라 '사건'을 기억한다.
+    왕좌/TOP20/잠재: 종류+날짜 (같은 날 문구가 달라도 재발행 금지)
+    관측일지: 제목 앞 14자 (주간 칼럼이 재생성돼 부제가 바뀌어도 같은 주면 동일 사건)"""
+    if kind == "column":
+        title = msg.split("「", 1)[-1]  # 「제목」 부분만
+        key = f"column:{title[:14]}"
+    else:
+        key = f"{kind}:{today}"
+    return hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
 
 
 # ─────────────────── Firestore 발행 ───────────────────
@@ -192,7 +200,7 @@ def main():
 
     state = load_state()
     posted_today = set(state.get("posted", {}).get(today, []))
-    fresh = [(k, msg) for k, msg in events if sig(msg) not in posted_today]
+    fresh = [(k, msg) for k, msg in events if sig(k, msg, today) not in posted_today]
     if not fresh:
         print(f"[관제탑] 변동 {len(events)}건 모두 발행 완료 상태 — 침묵")
         return
@@ -209,7 +217,7 @@ def main():
         print(f"[관제탑] 발행 실패: {e}", file=sys.stderr)
         sys.exit(0)  # 실패해도 파이프라인·기존 상태 유지
 
-    posted_today.update(sig(msg) for _, msg in fresh)
+    posted_today.update(sig(k, msg, today) for k, msg in fresh)
     state.setdefault("posted", {})[today] = sorted(posted_today)
     # 관측일지 발행 이력 갱신
     cols_path = DATA_DIR / "columns.json"
