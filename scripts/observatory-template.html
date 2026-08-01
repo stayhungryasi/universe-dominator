@@ -130,6 +130,8 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .solar-tip b { color: #d4b06a; }
 .pl { cursor: pointer; }
 .pl:hover { stroke: #ffd873; stroke-width: 2px; }
+.col-viz { border-radius: 10px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--line); line-height: 0; }
+.col-viz svg { width: 100%; height: auto; display: block; }
 .col-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; cursor: pointer; transition: border-color 0.15s; }
 .col-card:hover { border-color: var(--gold); }
 .col-card.open { cursor: default; }
@@ -482,12 +484,68 @@ function renderMap(){
 }
 
 /* ── 관측일지 ── */
+function colSeed(str){ let h = 2166136261;
+  for (const ch of String(str||'')) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  return h >>> 0; }
+
+function makeColViz(c){
+  const W = 800, H = 150;
+  let seed = colSeed(c.title);
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  let inner = '';
+  const gid = 'cv' + colSeed(c.title) % 100000;
+  let defs = '<defs><radialGradient id="'+gid+'sp" cx="50%" cy="30%" r="90%"><stop offset="0%" stop-color="#1b2244"/><stop offset="100%" stop-color="#0a0d18"/></radialGradient>' +
+    '<radialGradient id="'+gid+'g"><stop offset="0%" stop-color="#ffd873"/><stop offset="60%" stop-color="#d4a63f"/><stop offset="100%" stop-color="#9c7a3a"/></radialGradient></defs>';
+  inner += '<rect width="'+W+'" height="'+H+'" fill="url('+'#'+gid+'sp)"/>';
+  for (let i = 0; i < 60; i++)
+    inner += '<circle cx="'+(rnd()*W).toFixed(1)+'" cy="'+(rnd()*H).toFixed(1)+'" r="'+(rnd()*1.1+0.2).toFixed(2)+'" fill="#f5f1e6" opacity="'+(rnd()*0.5+0.15).toFixed(2)+'"/>';
+
+  if (c.viz && c.viz.type === 'solar' && Array.isArray(c.viz.planets) && c.viz.planets.length) {
+    // 주간 미니 태양계 — 그 주의 TOP 5 실데이터
+    const ps = c.viz.planets.slice(0, 5);
+    const maxMc = Math.max(...ps.map(p => p.mc || 1));
+    const step = W / (ps.length + 1);
+    ps.forEach((p, i) => {
+      const x = step * (i + 1), r = 8 + Math.sqrt((p.mc || 1) / maxMc) * 26;
+      inner += i === 0
+        ? '<circle cx="'+x+'" cy="'+(H*0.44)+'" r="'+(r+6)+'" fill="url(#'+gid+'g)"/>'
+        : '<circle cx="'+x+'" cy="'+(H*0.44)+'" r="'+r.toFixed(1)+'" fill="#8fa3d9" opacity="0.92"/>';
+      inner += '<text x="'+x+'" y="'+(H-14)+'" text-anchor="middle" fill="#c8d0ea" font-size="11.5" font-weight="700" style="paint-order:stroke" stroke="#0a0d18" stroke-width="3">'+esc((p.n||'').split(' ')[0])+'</text>';
+    });
+  } else {
+    const KINDS = { constellation: 0, nebula: 1, orbit: 2 };
+    const kind = (c.viz && KINDS[c.viz.type] !== undefined) ? KINDS[c.viz.type] : colSeed(c.title) % 3;
+    if (kind === 0) {
+      // 별자리 — 별들을 잇는 금색 선, 가장 밝은 별 하나
+      const pts = []; for (let i = 0; i < 7; i++) pts.push([60 + rnd()*(W-120), 25 + rnd()*(H-50)]);
+      pts.sort((a,b)=>a[0]-b[0]);
+      inner += '<polyline points="'+pts.map(p=>p[0].toFixed(0)+','+p[1].toFixed(0)).join(' ')+'" fill="none" stroke="#d4a63f" stroke-opacity="0.55" stroke-width="1.3"/>';
+      pts.forEach((p,i)=>{ inner += '<circle cx="'+p[0].toFixed(0)+'" cy="'+p[1].toFixed(0)+'" r="'+(i===3?5:2.6)+'" fill="'+(i===3?'url(#'+gid+'g)':'#e6ebfa')+'"/>'; });
+    } else if (kind === 1) {
+      // 성운 — 겹치는 발광 타원
+      const cols2 = ['#5a4a9e','#2e6d8a','#9c7a3a'];
+      for (let i = 0; i < 3; i++)
+        inner += '<ellipse cx="'+(W*(0.25+rnd()*0.5)).toFixed(0)+'" cy="'+(H*(0.3+rnd()*0.4)).toFixed(0)+'" rx="'+(120+rnd()*160).toFixed(0)+'" ry="'+(40+rnd()*50).toFixed(0)+'" fill="'+cols2[i]+'" opacity="0.22" transform="rotate('+((rnd()*40-20).toFixed(0))+')"/>';
+      inner += '<circle cx="'+(W*0.5+((rnd()-0.5)*200)).toFixed(0)+'" cy="'+(H*0.5).toFixed(0)+'" r="4.5" fill="url(#'+gid+'g)"/>';
+    } else {
+      // 궤도 — 상승하는 행성
+      for (let i = 1; i <= 4; i++)
+        inner += '<ellipse cx="'+(W*0.28)+'" cy="'+(H*0.5)+'" rx="'+(i*72)+'" ry="'+(i*26)+'" fill="none" stroke="#4a5578" stroke-opacity="0.5" stroke-width="0.9" stroke-dasharray="1 6"/>';
+      inner += '<circle cx="'+(W*0.28)+'" cy="'+(H*0.5)+'" r="17" fill="url(#'+gid+'g)"/>';
+      inner += '<circle cx="'+(W*0.28 + 216)+'" cy="'+(H*0.5 - 55)+'" r="9" fill="#8fa3d9"/>';
+      inner += '<path d="M '+(W*0.28+150)+' '+(H*0.72)+' Q '+(W*0.28+200)+' '+(H*0.45)+' '+(W*0.28+212)+' '+(H*0.5-48)+'" fill="none" stroke="#d4a63f" stroke-opacity="0.6" stroke-width="1.4" stroke-dasharray="3 4"/>';
+    }
+  }
+  return '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+defs+inner+'</svg>';
+}
+
 function renderColumns(){
   const cols = (DATA.columns || []);
   if (!cols.length) { document.getElementById('obsBody').innerHTML =
     '<div class="obs-note">첫 관측일지를 준비 중입니다 — 곧 기록이 시작됩니다.</div>'; return; }
   document.getElementById('obsBody').innerHTML = cols.map((c, i) =>
     '<div class="col-card" id="col-'+i+'" onclick="toggleCol('+i+')">'+
+      '<div class="col-viz">'+makeColViz(c)+'</div>'+
       '<div class="col-date">'+esc(c.date)+'</div>'+
       '<div class="col-title">'+esc(c.title)+'</div>'+
       '<div class="col-summary">'+esc(c.summary)+'</div>'+
