@@ -143,10 +143,10 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
 .col-body p { margin: 0 0 10px; }
 .map-wrap { background: #10141f; border: 1px solid var(--line); border-radius: 16px; padding: 10px; position: relative; }
-.map-grid { position: relative; width: 100%; height: 640px; }
+.map-grid { position: relative; width: 100%; height: 740px; }
 .map-tile { position: absolute; overflow: hidden; border-radius: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #eef2ff; cursor: pointer; transition: filter 0.12s, box-shadow 0.12s; background-image: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.09), rgba(0,0,0,0.12)); }
 .map-tile:hover { filter: brightness(1.18); box-shadow: 0 0 0 1.5px #d4a63f, 0 0 14px rgba(212,166,63,0.35); z-index: 3; }
-.map-tile .tk { font-weight: 800; line-height: 1.1; }
+.map-tile .tk { font-weight: 800; line-height: 1.1; text-shadow: 0 1px 2px rgba(0,0,0,0.35); max-width: 96%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .map-tile .pc { font-weight: 700; opacity: 0.9; }
 .map-head { position: absolute; font-size: 10.5px; font-weight: 800; color: #8a94b8; letter-spacing: 0.06em; padding: 2px 4px; z-index: 2; text-shadow: 0 1px 2px #10141f; }
 .map-legend { display: flex; justify-content: center; align-items: center; gap: 2px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
@@ -390,13 +390,13 @@ function renderSolar(){
 
 /* ── 우주 지도 (트리맵) ── */
 function chgColor(chg){
-  // UNIVERTRIX 빛의 문법: 상승 = 항성처럼 금빛으로 빛남 · 하락 = 차가운 심청으로 가라앉음
-  if (chg === null || chg === undefined) return '#262d47';
+  // 한국형 빛의 문법: 상승 = 금빛으로 타오름 · 하락 = 코발트로 얼어붙음 (한국 증시의 빨강/파랑 감각)
+  if (chg === null || chg === undefined) return '#3a4157';
   const v = Math.max(-3, Math.min(3, chg)) / 3;
   const mix = (a, b, t) => Math.round(a + (b - a) * t);
-  const base = [38, 45, 71];                       // 무풍 — 짙은 우주색
-  const to = v >= 0 ? [212, 166, 63] : [21, 49, 94]; // 금빛 항성 / 심청 심연
-  const t = Math.pow(Math.abs(v), 0.8);
+  const base = [58, 65, 87];                          // 무풍 — 무채 슬레이트
+  const to = v >= 0 ? [242, 186, 60] : [56, 110, 225]; // 발광 금빛 / 선명한 코발트
+  const t = Math.pow(Math.abs(v), 0.72);
   return 'rgb(' + mix(base[0], to[0], t) + ',' + mix(base[1], to[1], t) + ',' + mix(base[2], to[2], t) + ')';
 }
 const chgText = chg => (chg !== null && chg >= 1.5) ? '#1c2333' : '#eef2ff';  // 밝은 금빛 위엔 남색 글씨
@@ -435,7 +435,7 @@ function squarify(items, x, y, w, h, out){
 function renderMap(){
   const tiles = (DATA.tiles || []).filter(t => t.mc > 0);
   if (!tiles.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">지도 데이터 대기 중입니다.</div>'; return; }
-  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1100) || 900, H = 640;
+  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1100) || 900, H = 740;
   // 국가 그룹: 시총 합 내림차순
   const groups = {};
   tiles.forEach(t => { (groups[t.g] = groups[t.g] || { name: t.g, f: t.f, v: 0, items: [] }); groups[t.g].v += t.mc; groups[t.g].items.push({ ...t, v: t.mc }); });
@@ -451,12 +451,13 @@ function renderMap(){
     if (gb.w > 46 && gb.h > 26)
       html += '<div class="map-head" style="left:' + (gb.x + 3) + 'px;top:' + gb.y + 'px">' + esc(gb.g.f + ' ' + gb.g.name + ' 성단') + '</div>';
     inner.forEach(t => {
-      const big = t.w > 52 && t.h > 34, mid = t.w > 34 && t.h > 22;
-      const fs = Math.max(9, Math.min(20, Math.sqrt(t.w * t.h) / 5.2));
-      html += '<div class="map-tile" style="left:' + (t.x + 1.5).toFixed(1) + 'px;top:' + (t.y + 1.5).toFixed(1) + 'px;width:' + Math.max(0, t.w - 3).toFixed(1) + 'px;height:' + Math.max(0, t.h - 3).toFixed(1) + 'px;background-color:' + chgColor(t.chg) + ';color:' + chgText(t.chg) + '"' +
+      const label = (typeof shortName === 'function') ? shortName({ ticker: t.t, name: t.n }) : t.t;
+      const big = t.w > 46 && t.h > 32, mid = t.w > 26 && t.h > 15;
+      const fs = Math.max(8.5, Math.min(21, Math.sqrt(t.w * t.h) / 4.6, t.w / (label.length * 0.62)));
+      html += '<div class="map-tile" style="left:' + (t.x + 1) + 'px;top:' + (t.y + 1) + 'px;width:' + Math.max(0, t.w - 2).toFixed(1) + 'px;height:' + Math.max(0, t.h - 2).toFixed(1) + 'px;background-color:' + chgColor(t.chg) + ';color:' + chgText(t.chg) + ';border-radius:' + (t.w > 40 ? 6 : 3) + 'px"' +
         ' data-tip="' + esc(t.n) + '|' + esc(t.f) + '|' + t.mc + '|' + (t.chg === null ? '' : t.chg) + '">' +
-        (mid ? '<span class="tk" style="font-size:' + fs + 'px">' + esc(t.t) + '</span>' : '') +
-        (big && t.chg !== null ? '<span class="pc" style="font-size:' + Math.max(9, fs * 0.62) + 'px">' + (t.chg > 0 ? '+' : '') + t.chg + '%</span>' : '') +
+        (mid ? '<span class="tk" style="font-size:' + fs.toFixed(1) + 'px">' + esc(label) + '</span>' : '') +
+        (big && t.chg !== null ? '<span class="pc" style="font-size:' + Math.max(8.5, fs * 0.66).toFixed(1) + 'px">' + (t.chg > 0 ? '+' : '') + t.chg + '%</span>' : '') +
       '</div>';
     });
   });
