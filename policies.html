@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About · 우주지배자</title>
+<title>이용약관·정책 · UNIVERTRIX</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -107,29 +107,6 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .placeholder-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.6; }
 .placeholder-note { font-size: 12px; color: var(--text-muted); margin-top: 18px; }
 
-/* ── About ── */
-main.about-main { display: block; padding: 52px 0 72px; }
-.about-wrap { max-width: 640px; margin: 0 auto; }
-.about-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 14px; }
-.about-brand { font-size: 34px; font-weight: 800; letter-spacing: 0.34em; text-align: center; margin-bottom: 10px; text-indent: 0.34em; }
-.about-brand .v { color: var(--gold); }
-.about-motto { font-size: 13px; font-style: italic; color: var(--text-muted); text-align: center; margin-bottom: 44px; letter-spacing: 0.04em; }
-.about-sec { margin-bottom: 40px; }
-.about-sec h2 { font-size: 14px; font-weight: 800; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
-.about-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin-bottom: 10px; }
-.about-sec p strong { color: var(--text); }
-.about-quote { border-left: 2px solid var(--gold); padding: 4px 0 4px 18px; margin: 26px 0; font-size: 15px; line-height: 1.8; color: var(--text); font-weight: 600; }
-.about-name { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin: 8px 0 0; }
-.about-name .nm { font-size: 16px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 8px; }
-.about-name .nm .v { color: var(--gold); }
-.about-name p { font-size: 13.5px; line-height: 1.75; color: var(--text-secondary); margin: 0 0 6px; }
-.about-cta { text-align: center; margin-top: 48px; }
-.about-cta a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; background: var(--text); color: var(--bg); border-radius: 100px; font-size: 13px; font-weight: 700; text-decoration: none; }
-.about-back { text-align: center; margin-top: 16px; }
-.about-back a { font-size: 12.5px; color: var(--text-muted); text-decoration: none; }
-.about-back a:hover { color: var(--gold); }
-@media (max-width: 480px) { .about-brand { font-size: 24px; } main.about-main { padding: 36px 0 56px; } }
-
 .site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
 .footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
 .footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
@@ -137,51 +114,29 @@ main.about-main { display: block; padding: 52px 0 72px; }
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
+
+.pol-hero { padding: 36px 0 8px; }
+.pol-title { font-size: 30px; font-weight: 800; margin: 4px 0 6px; }
+.pol-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: var(--gold); }
+.pol-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 22px; }
+.pol-nav a { padding: 8px 14px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 13px; font-weight: 700; color: var(--text-secondary); text-decoration: none; }
+.pol-nav a:hover { border-color: var(--gold); color: var(--gold); }
+.pol-sec { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; margin-bottom: 18px; scroll-margin-top: 80px; }
+.pol-sec h2 { font-size: 19px; margin: 0 0 4px; }
+.pol-date { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+.pol-sec h3 { font-size: 14.5px; color: var(--gold); margin: 18px 0 6px; }
+.pol-sec p, .pol-sec li { font-size: 14px; line-height: 1.85; color: var(--text-secondary); }
+.pol-sec ul { padding-left: 18px; margin: 6px 0; }
 </style>
-<style>
-/* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
-@media (max-width: 480px) {
-  .site-header-inner { flex-wrap: wrap; }
-  .brand { flex-shrink: 0; }
-}
-.update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
-/* UNIVERTRIX 로고 (build_site.py 주입) */
-.brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.ud-logo-mark { display: block; height: 26px; width: auto; }
-.ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
-.ud-logo-word .v { color: var(--gold); }
-@media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  var badge = document.querySelector('.update-badge');
-  if (!badge) return;
-  badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
-  var dt = badge.querySelector('.ud-date');
-  var clk = badge.querySelector('.ud-clock');
-  function tick() {
-    var now = new Date();
-    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).replace(/-/g, '.');
-    clk.textContent = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
-  }
-  tick();
-  setInterval(tick, 1000);
-});
-</script>
 </head>
 <body>
 
 <header class="site-header">
   <div class="site-header-inner">
-    <a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX 홈">
-      <svg class="ud-logo-mark" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 3 H4 V27 H9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M25 3 H30 V27 H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <ellipse cx="17" cy="15" rx="6.2" ry="10" stroke="var(--gold)" stroke-width="1.8"/>
-        <circle cx="17" cy="15" r="2.6" fill="var(--gold)"/>
-      </svg>
-      <span class="ud-logo-word">UNI<span class="v">V</span>ERTRIX</span>
-    </a>
+    <div class="brand">
+      <a href="index.html"><span class="brand-star">✨</span><span>Stay hungry. ASI</span></a>
+      <span class="brand-tag">@stayhungryasi</span>
+    </div>
     <div class="header-right">
       <span class="update-badge">2026.08.01</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
@@ -204,51 +159,106 @@ document.addEventListener('DOMContentLoaded', function () {
     <a href="megatrend.html" class="nav-tab ">메가트렌드</a>
     <a href="research.html" class="nav-tab ">리서치</a>
     <a href="community.html" class="nav-tab ">커뮤니티</a>
-    <a href="observatory.html" class="nav-tab ">데이터 천문대</a>
+    <a href="my-universe.html" class="nav-tab ">나의우주</a>
   </div>
 </nav>
 
-<main class="about-main">
-  <div class="container">
-    <div class="about-wrap">
-      <div class="about-eyebrow">About</div>
-      <div class="about-brand">UNI<span class="v">V</span>ERTRIX</div>
-      <div class="about-motto">Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다</div>
+<main>
+  <div class="container" style="max-width: 860px;">
+    <div class="pol-hero">
+      <div class="pol-eyebrow">POLICY</div>
+      <h1 class="pol-title">약관 및 정책</h1>
+    </div>
+    <div class="pol-nav">
+      <a href="#terms">이용약관</a><a href="#privacy">개인정보처리방침</a><a href="#community">커뮤니티 운영정책</a><a href="#disclaimer">투자 고지·면책</a><a href="#contact">문의·제안</a>
+    </div>
 
-      <div class="about-sec">
-        <h2>왜 우주지배자인가</h2>
-        <p>폭발적으로 성장하는 기업은 지구를 지배하고, 전지구적 지배 기업은 결국 <strong>우주 전체로 그 영향력을 확장</strong>합니다. 이미 궤도 위에서 사업을 운영하는 기업들이 그 서막입니다.</p>
-        <p>우리는 AI가 스스로를 가속하는 <strong>특이점의 문턱</strong>에 서 있습니다. 시가총액 순위는 단순한 숫자가 아니라, 어떤 힘이 다음 시대를 지배할지 보여주는 가장 정직한 지도입니다.</p>
-        <div class="about-quote">왕좌를 차지하는 것은 거인들의 일이고,<br>빠짐없이 적어두는 것은 우리의 일입니다.</div>
-      </div>
+    <div class="pol-sec" id="terms">
+      <h2>이용약관</h2>
+      <div class="pol-date">시행일: 2026년 7월 28일</div>
+      <h3>제1조 (목적과 서비스의 성격)</h3>
+      <p>UNIVERTRIX(univertrix.com, 이하 "사이트")는 글로벌 상장기업의 시가총액 순위와 관련 정보를 기록·제공하는 정보 서비스입니다. 사이트의 모든 콘텐츠는 정보 제공 목적이며, 투자 자문·중개·일임·권유에 해당하지 않습니다.</p>
+      <h3>제2조 (계정)</h3>
+      <p>커뮤니티 이용을 위한 로그인은 Google 계정 인증으로 이루어집니다. 이용자는 본인 계정으로만 활동해야 하며, 계정 도용·양도는 금지됩니다.</p>
+      <h3>제3조 (콘텐츠의 권리)</h3>
+      <p>이용자가 커뮤니티에 게시한 글·댓글·이미지의 권리는 작성자에게 있습니다. 다만 작성자는 사이트가 해당 콘텐츠를 사이트 내에 게시·노출하는 것을 허락합니다. 이용자는 본인 게시물을 언제든 직접 삭제할 수 있습니다.</p>
+      <h3>제4조 (금지 행위)</h3>
+      <p>커뮤니티 운영정책(아래)에서 금지하는 행위, 서비스의 정상 운영을 방해하는 행위(자동화 도배, 취약점 악용 등), 관련 법령 위반 행위는 금지됩니다.</p>
+      <h3>제5조 (서비스의 변경·중단)</h3>
+      <p>사이트는 무료로 제공되며, 운영상 필요에 따라 기능이 변경·중단될 수 있습니다. 데이터의 무결성을 위해 노력하지만 상시 무중단·무오류를 보증하지 않습니다.</p>
+      <h3>제6조 (책임의 한계)</h3>
+      <p>사이트가 제공하는 정보의 이용으로 발생한 어떠한 손해에 대해서도 사이트는 책임을 지지 않습니다. 자세한 내용은 투자 고지·면책 조항을 따릅니다.</p>
+      <h3>제7조 (준거법)</h3>
+      <p>본 약관은 대한민국 법령에 따라 해석됩니다.</p>
+    </div>
 
-      <div class="about-sec">
-        <h2>무엇을 기록하는가</h2>
-        <p><strong>매일 세 번</strong>, 사람의 손을 거치지 않고 자동으로 — 7개 권역의 시가총액 TOP 20(우주지배자), 규칙으로 선별한 차세대 후보(잠재지배자), 20년의 왕좌 이동(메가트렌드), 그리고 종목별 글로벌 리서치를 수집·번역·요약해 기록합니다.</p>
-        <p>모든 변동은 매주 히스토리로 남습니다. 우주는 돌지만, 기록은 남으니까요.</p>
-      </div>
+    <div class="pol-sec" id="privacy">
+      <h2>개인정보처리방침</h2>
+      <div class="pol-date">시행일: 2026년 7월 28일</div>
+      <h3>1. 수집하는 정보</h3>
+      <ul>
+        <li><b>커뮤니티 로그인 시</b>: Google 계정의 이름, 이메일 주소, 프로필 사진, 고유 식별자(UID) — Google 인증 과정에서 수집됩니다.</li>
+        <li><b>이용자가 작성한 콘텐츠</b>: 글, 댓글, 태그, 첨부 이미지, 닉네임, 공감(중력) 기록.</li>
+        <li><b>접속자 수 집계</b>: 브라우저에 저장되는 무작위 익명 식별자와 접속 시각 — 이름·이메일 등과 연결되지 않습니다.</li>
+      </ul>
+      <h3>2. 이용 목적</h3>
+      <p>커뮤니티 기능 제공(로그인, 게시물 표시, 본인 게시물 관리), 실시간 접속자 수 표시, 서비스 품질 유지·부정 이용 방지.</p>
+      <h3>3. 보관 및 파기</h3>
+      <p>게시물은 작성자가 삭제하거나 운영정책 위반으로 삭제될 때까지 보관됩니다. 계정 정보 및 게시물 일괄 삭제를 원하시면 아래 문의 창구로 요청해 주세요. 지체 없이 처리합니다.</p>
+      <h3>4. 처리 위탁 및 국외 이전</h3>
+      <p>데이터 저장과 인증은 Google Firebase(Google LLC), 사이트 호스팅은 Cloudflare, Inc.를 통해 처리되며, 이 과정에서 데이터가 해외 서버에 저장될 수 있습니다. 각 사는 자체 보안 기준에 따라 정보를 보호합니다.</p>
+      <h3>5. 쿠키 및 유사 기술</h3>
+      <p>화면 테마 설정과 익명 접속자 식별자를 브라우저 저장소(localStorage)에 보관합니다. 광고·추적 쿠키는 사용하지 않습니다.</p>
+      <h3>6. 이용자의 권리</h3>
+      <p>본인 게시물의 열람·삭제는 사이트에서 직접 가능하며, 계정 관련 정보의 삭제·정정은 문의 창구를 통해 요청할 수 있습니다.</p>
+      <h3>7. 문의처</h3>
+      <p>개인정보 관련 문의: 아래 문의·제안 창구를 이용해 주세요.</p>
+    </div>
 
-      <div class="about-sec">
-        <h2>이름의 비밀</h2>
-        <div class="about-name">
-          <div class="nm">UNI<span class="v">V</span>ERTRIX</div>
-          <p><strong>UNIVERSE + -trix</strong> — 라틴어 행위자 접미사 <em>-trix</em>, "~하는 자". 우주를 기록하는 자.</p>
-          <p>그리고 그 안에는 라틴어 <strong><em>vertere</em>(돌다)</strong>가 숨어 있습니다. UNI<strong>VERT</strong>RIX — 도는 우주, 남는 기록.</p>
-        </div>
-      </div>
+    <div class="pol-sec" id="community">
+      <h2>커뮤니티 운영정책</h2>
+      <div class="pol-date">관제센터(커뮤니티)를 건강하게 지키기 위한 약속입니다.</div>
+      <h3>금지되는 교신</h3>
+      <ul>
+        <li>불법 정보, 음란물, 폭력·혐오·차별 표현</li>
+        <li>타인 비방, 명예훼손, 개인정보(본인·타인) 노출</li>
+        <li>도배·스팸, 상업적 광고, 외부 유료 서비스 홍보</li>
+        <li>리딩방 유도, 종목 매수·매도 선동, 미확인 정보를 사실처럼 유포하는 행위</li>
+        <li>계정 도용, 관리자·봇 사칭</li>
+      </ul>
+      <h3>조치</h3>
+      <p>위반 게시물은 사전 통보 없이 삭제될 수 있으며, 반복·중대 위반 시 계정 이용이 제한될 수 있습니다.</p>
+      <h3>신고</h3>
+      <p>문제 게시물을 발견하시면 문의·제안 창구로 알려주세요.</p>
+    </div>
 
-      <div class="about-cta">
-        <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener">텔레그램에서 매일 브리핑 받기 →</a>
-      </div>
-      <div class="about-back"><a href="index.html">← 우주지배자로 돌아가기</a></div>
+    <div class="pol-sec" id="disclaimer">
+      <h2>투자 고지·면책</h2>
+      <div class="pol-date">사이트의 모든 화면·문서·발송물에 공통 적용됩니다.</div>
+      <ul>
+        <li>본 사이트는 글로벌 상장기업의 시가총액 정보 제공을 목적으로 합니다.</li>
+        <li>특정 종목의 매수·매도 권유 또는 투자 자문·중개·알선에 해당하지 않습니다.</li>
+        <li>표시된 데이터는 외부 출처(companiesmarketcap.com, SEC EDGAR 등)를 인용한 것으로, 정확성·완전성·시의성을 보증하지 않습니다.</li>
+        <li>환율 및 시가총액은 시점에 따라 변동될 수 있습니다.</li>
+        <li>커뮤니티 게시물은 작성자 개인의 의견이며 사이트의 입장이 아닙니다.</li>
+        <li>모든 투자 판단과 그에 따른 손익은 전적으로 투자자 본인에게 귀속됩니다.</li>
+      </ul>
+    </div>
+
+    <div class="pol-sec" id="contact">
+      <h2>문의·제안</h2>
+      <p>제휴, 광고, 기능 제안, 오류 제보, 개인정보 관련 요청 등 모든 문의를 환영합니다.</p>
+      <p>📮 텔레그램: <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700">t.me/stayhungryasi</a></p>
+      <p>💬 또는 커뮤니티에 교신을 남겨 주세요 — 관제탑이 확인합니다.</p>
     </div>
   </div>
 </main>
 
+
 <footer class="site-footer">
   <div class="container">
     <div class="footer-brand">
-      <span>UNI<span style="color:var(--gold)">V</span>ERTRIX</span>
+      <span>✨ Stay hungry. ASI</span>
       <span class="footer-divider">·</span>
       <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
     </div>
@@ -266,46 +276,6 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('ud-theme', next);
 }
-</script>
-<!-- uv-presence -->
-<script type="module">
-(async () => {
-  try {
-    const cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json();
-    if (!cfg || !cfg.apiKey) return;
-    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
-      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-    const db = getFirestore(initializeApp(cfg, 'presence'));
-
-    let pid = localStorage.getItem('uv_pid');
-    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
-
-    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
-    const count = async () => {
-      try {
-        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
-        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
-        const n = snap.data().count;
-        if (n > 0) {
-          let el = document.getElementById('uvPresence');
-          if (!el) {
-            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
-            if (!ft) return;
-            el = document.createElement('div');
-            el.id = 'uvPresence';
-            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
-            ft.appendChild(el);
-          }
-          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> 지금 ' + n + '명이 우주를 관측 중';
-        }
-      } catch (e) {}
-    };
-    await beat(); await count();
-    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
-    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
-  } catch (e) {}
-})();
 </script>
 </body>
 </html>
