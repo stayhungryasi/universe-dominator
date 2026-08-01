@@ -429,7 +429,7 @@ function renderFeed(){
       (p.pinned ? '<span class="badge notice">📌 공지</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 오늘의 인기 '+(hotIds.indexOf(p.id)+1)+'위</span>' : ''))+
       avatarHtml(shownName(p.uid,p.name),p.photo)+'<span class="post-name">'+esc(shownName(p.uid,p.name))+'</span>'+
       '<span class="post-time">'+rel(p.created)+'</span>'+
-      (me && me.uid===p.uid ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
+      (me && (me.uid===p.uid || (window.__cfg && me.uid===window.__cfg.adminUid)) ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
       '<div class="post-text">'+esc(p.text)+'</div>'+
       (p.imgId ? '<div class="post-img" data-imgid="'+esc(p.imgId)+'">'+(imageCache[p.imgId]?'<img src="'+imageCache[p.imgId]+'" alt="">':'<span class="comm-guide">사진 불러오는 중…</span>')+'</div>'
         : (p.img && imgOk(p.img) ? '<div class="post-img"><a href="'+esc(p.img)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.parentNode.style.display=\'none\'"></a></div>' : ''))+
@@ -477,7 +477,7 @@ async function toggleComments(id){
   await fetchNicks(snap.docs.map(d=>d.data().uid));
   const rows = snap.docs.map(d=>{ const c=d.data(); return '<div class="comment">'+avatarHtml(shownName(c.uid,c.name),c.photo)+
     '<div class="comment-body"><b>'+esc(shownName(c.uid,c.name))+'</b>'+esc(c.text)+
-    (me&&me.uid===c.uid?' <button class="post-del" data-cdel="'+id+'/'+d.id+'">삭제</button>':'')+'</div></div>'; }).join('');
+    (me&&(me.uid===c.uid||(window.__cfg&&me.uid===window.__cfg.adminUid))?' <button class="post-del" data-cdel="'+id+'/'+d.id+'">삭제</button>':'')+'</div></div>'; }).join('');
   box.innerHTML = (rows || '<span class="comm-guide">첫 댓글을 남겨 주세요.</span>') +
     (me ? '<div class="comment-form"><input id="ci-'+id+'" maxlength="300" placeholder="댓글 남기기 (최대 300자)"><button class="btn btn-gold" data-csend="'+id+'">등록</button></div>'
         : '<div class="comm-guide">댓글은 로그인 후 작성할 수 있습니다.</div>');
