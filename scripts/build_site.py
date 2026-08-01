@@ -229,20 +229,27 @@ def build_observatory():
     print("[OK] my-universe.html → observatory.html 리다이렉트")
 
 
-def swap_nav_to_observatory():
-    """전 페이지 nav의 나의우주 → 데이터 천문대 (멱등 치환)"""
+def fix_nav():
+    """전 페이지 nav 정리 (멱등):
+    ① 나의우주 → 데이터 천문대  ② 커뮤니티 → 관제센터  ③ 순서: 천문대가 관제센터 앞"""
+    import re as _re
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "history-top20.html", "history-latent.html", "about.html"]
+             "community.html", "observatory.html", "policies.html",
+             "history-top20.html", "history-latent.html", "about.html"]
     n = 0
+    pat = _re.compile(r'(<a href="community\.html"[^>]*>[^<]*</a>)(\s*)(<a href="observatory\.html"[^>]*>[^<]*</a>)')
     for name in pages:
         f = HERE / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
-        new = html.replace('href="my-universe.html"', 'href="observatory.html"').replace(">나의우주<", ">데이터 천문대<")
+        new = html.replace('href="my-universe.html"', 'href="observatory.html"')
+        new = new.replace(">나의우주<", ">데이터 천문대<")
+        new = new.replace(">커뮤니티<", ">관제센터<")
+        new = pat.sub(lambda m: m.group(3) + m.group(2) + m.group(1), new)
         if new != html:
             f.write_text(new, encoding="utf-8"); n += 1
-    print(f"[OK] nav 교체(천문대): {n}개 페이지")
+    print(f"[OK] nav 정리(개명·순서): {n}개 페이지")
 
 
 def build_policies():
@@ -482,7 +489,7 @@ def main():
     build_history("latent", "latent", "history-latent.html")
     inject_header_fix()
     inject_presence()
-    swap_nav_to_observatory()
+    fix_nav()
     inject_footer_links()
     print("=" * 50)
     print("빌드 완료")
