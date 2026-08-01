@@ -222,7 +222,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
       <button class="sort-tab active" data-s="new" onclick="setSort('new',this)">최신</button>
       <button class="sort-tab" data-s="gravity" onclick="setSort('gravity',this)">중력순 ✦</button>
     </div>
-    <div id="feed"><div class="comm-note">관제센터 개설 준비 중입니다 — 곧 교신이 시작됩니다.</div></div>
+    <div id="feed"><div class="comm-note">📡 관제센터 교신 수신 중…</div></div>
   </div>
 </main>
 
@@ -394,21 +394,22 @@ async function sendPost(){
 
 async function loadFeed(){
   const snap = await getDocs(query(collection(db,'posts'), orderBy('created','desc'), limit(50)));
-  posts = [];
-  for(const d of snap.docs){
-    const p = { id: d.id, ...d.data(), stars: 0, comments: 0, mine: false };
-    try{
-      const [sc, cc] = await Promise.all([
-        getCountFromServer(collection(db,'posts',d.id,'stars')),
-        getCountFromServer(collection(db,'posts',d.id,'comments'))]);
-      p.stars = sc.data().count; p.comments = cc.data().count;
-      if(me){ p.mine = (await getDoc(doc(db,'posts',d.id,'stars',me.uid))).exists(); }
-    }catch(e){}
-    posts.push(p);
-  }
+  posts = snap.docs.map(d => ({ id: d.id, ...d.data(), stars: 0, comments: 0, mine: false }));
   await fetchNicks(posts.map(p => p.uid));
   $('sortTabs').style.display = 'flex';
-  renderFeed();
+  renderFeed();  // 1단: 글 먼저 즉시 표시
+
+  // 2단: 중력·댓글 수를 전 게시물 병렬로 채움 (기존 직렬 방식 → 수 배 빠름)
+  await Promise.all(posts.map(async p => {
+    try{
+      const [sc, cc] = await Promise.all([
+        getCountFromServer(collection(db,'posts',p.id,'stars')),
+        getCountFromServer(collection(db,'posts',p.id,'comments'))]);
+      p.stars = sc.data().count; p.comments = cc.data().count;
+      if(me){ p.mine = (await getDoc(doc(db,'posts',p.id,'stars',me.uid))).exists(); }
+    }catch(e){}
+  }));
+  renderFeed();  // 카운트 반영
 }
 
 function isToday(ts){ if(!ts) return true; const d=ts.toDate(), n=new Date();
@@ -501,7 +502,7 @@ window.setSort = (s, btn)=>{ sortMode=s;
 (async function init(){
   let cfg = null;
   try{ cfg = await (await fetch('data/firebase_config.json?v='+Date.now())).json(); }catch(e){}
-  if(!cfg || !cfg.apiKey){ return; } // 설정 전 — 준비중 카드 유지
+  if(!cfg || !cfg.apiKey){ $('feed').innerHTML = '<div class="comm-note">관제센터 개설 준비 중입니다 — 곧 교신이 시작됩니다.</div>'; return; }
   window.__cfg = cfg;
   app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
   onAuthStateChanged(auth, async u => {
