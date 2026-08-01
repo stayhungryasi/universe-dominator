@@ -423,6 +423,47 @@ const DATA = {
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.08.01",
+      "period": "7.25 → 8.1 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>Microsoft</strong> 시총 <span class='em-up'>+22%</span> ($2.83T → $3.45T)",
+            "<strong>Amazon</strong> 시총 <span class='em-up'>+17%</span> ($2.50T → $2.92T)",
+            "[미국] <strong>Cisco</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $457B</span>)",
+            "[미국] <strong>Intel</strong> TOP 20 이탈",
+            "[일본] <strong>Japan Tobacco</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $80B</span>)",
+            "[일본] <strong>Shin-Etsu Chemical</strong> TOP 20 이탈",
+            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>17위, $201B</span>)",
+            "[유럽] <strong>Allianz SE</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $189B</span>)",
+            "[유럽] <strong>Hermès</strong> TOP 20 이탈",
+            "[유럽] <strong>Airbus</strong> TOP 20 이탈",
+            "[중국] <strong>CXMT</strong> TOP 20 신규 진입 (<span class='em-up'>1위, $567B</span>)",
+            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 이탈",
+            "[홍콩] <strong>Swire Properties</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $18B</span>)",
+            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,444 (08/01 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.44"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.07.25",
       "period": "7.18 → 7.25 (주간)",
       "auto": true,
@@ -632,8 +673,8 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_date": "2026-07-31",
-    "usd_krw": 1433.7
+    "fetched_date": "2026-08-01",
+    "usd_krw": 1443.61
   }
 };
 
