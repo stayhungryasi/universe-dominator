@@ -294,7 +294,7 @@ function renderSolar(){
       '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">🖱 드래그 회전 · 휠 확대/축소</div>' +
     '</div>' +
     '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 행성 색 = 국적 · 빛과 그림자는 실시간 계산</div>' +
-    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측) · 텍스처: Solar System Scope(CC BY 4.0)·NASA</div>';
   loadThree().then(() => boot3d(stocks)).catch(() => renderSolarSVG());
 }
 
@@ -469,6 +469,15 @@ function boot3d(stocks){
   scene.add(sunLight);
 
   const texQueue = [];
+  // ── 실사 텍스처 (assets/textures/ 에 파일이 있으면 자동 승격, 없으면 절차적 폴백) ──
+  const REAL_TEX_BASE = 'assets/textures/';
+  const texLoader = new THREE.TextureLoader();
+  function loadReal(name, onOk){
+    texLoader.load(REAL_TEX_BASE + name, t => {
+      if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+      onOk(t);
+    }, undefined, () => {});  // 실패 시 침묵 — 절차적 유지
+  }
   // 은하수 배경 — 먼저 단색으로 즉시, 텍스처는 뒤이어 장착
   const sky = new THREE.Mesh(new THREE.SphereGeometry(2800, 48, 32),
     new THREE.MeshBasicMaterial({ color: 0x0a0d1a, side: THREE.BackSide }));
@@ -476,6 +485,7 @@ function boot3d(stocks){
   sky.rotation.z = 0.42;
   scene.add(sky);
   setTimeout(() => { try { sky.material.map = milkyTex(); sky.material.color.set(0xffffff); sky.material.needsUpdate = true; } catch(e){} }, 30);
+  loadReal('milky.jpg', t => { sky.material.map = t; sky.material.color.set(0xffffff); sky.material.needsUpdate = true; });
 
   // 별밭 — 원형 소프트 입자 (사각형 아티팩트 제거), 카메라 항로 바깥(1700+)에 배치
   const starSprite = (() => {
@@ -530,6 +540,7 @@ function boot3d(stocks){
     });
   } catch(e) { sunMat = new THREE.MeshBasicMaterial({ map: sunTex() }); }
   const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(sunR, 64, 48), sunMat);
+  loadReal('sun.jpg', t => { sunMesh.material = new THREE.MeshBasicMaterial({ map: t }); });
   sunMesh.userData.i = 0; scene.add(sunMesh);
   const glowM = new THREE.SpriteMaterial({ map: glowTex('rgb(255,240,200)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
   const glow0 = new THREE.Sprite(glowM); glow0.material.opacity = 1; glow0.scale.set(sunR*3.4, sunR*3.4, 1); scene.add(glow0);
@@ -559,6 +570,14 @@ function boot3d(stocks){
       mesh.add(atm);
     }
     texQueue.push({ mesh, hi, lo, seed: colSeed(p.ticker), rocky: r < 13 });
+    const realName = r >= 20 ? (i % 2 ? 'gas2.jpg' : 'gas1.jpg')
+      : r >= 13 ? 'ice1.jpg'
+      : (i % 2 ? 'rock2.jpg' : 'rock1.jpg');
+    loadReal(realName, t => {
+      mesh.material.map = t; mesh.material.bumpMap = null;
+      mesh.material.color.set(0xffffff); mesh.material.needsUpdate = true;
+      mesh.userData.realTex = true;
+    });
     if (i === 0 || i === 1) {  // 2·3위 행성 — 실사 고리 (반경 방향 텍스처)
       const geo = new THREE.RingGeometry(r*1.45, r*2.15, 96);
       const pos = geo.attributes.position, uv = geo.attributes.uv, v3 = new THREE.Vector3();
@@ -569,6 +588,7 @@ function boot3d(stocks){
       }
       const ring = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
         map: ringTex(), transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }));
+      loadReal('ring.png', t => { ring.material.map = t; ring.material.needsUpdate = true; });
       ring.rotation.x = i === 0 ? Math.PI/2.35 : Math.PI/2.7;
       mesh.add(ring);
     }
@@ -644,7 +664,8 @@ function boot3d(stocks){
     // 텍스처 지연 장착 — 프레임당 1개씩 (첫 화면을 막지 않음)
     if (texQueue.length) {
       const q = texQueue.shift();
-      try { const key = q.seed + (q.rocky ? 'r' : 'g');
+      try { if (q.mesh.userData.realTex) throw 0;
+        const key = q.seed + (q.rocky ? 'r' : 'g');
         const tex = __texCache[key] || (__texCache[key] = planetTex(q.hi, q.lo, q.seed, q.rocky));
         q.mesh.material.map = tex; q.mesh.material.bumpMap = tex;
         q.mesh.material.bumpScale = q.rocky ? 0.7 : 0.35;
