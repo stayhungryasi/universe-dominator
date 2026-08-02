@@ -119,8 +119,11 @@ def _claude_chunk(api_key, chunk):
 - ko: 한글 제목 (자연스러운 번역, 60자 이내)
 - why: 왜 중요한가 — 투자자·AI 시대를 준비하는 개인 관점 1~2문장 (과장 금지)
 - tag: 에세이 | 모델 발표 | 연구 | 정책·규제 | 투자·산업 | 기타 중 하나
-- grade: 일반 | 주목 | 필독 중 하나 — '필독'은 산업 판도를 바꿀 발표, AGI·초지능 담론의 기준이 될 에세이,
-  프런티어 모델 출시급 사건에만 부여 (남발 금지, 목록당 최대 1~2개)
+- grade: 일반 | 주목 | 필독 중 하나 — '필독'은 극히 드뭅니다. 산업 판도를 바꿀 발표,
+  AGI·초지능 담론의 기준이 될 에세이, 프런티어 모델 출시급 사건에만 부여하고,
+  해당 사항이 없으면 목록 전체에 필독이 0개여도 정상입니다.
+  다음은 필독이 아닙니다(주목 이하): 기능 업데이트, 고객 도입 사례, 파트너십·인수 보도,
+  교육 과정·행사 안내, 점진적 연구 성과
 
 JSON 배열로만 응답. 마크다운 코드펜스·설명 금지: [{{"i":0,"ko":"...","why":"...","tag":"...","grade":"..."}}]"""
     for attempt in range(2):
@@ -163,6 +166,51 @@ def enrich_with_claude(api_key, items):
     return items
 
 
+def arbitrate_pins(api_key, signals):
+    """등급 기반 필독(고득점 예외 제외)이 2건 이상이면 진짜 필독 1건만 남기고 강등.
+    실패 시 최신 1건만 유지하는 보수적 폴백 — 어떤 경우에도 과잉 고정은 남기지 않는다."""
+    cands = [x for x in signals
+             if x.get("pin") and x.get("grade") == "필독"
+             and (x.get("points") or 0) < 700]
+    if len(cands) <= 1:
+        return
+    keep_idx = None
+    if api_key:
+        payload = [{"i": i, "title": x.get("ko") or x["title"],
+                    "why": x.get("why", ""), "source": x.get("source", "")}
+                   for i, x in enumerate(cands)]
+        prompt = f"""당신은 '신호 관측소'의 최종 편집장입니다. 아래는 하위 편집자들이 '필독'으로 올린 후보입니다.
+필독 기준: 산업 판도를 바꿀 발표 / AGI·초지능 담론의 기준이 될 에세이 / 프런티어 모델 출시급 사건.
+기능 업데이트·고객 사례·인수 보도·행사·점진적 연구는 필독이 아닙니다.
+
+후보: {json.dumps(payload, ensure_ascii=False)}
+
+가장 중요한 1개의 i만 선택하세요. 모두 기준 미달이면 -1.
+JSON만 응답: {{"keep": 숫자}}"""
+        try:
+            r = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
+                         "content-type": "application/json"},
+                json={"model": "claude-haiku-4-5", "max_tokens": 200,
+                      "messages": [{"role": "user", "content": prompt}]},
+                timeout=60)
+            r.raise_for_status()
+            text = "".join(b.get("text", "") for b in r.json().get("content", []))
+            keep_idx = json.loads(text[text.find("{"):text.rfind("}") + 1]).get("keep")
+        except Exception as e:
+            print(f"[신호] 결선 판정 실패 → 최신 1건 폴백 ({e})", file=sys.stderr)
+    if not isinstance(keep_idx, int) or not (-1 <= keep_idx < len(cands)):
+        keep_idx = 0  # 폴백: 목록 최신(맨 앞) 1건만 유지
+    demoted = 0
+    for i, x in enumerate(cands):
+        if i != keep_idx:
+            x["grade"] = "주목"
+            x["pin"] = False
+            demoted += 1
+    print(f"[신호] 결선 판정: 필독 후보 {len(cands)}건 → 유지 {0 if keep_idx == -1 else 1}건 · 강등 {demoted}건")
+
+
 def main():
     cfg = load_sources()
     prev = {"signals": []}
@@ -200,6 +248,8 @@ def main():
     for x in merged:
         if x.get("pin") is None:
             x["pin"] = bool((x.get("points") or 0) >= 700 or x.get("grade") == "필독")
+    # 결선 판정: 등급 기반 필독은 하루 최대 1건 (점수 무사통과분 제외) — 과잉 고정 자동 교정
+    arbitrate_pins(os.environ.get("ANTHROPIC_API_KEY", "").strip(), merged)
     # 소급 번역: 과거 미번역 글도 매 실행 최대 24건씩 한글화
     backlog = [x for x in merged if not x.get("ko")][:24]
     if backlog:
