@@ -178,6 +178,23 @@ def build_briefing():
         except Exception:
             pass
 
+    # ── 📡 오늘의 신호 (신호 관측소 최고 1건) ──
+    sig_path = DATA_DIR / "signals.json"
+    if sig_path.exists():
+        try:
+            sigs = json.loads(sig_path.read_text(encoding="utf-8")).get("signals", [])
+            today_prefix = now.strftime("%Y-%m-%d")
+            fresh_sigs = [s for s in sigs if (s.get("captured") or "").startswith(today_prefix)]
+            if fresh_sigs:
+                top = max(fresh_sigs, key=lambda s: s.get("points") or 0)
+                lines.append("📡 <b>오늘의 신호</b>")
+                lines.append(esc(top.get("ko") or top.get("title", "")))
+                if top.get("why"):
+                    lines.append(esc(top["why"]))
+                lines.append("")
+        except Exception:
+            pass
+
     # ── 💱 환율 ──
     usd_krw = meta.get("usd_krw")
     if isinstance(usd_krw, (int, float)):
