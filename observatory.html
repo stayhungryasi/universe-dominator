@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
   setInterval(tick, 1000);
 });
 </script>
+<style id="wide-fix">.container{max-width:1280px}</style>
 </head>
 <body>
 
@@ -632,13 +633,7 @@ function boot3d(stocks){
       ring.rotation.x = i === 5 ? Math.PI/2.35 : Math.PI/2.05;
       mesh.add(ring);
     }
-    // 궤도선
-    const pts = [];
-    const orbR = orbitBase + orbitStep*(i+1);
-    for (let k = 0; k <= 128; k++) pts.push(new THREE.Vector3(Math.cos(k/128*Math.PI*2)*orbR, 0, Math.sin(k/128*Math.PI*2)*orbR));
-    const ORBIT_COLS = [0x5b86f0, 0x3fbfa5, 0xe0a83c, 0xd97070, 0x9a86e8, 0x6fc06f];
-    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineBasicMaterial({ color: ORBIT_COLS[i % ORBIT_COLS.length], transparent: true, opacity: 0.3 })));
+    const orbR = orbitBase + orbitStep*(i+1);  // 궤도 반경 (궤도선은 표시하지 않음 — 행성이 주인공)
     // 라벨 (HTML — 항상 선명)
     const lab = document.createElement('div');
     lab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18,0 0 8px #0a0d18;line-height:1.25;white-space:nowrap';
@@ -939,7 +934,7 @@ function renderMap(){
   else if (mapFilter === 'latent') tiles = all.filter(t => t.l);
   else if (mapFilter.startsWith('g:')) tiles = all.filter(t => t.g === mapFilter.slice(2));
   if (!tiles.length) tiles = all;
-  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1100) || 900, H = 740;
+  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1240) || 900, H = 740;
   // 국가 그룹: 시총 합 내림차순
   const groups = {};
   tiles.forEach(t => { (groups[t.g] = groups[t.g] || { name: t.g, f: t.f, v: 0, items: [] }); groups[t.g].v += t.mc; groups[t.g].items.push({ ...t, v: t.mc }); });
