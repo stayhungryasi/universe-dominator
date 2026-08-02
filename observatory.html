@@ -321,6 +321,7 @@ function renderSolar(){
   if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
   document.getElementById('obsBody').innerHTML =
     '<div class="solar-wrap" id="s3wrap" style="height:640px;position:relative;cursor:grab">' +
+      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">☀️ 태양계 정렬 중…</div>' +
       '<div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>' +
       '<div class="solar-tip" id="solarTip"></div>' +
       '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">🖱 드래그 회전 · 휠 확대/축소</div>' +
@@ -341,8 +342,9 @@ function glowTex(color){
   return new THREE.CanvasTexture(c);
 }
 function _hex(h){ const n = parseInt(h.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+const __texCache = {};
 function planetTex(hi, lo, seed, rocky){
-  const W = 512, Hh = 256;
+  const W = 256, Hh = 128;
   const c = document.createElement('canvas'); c.width = W; c.height = Hh;
   const g = c.getContext('2d');
   let s = (seed || 1) % 2147483646 + 1; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
@@ -381,7 +383,7 @@ function planetTex(hi, lo, seed, rocky){
   }
   g.putImageData(img, 0, 0);
   if (rocky) {  // 크레이터
-    for (let i = 0; i < 46; i++) {
+    for (let i = 0; i < 30; i++) {
       const cx = rnd()*W, cy = Hh*0.12 + rnd()*Hh*0.76, r = rnd()*8 + 1.5;
       g.strokeStyle = 'rgba(8,10,20,0.35)'; g.lineWidth = 1.4;
       g.beginPath(); g.arc(cx, cy, r, 0, 6.3); g.stroke();
@@ -411,14 +413,15 @@ function ringTex(){
   return new THREE.CanvasTexture(c);
 }
 function milkyTex(){
-  const c = document.createElement('canvas'); c.width = 2048; c.height = 1024;
+  if (__texCache.milky) return __texCache.milky;
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 512;
   const g = c.getContext('2d');
-  g.fillStyle = '#07090f'; g.fillRect(0, 0, 2048, 1024);
+  g.fillStyle = '#07090f'; g.fillRect(0, 0, 1024, 512);
   let s = 12345; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
   // 은하수 띠 — 겹겹의 뿌연 발광 + 갈색 성간운
-  for (let i = 0; i < 900; i++) {
-    const t = i / 900, x = t*2048, y = 512 + Math.sin(t*Math.PI*2)*120 + (rnd()-0.5)*260;
-    const r = rnd()*46 + 8;
+  for (let i = 0; i < 420; i++) {
+    const t = i / 420, x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*62 + (rnd()-0.5)*130;
+    const r = rnd()*26 + 5;
     const gr = g.createRadialGradient(x, y, 0, x, y, r);
     const warm = rnd() > 0.75;
     gr.addColorStop(0, warm ? 'rgba(150,110,80,0.05)' : 'rgba(165,175,215,0.05)');
@@ -426,17 +429,17 @@ function milkyTex(){
     g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.3); g.fill();
   }
   // 암흑 성운 줄기
-  for (let i = 0; i < 130; i++) {
-    const t = rnd(), x = t*2048, y = 512 + Math.sin(t*Math.PI*2)*110 + (rnd()-0.5)*90;
+  for (let i = 0; i < 70; i++) {
+    const t = rnd(), x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*56 + (rnd()-0.5)*46;
     g.fillStyle = 'rgba(5,6,10,0.16)';
-    g.beginPath(); g.ellipse(x, y, rnd()*70+16, rnd()*16+5, rnd()*3, 0, 6.3); g.fill();
+    g.beginPath(); g.ellipse(x, y, rnd()*36+9, rnd()*9+3, rnd()*3, 0, 6.3); g.fill();
   }
   // 별 5500개 (색 온도 섞기)
   const cols = ['#f5f1e6','#f5f1e6','#f5f1e6','#cfe0ff','#ffe0c9','#ffd0d0'];
-  for (let i = 0; i < 5500; i++) {
+  for (let i = 0; i < 2200; i++) {
     const band = rnd() < 0.55;
-    const x = rnd()*2048;
-    const y = band ? 512 + Math.sin(x/2048*Math.PI*2)*120 + (rnd()-0.5)*300 : rnd()*1024;
+    const x = rnd()*1024;
+    const y = band ? 256 + Math.sin(x/1024*Math.PI*2)*62 + (rnd()-0.5)*150 : rnd()*512;
     g.fillStyle = cols[Math.floor(rnd()*cols.length)];
     g.globalAlpha = rnd()*0.85 + 0.1;
     const r = rnd() < 0.985 ? rnd()*1.1 + 0.2 : rnd()*2.2 + 1.2;
@@ -445,6 +448,7 @@ function milkyTex(){
   g.globalAlpha = 1;
   const t = new THREE.CanvasTexture(c);
   if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+  __texCache.milky = t;
   return t;
 }
 function sunTex(){
@@ -473,6 +477,8 @@ function boot3d(stocks){
   scene.fog = new THREE.FogExp2(0x0a0d18, 0.00055);
   const camera = new THREE.PerspectiveCamera(45, W/H, 1, 6000);
   let camTheta = 0.35, camPhi = 1.12, camDist = 640;
+  let introT = 0;                // 진입 연출 진행도 (0→1)
+  let lastTouch = performance.now();  // 마지막 조작 시각 (자동 선회용)
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));  // 레티나 4K 선명도
   renderer.setSize(W, H);
@@ -489,12 +495,14 @@ function boot3d(stocks){
   const sunLight = new THREE.PointLight(0xffe6b0, 2.1, 0, 2);
   scene.add(sunLight);
 
-  // 은하수 배경 (거대 구 안쪽면)
+  const texQueue = [];
+  // 은하수 배경 — 먼저 단색으로 즉시, 텍스처는 뒤이어 장착
   const sky = new THREE.Mesh(new THREE.SphereGeometry(2800, 48, 32),
-    new THREE.MeshBasicMaterial({ map: milkyTex(), side: THREE.BackSide }));
+    new THREE.MeshBasicMaterial({ color: 0x0a0d1a, side: THREE.BackSide }));
   sky.material.fog = false;
   sky.rotation.z = 0.42;
   scene.add(sky);
+  setTimeout(() => { try { sky.material.map = milkyTex(); sky.material.color.set(0xffffff); sky.material.needsUpdate = true; } catch(e){} }, 30);
 
   // 별밭 2겹 (원·근)
   [[2600, 1400, 2.2, 0.9], [1200, 700, 1.2, 0.55]].forEach(([n, rad, size, op]) => {
@@ -548,11 +556,20 @@ function boot3d(stocks){
     const [hi, lo] = flagColor(p.flag);
     const mesh = new THREE.Mesh(
       new THREE.SphereGeometry(r, 48, 32),
-      (() => { const tex = planetTex(hi, lo, colSeed(p.ticker), r < 13);
-        return new THREE.MeshStandardMaterial({ map: tex, bumpMap: tex, bumpScale: r < 13 ? 0.7 : 0.35,
-          roughness: 0.92, metalness: 0.04 }); })());
+      new THREE.MeshStandardMaterial({ color: new THREE.Color(lo), roughness: 0.92, metalness: 0.04 }));
     mesh.userData.i = i + 1;
     scene.add(mesh); bodies.push(mesh);
+    // 대기 발광 (큰 행성) — 가장자리가 은은히 빛나는 실사 효과
+    if (r >= 16) {
+      const atm = new THREE.Mesh(new THREE.SphereGeometry(r * 1.16, 32, 24),
+        new THREE.ShaderMaterial({
+          uniforms: { c: { value: new THREE.Color(hi) } },
+          vertexShader: 'varying vec3 vNv; void main(){ vNv = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+          fragmentShader: 'varying vec3 vNv; uniform vec3 c; void main(){ float a = pow(clamp(0.68 - abs(vNv.z), 0.0, 1.0), 1.8); gl_FragColor = vec4(c * 1.35, a * 0.9); }',
+          transparent: true, blending: THREE.AdditiveBlending, side: THREE.BackSide, depthWrite: false }));
+      mesh.add(atm);
+    }
+    texQueue.push({ mesh, hi, lo, seed: colSeed(p.ticker), rocky: r < 13 });
     if (i === 0 || i === 1) {  // 2·3위 행성 — 실사 고리 (반경 방향 텍스처)
       const geo = new THREE.RingGeometry(r*1.45, r*2.15, 96);
       const pos = geo.attributes.position, uv = geo.attributes.uv, v3 = new THREE.Vector3();
@@ -591,11 +608,12 @@ function boot3d(stocks){
   const tip = document.getElementById('solarTip');
   const ray = new THREE.Raycaster(), mouseV = new THREE.Vector2();
   let dragging = false, px = 0, py = 0, hovered = null;
-  wrap.addEventListener('mousedown', e => { dragging = true; px = e.clientX; py = e.clientY; wrap.style.cursor = 'grabbing'; });
+  wrap.addEventListener('mousedown', e => { dragging = true; lastTouch = performance.now(); px = e.clientX; py = e.clientY; wrap.style.cursor = 'grabbing'; });
   window.addEventListener('mouseup', () => { dragging = false; wrap.style.cursor = 'grab'; });
   wrap.addEventListener('mousemove', e => {
     const rect = wrap.getBoundingClientRect();
     if (dragging) {
+      lastTouch = performance.now();
       camTheta -= (e.clientX - px) * 0.005; camPhi -= (e.clientY - py) * 0.004;
       camPhi = Math.max(0.35, Math.min(1.45, camPhi)); px = e.clientX; py = e.clientY;
     }
@@ -618,7 +636,7 @@ function boot3d(stocks){
       hovered = null;
     }
   });
-  wrap.addEventListener('wheel', e => { e.preventDefault();
+  wrap.addEventListener('wheel', e => { e.preventDefault(); lastTouch = performance.now();
     camDist = Math.max(320, Math.min(1100, camDist + e.deltaY * 0.5)); }, { passive: false });
 
   const v = new THREE.Vector3();
@@ -630,9 +648,28 @@ function boot3d(stocks){
     lab.style.top = ((-v.y*0.5+0.5)*H) + 'px';
     lab.style.opacity = Math.max(0.45, 1.15 - mesh.position.distanceTo(camera.position)/1400).toFixed(2);
   }
-  let t0 = 0;
+  let t0 = 0, firstFrame = true;
   function frame(t){
     const dt = Math.min(50, t - t0); t0 = t;
+    if (firstFrame) { firstFrame = false; const ld = document.getElementById('s3load'); if (ld) ld.remove(); }
+    // 텍스처 지연 장착 — 프레임당 1개씩 (첫 화면을 막지 않음)
+    if (texQueue.length) {
+      const q = texQueue.shift();
+      try { const key = q.seed + (q.rocky ? 'r' : 'g');
+        const tex = __texCache[key] || (__texCache[key] = planetTex(q.hi, q.lo, q.seed, q.rocky));
+        q.mesh.material.map = tex; q.mesh.material.bumpMap = tex;
+        q.mesh.material.bumpScale = q.rocky ? 0.7 : 0.35;
+        q.mesh.material.color.set(0xffffff);
+        q.mesh.material.needsUpdate = true; } catch(e){}
+    }
+    // 진입 돌리 (2.2초) + 3초 무조작 시 자동 선회
+    if (introT < 1) { introT = Math.min(1, introT + dt / 2200);
+      const ease = 1 - Math.pow(1 - introT, 3);
+      camDist = 1350 - (1350 - 640) * ease;
+      camTheta += dt * 0.00018;
+    } else if (!dragging && performance.now() - lastTouch > 3000) {
+      camTheta += dt * 0.00006;
+    }
     orbs.forEach(o => {
       o.a += o.s * dt * 0.06;
       o.mesh.position.set(Math.cos(o.a)*o.orbR, 0, Math.sin(o.a)*o.orbR);
