@@ -136,7 +136,10 @@ def sig(kind, msg, today):
     관측일지: 제목 앞 14자 (주간 칼럼이 재생성돼 부제가 바뀌어도 같은 주면 동일 사건)"""
     if kind == "column":
         title = msg.split("「", 1)[-1]  # 「제목」 부분만
-        key = f"column:{title[:14]}"
+        if title.startswith("📡"):
+            key = f"signal-column:{today}"   # 신호 자동 칼럼 — 제목이 달라도 하루 1건
+        else:
+            key = f"column:{title[:14]}"
     else:
         key = f"{kind}:{today}"
     return hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
