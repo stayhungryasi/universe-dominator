@@ -61,6 +61,13 @@ jobs:
         continue-on-error: true
 
       # 시장 주요일정 수집 (FOMC 고정 + Finnhub 실적 + 뉴스 이벤트)
+      # 신호 관측소 — 실리콘밸리 고신호 담론·발표 포착
+      - name: Fetch silicon valley signals (auto)
+        run: python scripts/fetch_signals.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        continue-on-error: true
+
       - name: Fetch market calendar (auto)
         run: python scripts/fetch_calendar.py
         env:
