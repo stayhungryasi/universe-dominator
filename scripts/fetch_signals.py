@@ -119,8 +119,10 @@ def _claude_chunk(api_key, chunk):
 - ko: 한글 제목 (자연스러운 번역, 60자 이내)
 - why: 왜 중요한가 — 투자자·AI 시대를 준비하는 개인 관점 1~2문장 (과장 금지)
 - tag: 에세이 | 모델 발표 | 연구 | 정책·규제 | 투자·산업 | 기타 중 하나
+- grade: 일반 | 주목 | 필독 중 하나 — '필독'은 산업 판도를 바꿀 발표, AGI·초지능 담론의 기준이 될 에세이,
+  프런티어 모델 출시급 사건에만 부여 (남발 금지, 목록당 최대 1~2개)
 
-JSON 배열로만 응답. 마크다운 코드펜스·설명 금지: [{{"i":0,"ko":"...","why":"...","tag":"..."}}]"""
+JSON 배열로만 응답. 마크다운 코드펜스·설명 금지: [{{"i":0,"ko":"...","why":"...","tag":"...","grade":"..."}}]"""
     for attempt in range(2):
         try:
             r = requests.post(
@@ -141,6 +143,7 @@ JSON 배열로만 응답. 마크다운 코드펜스·설명 금지: [{{"i":0,"ko
                     chunk[i]["ko"] = row["ko"][:120]
                     chunk[i]["why"] = (row.get("why") or "")[:300]
                     chunk[i]["tag"] = row.get("tag") or "기타"
+                    chunk[i]["grade"] = row.get("grade") or "일반"
                     n += 1
             return n
         except Exception as e:
@@ -193,6 +196,10 @@ def main():
 
     merged = fresh + prev.get("signals", [])
     merged = merged[:cfg.get("keep", 60)]
+    # 📌 필독 자동 고정: HN 700점↑ 또는 Claude 필독 판정
+    for x in merged:
+        if x.get("pin") is None:
+            x["pin"] = bool((x.get("points") or 0) >= 700 or x.get("grade") == "필독")
     # 소급 번역: 과거 미번역 글도 매 실행 최대 24건씩 한글화
     backlog = [x for x in merged if not x.get("ko")][:24]
     if backlog:
