@@ -124,6 +124,8 @@ def build_research():
     rdata["calendar"] = json.loads(cal_path.read_text(encoding="utf-8")) if cal_path.exists() else {"events": []}
     gurus_path = DATA_DIR / "gurus.json"
     rdata["gurus"] = json.loads(gurus_path.read_text(encoding="utf-8")) if gurus_path.exists() else {"gurus": []}
+    signals_path = DATA_DIR / "signals.json"
+    rdata["signals"] = json.loads(signals_path.read_text(encoding="utf-8")) if signals_path.exists() else {"signals": []}
     template = template_path.read_text(encoding="utf-8")
     # 헤더 배지 값 (placeholder 방식과 동일)
     meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
