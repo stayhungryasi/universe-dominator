@@ -106,42 +106,57 @@ def collect(cfg):
     return rows
 
 
-def enrich_with_claude(api_key, items):
-    """한글 제목 + 왜 중요한가 + 태그 — 실패 시 원문 유지"""
-    if not api_key or not items:
-        return items
+def _claude_chunk(api_key, chunk):
+    """묶음 하나 번역 — 2회 재시도, 관용 파싱"""
     payload = [{"i": i, "title": x["title"], "source": x["source"],
-                "hint": x.get("raw_desc", "")[:200]} for i, x in enumerate(items)]
+                "hint": (x.get("raw_desc") or "")[:150]} for i, x in enumerate(chunk)]
     prompt = f"""글로벌 시총 추적·AI 시대 대비 사이트 UNIVERTRIX의 '신호 관측소' 편집자로서,
-실리콘밸리 고신호 소식 목록을 한국 독자용으로 가공하세요.
+실리콘밸리 고신호 소식을 한국 독자용으로 가공하세요.
 
 목록: {json.dumps(payload, ensure_ascii=False)}
 
-각 항목에 대해:
+각 항목:
 - ko: 한글 제목 (자연스러운 번역, 60자 이내)
-- why: 왜 중요한가 — 투자자·AI 시대를 준비하는 개인 관점에서 1~2문장 (과장 금지)
-- tag: 다음 중 하나 — 에세이, 모델 발표, 연구, 정책·규제, 투자·산업, 기타
+- why: 왜 중요한가 — 투자자·AI 시대를 준비하는 개인 관점 1~2문장 (과장 금지)
+- tag: 에세이 | 모델 발표 | 연구 | 정책·규제 | 투자·산업 | 기타 중 하나
 
-JSON 배열로만 응답 (마크다운·설명 금지): [{{"i":0,"ko":"...","why":"...","tag":"..."}}]"""
-    try:
-        r = requests.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
-                     "content-type": "application/json"},
-            json={"model": "claude-haiku-4-5", "max_tokens": 6000,
-                  "messages": [{"role": "user", "content": prompt}]},
-            timeout=180)
-        r.raise_for_status()
-        text = "".join(b.get("text", "") for b in r.json().get("content", []))
-        arr = json.loads(text[text.find("["):text.rfind("]") + 1])
-        for row in arr:
-            i = row.get("i")
-            if isinstance(i, int) and 0 <= i < len(items):
-                items[i]["ko"] = (row.get("ko") or "")[:120]
-                items[i]["why"] = (row.get("why") or "")[:300]
-                items[i]["tag"] = row.get("tag") or "기타"
-    except Exception as e:
-        print(f"[신호] Claude 가공 실패 → 원문 유지 ({e})", file=sys.stderr)
+JSON 배열로만 응답. 마크다운 코드펜스·설명 금지: [{{"i":0,"ko":"...","why":"...","tag":"..."}}]"""
+    for attempt in range(2):
+        try:
+            r = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
+                         "content-type": "application/json"},
+                json={"model": "claude-haiku-4-5", "max_tokens": 2500,
+                      "messages": [{"role": "user", "content": prompt}]},
+                timeout=120)
+            r.raise_for_status()
+            text = "".join(b.get("text", "") for b in r.json().get("content", []))
+            text = re.sub(r"```(?:json)?", "", text).strip()
+            arr = json.loads(text[text.find("["):text.rfind("]") + 1])
+            n = 0
+            for row in arr:
+                i = row.get("i")
+                if isinstance(i, int) and 0 <= i < len(chunk) and row.get("ko"):
+                    chunk[i]["ko"] = row["ko"][:120]
+                    chunk[i]["why"] = (row.get("why") or "")[:300]
+                    chunk[i]["tag"] = row.get("tag") or "기타"
+                    n += 1
+            return n
+        except Exception as e:
+            if attempt == 1:
+                print(f"[신호] 묶음 가공 실패({len(chunk)}건): {e}", file=sys.stderr)
+    return 0
+
+
+def enrich_with_claude(api_key, items):
+    """8건씩 묶음 처리 — 일부 실패해도 나머지는 한글화"""
+    if not api_key or not items:
+        return items
+    done = 0
+    for s in range(0, len(items), 8):
+        done += _claude_chunk(api_key, items[s:s + 8])
+    print(f"[신호] 한글 가공: {done}/{len(items)}건")
     return items
 
 
@@ -164,7 +179,8 @@ def main():
         seen.add(x["url"]); dedup.append(x)
     fresh = dedup
 
-    if not fresh:
+    has_backlog = any(not x.get("ko") for x in prev.get("signals", []))
+    if not fresh and not has_backlog:
         print("[신호] 새 신호 없음 — 기존 유지")
         return
 
@@ -177,6 +193,13 @@ def main():
 
     merged = fresh + prev.get("signals", [])
     merged = merged[:cfg.get("keep", 60)]
+    # 소급 번역: 과거 미번역 글도 매 실행 최대 24건씩 한글화
+    backlog = [x for x in merged if not x.get("ko")][:24]
+    if backlog:
+        print(f"[신호] 미번역 백로그 {len(backlog)}건 소급 가공")
+        enrich_with_claude(os.environ.get("ANTHROPIC_API_KEY", "").strip(), backlog)
+        for x in backlog:
+            x.pop("raw_desc", None)
     OUT_PATH.write_text(json.dumps(
         {"generated_label": now_label, "signals": merged},
         ensure_ascii=False, indent=1), encoding="utf-8")
