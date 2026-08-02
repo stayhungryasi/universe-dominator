@@ -897,7 +897,7 @@ function renderMap(){
   else if (mapFilter === 'latent') tiles = all.filter(t => t.l);
   else if (mapFilter.startsWith('g:')) tiles = all.filter(t => t.g === mapFilter.slice(2));
   if (!tiles.length) tiles = all;
-  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1100) || 900, H = 740;
+  const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1240) || 900, H = 740;
   // 국가 그룹: 시총 합 내림차순
   const groups = {};
   tiles.forEach(t => { (groups[t.g] = groups[t.g] || { name: t.g, f: t.f, v: 0, items: [] }); groups[t.g].v += t.mc; groups[t.g].items.push({ ...t, v: t.mc }); });
