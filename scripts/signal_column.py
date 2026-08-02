@@ -45,6 +45,47 @@ def fetch_article_text(url, limit=7000):
         return ""
 
 
+def render_chart(ch):
+    """추출 수치 → UNIVERTRIX 표준 막대 차트 SVG"""
+    try:
+        series = [(str(s["label"])[:14], float(s["value"])) for s in ch.get("series", [])
+                  if isinstance(s, dict) and s.get("label") is not None][:6]
+        series = [(l, v) for l, v in series if v == v and abs(v) < 1e15]
+        if len(series) < 2:
+            return ""
+        title = str(ch.get("title", ""))[:40]
+        subtitle = str(ch.get("subtitle", ""))[:60]
+        unit = str(ch.get("unit", ""))[:8]
+        maxv = max(abs(v) for _, v in series) or 1
+        n = len(series)
+        W, H = 700, 300
+        pl, pr, pt, pb = 40, 40, 78, 56
+        cw = (W - pl - pr) / n
+        bw = min(74, cw * 0.56)
+        base = H - pb
+        o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">']
+        o.append('<defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">'
+                 '<stop offset="0%" stop-color="#f2ba3c"/><stop offset="100%" stop-color="#9c7a3a"/></linearGradient></defs>')
+        o.append(f'<rect width="{W}" height="{H}" fill="#10141f"/>')
+        o.append(f'<text x="26" y="34" fill="#f2ba3c" font-size="18" font-weight="800">{title}</text>')
+        o.append(f'<text x="26" y="56" fill="#8a94b8" font-size="12" font-weight="600">{subtitle}</text>')
+        o.append(f'<line x1="{pl-14}" y1="{base}" x2="{W-pr+14}" y2="{base}" stroke="#3a4568"/>')
+        for i, (label, v) in enumerate(series):
+            x = pl + cw * i + (cw - bw) / 2
+            h = abs(v) / maxv * (base - pt)
+            y = base - h
+            o.append(f'<rect x="{x:.0f}" y="{y:.0f}" width="{bw:.0f}" height="{max(h,2):.0f}" rx="7" fill="url(#sg)"/>')
+            vtxt = (f"{v:,.0f}" if abs(v) >= 100 else f"{v:g}") + unit
+            o.append(f'<text x="{x+bw/2:.0f}" y="{y-10:.0f}" text-anchor="middle" fill="#fff" font-size="15.5" font-weight="800">{vtxt}</text>')
+            o.append(f'<text x="{x+bw/2:.0f}" y="{base+21:.0f}" text-anchor="middle" fill="#c8d0ea" font-size="11.5" font-weight="700">{label}</text>')
+        o.append('<text x="26" y="' + str(H-14) + '" fill="#5a648a" font-size="10">자료: 원문 기사에서 추출 (자동)</text>')
+        o.append(f'<text x="{W-26}" y="{H-14}" text-anchor="end" fill="#9c7a3a" font-size="11.5" font-weight="800">UNIVERTRIX · univertrix.com</text>')
+        o.append('</svg>')
+        return '<div class="col-chart">' + ''.join(o) + '</div>'
+    except Exception:
+        return ""
+
+
 def ask_claude(api_key, sig, article):
     ctx = {"제목": sig.get("ko") or sig["title"], "원제": sig["title"],
            "출처": sig.get("source", ""), "점수": sig.get("points"),
@@ -64,8 +105,13 @@ def ask_claude(api_key, sig, article):
 마지막에 한 문장으로 맺기. 과장·확정적 예언 금지, 추정은 추정이라 표기.
 분량: 문단 6~9개.
 
+추가로, 원문에서 수치(건수·퍼센트·금액·연도별 값 등)를 찾아 차트 데이터를 뽑으세요.
+- 원문에 수치가 하나라도 있으면 charts에 1~2개를 반드시 구성 (막대 2~6개, 비교·추이·비율 등)
+- 수치가 정말 전무할 때만 charts를 빈 배열로
+
 반드시 아래 JSON만 응답 (코드펜스·설명 금지):
-{{"title": "칼럼 제목 (신호를 담되 60자 이내)", "summary": "한 줄 요약 100자 이내", "body": "<h3>·<p>만 쓴 HTML"}}"""
+{{"title": "칼럼 제목 (신호를 담되 60자 이내)", "summary": "한 줄 요약 100자 이내", "body": "<h3>·<p>만 쓴 HTML",
+"charts": [{{"title": "차트 제목", "subtitle": "부제·단위 설명", "unit": "단위(%·건·B 등, 없으면 빈 문자열)", "series": [{{"label": "항목", "value": 숫자}}]}}]}}"""
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
         headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
@@ -131,10 +177,13 @@ def main():
             cols = json.loads(COLS_PATH.read_text(encoding="utf-8"))
         except Exception:
             pass
+    charts_html = "".join(render_chart(ch) for ch in (col.get("charts") or [])[:2])
+    if charts_html:
+        print(f"[신호칼럼] 원문 수치 차트 {charts_html.count('<svg')}개 동봉")
     entry = {"date": datetime.now(KST).strftime("%Y.%m.%d"),
              "title": ("📡 " + col["title"])[:80],
              "summary": (col.get("summary") or "")[:120],
-             "body": col["body"] + src_line,
+             "body": col["body"] + charts_html + src_line,
              "auto": True, "viz": {"type": "constellation"}}
     cols["columns"] = [entry] + cols.get("columns", [])
     COLS_PATH.write_text(json.dumps(cols, ensure_ascii=False, indent=1),
