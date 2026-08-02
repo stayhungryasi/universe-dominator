@@ -142,6 +142,9 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .col-card.open .col-body { display: block; }
 .col-chart { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); line-height: 0; }
 .col-chart svg { width: 100%; height: auto; display: block; }
+.col-share { display: flex; gap: 8px; margin: 0 0 14px; }
+.col-share button { padding: 6px 13px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg); font-size: 12px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.col-share button:hover { border-color: var(--gold); color: var(--gold); }
 .col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
 .col-body p { margin: 0 0 10px; }
 .map-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -361,7 +364,7 @@ function planetTex(hi, lo, seed, rocky){
   const img = g.createImageData(W, Hh), d = img.data;
   for (let y = 0; y < Hh; y++) {
     const v = y / Hh;
-    const polar = 0.72 + 0.28*Math.sin(v*Math.PI);          // 극지방 어둡게
+    const polar = 0.58 + 0.42*Math.sin(v*Math.PI);          // 극지방 어둡게
     for (let x = 0; x < W; x++) {
       const u = x / W;
       const n = fbm(u*GX*0.55, v*GY*0.55);
@@ -372,7 +375,7 @@ function planetTex(hi, lo, seed, rocky){
       } else {
         const warp = (fbm(u*GX*0.8 + 9.7, v*GY*0.8) - 0.5) * 0.16;  // 소용돌이 워프
         t = Math.sin((v + warp)*Math.PI*bands + phase)*0.5 + 0.5;    // 흐르는 줄무늬
-        t = t*0.72 + n*0.28;
+        t = Math.pow(t, 1.25)*0.78 + n*0.22;
       }
       const i4 = (y*W + x) * 4;
       d[i4]   = (B[0] + (A[0]-B[0])*t) * polar;
@@ -424,10 +427,16 @@ function milkyTex(){
     const r = rnd()*26 + 5;
     const gr = g.createRadialGradient(x, y, 0, x, y, r);
     const warm = rnd() > 0.75;
-    gr.addColorStop(0, warm ? 'rgba(150,110,80,0.05)' : 'rgba(165,175,215,0.05)');
+    gr.addColorStop(0, warm ? 'rgba(185,135,90,0.12)' : 'rgba(175,190,235,0.12)');
     gr.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.3); g.fill();
   }
+  // 대형 발광 성운 2점 (레퍼런스의 색 포인트)
+  [[0.22, 0.38, 'rgba(210,120,60,0.16)', 150], [0.72, 0.6, 'rgba(110,140,230,0.13)', 180]].forEach(([fx, fy, col2, rr]) => {
+    const gr2 = g.createRadialGradient(1024*fx, 512*fy, 0, 1024*fx, 512*fy, rr);
+    gr2.addColorStop(0, col2); gr2.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr2; g.beginPath(); g.arc(1024*fx, 512*fy, rr, 0, 6.3); g.fill();
+  });
   // 암흑 성운 줄기
   for (let i = 0; i < 70; i++) {
     const t = rnd(), x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*56 + (rnd()-0.5)*46;
@@ -436,7 +445,7 @@ function milkyTex(){
   }
   // 별 5500개 (색 온도 섞기)
   const cols = ['#f5f1e6','#f5f1e6','#f5f1e6','#cfe0ff','#ffe0c9','#ffd0d0'];
-  for (let i = 0; i < 2200; i++) {
+  for (let i = 0; i < 3400; i++) {
     const band = rnd() < 0.55;
     const x = rnd()*1024;
     const y = band ? 256 + Math.sin(x/1024*Math.PI*2)*62 + (rnd()-0.5)*150 : rnd()*512;
@@ -470,8 +479,8 @@ function boot3d(stocks){
   const sun = stocks[0], planets = stocks.slice(1);
   const maxMc = sun.mc;
   const rOf = mc => 6 + Math.pow(mc / maxMc, 0.58) * 34;
-  const sunR = 46;
-  const orbitBase = sunR + 55, orbitStep = 34;
+  const sunR = 60;
+  const orbitBase = sunR + 60, orbitStep = 42;
 
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x0a0d18, 0.00055);
@@ -504,17 +513,30 @@ function boot3d(stocks){
   scene.add(sky);
   setTimeout(() => { try { sky.material.map = milkyTex(); sky.material.color.set(0xffffff); sky.material.needsUpdate = true; } catch(e){} }, 30);
 
-  // 별밭 2겹 (원·근)
-  [[2600, 1400, 2.2, 0.9], [1200, 700, 1.2, 0.55]].forEach(([n, rad, size, op]) => {
+  // 별밭 — 원형 소프트 입자 (사각형 아티팩트 제거), 카메라 항로 바깥(1700+)에 배치
+  const starSprite = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const g = c.getContext('2d');
+    const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, 'rgba(255,255,255,1)');
+    gr.addColorStop(0.25, 'rgba(255,250,235,0.85)');
+    gr.addColorStop(0.6, 'rgba(230,235,255,0.25)');
+    gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  })();
+  [[2200, 1700, 7, 0.9], [900, 2300, 12, 0.75]].forEach(([n, rad, size, op]) => {
     const pos = new Float32Array(n*3);
     for (let i = 0; i < n; i++) {
-      const u = Math.random()*2-1, t = Math.random()*Math.PI*2, rr = rad + Math.random()*rad;
+      const u = Math.random()*2-1, t = Math.random()*Math.PI*2, rr = rad + Math.random()*900;
       const sq = Math.sqrt(1-u*u);
       pos[i*3] = rr*sq*Math.cos(t); pos[i*3+1] = rr*u; pos[i*3+2] = rr*sq*Math.sin(t);
     }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xf5f1e6, size, transparent: true, opacity: op, sizeAttenuation: true })));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+      map: starSprite, color: 0xffffff, size, transparent: true, opacity: op,
+      sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending })));
   });
 
   // 태양 — 발광 코어 + 이중 광륜
@@ -535,7 +557,7 @@ function boot3d(stocks){
         '  vec3 p = normalize(vP) * 3.2;',
         '  float n = fbm(p + vec3(t*0.055, t*0.04, t*0.05)) + 0.45 * fbm(p*2.6 - vec3(t*0.085, 0.0, t*0.06));',
         '  vec3 deep = vec3(0.66, 0.22, 0.02); vec3 mid = vec3(1.0, 0.60, 0.10); vec3 hot = vec3(1.0, 0.95, 0.74);',
-        '  vec3 col = mix(deep, mid, smoothstep(0.28, 0.85, n));',
+        '  vec3 col = mix(deep, mid, smoothstep(0.34, 0.72, n)) * 1.25;',
         '  col = mix(col, hot, smoothstep(0.95, 1.35, n));',
         '  float rim = pow(1.0 - abs(vNv.z), 2.2);',
         '  col += rim * vec3(1.0, 0.55, 0.12) * 0.8;',
@@ -545,9 +567,12 @@ function boot3d(stocks){
   } catch(e) { sunMat = new THREE.MeshBasicMaterial({ map: sunTex() }); }
   const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(sunR, 64, 48), sunMat);
   sunMesh.userData.i = 0; scene.add(sunMesh);
-  const glowM = new THREE.SpriteMaterial({ map: glowTex('rgb(255,216,115)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
-  const glow1 = new THREE.Sprite(glowM); glow1.scale.set(sunR*6.5, sunR*6.5, 1); scene.add(glow1);
-  const glow2 = new THREE.Sprite(glowM.clone()); glow2.material.opacity = 0.5; glow2.scale.set(sunR*11, sunR*11, 1); scene.add(glow2);
+  const glowM = new THREE.SpriteMaterial({ map: glowTex('rgb(255,240,200)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
+  const glow0 = new THREE.Sprite(glowM); glow0.material.opacity = 1; glow0.scale.set(sunR*3.4, sunR*3.4, 1); scene.add(glow0);
+  const glow1 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex('rgb(255,205,95)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85 }));
+  glow1.scale.set(sunR*7, sunR*7, 1); scene.add(glow1);
+  const glow2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex('rgb(255,170,60)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.45 }));
+  glow2.scale.set(sunR*13, sunR*13, 1); scene.add(glow2);
 
   // 행성들
   const bodies = [sunMesh];
@@ -587,9 +612,9 @@ function boot3d(stocks){
     const pts = [];
     const orbR = orbitBase + orbitStep*(i+1);
     for (let k = 0; k <= 128; k++) pts.push(new THREE.Vector3(Math.cos(k/128*Math.PI*2)*orbR, 0, Math.sin(k/128*Math.PI*2)*orbR));
-    const ORBIT_COLS = [0x7aa2ff, 0x7fe0cc, 0xffd88a, 0xf2a0a0, 0xc3b8f0, 0x9fe89f];
+    const ORBIT_COLS = [0x5b86f0, 0x3fbfa5, 0xe0a83c, 0xd97070, 0x9a86e8, 0x6fc06f];
     scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineBasicMaterial({ color: ORBIT_COLS[i % ORBIT_COLS.length], transparent: true, opacity: 0.38 })));
+      new THREE.LineBasicMaterial({ color: ORBIT_COLS[i % ORBIT_COLS.length], transparent: true, opacity: 0.3 })));
     // 라벨 (HTML — 항상 선명)
     const lab = document.createElement('div');
     lab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18,0 0 8px #0a0d18;line-height:1.25;white-space:nowrap';
@@ -665,7 +690,7 @@ function boot3d(stocks){
     // 진입 돌리 (2.2초) + 3초 무조작 시 자동 선회
     if (introT < 1) { introT = Math.min(1, introT + dt / 2200);
       const ease = 1 - Math.pow(1 - introT, 3);
-      camDist = 1350 - (1350 - 640) * ease;
+      camDist = 1150 - (1150 - 660) * ease;
       camTheta += dt * 0.00018;
     } else if (!dragging && performance.now() - lastTouch > 3000) {
       camTheta += dt * 0.00006;
@@ -1003,13 +1028,53 @@ function renderColumns(){
   if (!cols.length) { document.getElementById('obsBody').innerHTML =
     '<div class="obs-note">첫 관측일지를 준비 중입니다 — 곧 기록이 시작됩니다.</div>'; return; }
   document.getElementById('obsBody').innerHTML = cols.map((c, i) =>
-    '<div class="col-card" id="col-'+i+'" onclick="toggleCol('+i+')">'+
+    '<div class="col-card" id="col-'+i+'" data-log="'+colSlug(c)+'" onclick="toggleCol('+i+')">'+
       '<div class="col-viz">'+makeColViz(c)+'</div>'+
       '<div class="col-date">'+esc(c.date)+'</div>'+
       '<div class="col-title">'+esc(c.title)+'</div>'+
       '<div class="col-summary">'+esc(c.summary)+'</div>'+
-      '<div class="col-body">'+c.body+'</div>'+
+      '<div class="col-body">'+
+        '<div class="col-share">'+
+          '<button onclick="copyColLink(event,'+i+')">🔗 링크 복사</button>'+
+          '<button onclick="copyColText(event,'+i+')">📄 본문 복사</button>'+
+        '</div>'+c.body+'</div>'+
     '</div>').join('');
+  openFromHash();
+}
+
+function colSlug(c){ return 'log-' + colSeed((c.title || '') + (c.date || '')); }
+
+function colUrl(c){
+  return location.origin + location.pathname.replace(/[^/]*$/, '') + 'observatory.html#' + colSlug(c);
+}
+
+async function copyToClip(text, btn){
+  try { await navigator.clipboard.writeText(text); }
+  catch(e) { window.prompt('아래 내용을 복사하세요 (Ctrl+C):', text.slice(0, 2000)); return; }
+  if (btn) { const orig = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = orig; }, 1500); }
+}
+
+function copyColLink(ev, i){
+  ev.stopPropagation();
+  copyToClip(colUrl((DATA.columns || [])[i]), ev.target);
+}
+
+function copyColText(ev, i){
+  ev.stopPropagation();
+  const c = (DATA.columns || [])[i];
+  const tmp = document.createElement('div'); tmp.innerHTML = c.body;
+  tmp.querySelectorAll('svg, .col-chart').forEach(n => n.remove());
+  tmp.querySelectorAll('h3').forEach(n => { n.textContent = '\n■ ' + n.textContent + '\n'; });
+  const text = 'UNIVERTRIX 관측일지 — ' + c.title + ' (' + c.date + ')\n' + colUrl(c) + '\n' +
+    (tmp.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
+  copyToClip(text, ev.target);
+}
+
+function openFromHash(){
+  const h = location.hash.replace('#', '');
+  if (!h.startsWith('log-')) return;
+  const card = document.querySelector('.col-card[data-log="' + h + '"]');
+  if (card) { card.classList.add('open'); setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80); }
 }
 function toggleCol(i){
   const el = document.getElementById('col-'+i);
@@ -1018,7 +1083,12 @@ function toggleCol(i){
   if (!was) el.classList.add('open');
 }
 
-renderSolar();
+if (location.hash && location.hash.indexOf('#log-') === 0) {
+  const btn = document.querySelector('.obs-tab[data-t="columns"]');
+  if (btn) setObsTab('columns', btn); else renderColumns();
+} else {
+  renderSolar();
+}
 </script>
 <!-- uv-presence -->
 <script type="module">
