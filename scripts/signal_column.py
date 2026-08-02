@@ -146,6 +146,32 @@ def main():
     if state.get("last_date") == today:
         print("[신호칼럼] 오늘 이미 발행 — 침묵 (하루 1편)")
         return
+    # 이중 잠금: 상태 파일이 유실돼도 columns.json에 오늘 자 📡 칼럼이 있으면 침묵
+    if COLS_PATH.exists():
+        try:
+            today_dot = datetime.now(KST).strftime("%Y.%m.%d")
+            existing = json.loads(COLS_PATH.read_text(encoding="utf-8")).get("columns", [])
+            if any(c.get("title", "").startswith("📡") and c.get("date") == today_dot
+                   for c in existing):
+                print("[신호칼럼] columns.json에 오늘 자 📡 칼럼 존재 — 침묵 (이중 잠금)")
+                STATE_PATH.write_text(json.dumps({"last_date": today}, ensure_ascii=False),
+                                      encoding="utf-8")
+                return
+        except Exception:
+            pass
+    # 이중 안전벨트: 상태 파일이 유실·경합돼도 columns.json에 오늘 📡 칼럼이 있으면 침묵
+    today_dot = datetime.now(KST).strftime("%Y.%m.%d")
+    if COLS_PATH.exists():
+        try:
+            existing = json.loads(COLS_PATH.read_text(encoding="utf-8")).get("columns", [])
+            if any(c.get("date") == today_dot and (c.get("title") or "").startswith("📡")
+                   for c in existing):
+                print("[신호칼럼] columns.json에 오늘 📡 칼럼 존재 — 침묵 (이중 안전벨트)")
+                STATE_PATH.write_text(json.dumps({"last_date": today}, ensure_ascii=False),
+                                      encoding="utf-8")
+                return
+        except Exception:
+            pass
 
     sig_data = json.loads(SIG_PATH.read_text(encoding="utf-8"))
     cutoff = (datetime.now(KST) - timedelta(days=2)).strftime("%Y-%m-%d")
