@@ -469,6 +469,17 @@ function boot3d(stocks){
   scene.add(sunLight);
 
   const texQueue = [];
+  // 실사 텍스처 풀 — 종목마다 서로 다른 행성 얼굴 (파일이 없으면 해당 항목만 절차적 폴백)
+  const GAS_POOL = ['jupiter.jpg', 'saturn.jpg', 'uranus.jpg', 'neptune.jpg', 'venus_atm.jpg', 'gas1.jpg', 'gas2.jpg', 'ice1.jpg'];
+  const ROCK_POOL = ['mars.jpg', 'mercury.jpg', 'venus.jpg', 'ceres.jpg', 'makemake.jpg', 'haumea.jpg', 'eris.jpg', 'moon.jpg', 'rock1.jpg', 'rock2.jpg'];
+  const __usedTex = new Set();
+  function pickRealTex(pool, seed){
+    for (let k = 0; k < pool.length; k++) {
+      const name = pool[(seed + k) % pool.length];
+      if (!__usedTex.has(name)) { __usedTex.add(name); return name; }
+    }
+    return pool[seed % pool.length];
+  }
   // ── 실사 텍스처 (assets/textures/ 에 파일이 있으면 자동 승격, 없으면 절차적 폴백) ──
   const REAL_TEX_BASE = 'assets/textures/';
   const texLoader = new THREE.TextureLoader();
@@ -499,7 +510,7 @@ function boot3d(stocks){
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
     return new THREE.CanvasTexture(c);
   })();
-  [[2200, 1700, 7, 0.9], [900, 2300, 12, 0.75]].forEach(([n, rad, size, op]) => {
+  [[2000, 1900, 3.8, 0.8], [700, 2600, 6, 0.5]].forEach(([n, rad, size, op]) => {
     const pos = new Float32Array(n*3);
     for (let i = 0; i < n; i++) {
       const u = Math.random()*2-1, t = Math.random()*Math.PI*2, rr = rad + Math.random()*900;
@@ -559,20 +570,8 @@ function boot3d(stocks){
       new THREE.MeshStandardMaterial({ color: new THREE.Color(lo), roughness: 0.92, metalness: 0.04 }));
     mesh.userData.i = i + 1;
     scene.add(mesh); bodies.push(mesh);
-    // 대기 발광 (큰 행성) — 가장자리가 은은히 빛나는 실사 효과
-    if (r >= 16) {
-      const atm = new THREE.Mesh(new THREE.SphereGeometry(r * 1.16, 32, 24),
-        new THREE.ShaderMaterial({
-          uniforms: { c: { value: new THREE.Color(hi) } },
-          vertexShader: 'varying vec3 vNv; void main(){ vNv = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-          fragmentShader: 'varying vec3 vNv; uniform vec3 c; void main(){ float a = pow(clamp(0.68 - abs(vNv.z), 0.0, 1.0), 1.8); gl_FragColor = vec4(c * 1.35, a * 0.9); }',
-          transparent: true, blending: THREE.AdditiveBlending, side: THREE.BackSide, depthWrite: false }));
-      mesh.add(atm);
-    }
     texQueue.push({ mesh, hi, lo, seed: colSeed(p.ticker), rocky: r < 13 });
-    const realName = r >= 20 ? (i % 2 ? 'gas2.jpg' : 'gas1.jpg')
-      : r >= 13 ? 'ice1.jpg'
-      : (i % 2 ? 'rock2.jpg' : 'rock1.jpg');
+    const realName = pickRealTex(r >= 15 ? GAS_POOL : ROCK_POOL, colSeed(p.ticker));
     loadReal(realName, t => {
       mesh.material.map = t; mesh.material.bumpMap = null;
       mesh.material.color.set(0xffffff); mesh.material.needsUpdate = true;
