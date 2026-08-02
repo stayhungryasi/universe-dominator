@@ -288,6 +288,44 @@ function render(group) {
   }).join('');
 }
 
+function calTimeline(evs){
+  // 다가오는 2주 타임라인 — 오늘부터 14일, 날짜별 티커 칩
+  const W = 980, H = 224, padL = 14, padT = 52, colW = (W - padL*2) / 14;
+  const day0 = new Date(); day0.setHours(0,0,0,0);
+  const fmt = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const byDay = {};
+  evs.forEach(e => { (byDay[e.date] = byDay[e.date] || []).push(e); });
+  const DOW = ['일','월','화','수','목','금','토'];
+  let o = '';
+  o += '<rect width="' + W + '" height="' + H + '" rx="14" fill="#10141f"/>';
+  o += '<text x="20" y="30" fill="#f2ba3c" font-size="16.5" font-weight="800">다가오는 2주 — 관측 캘린더</text>';
+  o += '<text x="' + (W-20) + '" y="30" text-anchor="end" fill="#9c7a3a" font-size="10.5" font-weight="800">UNIVERTRIX · univertrix.com</text>';
+  let total = 0;
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(day0.getTime() + i*86400000);
+    const x = padL + colW * i, dow = d.getDay();
+    const isToday = i === 0, isWknd = dow === 0 || dow === 6;
+    if (isWknd) o += '<rect x="' + x.toFixed(1) + '" y="' + (padT-8) + '" width="' + colW.toFixed(1) + '" height="' + (H-padT-16) + '" fill="#161b2b" rx="6"/>';
+    if (isToday) o += '<rect x="' + x.toFixed(1) + '" y="' + (padT-8) + '" width="' + colW.toFixed(1) + '" height="' + (H-padT-16) + '" fill="rgba(242,186,60,0.10)" stroke="#f2ba3c" stroke-width="1.2" rx="6"/>';
+    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (padT+8) + '" text-anchor="middle" fill="' + (isToday ? '#f2ba3c' : '#c8d0ea') + '" font-size="11.5" font-weight="800">' + (d.getMonth()+1) + '/' + d.getDate() + '</text>';
+    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (padT+22) + '" text-anchor="middle" fill="' + (isToday ? '#f2ba3c' : (isWknd ? '#5a648a' : '#7c88ac')) + '" font-size="9.5" font-weight="700">' + (isToday ? '오늘' : DOW[dow]) + '</text>';
+    const dayEvs = byDay[fmt(d)] || [];
+    total += dayEvs.length;
+    dayEvs.slice(0, 3).forEach((e, k) => {
+      const y = padT + 34 + k * 30;
+      const isE = e.type === 'earnings';
+      const label = String(e.ticker || (e.title || '').split(' ')[0]).slice(0, 6);
+      o += '<rect x="' + (x+3).toFixed(1) + '" y="' + y + '" width="' + (colW-6).toFixed(1) + '" height="24" rx="6" fill="' + (isE ? 'rgba(242,186,60,0.16)' : 'rgba(56,110,225,0.2)') + '" stroke="' + (isE ? '#9c7a3a' : '#386ee1') + '" stroke-width="1"/>';
+      o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (y+16) + '" text-anchor="middle" fill="' + (isE ? '#f2ba3c' : '#8fb0f5') + '" font-size="10.5" font-weight="800">' + esc(label) + '</text>';
+    });
+    if (dayEvs.length > 3)
+      o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (padT+34+90+12) + '" text-anchor="middle" fill="#7c88ac" font-size="9.5" font-weight="800">+' + (dayEvs.length-3) + '</text>';
+  }
+  o += '<text x="20" y="' + (H-10) + '" fill="#5a648a" font-size="9.5">금빛 = 실적 발표 · 코발트 = 경제지표·기타 — 2주 내 ' + total + '건</text>';
+  return '<div class="col-chart" style="margin:0 0 18px;border-radius:14px;overflow:hidden;border:1px solid var(--line);line-height:0">' +
+    '<svg style="width:100%;height:auto;display:block" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + o + '</svg></div>';
+}
+
 function renderCalendar() {
   const list = document.getElementById('list');
   const evs = (DATA.calendar && DATA.calendar.events) || [];
@@ -297,7 +335,7 @@ function renderCalendar() {
   }
   const today = new Date(new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }));
   const typeLabel = { macro: 'FOMC·매크로', earnings: '실적 발표', event: '이벤트' };
-  list.innerHTML = evs.map(e => {
+  list.innerHTML = calTimeline(evs) + evs.map(e => {
     const d = new Date(e.date);
     const diff = Math.round((d - today) / 86400000);
     const dday = diff === 0 ? 'TODAY' : (diff > 0 ? 'D-' + diff : 'D+' + Math.abs(diff));
