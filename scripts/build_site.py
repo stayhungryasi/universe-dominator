@@ -276,6 +276,10 @@ def fix_nav():
         if name == "journal.html":
             new = new.replace('<a href="journal.html" class="nav-tab">관측노트</a>',
                               '<a href="journal.html" class="nav-tab active">관측노트</a>')
+        # 광폭 레이아웃 (720px → 1280px) — 대시보드 체급에 맞게, 멱등 주입
+        if 'id="wide-fix"' not in new:
+            new = new.replace("</head>",
+                '<style id="wide-fix">.container{max-width:1280px}</style>\n</head>', 1)
         if new != html:
             f.write_text(new, encoding="utf-8"); n += 1
     print(f"[OK] nav 정리(개명·순서): {n}개 페이지")
