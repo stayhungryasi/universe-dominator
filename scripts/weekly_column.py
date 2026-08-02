@@ -110,6 +110,76 @@ def ask_claude(api_key, digest, week_label):
     return col
 
 
+# ─────────────────── 주간 차트 자동 생성 ───────────────────
+
+def _bar_chart(title, subtitle, series, unit="", W=700, H=300):
+    """세로 막대 — series: [(label, value)]"""
+    maxv = max(v for _, v in series) or 1
+    n = len(series)
+    pad_l, pad_r, pad_t, pad_b = 40, 40, 78, 56
+    cw = (W - pad_l - pad_r) / n
+    bw = min(74, cw * 0.56)
+    base_y = H - pad_b
+    o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">']
+    o.append('<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">'
+             '<stop offset="0%" stop-color="#f2ba3c"/><stop offset="100%" stop-color="#9c7a3a"/></linearGradient></defs>')
+    o.append(f'<rect width="{W}" height="{H}" fill="#10141f"/>')
+    o.append(f'<text x="26" y="34" fill="#f2ba3c" font-size="19" font-weight="800">{title}</text>')
+    o.append(f'<text x="26" y="56" fill="#8a94b8" font-size="12.5" font-weight="600">{subtitle}</text>')
+    o.append(f'<line x1="{pad_l-14}" y1="{base_y}" x2="{W-pad_r+14}" y2="{base_y}" stroke="#3a4568"/>')
+    for i, (label, v) in enumerate(series):
+        x = pad_l + cw * i + (cw - bw) / 2
+        h = (v / maxv) * (base_y - pad_t)
+        y = base_y - h
+        o.append(f'<rect x="{x:.0f}" y="{y:.0f}" width="{bw:.0f}" height="{h:.0f}" rx="7" fill="url(#wg)"/>')
+        o.append(f'<text x="{x+bw/2:.0f}" y="{y-10:.0f}" text-anchor="middle" fill="#fff" font-size="16" font-weight="800">{v:g}{unit}</text>')
+        o.append(f'<text x="{x+bw/2:.0f}" y="{base_y+22:.0f}" text-anchor="middle" fill="#c8d0ea" font-size="12" font-weight="700">{label}</text>')
+    o.append(f'<text x="{W-26}" y="{H-14}" text-anchor="end" fill="#9c7a3a" font-size="11.5" font-weight="800">UNIVERTRIX · univertrix.com</text>')
+    o.append('</svg>')
+    return '<div class="col-chart">' + ''.join(o) + '</div>'
+
+
+def _mover_chart(hot, cold, W=700, H=310):
+    """주간 등락 — 상승 금빛 / 하락 코발트 가로 막대"""
+    rows = [(x["name"], x["chg"], True) for x in hot] + [(x["name"], x["chg"], False) for x in cold]
+    if not rows:
+        return ""
+    maxa = max(abs(c) for _, c, _ in rows) or 1
+    pad_t = 74
+    rh = (H - pad_t - 40) / len(rows)
+    bh = min(26, rh * 0.62)
+    o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">']
+    o.append(f'<rect width="{W}" height="{H}" fill="#10141f"/>')
+    o.append('<text x="26" y="34" fill="#f2ba3c" font-size="19" font-weight="800">이번 주의 별 — 타오른 별과 식은 별</text>')
+    o.append('<text x="26" y="56" fill="#8a94b8" font-size="12.5" font-weight="600">지구 TOP 20 주간 시총 증감률 상·하위</text>')
+    for i, (name, chg, up) in enumerate(rows):
+        y = pad_t + rh * i + (rh - bh) / 2
+        w = abs(chg) / maxa * (W - 320)
+        color = 'url(#wg2)' if up else '#386ee1'
+        o.append(f'<text x="26" y="{y+bh/2+5:.0f}" fill="#e6ebfa" font-size="13" font-weight="800">{name[:16]}</text>')
+        o.append(f'<rect x="200" y="{y:.0f}" width="{max(w,4):.0f}" height="{bh:.0f}" rx="6" fill="{color}"/>')
+        sign = "+" if chg > 0 else ""
+        o.append(f'<text x="{200+max(w,4)+10:.0f}" y="{y+bh/2+5:.0f}" fill="#fff" font-size="14.5" font-weight="800">{sign}{chg:g}%</text>')
+    o.insert(1, '<defs><linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">'
+                '<stop offset="0%" stop-color="#9c7a3a"/><stop offset="100%" stop-color="#f2ba3c"/></linearGradient></defs>')
+    o.append(f'<text x="{W-26}" y="{H-14}" text-anchor="end" fill="#9c7a3a" font-size="11.5" font-weight="800">UNIVERTRIX · univertrix.com</text>')
+    o.append('</svg>')
+    return '<div class="col-chart">' + ''.join(o) + '</div>'
+
+
+def build_charts(digest):
+    charts = ""
+    hot = digest.get("week_hot") or []
+    cold = digest.get("week_cold") or []
+    charts += _mover_chart(hot[:3], cold[:3])
+    top5 = digest.get("top5") or []
+    if top5:
+        charts += _bar_chart("이번 주의 태양계 — TOP 5 시가총액",
+                             "조 달러($T) 기준 · " + digest.get("today", ""),
+                             [(t["name"].split(" ")[0][:10], t["mc_t"]) for t in top5], unit="")
+    return charts
+
+
 def main():
     now = datetime.now(KST)
     if now.weekday() != 5:  # 5 = 토요일
@@ -138,8 +208,13 @@ def main():
         print(f"[주간칼럼] 생성 실패: {e} — columns.json 보존", file=sys.stderr)
         sys.exit(0)
 
+    charts = ""
+    try:
+        charts = build_charts(digest)
+    except Exception as e:
+        print(f"[주간칼럼] 차트 생성 실패(본문만 발행): {e}", file=sys.stderr)
     entry = {"date": now.strftime("%Y.%m.%d"), "title": col["title"][:80],
-             "summary": (col.get("summary") or "")[:120], "body": col["body"],
+             "summary": (col.get("summary") or "")[:120], "body": col["body"] + charts,
              "auto": True,
              "viz": {"type": "solar",
                      "planets": [{"n": t["name"], "mc": t["mc_t"]}
