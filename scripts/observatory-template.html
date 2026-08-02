@@ -142,6 +142,10 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .col-card.open .col-body { display: block; }
 .col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
 .col-body p { margin: 0 0 10px; }
+.map-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.map-chip { padding: 7px 13px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 12.5px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.map-chip:hover { border-color: var(--gold); }
+.map-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 .map-wrap { background: #10141f; border: 1px solid var(--line); border-radius: 16px; padding: 10px; position: relative; }
 .map-grid { position: relative; width: 100%; height: 740px; }
 .map-tile { position: absolute; overflow: hidden; border-radius: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #eef2ff; cursor: pointer; transition: filter 0.12s, box-shadow 0.12s; background-image: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.09), rgba(0,0,0,0.12)); }
@@ -789,9 +793,27 @@ function squarify(items, x, y, w, h, out){
   else squarify(rest, x + thick, y, w - thick, h, out);
 }
 
+let mapFilter = 'all';
+function setMapFilter(f){ mapFilter = f; renderMap(); }
+
 function renderMap(){
-  const tiles = (DATA.tiles || []).filter(t => t.mc > 0);
-  if (!tiles.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">지도 데이터 대기 중입니다.</div>'; return; }
+  const all = (DATA.tiles || []).filter(t => t.mc > 0);
+  if (!all.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">지도 데이터 대기 중입니다.</div>'; return; }
+  // 필터 칩 구성: 전체 · 우주지배자 · 잠재지배자 · 국가별(시총순)
+  const gTotals = {};
+  all.forEach(t => { gTotals[t.g] = (gTotals[t.g] || 0) + t.mc; });
+  const countries = Object.entries(gTotals).sort((a, b) => b[1] - a[1]).map(([g]) => g);
+  const flagOf = g => (all.find(t => t.g === g) || {}).f || '';
+  const chips = [['all', '전체'], ['earth', '👑 우주지배자'], ['latent', '✦ 잠재지배자']]
+    .concat(countries.map(g => ['g:' + g, flagOf(g) + ' ' + g]));
+  const chipsHtml = '<div class="map-chips">' + chips.map(([k, label]) =>
+    '<button class="map-chip' + (mapFilter === k ? ' active' : '') + '" onclick="setMapFilter(\'' + k + '\')">' + esc(label) + '</button>').join('') + '</div>';
+
+  let tiles = all;
+  if (mapFilter === 'earth') tiles = all.filter(t => t.e);
+  else if (mapFilter === 'latent') tiles = all.filter(t => t.l);
+  else if (mapFilter.startsWith('g:')) tiles = all.filter(t => t.g === mapFilter.slice(2));
+  if (!tiles.length) tiles = all;
   const W = Math.min(document.getElementById('obsBody').clientWidth - 22, 1100) || 900, H = 740;
   // 국가 그룹: 시총 합 내림차순
   const groups = {};
@@ -820,11 +842,15 @@ function renderMap(){
   });
   const scale = [-3, -2, -1, 0, 1, 2, 3].map(v =>
     '<span style="background:' + chgColor(v) + ';color:' + chgText(v) + ';border-radius:100px">' + (v > 0 ? '+' : '') + v + '%</span>').join('');
-  document.getElementById('obsBody').innerHTML =
+  const subtitle = mapFilter === 'earth' ? '👑 우주지배자 — 지구 TOP 20'
+    : mapFilter === 'latent' ? '✦ 잠재지배자 — 30~200위권 모멘텀 후보'
+    : mapFilter.startsWith('g:') ? flagOf(mapFilter.slice(2)) + ' ' + mapFilter.slice(2) + ' 성단 상세'
+    : '8개 권역 통합';
+  document.getElementById('obsBody').innerHTML = chipsHtml +
     '<div class="map-wrap"><div class="map-grid" style="height:' + H + 'px">' + html + '</div>' +
     '<div class="solar-tip" id="mapTip"></div></div>' +
     '<div class="map-legend">' + scale + '</div>' +
-    '<div class="solar-legend">빛날수록 상승, 가라앉을수록 하락 — 칸 크기 = 시가총액 · 국가별 성단 · 8개 권역 통합 (' + esc(DATA.fetched || '') + ' 관측)</div>';
+    '<div class="solar-legend">빛날수록 상승, 가라앉을수록 하락 — 칸 크기 = 시가총액 · ' + subtitle + ' (' + esc(DATA.fetched || '') + ' 관측)</div>';
   const wrap = document.querySelector('.map-wrap'), tip = document.getElementById('mapTip');
   wrap.addEventListener('mousemove', e => {
     const t = e.target.closest('.map-tile');
