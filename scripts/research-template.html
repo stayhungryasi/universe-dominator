@@ -177,6 +177,8 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .guru-note { font-size: 12px; color: var(--text-muted); margin: 4px 0 18px; line-height: 1.6; }
 @media (max-width: 520px) { .guru-bar-wrap { display: none; } .guru-chg { width: 44px; } }
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
+:root { --cal-blue: #2f62c9; --cal-blue-bg: rgba(47,98,201,0.10); --cal-wknd: rgba(0,0,0,0.045); }
+[data-theme="dark"] { --cal-blue: #8fb0f5; --cal-blue-bg: rgba(56,110,225,0.2); --cal-wknd: #161b2b; }
 </style>
 </head>
 <body>
@@ -298,32 +300,32 @@ function calTimeline(evs){
   evs.forEach(e => { (byDay[e.date] = byDay[e.date] || []).push(e); });
   const DOW = ['일','월','화','수','목','금','토'];
   let o = '';
-  o += '<rect width="' + W + '" height="' + H + '" rx="14" fill="#10141f"/>';
-  o += '<text x="20" y="30" fill="#f2ba3c" font-size="16.5" font-weight="800">다가오는 2주 — 관측 캘린더</text>';
-  o += '<text x="' + (W-20) + '" y="30" text-anchor="end" fill="#9c7a3a" font-size="10.5" font-weight="800">UNIVERTRIX · univertrix.com</text>';
+  o += '<rect width="' + W + '" height="' + H + '" rx="14" fill="var(--bg-card)"/>';
+  o += '<text x="20" y="30" fill="var(--gold)" font-size="16.5" font-weight="800">다가오는 2주 — 관측 캘린더</text>';
+  o += '<text x="' + (W-20) + '" y="30" text-anchor="end" fill="var(--gold)" font-size="10.5" font-weight="800">UNIVERTRIX · univertrix.com</text>';
   let total = 0;
   for (let i = 0; i < 14; i++) {
     const d = new Date(day0.getTime() + i*86400000);
     const week = Math.floor(i / 7), col = i % 7;
     const x = padL + colW * col, top = padT + rowH * week, dow = d.getDay();
     const isToday = i === 0, isWknd = dow === 0 || dow === 6;
-    if (isWknd) o += '<rect x="' + (x+2).toFixed(1) + '" y="' + top + '" width="' + (colW-4).toFixed(1) + '" height="' + (rowH-12) + '" fill="#161b2b" rx="8"/>';
-    if (isToday) o += '<rect x="' + (x+2).toFixed(1) + '" y="' + top + '" width="' + (colW-4).toFixed(1) + '" height="' + (rowH-12) + '" fill="rgba(242,186,60,0.10)" stroke="#f2ba3c" stroke-width="1.2" rx="8"/>';
-    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+20) + '" text-anchor="middle" fill="' + (isToday ? '#f2ba3c' : '#e6ebfa') + '" font-size="13.5" font-weight="800">' + (d.getMonth()+1) + '/' + d.getDate() + '</text>';
-    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+36) + '" text-anchor="middle" fill="' + (isToday ? '#f2ba3c' : (isWknd ? '#5a648a' : '#7c88ac')) + '" font-size="10.5" font-weight="700">' + (isToday ? '오늘' : DOW[dow]) + '</text>';
+    if (isWknd) o += '<rect x="' + (x+2).toFixed(1) + '" y="' + top + '" width="' + (colW-4).toFixed(1) + '" height="' + (rowH-12) + '" fill="var(--cal-wknd)" rx="8"/>';
+    if (isToday) o += '<rect x="' + (x+2).toFixed(1) + '" y="' + top + '" width="' + (colW-4).toFixed(1) + '" height="' + (rowH-12) + '" fill="var(--gold-bg, rgba(242,186,60,0.12))" stroke="var(--gold)" stroke-width="1.2" rx="8"/>';
+    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+20) + '" text-anchor="middle" fill="' + (isToday ? 'var(--gold)' : 'var(--text)') + '" font-size="13.5" font-weight="800">' + (d.getMonth()+1) + '/' + d.getDate() + '</text>';
+    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+36) + '" text-anchor="middle" fill="' + (isToday ? 'var(--gold)' : 'var(--text-muted)') + '" font-size="10.5" font-weight="700">' + (isToday ? '오늘' : DOW[dow]) + '</text>';
     const dayEvs = byDay[fmt(d)] || [];
     total += dayEvs.length;
     dayEvs.slice(0, 4).forEach((e, k) => {
       const y = top + 46 + k * 33;
       const isE = e.type === 'earnings';
       const label = String(e.ticker || (e.title || '').split(' ')[0]).slice(0, 8);
-      o += '<rect x="' + (x+8).toFixed(1) + '" y="' + y + '" width="' + (colW-16).toFixed(1) + '" height="26" rx="7" fill="' + (isE ? 'rgba(242,186,60,0.16)' : 'rgba(56,110,225,0.2)') + '" stroke="' + (isE ? '#9c7a3a' : '#386ee1') + '" stroke-width="1"/>';
-      o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (y+17.5) + '" text-anchor="middle" fill="' + (isE ? '#f2ba3c' : '#8fb0f5') + '" font-size="12" font-weight="800">' + esc(label) + '</text>';
+      o += '<rect x="' + (x+8).toFixed(1) + '" y="' + y + '" width="' + (colW-16).toFixed(1) + '" height="26" rx="7" fill="' + (isE ? 'var(--gold-bg, rgba(242,186,60,0.14))' : 'var(--cal-blue-bg)') + '" stroke="' + (isE ? 'var(--gold)' : 'var(--cal-blue)') + '" stroke-width="1"/>';
+      o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (y+17.5) + '" text-anchor="middle" fill="' + (isE ? 'var(--gold)' : 'var(--cal-blue)') + '" font-size="12" font-weight="800">' + esc(label) + '</text>';
     });
     if (dayEvs.length > 4)
-      o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+46+4*33+13) + '" text-anchor="middle" fill="#7c88ac" font-size="10" font-weight="800">+' + (dayEvs.length-4) + '</text>';
+      o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+46+4*33+13) + '" text-anchor="middle" fill="var(--text-muted)" font-size="10" font-weight="800">+' + (dayEvs.length-4) + '</text>';
   }
-  o += '<text x="20" y="' + (H-8) + '" fill="#5a648a" font-size="9.5">금빛 = 실적 발표 · 코발트 = 경제지표·기타 — 2주 내 ' + total + '건</text>';
+  o += '<text x="20" y="' + (H-8) + '" fill="var(--text-muted)" font-size="9.5">금빛 = 실적 발표 · 코발트 = 경제지표·기타 — 2주 내 ' + total + '건</text>';
   return '<div class="col-chart" style="margin:0 0 18px;border-radius:14px;overflow:hidden;border:1px solid var(--line);line-height:0">' +
     '<svg style="width:100%;height:auto;display:block" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + o + '</svg></div>';
 }
