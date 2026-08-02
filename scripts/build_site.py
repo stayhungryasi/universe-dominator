@@ -253,7 +253,7 @@ def fix_nav():
     ① 나의우주 → 데이터 천문대  ② 커뮤니티 → 관제센터  ③ 순서: 천문대가 관제센터 앞"""
     import re as _re
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "observatory.html", "policies.html",
+             "community.html", "observatory.html", "policies.html", "journal.html",
              "history-top20.html", "history-latent.html", "about.html"]
     n = 0
     pat = _re.compile(r'(<a href="community\.html"[^>]*>[^<]*</a>)(\s*)(<a href="observatory\.html"[^>]*>[^<]*</a>)')
@@ -312,6 +312,23 @@ def inject_footer_links():
         f.write_text(html, encoding="utf-8")
         n += 1
     print(f"[OK] 푸터 정책 링크 주입: {n}개 페이지")
+
+
+def build_journal():
+    """journal.html — 판단 기록소 (비공개: 링크 미노출, 관리자 로그인 전용)"""
+    template_path = SCRIPTS_DIR / "journal-template.html"
+    if not template_path.exists():
+        print("[skip] journal-template.html 없음"); return
+    template = template_path.read_text(encoding="utf-8")
+    meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    html = template.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
+    for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
+        html = html.replace("{{ACTIVE_" + key + "}}", "")
+    (HERE / "journal.html").write_text(html, encoding="utf-8")
+    print(f"[OK] journal.html ({len(html):,} chars) — 비공개 페이지")
 
 
 def build_placeholders():
@@ -502,6 +519,7 @@ def main():
     build_community()
     build_observatory()
     build_policies()
+    build_journal()
     build_research()
     build_about()
     build_history("top20",  "home",   "history-top20.html")
