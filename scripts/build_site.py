@@ -191,9 +191,15 @@ def build_observatory():
                     for r in rows:
                         if r.get("ticker") and r.get("mc"):
                             prev_mc.setdefault(r["ticker"], r["mc"])
+                for r in prev.get("latent", []):
+                    if r.get("ticker") and r.get("mc"):
+                        prev_mc.setdefault(r["ticker"], r["mc"])
                 break
             except Exception:
                 continue
+    earth_set = {s.get("ticker") for s in latest.get("regions", {}).get("earth", {}).get("stocks", [])}
+    latent_rows = latest.get("latent", [])
+    latent_set = {x.get("ticker") for x in latent_rows}
     tiles, seen = [], set()
     for reg in latest.get("regions", {}).values():
         for s in reg.get("stocks", []):
@@ -205,7 +211,20 @@ def build_observatory():
             chg = round((s["mc"] - pm) / pm * 100, 2) if pm else None
             tiles.append({"t": tk, "n": s["name"], "mc": s["mc"], "chg": chg,
                           "g": FLAG_KO.get(s.get("flag", ""), "기타"),
-                          "f": s.get("flag", "")})
+                          "f": s.get("flag", ""),
+                          "e": 1 if tk in earth_set else 0,
+                          "l": 1 if tk in latent_set else 0})
+    # 잠재지배자(30~200위권) — 기존 지도에 없는 종목은 새 타일로 편입
+    for x in latent_rows:
+        tk = x.get("ticker")
+        if not tk or tk in seen or not x.get("mc"):
+            continue
+        seen.add(tk)
+        pm = prev_mc.get(tk)
+        chg = round((x["mc"] - pm) / pm * 100, 2) if pm else None
+        tiles.append({"t": tk, "n": x["name"], "mc": x["mc"], "chg": chg,
+                      "g": FLAG_KO.get(x.get("country", ""), "기타"),
+                      "f": x.get("country", ""), "e": 0, "l": 1})
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
