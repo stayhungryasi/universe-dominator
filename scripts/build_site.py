@@ -268,6 +268,14 @@ def fix_nav():
         new = new.replace(">나의우주<", ">데이터 천문대<")
         new = new.replace(">커뮤니티<", ">관제센터<")
         new = pat.sub(lambda m: m.group(3) + m.group(2) + m.group(1), new)
+        # 관측노트 메뉴 (공개) — 관제센터 뒤에 멱등 삽입
+        if 'href="journal.html"' not in new:
+            new = _re.sub(r'(<a href="community\.html"[^>]*>관제센터</a>)',
+                          lambda m: m.group(1) + '<a href="journal.html" class="nav-tab">관측노트</a>',
+                          new, count=1)
+        if name == "journal.html":
+            new = new.replace('<a href="journal.html" class="nav-tab">관측노트</a>',
+                              '<a href="journal.html" class="nav-tab active">관측노트</a>')
         if new != html:
             f.write_text(new, encoding="utf-8"); n += 1
     print(f"[OK] nav 정리(개명·순서): {n}개 페이지")
@@ -330,7 +338,7 @@ def build_journal():
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")
     (HERE / "journal.html").write_text(html, encoding="utf-8")
-    print(f"[OK] journal.html ({len(html):,} chars) — 비공개 페이지")
+    print(f"[OK] journal.html ({len(html):,} chars) — 관측노트(공개)")
 
 
 def build_placeholders():
