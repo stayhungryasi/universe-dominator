@@ -367,9 +367,14 @@ function renderSignals(){
   if (!sg.length) { document.getElementById('list').innerHTML =
     '<div class="empty-note">📡 신호 관측소 가동 준비 중 — 첫 수집 후 이곳에 실리콘밸리의 고신호 담론·발표가 잡힙니다.</div>'; return; }
   let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">해커뉴스 300점↑ 집단 주목 + AI 랩 공식 발표 — 매일 자동 포착' + (label ? ' (최근 수집: ' + esc(label) + ' KST)' : '') + '</div>';
-  html += sg.map(x => {
+  const cutoff = Date.now() - 7*86400000;
+  const isRecent = x => { const d = new Date((x.captured || '').replace(' ', 'T')); return !isNaN(d) && d.getTime() > cutoff; };
+  const pinned = sg.filter(x => x.pin && isRecent(x));
+  const rest = sg.filter(x => !pinned.includes(x));
+  const card = (x, pin) => {
     const tag = x.tag || '기타';
-    return '<div class="article-card" style="cursor:auto">' +
+    return '<div class="article-card" style="cursor:auto' + (pin ? ';border:1.5px solid var(--gold)' : '') + '">' +
+      (pin ? '<div style="font-size:10.5px;font-weight:800;color:var(--gold);margin-bottom:6px">📌 필독 신호 — 관제탑 지정</div>' : '') +
       '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px">' +
       '<span style="font-size:10.5px;font-weight:800;border-radius:100px;padding:2px 9px;background:' + (TAG_COLOR[tag] || '#6a7390') + ';color:#fff">' + esc(tag) + '</span>' +
       (x.points ? '<span style="font-size:11px;color:var(--gold);font-weight:800">▲ ' + x.points + '</span>' : '') +
@@ -379,7 +384,9 @@ function renderSignals(){
       (x.ko ? '<div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + esc(x.title) + '</div>' : '') + '</a>' +
       (x.why ? '<div style="font-size:13px;color:var(--text-secondary);line-height:1.65;margin-top:8px;border-left:3px solid var(--gold);padding-left:10px">' + esc(x.why) + '</div>' : '') +
     '</div>';
-  }).join('');
+  };
+  if (pinned.length) html += pinned.map(x => card(x, true)).join('');
+  html += rest.map(x => card(x, false)).join('');
   document.getElementById('list').innerHTML = html;
 }
 
