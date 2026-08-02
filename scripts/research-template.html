@@ -224,6 +224,7 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
       <button class="group-tab" data-g="latent" onclick="setGroup('latent', this)">잠재지배자</button>
       <button class="group-tab" data-g="calendar" onclick="setGroup('calendar', this)">주요일정</button>
       <button class="group-tab" data-g="gurus" onclick="setGroup('gurus', this)">거인의 어깨</button>
+      <button class="group-tab" data-g="signals" onclick="setGroup('signals', this)">📡 신호 관측소</button>
     </div>
     <div id="list"></div>
   </div>
@@ -359,10 +360,33 @@ function toggleGuru(gi) {
   if (!wasOpen) { el.classList.add('open'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
 }
 
+const TAG_COLOR = { '에세이': '#9c7a3a', '모델 발표': '#386ee1', '연구': '#2e9d87', '정책·규제': '#c05555', '투자·산업': '#7a6cc4', '기타': '#6a7390' };
+function renderSignals(){
+  const sg = (DATA.signals && DATA.signals.signals) || [];
+  const label = (DATA.signals && DATA.signals.generated_label) || '';
+  if (!sg.length) { document.getElementById('list').innerHTML =
+    '<div class="empty-note">📡 신호 관측소 가동 준비 중 — 첫 수집 후 이곳에 실리콘밸리의 고신호 담론·발표가 잡힙니다.</div>'; return; }
+  let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">해커뉴스 300점↑ 집단 주목 + AI 랩 공식 발표 — 매일 자동 포착' + (label ? ' (최근 수집: ' + esc(label) + ' KST)' : '') + '</div>';
+  html += sg.map(x => {
+    const tag = x.tag || '기타';
+    return '<div class="article-card" style="cursor:auto">' +
+      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px">' +
+      '<span style="font-size:10.5px;font-weight:800;border-radius:100px;padding:2px 9px;background:' + (TAG_COLOR[tag] || '#6a7390') + ';color:#fff">' + esc(tag) + '</span>' +
+      (x.points ? '<span style="font-size:11px;color:var(--gold);font-weight:800">▲ ' + x.points + '</span>' : '') +
+      '<span style="font-size:11px;color:var(--text-muted)">' + esc(x.source || '') + (x.captured ? ' · ' + esc(x.captured.slice(5, 16)) : '') + '</span></div>' +
+      '<a href="' + esc(x.url) + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">' +
+      '<div style="font-size:15.5px;font-weight:800;line-height:1.45">' + esc(x.ko || x.title) + '</div>' +
+      (x.ko ? '<div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + esc(x.title) + '</div>' : '') + '</a>' +
+      (x.why ? '<div style="font-size:13px;color:var(--text-secondary);line-height:1.65;margin-top:8px;border-left:3px solid var(--gold);padding-left:10px">' + esc(x.why) + '</div>' : '') +
+    '</div>';
+  }).join('');
+  document.getElementById('list').innerHTML = html;
+}
+
 function setGroup(g, btn) {
   document.querySelectorAll('.group-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (g === 'calendar') renderCalendar(); else if (g === 'gurus') renderGurus(); else render(g);
+  if (g === 'calendar') renderCalendar(); else if (g === 'gurus') renderGurus(); else if (g === 'signals') renderSignals(); else render(g);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
