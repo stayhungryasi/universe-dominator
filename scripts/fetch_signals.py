@@ -99,6 +99,8 @@ def collect(cfg):
             if s.get("type") == "hn":
                 got = [x for x in got
                        if (x["points"] or 0) >= cfg.get("min_points", 300)]
+            else:
+                got = got[:cfg.get("rss_cap", 5)]  # 한 소스가 관측소를 도배하지 못하게
             rows.extend(got)
             print(f"[신호] {s['name']}: {len(got)}건")
         except Exception as e:
@@ -118,7 +120,7 @@ def _claude_chunk(api_key, chunk):
 각 항목:
 - ko: 한글 제목 (자연스러운 번역, 60자 이내)
 - why: 왜 중요한가 — 투자자·AI 시대를 준비하는 개인 관점 1~2문장 (과장 금지)
-- tag: 에세이 | 모델 발표 | 연구 | 정책·규제 | 투자·산업 | 기타 중 하나
+- tag: 에세이 | 모델 발표 | 연구 | 정책·규제 | 투자·산업 | 기타 중 하나 ('모델 발표'는 실제 모델·제품 출시에만, 비전·전략 글은 '에세이')
 - grade: 일반 | 주목 | 필독 중 하나 — '필독'은 극히 드뭅니다. 산업 판도를 바꿀 발표,
   AGI·초지능 담론의 기준이 될 에세이, 프런티어 모델 출시급 사건에만 부여하고,
   해당 사항이 없으면 목록 전체에 필독이 0개여도 정상입니다.
