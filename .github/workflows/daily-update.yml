@@ -111,6 +111,15 @@ jobs:
         run: python scripts/fetch_gurus.py
         continue-on-error: true
 
+      # 개척자 — 세상을 바꾸는 인물들의 최신 신호 (Google News RSS + Haiku)
+      # 실패해도 파이프라인 중단 안 됨 → 기존 pioneers.json 유지
+      - name: Fetch pioneers signals (auto)
+        if: env.FULL_RUN == 'true'
+        run: python scripts/fetch_pioneers.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        continue-on-error: true
+
       # 토요일(KST)에만 주간 History 자동 생성
       # cron이 23:00 UTC = 다음날 08:00 KST 이므로,
       # 금요일 23:00 UTC 실행분이 토요일 08:00 KST가 됨 → KST 요일로 판정
