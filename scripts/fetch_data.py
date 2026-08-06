@@ -761,6 +761,12 @@ def collect():
             "china":  {**REGION_LABELS["china"],  "stocks": raw.get("china", [])[:TOP_N]},
             "hk":     {**REGION_LABELS["hk"],     "stocks": raw.get("hk", [])[:TOP_N]},
         },
+        # ★ 2026-08 PLTR 실적 누락 사고 수리: 글로벌 100위 전체를 감시 풀로 보존.
+        #    UI는 여전히 TOP 20만 쓰고, fetch_calendar가 실적 일정 감시에 사용한다.
+        "watch100": [
+            {"rank": i + 1, "ticker": r.get("ticker", ""), "name": r.get("name", "")}
+            for i, r in enumerate(raw.get("global", [])[:100])
+        ],
         "meta": {
             "fetched_at": TODAY_KST.isoformat(),
             "fetched_date": TODAY_KST.strftime("%Y-%m-%d"),
