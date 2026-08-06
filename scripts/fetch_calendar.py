@@ -50,10 +50,18 @@ def load_watch():
             stocks = region.get("stocks", region) if isinstance(region, dict) else region
             pools.extend(stocks or [])
         pools.extend(d.get("latent", []))
+        # ★ 2026-08 PLTR 사고 수리: 글로벌 시총 100위 전체를 감시망에 편입.
+        #    (기존엔 지역별 TOP 20 + 잠재뿐 → 글로벌 21~100위 중 어느 지역
+        #     TOP 20에도 못 드는 종목이 사각지대였다)
+        w100 = d.get("watch100", [])
+        pools.extend(w100)
         for s in pools:
             tk = (s.get("ticker") or "").strip().upper()
             if tk and "." not in tk and tk not in watch:
                 watch[tk] = s.get("name", tk)
+        if not w100:
+            print("  [경고] latest.json에 watch100 없음 — 글로벌 21~100위 실적 "
+                  "감시 불가 (fetch_data 선행 필요)", file=sys.stderr)
     except Exception as e:
         print(f"[warn] watch 목록 실패: {e}", file=sys.stderr)
     return watch
