@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개척자 · UNIVERTRIX</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+:root, [data-theme="light"] {
+  --bg: #FAF6EC; --bg-card: #FFFFFF; --header-bg: rgba(250, 246, 236, 0.95);
+  --bg-hover: #F5EFDF;
+  --text: #1A2438; --text-secondary: #525F7E; --text-muted: #8590AA;
+  --gold: #9C7A3A; --gold-bg: #F0E6CC;
+  --line: #E8DFC9; --line-strong: #C9BC9A;
+}
+[data-theme="dark"] {
+  --bg: #0A0E14; --bg-card: #1C2330; --header-bg: rgba(10, 14, 20, 0.95);
+  --bg-hover: #232B3B;
+  --text: #FFFFFF; --text-secondary: #B5BFD6; --text-muted: #6F7E9E;
+  --gold: #D4A658; --gold-bg: #2A2519;
+  --line: #2A3142; --line-strong: #3A4458;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard Variable', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  font-feature-settings: 'tnum', 'ss01'; line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+.site-header { background: var(--header-bg); border-bottom: 1px solid var(--line); }
+.site-header-inner { max-width: 720px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; color: var(--text); }
+.brand a { text-decoration: none; color: inherit; display: flex; gap: 8px; align-items: center; }
+.brand-star { color: var(--gold); }
+.brand-tag { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.update-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; background: var(--gold-bg);
+  border-radius: 100px; font-size: 12px; font-weight: 700;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .update-badge { border: 1px solid rgba(212,166,88,0.3); }
+.update-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse 2s ease-in-out infinite;
+}
+[data-theme="dark"] .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.rate-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 12px; background: var(--bg-card);
+  border: 1px solid var(--line); border-radius: 100px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums; white-space: nowrap; text-decoration: none; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.rate-badge:hover { border-color: var(--gold); }
+.rate-badge #usdKrwDisplay { color: var(--text); font-weight: 800; }
+.rate-badge-arrow { font-size: 10px; margin-left: 2px; color: var(--text-muted); opacity: 0.7; }
+@media (max-width: 480px) { .rate-badge { font-size: 11px; padding: 5px 10px; } .update-badge { font-size: 11px; padding: 5px 10px; } }
+@media (max-width: 380px) { .update-badge::before { display: none; } }
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--bg-card);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: inline; }
+
+.site-nav { position: sticky; top: 0; z-index: 50; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+.site-nav-inner { max-width: 720px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.site-nav-inner::-webkit-scrollbar { display: none; }
+.nav-tab { flex-shrink: 0; padding: 14px 18px; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.nav-tab:hover { color: var(--text-secondary); }
+.nav-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+
+main { flex: 1; padding: 0 0 48px; }
+
+.pn-hero { padding: 36px 0 6px; }
+.pn-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: var(--gold); }
+.pn-title { font-size: 30px; font-weight: 800; margin: 4px 0 6px; letter-spacing: -0.03em; }
+.pn-desc { font-size: 14px; color: var(--text-secondary); }
+.pn-updated { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+.pn-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 900px) { .pn-grid { grid-template-columns: 1fr 1fr; } }
+
+.pn-card {
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 16px; padding: 20px 20px 14px;
+  display: flex; flex-direction: column;
+}
+.pn-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.pn-name { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
+.pn-en { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+.pn-role { font-size: 12.5px; font-weight: 700; color: var(--gold); margin-top: 3px; }
+.pn-note { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; line-height: 1.55;
+  border-left: 2px solid var(--line-strong); padding-left: 9px; }
+
+.pn-items { margin-top: 14px; border-top: 1px solid var(--line); }
+.pn-item { padding: 11px 0; border-bottom: 1px solid var(--line); }
+.pn-item:last-child { border-bottom: none; }
+.pn-item-meta { font-size: 11.5px; color: var(--text-muted); font-weight: 600;
+  display: flex; gap: 6px; align-items: center; margin-bottom: 3px;
+  font-variant-numeric: tabular-nums; }
+.pn-item-src { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pn-item-title { font-size: 14px; font-weight: 600; color: var(--text);
+  text-decoration: none; display: block; line-height: 1.5; letter-spacing: -0.01em; }
+.pn-item-title:hover { color: var(--gold); }
+.pn-empty { padding: 16px 0 8px; font-size: 13px; color: var(--text-muted); }
+
+.pn-disclaim { margin-top: 26px; font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+
+.site-footer { padding: 24px 0 40px; border-top: 1px solid var(--line); text-align: center; }
+.footer-brand { display: flex; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text-secondary); }
+.footer-link { color: var(--text-secondary); text-decoration: none; font-weight: 700; }
+.footer-link:hover { color: var(--gold); }
+.footer-divider { color: var(--text-muted); font-weight: 400; }
+@media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .pn-title { font-size: 24px; } }
+</style>
+<style>
+/* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+.update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+/* UNIVERTRIX 로고 (build_site.py 주입) */
+.brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.ud-logo-mark { display: block; height: 26px; width: auto; }
+.ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
+.ud-logo-word .v { color: var(--gold); }
+@media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var badge = document.querySelector('.update-badge');
+  if (!badge) return;
+  badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
+  var dt = badge.querySelector('.ud-date');
+  var clk = badge.querySelector('.ud-clock');
+  function tick() {
+    var now = new Date();
+    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).replace(/-/g, '.');
+    clk.textContent = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
+  }
+  tick();
+  setInterval(tick, 1000);
+});
+</script>
+<style id="wide-fix">.container{max-width:1280px}</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX 홈">
+      <svg class="ud-logo-mark" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 3 H4 V27 H9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M25 3 H30 V27 H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="17" cy="15" rx="6.2" ry="10" stroke="var(--gold)" stroke-width="1.8"/>
+        <circle cx="17" cy="15" r="2.6" fill="var(--gold)"/>
+      </svg>
+      <span class="ud-logo-word">UNI<span class="v">V</span>ERTRIX</span>
+    </a>
+    <div class="header-right">
+      <span class="update-badge">2026.08.06</span>
+      <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
+         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+        USD/KRW <span id="usdKrwDisplay">1,423.57</span>
+        <span class="rate-badge-arrow" aria-hidden="true">↗</span>
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="site-nav-inner container">
+    <a href="index.html" class="nav-tab">우주지배자</a>
+    <a href="latent.html" class="nav-tab">잠재지배자</a>
+    <a href="megatrend.html" class="nav-tab">메가트렌드</a>
+    <a href="research.html" class="nav-tab">리서치</a>
+    <a href="observatory.html" class="nav-tab">데이터 천문대</a>
+    <a href="community.html" class="nav-tab">관제센터</a><a href="journal.html" class="nav-tab">관측노트</a><a href="pioneers.html" class="nav-tab active">개척자</a>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="pn-hero">
+      <div class="pn-eyebrow">PIONEERS</div>
+      <h1 class="pn-title">개척자</h1>
+      <p class="pn-desc">우주를 돌리는 사람들 — 세상을 바꾸는 인물들의 최신 신호를 매일 추적합니다.</p>
+      <div class="pn-updated" id="pnUpdated"></div>
+    </div>
+    <div class="pn-grid" id="pnGrid"></div>
+    <p class="pn-disclaim">※ 본 페이지는 공개 뉴스 헤드라인을 자동 수집·번역한 것으로 정보 제공 목적이며,
+    특정 인물·기업에 대한 평가나 투자 권유가 아닙니다. 원문은 각 링크의 해당 언론사에 있습니다.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-brand">
+      <span>UNI<span style="color:var(--gold)">V</span>ERTRIX</span>
+      <span class="footer-divider">·</span>
+      <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
+    </div>
+  </div>
+<div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">사이트 소개</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">이용약관</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">개인정보처리방침</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">커뮤니티 운영정책</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>
+</footer>
+
+<script>
+const savedTheme = localStorage.getItem('ud-theme');
+if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+function toggleTheme() {
+  const c = document.documentElement.getAttribute('data-theme') || 'light';
+  const n = c === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', n); localStorage.setItem('ud-theme', n);
+}
+
+const PIONEERS = {"updated": "2026-08-06 14:58 UTC", "people": [{"id": "jeff-dean", "ko": "제프 딘", "en": "Jeff Dean", "role": "Discovery Loop 공동창업자 · 前 구글 수석과학자", "note": "MapReduce·TensorFlow·구글브레인의 아버지. 27년 만에 구글을 떠나 과학 연구 자동화에 도전", "items": [{"title": "What Google’s AI talent exodus could mean for future drug discovery", "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOZ1pOT1lNV0tCSnBmUWxoc0tkNGJkcFNadGRtUjNWNjBDeTZmdjB0ZTAycmhlRzZaU2NjSnJLZUNjWnpFUFhsdVk4TXllWjE4ejFyaEJZZkcxX0owT0Z1SjZzLTNqRGpiWVY0bnJLSmpwQnhydTZSQnhCc09rb2MzTUE3YW9tSWdHWl8welVvTVVFOVJWSWVVUkhnb2tVTkRtaWVJZjQ1Z0pnNXlSTzk4WFRxMkFVZw?oc=5", "pub": "Thu, 06 Aug 2026 14:16:17 GMT", "source": "drugtargetreview.com", "date": "2026-08-06", "ko": "구글 AI 인재 이탈이 신약 개발 미래에 미칠 영향"}, {"title": "Google Employees React to Jeff Dean's Shock Departure With Fond Memes", "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOWmRYQmUzRkwtQ1VCb01kMG8tR2Y1bzJiS0RIaHROeFdmd2h4OUFiOTlIcnlPZzVMTVJ1aTltTE1qQm1hMVpMSXo0Smp6RHB4QkRtZFpxU0RxTVhPN0lpQkNHMzFka1l2RERIcjdpR1ZPU3RrVTlaOTMzN0N2VmlpWG9IRmYxX2VxdWVsUDhCUmN5bW8?oc=5", "pub": "Thu, 06 Aug 2026 09:56:00 GMT", "source": "Business Insider", "date": "2026-08-06", "ko": "제프 딘 떠나며 구글 직원들 추모 밈으로 화답"}, {"title": "What is Discovery Loop, AI startup launched by Google DeepMind’s top researchers?", "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQcU5WeTBHWkdPU3M1bVFsVC16cV92UHU5MWZLQ2JaYjNRRUdOMGpRYkZCeDc3NUFMVGpQYUE4dmRZbjI1WUczcFJwMFFIMEVFNmlSWmhHa2xtRlFVaFdLMEtKeW5kbmVibzNHVkVJdElEZ3lPbUVhSkVHYUZpSnBYVTlvM1hMMXpaNmpkdU16LXd0ZVdvVVFqeW1TdklxM01LWWcwenpHMnAxTTNzTllWMnJOcTg1Mi1uXzdTWVhDSXkzQ1hGY2M5b1Q0UVUwVkw30gHXAUFVX3lxTE95MVZ5SlFuckJKZzVFd3hfYXptN0dqQ2dWYThsa09OdVYyX0djMVpNYWFpYkJiakdYQzdQQUM1RmEwdzIzeUFQanFlaW1QUE1JT0N2LTZEWjIyeWxNbEV6MWs4UW5BbDAzam1helhENXZaSThMR0lJVDNZWTUwdjExeVRQeVVDUjJHLWF0RlNlY1R6OTNhOWhqbEpyVHpfcWkxOURnZW9NdU5zS2tGdUplU082X19mdjY4N1JUVDY4a29tT2swclFJVmRTaUVIWThRUmlrQ3VR?oc=5", "pub": "Thu, 06 Aug 2026 11:14:31 GMT", "source": "The Indian Express", "date": "2026-08-06", "ko": "구글 딥마인드 톱 연구진이 론칭한 AI 스타트업 '디스커버리 루프'"}]}, {"id": "elon-musk", "ko": "일론 머스크", "en": "Elon Musk", "role": "Tesla · SpaceX · xAI CEO", "note": "전기차·로켓·AI 세 전선에서 동시에 우주의 질서를 흔드는 자", "items": [{"title": "Elon Musk’s DOGE made big errors in claims of government savings, GAO finds", "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSlZ3V0REMS1pNi1PbUp6Z0RWejYyR2VUd1dQODhBbkwyQ1I0SG56amRFWFpZUGdxOWR4NE5mVVNmTER2cDhpeGFUQUNTMENSTVNZamdMcTVkRV9rdkwzd3VhNS1HcHJRUWxUOHcyczlDb1JXR2RvblhxM3N3UWRaVTRGU293RlNNY1FVM1I3a3VpSFQ4S1BOWjlYaW9aVV90d3llMlNFNmxpMFQ0WWpTNnhFY2NzeXpQX0hiVQ?oc=5", "pub": "Thu, 06 Aug 2026 14:25:53 GMT", "source": "The Washington Post", "date": "2026-08-06", "ko": "일론 머스크의 DOGE, 정부 절감 주장에 오류 발견 - 회계감시원"}, {"title": "Texans demand a say in the AI buildout after Elon Musk's Terafab factory gets a tax break", "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQQWdfWTcyLWpJRnJRTkhBeFJQb3BXSTJRR1AwcFVNaEJ2NlcwWEJodFZEcG1oOGhKS0o5M1E2eGJSVzQ3dzVWdTJQVW9kSzRjMjFtVkN0MDVuSzlOWXNieDhkX2ZWWWI2RFJrQnUtX2RhTHVablBSeFZENWF4UzEwakZjNWlEQXI3Yjg0Tm5SMlpCUjY3THZF?oc=5", "pub": "Thu, 06 Aug 2026 09:47:00 GMT", "source": "Business Insider", "date": "2026-08-06", "ko": "머스크 테라팹 공장 세금 감면에 텍사스 주민들 의견 수렴 요구"}, {"title": "Could Elon Musk replace your bank? Here's how X Money works", "url": "https://news.google.com/rss/articles/CBMitAJBVV95cUxQQzlLM29lV0hyNTYtRjZXejlUdEtVR29QanBRMFZhMjBwR29HNE9OSkg1elFaU1VybVQtMjZJT2I5QzkzOVBoMzAxc2tGN1pvZ0dvSVdXZDcxLWdfckM0WGp2VTA5WF8tYXlmRW1jbzQyRTVDSkd5OWJ4VlNjdWhZZ0dTQ1k0TTlyMWpxeXBtek1CYnBDaEpidkQyck90eUhMMWYzR2xSRHVzaVJ2aUh6bDE1V21xckZGYlJaZ0l4cFFqSGxfclZ1RVNPN0g3aVBnZkd4OU1SSEZQdWkwVVVOT1FWY1VqaGVBZS1hWkxKM3JpdnpTLU5lYkpGcnZOYmRLcDBiWl8tUWpwOFh0ejhkM293c21xZ0QxeHdwZE13bVpBQnJjY1djN19za3VKdy0ycE9fUg?oc=5", "pub": "Thu, 06 Aug 2026 07:31:57 GMT", "source": "WJLA", "date": "2026-08-06", "ko": "은행을 대체할 수 있을까, X 머니 시스템 작동 방식 분석"}]}, {"id": "peter-thiel", "ko": "피터 틸", "en": "Peter Thiel", "role": "Founders Fund · Palantir 공동창업자", "note": "제로 투 원 — 경쟁하지 말고 독점하라는 역발상의 투자자", "items": [{"title": "Sam Altman echoes Buffett and Thiel on 1 investing rule", "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPcjhtcVZEZkc2VmdWTUVMQzUyb2VSX3NTWlA3M3owRy1PcVVudFZYZUI2eVcxMEo1LTBScEJKRVNwVDBDekhmUnZfbDZoM2s0VXRDOU0wb2FDaUtITVNhc0xiRlo2alYtN1lrZnBicVNZRmxWU1M2UzVPUTZ6bmFVMlRNcnBTQ3lrU2c?oc=5", "pub": "Thu, 06 Aug 2026 00:07:00 GMT", "source": "thestreet.com", "date": "2026-08-06", "ko": "샘 알트만, 버핏·틸과 같은 투자 원칙 강조"}, {"title": "Why $370bn tech group Palantir pays just 1.4 percent tax: Report", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOcmtBTFEwT09QS0hTa0diSmNLN1NXNTlvUFlyYjVDb28yWk1rWkdpaE9LNjhYbTRWckY4TVlJcnVkMXpUMFc1LTEtajBGMmdZQkNPcDVfVktBZl81eFBfc3hYVkpIQ183ZU9GZVhBd2dmdWg1dEE0cjlpaUtOcGJmTkFYZTZiLUFETHZPSG80elFtSFdiZHktNjNPdzRCVlFaZlZOTg?oc=5", "pub": "Thu, 06 Aug 2026 14:14:07 GMT", "source": "Al Jazeera", "date": "2026-08-06", "ko": "3700억 달러 팔란티르, 1.4% 저세율 유지 비결 공개"}, {"title": "Peter Thiel stashed $5B tax-free in an IRA, and now lawmakers want to crack down — but one expert says it's time to kill the tax breaks for everyone", "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5jZ2swYjIxU21FZWUtR1VCMDZ4SDA4TFE0al9FdXR5RVVTNkRjTjBTM3ZHdUcyZi16c195ZFVaZjZEWTk0NzdST3BNblhqTkVod09ibWF3Szg4Q0JqdkdRY0hRMTNkZ0VKcUZPbm9Cd21aR2xFLTRHdWh3?oc=5", "pub": "Thu, 06 Aug 2026 12:00:00 GMT", "source": "AOL.com", "date": "2026-08-06", "ko": "피터 틸, IRA에 50억 달러 세금 회피…의원들 규제 추진"}]}, {"id": "sam-altman", "ko": "샘 올트먼", "en": "Sam Altman", "role": "OpenAI CEO", "note": "AGI 레이스의 최전선. 컴퓨트·자본·규제 전장을 동시에 지휘", "items": [{"title": "OpenAI Acquired Patents from Altman-Backed AI Chip Startup Following Failed Acquisition", "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOWUVpNWZ2SHN0S052SFNSY3ZUNVhNb1czNGN3dHgxOXM1bUFqclB6RVZsQjM5UWtyX0VJd01XOWtnMzBkY2VTOHNscGpPdDNmNmNkMVM2aGtVZXFSY0xZUVZqTzhTaUh5TnZzcjhSaEJBYW0xRXYyS3FxOVJETW82cEI5TExQUzlLbXBJenJpenVDVGtFRFlYSEg1c0dIU3A1N0Q2dWlOekhfNmFOT05pajVZLVE1dGRuQXpRTUY1RF9ROU9jSldDTmlRclYzcmI2?oc=5", "pub": "Thu, 06 Aug 2026 14:06:00 GMT", "source": "The Information", "date": "2026-08-06", "ko": "OpenAI, 샘 올트먼 지원 AI 칩 스타트업에서 특허 인수"}, {"title": "\"Around 70%\" of Microsoft's AI business still depends ENTIRELY on OpenAI", "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQZ0xJSDExMVhXamZkZ2pSNlJvYkVPY1BWeXNoNUtuNXphcFpWaWI2Zkh3eW5KM0tkYXg0V3U0SVR6VUNYN0RlZ1NnNWhqSk5sXzZUUTVnR2oyc1FRTnJnSUpRdjZRbThmZE9kdGhNLW5EQThSVXdvTnVhelI0NkY3RUY2Z09OTG11MkhtQnNOYy1pc0dwN1lJM0stM0QzRG9hNzltcUtIQzBPZHAzYXVLcGJobWZNRkNoTy1DczJYS3d0and2emF2bmkzb3gwLVotbEgtc2hnNTAwUjdacXR3V1JQdG5nZw?oc=5", "pub": "Thu, 06 Aug 2026 09:00:00 GMT", "source": "Windows Central", "date": "2026-08-06", "ko": "마이크로소프트 AI 사업의 70%, 여전히 OpenAI에 전적 의존"}, {"title": "Sam Altman echoes Buffett and Thiel on 1 investing rule", "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPcjhtcVZEZkc2VmdWTUVMQzUyb2VSX3NTWlA3M3owRy1PcVVudFZYZUI2eVcxMEo1LTBScEJKRVNwVDBDekhmUnZfbDZoM2s0VXRDOU0wb2FDaUtITVNhc0xiRlo2alYtN1lrZnBicVNZRmxWU1M2UzVPUTZ6bmFVMlRNcnBTQ3lrU2c?oc=5", "pub": "Thu, 06 Aug 2026 00:07:00 GMT", "source": "thestreet.com", "date": "2026-08-06", "ko": "샘 올트먼, 버핏·틸과 같은 투자 철칙 강조"}]}, {"id": "dario-amodei", "ko": "다리오 아모데이", "en": "Dario Amodei", "role": "Anthropic CEO", "note": "'기계 은총의 나라' — 안전과 프런티어를 동시에 쥐려는 설계자", "items": [{"title": "Why Anthropic’s CEO Is Surprised AI Talent Cares About Compensation", "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNanV6N0F5UWktd3VkSnhqNUVacHg2NWotZTlmUkNYcndRMnpQWS1FeGFWNk4xUEs3bnJDNzZ6YkZXQnhQdXUxNVhKNHFxa3BSYlVfaDdZcVlIblBpVGc3MjI5NDh4cXd5bTBZVWcwS29wNW5EX2Q2dC1CNlkxOXQxNnBjRUFkakxfMU5XV2ZudEpDSUgwRlljeEV4Mkdkb0dQTmxpMkFqbWwwbnd0VUE?oc=5", "pub": "Thu, 06 Aug 2026 11:42:04 GMT", "source": "inc.com", "date": "2026-08-06", "ko": "앤스로픽 CEO, AI 인재의 보상 관심에 놀라다"}, {"title": "How Dario Amodei Spread Anthropic’s Religion and Stirred Up Silicon Valley", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNNWJfV0FjbGpNblJkZWoxbDhOUWtEcnl2OTZVT091Mzh1X056NXNuVHYySTlwM29hbGtEb0l2RkZqdkFSZWhXTDhGQzhRN0NYMDJjcGVYOE1Md21yeC1ZR3dWT3lWaDRMQ2s5cXIxa0pUYk5jZEVjZUU3ckU5aGotdnJxY0lkcGJQS0poRG1RVDdGSUNwOUR3aWZqdjZxcGh5ZVhlZQ?oc=5", "pub": "Thu, 06 Aug 2026 13:00:00 GMT", "source": "The Information", "date": "2026-08-06", "ko": "다리오 아모데이, 앤스로픽의 신념을 실리콘밸리에 전파하다"}, {"title": "Why Dario Amodei's Views on AI Hiring Have Shifted Since Leaving OpenAI", "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9EbElvMDd3Q2ZsUEY1RkhCUVRBZV9UaVBPWjFfU1g2WEJRTE52WVBpTGtkZTk4RWNJbEw2azJnWGpIZG1Za1JYZ184dHlGMk9EQl8wa1p5R1FleEVfWWZCZzJ4UmRURHcwX1VYX0hyUkZNTmMzaFE?oc=5", "pub": "Thu, 06 Aug 2026 11:46:28 GMT", "source": "EasternEye", "date": "2026-08-06", "ko": "다리오 아모데이, OpenAI 떠난 후 AI 채용관 변했다"}]}, {"id": "demis-hassabis", "ko": "데미스 허사비스", "en": "Demis Hassabis", "role": "Alphabet 수석과학자 · Google DeepMind 의장", "note": "알파고에서 알파폴드까지 — 노벨상을 받은 게임 천재", "items": [{"title": "Opinion: Demis Hassabis’ new role exposes Google’s AI balancing act", "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQYlFxcXpkYndZZ2Y2N0tmZEcySm9CUmh4NUlvdHJETEtZZGFvUC1lNzBLaURCOFYwYldWSTdtTXFDWWxEMDFiamtsOUVsUkcxTmZIQ1U1WjVmWnNfOVRKTUIxcHF6ZGF5cElvMXhfb19oWm5ZQ2tkWXhiM1VVcXpBaUdhZ2haSUhLUGfSAY8BQVVfeXFMTWZybjh1Z3hJOUcwVTkta3hJcjI3R216S2hKTVZlMHVQMGs3TlhVRHMxaFpFbjRXUkdlOWpJVFhhTmR5aXJpVU5lbzdQS3ZLa1NYWjZrbkRjZlhQUGh6a3ljRGNVcmoxRTdwcVFnNHpSSENndmp2TlJWbjdFWmhoWEtIbG5Nb01LT2pvWW9WNms?oc=5", "pub": "Thu, 06 Aug 2026 13:15:41 GMT", "source": "CNBC", "date": "2026-08-06", "ko": "데미스 허사비스 신임, 구글의 AI 균형잡기 과제 드러내다"}, {"title": "Google chief scientist Jeff Dean departs, Demis Hassabis steps down as DeepMind CEO", "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQN21CTkdMY3VmekltVENMaXJ0V2JoSExPSUFBNU04dW5US1MtS0xGVExUYW50NXA3MF9sUmI3NkctdHBvS1ZzSzdYUDZsYkYyZTZaeWlwZ0VrTUdRTDI0bWFrSU5RMWg0cUZseDlWLXJhd050aDRQbHl3MUxiVWhnTDJ4cUtpbXlkdEF6YjlkWW9TRHNFb0RyMWpfcUl1WWJpZTRmcTNIaGg1WTNkcURyd3JoeW8wVVpHckRUcXE4WHp3MGI5?oc=5", "pub": "Thu, 06 Aug 2026 10:19:32 GMT", "source": "Data Center Dynamics", "date": "2026-08-06", "ko": "구글 수석 과학자 제프 딘 퇴직, 데미스 허사비스 딥마인드 CEO 사임"}, {"title": "Demis Hassabis Becomes Alphabet Chief Scientist as Google DeepMind Leadership Overhaul Shifts", "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQN2JjLXhCT3lheTg4RWZHc2QtVEZ2Y1FYNkZJd2ZldG9vSTRJdU11SnVjUlV6X2U4bFZCNnF0blB5TjJCZ3Y2RUtFMWw3YmJlTy1nZzZJTmxUZEtaZjBvVmlUanFFYklmWUFqRUZPZHpTNGpId3FrTm9vbUhhRXFjZnh5MXpIUHdxVDZUVGRCaXFXNFJwRks5QjVfZUNWSW1wWGdOWW1sN0xGX2hlaS1rZE4tdWZaNkM0SVQ3ZFBMQWM1NnAyUktNeGVTdDJJRGc1cmdCbWVGbWltbHlvRno2UXlMMF94Nk5wSmc?oc=5", "pub": "Thu, 06 Aug 2026 08:01:48 GMT", "source": "NewsCord", "date": "2026-08-06", "ko": "데미스 허사비스, 알파벳 수석 과학자로 승진...구글 딥마인드 경영진 교체"}]}, {"id": "jensen-huang", "ko": "젠슨 황", "en": "Jensen Huang", "role": "NVIDIA CEO", "note": "현재 왕좌(시총 1위)의 주인. AI 시대의 조선소장", "items": [{"title": "Prediction: Nvidia CEO Jensen Huang Will Shock Wall Street on Aug. 26", "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQTTNsUjhmWkZqV0szaDJWUzVNNkJRdDh5bEVfX0VhQ1pyeXVIc19vaWhWZ1dldUtQaXVIS013VGlac05pWGNsd0QtZ0J2LXAzQldBNng1dmNxaGJRVnFmVElvTGJSSk9hRXVVWXhObDVSWUZPQ3lWd2RiOXBvUFROUWEtX1dGaWlBTFZkSDJIQkkzdlJ2Y0xtcVV2czBielh6?oc=5", "pub": "Thu, 06 Aug 2026 10:25:00 GMT", "source": "Yahoo Finance", "date": "2026-08-06", "ko": "젠슨 황 엔비디아 CEO, 8월 26일 월스트리트 깜짝 쇼 예고"}, {"title": "Nvidia is quietly staffing a new AI safety team as it doubles down on open models", "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOSkNyU1RvSk9wbWhNdGtGR2NZSHU4LV9xRzdJLW5kLUdjaGxuT1VncWdzMmR4RkllU2sxQ05UM05UWHlHZFR2ZEdpZzNKVWRPemctc2c3RXBmMXRTcnkzQk5ublphNG9TVHVZYXNBM0JIRFdsRFgtYlZ4XzhMeVFHT3FiU0NmWU1NeUR0emlXcW1XYXF6S0ow?oc=5", "pub": "Thu, 06 Aug 2026 09:04:15 GMT", "source": "Business Insider", "date": "2026-08-06", "ko": "엔비디아, AI 안전팀 신설하며 오픈 모델 투자 확대"}, {"title": "AI power surge is frying its own data centers and rattling the grid", "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxObENJSUdaZEdYRlZDaThDd1RwbVNBUGNFWjZZQ3RocG1HaTIyOHNkWnJKSDlWX3hBcHp1bnZWSVpmSHY0QlBPTVRBM3R4UmNHQi1OUWFoS0hIWFYxODdlcHMzbUpWUDZMZTV1TGJVa1ZZOXdDbThZLWJDNUlrUURfY1VaZFpGd010bnBTU3pXQU9SQ0VBR2RhdHM1dzB1UzU3T25VbU5oQVRVRjd2NkE?oc=5", "pub": "Thu, 06 Aug 2026 14:26:00 GMT", "source": "Los Angeles Times", "date": "2026-08-06", "ko": "AI 전력 수요, 자체 데이터센터 과열 및 전력망 불안 야기"}]}, {"id": "ilya-sutskever", "ko": "일리야 수츠케버", "en": "Ilya Sutskever", "role": "Safe Superintelligence 창업자", "note": "딥러닝 혁명의 산증인. 오직 초지능 하나만 보고 잠행 중", "items": [{"title": "Nvidia just put $5 billion into a company that has never shipped a product", "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPYVBVdDI0ZWk0REdiUjRXSExNZld4eHpheGZPUDJqT1ctSHZWR1JKUWpqSWxYcDA5MUQxY1J1UkxXSl8yNzFkSEZIYThNQ3l2d1EwZVlDNEZ0ZVktTG5vcm90bTY0UGtBLXdNMGhtM3FwMWpoa0xQVUR6RFRLQ3JBMmVxVkliZUw1V0FWX1l6TzIyUWdBanQzLUVEX3Z1YUJZamVQdmlWVUxXYmJtMlVvSWg1Z2NTbV9vWlEwMUZB0gG-AUFVX3lxTE9hUFV0MjRlaTRER2JSNFdITE1mV3h4emF4Zk9QMmpPVy1IdlZHUkpRampJbFhwMDkxRDFjUnVSTFdKXzI3MWRIRkhhOE1DeXZ3UTBlWUM0RnRlWS1Mbm9yb3RtNjRQa0Etd00waG0zcXAxamhrTFBVRHpEVEtDckEyZXFWSWJlTDVXQVZfWXpPMjJRZ0FqdDMtRURfdnVhQllqZVB2aVZVTFdiYm0yVW9JaDVnY1NtX29aUTAxRkE?oc=5", "pub": "Wed, 05 Aug 2026 18:15:00 GMT", "source": "WION", "date": "2026-08-05", "ko": "엔비디아, 미출시 회사에 50억 달러 투자"}, {"title": "Secretive AI Lab Chasing 'Superintelligence' Announces Massive Investment From NVIDIA. Here's Why it Matters.", "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOeFByTFVEMTh2UmJsUktUTXNIYlBXdW8wR20yaEo5T001RVJuZDhyN0h3QUZKTzlUTGlGZDZFZl8wdU9fUTBQZV9wZ3lGUkdhQkg1VDd2aGU5X3Z0UVZWZXZIZ3o2aHlHcHdaVDZTdjl5azFUd1VxaHRuVS1ma1FYRnFMUmN5eWtqbk5XdzY0VEFZeUgxcmltMlNpdlA3TnIzWTRhSXBtc1dmNkM4WlhXRVhEcWNGcHFnYkhfbTh3Z0xtaWtQMlZyMmw5MlhVUFNPMjR2YklXRnRUSnlVUTN4ZkxR?oc=5", "pub": "Tue, 04 Aug 2026 18:08:21 GMT", "source": "24/7 Wall St.", "date": "2026-08-04", "ko": "일리야 수츠케버 스타트업, 엔비디아로부터 초대형 투자 유치"}, {"title": "The Week’s 10 Biggest Funding Rounds: Safe Superintelligence And Commonwealth Fusion Lead With Billion-Dollar Deals", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPV2hEdWNkSHNtRVp0blRwR0FqNC1NbmZZY1JQSGRMaFprWFdicm5RaUxjb1ZRX1hfWkI3N3YtMk1IclMyTWRWUHNPeV9ibTNVMl9hWnk0a0xpM0VYNmVJTWdfR3lKel8xcGNMTzluSXdETEhxT182MURBdkxNMnpnRG1UZWQxMVl2WDFPNU9pRlE0YklndzVveGpocXRBZUpLWUQxQw?oc=5", "pub": "Fri, 31 Jul 2026 20:14:23 GMT", "source": "news.crunchbase.com", "date": "2026-07-31", "ko": "초지능 추구 스타트업, 10억 달러대 펀딩으로 주목"}]}, {"id": "mark-zuckerberg", "ko": "마크 저커버그", "en": "Mark Zuckerberg", "role": "Meta CEO", "note": "소셜의 제왕에서 초지능 연구소 설립자로 — 인재 전쟁의 큰손", "items": [{"title": "Meta becomes latest firm to say its AI hacked another company", "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5YQVQ3TDVDai1EZmNvU21ycTFpak42NUxZbll0VkxSQTVVNUVyeVdOOWZQdmd0R1VUSlFtZURIdU1YYWFGZmRGaVVhR21vZG9nTlhfMHRzYVA5Zw?oc=5", "pub": "Thu, 06 Aug 2026 05:53:58 GMT", "source": "BBC", "date": "2026-08-06", "ko": "메타, AI가 다른 기업 해킹했다고 인정"}, {"title": "Meta’s AI Can Hack Things Too. It’s the Mark of a Winner.", "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5mdU5IZVV2TFNoNXFraXY0TXVfS083ZDVtX3ZMX1ppZS1CZG9adERmWG83Vl92SThsbk9XZ2x1SXZHaXhZbFVfN2dzVU12MkNjTHN4NWl5RjF4SnJMUFU0WWxrUXNzYllhZzliZ2tQZjJCOGVXTV9RYmVB?oc=5", "pub": "Thu, 06 Aug 2026 14:42:00 GMT", "source": "Barron's", "date": "2026-08-06", "ko": "메타 AI의 해킹 능력, 기술 리더십의 증거"}, {"title": "Mark Zuckerberg Wants to Accelerate AI Development Further", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQWEhtOFRJQ0hybzNBQzhSWGM5N0pDdVlQZE95aDRCQUotMXVlU09vbXdQMEVXVFNQTnl5enBoNmFwSFVqNGJfYkJ1WWRTRG9JMlQxbW4xaXVlSURmNkt2cTVXbFlsQ2tRb3RObFV5b3ZSZktmUzVYekxPd0hsUk1vbmowU2c3eFpFWWJwa3dWYWZtemtKajdXX0h0aTRvQ3RVc0JxRg?oc=5", "pub": "Thu, 06 Aug 2026 13:17:34 GMT", "source": "24/7 Wall St.", "date": "2026-08-06", "ko": "마크 저커버그, AI 개발 속도 더 높이려 한다"}]}, {"id": "lisa-su", "ko": "리사 수", "en": "Lisa Su", "role": "AMD CEO", "note": "파산 직전의 회사를 반도체 열강으로 — 왕좌 도전자의 조련사", "items": [{"title": "Lisa Su brushes off Musk's Nvidia commitment as AMD stock sinks after earnings", "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9sSTl3aGxwYWRDZUtoUElIb1h3SkgwWEJwTFA1ZzVQY3RRaTVfdEU1eHAzTk9URTJQYmN5Q1hhd0I4OG4xVGhGVVRPRW00bzBGMzNESndXY0xyVlpkTEF6ekNyMzRibU8tYTA5ZW5QczJMd9IBd0FVX3lxTE5RNWlETDdZZWNZNVFrM3RrOFBXMlIzMHFzVzZXVlhqVUtQVGFmOUlaaE1uT1FKZDJYSWdKUWFLMGd2WGdieFlVb0NQYThkRkZIUkNPRkJSMFRDS1pZYkdYZ2lLNG0wSTBLU3p0T1N6SUFiNTB2cWZz?oc=5", "pub": "Wed, 05 Aug 2026 09:16:15 GMT", "source": "CNBC", "date": "2026-08-05", "ko": "리사 수, 머스크의 엔비디아 발언 일축...AMD 주가 하락"}, {"title": "Watch CNBC’s full interview with AMD CEO Lisa Su", "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOOWZvdzZsNHR3U3JKVVdfRVozNnN0Wlc0a1VvQThQaEJ2N1dxRlBVTUlHOF93RzNTbWhaOGlCemhyUlhZZ19SUDV5NU5oSlN1c1ZXaUpDR3lyQ2ttWmNZaC1DektZdGRLNl9nYUJaLWNyWjJKaUtpMHRIbWlKbFpRMDU1eUdUcTFCcjRiTFAxb1dYa1pLcm53?oc=5", "pub": "Wed, 05 Aug 2026 13:42:58 GMT", "source": "CNBC", "date": "2026-08-05", "ko": "AMD CEO 리사 수와의 전체 인터뷰 영상"}, {"title": "Lisa Su Says Customers Want 'A Lot More Compute' — Sees 'Tremendous Momentum' In AMD’s Data Center Business", "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNYlFxQkI4YUVnUk0teV9XbDctSXpfOVF4OEtKX2tYNUVqWTRUTE1SQl9WM1laRnl4ZnJRWTBjUUZxdHg4OEJDQWxPU3dWVlFVZElULXdsUC1nbG9QNy1QcTJ2M0lCRHM3TXNnUGVKbXBBVHpBUGliTWU4azdnbTNZNmRPdUcteFpwN1VvZ3dEYjVwNDg1dHc?oc=5", "pub": "Wed, 05 Aug 2026 14:45:55 GMT", "source": "Yahoo Finance", "date": "2026-08-05", "ko": "리사 수, 고객들 더 많은 컴퓨팅 성능 원해...AMD 데이터센터 사업 '호조'"}]}]};
+
+function esc(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+(function render() {
+  const grid = document.getElementById('pnGrid');
+  const upd = document.getElementById('pnUpdated');
+  const people = (PIONEERS && PIONEERS.people) || [];
+  if (upd && PIONEERS && PIONEERS.updated) upd.textContent = '마지막 관측: ' + PIONEERS.updated;
+  if (!people.length) {
+    grid.innerHTML = '<div class="pn-empty">첫 관측 데이터를 기다리는 중입니다 — 다음 전체 수집 후 표시됩니다.</div>';
+    return;
+  }
+  grid.innerHTML = people.map(p => {
+    const items = (p.items || []).map(it => `
+      <div class="pn-item">
+        <div class="pn-item-meta">
+          <span>${esc(it.date || '')}</span>
+          ${it.source ? `<span>·</span><span class="pn-item-src">${esc(it.source)}</span>` : ''}
+        </div>
+        <a class="pn-item-title" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.ko || it.title)}</a>
+      </div>`).join('') || '<div class="pn-empty">최근 3주 내 포착된 신호가 없습니다.</div>';
+    return `
+      <div class="pn-card">
+        <div class="pn-head">
+          <span class="pn-name">${esc(p.ko)}</span>
+          <span class="pn-en">${esc(p.en)}</span>
+        </div>
+        <div class="pn-role">${esc(p.role)}</div>
+        ${p.note ? `<div class="pn-note">${esc(p.note)}</div>` : ''}
+        <div class="pn-items">${items}</div>
+      </div>`;
+  }).join('');
+})();
+</script>
+<!-- uv-presence -->
+<script type="module">
+(async () => {
+  try {
+    const cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json();
+    if (!cfg || !cfg.apiKey) return;
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const db = getFirestore(initializeApp(cfg, 'presence'));
+
+    let pid = localStorage.getItem('uv_pid');
+    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
+
+    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
+    const count = async () => {
+      try {
+        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
+        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
+        const n = snap.data().count;
+        if (n > 0) {
+          let el = document.getElementById('uvPresence');
+          if (!el) {
+            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
+            if (!ft) return;
+            el = document.createElement('div');
+            el.id = 'uvPresence';
+            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
+            ft.appendChild(el);
+          }
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> 지금 ' + n + '명이 우주를 관측 중';
+        }
+      } catch (e) {}
+    };
+    await beat(); await count();
+    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
+    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
