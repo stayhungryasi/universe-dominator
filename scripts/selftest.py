@@ -59,6 +59,34 @@ def main():
     got = check_rank_gaps(rows_gap, "test")
     check("rank_gaps: 4위 탈락 감지", len(got) == 1 and "[4]" in got[0], True)
 
+    # ── load_watch: 2026-08 PLTR 실적 누락 사고 재발 방지 ──
+    # 지역 TOP 20에 못 드는 글로벌 21~100위(watch100)가 감시 풀에 들어가는지.
+    import json as _json
+    import tempfile
+    import fetch_calendar as _fc
+    fake = {
+        "regions": {"earth": {"stocks": [{"ticker": "NVDA", "name": "NVIDIA"}]}},
+        "latent": [{"ticker": "INTC", "name": "Intel"}],
+        "watch100": [
+            {"rank": 25, "ticker": "PLTR", "name": "Palantir"},
+            {"rank": 40, "ticker": "005930.KS", "name": "삼성전자"},  # 점 티커는 제외돼야
+        ],
+    }
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False,
+                                     encoding="utf-8") as tf:
+        tf.write(_json.dumps(fake, ensure_ascii=False))
+        tmp_path = Path(tf.name)
+    orig_latest = _fc.LATEST_PATH
+    try:
+        _fc.LATEST_PATH = tmp_path
+        w = _fc.load_watch()
+    finally:
+        _fc.LATEST_PATH = orig_latest
+        tmp_path.unlink(missing_ok=True)
+    check("load_watch: watch100의 PLTR 편입", "PLTR" in w, True)
+    check("load_watch: 지역·잠재 유지", "NVDA" in w and "INTC" in w, True)
+    check("load_watch: 점 티커 제외 유지", "005930.KS" not in w, True)
+
     if FAILS:
         print(f"[자가진단] ❌ 실패 {len(FAILS)}건 — 수집을 중단합니다: {FAILS}",
               file=sys.stderr)
