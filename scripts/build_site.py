@@ -250,12 +250,36 @@ def build_observatory():
     print("[OK] my-universe.html → observatory.html 리다이렉트")
 
 
+def build_pioneers():
+    """pioneers.html — 개척자: 세상을 바꾸는 인물들의 최신 신호"""
+    template_path = SCRIPTS_DIR / "pioneers-template.html"
+    if not template_path.exists():
+        print("[skip] pioneers-template.html 없음"); return
+    template = template_path.read_text(encoding="utf-8")
+    data_path = DATA_DIR / "pioneers.json"
+    if data_path.exists():
+        pioneers = json.loads(data_path.read_text(encoding="utf-8"))
+    else:
+        pioneers = {"updated": "", "people": []}  # 첫 full 수집 전 — 빈 상태 렌더
+    meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
+    fetched_label = meta.get("fetched_date", "—").replace("-", ".")
+    usd_krw = meta.get("usd_krw")
+    html = template.replace("{{PIONEERS_JSON}}",
+                            json.dumps(pioneers, ensure_ascii=False))
+    html = html.replace("{{FETCHED_DATE}}", fetched_label)
+    html = html.replace("{{USD_KRW}}",
+                        f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
+    (HERE / "pioneers.html").write_text(html, encoding="utf-8")
+    print(f"[OK] pioneers.html ({len(html):,} chars)")
+
+
 def fix_nav():
     """전 페이지 nav 정리 (멱등):
     ① 나의우주 → 데이터 천문대  ② 커뮤니티 → 관제센터  ③ 순서: 천문대가 관제센터 앞"""
     import re as _re
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
              "community.html", "observatory.html", "policies.html", "journal.html",
+             "pioneers.html",
              "history-top20.html", "history-latent.html", "about.html"]
     n = 0
     pat = _re.compile(r'(<a href="community\.html"[^>]*>[^<]*</a>)(\s*)(<a href="observatory\.html"[^>]*>[^<]*</a>)')
@@ -276,6 +300,14 @@ def fix_nav():
         if name == "journal.html":
             new = new.replace('<a href="journal.html" class="nav-tab">관측노트</a>',
                               '<a href="journal.html" class="nav-tab active">관측노트</a>')
+        # 개척자 메뉴 (세상을 바꾸는 인물 추적) — 관측노트 뒤에 멱등 삽입
+        if 'href="pioneers.html"' not in new:
+            new = _re.sub(r'(<a href="journal\.html"[^>]*>관측노트</a>)',
+                          lambda m: m.group(1) + '<a href="pioneers.html" class="nav-tab">개척자</a>',
+                          new, count=1)
+        if name == "pioneers.html":
+            new = new.replace('<a href="pioneers.html" class="nav-tab">개척자</a>',
+                              '<a href="pioneers.html" class="nav-tab active">개척자</a>')
         # 광폭 레이아웃 (720px → 1280px) — 대시보드 체급에 맞게, 멱등 주입
         if 'id="wide-fix"' not in new:
             new = new.replace("</head>",
@@ -312,7 +344,7 @@ def inject_footer_links():
                '<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·'
                '<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>')
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "observatory.html", "history-top20.html",
+             "community.html", "pioneers.html", "observatory.html", "history-top20.html",
              "history-latent.html", "about.html", "policies.html"]
     n = 0
     for name in pages:
@@ -478,7 +510,7 @@ PRESENCE_SNIPPET = """<!-- uv-presence -->
 def inject_presence():
     """전 페이지 </body> 직전에 접속자 카운터 스니펫 주입 (멱등)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "observatory.html", "history-top20.html",
+             "community.html", "pioneers.html", "observatory.html", "history-top20.html",
              "history-latent.html", "about.html"]
     n = 0
     for name in pages:
@@ -497,7 +529,7 @@ def inject_presence():
 def inject_header_fix():
     """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "observatory.html", "history-top20.html", "history-latent.html", "about.html"]
+             "community.html", "pioneers.html", "observatory.html", "history-top20.html", "history-latent.html", "about.html"]
     n = 0
     for name in pages:
         f = HERE / name
@@ -534,6 +566,7 @@ def main():
     build_observatory()
     build_policies()
     build_journal()
+    build_pioneers()
     build_research()
     build_about()
     build_history("top20",  "home",   "history-top20.html")
