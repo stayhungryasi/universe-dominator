@@ -344,7 +344,8 @@ def run_live(preview=False):
     cutoff = top20_cutoff()
 
     uni = scrape_universe(sectors)
-    print(f"  AI 가치사슬 유니버스 {len(uni)}개 · 제외({"+".join(excl_regions)} TOP20) {len(excluded)}개")
+    excl_label = "+".join(excl_regions)
+    print(f"  AI 가치사슬 유니버스 {len(uni)}개 · 제외({excl_label} TOP20) {len(excluded)}개")
     pool = [c for tk, c in uni.items() if tk not in excluded and mc_floor <= c["mc"] < cutoff]
     pool.sort(key=lambda c: -c["mc"])
     pool = pool[:MAX_AUTO_FETCH]
