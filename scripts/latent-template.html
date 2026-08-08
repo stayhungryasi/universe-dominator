@@ -188,6 +188,9 @@ body {
 .latent-stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
 .latent-stat-val { font-size: 15px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
 .latent-stat-val.gain { color: var(--up); }
+.latent-momentum { display: flex; gap: 16px; margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--text-muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+.latent-momentum b.mup { color: var(--up); }
+.latent-momentum b.mdown { color: #386ee1; }
 
 /* 푸터 */
 .site-footer { padding: 32px 0 60px; border-top: 1px solid var(--line); text-align: center; margin-top: 40px; }
@@ -325,6 +328,14 @@ function flagFromEmoji(emoji) {
 
 const fmtMC = (mc) => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
 
+// 단기 모멘텀 스트립: 1M/3M/6M — 상승 금빛 · 하락 코발트, 값 없으면 항목 생략
+const momCell = (label, v) => (v === null || v === undefined) ? ''
+  : `<span>${label} <b class="${v >= 0 ? 'mup' : 'mdown'}">${v >= 0 ? '+' : ''}${v}%</b></span>`;
+const momStrip = (c) => {
+  const cells = momCell('1M', c.momentum_1m) + momCell('3M', c.momentum_3m) + momCell('6M', c.momentum_6m);
+  return cells ? `<div class="latent-momentum">${cells}</div>` : '';
+};
+
 const latentGrid = document.getElementById('latentGrid');
 if (DATA.latent && DATA.latent.length > 0) {
   latentGrid.innerHTML = DATA.latent.map((c) => {
@@ -353,6 +364,7 @@ if (DATA.latent && DATA.latent.length > 0) {
             <div class="latent-stat-val gain">+${c.momentum_1y}%</div>
           </div>
         </div>
+        ${momStrip(c)}
       </div>
     `;
   }).join('');
