@@ -520,10 +520,12 @@ function boot3d(stocks){
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
     return new THREE.CanvasTexture(c);
   })();
-  [[2000, 1900, 3.8, 0.8], [700, 2600, 6, 0.5]].forEach(([n, rad, size, op]) => {
+  // 별밭 배치·크기를 fitK로 함께 스케일 → 카메라:별껍질 거리 비율이 기기 무관 동일
+  // (모바일은 카메라가 멀리 물러나므로, 별도 같이 밀어야 PC와 같은 안정적 우주가 된다)
+  [[2000, 1900 * fitK, 3.8 * fitK, 0.8], [700, 2600 * fitK, 6 * fitK, 0.5]].forEach(([n, rad, size, op]) => {
     const pos = new Float32Array(n*3);
     for (let i = 0; i < n; i++) {
-      const u = Math.random()*2-1, t = Math.random()*Math.PI*2, rr = rad + Math.random()*900;
+      const u = Math.random()*2-1, t = Math.random()*Math.PI*2, rr = rad + Math.random()*900*fitK;
       const sq = Math.sqrt(1-u*u);
       pos[i*3] = rr*sq*Math.cos(t); pos[i*3+1] = rr*u; pos[i*3+2] = rr*sq*Math.sin(t);
     }
