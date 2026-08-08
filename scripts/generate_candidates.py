@@ -182,6 +182,31 @@ def scrape_universe(sectors):
     return uni
 
 
+YCHART = "https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=1y&interval=1d"
+
+
+def fetch_multi_momentum(ticker):
+    """최종 통과 종목 한정: Yahoo 차트로 1M/3M/6M 모멘텀(%) — 실패 시 None (표시만 생략)"""
+    out = {"m1": None, "m3": None, "m6": None}
+    tk = (ticker or "").strip()
+    if not tk:
+        return out
+    try:
+        r = requests.get(YCHART.format(sym=tk), headers=HEADERS, timeout=20)
+        r.raise_for_status()
+        res = r.json()["chart"]["result"][0]
+        closes = [c for c in (res["indicators"]["quote"][0].get("close") or []) if c]
+        if len(closes) < 25:
+            return out
+        last = closes[-1]
+        for key, days in (("m1", 21), ("m3", 63), ("m6", 126)):  # 거래일 기준
+            if len(closes) > days and closes[-days - 1]:
+                out[key] = round((last / closes[-days - 1] - 1) * 100)
+    except Exception as e:
+        print(f"  [warn] {tk} 다기간 모멘텀 실패({e}) — 1M/3M/6M 표시 생략", file=sys.stderr)
+    return out
+
+
 def stock_stats(row):
     """종목 페이지 → {rank, momentum, flag, mc}."""
     out = {"rank": None, "momentum": None, "flag": None, "mc": None}
@@ -211,11 +236,14 @@ def stock_stats(row):
 
 
 # ───────────────────────── 기준 데이터 ─────────────────────────
-def regional_top20_tickers():
+def regional_top20_tickers(regions=None):
+    """지정 지역들의 TOP 20 티커 집합. regions=None이면 전 지역(과거 동작)."""
     keys = set()
     try:
         data = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
-        for region in data.get("regions", {}).values():
+        for rname, region in data.get("regions", {}).items():
+            if regions is not None and rname not in regions:
+                continue
             stocks = region.get("stocks", region) if isinstance(region, dict) else region
             for s in (stocks or []):
                 tk = (s.get("ticker") or "").upper().strip()
@@ -259,6 +287,7 @@ def build_card(c, overrides):
     return {
         "rank": c["rank"], "ticker": c["ticker"], "name": c["name"],
         "country": c["flag"], "mc": c["mc"], "momentum_1y": c["momentum_1y"],
+        "momentum_1m": c.get("m1"), "momentum_3m": c.get("m3"), "momentum_6m": c.get("m6"),
         "theme": ov.get("theme", c["theme"]),
         "story": ov.get("story", template_story(c)),
         "auto": True,
@@ -308,11 +337,14 @@ def run_live(preview=False):
     print(f"  섹터: {sectors}")
 
     overrides = load_overrides()
-    excluded = regional_top20_tickers() if crit.get("지역TOP20_제외", True) else set()
+    # ★ 2026-08 규칙 개정: 지구·미국 TOP 20만 제외. 비미국 지역 챔피언(한국·일본·유럽 등)은
+    #   조건 충족 시 편입 — "다른 지역의 왕은 지구의 왕좌에 가장 가까운 도전자"
+    excl_regions = crit.get("제외_지역", ["earth", "us"])
+    excluded = regional_top20_tickers(excl_regions) if crit.get("지역TOP20_제외", True) else set()
     cutoff = top20_cutoff()
 
     uni = scrape_universe(sectors)
-    print(f"  AI 가치사슬 유니버스 {len(uni)}개 · 지역 TOP20 제외 {len(excluded)}개")
+    print(f"  AI 가치사슬 유니버스 {len(uni)}개 · 제외({"+".join(excl_regions)} TOP20) {len(excluded)}개")
     pool = [c for tk, c in uni.items() if tk not in excluded and mc_floor <= c["mc"] < cutoff]
     pool.sort(key=lambda c: -c["mc"])
     pool = pool[:MAX_AUTO_FETCH]
@@ -337,7 +369,11 @@ def run_live(preview=False):
         print(f"  [pass] {rank}위 {c['name']} ({c['theme']}) 1Y +{mom}%")
 
     passed.sort(key=lambda c: c["rank"])
-    cards = [build_card(c, overrides) for c in passed][:max_n]
+    passed = passed[:max_n]
+    for c in passed:  # 최종 통과분만 다기간 모멘텀 조회 (≤최대후보수 회)
+        c.update(fetch_multi_momentum(c["ticker"]))
+        time.sleep(0.5)
+    cards = [build_card(c, overrides) for c in passed]
     print(f"  최종 {len(cards)}개")
     if not cards:
         print("[정보] 조건 통과 0개 — latent 유지(덮어쓰지 않음)")
