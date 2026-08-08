@@ -324,11 +324,11 @@ function renderSolar(){
   const stocks = (DATA.earth || []).slice(0, 20);
   if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
   document.getElementById('obsBody').innerHTML =
-    '<div class="solar-wrap" id="s3wrap" style="height:640px;position:relative;cursor:grab">' +
+    '<div class="solar-wrap" id="s3wrap" style="height:' + (window.innerWidth < 700 ? 480 : 640) + 'px;position:relative;cursor:grab;touch-action:none">' +
       '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">☀️ 태양계 정렬 중…</div>' +
       '<div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>' +
       '<div class="solar-tip" id="solarTip"></div>' +
-      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">🖱 드래그 회전 · 휠 확대/축소</div>' +
+      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? '☝️ 한 손가락 회전 · 두 손가락 확대/축소 · 행성 탭 = 정보' : '🖱 드래그 회전 · 휠 확대/축소') + '</div>' +
     '</div>' +
     '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 순위가 높을수록 안쪽 궤도 — 행성의 얼굴은 실제 태양계 순서(수성→해왕성→왜소행성)</div>' +
     '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측) · 텍스처: Solar System Scope(CC BY 4.0)·NASA</div>';
@@ -486,7 +486,12 @@ function boot3d(stocks){
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x0a0d18, 0.00055);
   const camera = new THREE.PerspectiveCamera(45, W/H, 1, 6000);
-  let camTheta = 0.35, camPhi = 1.12, camDist = 640;
+  // 화면비 반응형 카메라 거리: 세로 폰(좁은 화면)은 수평 시야가 좁아지므로
+  // 그만큼 멀리서 시작해야 태양계 전체가 담긴다 (PC 4:3 기준 660)
+  const fitK = Math.min(1.75, Math.max(1, (4 / 3) / (W / H)));
+  const introEnd = Math.min(1080, Math.round(660 * fitK));
+  const maxDist = Math.max(1100, introEnd + 250);
+  let camTheta = 0.35, camPhi = 1.12, camDist = introEnd - 20;
   let introT = 0;                // 진입 연출 진행도 (0→1)
   let lastTouch = performance.now();  // 마지막 조작 시각 (자동 선회용)
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -681,7 +686,66 @@ function boot3d(stocks){
     }
   });
   wrap.addEventListener('wheel', e => { e.preventDefault(); lastTouch = performance.now();
-    camDist = Math.max(320, Math.min(1100, camDist + e.deltaY * 0.5)); }, { passive: false });
+    camDist = Math.max(320, Math.min(maxDist, camDist + e.deltaY * 0.5)); }, { passive: false });
+
+  // ── 모바일 터치: 한 손가락 회전 · 두 손가락 핀치 줌 · 짧은 탭 = 행성 정보 ──
+  function probeTip(cx, cy){
+    const rect = wrap.getBoundingClientRect();
+    mouseV.x = ((cx - rect.left) / rect.width) * 2 - 1;
+    mouseV.y = -((cy - rect.top) / rect.height) * 2 + 1;
+    ray.setFromCamera(mouseV, camera);
+    const hit = ray.intersectObjects(bodies)[0];
+    if (hit) {
+      const s = stocks[hit.object.userData.i];
+      tip.style.display = 'block';
+      tip.style.left = Math.max(6, Math.min(cx - rect.left - 60, rect.width - 230)) + 'px';
+      tip.style.top = Math.max(6, cy - rect.top - 90) + 'px';
+      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+(s.mc>=1000?'$'+(s.mc/1000).toFixed(2)+'T':'$'+Math.round(s.mc)+'B')+(s.desc?'<br>'+esc(s.desc):'');
+    } else {
+      tip.style.display = 'none';
+    }
+  }
+  let pinchD = 0, tapX = 0, tapY = 0, tapT = 0, tapMoved = false;
+  wrap.addEventListener('touchstart', e => {
+    lastTouch = performance.now();
+    if (e.touches.length === 1) {
+      dragging = true; tapMoved = false;
+      px = e.touches[0].clientX; py = e.touches[0].clientY;
+      tapX = px; tapY = py; tapT = performance.now();
+    } else if (e.touches.length === 2) {
+      dragging = false; tapMoved = true;
+      pinchD = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                          e.touches[0].clientY - e.touches[1].clientY);
+    }
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    e.preventDefault();  // 캔버스 위에서는 페이지 스크롤 대신 우주가 움직인다
+    lastTouch = performance.now();
+    if (e.touches.length === 1 && dragging) {
+      const x = e.touches[0].clientX, y = e.touches[0].clientY;
+      if (Math.abs(x - tapX) + Math.abs(y - tapY) > 8) tapMoved = true;
+      camTheta -= (x - px) * 0.005; camPhi -= (y - py) * 0.004;
+      camPhi = Math.max(0.35, Math.min(1.45, camPhi)); px = x; py = y;
+    } else if (e.touches.length === 2) {
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                           e.touches[0].clientY - e.touches[1].clientY);
+      if (pinchD > 0 && d > 0) {
+        camDist = Math.max(320, Math.min(maxDist, camDist * (pinchD / d)));
+      }
+      pinchD = d;
+    }
+  }, { passive: false });
+  wrap.addEventListener('touchend', e => {
+    lastTouch = performance.now();
+    if (e.touches.length === 0) {
+      dragging = false;
+      if (!tapMoved && performance.now() - tapT < 350) probeTip(tapX, tapY);
+    } else if (e.touches.length === 1) {
+      dragging = true; tapMoved = true;
+      px = e.touches[0].clientX; py = e.touches[0].clientY;
+    }
+    pinchD = 0;
+  }, { passive: true });
 
   const v = new THREE.Vector3();
   function place(mesh, lab, yOff){
@@ -710,7 +774,7 @@ function boot3d(stocks){
     // 진입 돌리 (2.2초) + 3초 무조작 시 자동 선회
     if (introT < 1) { introT = Math.min(1, introT + dt / 2200);
       const ease = 1 - Math.pow(1 - introT, 3);
-      camDist = 1150 - (1150 - 660) * ease;
+      camDist = (introEnd + 490) - 490 * ease;
       camTheta += dt * 0.00018;
     } else if (!dragging && performance.now() - lastTouch > 3000) {
       camTheta += dt * 0.00006;
