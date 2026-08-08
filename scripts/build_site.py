@@ -29,6 +29,33 @@ def _header_meta():
         return {}
 
 
+def _prev_snapshot_map(data):
+    """오늘 이전 가장 최근 스냅샷 → {region: {TICKER: {r, mc}}} (없으면 빈 맵 — 우아한 저하)"""
+    try:
+        cur_date = (data.get("meta", {}).get("fetched_date") or "")[:10]
+        snaps = sorted((DATA_DIR / "snapshots").glob("????-??-??.json"))
+        prev_file = None
+        for f in snaps:
+            if not cur_date or f.stem < cur_date:
+                prev_file = f
+        if prev_file is None:
+            return {}
+        sd = json.loads(prev_file.read_text(encoding="utf-8"))
+        out = {}
+        for rname, region in (sd.get("regions") or {}).items():
+            stocks = region.get("stocks", region) if isinstance(region, dict) else region
+            m = {}
+            for i, s in enumerate(stocks or []):
+                tk = (s.get("ticker") or "").upper().strip()
+                if tk:
+                    m[tk] = {"r": s.get("rank") or (i + 1), "mc": s.get("mc") or 0}
+            out[rname] = m
+        return out
+    except Exception as e:
+        print(f"[warn] 전일 스냅샷 대조 실패(무시): {e}")
+        return {}
+
+
 def build_main():
     """index.html — 우주지배자 메인 (TOP 20)"""
     data = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
@@ -47,6 +74,7 @@ def build_main():
     
     html = template
     html = html.replace("{{DATA_JSON}}", data_json)
+    html = html.replace("{{PREV_JSON}}", json.dumps(_prev_snapshot_map(data), ensure_ascii=False))
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{TOP1_NAME}}", top1_name)
     html = html.replace("{{TOP1_MC}}", f"${top1_mc/1000:.2f}T" if top1_mc >= 1000 else f"${top1_mc:.0f}B")
