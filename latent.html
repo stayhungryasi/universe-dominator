@@ -188,6 +188,9 @@ body {
 .latent-stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
 .latent-stat-val { font-size: 15px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
 .latent-stat-val.gain { color: var(--up); }
+.latent-momentum { display: flex; gap: 16px; margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--text-muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+.latent-momentum b.mup { color: var(--up); }
+.latent-momentum b.mdown { color: #386ee1; }
 
 /* 푸터 */
 .site-footer { padding: 32px 0 60px; border-top: 1px solid var(--line); text-align: center; margin-top: 40px; }
@@ -215,6 +218,35 @@ body {
 .ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
 .ud-logo-word .v { color: var(--gold); }
 @media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
+
+/* ud-hdr-refine-v2 — 상태 스트립 통합: 배지 3개 → 계기판 캡슐 하나 */
+.site-header-inner { padding: 15px 20px; }
+.header-right {
+  gap: 0; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 100px; padding: 3px 5px 3px 4px; align-items: center;
+  box-shadow: 0 1px 2px rgba(28,35,51,0.04);
+}
+.header-right .update-badge {
+  background: transparent; border: none; border-radius: 0;
+  padding: 5px 13px; color: var(--text-secondary);
+}
+[data-theme="dark"] .header-right .update-badge { border: none; }
+.header-right .update-badge .ud-clock { color: var(--gold); font-weight: 800; }
+.header-right .rate-badge {
+  background: transparent; border: none; border-radius: 0;
+  border-left: 1px solid var(--line); padding: 5px 13px;
+}
+.header-right .rate-badge:hover { border-color: var(--line); }
+.header-right .rate-badge:hover #usdKrwDisplay, .header-right .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.header-right .theme-toggle {
+  width: 34px; height: 30px; border: none; border-radius: 0 100px 100px 0;
+  border-left: 1px solid var(--line); background: transparent; margin-left: 0;
+}
+.header-right .theme-toggle:hover { color: var(--gold); }
+@media (max-width: 480px) {
+  .header-right { padding: 2px 3px 2px 2px; }
+  .header-right .update-badge, .header-right .rate-badge { padding: 4px 9px; }
+}
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -1983,7 +2015,7 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_at": "2026-08-08T08:50:39.146722+09:00",
+    "fetched_at": "2026-08-08T13:50:36.878679+09:00",
     "fetched_date": "2026-08-08",
     "usd_krw": 1415.95,
     "errors": [],
@@ -1991,12 +2023,29 @@ const DATA = {
   },
   "latent": [
     {
+      "rank": 21,
+      "ticker": "ASML",
+      "name": "ASML",
+      "country": "🇺🇸",
+      "mc": 668.71,
+      "momentum_1y": 144,
+      "momentum_1m": -4,
+      "momentum_3m": 15,
+      "momentum_6m": 29,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 21위 · 1년 +144% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
       "rank": 31,
       "ticker": "AMAT",
       "name": "Applied Materials",
       "country": "🇺🇸",
       "mc": 428.05,
       "momentum_1y": 195,
+      "momentum_1m": -8,
+      "momentum_3m": 31,
+      "momentum_6m": 77,
       "theme": "AI 반도체",
       "story": "AI 반도체 · 글로벌 31위 · 1년 +195% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2008,8 +2057,25 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 389.58,
       "momentum_1y": 214,
+      "momentum_1m": -12,
+      "momentum_3m": 9,
+      "momentum_6m": 46,
       "theme": "AI 반도체",
       "story": "AI 반도체 · 글로벌 36위 · 1년 +214% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
+      "rank": 53,
+      "ticker": "ARM",
+      "name": "Arm Holdings",
+      "country": "🇺🇸",
+      "mc": 301.78,
+      "momentum_1y": 108,
+      "momentum_1m": -14,
+      "momentum_3m": 32,
+      "momentum_6m": 155,
+      "theme": "AI 칩 CPU IP",
+      "story": "모든 AI 칩에 들어가는 ARM 아키텍처 — SoftBank가 88% 보유. 1년 새 약 2배 상승.",
       "auto": true
     },
     {
@@ -2019,6 +2085,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 296.54,
       "momentum_1y": 116,
+      "momentum_1m": 8,
+      "momentum_3m": 85,
+      "momentum_6m": 135,
       "theme": "AI 소프트웨어",
       "story": "AI 소프트웨어 · 글로벌 56위 · 1년 +116% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2030,6 +2099,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 293.2,
       "momentum_1y": 239,
+      "momentum_1m": 1,
+      "momentum_3m": 97,
+      "momentum_6m": 293,
       "theme": "AI 서버 OEM",
       "story": "★ 신규 — NVIDIA Blackwell 서버 공급망 핵심. 1일 +33% 폭등.",
       "auto": true
@@ -2041,6 +2113,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 218.33,
       "momentum_1y": 102,
+      "momentum_1m": 8,
+      "momentum_3m": 70,
+      "momentum_6m": 127,
       "theme": "AI 소프트웨어",
       "story": "AI 소프트웨어 · 글로벌 87위 · 1년 +102% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2052,8 +2127,25 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 196.31,
       "momentum_1y": 188,
+      "momentum_1m": -10,
+      "momentum_3m": 37,
+      "momentum_6m": 195,
       "theme": "AI 광 인터커넥트",
       "story": "★ 신규 — NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (6/2 Computex). NVIDIA $2B 직접 투자, 1일 +42% 폭등.",
+      "auto": true
+    },
+    {
+      "rank": 104,
+      "ticker": "2454.TW",
+      "name": "MediaTek",
+      "country": "🇹🇼",
+      "mc": 193.03,
+      "momentum_1y": 166,
+      "momentum_1m": -1,
+      "momentum_3m": 1,
+      "momentum_6m": 120,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 104위 · 1년 +166% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
     },
     {
@@ -2063,6 +2155,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 184.49,
       "momentum_1y": 449,
+      "momentum_1m": -9,
+      "momentum_3m": 6,
+      "momentum_6m": 100,
       "theme": "AI 테크",
       "story": "AI 테크 · 글로벌 115위 · 1년 +449% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2074,19 +2169,53 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 176.98,
       "momentum_1y": 879,
+      "momentum_1m": -35,
+      "momentum_3m": -10,
+      "momentum_6m": 110,
       "theme": "AI 테크",
       "story": "AI 테크 · 글로벌 119위 · 1년 +879% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
     },
     {
-      "rank": 195,
-      "ticker": "FTNT",
-      "name": "Fortinet",
-      "country": "🇺🇸",
-      "mc": 117.13,
-      "momentum_1y": 112,
-      "theme": "AI 소프트웨어",
-      "story": "AI 소프트웨어 · 글로벌 195위 · 1년 +112% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "rank": 133,
+      "ticker": "285A.T",
+      "name": "KIOXIA Holdings Corporation",
+      "country": "🇯🇵",
+      "mc": 165.82,
+      "momentum_1y": 835,
+      "momentum_1m": -34,
+      "momentum_3m": 4,
+      "momentum_6m": 160,
+      "theme": "AI 테크",
+      "story": "AI 테크 · 글로벌 133위 · 1년 +835% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
+      "rank": 144,
+      "ticker": "8035.T",
+      "name": "Tokyo Electron",
+      "country": "🇯🇵",
+      "mc": 157.3,
+      "momentum_1y": 142,
+      "momentum_1m": -19,
+      "momentum_3m": 5,
+      "momentum_6m": 37,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 144위 · 1년 +142% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
+      "rank": 154,
+      "ticker": "6857.T",
+      "name": "Advantest",
+      "country": "🇯🇵",
+      "mc": 147.97,
+      "momentum_1y": 197,
+      "momentum_1m": 17,
+      "momentum_3m": 12,
+      "momentum_6m": 32,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 154위 · 1년 +197% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
     }
   ],
@@ -2211,6 +2340,14 @@ function flagFromEmoji(emoji) {
 
 const fmtMC = (mc) => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
 
+// 단기 모멘텀 스트립: 1M/3M/6M — 상승 금빛 · 하락 코발트, 값 없으면 항목 생략
+const momCell = (label, v) => (v === null || v === undefined) ? ''
+  : `<span>${label} <b class="${v >= 0 ? 'mup' : 'mdown'}">${v >= 0 ? '+' : ''}${v}%</b></span>`;
+const momStrip = (c) => {
+  const cells = momCell('1M', c.momentum_1m) + momCell('3M', c.momentum_3m) + momCell('6M', c.momentum_6m);
+  return cells ? `<div class="latent-momentum">${cells}</div>` : '';
+};
+
 const latentGrid = document.getElementById('latentGrid');
 if (DATA.latent && DATA.latent.length > 0) {
   latentGrid.innerHTML = DATA.latent.map((c) => {
@@ -2239,6 +2376,7 @@ if (DATA.latent && DATA.latent.length > 0) {
             <div class="latent-stat-val gain">+${c.momentum_1y}%</div>
           </div>
         </div>
+        ${momStrip(c)}
       </div>
     `;
   }).join('');

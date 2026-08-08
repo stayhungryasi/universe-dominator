@@ -470,10 +470,27 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ── 중력장 바: 광폭(1280px)에서 생긴 중앙 공백을 정보로 채운다.
      각 지역 1위(태양) 대비 시총 비율 = 왕좌와의 거리 시각화 ── */
 .stock-grav { display: none; }
+.stock-delta { display: none; }
+
+@media (min-width: 900px) {
+  .stock-delta {
+    display: flex; flex-direction: column; gap: 2px;
+    font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+    line-height: 1.25; white-space: nowrap;
+  }
+  .stock-delta .d-rank.dup { color: var(--gold); }
+  .stock-delta .d-rank.ddown { color: #386ee1; }
+  .stock-delta .d-rank.dkeep { color: var(--text-muted); font-weight: 700; }
+  .stock-delta .d-rank.dnew { color: var(--gold); letter-spacing: 0.05em; }
+  .stock-delta .d-mc { font-size: 11.5px; font-weight: 700; }
+  .stock-delta .d-mc.dup { color: var(--gold); }
+  .stock-delta .d-mc.ddown { color: #386ee1; }
+  .stock-delta .d-mc.dkeep { color: var(--text-muted); }
+}
 
 @media (min-width: 900px) {
   .stock-row {
-    grid-template-columns: 32px minmax(240px, 30%) 1fr auto;
+    grid-template-columns: 32px minmax(220px, 27%) 84px 1fr auto;
     gap: 20px;
   }
   .stock-grav {
@@ -889,6 +906,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
 .ud-logo-word .v { color: var(--gold); }
 @media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
+
+/* ud-hdr-refine-v2 — 상태 스트립 통합: 배지 3개 → 계기판 캡슐 하나 */
+.site-header-inner { padding: 15px 20px; }
+.header-right {
+  gap: 0; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 100px; padding: 3px 5px 3px 4px; align-items: center;
+  box-shadow: 0 1px 2px rgba(28,35,51,0.04);
+}
+.header-right .update-badge {
+  background: transparent; border: none; border-radius: 0;
+  padding: 5px 13px; color: var(--text-secondary);
+}
+[data-theme="dark"] .header-right .update-badge { border: none; }
+.header-right .update-badge .ud-clock { color: var(--gold); font-weight: 800; }
+.header-right .rate-badge {
+  background: transparent; border: none; border-radius: 0;
+  border-left: 1px solid var(--line); padding: 5px 13px;
+}
+.header-right .rate-badge:hover { border-color: var(--line); }
+.header-right .rate-badge:hover #usdKrwDisplay, .header-right .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.header-right .theme-toggle {
+  width: 34px; height: 30px; border: none; border-radius: 0 100px 100px 0;
+  border-left: 1px solid var(--line); background: transparent; margin-left: 0;
+}
+.header-right .theme-toggle:hover { color: var(--gold); }
+@media (max-width: 480px) {
+  .header-right { padding: 2px 3px 2px 2px; }
+  .header-right .update-badge, .header-right .rate-badge { padding: 4px 9px; }
+}
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -2708,7 +2754,7 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_at": "2026-08-08T08:50:39.146722+09:00",
+    "fetched_at": "2026-08-08T13:50:36.878679+09:00",
     "fetched_date": "2026-08-08",
     "usd_krw": 1415.95,
     "errors": [],
@@ -2716,12 +2762,29 @@ const DATA = {
   },
   "latent": [
     {
+      "rank": 21,
+      "ticker": "ASML",
+      "name": "ASML",
+      "country": "🇺🇸",
+      "mc": 668.71,
+      "momentum_1y": 144,
+      "momentum_1m": -4,
+      "momentum_3m": 15,
+      "momentum_6m": 29,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 21위 · 1년 +144% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
       "rank": 31,
       "ticker": "AMAT",
       "name": "Applied Materials",
       "country": "🇺🇸",
       "mc": 428.05,
       "momentum_1y": 195,
+      "momentum_1m": -8,
+      "momentum_3m": 31,
+      "momentum_6m": 77,
       "theme": "AI 반도체",
       "story": "AI 반도체 · 글로벌 31위 · 1년 +195% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2733,8 +2796,25 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 389.58,
       "momentum_1y": 214,
+      "momentum_1m": -12,
+      "momentum_3m": 9,
+      "momentum_6m": 46,
       "theme": "AI 반도체",
       "story": "AI 반도체 · 글로벌 36위 · 1년 +214% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
+      "rank": 53,
+      "ticker": "ARM",
+      "name": "Arm Holdings",
+      "country": "🇺🇸",
+      "mc": 301.78,
+      "momentum_1y": 108,
+      "momentum_1m": -14,
+      "momentum_3m": 32,
+      "momentum_6m": 155,
+      "theme": "AI 칩 CPU IP",
+      "story": "모든 AI 칩에 들어가는 ARM 아키텍처 — SoftBank가 88% 보유. 1년 새 약 2배 상승.",
       "auto": true
     },
     {
@@ -2744,6 +2824,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 296.54,
       "momentum_1y": 116,
+      "momentum_1m": 8,
+      "momentum_3m": 85,
+      "momentum_6m": 135,
       "theme": "AI 소프트웨어",
       "story": "AI 소프트웨어 · 글로벌 56위 · 1년 +116% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2755,6 +2838,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 293.2,
       "momentum_1y": 239,
+      "momentum_1m": 1,
+      "momentum_3m": 97,
+      "momentum_6m": 293,
       "theme": "AI 서버 OEM",
       "story": "★ 신규 — NVIDIA Blackwell 서버 공급망 핵심. 1일 +33% 폭등.",
       "auto": true
@@ -2766,6 +2852,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 218.33,
       "momentum_1y": 102,
+      "momentum_1m": 8,
+      "momentum_3m": 70,
+      "momentum_6m": 127,
       "theme": "AI 소프트웨어",
       "story": "AI 소프트웨어 · 글로벌 87위 · 1년 +102% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2777,8 +2866,25 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 196.31,
       "momentum_1y": 188,
+      "momentum_1m": -10,
+      "momentum_3m": 37,
+      "momentum_6m": 195,
       "theme": "AI 광 인터커넥트",
       "story": "★ 신규 — NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (6/2 Computex). NVIDIA $2B 직접 투자, 1일 +42% 폭등.",
+      "auto": true
+    },
+    {
+      "rank": 104,
+      "ticker": "2454.TW",
+      "name": "MediaTek",
+      "country": "🇹🇼",
+      "mc": 193.03,
+      "momentum_1y": 166,
+      "momentum_1m": -1,
+      "momentum_3m": 1,
+      "momentum_6m": 120,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 104위 · 1년 +166% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
     },
     {
@@ -2788,6 +2894,9 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 184.49,
       "momentum_1y": 449,
+      "momentum_1m": -9,
+      "momentum_3m": 6,
+      "momentum_6m": 100,
       "theme": "AI 테크",
       "story": "AI 테크 · 글로벌 115위 · 1년 +449% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -2799,19 +2908,53 @@ const DATA = {
       "country": "🇺🇸",
       "mc": 176.98,
       "momentum_1y": 879,
+      "momentum_1m": -35,
+      "momentum_3m": -10,
+      "momentum_6m": 110,
       "theme": "AI 테크",
       "story": "AI 테크 · 글로벌 119위 · 1년 +879% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
     },
     {
-      "rank": 195,
-      "ticker": "FTNT",
-      "name": "Fortinet",
-      "country": "🇺🇸",
-      "mc": 117.13,
-      "momentum_1y": 112,
-      "theme": "AI 소프트웨어",
-      "story": "AI 소프트웨어 · 글로벌 195위 · 1년 +112% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "rank": 133,
+      "ticker": "285A.T",
+      "name": "KIOXIA Holdings Corporation",
+      "country": "🇯🇵",
+      "mc": 165.82,
+      "momentum_1y": 835,
+      "momentum_1m": -34,
+      "momentum_3m": 4,
+      "momentum_6m": 160,
+      "theme": "AI 테크",
+      "story": "AI 테크 · 글로벌 133위 · 1년 +835% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
+      "rank": 144,
+      "ticker": "8035.T",
+      "name": "Tokyo Electron",
+      "country": "🇯🇵",
+      "mc": 157.3,
+      "momentum_1y": 142,
+      "momentum_1m": -19,
+      "momentum_3m": 5,
+      "momentum_6m": 37,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 144위 · 1년 +142% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true
+    },
+    {
+      "rank": 154,
+      "ticker": "6857.T",
+      "name": "Advantest",
+      "country": "🇯🇵",
+      "mc": 147.97,
+      "momentum_1y": 197,
+      "momentum_1m": 17,
+      "momentum_3m": 12,
+      "momentum_6m": 32,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 154위 · 1년 +197% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
     }
   ],
@@ -2884,6 +3027,7 @@ const DATA = {
     }
   ]
 };
+const PREV = {"earth": {"NVDA": {"r": 1, "mc": 5304.0}, "AAPL": {"r": 2, "mc": 4559.0}, "GOOG": {"r": 3, "mc": 4361.0}, "MSFT": {"r": 4, "mc": 3711.0}, "AMZN": {"r": 5, "mc": 2936.0}, "TSM": {"r": 6, "mc": 2168.0}, "AVGO": {"r": 7, "mc": 2000.0}, "2222.SR": {"r": 8, "mc": 1707.0}, "SPCX": {"r": 9, "mc": 1513.0}, "META": {"r": 10, "mc": 1502.0}, "TSLA": {"r": 11, "mc": 1261.0}, "BRK-B": {"r": 12, "mc": 1131.0}, "005930.KS": {"r": 13, "mc": 1068.0}, "LLY": {"r": 14, "mc": 1062.0}, "MU": {"r": 15, "mc": 995.52}, "JPM": {"r": 16, "mc": 947.11}, "WMT": {"r": 17, "mc": 891.86}, "AMD": {"r": 18, "mc": 798.73}, "000660.KS": {"r": 19, "mc": 710.74}, "V": {"r": 20, "mc": 691.68}}, "us": {"NVDA": {"r": 1, "mc": 5304.0}, "AAPL": {"r": 2, "mc": 4559.0}, "GOOG": {"r": 3, "mc": 4361.0}, "MSFT": {"r": 4, "mc": 3711.0}, "AMZN": {"r": 5, "mc": 2936.0}, "AVGO": {"r": 6, "mc": 2000.0}, "SPCX": {"r": 7, "mc": 1513.0}, "META": {"r": 8, "mc": 1502.0}, "TSLA": {"r": 9, "mc": 1261.0}, "BRK-B": {"r": 10, "mc": 1131.0}, "LLY": {"r": 11, "mc": 1062.0}, "MU": {"r": 12, "mc": 995.52}, "JPM": {"r": 13, "mc": 947.11}, "WMT": {"r": 14, "mc": 891.86}, "AMD": {"r": 15, "mc": 798.73}, "V": {"r": 16, "mc": 691.68}, "XOM": {"r": 17, "mc": 641.8}, "JNJ": {"r": 18, "mc": 619.29}, "MA": {"r": 19, "mc": 504.53}, "INTC": {"r": 20, "mc": 503.44}}, "korea": {"005930.KS": {"r": 1, "mc": 1068.0}, "000660.KS": {"r": 2, "mc": 710.74}, "402340.KS": {"r": 3, "mc": 87.14}, "005380.KS": {"r": 4, "mc": 72.91}, "373220.KS": {"r": 5, "mc": 59.31}, "207940.KS": {"r": 6, "mc": 50.71}, "KB": {"r": 7, "mc": 42.59}, "012450.KS": {"r": 8, "mc": 39.74}, "028260.KS": {"r": 9, "mc": 38.77}, "329180.KS": {"r": 10, "mc": 37.38}, "000270.KS": {"r": 11, "mc": 36.91}, "SHG": {"r": 12, "mc": 34.96}, "032830.KS": {"r": 13, "mc": 34.83}, "034020.KS": {"r": 14, "mc": 34.69}, "068270.KS": {"r": 15, "mc": 32.18}, "012330.KS": {"r": 16, "mc": 31.17}, "086790.KS": {"r": 17, "mc": 25.44}, "009155.KS": {"r": 18, "mc": 23.72}, "066570.KS": {"r": 19, "mc": 23.39}, "035420.KS": {"r": 20, "mc": 22.11}}, "japan": {"MUFG": {"r": 1, "mc": 253.95}, "TM": {"r": 2, "mc": 222.0}, "9984.T": {"r": 3, "mc": 199.84}, "285A.T": {"r": 4, "mc": 164.97}, "SMFG": {"r": 5, "mc": 163.47}, "6501.T": {"r": 6, "mc": 158.88}, "8035.T": {"r": 7, "mc": 156.5}, "9983.T": {"r": 8, "mc": 153.71}, "6857.T": {"r": 9, "mc": 147.22}, "SONY": {"r": 10, "mc": 135.65}, "6861.T": {"r": 11, "mc": 130.37}, "MFG": {"r": 12, "mc": 130.22}, "6098.T": {"r": 13, "mc": 115.76}, "8058.T": {"r": 14, "mc": 112.58}, "8766.T": {"r": 15, "mc": 95.26}, "8001.T": {"r": 16, "mc": 91.83}, "8031.T": {"r": 17, "mc": 88.3}, "7011.T": {"r": 18, "mc": 85.82}, "6981.T": {"r": 19, "mc": 83.5}, "9432.T": {"r": 20, "mc": 81.29}}, "europe": {"ASML": {"r": 1, "mc": 654.64}, "RO.SW": {"r": 2, "mc": 370.74}, "HSBC": {"r": 3, "mc": 351.74}, "ARM": {"r": 4, "mc": 306.17}, "NVS": {"r": 5, "mc": 293.1}, "MC.PA": {"r": 6, "mc": 272.92}, "NESN.SW": {"r": 7, "mc": 256.66}, "AZN": {"r": 8, "mc": 249.8}, "SHEL": {"r": 9, "mc": 247.76}, "SIE.DE": {"r": 10, "mc": 245.41}, "OR.PA": {"r": 11, "mc": 240.02}, "SAP": {"r": 12, "mc": 230.21}, "LIN": {"r": 13, "mc": 225.93}, "PRX.AS": {"r": 14, "mc": 213.31}, "ITX.MC": {"r": 15, "mc": 211.5}, "SAN": {"r": 16, "mc": 209.0}, "NVO": {"r": 17, "mc": 203.22}, "SU.PA": {"r": 18, "mc": 196.96}, "RMS.PA": {"r": 19, "mc": 196.65}, "AIR.PA": {"r": 20, "mc": 195.9}}, "taiwan": {"TSM": {"r": 1, "mc": 2168.0}, "2454.TW": {"r": 2, "mc": 193.11}, "2308.TW": {"r": 3, "mc": 132.96}, "2317.TW": {"r": 4, "mc": 113.0}, "6669.TW": {"r": 5, "mc": 105.5}, "ASX": {"r": 6, "mc": 81.9}, "2881.TW": {"r": 7, "mc": 53.84}, "UMC": {"r": 8, "mc": 48.15}, "3037.TW": {"r": 9, "mc": 47.19}, "1303.TW": {"r": 10, "mc": 46.25}, "2882.TW": {"r": 11, "mc": 45.23}, "2408.TW": {"r": 12, "mc": 43.93}, "2891.TW": {"r": 13, "mc": 40.04}, "2345.TW": {"r": 14, "mc": 38.4}, "2382.TW": {"r": 15, "mc": 37.9}, "2327.TW": {"r": 16, "mc": 34.43}, "CHT": {"r": 17, "mc": 32.79}, "2885.TW": {"r": 18, "mc": 27.99}, "2887.TW": {"r": 19, "mc": 27.38}, "2360.TW": {"r": 20, "mc": 26.67}}, "china": {"688825.SS": {"r": 1, "mc": 550.89}, "TCEHY": {"r": 2, "mc": 546.66}, "601939.SS": {"r": 3, "mc": 390.49}, "601288.SS": {"r": 4, "mc": 335.65}, "1398.HK": {"r": 5, "mc": 324.39}, "BABA": {"r": 6, "mc": 303.94}, "601988.SS": {"r": 7, "mc": 275.59}, "300750.SZ": {"r": 8, "mc": 266.14}, "600519.SS": {"r": 9, "mc": 242.6}, "0941.HK": {"r": 10, "mc": 225.83}, "0857.HK": {"r": 11, "mc": 221.75}, "601138.SS": {"r": 12, "mc": 200.55}, "601628.SS": {"r": 13, "mc": 161.59}, "3968.HK": {"r": 14, "mc": 156.5}, "300308.SZ": {"r": 15, "mc": 152.06}, "601318.SS": {"r": 16, "mc": 143.28}, "601088.SS": {"r": 17, "mc": 141.27}, "0883.HK": {"r": 18, "mc": 140.92}, "601899.SS": {"r": 19, "mc": 138.54}, "PDD": {"r": 20, "mc": 129.31}}, "hk": {"1299.HK": {"r": 1, "mc": 97.4}, "2388.HK": {"r": 2, "mc": 67.65}, "0388.HK": {"r": 3, "mc": 66.32}, "2259.HK": {"r": 4, "mc": 46.77}, "J36.SI": {"r": 5, "mc": 45.92}, "0019.HK": {"r": 6, "mc": 45.76}, "0992.HK": {"r": 7, "mc": 44.43}, "0016.HK": {"r": 8, "mc": 42.62}, "0001.HK": {"r": 9, "mc": 35.76}, "0669.HK": {"r": 10, "mc": 34.15}, "1109.HK": {"r": 11, "mc": 29.83}, "0066.HK": {"r": 12, "mc": 25.26}, "0002.HK": {"r": 13, "mc": 24.99}, "0762.HK": {"r": 14, "mc": 24.94}, "1113.HK": {"r": 15, "mc": 20.91}, "1038.HK": {"r": 16, "mc": 19.65}, "0027.HK": {"r": 17, "mc": 18.35}, "0688.HK": {"r": 18, "mc": 18.33}, "1972.HK": {"r": 19, "mc": 17.15}, "H78.SI": {"r": 20, "mc": 16.98}}};  // 전일 스냅샷 (build_site 주입)
 
 const fmtMC = (mc) => {
   if (mc >= 1000) return '$' + (mc / 1000).toFixed(2) + 'T';
@@ -3039,6 +3183,27 @@ function switchRegion(key) {
   });
   const stocks = DATA.regions[key].stocks;
   const topMC = stocks.length ? (stocks[0].mc !== undefined ? stocks[0].mc : stocks[0][3]) : 0;
+  const prevR = (typeof PREV !== 'undefined' && PREV[key]) || {};
+  // 전일 대비 변동 칩: 순위 이동 + 시총 변동률 (전일 스냅샷 없으면 통째로 생략)
+  const deltaChip = (ticker, rankNow, mcNow) => {
+    if (!Object.keys(prevR).length) return '';
+    const p = prevR[(ticker || '').toUpperCase()];
+    let rankHtml;
+    if (!p) rankHtml = '<span class="d-rank dnew">NEW</span>';
+    else {
+      const d = p.r - rankNow;
+      rankHtml = d > 0 ? `<span class="d-rank dup">▲${d}</span>`
+               : d < 0 ? `<span class="d-rank ddown">▼${-d}</span>`
+               : '<span class="d-rank dkeep">—</span>';
+    }
+    let mcHtml = '';
+    if (p && p.mc > 0 && mcNow > 0) {
+      const pct = (mcNow / p.mc - 1) * 100;
+      const cls = pct > 0.05 ? 'dup' : pct < -0.05 ? 'ddown' : 'dkeep';
+      mcHtml = `<span class="d-mc ${cls}">${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%</span>`;
+    }
+    return `<div class="stock-delta" title="전일 대비">${rankHtml}${mcHtml}</div>`;
+  };
   stockList.innerHTML = stocks.map((s, i) => {
     const mc = s.mc !== undefined ? s.mc : s[3];
     const name = s.name !== undefined ? s.name : s[0];
@@ -3056,6 +3221,7 @@ function switchRegion(key) {
             <span>${ticker}</span>
           </div>
         </div>
+        ${deltaChip(ticker, i + 1, mc) || '<div class="stock-delta"></div>'}
         <div class="stock-grav" title="1위 대비 ${(topMC > 0 ? (mc / topMC) * 100 : 0).toFixed(1)}%"><i style="width:${gravPct.toFixed(1)}%"></i></div>
         <div class="stock-mc">
           <div class="stock-mc-usd">${fmtMC(mc)}</div>
