@@ -37,7 +37,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'   # 검증 환경(Claude 샌드박스 3.12)과 일치 — f-string 문법 사고 재발 방지
           cache: 'pip'
       
       - name: Install dependencies
