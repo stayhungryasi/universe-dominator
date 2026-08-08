@@ -450,6 +450,12 @@ function renderSignals(){
   const isRecent = x => { const d = new Date((x.captured || '').replace(' ', 'T')); return !isNaN(d) && d.getTime() > cutoff; };
   const pinned = sg.filter(x => x.pin && isRecent(x));
   const rest = sg.filter(x => !pinned.includes(x));
+  // 재배치: 고정(필독)은 최상단 유지, 그 안에서도·나머지도 추천수(▲) 많은 순.
+  // 포인트 없는 공식 발표(RSS)는 동률(0점) 취급 — 같은 점수끼리는 최신 수집순.
+  const byVotes = (a, b) => ((b.points || 0) - (a.points || 0))
+    || String(b.captured || '').localeCompare(String(a.captured || ''));
+  pinned.sort(byVotes);
+  rest.sort(byVotes);
   const card = (x, pin) => {
     const tag = x.tag || '기타';
     return '<div class="article-card" style="cursor:auto' + (pin ? ';border:1.5px solid var(--gold)' : '') + '">' +
