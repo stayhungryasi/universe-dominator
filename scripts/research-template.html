@@ -414,7 +414,11 @@ function renderSignals(){
   const pinDays = x => ((x.points || 0) >= 1000 ? 30 : 7);
   const isRecent = x => { const d = new Date((x.captured || '').replace(' ', 'T')); return !isNaN(d) && (now - d.getTime()) < pinDays(x) * 86400000; };
   const pinned = sg.filter(x => x.pin && isRecent(x));
-  const rest = sg.filter(x => !pinned.includes(x));
+  // 표시 문턱: HN 신호는 추천수 400점 이상만 노출 (수집·보관은 300점부터 계속 —
+  // 문턱만 낮추면 과거분도 재등장). 포인트 없는 공식 발표(RSS)와 필독 고정은 예외.
+  const SHOW_MIN_POINTS = 400;
+  const rest = sg.filter(x => !pinned.includes(x)
+    && (x.points == null || x.points >= SHOW_MIN_POINTS));
   // 재배치: 고정(필독)은 최상단 유지, 그 안에서도·나머지도 추천수(▲) 많은 순.
   // 포인트 없는 공식 발표(RSS)는 동률(0점) 취급 — 같은 점수끼리는 최신 수집순.
   const byVotes = (a, b) => ((b.points || 0) - (a.points || 0))
