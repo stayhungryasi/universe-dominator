@@ -470,10 +470,27 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ── 중력장 바: 광폭(1280px)에서 생긴 중앙 공백을 정보로 채운다.
      각 지역 1위(태양) 대비 시총 비율 = 왕좌와의 거리 시각화 ── */
 .stock-grav { display: none; }
+.stock-delta { display: none; }
+
+@media (min-width: 900px) {
+  .stock-delta {
+    display: flex; flex-direction: column; gap: 2px;
+    font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+    line-height: 1.25; white-space: nowrap;
+  }
+  .stock-delta .d-rank.dup { color: var(--gold); }
+  .stock-delta .d-rank.ddown { color: #386ee1; }
+  .stock-delta .d-rank.dkeep { color: var(--text-muted); font-weight: 700; }
+  .stock-delta .d-rank.dnew { color: var(--gold); letter-spacing: 0.05em; }
+  .stock-delta .d-mc { font-size: 11.5px; font-weight: 700; }
+  .stock-delta .d-mc.dup { color: var(--gold); }
+  .stock-delta .d-mc.ddown { color: #386ee1; }
+  .stock-delta .d-mc.dkeep { color: var(--text-muted); }
+}
 
 @media (min-width: 900px) {
   .stock-row {
-    grid-template-columns: 32px minmax(240px, 30%) 1fr auto;
+    grid-template-columns: 32px minmax(220px, 27%) 84px 1fr auto;
     gap: 20px;
   }
   .stock-grav {
@@ -999,6 +1016,7 @@ function toggleTheme() {
 }
 
 const DATA = {{DATA_JSON}};
+const PREV = {{PREV_JSON}};  // 전일 스냅샷 (build_site 주입)
 
 const fmtMC = (mc) => {
   if (mc >= 1000) return '$' + (mc / 1000).toFixed(2) + 'T';
@@ -1154,6 +1172,27 @@ function switchRegion(key) {
   });
   const stocks = DATA.regions[key].stocks;
   const topMC = stocks.length ? (stocks[0].mc !== undefined ? stocks[0].mc : stocks[0][3]) : 0;
+  const prevR = (typeof PREV !== 'undefined' && PREV[key]) || {};
+  // 전일 대비 변동 칩: 순위 이동 + 시총 변동률 (전일 스냅샷 없으면 통째로 생략)
+  const deltaChip = (ticker, rankNow, mcNow) => {
+    if (!Object.keys(prevR).length) return '';
+    const p = prevR[(ticker || '').toUpperCase()];
+    let rankHtml;
+    if (!p) rankHtml = '<span class="d-rank dnew">NEW</span>';
+    else {
+      const d = p.r - rankNow;
+      rankHtml = d > 0 ? `<span class="d-rank dup">▲${d}</span>`
+               : d < 0 ? `<span class="d-rank ddown">▼${-d}</span>`
+               : '<span class="d-rank dkeep">—</span>';
+    }
+    let mcHtml = '';
+    if (p && p.mc > 0 && mcNow > 0) {
+      const pct = (mcNow / p.mc - 1) * 100;
+      const cls = pct > 0.05 ? 'dup' : pct < -0.05 ? 'ddown' : 'dkeep';
+      mcHtml = `<span class="d-mc ${cls}">${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%</span>`;
+    }
+    return `<div class="stock-delta" title="전일 대비">${rankHtml}${mcHtml}</div>`;
+  };
   stockList.innerHTML = stocks.map((s, i) => {
     const mc = s.mc !== undefined ? s.mc : s[3];
     const name = s.name !== undefined ? s.name : s[0];
@@ -1171,6 +1210,7 @@ function switchRegion(key) {
             <span>${ticker}</span>
           </div>
         </div>
+        ${deltaChip(ticker, i + 1, mc) || '<div class="stock-delta"></div>'}
         <div class="stock-grav" title="1위 대비 ${(topMC > 0 ? (mc / topMC) * 100 : 0).toFixed(1)}%"><i style="width:${gravPct.toFixed(1)}%"></i></div>
         <div class="stock-mc">
           <div class="stock-mc-usd">${fmtMC(mc)}</div>
