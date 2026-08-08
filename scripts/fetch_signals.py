@@ -252,6 +252,11 @@ def main():
             x["pin"] = bool((x.get("points") or 0) >= 700 or x.get("grade") == "필독")
     # 결선 판정: 등급 기반 필독은 하루 최대 1건 (점수 무사통과분 제외) — 과잉 고정 자동 교정
     arbitrate_pins(os.environ.get("ANTHROPIC_API_KEY", "").strip(), merged)
+    # 표기 일관성: 고정 확정(pin=True)된 항목은 등급도 '필독'으로 동기화
+    # (기존엔 HN 700점 무사통과분이 pin인데 grade는 주목/일반으로 남는 불일치가 있었음)
+    for x in merged:
+        if x.get("pin"):
+            x["grade"] = "필독"
     # 소급 번역: 과거 미번역 글도 매 실행 최대 24건씩 한글화
     backlog = [x for x in merged if not x.get("ko")][:24]
     if backlog:
