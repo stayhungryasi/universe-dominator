@@ -87,6 +87,18 @@ def main():
     check("load_watch: 지역·잠재 유지", "NVDA" in w and "INTC" in w, True)
     check("load_watch: 점 티커 제외 유지", "005930.KS" not in w, True)
 
+    # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
+    # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
+    #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)
+    import py_compile as _pyc
+    _bad = []
+    for _f in sorted(Path(__file__).parent.glob("*.py")):
+        try:
+            _pyc.compile(str(_f), doraise=True)
+        except Exception as _e:
+            _bad.append(f"{_f.name}: {str(_e)[:60]}")
+    check("전 스크립트 컴파일 (문법 전수검사)", _bad, [])
+
     if FAILS:
         print(f"[자가진단] ❌ 실패 {len(FAILS)}건 — 수집을 중단합니다: {FAILS}",
               file=sys.stderr)
