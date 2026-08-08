@@ -245,7 +245,19 @@ def main():
         x.pop("raw_desc", None)
 
     merged = fresh + prev.get("signals", [])
-    merged = merged[:cfg.get("keep", 60)]
+    keep_n = cfg.get("keep", 60)
+    base, overflow = merged[:keep_n], merged[keep_n:]
+    # ★ 초신성 보존: 추천수 1000점↑는 60건 롤링에서 밀려나도 30일간 소멸 면제
+    #   (렌더의 '한 달 고정'이 데이터 소멸로 무력화되는 것을 방지)
+    def _is_mega(x):
+        if (x.get("points") or 0) < 1000:
+            return False
+        try:
+            cap = datetime.strptime(x.get("captured", ""), "%Y-%m-%d %H:%M")
+            return (datetime.now() - cap).days < 30
+        except Exception:
+            return False
+    merged = base + [x for x in overflow if _is_mega(x)]
     # 📌 필독 자동 고정: HN 700점↑ 또는 Claude 필독 판정
     for x in merged:
         if x.get("pin") is None:
