@@ -153,7 +153,11 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 }
 /* ── 정렬 통일: 헤더·메뉴·본문을 같은 1080px 기둥에 ── */
 .site-header-inner{max-width:1080px !important;margin:0 auto !important;padding:14px 20px !important;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.site-nav-inner{max-width:1080px !important;margin:0 auto !important;padding:0 20px !important}
+.site-nav-inner{max-width:1080px !important;margin:0 auto !important;padding:0 20px !important;justify-content:space-between}
+/* 첫/끝 탭의 내부 패딩만큼 광학 보정 — 탭 '글자'가 로고 좌변·캡슐 우변과 정렬 */
+.site-nav-inner .nav-tab:first-child{margin-left:-14px}
+.site-nav-inner .nav-tab:last-child{margin-right:-14px}
+@media(max-width:860px){.site-nav-inner{justify-content:flex-start}.site-nav-inner .nav-tab:first-child,.site-nav-inner .nav-tab:last-child{margin:0}}
 .container{max-width:1080px !important}
 
 /* 메뉴 하단 헤어라인: 골드 → 오로라 */
