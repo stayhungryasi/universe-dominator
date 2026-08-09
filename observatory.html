@@ -205,30 +205,37 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
   .header-right .update-badge, .header-right .rate-badge { padding: 4px 9px; }
 }
 
-/* ud-hdr-refine-v3 — 네이비 계기판 헤더: 아이보리 본문 위 관측 장비 띠 */
-.site-header { background: #1C2333; border-bottom: none; position: relative; }
-[data-theme="dark"] .site-header { background: #10141F; }
-.site-header::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(212,166,88,0.7) 28%, rgba(212,166,88,0.7) 72%, transparent);
-}
-.site-header .ud-logo, .site-header .ud-logo-word { color: #F5EFDF; }
-.site-header .ud-logo-mark { --gold: #D4A658; }
-.site-header .ud-logo-word .v { color: #D4A658; }
-.site-header .ud-logo-word { letter-spacing: 0.24em; }
+/* ud-hdr-refine-v4 — 아이보리 복원: 헤더는 본문과 한 몸, 세련됨은 디테일에서.
+   (한때 페이지에 주입됐던 v3 네이비 블록을 아래 리셋이 캐스케이드로 무력화한다) */
+.site-header { background: var(--header-bg); border-bottom: none; position: relative; }
+.site-header::after { content: none; }
+.site-header .ud-logo, .site-header .ud-logo-word { color: var(--text); }
+.site-header .ud-logo-word { letter-spacing: 0.2em; }
+.site-header .ud-logo-word .v { color: var(--gold); }
+.site-header .ud-logo-mark { --gold: #9C7A3A; }
+[data-theme="dark"] .site-header .ud-logo-mark { --gold: #D4A658; }
 .site-header .header-right {
-  background: rgba(250,246,236,0.06); border-color: rgba(250,246,236,0.16);
-  box-shadow: none;
+  background: var(--bg-card); border-color: var(--line);
+  box-shadow: 0 1px 2px rgba(28,35,51,0.05);
 }
-.site-header .update-badge { color: #B5BFD6; }
-.site-header .update-badge .ud-date { color: #B5BFD6; }
-.site-header .update-badge .ud-clock { color: #E9C87E; }
-.site-header .update-badge::before { background: #D4A658; box-shadow: 0 0 8px rgba(212,166,88,0.8); }
-.site-header .rate-badge { color: #8590AA; border-left-color: rgba(250,246,236,0.14); }
-.site-header .rate-badge #usdKrwDisplay { color: #F5EFDF; }
-.site-header .rate-badge:hover #usdKrwDisplay, .site-header .rate-badge:hover .rate-badge-arrow { color: #E9C87E; }
-.site-header .theme-toggle { color: #B5BFD6; border-left-color: rgba(250,246,236,0.14); }
-.site-header .theme-toggle:hover { color: #E9C87E; }
+.site-header .update-badge, .site-header .update-badge .ud-date { color: var(--text-secondary); }
+.site-header .update-badge .ud-clock { color: var(--gold); }
+.site-header .update-badge::before { background: var(--gold); box-shadow: none; }
+[data-theme="dark"] .site-header .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+.site-header .rate-badge { color: var(--text-secondary); border-left-color: var(--line); }
+.site-header .rate-badge #usdKrwDisplay { color: var(--text); }
+.site-header .rate-badge:hover #usdKrwDisplay, .site-header .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.site-header .theme-toggle { color: var(--text-secondary); border-left-color: var(--line); }
+.site-header .theme-toggle:hover { color: var(--gold); }
+/* 헤더+메뉴 = 하나의 아이보리 존, 경계는 메뉴 아래 은은한 골드 헤어라인 한 줄 */
+.site-nav { border-bottom: 1px solid var(--line); }
+.site-nav::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent 8%, rgba(156,122,58,0.38), transparent 92%);
+}
+[data-theme="dark"] .site-nav::after {
+  background: linear-gradient(90deg, transparent 8%, rgba(212,166,88,0.3), transparent 92%);
+}
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
