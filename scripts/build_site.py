@@ -80,7 +80,30 @@ def build_main():
     html = html.replace("{{TOP1_MC}}", f"${top1_mc/1000:.2f}T" if top1_mc >= 1000 else f"${top1_mc:.0f}B")
     html = html.replace("{{TRILLION_COUNT}}", str(trillion_count))
     html = html.replace("{{TOP20_SUM}}", f"${top20_sum/1000:.1f}T" if top20_sum >= 1000 else f"${top20_sum:.0f}B")
-    
+
+    # 오늘의 신호 3건 (ud-aurora-v1) — 필독 우선, 이후 추천수순 · 파일 없으면 우아한 저하
+    try:
+        sig_all = json.loads((DATA_DIR / "signals.json").read_text(encoding="utf-8")).get("signals", [])
+        # 최신 수신순 3건 (RFC822/ISO 혼재 파싱 · 같은 시각이면 필독→추천수)
+        from email.utils import parsedate_to_datetime as _p822
+        from datetime import datetime as _dt
+        def _sig_ts(x):
+            for v in (x.get("pub"), x.get("captured")):
+                if not v: continue
+                v = str(v)
+                try: return _p822(v).timestamp()
+                except Exception: pass
+                try: return _dt.fromisoformat(v.replace("Z", "+00:00")).timestamp()
+                except Exception: pass
+            return 0.0
+        sig_top = sorted(sig_all, key=lambda x: (_sig_ts(x), bool(x.get("pin")), x.get("points") or 0),
+                         reverse=True)[:3]
+        sig_top = [{k: x.get(k) for k in ("title", "ko", "url", "pub", "points", "pin")} for x in sig_top]
+    except Exception as e:
+        print(f"[warn] index 신호 주입 실패(무시): {e}")
+        sig_top = []
+    html = html.replace("{{SIGNALS_JSON}}", json.dumps(sig_top, ensure_ascii=False))
+
     out = HERE / "index.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
