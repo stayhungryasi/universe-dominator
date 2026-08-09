@@ -395,7 +395,7 @@ def inject_footer_links():
                '<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·'
                '<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>')
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "pioneers.html", "observatory.html", "history-top20.html",
+             "community.html", "pioneers.html", "journal.html", "observatory.html", "history-top20.html",
              "history-latent.html", "about.html", "policies.html"]
     n = 0
     for name in pages:
@@ -673,7 +673,7 @@ PRESENCE_SNIPPET = """<!-- uv-presence -->
 def inject_presence():
     """전 페이지 </body> 직전에 접속자 카운터 스니펫 주입 (멱등)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "pioneers.html", "observatory.html", "history-top20.html",
+             "community.html", "pioneers.html", "journal.html", "observatory.html", "history-top20.html",
              "history-latent.html", "about.html"]
     n = 0
     for name in pages:
@@ -692,7 +692,7 @@ def inject_presence():
 def inject_header_fix():
     """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
     pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "pioneers.html", "observatory.html", "history-top20.html", "history-latent.html", "about.html"]
+             "community.html", "pioneers.html", "journal.html", "observatory.html", "history-top20.html", "history-latent.html", "about.html"]
     n = 0
     for name in pages:
         f = HERE / name
