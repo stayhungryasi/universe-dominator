@@ -308,6 +308,11 @@ document.addEventListener('DOMContentLoaded', function () {
   --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
   --toggle-icon-color:var(--gold);
 }
+/* ── 정렬 통일: 헤더·메뉴·본문을 같은 1080px 기둥에 ── */
+.site-header-inner{max-width:1080px !important;margin:0 auto !important;padding:14px 20px !important;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.site-nav-inner{max-width:1080px !important;margin:0 auto !important;padding:0 20px !important}
+.container{max-width:1080px !important}
+
 /* 메뉴 하단 헤어라인: 골드 → 오로라 */
 .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
 [data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}

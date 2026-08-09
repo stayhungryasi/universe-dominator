@@ -918,7 +918,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .s3hint{position:absolute;left:14px;bottom:12px;font-size:11px;color:#8a94b8;pointer-events:none;z-index:3}
 .solar-tip{position:absolute;pointer-events:none;background:rgba(20,25,40,.95);color:#f5f1e6;border:1px solid #565CE8;border-radius:10px;padding:8px 12px;font-size:12.5px;display:none;max-width:220px;z-index:5}
 .solar-tip b{color:#8B93FF}
-.hero-ov{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:30px clamp(18px,4vw,52px) 40px}
+.hero-ov{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hero-ov .ov-in{max-width:1080px;margin:0 auto;height:100%;padding:30px 20px 40px;display:flex;flex-direction:column;justify-content:space-between}
 .hero-ov .ov-top{display:flex;justify-content:space-between;align-items:flex-start}
 .hero-ov .ov-date{font-size:11px;letter-spacing:.3em;color:#9aa3b8;font-weight:700}
 .hero-ov h1{font-weight:900;font-size:clamp(34px,5.4vw,56px);color:#F4F5F8;margin-top:10px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.55)}
@@ -1100,6 +1101,11 @@ document.addEventListener('DOMContentLoaded', function () {
   --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
   --toggle-icon-color:var(--gold);
 }
+/* ── 정렬 통일: 헤더·메뉴·본문을 같은 1080px 기둥에 ── */
+.site-header-inner{max-width:1080px !important;margin:0 auto !important;padding:14px 20px !important;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.site-nav-inner{max-width:1080px !important;margin:0 auto !important;padding:0 20px !important}
+.container{max-width:1080px !important}
+
 /* 메뉴 하단 헤어라인: 골드 → 오로라 */
 .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
 [data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
@@ -1165,7 +1171,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
     <div class="solar-tip" id="solarTip"></div>
     <div class="s3hint" id="s3hint"></div>
-    <div class="hero-ov">
+    <div class="hero-ov"><div class="ov-in">
       <div class="ov-top">
         <div>
           <div class="ov-stage">STAGE 0 · <b>LIFTOFF</b> — 진입</div>
@@ -1176,7 +1182,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <a href="about.html" class="ov-about">About →</a>
       </div>
       <div class="ov-legend">오늘의 태양계 — 행성 크기 = 시총 · 태양 = 왕좌</div>
-    </div>
+    </div></div>
   </div>
 </div>
 
