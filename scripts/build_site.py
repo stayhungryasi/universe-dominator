@@ -481,6 +481,57 @@ LOGO_HTML = """<a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX
       <span class="ud-logo-word">UNI<span class="v">V</span>ERTRIX</span>
     </a>"""
 
+
+
+AURORA_GLOBAL_CSS = """<style id="ud-aurora-global-v1">
+/* ud-aurora-global-v1 — 전 페이지 오로라 팔레트 통일 (build_site 주입 · 멱등)
+   토큰 리맵이므로 각 페이지 기존 컴포넌트가 자동으로 새 팔레트를 입는다 */
+:root, [data-theme="light"] {
+  --bg:#FBFBFC; --bg-card:#F5F5F7; --bg-hover:#ECECF0;
+  --text:#16181D; --text-secondary:#4A4E58; --text-muted:#7E828B;
+  --gold:#565CE8; --gold-bg:rgba(86,92,232,0.08); --aurora2:#3EC8D8;
+  --line:#E8E9EC; --line-strong:#D8DAE0; --up:#565CE8;
+  --header-bg:rgba(251,251,252,0.92);
+  --tab-active-bg:var(--text); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--text);
+}
+[data-theme="dark"] {
+  --bg:#0A0B0F; --bg-card:#12141B; --bg-hover:#191C25;
+  --text:#F4F5F8; --text-secondary:#C3C7D1; --text-muted:#7C8290;
+  --gold:#8B93FF; --gold-bg:rgba(139,147,255,0.10); --aurora2:#4FE0EF;
+  --line:#1E2027; --line-strong:#2A2D38; --up:#8B93FF;
+  --header-bg:rgba(10,11,15,0.92);
+  --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--gold);
+}
+/* 메뉴 하단 헤어라인: 골드 → 오로라 */
+.site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
+[data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+/* 로고 마크도 오로라로 */
+.site-header .ud-logo-mark { --gold:#565CE8 }
+[data-theme="dark"] .site-header .ud-logo-mark { --gold:#8B93FF }
+</style>
+"""
+
+
+def inject_aurora_tokens():
+    """전 페이지 </head> 직전에 오로라 토큰 주입 (마지막 주입 = 캐스케이드 승리, 멱등)"""
+    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
+             "community.html", "observatory.html", "policies.html", "journal.html",
+             "pioneers.html", "history-top20.html", "history-latent.html", "about.html"]
+    n = 0
+    for name in pages:
+        f = HERE / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        if "ud-aurora-global-v1" in html or "</head>" not in html:
+            continue
+        html = html.replace("</head>", AURORA_GLOBAL_CSS + "\n</head>", 1)
+        f.write_text(html, encoding="utf-8"); n += 1
+    print(f"[OK] 오로라 팔레트 주입: {n}개 페이지")
+
+
 HEADER_FIX_CSS = """<style>
 /* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
 @media (max-width: 480px) {
@@ -687,6 +738,7 @@ def main():
     inject_presence()
     fix_nav()
     inject_footer_links()
+    inject_aurora_tokens()
     print("=" * 50)
     print("빌드 완료")
 
