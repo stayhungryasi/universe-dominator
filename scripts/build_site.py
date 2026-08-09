@@ -471,19 +471,19 @@ def build_history(page_key, active_marker, out_filename):
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
-LOGO_HTML = """<a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX 홈">
-      <svg class="ud-logo-mark" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 3 H4 V27 H9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M25 3 H30 V27 H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <ellipse cx="17" cy="15" rx="6.2" ry="10" stroke="var(--gold)" stroke-width="1.8"/>
-        <circle cx="17" cy="15" r="2.6" fill="var(--gold)"/>
-      </svg>
-      <span class="ud-logo-word">UNI<span class="v">V</span>ERTRIX</span>
+LOGO_HTML = """<a class="brand ud-logo uvx" href="index.html" aria-label="UNIVERTRIX 홈">
+      <span class="uvx-lat"><span class="uvx-word">UNIVERTRIX</span>
+        <svg class="uvx-orbit" viewBox="0 0 300 60" preserveAspectRatio="none" fill="none" aria-hidden="true">
+          <path d="M8 46 C 62 68, 150 -16, 288 20" stroke-width="1.6"/>
+          <circle cx="288" cy="20" r="3.4"/>
+        </svg></span>
+      <span class="uvx-kr">우주지배자</span>
     </a>"""
 
 
 
-AURORA_GLOBAL_CSS = """<style id="ud-aurora-global-v1">
+AURORA_GLOBAL_CSS = """<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+<style id="ud-aurora-global-v1">
 /* ud-aurora-global-v1 — 전 페이지 오로라 팔레트 통일 (build_site 주입 · 멱등)
    토큰 리맵이므로 각 페이지 기존 컴포넌트가 자동으로 새 팔레트를 입는다 */
 :root, [data-theme="light"] {
@@ -507,9 +507,6 @@ AURORA_GLOBAL_CSS = """<style id="ud-aurora-global-v1">
 /* 메뉴 하단 헤어라인: 골드 → 오로라 */
 .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
 [data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
-/* 로고 마크도 오로라로 */
-.site-header .ud-logo-mark { --gold:#565CE8 }
-[data-theme="dark"] .site-header .ud-logo-mark { --gold:#8B93FF }
 </style>
 """
 
@@ -541,8 +538,28 @@ HEADER_FIX_CSS = """<style>
 .update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
 /* UNIVERTRIX 로고 (build_site.py 주입) */
 .brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.ud-logo-mark { display: block; height: 26px; width: auto; }
-.ud-logo-word { font-size: 16px; font-weight: 800; letter-spacing: 0.22em; color: var(--text); line-height: 1; }
+/* ── UNIVERTRIX 종합 로고 (오로라×궤도×호흡×서예) ── */
+.uvx{display:inline-flex;align-items:center;gap:13px;text-decoration:none}
+.uvx-lat{position:relative;display:inline-block}
+.uvx-word{font-size:20px;letter-spacing:.3em;font-weight:400;line-height:1;
+  background:linear-gradient(95deg,var(--text) 12%,var(--gold) 46%,var(--aurora2) 62%,var(--text) 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-variation-settings:'wght' 528}
+.uvx-orbit{position:absolute;inset:-12px -11px -8px -7px;width:calc(100% + 18px);height:calc(100% + 20px);pointer-events:none;overflow:visible}
+.uvx-orbit path{stroke:var(--gold);opacity:.9}
+.uvx-orbit circle{fill:var(--aurora2)}
+.uvx-kr{font-family:'Nanum Brush Script',cursive;font-size:26px;line-height:1;padding-left:13px;border-left:1px solid var(--text-muted);white-space:nowrap;
+  background:linear-gradient(95deg,var(--text) 10%,var(--gold) 42%,var(--aurora2) 60%,var(--text) 90%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+@media(prefers-reduced-motion:no-preference){
+  .uvx-word{animation:uvbreath 6s ease-in-out infinite}
+  .uvx-kr{animation:krbreath 6s ease-in-out infinite}
+  @keyframes uvbreath{0%,100%{font-variation-settings:'wght' 340}50%{font-variation-settings:'wght' 800}}
+  @keyframes krbreath{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+}
+[data-theme="dark"] .uvx-word{filter:drop-shadow(0 0 13px rgba(139,147,255,.4))}
+[data-theme="dark"] .uvx-kr{filter:drop-shadow(0 0 11px rgba(139,147,255,.35))}
+@media(max-width:760px){.uvx-kr{display:none}.uvx-word{font-size:17px}}
 .ud-logo-word .v { color: var(--gold); }
 @media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
 
