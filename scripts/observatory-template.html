@@ -505,7 +505,10 @@ function boot3d(stocks){
   sky.material.fog = false;
   sky.rotation.z = 0.42;
   scene.add(sky);
-  setTimeout(() => { try { sky.material.map = milkyTex(); sky.material.color.set(0xffffff); sky.material.needsUpdate = true; } catch(e){} }, 30);
+  // ★ v11.3 배경 확정: 구체에 어떤 텍스처도 씌우지 않는다 (부장님 판정 2회 확정).
+  //   절차적 은하수(milkyTex)의 발광 원 420개가 구체 확대로 '뿌연 블롭' 오염의 진범.
+  //   깔끔한 우주 = 민무늬 심연(#0a0d1a) + 별 입자만. milkyTex·실사 milky 모두 봉인.
+  // setTimeout(() => { try { sky.material.map = milkyTex(); sky.material.color.set(0xffffff); sky.material.needsUpdate = true; } catch(e){} }, 30);
   // ★ 은하수 배경은 절차적 고정 — 실사 milky.jpg는 2K를 구체 안에서 ~5배 확대해
   //   사진 별들이 거대 블롭으로 번짐 (2026-08-08 배경 오염 사고). 행성 실사는 유지.
   // loadReal('milky.jpg', t => { sky.material.map = t; sky.material.color.set(0xffffff); sky.material.needsUpdate = true; });
