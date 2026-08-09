@@ -217,6 +217,35 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <style id="wide-fix">.container{max-width:1280px}</style>
+<style id="ud-aurora-global-v1">
+/* ud-aurora-global-v1 — 전 페이지 오로라 팔레트 통일 (build_site 주입 · 멱등)
+   토큰 리맵이므로 각 페이지 기존 컴포넌트가 자동으로 새 팔레트를 입는다 */
+:root, [data-theme="light"] {
+  --bg:#FBFBFC; --bg-card:#F5F5F7; --bg-hover:#ECECF0;
+  --text:#16181D; --text-secondary:#4A4E58; --text-muted:#7E828B;
+  --gold:#565CE8; --gold-bg:rgba(86,92,232,0.08); --aurora2:#3EC8D8;
+  --line:#E8E9EC; --line-strong:#D8DAE0; --up:#565CE8;
+  --header-bg:rgba(251,251,252,0.92);
+  --tab-active-bg:var(--text); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--text);
+}
+[data-theme="dark"] {
+  --bg:#0A0B0F; --bg-card:#12141B; --bg-hover:#191C25;
+  --text:#F4F5F8; --text-secondary:#C3C7D1; --text-muted:#7C8290;
+  --gold:#8B93FF; --gold-bg:rgba(139,147,255,0.10); --aurora2:#4FE0EF;
+  --line:#1E2027; --line-strong:#2A2D38; --up:#8B93FF;
+  --header-bg:rgba(10,11,15,0.92);
+  --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--gold);
+}
+/* 메뉴 하단 헤어라인: 골드 → 오로라 */
+.site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
+[data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+/* 로고 마크도 오로라로 */
+.site-header .ud-logo-mark { --gold:#565CE8 }
+[data-theme="dark"] .site-header .ud-logo-mark { --gold:#8B93FF }
+</style>
+
 </head>
 <body>
 

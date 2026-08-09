@@ -1047,6 +1047,35 @@ document.addEventListener('DOMContentLoaded', function () {
   setInterval(tick, 1000);
 });
 </script>
+<style id="ud-aurora-global-v1">
+/* ud-aurora-global-v1 — 전 페이지 오로라 팔레트 통일 (build_site 주입 · 멱등)
+   토큰 리맵이므로 각 페이지 기존 컴포넌트가 자동으로 새 팔레트를 입는다 */
+:root, [data-theme="light"] {
+  --bg:#FBFBFC; --bg-card:#F5F5F7; --bg-hover:#ECECF0;
+  --text:#16181D; --text-secondary:#4A4E58; --text-muted:#7E828B;
+  --gold:#565CE8; --gold-bg:rgba(86,92,232,0.08); --aurora2:#3EC8D8;
+  --line:#E8E9EC; --line-strong:#D8DAE0; --up:#565CE8;
+  --header-bg:rgba(251,251,252,0.92);
+  --tab-active-bg:var(--text); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--text);
+}
+[data-theme="dark"] {
+  --bg:#0A0B0F; --bg-card:#12141B; --bg-hover:#191C25;
+  --text:#F4F5F8; --text-secondary:#C3C7D1; --text-muted:#7C8290;
+  --gold:#8B93FF; --gold-bg:rgba(139,147,255,0.10); --aurora2:#4FE0EF;
+  --line:#1E2027; --line-strong:#2A2D38; --up:#8B93FF;
+  --header-bg:rgba(10,11,15,0.92);
+  --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--gold);
+}
+/* 메뉴 하단 헤어라인: 골드 → 오로라 */
+.site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
+[data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+/* 로고 마크도 오로라로 */
+.site-header .ud-logo-mark { --gold:#565CE8 }
+[data-theme="dark"] .site-header .ud-logo-mark { --gold:#8B93FF }
+</style>
+
 </head>
 <body>
 
@@ -3396,6 +3425,11 @@ if (rateEl) {
 /* ud-aurora-v1 — 오늘의 태양계(천문대 v11 원본) + 왕좌 스윕 + 신호 + 카운트다운 */
 const SIGNALS = [{"title": "Denmark Requires Oral Defenses for Students' Written Work to Counter AI Cheating", "ko": "덴마크, AI 부정행위 막으려 구술 방어 의무화", "url": "https://mezha.net/eng/bukvy/ca117584_denmark_requires_oral/", "pub": "Sat, 08 Aug 2026 18:09:31 +0000", "points": 473, "pin": false}, {"title": "Fastmail offers EU data region", "ko": "Fastmail, EU 데이터센터 지원 시작", "url": "https://www.fastmail.com/blog/fastmail-offers-eu-data-region/", "pub": "Sat, 08 Aug 2026 16:04:51 +0000", "points": 352, "pin": false}, {"title": "“Code was never the hard part” is an insult to all programmers", "ko": "\"코드는 어려운 부분이 아니다\"는 프로그래머 모욕", "url": "https://blog.senko.net/code-was-never-the-hard-part-is-an-insult-to-all-programmers", "pub": "Sat, 08 Aug 2026 14:32:33 +0000", "points": 518, "pin": false}];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let solarRAF = null;
+const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','#2e9d87'], '🇰🇷': ['#ffd88a','#c99544'],
+  '🇸🇦': ['#9fe89f','#4d9e4d'], '🇨🇳': ['#f2a0a0','#c05555'], '🇳🇱': ['#f0c9a0','#c48a4e'], '🇯🇵': ['#f0a9c8','#c45b8a'] };
+const flagColor = f => FLAG_COLOR[f] || ['#c3b8f0','#7a6cc4'];
+
 const SHORT_NAME = {'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
   '005930.KS':'삼성전자','000660.KS':'SK하이닉스','TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
   'LLY':'Eli Lilly','XOM':'엑슨모빌','JNJ':'J&J','WMT':'월마트','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'};
@@ -3415,6 +3449,170 @@ function loadThree(){
     document.head.appendChild(s);
   });
 }
+
+function cleanupSolar(){
+  if (solar3d) {
+    cancelAnimationFrame(solar3d.raf);
+    try { solar3d.renderer.dispose(); } catch(e){}
+    solar3d = null;
+  }
+  if (solarRAF) { cancelAnimationFrame(solarRAF); solarRAF = null; }
+}
+
+function renderSolar(){
+  const stocks = (DATA.earth || []).slice(0, 20);
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
+  document.getElementById('obsBody').innerHTML =
+    '<div class="solar-wrap" id="s3wrap" style="height:' + (window.innerWidth < 700 ? 480 : 640) + 'px;position:relative;cursor:grab;touch-action:none">' +
+      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">☀️ 태양계 정렬 중…</div>' +
+      '<div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>' +
+      '<div class="solar-tip" id="solarTip"></div>' +
+      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? '☝️ 한 손가락 회전 · 두 손가락 확대/축소 · 행성 탭 = 정보' : '🖱 드래그 회전 · 휠 확대/축소') + '</div>' +
+    '</div>' +
+    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 순위가 높을수록 안쪽 궤도 — 행성의 얼굴은 실제 태양계 순서(수성→해왕성→왜소행성)</div>' +
+    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측) · 텍스처: Solar System Scope(CC BY 4.0)·NASA</div>';
+  loadThree().then(() => boot3d(stocks)).catch(() => renderSolarSVG());
+}
+
+/* 절차적 텍스처 — 코드로 만드는 행성 표면 */
+function glowTex(color){
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d');
+  const gr = g.createRadialGradient(128,128,0,128,128,128);
+  gr.addColorStop(0, color); gr.addColorStop(0.35, color.replace(')',',0.45)').replace('rgb','rgba'));
+  gr.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = gr; g.fillRect(0,0,256,256);
+  return new THREE.CanvasTexture(c);
+}
+function _hex(h){ const n = parseInt(h.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+const __texCache = {};
+function planetTex(hi, lo, seed, rocky){
+  const W = 256, Hh = 128;
+  const c = document.createElement('canvas'); c.width = W; c.height = Hh;
+  const g = c.getContext('2d');
+  let s = (seed || 1) % 2147483646 + 1; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  const A = _hex(hi), B = _hex(lo);
+  // 값 노이즈 (가로 순환 — 구에 감아도 이음매 없음)
+  const GX = 32, GY = 17, grid = [];
+  for (let i = 0; i < GX*GY; i++) grid.push(rnd());
+  const gv = (x, y) => grid[(((y % GY) + GY) % GY) * GX + (((x % GX) + GX) % GX)];
+  const sm = t => t*t*(3-2*t);
+  const nz = (x, y) => { const x0 = Math.floor(x), y0 = Math.floor(y), fx = sm(x-x0), fy = sm(y-y0);
+    return gv(x0,y0)*(1-fx)*(1-fy) + gv(x0+1,y0)*fx*(1-fy) + gv(x0,y0+1)*(1-fx)*fy + gv(x0+1,y0+1)*fx*fy; };
+  const fbm = (x, y) => nz(x,y)*0.5 + nz(x*2.03, y*2.03)*0.28 + nz(x*4.1, y*4.1)*0.15 + nz(x*8.2, y*8.2)*0.07;
+  const phase = rnd()*6.28, bands = 6 + Math.floor(rnd()*6);
+  const img = g.createImageData(W, Hh), d = img.data;
+  for (let y = 0; y < Hh; y++) {
+    const v = y / Hh;
+    const polar = 0.58 + 0.42*Math.sin(v*Math.PI);          // 극지방 어둡게
+    for (let x = 0; x < W; x++) {
+      const u = x / W;
+      const n = fbm(u*GX*0.55, v*GY*0.55);
+      let t;
+      if (rocky) {
+        t = n;                                               // 대륙형 얼룩
+        t = t < 0.48 ? t*0.55 : 0.35 + (t-0.48)*1.35;
+      } else {
+        const warp = (fbm(u*GX*0.8 + 9.7, v*GY*0.8) - 0.5) * 0.16;  // 소용돌이 워프
+        t = Math.sin((v + warp)*Math.PI*bands + phase)*0.5 + 0.5;    // 흐르는 줄무늬
+        t = Math.pow(t, 1.25)*0.78 + n*0.22;
+      }
+      const i4 = (y*W + x) * 4;
+      d[i4]   = (B[0] + (A[0]-B[0])*t) * polar;
+      d[i4+1] = (B[1] + (A[1]-B[1])*t) * polar;
+      d[i4+2] = (B[2] + (A[2]-B[2])*t) * polar;
+      d[i4+3] = 255;
+    }
+  }
+  g.putImageData(img, 0, 0);
+  if (rocky) {  // 크레이터
+    for (let i = 0; i < 30; i++) {
+      const cx = rnd()*W, cy = Hh*0.12 + rnd()*Hh*0.76, r = rnd()*8 + 1.5;
+      g.strokeStyle = 'rgba(8,10,20,0.35)'; g.lineWidth = 1.4;
+      g.beginPath(); g.arc(cx, cy, r, 0, 6.3); g.stroke();
+      g.fillStyle = 'rgba(255,255,255,0.10)';
+      g.beginPath(); g.arc(cx - r*0.28, cy - r*0.28, r*0.55, 0, 6.3); g.fill();
+    }
+  } else if (rnd() > 0.45) {  // 대적점 폭풍
+    const cx = rnd()*W, cy = Hh*(0.55 + rnd()*0.2);
+    for (let k = 3; k >= 1; k--) {
+      g.fillStyle = 'rgba(150,60,30,' + (0.10*k).toFixed(2) + ')';
+      g.beginPath(); g.ellipse(cx, cy, 15*k, 7*k, -0.25, 0, 6.3); g.fill();
+    }
+  }
+  const t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping;
+  if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+function ringTex(){
+  const c = document.createElement('canvas'); c.width = 256; c.height = 1;
+  const g = c.getContext('2d');
+  let s = 99; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  for (let x = 0; x < 256; x++) {
+    const a = (Math.sin(x*0.22)*0.5+0.5) * (0.25 + rnd()*0.5) * (x < 18 || x > 244 ? 0.15 : 1);
+    g.fillStyle = 'rgba(216,201,160,' + a.toFixed(2) + ')';
+    g.fillRect(x, 0, 1, 1);
+  }
+  return new THREE.CanvasTexture(c);
+}
+function milkyTex(){
+  if (__texCache.milky) return __texCache.milky;
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 512;
+  const g = c.getContext('2d');
+  g.fillStyle = '#07090f'; g.fillRect(0, 0, 1024, 512);
+  let s = 12345; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  // 은하수 띠 — 겹겹의 뿌연 발광 + 갈색 성간운
+  for (let i = 0; i < 420; i++) {
+    const t = i / 420, x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*62 + (rnd()-0.5)*130;
+    const r = rnd()*26 + 5;
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    const warm = rnd() > 0.75;
+    gr.addColorStop(0, warm ? 'rgba(185,135,90,0.12)' : 'rgba(175,190,235,0.12)');
+    gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.3); g.fill();
+  }
+  // 대형 발광 성운 2점 (레퍼런스의 색 포인트)
+  [[0.22, 0.38, 'rgba(210,120,60,0.16)', 150], [0.72, 0.6, 'rgba(110,140,230,0.13)', 180]].forEach(([fx, fy, col2, rr]) => {
+    const gr2 = g.createRadialGradient(1024*fx, 512*fy, 0, 1024*fx, 512*fy, rr);
+    gr2.addColorStop(0, col2); gr2.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr2; g.beginPath(); g.arc(1024*fx, 512*fy, rr, 0, 6.3); g.fill();
+  });
+  // 암흑 성운 줄기
+  for (let i = 0; i < 70; i++) {
+    const t = rnd(), x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*56 + (rnd()-0.5)*46;
+    g.fillStyle = 'rgba(5,6,10,0.16)';
+    g.beginPath(); g.ellipse(x, y, rnd()*36+9, rnd()*9+3, rnd()*3, 0, 6.3); g.fill();
+  }
+  // 별 5500개 (색 온도 섞기)
+  const cols = ['#f5f1e6','#f5f1e6','#f5f1e6','#cfe0ff','#ffe0c9','#ffd0d0'];
+  for (let i = 0; i < 3400; i++) {
+    const band = rnd() < 0.55;
+    const x = rnd()*1024;
+    const y = band ? 256 + Math.sin(x/1024*Math.PI*2)*62 + (rnd()-0.5)*150 : rnd()*512;
+    g.fillStyle = cols[Math.floor(rnd()*cols.length)];
+    g.globalAlpha = rnd()*0.85 + 0.1;
+    const r = rnd() < 0.985 ? rnd()*1.1 + 0.2 : rnd()*2.2 + 1.2;
+    g.beginPath(); g.arc(x, y, r, 0, 6.3); g.fill();
+  }
+  g.globalAlpha = 1;
+  const t = new THREE.CanvasTexture(c);
+  if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+  __texCache.milky = t;
+  return t;
+}
+function sunTex(){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+  const g = c.getContext('2d');
+  g.fillStyle = '#ffd873'; g.fillRect(0,0,512,256);
+  let s = 42; const rnd = () => (s = (s*16807)%2147483647)/2147483647;
+  for (let i = 0; i < 320; i++) {
+    g.fillStyle = 'rgba(' + (rnd()>0.4? '255,250,225' : '224,140,40') + ',' + (rnd()*0.22+0.04).toFixed(2) + ')';
+    g.beginPath(); g.arc(rnd()*512, rnd()*256, rnd()*16+2, 0, 6.3); g.fill();
+  }
+  return new THREE.CanvasTexture(c);
+}
+function hexToRgbStr(h){ const n = parseInt(h.slice(1),16); return 'rgb('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+')'; }
+
 function boot3d(stocks){
   const wrap = document.getElementById('s3wrap');
   const W = wrap.clientWidth, H = wrap.clientHeight;
