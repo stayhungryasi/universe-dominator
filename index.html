@@ -949,6 +949,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .sig-title{color:var(--text);font-weight:800;font-size:16.5px;margin-top:9px;line-height:1.55}
 .sig-empty{color:var(--text-muted);font-size:13.5px}
 
+/* ── 발사 시퀀스 (r02 이식) ── */
+.stage-k{font-size:11px;font-weight:900;letter-spacing:.3em;color:var(--text-muted);margin-bottom:10px}
+.stage-k b{color:var(--gold)}
+.hero-ov .ov-stage{font-size:11px;letter-spacing:.3em;color:#9aa3b8;font-weight:900}
+.hero-ov .ov-stage b{color:#8B93FF}
+.asc-rail{position:fixed;left:18px;top:0;bottom:0;width:1px;background:var(--line);z-index:40;pointer-events:none}
+.asc-rail i{position:absolute;left:0;top:0;width:1px;height:0;background:linear-gradient(180deg,var(--gold),var(--aurora2))}
+.asc-rail span{position:absolute;left:8px;font-size:9px;font-weight:900;letter-spacing:.22em;color:var(--text-muted);writing-mode:vertical-rl;transition:color .25s}
+.asc-rail span.on{color:var(--gold)}
+@media(max-width:1220px){.asc-rail{display:none}}
+
 /* ── 다음 관측 ── */
 .next-sec{text-align:center;padding:54px 0 24px}
 .next-sec .nk{font-size:12px;letter-spacing:.3em;color:var(--text-muted);font-weight:800}
@@ -1079,6 +1090,15 @@ document.addEventListener('DOMContentLoaded', function () {
 </head>
 <body>
 
+<div class="asc-rail" aria-hidden="true">
+  <i id="ascFill"></i>
+  <span style="top:5%" data-tgt="s3wrap">LIFTOFF</span>
+  <span style="top:28%" data-tgt="stage1">MAX-Q</span>
+  <span style="top:50%" data-tgt="stage2">ORBIT</span>
+  <span style="top:72%" data-tgt="stage3">TELEMETRY</span>
+  <span style="bottom:4%" data-tgt="stage4">LANDING</span>
+</div>
+
 <header class="site-header">
   <div class="site-header-inner">
     <a class="brand ud-logo" href="index.html" aria-label="UNIVERTRIX 홈">
@@ -1131,7 +1151,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="hero-ov">
       <div class="ov-top">
         <div>
-          <div class="ov-date">DAY 2026.08.09 · 매일 아침 다시 그려집니다</div>
+          <div class="ov-stage">STAGE 0 · <b>LIFTOFF</b> — 진입</div>
+          <div class="ov-date" style="margin-top:6px">DAY 2026.08.09 · 매일 아침 다시 그려집니다</div>
           <h1>우주지배자</h1>
           <p class="ov-sub">글로벌 시가총액 TOP 종목, 매일 갱신</p>
         </div>
@@ -1145,7 +1166,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <main class="container">
 
-<section class="hero">
+<section class="hero" id="stage1">
+  <div class="stage-k">STAGE 1 · <b>MAX-Q</b> — 왕좌, 최대 압력 구간</div>
 
   <div class="stats-grid">
     <div class="stat-card">
@@ -1177,7 +1199,8 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="throne-sub" id="throneSub">&nbsp;</div>
 </section>
 
-<section class="section">
+<section class="section" id="stage2">
+  <div class="stage-k">STAGE 2 · <b>ORBIT</b> — 궤도 진입</div>
   <div class="section-head">
     <h2 class="section-title">TOP 20</h2>
     <a href="history-top20.html" class="history-btn">History <span class="history-btn-arrow">→</span></a>
@@ -1192,7 +1215,8 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 
 
-<section class="section">
+<section class="section" id="stage3">
+  <div class="stage-k">STAGE 3 · <b>TELEMETRY</b> — 지상 수신</div>
   <div class="section-head">
     <h2 class="section-title">오늘의 신호</h2>
     <a href="research.html" class="history-btn">신호 관측소 <span class="history-btn-arrow">→</span></a>
@@ -1200,10 +1224,10 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="sig-grid" id="sigGrid"></div>
 </section>
 
-<section class="next-sec">
-  <div class="nk">NEXT OBSERVATION — 다음 관측까지</div>
+<section class="next-sec" id="stage4">
+  <div class="nk">STAGE 4 · LANDING — 다음 발사까지</div>
   <div class="nt" id="nextTm">--:--:--</div>
-  <p>매일 아침 8시, 우주의 질서가 다시 기록됩니다</p>
+  <p>부스터는 매일 아침 8시에 다시 섭니다 — 우주의 질서가 재기록됩니다</p>
 </section>
 
 </main>
@@ -3971,6 +3995,21 @@ function colSeed(str){ let h = 2166136261;
     var sc=Math.floor((t-n)/1000),p=function(v){return String(v).padStart(2,'0')};
     var el=document.getElementById('nextTm'); if(el)el.textContent=p(Math.floor(sc/3600))+':'+p(Math.floor(sc%3600/60))+':'+p(sc%60);}
   tick(); setInterval(tick,1000);
+  // 발사 시퀀스 레일 — 스크롤 진행 게이지 + 현 구간 점등
+  (function(){
+    var fill=document.getElementById('ascFill'); if(!fill) return;
+    var marks=[].slice.call(document.querySelectorAll('.asc-rail [data-tgt]'));
+    function upd(){
+      var h=document.documentElement, p=h.scrollTop/((h.scrollHeight-h.clientHeight)||1);
+      fill.style.height=(Math.min(1,Math.max(0,p))*100).toFixed(1)+'%';
+      var act=0;
+      marks.forEach(function(m,i){var el=document.getElementById(m.getAttribute('data-tgt'));
+        if(el&&el.getBoundingClientRect().top<innerHeight*0.55) act=i;});
+      marks.forEach(function(m,i){m.classList.toggle('on',i===act)});
+    }
+    addEventListener('scroll',function(){requestAnimationFrame(upd)},{passive:true});
+    addEventListener('resize',upd); upd();
+  })();
   try{
     var hint=document.getElementById('s3hint');
     if(hint) hint.textContent=('ontouchstart' in window)?'☝️ 한 손가락 회전 · 두 손가락 확대/축소 · 행성 탭 = 정보':'🖱 드래그 회전 · 휠 확대/축소 · 행성 클릭 = 정보';
