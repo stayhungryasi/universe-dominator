@@ -918,7 +918,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .s3hint{position:absolute;left:14px;bottom:12px;font-size:11px;color:#8a94b8;pointer-events:none;z-index:3}
 .solar-tip{position:absolute;pointer-events:none;background:rgba(20,25,40,.95);color:#f5f1e6;border:1px solid #565CE8;border-radius:10px;padding:8px 12px;font-size:12.5px;display:none;max-width:220px;z-index:5}
 .solar-tip b{color:#8B93FF}
-.hero-ov{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hero-ov{position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(115deg,rgba(10,13,24,.62) 0%,rgba(10,13,24,.28) 26%,transparent 46%)}
 .hero-ov .ov-in{max-width:1080px;margin:0 auto;height:100%;padding:30px 20px 40px;display:flex;flex-direction:column;justify-content:space-between}
 .hero-ov .ov-top{display:flex;justify-content:space-between;align-items:flex-start}
 .hero-ov .ov-date{font-size:11px;letter-spacing:.3em;color:#9aa3b8;font-weight:700}
@@ -927,7 +928,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero-ov .ov-about{pointer-events:auto;display:inline-block;border:1px solid rgba(244,245,248,.4);background:rgba(10,13,24,.4);color:#F4F5F8;border-radius:100px;padding:8px 18px;font-weight:800;font-size:13px;text-decoration:none;backdrop-filter:blur(6px)}
 .hero-ov .ov-about:hover{border-color:#F4F5F8}
 .hero-ov .ov-legend{font-size:11px;letter-spacing:.16em;color:#8a94b8;font-weight:700}
-@media(max-width:700px){.hero-ov h1{font-size:30px}.hero-ov .ov-legend{display:none}}
+@media(max-width:760px){.hero-ov .ov-legend{display:none}}
+@media(max-width:760px){
+  .hero-ov{background:linear-gradient(180deg,rgba(10,13,24,.55),transparent 34%)}
+  .hero-ov h1,.hero-ov .ov-sub{display:none}
+  .hero-ov .ov-in{padding:16px 16px 26px}
+  .hero-ov .ov-date{font-size:9.5px;letter-spacing:.2em}
+  .hero-ov .ov-about{padding:6px 13px;font-size:12px}
+  .hero .solar-wrap{height:56vh;min-height:400px}
+}
 
 /* ── 왕좌 스윕 ── */
 .throne-sec{text-align:center;padding:54px 0 44px}
