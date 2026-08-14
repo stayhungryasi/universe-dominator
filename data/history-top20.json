@@ -3,6 +3,41 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.08.15",
+      "period": "8.8 → 8.15 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>ASML</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $708B</span>)",
+            "<strong>Visa</strong> TOP 20 이탈",
+            "<strong>삼성전자</strong> 시총 <span class='em-up'>+18%</span> ($1.08T → $1.27T)",
+            "<strong>SK하이닉스</strong> 시총 <span class='em-up'>+15%</span> ($716B → $825B)",
+            "[유럽] <strong>Seagate Technology</strong> TOP 20 신규 진입 (<span class='em-up'>14위, $221B</span>)",
+            "[유럽] <strong>TotalEnergies</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $196B</span>)",
+            "[유럽] <strong>Prosus</strong> TOP 20 이탈",
+            "[유럽] <strong>Hermès</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,411 (08/15 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.41"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.08.08",
       "period": "8.1 → 8.8 (주간)",
       "auto": true,
