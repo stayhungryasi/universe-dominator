@@ -201,6 +201,11 @@ def build_research():
     rdata["gurus"] = json.loads(gurus_path.read_text(encoding="utf-8")) if gurus_path.exists() else {"gurus": []}
     signals_path = DATA_DIR / "signals.json"
     rdata["signals"] = json.loads(signals_path.read_text(encoding="utf-8")) if signals_path.exists() else {"signals": []}
+    # 🔬 필독 해부실 — 실패 기록(failures)은 내부용이므로 페이지에 싣지 않는다
+    tr_path = DATA_DIR / "translations.json"
+    tr = json.loads(tr_path.read_text(encoding="utf-8")) if tr_path.exists() else {}
+    rdata["translations"] = {"generated_label": tr.get("generated_label", ""),
+                             "items": tr.get("items", [])}
     template = template_path.read_text(encoding="utf-8")
     # 헤더 배지 값 (placeholder 방식과 동일)
     meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
@@ -302,11 +307,23 @@ def build_observatory():
         tiles.append({"t": tk, "n": x["name"], "mc": x["mc"], "chg": chg,
                       "g": FLAG_KO.get(x.get("country", ""), "기타"),
                       "f": x.get("country", ""), "e": 0, "l": 1})
+    # 🔬 해부실 연결 지도: {원문 URL: 해부 id} — 칼럼에 '해부실에서 보기' 버튼을
+    #    띄울지 판정하는 근거. 해부 글이 없는 칼럼은 버튼을 아예 만들지 않는다.
+    tr_path = DATA_DIR / "translations.json"
+    dissected = {}
+    if tr_path.exists():
+        try:
+            for it in json.loads(tr_path.read_text(encoding="utf-8")).get("items", []):
+                if it.get("url") and it.get("id"):
+                    dissected[it["url"]] = it["id"]
+        except Exception as e:
+            print(f"[warn] translations.json 읽기 실패(무시): {e}")
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
         "columns": cols,
         "tiles": tiles,
+        "dissected": dissected,
     }
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")

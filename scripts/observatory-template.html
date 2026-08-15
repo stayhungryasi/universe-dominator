@@ -145,6 +145,10 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .col-share { display: flex; gap: 8px; margin: 0 0 14px; }
 .col-share button { padding: 6px 13px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg); font-size: 12px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
 .col-share button:hover { border-color: var(--gold); color: var(--gold); }
+/* 🔬 해부실 연결 버튼 — 복사 버튼과 같은 형태, 강조는 골드 테두리로 */
+.col-share .dx-jump { display: inline-flex; align-items: center; padding: 6px 13px; border-radius: 100px; border: 1px solid var(--gold); background: var(--bg); font-size: 12px; font-weight: 800; color: var(--gold); text-decoration: none; white-space: nowrap; }
+.col-share .dx-jump:hover { background: var(--gold); color: #fff; }
+@media (max-width: 480px) { .col-share { flex-wrap: wrap; } }
 .col-body h3 { font-size: 15.5px; margin: 18px 0 6px; color: var(--gold); }
 .col-body p { margin: 0 0 10px; }
 .map-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -1091,9 +1095,19 @@ function renderColumns(){
         '<div class="col-share">'+
           '<button onclick="copyColLink(event,'+i+')">🔗 링크 복사</button>'+
           '<button onclick="copyColText(event,'+i+')">📄 본문 복사</button>'+
+          dissectBtn(c)+
         '</div>'+c.body+'</div>'+
     '</div>').join('');
   openFromHash();
+}
+
+// 🔬 해부실 연결 — 이 칼럼의 원문이 해부돼 있을 때만 버튼을 만든다.
+// DATA.dissected = {원문 URL: 해부 id} (build_site.py가 translations.json에서 주입)
+function dissectBtn(c){
+  const id = c && c.url && (DATA.dissected || {})[c.url];
+  if (!id) return '';
+  return '<a class="dx-jump" href="research.html#dx-' + esc(id) + '" onclick="event.stopPropagation()"'+
+    ' title="이 신호 원문의 문단별 한국어 브리핑">🔬 해부실에서 보기 →</a>';
 }
 
 function colSlug(c){ return 'log-' + colSeed((c.title || '') + (c.date || '')); }

@@ -88,6 +88,16 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         continue-on-error: true
 
+      # 🔬 필독 해부실 — 필독 신호 원문을 문단별 한국어 브리핑으로 재서술
+      # (전문 번역이 아님 — 저작권 원칙은 fetch_translations.py 상단 참조)
+      # 항목별 continue-on-error 구조라 유료벽·404가 있어도 나머지는 계속 해부된다
+      - name: Dissect must-read signals (auto)
+        if: env.FULL_RUN == 'true'
+        run: python scripts/fetch_translations.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        continue-on-error: true
+
       # 필독 신호 → 관측일지 자동 심층 칼럼 (하루 1편)
       - name: Signal deep-dive column (auto)
         if: env.FULL_RUN == 'true'

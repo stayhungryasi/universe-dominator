@@ -45,6 +45,34 @@ def fetch_article_text(url, limit=7000):
         return ""
 
 
+def backfill_column_urls():
+    """기존 칼럼에 원문 url 소급 부여 (멱등).
+
+    2026-08 이전 칼럼 레코드에는 url 필드가 없다. 하지만 본문 하단 '신호 출처' 줄에
+    원문 링크가 그대로 박혀 있으므로 거기서 정확히 되찾는다(추측 아님).
+    url이 있어야 해부실('해부실에서 보기' 버튼)과 연결된다.
+    """
+    if not COLS_PATH.exists():
+        return
+    try:
+        data = json.loads(COLS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return
+    pat = re.compile(r'신호 출처:[\s\S]{0,200}?<a href="([^"]+)"')
+    n = 0
+    for c in data.get("columns", []):
+        if c.get("url"):
+            continue
+        m = pat.search(c.get("body") or "")
+        if m:
+            c["url"] = m.group(1)
+            n += 1
+    if n:
+        COLS_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=1),
+                             encoding="utf-8")
+        print(f"[신호칼럼] 기존 칼럼 원문 url 소급 연결: {n}건")
+
+
 def render_chart(ch):
     """추출 수치 → UNIVERTRIX 표준 막대 차트 SVG"""
     try:
@@ -128,6 +156,9 @@ def ask_claude(api_key, sig, article):
 
 
 def main():
+    # 해부실 연결용 소급 작업 — API 키·발행 여부와 무관하게 매 실행 먼저 수행
+    backfill_column_urls()
+
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key:
         print("[신호칼럼] ANTHROPIC_API_KEY 미설정 — 건너뜀")
@@ -210,6 +241,7 @@ def main():
              "title": ("📡 " + col["title"])[:80],
              "summary": (col.get("summary") or "")[:120],
              "body": col["body"] + charts_html + src_line,
+             "url": sig["url"],   # 해부실 연결 키 (fetch_translations의 id 산출 근거)
              "auto": True, "viz": {"type": "constellation"}}
     cols["columns"] = [entry] + cols.get("columns", [])
     COLS_PATH.write_text(json.dumps(cols, ensure_ascii=False, indent=1),

@@ -179,6 +179,29 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .placeholder-title { font-size: 24px; } }
 :root { --cal-blue: #2f62c9; --cal-blue-bg: rgba(47,98,201,0.10); --cal-wknd: rgba(0,0,0,0.045); }
 [data-theme="dark"] { --cal-blue: #8fb0f5; --cal-blue-bg: rgba(56,110,225,0.2); --cal-wknd: #161b2b; }
+
+/* ── 🔬 필독 해부실 (신호 관측소 카드 문법 그대로) ── */
+.dx-index { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; margin-bottom: 18px; }
+.dx-index-title { font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.dx-index a { display: block; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; font-weight: 600; color: var(--text); text-decoration: none; line-height: 1.45; }
+.dx-index a:first-of-type { border-top: 0; }
+.dx-index a:hover { color: var(--gold); }
+.dx-index .dx-index-date { color: var(--text-muted); font-weight: 700; font-size: 12px; margin-right: 8px; font-variant-numeric: tabular-nums; }
+.dx-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; scroll-margin-top: 90px; }
+.dx-card:target { border-color: var(--gold); }
+.dx-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; font-size: 11px; color: var(--text-muted); }
+.dx-badge { font-size: 10.5px; font-weight: 800; border-radius: 100px; padding: 2px 9px; background: var(--gold); color: #fff; }
+.dx-title { font-size: 19px; font-weight: 800; line-height: 1.4; letter-spacing: -0.02em; }
+.dx-orig { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; font-style: italic; line-height: 1.45; }
+.dx-src { display: inline-flex; align-items: center; gap: 7px; margin: 12px 0 4px; padding: 10px 16px; border-radius: 100px;
+  border: 1.5px solid var(--gold); color: var(--gold); font-size: 13.5px; font-weight: 800; text-decoration: none; }
+.dx-src:hover { background: var(--gold); color: #fff; }
+.dx-sec { margin-top: 18px; }
+.dx-sec h4 { font-size: 15px; font-weight: 800; color: var(--gold); margin: 0 0 6px; letter-spacing: -0.01em; }
+.dx-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin: 0; }
+.dx-caveat { margin-top: 18px; padding: 12px 14px; border-left: 3px solid var(--line); font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+.dx-notice { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+@media (max-width: 480px) { .dx-card { padding: 18px 16px; } .dx-title { font-size: 17px; } }
 </style>
 </head>
 <body>
@@ -227,6 +250,7 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
       <button class="group-tab" data-g="calendar" onclick="setGroup('calendar', this)">주요일정</button>
       <button class="group-tab" data-g="gurus" onclick="setGroup('gurus', this)">거인의 어깨</button>
       <button class="group-tab" data-g="signals" onclick="setGroup('signals', this)">📡 신호 관측소</button>
+      <button class="group-tab" data-g="dissect" onclick="setGroup('dissect', this)">🔬 필독 해부실</button>
     </div>
     <div id="list"></div>
   </div>
@@ -444,15 +468,55 @@ function renderSignals(){
   document.getElementById('list').innerHTML = html;
 }
 
+// 🔬 필독 해부실 — 필독 신호 원문의 문단별 한국어 브리핑 (전문 번역 아님)
+const DX_NOTICE = '본 글은 원문의 논지를 재서술한 브리핑이며 전문 번역이 아닙니다.';
+function renderDissect(){
+  const items = (DATA.translations && DATA.translations.items) || [];
+  const label = (DATA.translations && DATA.translations.generated_label) || '';
+  if (!items.length) { document.getElementById('list').innerHTML =
+    '<div class="empty-note" style="font-size:13px;color:var(--text-muted);padding:20px 0">🔬 해부실 준비 중 — 필독 신호가 지정되면 원문을 문단별로 해부해 이곳에 싣습니다.</div>'; return; }
+  let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">필독 신호의 원문을 문단·섹션 단위로 재서술한 한국어 브리핑' + (label ? ' (최근 해부: ' + esc(label) + ' KST)' : '') + '</div>';
+  html += '<div class="dx-index"><div class="dx-index-title">해부 목록 ' + items.length + '건</div>' +
+    items.map(it => '<a href="#dx-' + esc(it.id) + '">' +
+      '<span class="dx-index-date">' + esc(it.date || '') + '</span>' +
+      esc(it.ko_title || it.title) + '</a>').join('') + '</div>';
+  html += items.map(it => {
+    const secs = (it.sections || []).map(s =>
+      '<div class="dx-sec"><h4>' + esc(s.h || '') + '</h4><p>' + esc(s.ko || '') + '</p></div>').join('');
+    return '<div class="dx-card" id="dx-' + esc(it.id) + '">' +
+      '<div class="dx-meta"><span class="dx-badge">🔬 해부</span>' +
+        '<span>' + esc(it.source || '') + (it.date ? ' · ' + esc(it.date) : '') + '</span></div>' +
+      '<div class="dx-title">' + esc(it.ko_title || it.title) + '</div>' +
+      (it.ko_title && it.title ? '<div class="dx-orig">' + esc(it.title) + '</div>' : '') +
+      '<a class="dx-src" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">원문 읽기 ↗</a>' +
+      secs +
+      (it.caveat ? '<div class="dx-caveat">⚠ ' + esc(it.caveat) + '</div>' : '') +
+      '<div class="dx-notice">' + DX_NOTICE + ' 인용은 최소한으로 제한했으며, 정확한 표현·수치는 위 원문을 확인해 주십시오.</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('list').innerHTML = html;
+}
+
 function setGroup(g, btn) {
   document.querySelectorAll('.group-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (g === 'calendar') renderCalendar(); else if (g === 'gurus') renderGurus(); else if (g === 'signals') renderSignals(); else render(g);
+  if (g === 'calendar') renderCalendar(); else if (g === 'gurus') renderGurus(); else if (g === 'signals') renderSignals(); else if (g === 'dissect') renderDissect(); else render(g);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
   if (DATA.generated_label) {
     document.getElementById('genLabel').textContent = '마지막 수집: ' + DATA.generated_label + ' KST';
+  }
+  // 해부실 딥링크 (#dx-…) — 관측일지의 '해부실에서 보기' 버튼이 이 경로로 들어온다
+  const h = location.hash || '';
+  if (/^#dx-/.test(h)) {
+    const btn = document.querySelector('.group-tab[data-g="dissect"]');
+    if (btn) {
+      setGroup('dissect', btn);
+      const el = document.getElementById(h.slice(1));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
   }
   render('universe');
 });
