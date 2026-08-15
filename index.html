@@ -1901,7 +1901,7 @@ const DATA = {
           "name": "HSBC",
           "ticker": "HSBC",
           "flag": "🇬🇧",
-          "mc": 356.69,
+          "mc": 355.87,
           "desc": "글로벌 빅뱅크"
         },
         {
@@ -1950,7 +1950,7 @@ const DATA = {
           "name": "Shell",
           "ticker": "SHEL",
           "flag": "🇬🇧",
-          "mc": 249.87,
+          "mc": 249.8,
           "desc": "유럽 석유 메이저 (Shell)"
         },
         {
@@ -2974,7 +2974,7 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_at": "2026-08-15T08:40:49.713029+09:00",
+    "fetched_at": "2026-08-15T12:57:19.654516+09:00",
     "fetched_date": "2026-08-15",
     "usd_krw": 1411.27,
     "errors": [],
@@ -3170,9 +3170,9 @@ const DATA = {
       "country": "🇹🇼",
       "mc": 153.04,
       "momentum_1y": 165,
-      "momentum_1m": 0,
-      "momentum_3m": -9,
-      "momentum_6m": 60,
+      "momentum_1m": -1,
+      "momentum_3m": -7,
+      "momentum_6m": 55,
       "theme": "AI 테크",
       "story": "AI 테크 · 글로벌 153위 · 1년 +165% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true
@@ -3483,7 +3483,7 @@ if (rateEl) {
 
 <script>
 /* ud-aurora-v1 — 오늘의 태양계(천문대 v11 원본) + 왕좌 스윕 + 신호 + 카운트다운 */
-const SIGNALS = [{"title": "Qwen 3.8 27B", "ko": "Qwen 3.8 27B 공개", "url": "https://huggingface.co/Qwen/Qwen3.8-27B-FP8", "pub": "Fri, 14 Aug 2026 15:00:00 +0000", "points": 824, "pin": true}, {"title": "Every Fucking Website (2020)", "ko": "모든 웹사이트의 수렴 현상", "url": "https://lxe.github.io/everywebsite/", "pub": "Fri, 14 Aug 2026 14:31:08 +0000", "points": 711, "pin": true}, {"title": "Why does Opus 5 feel worse to work with?", "ko": "Opus 5는 왜 체감상 약할까?", "url": "https://mun-logadan.github.io/why-does-opus-5-feel-worse/", "pub": "Fri, 14 Aug 2026 10:12:48 +0000", "points": 742, "pin": true}];
+const SIGNALS = [{"title": "Firefox is now the last major browser that still supports uBlock Origin", "ko": "Firefox, 유일한 주요 브라우저로 uBlock Origin 지원 계속", "url": "https://www.pcworld.com/article/3212428/firefox-is-now-the-last-major-browser-that-still-supports-ublock-origin.html", "pub": "Fri, 14 Aug 2026 19:03:20 +0000", "points": 573, "pin": false}, {"title": "Google is making private AI practical with homomorphic encryption", "ko": "Google, 준동형암호로 프라이빗 AI 실용화 추진", "url": "https://blog.google/security/how-google-is-making-private-ai-practical-with-homomorphic-encryption/", "pub": "Fri, 14 Aug 2026 15:43:10 +0000", "points": 311, "pin": true}, {"title": "Seven books I keep close because I love them", "ko": "\"가까이 두고 싶은 책 일곱 권\"", "url": "https://blog.plover.com/2026/08/02/", "pub": "Fri, 14 Aug 2026 15:03:26 +0000", "points": 314, "pin": false}];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let solarRAF = null;
 const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','#2e9d87'], '🇰🇷': ['#ffd88a','#c99544'],
