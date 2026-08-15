@@ -87,6 +87,50 @@ def main():
     check("load_watch: 지역·잠재 유지", "NVDA" in w and "INTC" in w, True)
     check("load_watch: 점 티커 제외 유지", "005930.KS" not in w, True)
 
+    # ── 2026-08 관측노트 누락 사고 재발 방지: 페이지 목록 단일화 검증 ──
+    # 사고 원인: 주입 대상 페이지 목록이 build_site.py 5개 함수에 각각 하드코딩돼
+    # 있어 새 페이지가 일부 주입에서만 누락됐다. ALL_PAGES 단일 상수로 통합한 뒤,
+    # 그 단일화가 (ⓐ 상수 존재 ⓑ 전 주입 함수가 이 상수만 사용 ⓒ 실제 페이지와
+    # 일치) 유지되는지 여기서 매 실행 검증한다.
+    import inspect as _inspect
+    import re as _re
+    import build_site as _bs
+
+    _INJECTORS = ("fix_nav", "inject_footer_links", "inject_presence",
+                  "inject_header_fix", "inject_aurora_tokens")
+
+    check("ALL_PAGES: 상수 존재", isinstance(getattr(_bs, "ALL_PAGES", None), tuple), True)
+    check("ALL_PAGES: 중복 없음",
+          sorted(p for p in set(_bs.ALL_PAGES)
+                 if list(_bs.ALL_PAGES).count(p) > 1), [])
+    check("ALL_PAGES: .html 파일명만",
+          sorted(p for p in _bs.ALL_PAGES if not p.endswith(".html")), [])
+
+    # ⓑ 5개 주입 함수 전부가 ALL_PAGES 를 쓰는가 (지역 목록 부활 차단)
+    _not_using = []
+    _has_local = []
+    for _name in _INJECTORS:
+        _fn = getattr(_bs, _name, None)
+        if _fn is None:
+            _not_using.append(f"{_name}(없음)")
+            continue
+        _src = _inspect.getsource(_fn)
+        if "ALL_PAGES" not in _src:
+            _not_using.append(_name)
+        # 함수 안에서 .html 문자열을 목록처럼 나열하면 지역 목록 부활로 간주
+        if _re.search(r"pages\s*=\s*\[", _src):
+            _has_local.append(_name)
+    check("주입 함수 전부 ALL_PAGES 사용", _not_using, [])
+    check("주입 함수 내 지역 페이지 목록 없음", _has_local, [])
+
+    # ⓒ 실제 루트 HTML 과 목록이 일치하는가 (새 페이지 등록 누락 즉시 탐지)
+    _root = Path(__file__).parent.parent
+    _on_disk = {f.name for f in _root.glob("*.html")} - set(_bs.UNMANAGED_PAGES)
+    _missing = sorted(_on_disk - set(_bs.ALL_PAGES))   # 파일은 있는데 목록에 없음
+    _ghost = sorted(set(_bs.ALL_PAGES) - _on_disk)     # 목록에 있는데 파일이 없음
+    check("ALL_PAGES: 미등록 페이지 없음 (파일↔목록)", _missing, [])
+    check("ALL_PAGES: 유령 항목 없음 (목록↔파일)", _ghost, [])
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)

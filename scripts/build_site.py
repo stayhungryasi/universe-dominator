@@ -1,15 +1,9 @@
 """
 build_site.py — 멀티페이지 사이트 빌드
 
-생성 페이지 (8개):
-  1. index.html          — 우주지배자 (main, TOP 20)
-  2. latent.html         — 잠재지배자
-  3. megatrend.html      — 메가트렌드 (4 카테고리)
-  4. research.html       — 리서치 (placeholder)
-  5. community.html      — 커뮤니티 (placeholder)
-  6. my-universe.html    — 나의우주 (placeholder)
-  7. history-top20.html  — 우주지배자 변동 이력
-  8. history-latent.html — 잠재지배자 변동 이력
+생성 페이지 목록은 ALL_PAGES 하나가 유일한 진실이다 (아래 참조).
+새 페이지를 추가할 때 손대야 하는 곳도 ALL_PAGES 한 곳뿐이며,
+selftest.py 가 이 단일화를 매 실행마다 검증한다.
 """
 import json
 import re
@@ -18,6 +12,36 @@ from pathlib import Path
 HERE = Path(__file__).parent.parent
 DATA_DIR = HERE / "data"
 SCRIPTS_DIR = HERE / "scripts"
+
+# ── 전 페이지 목록 — 단일 진실 공급원 (Single Source of Truth) ──────────────
+# 2026-08 관측노트 누락 사고: 이 목록이 fix_nav / inject_footer_links /
+# inject_presence / inject_header_fix / inject_aurora_tokens 5곳에 흩어져 있어
+# 새 페이지가 일부 주입에서만 빠지는 사고가 반복됐다 (policies.html 도 로고·
+# 접속자 카운터가 누락된 채였다). 이제 전 주입 함수가 이 상수 하나만 읽는다.
+#
+# 새 페이지 추가 절차: ① build_xxx() 작성 ② main() 에 호출 추가
+#                     ③ 여기 ALL_PAGES 에 파일명 추가 — 끝.
+# (③ 을 빠뜨리면 selftest.py 의 "페이지 목록 동기화" 검사가 즉시 실패한다)
+ALL_PAGES = (
+    "index.html",           # 우주지배자 (메인 · TOP 20)
+    "latent.html",          # 잠재지배자
+    "megatrend.html",       # 메가트렌드
+    "research.html",        # 리서치
+    "community.html",       # 관제센터
+    "observatory.html",     # 데이터 천문대 (3D)
+    "journal.html",         # 관측노트
+    "pioneers.html",        # 개척자
+    "history-top20.html",   # 우주지배자 변동 이력
+    "history-latent.html",  # 잠재지배자 변동 이력
+    "about.html",           # 사이트 소개
+    "policies.html",        # 약관·개인정보·면책
+)
+
+# 빌드가 만들지만 주입 대상이 아닌 파일 (레이아웃 없는 스텁 등).
+# 루트에 HTML을 새로 두면서 주입은 원치 않을 때만 여기에 등록한다.
+UNMANAGED_PAGES = (
+    "my-universe.html",     # observatory.html 로 보내는 리다이렉트 스텁
+)
 
 
 def _header_meta():
@@ -328,10 +352,7 @@ def fix_nav():
     """전 페이지 nav 정리 (멱등):
     ① 나의우주 → 데이터 천문대  ② 커뮤니티 → 관제센터  ③ 순서: 천문대가 관제센터 앞"""
     import re as _re
-    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "observatory.html", "policies.html", "journal.html",
-             "pioneers.html",
-             "history-top20.html", "history-latent.html", "about.html"]
+    pages = ALL_PAGES
     n = 0
     pat = _re.compile(r'(<a href="community\.html"[^>]*>[^<]*</a>)(\s*)(<a href="observatory\.html"[^>]*>[^<]*</a>)')
     for name in pages:
@@ -394,9 +415,7 @@ def inject_footer_links():
                '<a href="policies.html#community" style="color:inherit;margin:0 7px">커뮤니티 운영정책</a>·'
                '<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·'
                '<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>')
-    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "pioneers.html", "journal.html", "observatory.html", "history-top20.html",
-             "history-latent.html", "about.html", "policies.html"]
+    pages = ALL_PAGES
     n = 0
     for name in pages:
         f = HERE / name
@@ -522,9 +541,7 @@ AURORA_GLOBAL_CSS = """<link href="https://fonts.googleapis.com/css2?family=Nanu
 
 def inject_aurora_tokens():
     """전 페이지 </head> 직전에 오로라 토큰 주입 (마지막 주입 = 캐스케이드 승리, 멱등)"""
-    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "observatory.html", "policies.html", "journal.html",
-             "pioneers.html", "history-top20.html", "history-latent.html", "about.html"]
+    pages = ALL_PAGES
     n = 0
     for name in pages:
         f = HERE / name
@@ -698,9 +715,7 @@ PRESENCE_SNIPPET = """<!-- uv-presence -->
 
 def inject_presence():
     """전 페이지 </body> 직전에 접속자 카운터 스니펫 주입 (멱등)"""
-    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "pioneers.html", "journal.html", "observatory.html", "history-top20.html",
-             "history-latent.html", "about.html"]
+    pages = ALL_PAGES
     n = 0
     for name in pages:
         f = HERE / name
@@ -717,8 +732,7 @@ def inject_presence():
 
 def inject_header_fix():
     """생성된 모든 페이지 헤더에 동일한 반응형 규칙 주입 (중복 방지)"""
-    pages = ["index.html", "latent.html", "megatrend.html", "research.html",
-             "community.html", "pioneers.html", "journal.html", "observatory.html", "history-top20.html", "history-latent.html", "about.html"]
+    pages = ALL_PAGES
     n = 0
     for name in pages:
         f = HERE / name
