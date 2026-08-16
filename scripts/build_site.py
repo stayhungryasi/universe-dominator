@@ -44,6 +44,29 @@ UNMANAGED_PAGES = (
 )
 
 
+def _col_seed(s):
+    """observatory-template.html 의 colSeed()와 동일한 FNV-1a 32비트 해시.
+
+    JS 원본:
+      let h = 2166136261;
+      for (const ch of String(str||'')) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+      return h >>> 0;
+    JS는 코드포인트 단위로 순회하고(이모지 안전) Math.imul + >>>0 이 32비트 랩어라운드다.
+    파이썬 문자열도 코드포인트 단위 순회이므로 & 0xFFFFFFFF 로 동일 결과를 얻는다.
+    ⚠️ 이 함수와 JS colSeed 는 한 몸이다 — 한쪽만 바꾸면 칼럼 앵커가 어긋난다.
+    """
+    h = 2166136261
+    for ch in str(s or ""):
+        h ^= ord(ch)
+        h = (h * 16777619) & 0xFFFFFFFF
+    return h
+
+
+def _col_slug(col):
+    """observatory 의 colSlug(c) = 'log-' + colSeed(title + date) 와 동일"""
+    return "log-" + str(_col_seed((col.get("title") or "") + (col.get("date") or "")))
+
+
 def _header_meta():
     """헤더 배지용 날짜·환율 (latest.json meta 기준)"""
     try:
@@ -204,8 +227,23 @@ def build_research():
     # 🔬 필독 해부실 — 실패 기록(failures)은 내부용이므로 페이지에 싣지 않는다
     tr_path = DATA_DIR / "translations.json"
     tr = json.loads(tr_path.read_text(encoding="utf-8")) if tr_path.exists() else {}
+    tr_items = tr.get("items", [])
+    # 역방향 링크 {해부 id: 칼럼 영구 슬러그} — 같은 원문으로 쓴 칼럼이 있을 때만.
+    # 칼럼이 없는 해부 글은 키가 없어 '칼럼 보기' 버튼이 아예 만들어지지 않는다.
+    by_url = {it["url"]: it["id"] for it in tr_items if it.get("url") and it.get("id")}
+    column_links = {}
+    cols_path = DATA_DIR / "columns.json"
+    if cols_path.exists():
+        try:
+            for c in json.loads(cols_path.read_text(encoding="utf-8")).get("columns", []):
+                dx_id = by_url.get(c.get("url"))
+                if dx_id and dx_id not in column_links:  # 같은 원문 칼럼이 여럿이면 최신 1건
+                    column_links[dx_id] = _col_slug(c)
+        except Exception as e:
+            print(f"[warn] 칼럼 역방향 링크 생성 실패(무시): {e}")
     rdata["translations"] = {"generated_label": tr.get("generated_label", ""),
-                             "items": tr.get("items", [])}
+                             "items": tr_items,
+                             "column_links": column_links}
     template = template_path.read_text(encoding="utf-8")
     # 헤더 배지 값 (placeholder 방식과 동일)
     meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})

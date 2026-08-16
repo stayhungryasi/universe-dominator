@@ -196,6 +196,10 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .dx-src { display: inline-flex; align-items: center; gap: 7px; margin: 12px 0 4px; padding: 10px 16px; border-radius: 100px;
   border: 1.5px solid var(--gold); color: var(--gold); font-size: 13.5px; font-weight: 800; text-decoration: none; }
 .dx-src:hover { background: var(--gold); color: #fff; }
+/* 해부 글 액션 — 관측일지 .col-share 문법 그대로 */
+.dx-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 2px; }
+.dx-actions button, .dx-actions a { padding: 6px 13px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg); font-size: 12px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; }
+.dx-actions button:hover, .dx-actions a:hover { border-color: var(--gold); color: var(--gold); }
 .dx-sec { margin-top: 18px; }
 .dx-sec h4 { font-size: 15px; font-weight: 800; color: var(--gold); margin: 0 0 6px; letter-spacing: -0.01em; }
 .dx-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin: 0; }
@@ -480,21 +484,50 @@ function renderDissect(){
     items.map(it => '<a href="#dx-' + esc(it.id) + '">' +
       '<span class="dx-index-date">' + esc(it.date || '') + '</span>' +
       esc(it.ko_title || it.title) + '</a>').join('') + '</div>';
+  const colLinks = (DATA.translations && DATA.translations.column_links) || {};
   html += items.map(it => {
     const secs = (it.sections || []).map(s =>
       '<div class="dx-sec"><h4>' + esc(s.h || '') + '</h4><p>' + esc(s.ko || '') + '</p></div>').join('');
+    // 역방향 링크 — 이 원문으로 쓴 관측일지 칼럼이 있을 때만 (영구 슬러그 #log-)
+    const slug = colLinks[it.id];
     return '<div class="dx-card" id="dx-' + esc(it.id) + '">' +
       '<div class="dx-meta"><span class="dx-badge">🔬 해부</span>' +
         '<span>' + esc(it.source || '') + (it.date ? ' · ' + esc(it.date) : '') + '</span></div>' +
       '<div class="dx-title">' + esc(it.ko_title || it.title) + '</div>' +
       (it.ko_title && it.title ? '<div class="dx-orig">' + esc(it.title) + '</div>' : '') +
       '<a class="dx-src" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">원문 읽기 ↗</a>' +
+      '<div class="dx-actions">' +
+        '<button onclick="dxCopyLink(event,\'' + esc(it.id) + '\')">🔗 링크 복사</button>' +
+        (slug ? '<a href="observatory.html#' + esc(slug) + '">📄 칼럼 보기 →</a>' : '') +
+      '</div>' +
       secs +
       (it.caveat ? '<div class="dx-caveat">⚠ ' + esc(it.caveat) + '</div>' : '') +
       '<div class="dx-notice">' + DX_NOTICE + ' 인용은 최소한으로 제한했으며, 정확한 표현·수치는 위 원문을 확인해 주십시오.</div>' +
     '</div>';
   }).join('');
   document.getElementById('list').innerHTML = html;
+  openDissectFromHash();
+}
+
+// 해부 글 영구 링크 복사 — 관측일지 copyColLink와 같은 문법(복사 + 완료 피드백)
+function dxCopyLink(ev, id){
+  ev.preventDefault(); ev.stopPropagation();
+  const btn = ev.target;
+  const url = location.origin + location.pathname.replace(/[^/]*$/, '') + 'research.html#dx-' + id;
+  const done = () => { const o = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = o; }, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done, () => window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url));
+  } else {
+    window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url);
+  }
+}
+
+// #dx-… 진입 처리 — 관측일지 openFromHash와 동일 패턴
+function openDissectFromHash(){
+  const h = location.hash.replace('#', '');
+  if (!h.startsWith('dx-')) return;
+  const card = document.getElementById(h);
+  if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
 function setGroup(g, btn) {
@@ -507,16 +540,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (DATA.generated_label) {
     document.getElementById('genLabel').textContent = '마지막 수집: ' + DATA.generated_label + ' KST';
   }
-  // 해부실 딥링크 (#dx-…) — 관측일지의 '해부실에서 보기' 버튼이 이 경로로 들어온다
-  const h = location.hash || '';
-  if (/^#dx-/.test(h)) {
+  // 해부실 딥링크 (#dx-…) — 관측일지 '해부실에서 보기'·해부 글 링크 복사가 이 경로로 들어온다
+  // (관측일지의 #log- 진입 처리와 같은 패턴: 탭을 열면 렌더 끝에서 openDissectFromHash가 스크롤)
+  if (location.hash && location.hash.indexOf('#dx-') === 0) {
     const btn = document.querySelector('.group-tab[data-g="dissect"]');
-    if (btn) {
-      setGroup('dissect', btn);
-      const el = document.getElementById(h.slice(1));
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
+    if (btn) { setGroup('dissect', btn); return; }
+    renderDissect();
+    return;
   }
   render('universe');
 });
