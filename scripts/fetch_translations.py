@@ -93,6 +93,8 @@ COPYRIGHT_RULES = """■ 저작권 원칙 — 반드시 지키십시오
 3. 직접 인용은 글 전체에서 1~2회만, 각 15단어 미만으로만 허용합니다.
    인용 부호는 반드시 「 」를 쓰십시오. 큰따옴표(")는 JSON 문자열을 깨뜨리므로
    본문 어디에도 쓰지 마십시오 (강조·제목 표기에도 마찬가지입니다).
+   「 」는 직접 인용 전용입니다. 강조·제목·강세 표기에는 사용하지 마십시오.
+   강조가 필요하면 부호 없이 문장으로 풀어 쓰십시오.
 4. 결과물이 원문을 읽지 않아도 되는 '대체재'가 아니라, 원문으로 가도록 안내하는 '해설'이어야 합니다.
 5. 원문에 없는 사실을 지어내지 마십시오. 원문이 추정으로 말한 것은 추정이라고 표기하십시오."""
 
@@ -194,6 +196,9 @@ def main():
     ap.add_argument("--force", action="store_true",
                     help="이미 해부된 항목도 다시 생성 (프롬프트 개선 후 재생성용). "
                          "같은 id는 중복 추가하지 않고 교체한다")
+    ap.add_argument("--only", default="",
+                    help="id·URL·제목에 이 문자열(대소문자 무시)이 포함된 항목만 대상. "
+                         "전건을 건드리지 않고 특정 1건만 손볼 때 쓴다")
     args = ap.parse_args()
 
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
@@ -214,9 +219,13 @@ def main():
     done_ids = {it.get("id") for it in out["items"]}
     fail_by_id = {f.get("id"): f for f in out["failures"]}
 
+    needle = args.only.strip().lower()
     todo = []
     for s in pinned:
         sid = sig_id(s["url"])
+        if needle and needle not in " ".join(
+                [sid, s["url"], s.get("title") or "", s.get("ko") or ""]).lower():
+            continue
         if sid in done_ids and not args.force:
             continue
         prev = fail_by_id.get(sid)
