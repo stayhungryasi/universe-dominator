@@ -205,7 +205,20 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .dx-sec p { font-size: 14.5px; line-height: 1.85; color: var(--text-secondary); margin: 0; }
 .dx-caveat { margin-top: 18px; padding: 12px 14px; border-left: 3px solid var(--line); font-size: 13px; color: var(--text-muted); line-height: 1.7; }
 .dx-notice { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--text-muted); line-height: 1.6; }
-@media (max-width: 480px) { .dx-card { padding: 18px 16px; } .dx-title { font-size: 17px; } }
+/* 📡 신호 관측소 카드 — 해부실 .dx-* 와 같은 골격·같은 문법 */
+.sig-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; }
+.sig-card.pin { border-color: var(--gold); border-width: 1.5px; }
+.sig-pin-label { font-size: 10.5px; font-weight: 800; color: var(--gold); margin-bottom: 6px; }
+.sig-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; font-size: 11px; color: var(--text-muted); }
+.sig-tag { font-size: 10.5px; font-weight: 800; border-radius: 100px; padding: 2px 9px; color: #fff; }
+.sig-points { font-size: 11px; font-weight: 800; color: var(--gold); }
+.sig-link { text-decoration: none; color: inherit; }
+.sig-title { font-size: 15.5px; font-weight: 800; line-height: 1.45; }
+.sig-title-en { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.sig-why { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-top: 8px; border-left: 3px solid var(--gold); padding-left: 10px; }
+/* 신호·해부 공용 빈 상태 */
+.empty-note { font-size: 13px; color: var(--text-muted); padding: 20px 0; }
+@media (max-width: 480px) { .dx-card { padding: 18px 16px; } .dx-title { font-size: 17px; } .sig-card { padding: 18px 16px; } }
 </style>
 <style>
 /* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
@@ -608,16 +621,16 @@ function renderSignals(){
   rest.sort(byVotes);
   const card = (x, pin) => {
     const tag = x.tag || '기타';
-    return '<div class="article-card" style="cursor:auto' + (pin ? ';border:1.5px solid var(--gold)' : '') + '">' +
-      (pin ? '<div style="font-size:10.5px;font-weight:800;color:var(--gold);margin-bottom:6px">📌 필독 신호 — 관제탑 지정</div>' : '') +
-      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px">' +
-      '<span style="font-size:10.5px;font-weight:800;border-radius:100px;padding:2px 9px;background:' + (TAG_COLOR[tag] || '#6a7390') + ';color:#fff">' + esc(tag) + '</span>' +
-      (x.points ? '<span style="font-size:11px;color:var(--gold);font-weight:800">▲ ' + x.points + '</span>' : '') +
-      '<span style="font-size:11px;color:var(--text-muted)">' + esc(x.source || '') + (x.captured ? ' · ' + esc(x.captured.slice(5, 16)) : '') + '</span></div>' +
-      '<a href="' + esc(x.url) + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">' +
-      '<div style="font-size:15.5px;font-weight:800;line-height:1.45">' + esc(x.ko || x.title) + '</div>' +
-      (x.ko ? '<div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + esc(x.title) + '</div>' : '') + '</a>' +
-      (x.why ? '<div style="font-size:13px;color:var(--text-secondary);line-height:1.65;margin-top:8px;border-left:3px solid var(--gold);padding-left:10px">' + esc(x.why) + '</div>' : '') +
+    return '<div class="sig-card' + (pin ? ' pin' : '') + '">' +
+      (pin ? '<div class="sig-pin-label">📌 필독 신호 — 관제탑 지정</div>' : '') +
+      '<div class="sig-meta">' +
+      '<span class="sig-tag" style="background:' + (TAG_COLOR[tag] || '#6a7390') + '">' + esc(tag) + '</span>' +
+      (x.points ? '<span class="sig-points">▲ ' + x.points + '</span>' : '') +
+      '<span>' + esc(x.source || '') + (x.captured ? ' · ' + esc(x.captured.slice(5, 16)) : '') + '</span></div>' +
+      '<a href="' + esc(x.url) + '" target="_blank" rel="noopener noreferrer" class="sig-link">' +
+      '<div class="sig-title">' + esc(x.ko || x.title) + '</div>' +
+      (x.ko ? '<div class="sig-title-en">' + esc(x.title) + '</div>' : '') + '</a>' +
+      (x.why ? '<div class="sig-why">' + esc(x.why) + '</div>' : '') +
     '</div>';
   };
   if (pinned.length) html += pinned.map(x => card(x, true)).join('');
@@ -631,7 +644,7 @@ function renderDissect(){
   const items = (DATA.translations && DATA.translations.items) || [];
   const label = (DATA.translations && DATA.translations.generated_label) || '';
   if (!items.length) { document.getElementById('list').innerHTML =
-    '<div class="empty-note" style="font-size:13px;color:var(--text-muted);padding:20px 0">🔬 해부실 준비 중 — 필독 신호가 지정되면 원문을 문단별로 해부해 이곳에 싣습니다.</div>'; return; }
+    '<div class="empty-note">🔬 해부실 준비 중 — 필독 신호가 지정되면 원문을 문단별로 해부해 이곳에 싣습니다.</div>'; return; }
   let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">필독 신호의 원문을 문단·섹션 단위로 재서술한 한국어 브리핑' + (label ? ' (최근 해부: ' + esc(label) + ' KST)' : '') + '</div>';
   html += '<div class="dx-index"><div class="dx-index-title">해부 목록 ' + items.length + '건</div>' +
     items.map(it => '<a href="#dx-' + esc(it.id) + '">' +
