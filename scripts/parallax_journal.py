@@ -59,7 +59,7 @@ def load_state():
             return json.loads(STATE_PATH.read_text(encoding="utf-8"))
         except Exception:
             pass
-    return {"zones": {}, "gaps": {}, "posted": {}}
+    return {"zones": {}, "gaps": {}, "fp": {}, "posted": {}}
 
 
 def save_state(state):
@@ -98,9 +98,20 @@ def is_zoned(x):
     return bool(x.get("zoned"))
 
 
-def detect_events(items, zones, prev_zones, prev_gaps):
+def fingerprint(x):
+    """이 종목을 '무엇으로 쟀는가'의 지문 — 자가 바뀌면 전후를 비교하면 안 된다.
+
+    2026-08-17 사고: AMZN 이 후행→선행으로 바뀌자 주가가 1원도 안 움직였는데
+    (262.65 → 262.65) 괴리가 +42%→+6% 로 튀어 "본격선 아래로" 가 기록됐다.
+    시장이 움직인 게 아니라 눈금이 바뀐 것이다. 지문이 다르면 재기준만 잡고 침묵한다.
+    판단층의 정당 MAX·EPS 취재 시점이 바뀌는 경우(실적 시즌 갱신)도 같은 부류."""
+    return "|".join([str(x.get("basis") or ""), str(x.get("fair_max")), str(x.get("eps_asof") or "")])
+
+
+def detect_events(items, zones, prev_zones, prev_gaps, prev_fp=None):
     """전일 존과 다른 티커만 사건으로 본다. 첫 관측(전일 기록 없음)은 사건이 아니다."""
-    events = []
+    prev_fp = prev_fp or {}
+    events, remeasured = [], []
     for x in items:
         t = x.get("ticker")
         gap = x.get("gap")
@@ -112,6 +123,10 @@ def detect_events(items, zones, prev_zones, prev_gaps):
         before = prev_zones.get(t)
         if before is None or before == now_zone:
             continue                      # 첫 관측이거나 변화 없음 → 침묵
+        was = prev_fp.get(t)
+        if was and was != fingerprint(x):
+            remeasured.append(t)          # 자가 바뀐 것 — 시장 사건이 아니다
+            continue
         events.append({
             "ticker": t, "before": before, "after": now_zone,
             "gap_before": prev_gaps.get(t), "gap_after": gap,
@@ -120,6 +135,9 @@ def detect_events(items, zones, prev_zones, prev_gaps):
     # 변화 폭이 큰 순서로 — 상한에 걸릴 때 더 중요한 사건이 남도록
     events.sort(key=lambda e: abs(ZONE_ORDER.index(e["after"]) - ZONE_ORDER.index(e["before"])),
                 reverse=True)
+    if remeasured:
+        print(f"[시차노트] 측정 기준이 바뀐 {len(remeasured)}종은 기록하지 않고 재기준 "
+              f"({', '.join(remeasured[:6])})")
     return events
 
 
@@ -162,9 +180,10 @@ def main():
     state = load_state()
     prev_zones = state.get("zones", {})
     prev_gaps = state.get("gaps", {})
+    prev_fp = state.get("fp", {})
     today = datetime.now(KST).strftime("%Y-%m-%d")
 
-    events = detect_events(items, zones, prev_zones, prev_gaps)
+    events = detect_events(items, zones, prev_zones, prev_gaps, prev_fp)
 
     # 오늘의 존을 다음 실행의 기준선으로 먼저 갱신 (발행 실패해도 기준선은 전진)
     # 기준선도 존 판정 대상(선행)만 남긴다 — 후행 잔재가 남아 있으면 다음 날
@@ -173,6 +192,7 @@ def main():
     purged = [t for t in prev_zones if t not in zoned_now]
     new_zones = {t: z for t, z in prev_zones.items() if t in zoned_now}
     new_gaps = {t: g for t, g in prev_gaps.items() if t in zoned_now}
+    new_fp = {t: f for t, f in prev_fp.items() if t in zoned_now}
     for x in items:
         if not is_zoned(x):
             continue
@@ -180,10 +200,11 @@ def main():
         if z:
             new_zones[x["ticker"]] = z
             new_gaps[x["ticker"]] = x.get("gap")
+            new_fp[x["ticker"]] = fingerprint(x)
     if purged:
         print(f"[시차노트] 기준선 정리 — 존 판정 대상 아닌 {len(purged)}종 제외 "
               f"({', '.join(purged[:6])}{' 외' if len(purged) > 6 else ''})")
-    state["zones"], state["gaps"] = new_zones, new_gaps
+    state["zones"], state["gaps"], state["fp"] = new_zones, new_gaps, new_fp
 
     if not events:
         save_state(state)
