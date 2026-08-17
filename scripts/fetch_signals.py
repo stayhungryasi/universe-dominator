@@ -20,9 +20,15 @@ import sys
 import html as html_mod
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 from xml.etree import ElementTree
 
 import requests
+
+try:
+    from googlenewsdecoder import gnewsdecoder   # 구글뉴스 링크 → 원문 URL 해석
+except Exception:
+    gnewsdecoder = None
 
 HERE = Path(__file__).parent.parent
 DATA_DIR = HERE / "data"
@@ -37,8 +43,11 @@ DEFAULT_SOURCES = {
          "url": "https://hnrss.org/frontpage?points=300&count=30"},
         {"name": "OpenAI", "type": "rss",
          "url": "https://openai.com/news/rss.xml"},
-        {"name": "Anthropic", "type": "rss",
-         "url": "https://www.anthropic.com/rss.xml"},
+        # anthropic.com은 공개 RSS를 제공하지 않는다(/rss.xml·/news/rss·/feed.xml 등
+        # 전부 404, HTML에 alternate 피드 선언도 없음 — 2026-08-17 실측).
+        # 구글뉴스 검색 피드로 우회하고, 링크는 원문 URL로 복원해 도메인으로 거른다.
+        {"name": "Anthropic", "type": "gnews", "domain": "anthropic.com",
+         "url": "https://news.google.com/rss/search?q=site:anthropic.com&hl=en-US&gl=US&ceid=US:en"},
         {"name": "Google DeepMind", "type": "rss",
          "url": "https://deepmind.google/blog/rss.xml"},
     ],
@@ -82,10 +91,58 @@ def parse_rss(xml_text, source_name):
         m = re.search(r"Points:\s*(\d+)", desc)
         points = int(m.group(1)) if m else None
         # HN은 기사 원문 링크가 <link>, 토론은 comments — 원문 우선
+        # RSS <source>: 구글뉴스는 여기에 실제 발행처를 담는다 (제목 꼬리 제거에 쓴다)
+        feed_src = html_mod.unescape(g("source"))
         if title and link:
             out.append({"title": title[:300], "url": link, "pub": pub[:40],
                         "points": points, "source": source_name,
-                        "raw_desc": desc[:400]})
+                        "feed_source": feed_src[:80], "raw_desc": desc[:400]})
+    return out
+
+
+def _host_matches(url, domain):
+    try:
+        host = urlparse(url).netloc.lower()
+    except Exception:
+        return False
+    return host == domain or host.endswith("." + domain)
+
+
+def resolve_gnews(rows, domain, cap, scan_limit=None):
+    """구글뉴스 RSS 후처리 — 리다이렉트 링크를 원문 URL로 복원하고 도메인으로 거른다.
+
+    구글뉴스 검색은 site: 지정을 느슨하게 해석해 타 도메인 글도 섞어준다.
+    복원한 URL의 호스트로 걸러야 진짜 그 랩의 발표만 남는다.
+    복원 1건당 1초 간격이 필요하므로 상한(cap)을 채우면 즉시 멈춘다.
+    """
+    out = []
+    scanned = 0
+    scan_limit = scan_limit if scan_limit is not None else cap * 4
+    for x in rows:
+        if len(out) >= cap or scanned >= scan_limit:
+            break
+        scanned += 1
+        url = x["url"]
+        if "news.google.com" in url:
+            if gnewsdecoder is None:
+                continue          # 디코더 없으면 리다이렉트 링크를 그대로 싣지 않는다
+            try:
+                res = gnewsdecoder(url, interval=1)
+                if isinstance(res, dict) and res.get("status") and res.get("decoded_url"):
+                    url = res["decoded_url"]
+                else:
+                    continue
+            except Exception:
+                continue
+        if domain and not _host_matches(url, domain):
+            continue
+        x["url"] = url
+        # 구글뉴스는 제목 끝에 " - 발행처"를 붙인다 — <source> 와 일치할 때만 떼어낸다
+        # (발행처명에 하이픈이 있어도 정확히 잘리고, 제목 본래의 " - "는 건드리지 않는다)
+        tail = " - " + (x.get("feed_source") or "")
+        if x.get("feed_source") and x["title"].endswith(tail):
+            x["title"] = x["title"][: -len(tail)].strip() or x["title"]
+        out.append(x)
     return out
 
 
@@ -96,13 +153,23 @@ def collect(cfg):
             r = requests.get(s["url"], headers=UA, timeout=25)
             r.raise_for_status()
             got = parse_rss(r.text, s["name"])
+            cap = cfg.get("rss_cap", 5)
             if s.get("type") == "hn":
                 got = [x for x in got
                        if (x["points"] or 0) >= cfg.get("min_points", 300)]
+            elif s.get("type") == "gnews":
+                got = resolve_gnews(got, s.get("domain", ""), cap)
             else:
-                got = got[:cfg.get("rss_cap", 5)]  # 한 소스가 관측소를 도배하지 못하게
+                got = got[:cap]  # 한 소스가 관측소를 도배하지 못하게
+            # feed_source 는 제목 꼬리 제거용 임시 필드 — signals.json 스키마에 남기지 않는다
+            for x in got:
+                x.pop("feed_source", None)
             rows.extend(got)
             print(f"[신호] {s['name']}: {len(got)}건")
+            # 죽은 소스가 조용히 0건으로 지나가지 않게 — 다음 점검 대상으로 못을 박는다
+            if not got and s.get("type") != "hn":
+                print(f"[신호] {s['name']}: 0건 — 피드가 죽었을 수 있습니다 (경로 점검 필요)",
+                      file=sys.stderr)
         except Exception as e:
             print(f"[신호] {s['name']} 수집 실패 → 건너뜀 ({e})", file=sys.stderr)
     return rows
