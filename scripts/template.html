@@ -402,8 +402,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin-bottom: 20px;
 }
 
+.head-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 @media (max-width: 480px) {
   .history-btn { padding: 6px 12px; font-size: 11px; }
+  .head-btns { gap: 6px; }
 }
 
 /* ────────── TABS ────────── */
@@ -1105,7 +1114,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <div class="stage-k">STAGE 3 · <b>TELEMETRY</b> — 지상 수신</div>
   <div class="section-head">
     <h2 class="section-title">오늘의 신호</h2>
-    <a href="research.html" class="history-btn">신호 관측소 <span class="history-btn-arrow">→</span></a>
+    <div class="head-btns">
+      <a href="research.html#signals" class="history-btn">신호 관측소 <span class="history-btn-arrow">→</span></a>
+      <a href="research.html#dissect" class="history-btn">필독 해부실 <span class="history-btn-arrow">→</span></a>
+      <a href="observatory.html#columns" class="history-btn">관측일지 <span class="history-btn-arrow">→</span></a>
+    </div>
   </div>
   <div class="sig-grid" id="sigGrid"></div>
 </section>

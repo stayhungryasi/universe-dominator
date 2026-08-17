@@ -1151,7 +1151,7 @@ function toggleCol(i){
   if (!was) el.classList.add('open');
 }
 
-if (location.hash && location.hash.indexOf('#log-') === 0) {
+if (location.hash && (location.hash.indexOf('#log-') === 0 || location.hash === '#columns')) {
   const btn = document.querySelector('.obs-tab[data-t="columns"]');
   if (btn) setObsTab('columns', btn); else renderColumns();
 } else {

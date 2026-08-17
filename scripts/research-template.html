@@ -548,6 +548,14 @@ document.addEventListener('DOMContentLoaded', function () {
     renderDissect();
     return;
   }
+  // 순수 탭 해시 딥링크 (#signals·#dissect·#calendar·#gurus) — 메인 STAGE 3 버튼이 이 경로로 들어온다
+  // #dx- 분기를 지난 뒤이므로 해부실 영구 슬러그와 충돌하지 않는다
+  const tabHash = { '#signals': 'signals', '#dissect': 'dissect',
+    '#calendar': 'calendar', '#gurus': 'gurus' }[location.hash];
+  if (tabHash) {
+    const btn = document.querySelector('.group-tab[data-g="' + tabHash + '"]');
+    if (btn) { setGroup(tabHash, btn); return; }
+  }
   render('universe');
 });
 </script>
