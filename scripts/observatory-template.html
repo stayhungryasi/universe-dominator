@@ -169,7 +169,8 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .px-notice { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 14px; padding: 15px 19px; margin-bottom: 16px; font-size: 12.5px; line-height: 1.75; color: var(--text-secondary); }
 .px-notice b { color: var(--gold); font-weight: 800; }
 .px-asof { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
-.px-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.px-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.px-stripnote { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
 .px-zone { flex: 1 1 130px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; }
 .px-zone .z-name { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--text-muted); }
 .px-zone .z-n { font-size: 21px; font-weight: 800; margin-top: 2px; }
@@ -1123,9 +1124,15 @@ function makeColViz(c){
 /* ── 시차 관측 — 버핏 멀티플 괴리 (측정층: data/buffett.json) ──
    괴리 = 정당 MAX ÷ P/E − 1. 양수 = 정당선 아래. 판단층은 사람이 취재한 config. */
 const PX_SKIP = ['too_hard', 'unlisted', 'float'];
-const PX_BASIS = { forward: '선행', trailing: '후행 기준', '미취재': '미취재',
+const PX_BASIS = { forward: '선행', trailing: '후행 참고', '미취재': '미취재',
                    too_hard: '추정불가', unlisted: '비상장', float: '플로트형' };
 const PX_ZONES = ['탐색', '본격', '관망', '고평가'];
+
+/* 존 판정은 선행(forward)으로 잰 종목만 — 정당 MAX 가 선행 눈금이라
+   후행 P/E 를 같은 자에 대면 전부 고평가로 쏠린다. 후행은 참고 수치로만 싣는다. */
+function pxZoned(x){
+  return x.zoned === true || (x.zoned === undefined && x.basis === 'forward');
+}
 
 function pxZone(gap, z){
   if (gap == null) return null;
@@ -1154,11 +1161,14 @@ function pxSpark(series){
 function pxPct(g){ return (g >= 0 ? '+' : '') + (g * 100).toFixed(0) + '%'; }
 
 function pxRow(x, z, hist){
-  const zone = pxZone(x.gap, z);
+  const zoned = pxZoned(x);
+  const zone = zoned ? pxZone(x.gap, z) : null;   // 후행은 존을 매기지 않는다
   let cls = 'none', txt = '—';
   if (x.gap != null) {
-    cls = (zone === '탐색' || zone === '본격') ? 'hot' : (zone === '고평가' ? 'cold' : '');
     txt = pxPct(x.gap);
+    cls = !zoned ? 'cold'
+      : (zone === '탐색' || zone === '본격') ? 'hot'
+      : (zone === '고평가') ? 'cold' : '';
   }
   const pe = x.pe != null ? x.pe.toFixed(1) : '—';
   return '<tr>' +
@@ -1191,24 +1201,28 @@ function renderParallax(){
   const board = items.filter(x => PX_SKIP.indexOf(x.basis) < 0)
     .sort((a, c) => (c.gap == null ? -Infinity : c.gap) - (a.gap == null ? -Infinity : a.gap));
   const measured = board.filter(x => x.gap != null);
+  const zonedItems = measured.filter(pxZoned);      // 존 집계는 선행만
 
   let html = '<div class="px-notice"><b>버핏 프레임의 관측 실험입니다 — 투자 권유가 아닙니다.</b> ' +
     '정당 멀티플(정당 MAX)은 검증된 수치가 아니라 <b>주관적 추정</b>이며, 괴리는 그 추정에 오늘 시세를 대입한 ' +
-    '산술 결과일 뿐입니다. P/E는 선행(추정 EPS) 또는 후행(실적 EPS) 기준이 섞여 있고 EPS 추정 기준일은 표에 ' +
-    '함께 적었습니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+    '산술 결과일 뿐입니다. 정당 MAX는 <b>선행</b> 눈금으로 매긴 자이므로, 존 판정과 아래 집계는 선행 기준으로 ' +
+    '측정한 종목만 셉니다 — 후행(실적 EPS) 수치는 같은 자에 댈 수 없어 <b>참고 수치</b>로만 싣습니다. ' +
+    'EPS 추정 기준일은 표에 함께 적었습니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
 
   html += '<div class="px-asof">판단층 기준일 ' + esc(b.asof || '—') +
     ' · 측정 ' + esc(b.generated_label || '—') + ' KST · ' +
     '탐색선 +' + Math.round(z.explore * 100) + '% / 본격선 +' + Math.round(z.commit * 100) + '%</div>';
 
   html += '<div class="px-strip">' + PX_ZONES.map(n => {
-    const c = measured.filter(x => pxZone(x.gap, z) === n).length;
+    const c = zonedItems.filter(x => pxZone(x.gap, z) === n).length;
     const on = (n === '탐색' || n === '본격') && c > 0;
     return '<div class="px-zone' + (on ? ' on' : '') + '">' +
       '<div class="z-name">' + n + (n === '탐색' ? ' +' + Math.round(z.explore * 100) + '%↑'
         : n === '본격' ? ' +' + Math.round(z.commit * 100) + '%↑' : '') + '</div>' +
       '<div class="z-n">' + c + '<span style="font-size:12px;font-weight:700">종</span></div></div>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+  '<div class="px-stripnote">존 집계 대상은 선행 기준 ' + zonedItems.length + '종입니다 — ' +
+  '후행 참고 ' + (measured.length - zonedItems.length) + '종은 눈금이 달라 존을 매기지 않습니다.</div>';
 
   html += '<div class="px-wrap"><table class="px-table"><thead><tr>' +
     '<th>티커</th><th>유형</th><th>P/E</th><th>정당 MAX</th><th>괴리</th><th>근거</th>' +

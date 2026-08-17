@@ -89,12 +89,23 @@ def phrase(ticker, before, after, gap_before, gap_after):
     return f"🔭 시차 관측 — {ticker} 괴리 {gb} → {ga}, {tail}"
 
 
+def is_zoned(x):
+    """존 판정 대상인가 — 선행(forward) 기준으로 잰 종목만.
+
+    정당 MAX 는 선행 눈금이라 후행 P/E 에 대면 전부 고평가로 쏠린다. 후행 수치는
+    표에 참고로만 싣고 임계 이벤트에서는 뺀다 (구 measurement 는 zoned 키가 없으므로
+    basis 로 보정해 읽는다)."""
+    return bool(x.get("zoned")) or (x.get("zoned") is None and x.get("basis") == "forward")
+
+
 def detect_events(items, zones, prev_zones, prev_gaps):
     """전일 존과 다른 티커만 사건으로 본다. 첫 관측(전일 기록 없음)은 사건이 아니다."""
     events = []
     for x in items:
         t = x.get("ticker")
         gap = x.get("gap")
+        if not is_zoned(x):
+            continue                      # 후행·미취재는 임계 이벤트 대상이 아니다
         now_zone = zone_of(gap, zones)
         if now_zone is None:
             continue                      # 못 잰 종목은 사건이 될 수 없다
@@ -156,12 +167,22 @@ def main():
     events = detect_events(items, zones, prev_zones, prev_gaps)
 
     # 오늘의 존을 다음 실행의 기준선으로 먼저 갱신 (발행 실패해도 기준선은 전진)
-    new_zones, new_gaps = dict(prev_zones), dict(prev_gaps)
+    # 기준선도 존 판정 대상(선행)만 남긴다 — 후행 잔재가 남아 있으면 다음 날
+    # 그 종목이 사라지거나 되살아날 때 유령 전이가 잡힌다
+    zoned_now = {x["ticker"] for x in items if is_zoned(x) and zone_of(x.get("gap"), zones)}
+    purged = [t for t in prev_zones if t not in zoned_now]
+    new_zones = {t: z for t, z in prev_zones.items() if t in zoned_now}
+    new_gaps = {t: g for t, g in prev_gaps.items() if t in zoned_now}
     for x in items:
+        if not is_zoned(x):
+            continue
         z = zone_of(x.get("gap"), zones)
         if z:
             new_zones[x["ticker"]] = z
             new_gaps[x["ticker"]] = x.get("gap")
+    if purged:
+        print(f"[시차노트] 기준선 정리 — 존 판정 대상 아닌 {len(purged)}종 제외 "
+              f"({', '.join(purged[:6])}{' 외' if len(purged) > 6 else ''})")
     state["zones"], state["gaps"] = new_zones, new_gaps
 
     if not events:
