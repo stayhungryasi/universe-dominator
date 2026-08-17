@@ -119,6 +119,94 @@ def _fmt_value(v, unit, label=""):
     return num + unit
 
 
+def _is_year_series(series, unit):
+    """전 항목이 연도인가 — 0 기준 막대로 그리면 길이가 거의 같아 의미가 없는 계열
+
+    판정: 정수이면서 1900~2100 범위 + 단위가 비었거나 '년' 표시가 있을 것.
+    ('%'·'건' 같은 실제 단위가 붙은 1900~2100 값은 연도가 아니라 수치로 본다)
+    """
+    if len(series) < 2:
+        return False
+    for label, v in series:
+        if not float(v).is_integer() or not (1900 <= abs(v) <= 2100):
+            return False
+        if unit and "년" not in unit and "년" not in label:
+            return False
+    return True
+
+
+def _render_timeline(title, subtitle, unit, series):
+    """연도 계열 → 가로 시간선 위의 점 + 라벨
+
+    막대는 0을 기준으로 길이를 재므로 2008년과 2026년이 사실상 같은 길이가 된다.
+    시간선은 값의 '간격'을 그대로 x 위치로 옮겨 연도 사이의 거리를 보여준다.
+    """
+    W = 700
+    AX0, AX1 = 74, 626           # 시간선 양 끝
+    AY = 156                     # 시간선 y
+    H = 250
+    events = sorted(series, key=lambda t: t[1])
+    lo = min(v for _, v in events)
+    hi = max(v for _, v in events)
+
+    o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">']
+    o.append(f'<rect width="{W}" height="{H}" fill="#10141f"/>')
+    o.append(f'<text x="26" y="34" fill="#f2ba3c" font-size="18" font-weight="800">{title}</text>')
+    o.append(f'<text x="26" y="56" fill="#8a94b8" font-size="12" font-weight="600">{subtitle}</text>')
+    o.append(f'<line x1="{AX0-30}" y1="{AY}" x2="{AX1+30}" y2="{AY}" stroke="#3a4568" stroke-width="2"/>')
+
+    fs, yfs, maxw = 11.5, 13.5, 168
+    placed = []
+    for i, (label, v) in enumerate(events):
+        # 전부 같은 해면 시간 위에 흩어놓지 않고 한 점에 모은다 (사실대로)
+        x = AX0 + (v - lo) / (hi - lo) * (AX1 - AX0) if hi > lo else (AX0 + AX1) / 2
+        lines = _wrap(label, fs, maxw)
+        ytxt = _fmt_value(v, unit, label)
+        halfw = max([_text_w(ln, fs) for ln in lines] + [_text_w(ytxt, yfs)]) / 2
+        placed.append({"x": x, "lines": lines, "ytxt": ytxt, "halfw": halfw,
+                       "above": i % 2 == 0})
+
+    # 같은 쪽 라벨끼리 겹치지 않게 두 번 훑는다 (점은 실제 연도 위치에 고정)
+    GAP = 8
+    for above in (True, False):
+        side = [q for q in placed if q["above"] is above]
+        edge = -1e9
+        for p in side:                                  # ① 왼→오: 오른쪽으로 밀어내기
+            lx = min(max(p["x"], 26 + p["halfw"]), W - 26 - p["halfw"])
+            p["lx"] = max(lx, edge + GAP + p["halfw"])
+            edge = p["lx"] + p["halfw"]
+        edge = 1e9
+        for p in reversed(side):                        # ② 오→왼: 오른쪽 끝 넘침을 되밀기
+            p["lx"] = max(min(p["lx"], edge - GAP - p["halfw"], W - 26 - p["halfw"]),
+                          26 + p["halfw"])
+            edge = p["lx"] - p["halfw"]
+
+    for p in placed:
+        x, lx, up = p["x"], p["lx"], p["above"]
+        sign = -1 if up else 1
+        # 점이 라벨과 어긋났으면 잇는 선을 그어 짝을 알아보게 한다
+        o.append(f'<line x1="{x:.1f}" y1="{AY + sign*10}" x2="{lx:.1f}" y2="{AY + sign*22}" '
+                 f'stroke="#5a648a" stroke-width="1"/>')
+        o.append(f'<circle cx="{x:.1f}" cy="{AY}" r="6" fill="#f2ba3c"/>')
+        o.append(f'<circle cx="{x:.1f}" cy="{AY}" r="2.4" fill="#10141f"/>')
+        ybase = AY - 30 if up else AY + 38
+        o.append(f'<text x="{lx:.1f}" y="{ybase}" text-anchor="middle" fill="#f2ba3c" '
+                 f'font-size="{yfs:g}" font-weight="800">{_svg_esc(p["ytxt"])}</text>')
+        for k, ln in enumerate(p["lines"]):
+            if up:
+                ly = ybase - 18 - (len(p["lines"]) - 1 - k) * 14
+            else:
+                ly = ybase + 18 + k * 14
+            o.append(f'<text x="{lx:.1f}" y="{ly:.1f}" text-anchor="middle" fill="#e6ebfa" '
+                     f'font-size="{fs:g}" font-weight="700">{_svg_esc(ln)}</text>')
+
+    o.append(f'<text x="26" y="{H-14}" fill="#5a648a" font-size="10">자료: 원문 기사에서 추출 (자동)</text>')
+    o.append(f'<text x="{W-26}" y="{H-14}" text-anchor="end" fill="#9c7a3a" '
+             f'font-size="11.5" font-weight="800">UNIVERTRIX · univertrix.com</text>')
+    o.append('</svg>')
+    return '<div class="col-chart">' + ''.join(o) + '</div>'
+
+
 def render_chart(ch):
     """추출 수치 → UNIVERTRIX 표준 가로 막대 차트 SVG
 
@@ -136,6 +224,10 @@ def render_chart(ch):
         title = _svg_esc(str(ch.get("title", ""))[:40])
         subtitle = _svg_esc(str(ch.get("subtitle", ""))[:60])
         unit = str(ch.get("unit", ""))[:8]
+
+        # 연도 계열은 막대가 아니라 시간선으로 — 0 기준 막대는 길이 차가 거의 없다
+        if _is_year_series(series, unit):
+            return _render_timeline(title, subtitle, unit, series)
 
         maxv = max(abs(v) for _, v in series) or 1
         n = len(series)
