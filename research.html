@@ -165,8 +165,12 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .guru-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
 .guru-rank { width: 22px; color: var(--text-muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
 .guru-issuer { flex: 1; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 지분율 막대 — 메인 TOP 20 중력바(.stock-grav)와 같은 문법: 얇은 트랙 + 둥근 캡 + 오로라 그라데이션 */
 .guru-bar-wrap { flex: 0 0 90px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
-.guru-bar { height: 100%; background: var(--gold); border-radius: 3px; }
+.guru-bar { display: block; height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), #f2ba3c); transition: width 0.5s ease; }
+/* 밤에는 배경이 어두워 막대가 납작해 보인다 — 아주 옅은 발광으로 띄운다 */
+[data-theme="dark"] .guru-bar { box-shadow: 0 0 6px rgba(139,147,255,0.35); }
 .guru-pct { width: 48px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; flex-shrink: 0; }
 .guru-chg { width: 52px; text-align: right; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-muted); flex-shrink: 0; }
 .guru-chg.new { color: var(--gold); font-weight: 800; }
