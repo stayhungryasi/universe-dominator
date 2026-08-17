@@ -73,41 +73,125 @@ def backfill_column_urls():
         print(f"[신호칼럼] 기존 칼럼 원문 url 소급 연결: {n}건")
 
 
+def _svg_esc(s):
+    """SVG 텍스트 노드 이스케이프 — 라벨에 & < > 가 섞여도 문서가 깨지지 않게"""
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def _text_w(s, fs):
+    """문자열의 대략적 렌더 폭(px) — 한글·전각은 1.0em, 그 외는 0.55em로 추정"""
+    w = 0.0
+    for ch in str(s):
+        w += fs * (1.0 if ord(ch) > 0x2000 else 0.55)
+    return w
+
+
+def _wrap(label, fs, maxw, max_lines=2):
+    """폭 안에 들어가도록 줄바꿈 — 공백이 있으면 공백 기준, 없으면 글자 기준"""
+    if _text_w(label, fs) <= maxw:
+        return [label]
+    lines, cur = [], ""
+    for tok in (label.split(" ") if " " in label else list(label)):
+        sep = " " if (" " in label and cur) else ""
+        cand = cur + sep + tok
+        if cur and _text_w(cand, fs) > maxw:
+            lines.append(cur)
+            cur = tok
+            if len(lines) == max_lines:
+                break
+        else:
+            cur = cand
+    if len(lines) < max_lines and cur:
+        lines.append(cur)
+    return lines[:max_lines]
+
+
+def _fmt_value(v, unit, label=""):
+    """수치 표기 — 연도류는 천단위 콤마 없이 원형으로"""
+    is_year = (float(v).is_integer() and 1000 <= abs(v) <= 2100
+               and ("년" in unit or "년" in label or not unit))
+    if is_year:
+        num = f"{v:.0f}"          # 2008년 — 콤마 금지
+    elif float(v).is_integer():
+        num = f"{v:,.0f}"
+    else:
+        num = f"{v:g}"
+    return num + unit
+
+
 def render_chart(ch):
-    """추출 수치 → UNIVERTRIX 표준 막대 차트 SVG"""
+    """추출 수치 → UNIVERTRIX 표준 가로 막대 차트 SVG
+
+    가로 막대인 이유: 한글 카테고리 라벨을 자르지 않고 왼쪽에 온전히 놓을 수 있고,
+    수치 라벨을 막대 끝에 붙일 수 있다.
+    색은 url(#gradient) 대신 단색 — 같은 문서에 여러 칼럼 본문이 동시에 주입되므로
+    id 충돌·display:none 하위 참조로 paint server가 해석되지 않는 사고를 원천 차단한다.
+    """
     try:
-        series = [(str(s["label"])[:14], float(s["value"])) for s in ch.get("series", [])
-                  if isinstance(s, dict) and s.get("label") is not None][:6]
-        series = [(l, v) for l, v in series if v == v and abs(v) < 1e15]
+        raw = [(str(s["label"]), float(s["value"])) for s in ch.get("series", [])
+               if isinstance(s, dict) and s.get("label") is not None][:6]
+        series = [(l, v) for l, v in raw if v == v and abs(v) != float("inf") and abs(v) < 1e15]
         if len(series) < 2:
             return ""
-        title = str(ch.get("title", ""))[:40]
-        subtitle = str(ch.get("subtitle", ""))[:60]
+        title = _svg_esc(str(ch.get("title", ""))[:40])
+        subtitle = _svg_esc(str(ch.get("subtitle", ""))[:60])
         unit = str(ch.get("unit", ""))[:8]
+
         maxv = max(abs(v) for _, v in series) or 1
         n = len(series)
-        W, H = 700, 300
-        pl, pr, pt, pb = 40, 40, 78, 56
-        cw = (W - pl - pr) / n
-        bw = min(74, cw * 0.56)
-        base = H - pb
+
+        W = 700
+        LX = 26                      # 라벨 시작 x
+        LW = 178                     # 라벨 영역 폭
+        BX = LX + LW + 12            # 막대 시작 x
+        VW = 96                      # 수치 라벨 자리
+        TRACK = W - 26 - VW - BX     # 막대가 쓸 수 있는 최대 길이
+        TOP = 84                     # 제목·부제 아래
+        ROW = 46
+        FOOT = 40
+        H = TOP + ROW * n + FOOT
+
         o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">']
-        o.append('<defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">'
-                 '<stop offset="0%" stop-color="#f2ba3c"/><stop offset="100%" stop-color="#9c7a3a"/></linearGradient></defs>')
         o.append(f'<rect width="{W}" height="{H}" fill="#10141f"/>')
-        o.append(f'<text x="26" y="34" fill="#f2ba3c" font-size="18" font-weight="800">{title}</text>')
-        o.append(f'<text x="26" y="56" fill="#8a94b8" font-size="12" font-weight="600">{subtitle}</text>')
-        o.append(f'<line x1="{pl-14}" y1="{base}" x2="{W-pr+14}" y2="{base}" stroke="#3a4568"/>')
+        o.append(f'<text x="{LX}" y="34" fill="#f2ba3c" font-size="18" font-weight="800">{title}</text>')
+        o.append(f'<text x="{LX}" y="56" fill="#8a94b8" font-size="12" font-weight="600">{subtitle}</text>')
+        o.append(f'<line x1="{BX-6}" y1="{TOP-8}" x2="{BX-6}" y2="{TOP + ROW*n - 6}" stroke="#3a4568"/>')
+
         for i, (label, v) in enumerate(series):
-            x = pl + cw * i + (cw - bw) / 2
-            h = abs(v) / maxv * (base - pt)
-            y = base - h
-            o.append(f'<rect x="{x:.0f}" y="{y:.0f}" width="{bw:.0f}" height="{max(h,2):.0f}" rx="7" fill="url(#sg)"/>')
-            vtxt = (f"{v:,.0f}" if abs(v) >= 100 else f"{v:g}") + unit
-            o.append(f'<text x="{x+bw/2:.0f}" y="{y-10:.0f}" text-anchor="middle" fill="#fff" font-size="15.5" font-weight="800">{vtxt}</text>')
-            o.append(f'<text x="{x+bw/2:.0f}" y="{base+21:.0f}" text-anchor="middle" fill="#c8d0ea" font-size="11.5" font-weight="700">{label}</text>')
-        o.append('<text x="26" y="' + str(H-14) + '" fill="#5a648a" font-size="10">자료: 원문 기사에서 추출 (자동)</text>')
-        o.append(f'<text x="{W-26}" y="{H-14}" text-anchor="end" fill="#9c7a3a" font-size="11.5" font-weight="800">UNIVERTRIX · univertrix.com</text>')
+            top = TOP + ROW * i
+            cy = top + ROW / 2 - 6           # 이 행의 세로 중심
+            bh = 22
+            by = cy - bh / 2
+            # 최솟값도 반드시 보이도록 트랙의 6% 하한
+            bw = max(abs(v) / maxv * TRACK, TRACK * 0.06)
+            color = "#f2ba3c" if v >= 0 else "#5b8def"
+
+            # 카테고리 라벨 — 자르지 않고 폭에 맞춰 축소·줄바꿈
+            fs = 12.5
+            lines = _wrap(label, fs, LW)
+            if len(lines) > 1:
+                fs = 11.0
+                lines = _wrap(label, fs, LW)
+            while len(lines) > 1 and _text_w(lines[0], fs) > LW and fs > 9.5:
+                fs -= 0.5
+                lines = _wrap(label, fs, LW)
+            if len(lines) == 1:
+                o.append(f'<text x="{LX}" y="{cy+4:.1f}" fill="#e6ebfa" font-size="{fs:g}" '
+                         f'font-weight="700">{_svg_esc(lines[0])}</text>')
+            else:
+                for k, ln in enumerate(lines):
+                    ly = cy - 2 + k * (fs + 2.5)
+                    o.append(f'<text x="{LX}" y="{ly:.1f}" fill="#e6ebfa" font-size="{fs:g}" '
+                             f'font-weight="700">{_svg_esc(ln)}</text>')
+
+            o.append(f'<rect x="{BX}" y="{by:.1f}" width="{bw:.1f}" height="{bh}" rx="6" fill="{color}"/>')
+            vtxt = _svg_esc(_fmt_value(v, unit, label))
+            o.append(f'<text x="{BX + bw + 9:.1f}" y="{cy+5:.1f}" fill="#ffffff" '
+                     f'font-size="14" font-weight="800">{vtxt}</text>')
+
+        o.append(f'<text x="{LX}" y="{H-14}" fill="#5a648a" font-size="10">자료: 원문 기사에서 추출 (자동)</text>')
+        o.append(f'<text x="{W-26}" y="{H-14}" text-anchor="end" fill="#9c7a3a" '
+                 f'font-size="11.5" font-weight="800">UNIVERTRIX · univertrix.com</text>')
         o.append('</svg>')
         return '<div class="col-chart">' + ''.join(o) + '</div>'
     except Exception:
