@@ -176,30 +176,42 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .px-zone .z-n { font-size: 21px; font-weight: 800; margin-top: 2px; }
 .px-zone.on { border-color: var(--gold); }
 .px-zone.on .z-n { color: var(--gold); }
-.px-wrap { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 12px; overflow-x: auto; }
-.px-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.px-table th { text-align: left; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--line); padding: 10px 9px; white-space: nowrap; }
-.px-table td { border-bottom: 1px solid var(--line); padding: 11px 9px; vertical-align: top; }
+/* 유형 용어집 — 기본 펼침 */
+.px-gloss { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 20px 6px; margin-bottom: 16px; }
+.px-gloss > summary { cursor: pointer; font-size: 13.5px; font-weight: 800; padding: 12px 0; list-style: none; color: var(--text); }
+.px-gloss > summary::-webkit-details-marker { display: none; }
+.px-gloss > summary::before { content: '▾ '; color: var(--gold); font-weight: 800; }
+.px-gloss:not([open]) > summary::before { content: '▸ '; }
+.px-gloss dl { margin: 0 0 8px; }
+.px-gloss dt { font-size: 13px; font-weight: 800; color: var(--gold); margin-top: 12px; }
+.px-gloss dd { margin: 3px 0 0; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+.px-wrap { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 14px; overflow-x: auto; }
+.px-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.px-table th { text-align: left; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; color: var(--text-secondary); border-bottom: 1.5px solid var(--line-strong); padding: 13px 10px; white-space: nowrap; }
+.px-table td { border-bottom: 1px solid var(--line); padding: 15px 10px; vertical-align: top; }
 .px-table tr:last-child td { border-bottom: 0; }
-.px-tk { font-weight: 800; white-space: nowrap; }
-.px-name { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
-.px-type { font-size: 12px; color: var(--text-secondary); }
-.px-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.px-basis { display: inline-block; font-size: 10px; font-weight: 800; border-radius: 100px; padding: 1px 7px; border: 1px solid var(--line); color: var(--text-muted); margin-left: 4px; }
-.px-eps { font-size: 10.5px; color: var(--text-muted); margin-top: 2px; }
-.px-gap { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 14px; }
+.px-tk { font-weight: 800; white-space: nowrap; font-size: 14.5px; }
+.px-name { font-size: 12.5px; color: var(--text-secondary); font-weight: 600; margin-top: 1px; }
+.px-type { font-size: 13.5px; color: var(--text-secondary); }
+.px-num { font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 14.5px; font-weight: 700; }
+.px-basis { display: inline-block; font-size: 11px; font-weight: 800; border-radius: 100px; padding: 2px 8px; border: 1px solid var(--line-strong); color: var(--text-secondary); margin-left: 5px; }
+.px-eps { font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
+.px-gap { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 17px; }
 .px-gap.hot { color: var(--gold); }
 .px-gap.cold { color: var(--text-muted); }
 .px-gap.none { color: var(--text-muted); font-weight: 700; }
-.px-spark { display: block; width: 86px; height: 22px; margin-top: 4px; }
-.px-why { font-size: 12px; color: var(--text-secondary); line-height: 1.6; min-width: 220px; }
+.px-zonetag { font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-top: 3px; }
+.px-spark { display: block; width: 86px; height: 22px; margin-top: 5px; }
+.px-why { font-size: 13px; color: var(--text-secondary); line-height: 1.7; min-width: 230px; }
 .px-hard { margin-top: 20px; }
 .px-hard-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
 .px-hard-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
 @media (max-width: 480px) {
-  .px-table { font-size: 12px; }
+  .px-table { font-size: 13px; }
+  .px-table td { padding: 12px 7px; }
   .px-why, .px-table th:last-child, .px-table td:last-child { display: none; }
   .px-zone { flex: 1 1 45%; }
+  .px-gloss { padding: 4px 15px 6px; }
 }
 </style>
 </head>
@@ -1160,6 +1172,20 @@ function pxSpark(series){
 
 function pxPct(g){ return (g >= 0 ? '+' : '') + (g * 100).toFixed(0) + '%'; }
 
+/* 유형 용어집 — 표를 읽기 전에 자(尺)의 눈금을 먼저 설명한다 */
+const PX_GLOSSARY =
+  '<details class="px-gloss" open><summary>유형 용어집 — 이 표의 눈금 읽는 법</summary><dl>' +
+  '<dt>씨즈형</dt><dd>간판만 바꿔도 월세가 오르는 건물. 증분 자본 거의 없이 이익이 성장하는 프랜차이즈 ' +
+    '(씨즈캔디: 이익 16배 성장에 증분 자본 3,200만 달러).</dd>' +
+  '<dt>통행료형</dt><dd>모두가 지나야 하는 다리의 통행료. 독점 인프라·로열티 (ASML·Arm).</dd>' +
+  '<dt>플라이트세이프티형</dt><dd>우량하지만 월세를 올리려면 매번 증축 공사가 필요한 건물. 고자본 우량 (TSMC·릴리).</dd>' +
+  '<dt>시클리컬</dt><dd>월세를 경기 사이클이 결정하는 건물. 예측 가능성의 구조적 한계 (메모리·은행·에너지).</dd>' +
+  '<dt>플로트형</dt><dd>매력이 월세가 아니라 세입자 보증금(플로트)을 공짜로 굴리는 것. P/E 시차계로는 측정 불가 (버크셔).</dd>' +
+  '<dt>추정불가(too hard)</dt><dd>10년 뒤 월세를 적을 수 없는 건물. 사업이 나빠서가 아니라 추정 범위가 ±30%를 넘는 것 ' +
+    '(버핏 2000년 서한: 이 경우 모든 투입은 투기).</dd>' +
+  '<dt>미취재</dt><dd>판단층에 선행 EPS를 아직 취재해 넣지 않아 괴리 계산을 보류한 상태. 실적 시즌 취재로 채워진다.</dd>' +
+  '</dl></details>';
+
 function pxRow(x, z, hist){
   const zoned = pxZoned(x);
   const zone = zoned ? pxZone(x.gap, z) : null;   // 후행은 존을 매기지 않는다
@@ -1181,7 +1207,7 @@ function pxRow(x, z, hist){
       (x.note ? '<div class="px-eps">' + esc(x.note) + '</div>' : '') + '</td>' +
     '<td class="px-num">' + (x.fair_max != null ? x.fair_max : '—') + '</td>' +
     '<td><span class="px-gap ' + cls + '">' + txt + '</span>' +
-      (zone ? '<div class="px-eps">' + zone + '</div>' : '') +
+      (zone ? '<div class="px-zonetag">' + zone + '</div>' : '') +
       pxSpark(hist[x.ticker]) + '</td>' +
     '<td class="px-why">' + esc(x.rationale) + '</td>' +
   '</tr>';
@@ -1210,7 +1236,7 @@ function renderParallax(){
     'EPS 추정 기준일은 표에 함께 적었습니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
 
   html += '<div class="px-asof">판단층 기준일 ' + esc(b.asof || '—') +
-    ' · 측정 ' + esc(b.generated_label || '—') + ' KST · ' +
+    ' · 측정 ' + esc(b.generated_label || '—') + ' KST · 매일 3회 자동 측정 (예약 full) · ' +
     '탐색선 +' + Math.round(z.explore * 100) + '% / 본격선 +' + Math.round(z.commit * 100) + '%</div>';
 
   html += '<div class="px-strip">' + PX_ZONES.map(n => {
@@ -1224,15 +1250,22 @@ function renderParallax(){
   '<div class="px-stripnote">존 집계 대상은 선행 기준 ' + zonedItems.length + '종입니다 — ' +
   '후행 참고 ' + (measured.length - zonedItems.length) + '종은 눈금이 달라 존을 매기지 않습니다.</div>';
 
+  html += PX_GLOSSARY;
+
   html += '<div class="px-wrap"><table class="px-table"><thead><tr>' +
     '<th>티커</th><th>유형</th><th>P/E</th><th>정당 MAX</th><th>괴리</th><th>근거</th>' +
     '</tr></thead><tbody>' +
     board.map(x => pxRow(x, z, hist)).join('') + '</tbody></table></div>';
 
   if (basket.length) {
+    // 사유 설명은 실제로 담긴 바구니만 말한다 — 없는 사유를 적어두면 표와 어긋난다
+    const reasons = { too_hard: '10년 뒤 월세를 적을 수 없는 별(추정불가)',
+                      float: '매력이 월세가 아니라 보증금인 별(플로트형)',
+                      unlisted: '시세 자체가 없는 별(비상장)' };
+    const present = Object.keys(reasons).filter(k => basket.some(x => x.basis === k))
+      .map(k => reasons[k]).join(', ');
     html += '<div class="px-hard"><div class="px-hard-title">too hard 바구니 — ' + basket.length + '종</div>' +
-      '<div class="px-hard-desc">낙제가 아니라 원칙입니다. 10년 쿠폰의 추정 범위를 넘어서거나(추정불가), ' +
-      '매력이 월세가 아니라 보증금이거나(플로트형), 시세 자체가 없는(비상장) 별은 이 자로 재지 않습니다. ' +
+      '<div class="px-hard-desc">낙제가 아니라 원칙입니다. ' + present + ' — 이 자로는 재지 않습니다. ' +
       '재지 못한다는 사실을 적어두는 것이 억지로 숫자를 만드는 것보다 정직합니다.</div>' +
       '<div class="px-wrap"><table class="px-table"><thead><tr>' +
       '<th>티커</th><th>유형</th><th>사유</th><th>근거</th></tr></thead><tbody>' +
