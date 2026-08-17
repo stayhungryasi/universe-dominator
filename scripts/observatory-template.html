@@ -165,6 +165,41 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .map-legend { display: flex; justify-content: center; align-items: center; gap: 2px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
 .map-legend span { padding: 3px 9px; border-radius: 4px; color: #fff; font-weight: 700; }
 .obs-note { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
+/* ── 시차 관측 (버핏 멀티플 괴리) ── */
+.px-notice { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 14px; padding: 15px 19px; margin-bottom: 16px; font-size: 12.5px; line-height: 1.75; color: var(--text-secondary); }
+.px-notice b { color: var(--gold); font-weight: 800; }
+.px-asof { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+.px-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.px-zone { flex: 1 1 130px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; }
+.px-zone .z-name { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--text-muted); }
+.px-zone .z-n { font-size: 21px; font-weight: 800; margin-top: 2px; }
+.px-zone.on { border-color: var(--gold); }
+.px-zone.on .z-n { color: var(--gold); }
+.px-wrap { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 12px; overflow-x: auto; }
+.px-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.px-table th { text-align: left; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--line); padding: 10px 9px; white-space: nowrap; }
+.px-table td { border-bottom: 1px solid var(--line); padding: 11px 9px; vertical-align: top; }
+.px-table tr:last-child td { border-bottom: 0; }
+.px-tk { font-weight: 800; white-space: nowrap; }
+.px-name { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+.px-type { font-size: 12px; color: var(--text-secondary); }
+.px-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.px-basis { display: inline-block; font-size: 10px; font-weight: 800; border-radius: 100px; padding: 1px 7px; border: 1px solid var(--line); color: var(--text-muted); margin-left: 4px; }
+.px-eps { font-size: 10.5px; color: var(--text-muted); margin-top: 2px; }
+.px-gap { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 14px; }
+.px-gap.hot { color: var(--gold); }
+.px-gap.cold { color: var(--text-muted); }
+.px-gap.none { color: var(--text-muted); font-weight: 700; }
+.px-spark { display: block; width: 86px; height: 22px; margin-top: 4px; }
+.px-why { font-size: 12px; color: var(--text-secondary); line-height: 1.6; min-width: 220px; }
+.px-hard { margin-top: 20px; }
+.px-hard-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
+.px-hard-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
+@media (max-width: 480px) {
+  .px-table { font-size: 12px; }
+  .px-why, .px-table th:last-child, .px-table td:last-child { display: none; }
+  .px-zone { flex: 1 1 45%; }
+}
 </style>
 </head>
 <body>
@@ -212,6 +247,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
       <button class="obs-tab active" data-t="solar" onclick="setObsTab('solar', this)">오늘의 태양계</button>
       <button class="obs-tab" data-t="map" onclick="setObsTab('map', this)">우주 지도</button>
       <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">관측일지</button>
+      <button class="obs-tab" data-t="parallax" onclick="setObsTab('parallax', this)">시차 관측</button>
     </div>
     <div id="obsBody"></div>
   </div>
@@ -248,7 +284,10 @@ function setObsTab(t, btn){
   document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   cleanupSolar();
-  if (t === 'solar') renderSolar(); else if (t === 'map') renderMap(); else renderColumns();
+  if (t === 'solar') renderSolar();
+  else if (t === 'map') renderMap();
+  else if (t === 'parallax') renderParallax();
+  else renderColumns();
 }
 
 /* ── 오늘의 태양계 ── */
@@ -1081,6 +1120,118 @@ function makeColViz(c){
   return '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+defs+inner+'</svg>';
 }
 
+/* ── 시차 관측 — 버핏 멀티플 괴리 (측정층: data/buffett.json) ──
+   괴리 = 정당 MAX ÷ P/E − 1. 양수 = 정당선 아래. 판단층은 사람이 취재한 config. */
+const PX_SKIP = ['too_hard', 'unlisted', 'float'];
+const PX_BASIS = { forward: '선행', trailing: '후행 기준', '미취재': '미취재',
+                   too_hard: '추정불가', unlisted: '비상장', float: '플로트형' };
+const PX_ZONES = ['탐색', '본격', '관망', '고평가'];
+
+function pxZone(gap, z){
+  if (gap == null) return null;
+  if (gap >= z.explore) return '탐색';
+  if (gap >= z.commit) return '본격';
+  if (gap >= 0) return '관망';
+  return '고평가';
+}
+
+function pxSpark(series){
+  if (!series || series.length < 2) return '';   // 2점 미만이면 선을 그리지 않는다
+  const W = 86, H = 22, P = 2;
+  const gs = series.map(p => p.gap);
+  const mn = Math.min(...gs), mx = Math.max(...gs), span = (mx - mn) || 1;
+  const pts = series.map((p, i) => {
+    const x = P + (W - 2 * P) * (i / (series.length - 1));
+    const y = H - P - (H - 2 * P) * ((p.gap - mn) / span);
+    return x.toFixed(1) + ',' + y.toFixed(1);
+  }).join(' ');
+  const rising = gs[gs.length - 1] >= gs[0];
+  return '<svg class="px-spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
+    '<polyline points="' + pts + '" fill="none" stroke="' + (rising ? 'var(--gold)' : 'var(--text-muted)') +
+    '" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+}
+
+function pxPct(g){ return (g >= 0 ? '+' : '') + (g * 100).toFixed(0) + '%'; }
+
+function pxRow(x, z, hist){
+  const zone = pxZone(x.gap, z);
+  let cls = 'none', txt = '—';
+  if (x.gap != null) {
+    cls = (zone === '탐색' || zone === '본격') ? 'hot' : (zone === '고평가' ? 'cold' : '');
+    txt = pxPct(x.gap);
+  }
+  const pe = x.pe != null ? x.pe.toFixed(1) : '—';
+  return '<tr>' +
+    '<td><div class="px-tk">' + esc(x.ticker) + '</div>' +
+      '<div class="px-name">' + esc(x.name) + '</div></td>' +
+    '<td class="px-type">' + esc(x.type) + '</td>' +
+    '<td class="px-num">' + pe +
+      '<span class="px-basis">' + esc(PX_BASIS[x.basis] || x.basis) + '</span>' +
+      (x.eps_asof ? '<div class="px-eps">EPS ' + esc(x.eps_asof) + '</div>' : '') +
+      (x.note ? '<div class="px-eps">' + esc(x.note) + '</div>' : '') + '</td>' +
+    '<td class="px-num">' + (x.fair_max != null ? x.fair_max : '—') + '</td>' +
+    '<td><span class="px-gap ' + cls + '">' + txt + '</span>' +
+      (zone ? '<div class="px-eps">' + zone + '</div>' : '') +
+      pxSpark(hist[x.ticker]) + '</td>' +
+    '<td class="px-why">' + esc(x.rationale) + '</td>' +
+  '</tr>';
+}
+
+function renderParallax(){
+  const b = (DATA.buffett) || {};
+  const items = b.items || [];
+  const host = document.getElementById('obsBody');
+  if (!items.length) {
+    host.innerHTML = '<div class="obs-note">시차 관측 준비 중 — 첫 측정이 끝나면 이곳에 괴리가 실립니다.</div>';
+    return;
+  }
+  const z = b.zones || { explore: 0.60, commit: 0.40 };
+  const hist = b.history || {};
+  const basket = items.filter(x => PX_SKIP.indexOf(x.basis) >= 0);
+  const board = items.filter(x => PX_SKIP.indexOf(x.basis) < 0)
+    .sort((a, c) => (c.gap == null ? -Infinity : c.gap) - (a.gap == null ? -Infinity : a.gap));
+  const measured = board.filter(x => x.gap != null);
+
+  let html = '<div class="px-notice"><b>버핏 프레임의 관측 실험입니다 — 투자 권유가 아닙니다.</b> ' +
+    '정당 멀티플(정당 MAX)은 검증된 수치가 아니라 <b>주관적 추정</b>이며, 괴리는 그 추정에 오늘 시세를 대입한 ' +
+    '산술 결과일 뿐입니다. P/E는 선행(추정 EPS) 또는 후행(실적 EPS) 기준이 섞여 있고 EPS 추정 기준일은 표에 ' +
+    '함께 적었습니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+
+  html += '<div class="px-asof">판단층 기준일 ' + esc(b.asof || '—') +
+    ' · 측정 ' + esc(b.generated_label || '—') + ' KST · ' +
+    '탐색선 +' + Math.round(z.explore * 100) + '% / 본격선 +' + Math.round(z.commit * 100) + '%</div>';
+
+  html += '<div class="px-strip">' + PX_ZONES.map(n => {
+    const c = measured.filter(x => pxZone(x.gap, z) === n).length;
+    const on = (n === '탐색' || n === '본격') && c > 0;
+    return '<div class="px-zone' + (on ? ' on' : '') + '">' +
+      '<div class="z-name">' + n + (n === '탐색' ? ' +' + Math.round(z.explore * 100) + '%↑'
+        : n === '본격' ? ' +' + Math.round(z.commit * 100) + '%↑' : '') + '</div>' +
+      '<div class="z-n">' + c + '<span style="font-size:12px;font-weight:700">종</span></div></div>';
+  }).join('') + '</div>';
+
+  html += '<div class="px-wrap"><table class="px-table"><thead><tr>' +
+    '<th>티커</th><th>유형</th><th>P/E</th><th>정당 MAX</th><th>괴리</th><th>근거</th>' +
+    '</tr></thead><tbody>' +
+    board.map(x => pxRow(x, z, hist)).join('') + '</tbody></table></div>';
+
+  if (basket.length) {
+    html += '<div class="px-hard"><div class="px-hard-title">too hard 바구니 — ' + basket.length + '종</div>' +
+      '<div class="px-hard-desc">낙제가 아니라 원칙입니다. 10년 쿠폰의 추정 범위를 넘어서거나(추정불가), ' +
+      '매력이 월세가 아니라 보증금이거나(플로트형), 시세 자체가 없는(비상장) 별은 이 자로 재지 않습니다. ' +
+      '재지 못한다는 사실을 적어두는 것이 억지로 숫자를 만드는 것보다 정직합니다.</div>' +
+      '<div class="px-wrap"><table class="px-table"><thead><tr>' +
+      '<th>티커</th><th>유형</th><th>사유</th><th>근거</th></tr></thead><tbody>' +
+      basket.map(x => '<tr><td><div class="px-tk">' + esc(x.ticker) + '</div>' +
+        '<div class="px-name">' + esc(x.name) + '</div></td>' +
+        '<td class="px-type">' + esc(x.type) + '</td>' +
+        '<td class="px-type">' + esc(PX_BASIS[x.basis] || x.basis) + '</td>' +
+        '<td class="px-why">' + esc(x.rationale) + '</td></tr>').join('') +
+      '</tbody></table></div></div>';
+  }
+  host.innerHTML = html;
+}
+
 function renderColumns(){
   const cols = (DATA.columns || []);
   if (!cols.length) { document.getElementById('obsBody').innerHTML =
@@ -1151,7 +1302,10 @@ function toggleCol(i){
   if (!was) el.classList.add('open');
 }
 
-if (location.hash && (location.hash.indexOf('#log-') === 0 || location.hash === '#columns')) {
+if (location.hash === '#parallax') {
+  const btn = document.querySelector('.obs-tab[data-t="parallax"]');
+  if (btn) setObsTab('parallax', btn); else renderParallax();
+} else if (location.hash && (location.hash.indexOf('#log-') === 0 || location.hash === '#columns')) {
   const btn = document.querySelector('.obs-tab[data-t="columns"]');
   if (btn) setObsTab('columns', btn); else renderColumns();
 } else {

@@ -356,12 +356,21 @@ def build_observatory():
                     dissected[it["url"]] = it["id"]
         except Exception as e:
             print(f"[warn] translations.json 읽기 실패(무시): {e}")
+    # 시차 관측 — 측정층 산출물 (없어도 탭은 빈 상태로 뜬다)
+    buffett = {}
+    bf_path = DATA_DIR / "buffett.json"
+    if bf_path.exists():
+        try:
+            buffett = json.loads(bf_path.read_text(encoding="utf-8"))
+        except Exception as e:
+            print(f"[warn] buffett.json 읽기 실패(무시): {e}")
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
         "columns": cols,
         "tiles": tiles,
         "dissected": dissected,
+        "buffett": buffett,
     }
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
