@@ -129,7 +129,8 @@ def main():
         row = {"ticker": ticker, "name": c.get("name", ""), "type": c.get("type", ""),
                "fair_max": c.get("fair_max"), "rationale": c.get("rationale", ""),
                "eps_asof": c.get("eps_asof"), "price": None, "currency": "",
-               "pe": None, "gap": None, "basis": "미취재", "note": "", "zoned": False}
+               "pe": None, "gap": None, "basis": "미취재", "note": "", "zoned": False,
+               "cyclical": ("시클리컬" in (c.get("type") or ""))}
 
         # ① 원칙상 재지 않는 바구니 — 시세도 부르지 않는다
         basis = TYPE_BASIS.get(c.get("type"))
@@ -179,12 +180,15 @@ def main():
         gap = float(row["fair_max"]) / pe - 1.0
         row["pe"] = round(pe, 2)
         row["gap"] = round(gap, 4)
-        # 존 판정은 선행 기준에만 부여한다.
-        # 정당 MAX 는 '선행' 눈금으로 매긴 자다. 후행 P/E 는 성장주·사이클 저점에서
-        # 구조적으로 높게 잡히므로 같은 자에 대면 자동으로 고평가 쪽으로 쏠린다
-        # (2026-08-17 실측: 후행 16종 중 양수는 1종뿐). 그래서 후행은 '참고 수치'로만
-        # 표시하고 존·집계·임계 이벤트에서는 뺀다.
-        row["zoned"] = (row["basis"] == "forward")
+        # 존 판정 자격 — 두 관문을 모두 통과해야 한다 (규칙은 여기 한 곳에만 둔다)
+        #  ① 선행 기준일 것: 정당 MAX 는 '선행' 눈금으로 매긴 자다. 후행 P/E 는
+        #     성장주·사이클 저점에서 구조적으로 높게 잡혀 같은 자에 대면 자동으로
+        #     고평가로 쏠린다 (2026-08-17 실측: 후행 16종 중 양수 1종뿐).
+        #  ② 시클리컬이 아닐 것: 시클리컬은 '정점 이익'에서 P/E 가 가장 낮게 찍혀
+        #     제일 싸 보인다. 정점 EPS × 사이클 멀티플은 가짜 신호다 — 괴리는
+        #     계산해 보여주되 존에는 올리지 않는다.
+        row["cyclical"] = ("시클리컬" in (c.get("type") or ""))
+        row["zoned"] = (row["basis"] == "forward") and not row["cyclical"]
         out_items.append(row)
         append_history(history, ticker, day, gap)
         n_measured += 1

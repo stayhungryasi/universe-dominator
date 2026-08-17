@@ -201,6 +201,8 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .px-gap.cold { color: var(--text-muted); }
 .px-gap.none { color: var(--text-muted); font-weight: 700; }
 .px-zonetag { font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-top: 3px; }
+.px-peak { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; white-space: nowrap;
+  border: 1px solid var(--line-strong); border-radius: 100px; padding: 2px 8px; color: var(--text-muted); cursor: help; }
 .px-spark { display: block; width: 86px; height: 22px; margin-top: 5px; }
 .px-why { font-size: 13px; color: var(--text-secondary); line-height: 1.7; min-width: 230px; }
 .px-hard { margin-top: 20px; }
@@ -1179,7 +1181,9 @@ const PX_GLOSSARY =
     '(씨즈캔디: 이익 16배 성장에 증분 자본 3,200만 달러).</dd>' +
   '<dt>통행료형</dt><dd>모두가 지나야 하는 다리의 통행료. 독점 인프라·로열티 (ASML·Arm).</dd>' +
   '<dt>플라이트세이프티형</dt><dd>우량하지만 월세를 올리려면 매번 증축 공사가 필요한 건물. 고자본 우량 (TSMC·릴리).</dd>' +
-  '<dt>시클리컬</dt><dd>월세를 경기 사이클이 결정하는 건물. 예측 가능성의 구조적 한계 (메모리·은행·에너지).</dd>' +
+  '<dt>시클리컬</dt><dd>월세를 경기 사이클이 결정하는 건물. 예측 가능성의 구조적 한계 (메모리·은행·에너지). ' +
+    '<b>시클리컬은 정점 이익에서 가장 싸 보인다 — 정점 EPS × 사이클 멀티플은 가짜 신호다.</b> ' +
+    '그래서 괴리는 계산해 보여주되 존에는 올리지 않는다.</dd>' +
   '<dt>플로트형</dt><dd>매력이 월세가 아니라 세입자 보증금(플로트)을 공짜로 굴리는 것. P/E 시차계로는 측정 불가 (버크셔).</dd>' +
   '<dt>추정불가(too hard)</dt><dd>10년 뒤 월세를 적을 수 없는 건물. 사업이 나빠서가 아니라 추정 범위가 ±30%를 넘는 것 ' +
     '(버핏 2000년 서한: 이 경우 모든 투입은 투기).</dd>' +
@@ -1207,6 +1211,8 @@ function pxRow(x, z, hist){
       (x.note ? '<div class="px-eps">' + esc(x.note) + '</div>' : '') + '</td>' +
     '<td class="px-num">' + (x.fair_max != null ? x.fair_max : '—') + '</td>' +
     '<td><span class="px-gap ' + cls + '">' + txt + '</span>' +
+      (x.cyclical ? '<span class="px-peak" title="시클리컬은 정점 이익에서 가장 싸 보인다 — ' +
+        '정점 EPS × 사이클 멀티플은 가짜 신호">⚠ 정점 주의</span>' : '') +
       (zone ? '<div class="px-zonetag">' + zone + '</div>' : '') +
       pxSpark(hist[x.ticker]) + '</td>' +
     '<td class="px-why">' + esc(x.rationale) + '</td>' +
@@ -1247,8 +1253,8 @@ function renderParallax(){
         : n === '본격' ? ' +' + Math.round(z.commit * 100) + '%↑' : '') + '</div>' +
       '<div class="z-n">' + c + '<span style="font-size:12px;font-weight:700">종</span></div></div>';
   }).join('') + '</div>' +
-  '<div class="px-stripnote">존 집계 대상은 선행 기준 ' + zonedItems.length + '종입니다 — ' +
-  '후행 참고 ' + (measured.length - zonedItems.length) + '종은 눈금이 달라 존을 매기지 않습니다.</div>';
+  '<div class="px-stripnote"><b>존 판정은 비시클리컬·선행 기준만.</b> 집계 대상 ' + zonedItems.length + '종 — ' +
+  '나머지 ' + (measured.length - zonedItems.length) + '종(후행 참고 · 시클리컬)은 눈금이 달라 존을 매기지 않습니다.</div>';
 
   html += PX_GLOSSARY;
 

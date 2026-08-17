@@ -90,12 +90,12 @@ def phrase(ticker, before, after, gap_before, gap_after):
 
 
 def is_zoned(x):
-    """존 판정 대상인가 — 선행(forward) 기준으로 잰 종목만.
+    """존 판정 대상인가 — 측정층이 매긴 zoned 를 그대로 읽기만 한다.
 
-    정당 MAX 는 선행 눈금이라 후행 P/E 에 대면 전부 고평가로 쏠린다. 후행 수치는
-    표에 참고로만 싣고 임계 이벤트에서는 뺀다 (구 measurement 는 zoned 키가 없으므로
-    basis 로 보정해 읽는다)."""
-    return bool(x.get("zoned")) or (x.get("zoned") is None and x.get("basis") == "forward")
+    자격 규칙(선행 기준일 것 · 시클리컬이 아닐 것)은 fetch_buffett.py 한 곳에만 둔다.
+    여기서 basis·type 을 다시 해석하면 규칙이 두 벌이 되어 언젠가 어긋난다.
+    zoned 가 없는 구 데이터는 대상 없음으로 본다 — 침묵이 오탐보다 안전하다."""
+    return bool(x.get("zoned"))
 
 
 def detect_events(items, zones, prev_zones, prev_gaps):
