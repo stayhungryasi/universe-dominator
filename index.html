@@ -936,8 +936,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero-ov .ov-sub{color:#B9BFCE;font-size:14px;font-weight:600;margin-top:6px}
 .hero-ov .ov-about{pointer-events:auto;display:inline-block;border:1px solid rgba(244,245,248,.4);background:rgba(10,13,24,.4);color:#F4F5F8;border-radius:100px;padding:8px 18px;font-weight:800;font-size:13px;text-decoration:none;backdrop-filter:blur(6px)}
 .hero-ov .ov-about:hover{border-color:#F4F5F8}
-.hero-ov .ov-legend{font-size:11px;letter-spacing:.16em;color:#8a94b8;font-weight:700}
+/* 범례 — 행성 라벨(JPMorgan 등)과 겹쳐 읽히지 않던 문제: 스크림을 깔아 분리한다 */
+.hero-ov .ov-legend{align-self:flex-start;font-size:11px;letter-spacing:.16em;color:#b6bed4;font-weight:700;
+  background:rgba(10,13,24,.62);border:1px solid rgba(244,245,248,.10);border-radius:100px;
+  padding:6px 13px;backdrop-filter:blur(6px)}
 @media(max-width:760px){.hero-ov .ov-legend{display:none}}
+
+/* ── 히어로 하단: 페이지로 녹아드는 페이드 + 스크롤 유도 ── */
+/* z-2 — 캔버스·행성 라벨 위, 조작 힌트(z-3)·오버레이(z-3) 아래.
+   z-4 로 두면 좌하단 드래그 힌트가 페이드에 씻겨 안 보인다 */
+.hero-fade{position:absolute;left:0;right:0;bottom:0;height:120px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,13,24,0) 0%,var(--bg) 100%)}
+.hero-scroll{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:none;border:0;padding:6px 14px;cursor:pointer;font-family:inherit;
+  color:var(--text-muted);transition:opacity .35s ease,color .2s}
+.hero-scroll:hover{color:var(--gold)}
+.hero-scroll .hs-chev{font-size:17px;line-height:1;animation:hsBounce 1.9s ease-in-out infinite}
+.hero-scroll .hs-label{font-size:11px;font-weight:800;letter-spacing:.34em;text-indent:.34em}
+.hero-scroll.gone{opacity:0;pointer-events:none}
+@keyframes hsBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media(prefers-reduced-motion:reduce){.hero-scroll .hs-chev{animation:none}}
+@media(max-width:760px){.hero-fade{height:84px}.hero-scroll{bottom:10px}}
 @media(max-width:760px){
   .hero-ov{background:linear-gradient(180deg,rgba(10,13,24,.55),transparent 34%)}
   .hero-ov h1,.hero-ov .ov-sub{display:none}
@@ -1205,6 +1225,11 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
       <div class="ov-legend">오늘의 태양계 — 행성 크기 = 시총 · 태양 = 왕좌</div>
     </div></div>
+    <div class="hero-fade" aria-hidden="true"></div>
+    <button type="button" class="hero-scroll" id="heroScroll" aria-label="아래로 스크롤">
+      <span class="hs-chev" aria-hidden="true">⌄</span>
+      <span class="hs-label">SCROLL</span>
+    </button>
   </div>
 </div>
 
@@ -4065,6 +4090,25 @@ function colSeed(str){ let h = 2166136261;
     var E2=(DATA.regions.earth&&DATA.regions.earth.stocks)||[];
     if(E2.length&&document.getElementById('s3wrap'))
       loadThree().then(function(){boot3d(E2)}).catch(function(){var l=document.getElementById('s3load'); if(l)l.textContent='3D 로드 실패 — 새로고침 해보세요';});
+  }catch(e){}
+
+  /* 스크롤 유도 — 클릭하면 STAGE 1로, 스크롤이 시작되면 사라진다.
+     3D 조작을 막지 않도록 페이드는 pointer-events:none 이고,
+     버튼만 히트 영역을 가진다(히어로 하단 중앙의 작은 영역). */
+  try{
+    var hs=document.getElementById('heroScroll');
+    if(hs){
+      hs.addEventListener('click',function(){
+        var t=document.getElementById('stage1');
+        if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      var onScroll=function(){
+        if(window.scrollY>40) hs.classList.add('gone');
+        else hs.classList.remove('gone');
+      };
+      window.addEventListener('scroll',onScroll,{passive:true});
+      onScroll();
+    }
   }catch(e){}
 })();
 </script>
