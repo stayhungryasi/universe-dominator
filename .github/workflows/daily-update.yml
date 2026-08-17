@@ -147,6 +147,24 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
+      # 시차 관측 — 판단층(buffett_config.json)에 오늘 시세를 곱해 괴리 측정
+      # config 는 사람이 취재한 판단층이라 어떤 경우에도 재생성되지 않는다.
+      # 실패해도 파이프라인 중단 안 됨 → 기존 buffett.json 유지 (탭은 어제 값으로 뜬다)
+      - name: Measure Buffett multiple gap (parallax)
+        if: env.FULL_RUN == 'true'
+        run: python scripts/fetch_buffett.py || echo "::warning::fetch_buffett 실패 — 시차 관측은 기존 값 유지"
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        continue-on-error: true
+
+      # 존 전이(탐색·본격·정당선 교차)만 관측노트에 기록 — 변화 없으면 침묵
+      - name: Record parallax zone crossings to journal
+        if: env.FULL_RUN == 'true'
+        run: python scripts/parallax_journal.py || echo "::warning::parallax_journal 실패 — 이번 회차 기록 생략"
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        continue-on-error: true
+
       - name: Build all site pages
         run: python scripts/build_site.py
       
