@@ -110,6 +110,20 @@ def main():
     _ba, _ = _ps.judge_buffett(_mk(13, 9), _bst, "2026-01-02", _ps.DEFAULTS)
     check("sentinel: buffett 급감·선행 유실 감지", len(_ba), 2)
     check("sentinel: 서명 형식", _ps.sig("buffett", "2026-01-02"), "sentinel:buffett:2026-01-02")
+    # 발송 경로 배선 — sentinel 은 발송부를 자체 구현하지 않고 모닝브리핑 경로를
+    # 재사용한다. 그 배선이 살아 있는지 매 실행 확인한다(실제 발송은 하지 않음).
+    import send_telegram_briefing as _tg
+    _captured = []
+    _orig_send = _tg.send_telegram
+    try:
+        _tg.send_telegram = lambda tok, chat, txt: _captured.append((tok, chat, txt))
+        _ps.send_telegram("tok", "@chan", "소스 <A & B> 0건")
+    finally:
+        _tg.send_telegram = _orig_send
+    check("sentinel: 발송부는 브리핑 경로 재사용", len(_captured), 1)
+    check("sentinel: HTML parse_mode용 이스케이프",
+          _captured[0][2] if _captured else "", "소스 &lt;A &amp; B&gt; 0건")
+
     check("sentinel: 경보 5건 상한",
           _ps.format_message([_ps.alert(f"x{i}", f"항목{i}", "2026-01-02") for i in range(8)],
                              __import__("datetime").datetime(2026, 1, 2)).endswith("· 외 3건"), True)

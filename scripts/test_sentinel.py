@@ -90,6 +90,21 @@ class SignalJudgeTest(unittest.TestCase):
                                     NAMES, self.state, TODAY, self.cfg)
         self.assertEqual(again, [], "회복 알림은 1회만")
 
+    def test_configured_limit_4_delays_alarm(self):
+        """운영값(sentinel_config.json = 4): 3회까지 침묵, 4회째 경보.
+
+        2회 임계는 오탐이 난다 — 2026-08-20 Anthropic은 하루 종일 0건이었지만
+        소스가 죽은 게 아니라 그날 발표가 없었을 뿐이었다.
+        """
+        cfg = dict(ps.DEFAULTS, zero_streak_limit=4)
+        zero = signals_for({"Hacker News 300+": 8, "Anthropic": 0})
+        for i in range(3):
+            alerts, _ = ps.judge_signals(zero, NAMES, self.state, TODAY, cfg)
+            self.assertEqual(alerts, [], f"{i + 1}회째는 아직 침묵해야 한다")
+        alerts, _ = ps.judge_signals(zero, NAMES, self.state, TODAY, cfg)
+        self.assertEqual(len(alerts), 1)
+        self.assertIn("Anthropic 0건 4회 연속", alerts[0]["text"])
+
     def test_new_source_has_grace(self):
         """한 번도 수집된 적 없는 신규 소스는 기준선이 없으므로 판정 유예."""
         state = fresh_state()
@@ -234,6 +249,31 @@ class DispatchTest(unittest.TestCase):
         with mock.patch.object(ps, "send_telegram") as send:
             self.assertTrue(ps.dispatch(alerts, NOW, TODAY, state))
             self.assertEqual(send.call_count, 1)
+
+
+class SendPathTest(unittest.TestCase):
+    """발송부는 브리핑과 같은 경로여야 한다 — 그래야 매일 실전 검증된다."""
+
+    def test_delegates_to_briefing_sender(self):
+        import send_telegram_briefing as briefing
+        with mock.patch.object(briefing, "send_telegram") as real:
+            ps.send_telegram("tok", "@chan", "· 측정 21→13 급감")
+            self.assertEqual(real.call_count, 1, "브리핑 발송부를 그대로 타야 한다")
+            self.assertEqual(real.call_args[0][0], "tok")
+            self.assertEqual(real.call_args[0][1], "@chan")
+
+    def test_escapes_for_html_parse_mode(self):
+        """브리핑 경로는 parse_mode=HTML — 평문의 <, & 가 메시지를 깨뜨리면 안 된다."""
+        import send_telegram_briefing as briefing
+        with mock.patch.object(briefing, "send_telegram") as real:
+            ps.send_telegram("tok", "@chan", "소스 <A & B> 0건")
+            self.assertEqual(real.call_args[0][2], "소스 &lt;A &amp; B&gt; 0건")
+
+    def test_config_file_overrides_threshold(self):
+        """운영 중 임계 조정은 코드 수정 없이 sentinel_config.json 으로."""
+        cfg = ps.load_config()
+        self.assertIn("zero_streak_limit", cfg)
+        self.assertIsInstance(cfg["stale_hours"], dict)
 
 
 class ResilienceTest(unittest.TestCase):

@@ -15,7 +15,9 @@
      (침묵 감시자가 침묵하는 아이러니 방지 — CLAUDE.md '프로브 침묵' 지뢰 참조).
   3. **정상이면 완전 침묵.** 매일 "정상입니다" 스팸 금지. 경보와 회복만 말한다.
 
-실행 위치: daily-update.yml full 모드 맨 끝(git commit 직전), if: always()
+실행 위치: daily-update.yml full 모드 맨 끝(git commit 직전), if: !cancelled()
+발송 경로: 자체 구현 금지 — send_telegram_briefing 의 발송부를 재사용한다
+           (브리핑은 매일 실전 발송되므로 그 경로는 매일 검증되는 셈)
 
 ⚠️ mtime 함정: CI는 매 실행 fresh checkout이라 **모든 파일 mtime = 체크아웃 시각**이다.
    파일 갱신 정체를 mtime으로 재면 영원히 "방금 갱신됨"으로 보여 경보가 절대 안 울린다
@@ -35,6 +37,8 @@ try:  # 윈도우 로컬 실행에서 한글 출력이 cp949로 죽는 것 방�
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 except Exception:
     pass
+
+sys.path.insert(0, str(Path(__file__).parent))   # 같은 폴더 모듈(fetch_signals 등) 참조용
 
 HERE = Path(__file__).parent.parent
 DATA_DIR = HERE / "data"
@@ -119,7 +123,6 @@ def alert(item, text, today, kind="alert"):
 def source_names():
     """감시 대상 소스 이름 = fetch_signals 의 실제 설정 (설정 변경을 자동 추적)."""
     try:
-        sys.path.insert(0, str(Path(__file__).parent))
         from fetch_signals import load_sources
         return [s.get("name", "") for s in load_sources().get("sources", []) if s.get("name")]
     except Exception as e:
@@ -326,19 +329,24 @@ def format_message(alerts, now):
 # ────────────────────────────────────────────────────────────────
 
 def send_telegram(token, chat_id, text):
-    import requests
-    r = requests.post(
-        f"https://api.telegram.org/bot{token}/sendMessage",
-        json={"chat_id": chat_id, "text": text, "disable_web_page_preview": True},
-        timeout=30)
-    r.raise_for_status()
-    data = r.json()
-    if not data.get("ok"):
-        raise RuntimeError(f"Telegram API 오류: {data}")
+    """발송부는 자체 구현하지 않는다 — 모닝브리핑과 **같은 경로**를 재사용한다.
+
+    이유: 브리핑은 매일 실전 발송되므로 이 경로는 사실상 매일 검증된다.
+    경보는 1년에 몇 번 울릴까 말까 한 코드라, 자체 구현했다면 정작 필요한 날
+    조용히 깨져 있을 위험이 크다 (침묵 실패를 잡는 코드가 침묵 실패하는 것).
+    브리핑 경로는 parse_mode=HTML이므로 평문을 그대로 넘기지 않고 이스케이프한다.
+    """
+    from send_telegram_briefing import send_telegram as _send, esc
+    _send(token, chat_id, esc(text))
 
 
 def alert_chat_id():
-    """전용 경보 채널이 있으면 그리로, 없으면 기존 브리핑 채널로 폴백."""
+    """전용 경보 채널이 있으면 그리로, 없으면 브리핑과 동일한 해석 체계로 폴백.
+
+    (TELEGRAM_CHAT_ID → '@stayhungryasi' 순서는 send_telegram_briefing.main 과 같다.
+     경보를 브리핑과 분리하고 싶어지면 TELEGRAM_ALERT_CHAT_ID 만 등록하면 된다 —
+     지금은 미등록이 선장님 결정이며, 소음이 거슬릴 때 쓰는 퇴로로 남겨둔다.)
+    """
     return (os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
             or os.environ.get("TELEGRAM_CHAT_ID", "").strip()
             or "@stayhungryasi")
