@@ -87,6 +87,33 @@ def main():
     check("load_watch: 지역·잠재 유지", "NVDA" in w and "INTC" in w, True)
     check("load_watch: 점 티커 제외 유지", "005930.KS" not in w, True)
 
+    # ── 정비 관제탑(pipeline_sentinel) 판정 로직 — 침묵 실패 감시망의 자체 검증 ──
+    # 경보가 '울려야 할 때만' 울리는지. 순수 함수만 부르므로 부작용·네트워크 없음.
+    # (전 케이스는 scripts/test_sentinel.py — 여기엔 회귀 핵심만 둔다)
+    import pipeline_sentinel as _ps
+    _st = {"sources": {}, "buffett": [], "sent": {}}
+    _names = ["srcA"]
+    _sig = lambda n, day: [{"source": "srcA", "captured": f"{day} 10:00"} for _ in range(n)]
+    _ps.judge_signals(_sig(3, "2026-01-01"), _names, _st, "2026-01-01", _ps.DEFAULTS)  # 기준선
+    _a1, _ = _ps.judge_signals([], _names, _st, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: 0건 1회는 침묵", _a1, [])
+    _a2, _ = _ps.judge_signals([], _names, _st, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: 0건 2회 연속 경보", len(_a2) == 1 and _a2[0]["kind"] == "alert", True)
+    _a3, _ = _ps.judge_signals(_sig(2, "2026-01-02"), _names, _st, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: 회복 알림 1회", len(_a3) == 1 and _a3[0]["kind"] == "recover", True)
+    _a4, _ = _ps.judge_signals(_sig(2, "2026-01-02"), _names, _st, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: 회복 후 재침묵", _a4, [])
+    _bst = {"buffett": []}
+    _mk = lambda m, f: {"items": [{"pe": 1, "basis": "forward"}] * f
+                        + [{"pe": 1, "basis": "trailing"}] * (m - f)}
+    _ps.judge_buffett(_mk(21, 13), _bst, "2026-01-01", _ps.DEFAULTS)
+    _ba, _ = _ps.judge_buffett(_mk(13, 9), _bst, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: buffett 급감·선행 유실 감지", len(_ba), 2)
+    check("sentinel: 서명 형식", _ps.sig("buffett", "2026-01-02"), "sentinel:buffett:2026-01-02")
+    check("sentinel: 경보 5건 상한",
+          _ps.format_message([_ps.alert(f"x{i}", f"항목{i}", "2026-01-02") for i in range(8)],
+                             __import__("datetime").datetime(2026, 1, 2)).endswith("· 외 3건"), True)
+
     # ── 2026-08 관측노트 누락 사고 재발 방지: 페이지 목록 단일화 검증 ──
     # 사고 원인: 주입 대상 페이지 목록이 build_site.py 5개 함수에 각각 하드코딩돼
     # 있어 새 페이지가 일부 주입에서만 누락됐다. ALL_PAGES 단일 상수로 통합한 뒤,
