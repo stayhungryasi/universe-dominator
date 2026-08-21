@@ -3,6 +3,41 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.08.22",
+      "period": "8.15 → 8.22 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>Visa</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $693B</span>)",
+            "<strong>ASML</strong> TOP 20 이탈",
+            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $196B</span>)",
+            "[유럽] <strong>Allianz SE</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $195B</span>)",
+            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
+            "[유럽] <strong>Airbus</strong> TOP 20 이탈",
+            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $19B</span>)",
+            "[홍콩] <strong>Hongkong Land</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,384 (08/22 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.38"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.08.15",
       "period": "8.8 → 8.15 (주간)",
       "auto": true,
