@@ -159,8 +159,12 @@ jobs:
 
       # 존 전이(탐색·본격·정당선 교차)만 관측노트에 기록 — 변화 없으면 침묵
       - name: Record parallax zone crossings to journal
+        id: parallax
         if: env.FULL_RUN == 'true'
-        run: python scripts/parallax_journal.py || echo "::warning::parallax_journal 실패 — 이번 회차 기록 생략"
+        # `|| echo` 로 끝내면 스텝 outcome 이 항상 success 가 되어 sentinel 이
+        # '실행 흔적 없음'을 영영 못 본다 → 경고를 남기되 실패는 실패로 보고하고,
+        # continue-on-error 가 파이프라인을 계속 굴린다 (기존 동작 그대로).
+        run: python scripts/parallax_journal.py || { echo "::warning::parallax_journal 실패 — 이번 회차 기록 생략"; exit 1; }
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         continue-on-error: true
@@ -170,6 +174,7 @@ jobs:
       
       # 관제탑 봇 — 사이트 변동을 커뮤니티에 자동 공지 (변동 없으면 침묵)
       - name: Community notice bot
+        id: notice
         if: env.FULL_RUN == 'true'
         run: python scripts/post_community_notice.py
         env:
@@ -183,6 +188,25 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        continue-on-error: true
+
+      # ── 정비 관제탑 — 침묵 실패 감시 (관측자, 커밋 직전 마지막 관문) ──
+      # 우아한 저하 덕에 파이프라인은 죽지 않는다. 대신 조용히 비어간다.
+      # 이 스텝이 산출물을 읽어 '비어가는 중'을 텔레그램으로 시끄럽게 만든다.
+      # !cancelled() — 앞 스텝이 일부 실패해도 실행한다(그때가 가장 알아야 할 때).
+      #   always() 대신 쓰는 이유: concurrency cancel-in-progress로 취소된 회차는
+      #   판정 대상이 아니다(오탐 방지).
+      # SENTINEL_STEPS — 봇의 '실행 흔적'은 CI에서 파일 mtime으로 알 수 없다
+      #   (fresh checkout이라 전부 방금 갱신된 것처럼 보인다). 스텝 결과만이 진실.
+      - name: Pipeline sentinel (silent-failure alarm)
+        if: ${{ !cancelled() && env.FULL_RUN == 'true' }}
+        run: python scripts/pipeline_sentinel.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+          SENTINEL_STEPS: >-
+            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }}
         continue-on-error: true
 
       - name: Commit if changed
@@ -205,3 +229,21 @@ jobs:
               sleep $((i * 3))
             done
           fi
+
+      # ── 경성 실패 경보 — sentinel조차 못 도는 대참사용 ──
+      # sentinel과 완전 독립(파이썬·스크립트 무관, curl 한 줄). 워크플로 자체가
+      # 죽으면 이 스텝만이 유일한 목소리다.
+      - name: Hard failure alarm (workflow died)
+        if: failure()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_ALERT_CHAT_ID || secrets.TELEGRAM_CHAT_ID || '@stayhungryasi' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$TG_TOKEN" ]; then
+            echo "::warning::[정비] TELEGRAM_BOT_TOKEN 없음 — 경성 실패 경보 발송 불가"
+            exit 0
+          fi
+          MSG="🚨 UNIVERTRIX 워크플로 경성 실패: $RUN_URL"
+          API="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
+          curl -sS -m 30 -o /dev/null -X POST "$API" --data-urlencode "chat_id=$TG_CHAT" --data-urlencode "text=$MSG" || echo "::warning::[정비] 경보 발송 실패 (curl)"
