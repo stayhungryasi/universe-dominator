@@ -169,6 +169,18 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         continue-on-error: true
 
+      # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진
+      # build_site 앞에 둔다: essays.json 이 journal.html 에 주입되기 때문.
+      # 논제 원장이 플레이스홀더인 회사는 수집조차 하지 않고 "관찰 대기" 로그만 남긴다.
+      - name: Companion essays (3-company thesis observation)
+        id: companion
+        if: env.FULL_RUN == 'true'
+        run: python scripts/companion_essays.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        continue-on-error: true
+
       - name: Build all site pages
         run: python scripts/build_site.py
       
@@ -206,7 +218,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           SENTINEL_STEPS: >-
-            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }}
+            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }}
         continue-on-error: true
 
       - name: Commit if changed

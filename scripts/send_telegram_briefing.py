@@ -195,6 +195,27 @@ def build_briefing():
         except Exception:
             pass
 
+    # ── 🧭 오늘의 동행 ── 발행이 있을 때만. 없는 날은 줄 자체를 만들지 않는다.
+    try:
+        ess_path = DATA_DIR / "essays.json"
+        if ess_path.exists():
+            ess = json.loads(ess_path.read_text(encoding="utf-8")).get("essays", [])
+            today_kst = datetime.now(KST).strftime("%Y-%m-%d")
+            ko = {"spacex": "SpaceX", "alphabet": "Alphabet", "anthropic": "Anthropic"}
+            todays, seen = [], set()
+            for e in ess:
+                co = e.get("company")
+                if e.get("date") != today_kst or not co or co in seen:
+                    continue
+                seen.add(co)
+                todays.append(f"· {ko.get(co, co)} 「{esc(e.get('title',''))}」 [{esc(e.get('verdict',''))}]")
+            if todays:
+                lines.append("🧭 오늘의 동행")
+                lines += todays
+                lines.append("")
+    except Exception:
+        pass
+
     # ── 💱 환율 ──
     usd_krw = meta.get("usd_krw")
     if isinstance(usd_krw, (int, float)):

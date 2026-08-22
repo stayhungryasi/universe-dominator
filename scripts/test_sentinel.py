@@ -276,6 +276,48 @@ class SendPathTest(unittest.TestCase):
         self.assertIsInstance(cfg["stale_hours"], dict)
 
 
+class MaterialsTest(unittest.TestCase):
+    """⑥ 동행 소재함 — 소장이 던진 소재가 침묵 속에 썩지 않게.
+
+    관찰자 원칙 유지: Firestore 를 보지 않고 동행 엔진의 상태 파일만 읽는다.
+    """
+
+    def setUp(self):
+        self.state = fresh_state()
+        self.state["materials"] = {"streak": 0, "alerted": False}
+        self.cfg = dict(ps.DEFAULTS)
+
+    def test_one_round_stays_silent(self):
+        a = ps.judge_materials(self.state, {"materials_pending": 2}, TODAY, self.cfg)
+        self.assertEqual(a, [], "1회 잔존은 일시 오류일 수 있다 — 침묵")
+
+    def test_two_rounds_alert(self):
+        ps.judge_materials(self.state, {"materials_pending": 2}, TODAY, self.cfg)
+        a = ps.judge_materials(self.state, {"materials_pending": 2}, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertIn("미소비 소재 2건 잔존", a[0]["text"])
+        self.assertEqual(a[0]["sig"], f"sentinel:materials:{TODAY}")
+        again = ps.judge_materials(self.state, {"materials_pending": 2}, TODAY, self.cfg)
+        self.assertEqual(again, [], "이미 경보한 사건은 반복하지 않는다")
+
+    def test_inbox_unreachable_is_worse(self):
+        for _ in range(2):
+            a = ps.judge_materials(self.state, {"materials_pending": -1}, TODAY, self.cfg)
+        self.assertIn("소재함 접근 실패", a[0]["text"])
+
+    def test_recovery_notifies_once(self):
+        for _ in range(2):
+            ps.judge_materials(self.state, {"materials_pending": 1}, TODAY, self.cfg)
+        a = ps.judge_materials(self.state, {"materials_pending": 0}, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertEqual(a[0]["kind"], "recover")
+        self.assertEqual(ps.judge_materials(self.state, {"materials_pending": 0}, TODAY, self.cfg), [])
+
+    def test_normal_is_silent(self):
+        self.assertEqual(ps.judge_materials(self.state, {}, TODAY, self.cfg), [])
+        self.assertEqual(ps.judge_materials(self.state, {"materials_pending": 0}, TODAY, self.cfg), [])
+
+
 class ResilienceTest(unittest.TestCase):
     """관측자는 죽어도 파이프라인을 죽이지 않는다 — 단 조용히 죽지도 않는다."""
 

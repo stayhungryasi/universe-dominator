@@ -125,6 +125,8 @@ def load_state():
     st = load_json(STATE_PATH, {})
     st.setdefault("published", {})     # {slug: "YYYY-MM-DD"}
     st.setdefault("materials", [])     # 처리한 소재 문서 id (재처리 방지)
+    st.setdefault("materials_pending", 0)   # 이번 회차에 소비하지 못한 소재 수 (-1=접근 실패)
+    st.setdefault("materials_checked", "")
     return st
 
 
@@ -470,6 +472,7 @@ def main():
     sa_raw = os.environ.get("FIREBASE_SERVICE_ACCOUNT", "").strip()
     if sa_raw:
         try:
+            stuck = 0
             sa_info = json.loads(sa_raw)
             token = firestore_token(sa_info)
             mats = [m for m in fetch_materials(sa_info, token)
@@ -489,9 +492,16 @@ def main():
                     mark_consumed(token, m["name"], note)
                     state.setdefault("materials", []).append(m["id"])
                 except Exception as e:
+                    stuck += 1
                     print(f"[동행] 소재 {m['id']} 소비 표시 실패 ({e}) — 다음 회차 재시도",
                           file=sys.stderr)
+            # 정비 관제탑이 읽는 관측치 — 소장이 던진 소재가 침묵 속에 썩지 않도록
+            # '남은 미소비 건수'를 산출물에 남긴다 (sentinel 은 이 값만 본다).
+            state["materials_pending"] = stuck
+            state["materials_checked"] = today
         except Exception as e:
+            state["materials_pending"] = -1     # -1 = 소재함 접근 자체 실패(알 수 없음)
+            state["materials_checked"] = today
             print(f"[동행] 소재함 접근 실패 → 자동 수집만 진행 ({e})", file=sys.stderr)
     else:
         print("[동행] FIREBASE_SERVICE_ACCOUNT 없음 — 소재함 생략")

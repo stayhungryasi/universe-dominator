@@ -61,7 +61,10 @@ DEFAULTS = {
     #            토요일 주간 칼럼 주기까지 감안해 72h
     "stale_hours": {"calendar.json": 48, "gurus.json": 48, "columns.json": 72},
     # 실행 흔적을 감시할 봇 (SENTINEL_STEPS 키 → 사람이 읽을 이름)
-    "bots": {"parallax_journal": "관측노트 봇", "community_notice": "관제탑 공지"},
+    "bots": {"parallax_journal": "관측노트 봇", "community_notice": "관제탑 공지",
+             "companion_essays": "동행 관측 엔진"},
+    # 소장이 던진 소재가 몇 회차 연속 잔존하면 경보할지 (full 기준)
+    "materials_streak_limit": 2,
 }
 
 
@@ -93,6 +96,7 @@ def load_state():
     st.setdefault("buffett", [])
     st.setdefault("sent", {})
     st.setdefault("last_verdict", {})
+    st.setdefault("materials", {"streak": 0, "alerted": False})
     return st
 
 
@@ -289,6 +293,37 @@ def judge_bots(cfg, today, step_outcomes, data_dir, now):
     return out, notes
 
 
+def judge_materials(state, comp_state, today, cfg):
+    """⑥ 소장이 던진 소재가 침묵 속에 썩는 것 방지.
+
+    관찰자 원칙 유지 — Firestore 를 직접 보지 않는다. 동행 엔진이 자기 상태 파일에
+    남긴 '남은 미소비 건수'(companion_state.json)만 읽는다.
+      pending > 0  → 엔진이 소비에 실패한 소재가 있다
+      pending == -1 → 소재함 접근 자체가 실패했다 (더 나쁜 신호)
+    full 2회 연속 잔존해야 경보한다 — 한 회차의 일시 오류로 소리치지 않기 위해서다.
+    """
+    limit = int(cfg.get("materials_streak_limit", 2))
+    pending = comp_state.get("materials_pending", 0)
+    rec = state.setdefault("materials", {"streak": 0, "alerted": False})
+    try:
+        pending = int(pending)
+    except (TypeError, ValueError):
+        pending = 0
+    if pending == 0:
+        was = rec.get("alerted", False)
+        rec["streak"], rec["alerted"] = 0, False
+        if was:
+            return [alert("materials-recover", "동행 소재함: 잔존 소재 해소 ✅", today,
+                          kind="recover")]
+        return []
+    rec["streak"] = int(rec.get("streak", 0)) + 1
+    if rec["streak"] < limit or rec.get("alerted"):
+        return []
+    rec["alerted"] = True
+    what = ("소재함 접근 실패" if pending < 0 else f"미소비 소재 {pending}건 잔존")
+    return [alert("materials", f"동행 관측: {what} — {rec['streak']}회 연속", today)]
+
+
 def parse_step_outcomes(raw):
     """워크플로 주입값 파싱 — JSON 또는 'k=v,k=v' 둘 다 받는다."""
     raw = (raw or "").strip()
@@ -395,15 +430,20 @@ def run():
     stale_alerts, stale_notes = judge_staleness(DATA_DIR, cfg, today, now)
     steps = parse_step_outcomes(os.environ.get("SENTINEL_STEPS"))
     bot_alerts, bot_notes = judge_bots(cfg, today, steps, DATA_DIR, now)
+    comp_state = read_json(DATA_DIR / "companion_state.json", {}) or {}
+    mat_alerts = judge_materials(state, comp_state, today, cfg)
 
-    alerts = sig_alerts + buf_alerts + snap_alerts + stale_alerts + bot_alerts
+    alerts = sig_alerts + buf_alerts + snap_alerts + stale_alerts + bot_alerts + mat_alerts
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(f"{n} {counts.get(n, 0)}건" for n in names) or "소스 없음"
     buf_part = (f" | buffett 측정 {buf_cur['measured']}·선행 {buf_cur['forward']}"
                 if buf_cur else " | buffett 없음")
     step_part = f" | 스텝 {steps}" if steps else ""
-    print(f"[정비] 판정 {today} {now.strftime('%H:%M')} — 신호 {sig_part}{buf_part}{step_part}")
+    pend = comp_state.get("materials_pending", 0)
+    comp_part = f" | 동행 소재 잔존 {pend}" if pend else ""
+    print(f"[정비] 판정 {today} {now.strftime('%H:%M')} — "
+          f"신호 {sig_part}{buf_part}{step_part}{comp_part}")
     for n in stale_notes + bot_notes:
         print(f"[정비] 참고: {n}", file=sys.stderr)
 

@@ -53,6 +53,10 @@ def load_prev_snapshot(today_str):
     return None
 
 
+# 동행 관측 회사 표기 — companion_sources.json 과 같은 슬러그를 쓴다
+COMPANION_KO = {"spacex": "SpaceX", "alphabet": "Alphabet", "anthropic": "Anthropic"}
+
+
 def detect_events():
     latest = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
     today = latest.get("meta", {}).get("fetched_date", "")
@@ -108,6 +112,24 @@ def detect_events():
             if c.get("title") and c["title"] not in known:
                 events.append(("column", f"🔭 새 관측일지 발행 — 「{c['title']}」"))
 
+    # 🧭 동행 관측 — 오늘 발행된 3사 에세이 (회사당 하루 1건)
+    ess_path = DATA_DIR / "essays.json"
+    if ess_path.exists():
+        try:
+            ess = json.loads(ess_path.read_text(encoding="utf-8")).get("essays", [])
+        except Exception:
+            ess = []
+        kst_today = datetime.now(KST).strftime("%Y-%m-%d")
+        seen_co = set()
+        for e in ess:
+            co = e.get("company")
+            if e.get("date") != kst_today or not co or co in seen_co:
+                continue
+            seen_co.add(co)
+            events.append((f"companion:{co}",
+                           f"🧭 동행 관측 — {COMPANION_KO.get(co, co)} 「{e.get('title','')}」"
+                           f" [{e.get('verdict','')}]"))
+
     return today, events
 
 
@@ -134,7 +156,9 @@ def sig(kind, msg, today):
     """발행 이력 서명 — 문구가 아니라 '사건'을 기억한다.
     왕좌/TOP20/잠재: 종류+날짜 (같은 날 문구가 달라도 재발행 금지)
     관측일지: 제목 앞 14자 (주간 칼럼이 재생성돼 부제가 바뀌어도 같은 주면 동일 사건)"""
-    if kind == "column":
+    if kind.startswith("companion:"):
+        key = f"{kind}:{today}"          # companion:{회사}:{날짜} — 회사당 하루 1건
+    elif kind == "column":
         title = msg.split("「", 1)[-1]  # 「제목」 부분만
         if title.startswith("📡"):
             key = f"signal-column:{today}"   # 신호 자동 칼럼 — 제목이 달라도 하루 1건
