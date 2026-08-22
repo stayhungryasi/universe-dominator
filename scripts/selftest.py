@@ -122,6 +122,9 @@ def main():
                               "spacex", "2026-01-02"), False)
 
     # ── 피드 공용 클라이언트: 레이트 리밋 방어 (2026-08-22 동행 7소스 503 사고) ──
+    import pipeline_sentinel as _ps_early
+    _ps_feeds = lambda status, st: _ps_early.judge_feeds(
+        status, st, "2026-01-02", dict(_ps_early.DEFAULTS, feed_error_limit=2))
     # 한 번 던지고 포기하면 우아한 저하가 '조용히 비어가는' 것으로 끝난다.
     import feed_client as _fc
     check("피드: 503 은 재시도 대상", 503 in _fc.RETRY_CODES and 429 in _fc.RETRY_CODES, True)
@@ -133,6 +136,17 @@ def main():
     _h = [_fc._host(x["url"]) for x in _fc.interleave_by_host(_mix)]
     check("피드: 같은 호스트 연타 없음",
           sum(1 for i in range(1, len(_h)) if _h[i] == _h[i - 1]), 0)
+    # 원장이 있어야 '조용한 날'과 '죽은 소스'가 갈린다 — 사각지대가 닫혔는지 매 실행 확인
+    _fst = {"sources": {"companion:x": {"kind": "companion", "source": "x",
+                                        "outcome": "http_error", "code": 503}}}
+    _fs = {"feeds": {}}
+    _f1, _ = _ps_feeds(_fst, _fs)
+    _f2, _ = _ps_feeds(_fst, _fs)
+    check("피드: 요청 실패 1회 침묵 · 2회 경보", [_f1, len(_f2)], [[], 1])
+    _fz = {"sources": {"companion:y": {"kind": "companion", "source": "y",
+                                       "outcome": "zero", "code": 200}}}
+    _fs2 = {"feeds": {}}
+    check("피드: 0건은 실패보다 관대(즉시 경보 아님)", _ps_feeds(_fz, _fs2)[0], [])
 
     # ── 보안 규칙 정본(firestore.rules)과 클라이언트 설정의 adminUid 일치 ──
     # 두 값이 어긋나면 소장이 자기 소재함에서 잠긴다. 콘솔에 붙여넣기 전에

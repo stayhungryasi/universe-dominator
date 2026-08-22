@@ -7,9 +7,11 @@
   ① 503 을 만나면 정말로 백오프하며 다시 두드리는가 (한 번 던지고 포기하지 않는가)
   ② 항구적 오류(404)는 헛되이 다시 두드리지 않는가
   ③ 같은 호스트를 연타하지 않는가 (페이싱·순서 섞기)
+  ④ 결과가 원장에 남는가 — 관제탑이 '조용한 날'과 '죽은 소스'를 가르는 근거
 
 실행: python scripts/test_feed_client.py
 """
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -31,6 +33,7 @@ class Resp:
 class RetryTest(unittest.TestCase):
     def setUp(self):
         fc._last_hit.clear()
+        fc._buffer.clear()
         self.sleep = mock.patch.object(fc.time, "sleep")   # 테스트는 실제로 기다리지 않는다
         self.sleep.start()
         self.addCleanup(self.sleep.stop)
@@ -50,6 +53,9 @@ class RetryTest(unittest.TestCase):
         self.assertEqual(outcome, "http_error")
         self.assertEqual(code, 503)
         self.assertEqual(g.call_count, fc.RETRIES + 1, "재시도 횟수만큼 두드린다")
+        rec = fc._buffer["companion:src"]
+        self.assertEqual((rec["outcome"], rec["code"], rec["kind"]),
+                         ("http_error", 503, "companion"))
 
     def test_backoff_is_exponential(self):
         waits = []
@@ -72,6 +78,7 @@ class RetryTest(unittest.TestCase):
             _, outcome, code = fc.fetch("https://example.com/x", "src", "signals")
         self.assertEqual(outcome, "timeout")
         self.assertIsNone(code)
+        self.assertEqual(fc._buffer["signals:src"]["outcome"], "timeout")
 
 
 class PacingTest(unittest.TestCase):
@@ -106,6 +113,43 @@ class PacingTest(unittest.TestCase):
     def test_interleave_single_host_keeps_order(self):
         srcs = [{"url": f"https://news.google.com/{i}"} for i in range(3)]
         self.assertEqual(fc.interleave_by_host(srcs), srcs)
+
+
+class LedgerTest(unittest.TestCase):
+    """상태 원장 — 이 파일이 있어야 관제탑이 0건과 장애를 구분한다."""
+
+    def setUp(self):
+        fc._buffer.clear()
+
+    def test_flush_merges_other_processes(self):
+        """fetch_signals 와 companion 은 다른 프로세스다 — 서로의 기록을 지우면 안 된다."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "fetch_status.json"
+            path.write_text(json.dumps(
+                {"sources": {"signals:OpenAI": {"kind": "signals", "outcome": "ok"}}},
+                ensure_ascii=False), encoding="utf-8")
+            with mock.patch.object(fc, "STATUS_PATH", path):
+                fc.record("companion", "spacex:발사", "zero", 200, 0)
+                fc.flush()
+                doc = json.loads(path.read_text(encoding="utf-8"))
+        self.assertIn("signals:OpenAI", doc["sources"], "남의 기록을 지웠다")
+        self.assertEqual(doc["sources"]["companion:spacex:발사"]["outcome"], "zero")
+        self.assertIn("generated_label", doc)
+
+    def test_record_shape(self):
+        fc.record("signals", "Anthropic", "ok", 200, 3)
+        r = fc._buffer["signals:Anthropic"]
+        self.assertEqual((r["source"], r["items"], r["kind"]), ("Anthropic", 3, "signals"))
+        self.assertRegex(r["ts"], r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
+
+    def test_empty_buffer_writes_nothing(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "fetch_status.json"
+            with mock.patch.object(fc, "STATUS_PATH", path):
+                fc.flush()
+            self.assertFalse(path.exists(), "쓸 것이 없으면 파일을 만들지 않는다")
 
 
 if __name__ == "__main__":

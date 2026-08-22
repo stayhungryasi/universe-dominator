@@ -14,13 +14,21 @@
      원장에 남겨 이어받는다.
   ② 재시도 — 503·429·5xx 는 지수 백오프로 3회까지 다시 두드린다.
   ③ 순서 섞기 — 같은 호스트 연타를 피하도록 소스 순서를 재배열한다.
+  ④ 상태 원장 — 소스별 결과를 data/fetch_status.json 에 남긴다.
+     outcome: ok(수확 있음) · zero(성공했으나 0건) · http_error · timeout
+     이 원장이 있어야 정비 관제탑이 **"조용한 날"과 "죽은 소스"를 구분**한다.
+     0건은 발표가 없었던 날일 수도 있지만 http_error 는 언제나 장애다 —
+     그래서 둘의 경보 임계가 다를 수 있게 됐다.
+     (CLAUDE.md §미결 '소스별 fetch 상태 기록' 의 정식 구현)
 
 ⚠️ 저하 동작은 바꾸지 않는다. 실패는 여전히 예외가 아니라 '건너뜀'이고,
    상한·호스트 필터·파싱은 호출자가 그대로 갖는다. 여기서는 HTTP 만 맡는다.
 """
+import json
 import random
 import sys
 import time
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -28,6 +36,8 @@ import requests
 
 HERE = Path(__file__).parent.parent
 DATA_DIR = HERE / "data"
+STATUS_PATH = DATA_DIR / "fetch_status.json"
+KST = timezone(timedelta(hours=9))
 MIN_GAP = 2.0          # 같은 호스트 연속 요청 최소 간격(초)
 JITTER = 1.5           # 그 위에 얹는 무작위 지터 상한(초) — 규칙적 패턴 회피
 RETRIES = 3            # 503/429/5xx 재시도 횟수
@@ -35,6 +45,7 @@ BACKOFF = (4, 10, 20)  # 지수 백오프 대기(초)
 RETRY_CODES = {429, 500, 502, 503, 504}
 
 _last_hit = {}         # {host: monotonic ts} — 이 프로세스 안의 마지막 타격
+_buffer = {}           # {key: record} — flush 에서 원장에 병합된다
 
 
 def _host(url):
@@ -99,10 +110,47 @@ def fetch(url, label, kind, headers=None, timeout=25):
             if attempt < RETRIES:
                 time.sleep(BACKOFF[min(attempt, len(BACKOFF) - 1)])
                 continue
+            record(kind, label, "timeout", None, 0)
             return None, "timeout", None
         except Exception as e:
             if code in RETRY_CODES and attempt < RETRIES:
                 continue
+            record(kind, label, "http_error", code, 0)
             print(f"[피드] {label}: 수집 실패 ({e})", file=sys.stderr)
             return None, "http_error", code
     return None, "http_error", code
+
+
+def record(kind, label, outcome, code, items):
+    """소스별 결과를 원장 버퍼에 적는다. 키는 '{kind}:{label}' 로 고정."""
+    _buffer[f"{kind}:{label}"] = {
+        "kind": kind, "source": label, "outcome": outcome,
+        "code": code, "items": int(items or 0),
+        "ts": datetime.now(KST).strftime("%Y-%m-%d %H:%M"),
+    }
+
+
+def flush():
+    """원장에 **병합** 저장.
+
+    fetch_signals 와 companion_essays 는 서로 다른 프로세스다. 통째로 덮어쓰면
+    나중에 도는 쪽이 앞선 쪽의 기록을 지워, 관제탑이 절반만 보게 된다.
+    """
+    if not _buffer:
+        return
+    doc = {}
+    try:
+        loaded = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
+        if isinstance(loaded, dict):
+            doc = loaded
+    except Exception:
+        pass
+    if not isinstance(doc.get("sources"), dict):
+        doc["sources"] = {}
+    doc["sources"].update(_buffer)
+    doc["generated_label"] = datetime.now(KST).strftime("%Y.%m.%d %H:%M")
+    try:
+        STATUS_PATH.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + chr(10),
+                               encoding="utf-8")
+    except Exception as e:
+        print(f"[피드] 상태 원장 기록 실패 ({e})", file=sys.stderr)

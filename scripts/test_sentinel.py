@@ -318,6 +318,91 @@ class MaterialsTest(unittest.TestCase):
         self.assertEqual(ps.judge_materials(self.state, {"materials_pending": 0}, TODAY, self.cfg), [])
 
 
+class FeedJudgeTest(unittest.TestCase):
+    """⑦ fetch_status 원장 — 죽은 소스와 조용한 날을 가른다 (2026-08-22 503 사고).
+
+    이전에는 signals.json 결과물만 봤기 때문에 동행 소스가 통째로 죽어도
+    아무 소리가 나지 않았다. 그 사각지대가 닫혔는지 본다.
+    """
+
+    def setUp(self):
+        self.state = fresh_state()
+        self.state["feeds"] = {}
+        self.cfg = dict(ps.DEFAULTS, feed_error_limit=2, zero_streak_limit=4)
+
+    def st(self, outcome, kind="companion", code=503, label="spacex:발사"):
+        return {"sources": {f"{kind}:{label}": {"kind": kind, "source": label,
+                                                "outcome": outcome, "code": code}}}
+
+    def test_dead_source_alerts_on_second_round(self):
+        a, seen = ps.judge_feeds(self.st("http_error"), self.state, TODAY, self.cfg)
+        self.assertEqual(a, [], "1회 실패는 일시 오류일 수 있다")
+        self.assertEqual(seen["error"], 1)
+        a, _ = ps.judge_feeds(self.st("http_error"), self.state, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertIn("동행 spacex:발사: HTTP 503 2회 연속", a[0]["text"])
+        again, _ = ps.judge_feeds(self.st("http_error"), self.state, TODAY, self.cfg)
+        self.assertEqual(again, [], "이미 경보한 사건은 반복하지 않는다")
+
+    def test_quiet_day_is_not_an_error(self):
+        """0건은 장애가 아니다 — 실패보다 관대한 임계(4)를 쓴다."""
+        for i in range(3):
+            a, seen = ps.judge_feeds(self.st("zero", code=200), self.state, TODAY, self.cfg)
+            self.assertEqual(a, [], f"{i + 1}회째 0건은 아직 침묵")
+        self.assertEqual(seen["zero"], 1)
+        a, _ = ps.judge_feeds(self.st("zero", code=200), self.state, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertIn("0건 4회 연속", a[0]["text"])
+
+    def test_signals_zero_is_left_to_judge_signals(self):
+        """신호 소스의 0건은 judge_signals 관할 — 같은 사실로 두 번 울리지 않는다."""
+        for _ in range(6):
+            a, _ = ps.judge_feeds(self.st("zero", kind="signals", code=200, label="Anthropic"),
+                                  self.state, TODAY, self.cfg)
+            self.assertEqual(a, [])
+
+    def test_signals_error_still_alerts(self):
+        """단, 신호 소스라도 '요청 실패'는 여기서 잡는다 — 그건 장애다."""
+        for _ in range(2):
+            a, _ = ps.judge_feeds(self.st("http_error", kind="signals", label="Anthropic"),
+                                  self.state, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertIn("신호 Anthropic", a[0]["text"])
+
+    def test_recovery_notifies_once(self):
+        for _ in range(2):
+            ps.judge_feeds(self.st("http_error"), self.state, TODAY, self.cfg)
+        a, _ = ps.judge_feeds(self.st("ok", code=200), self.state, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertEqual(a[0]["kind"], "recover")
+        self.assertIn("응답 회복 ✅", a[0]["text"])
+        again, _ = ps.judge_feeds(self.st("ok", code=200), self.state, TODAY, self.cfg)
+        self.assertEqual(again, [])
+
+    def test_timeout_counts_as_error(self):
+        for _ in range(2):
+            a, _ = ps.judge_feeds(self.st("timeout", code=None), self.state, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertIn("timeout 2회 연속", a[0]["text"])
+
+    def test_all_ok_is_silent(self):
+        a, seen = ps.judge_feeds(self.st("ok", code=200), self.state, TODAY, self.cfg)
+        self.assertEqual(a, [])
+        self.assertEqual(seen["ok"], 1)
+
+    def test_removed_source_is_forgotten(self):
+        """설정에서 뺀 소스가 상태 파일에 유령으로 남지 않는다."""
+        ps.judge_feeds(self.st("http_error"), self.state, TODAY, self.cfg)
+        self.assertIn("companion:spacex:발사", self.state["feeds"])
+        ps.judge_feeds({"sources": {}}, self.state, TODAY, self.cfg)
+        self.assertEqual(self.state["feeds"], {})
+
+    def test_missing_ledger_is_silent(self):
+        """원장이 아직 없어도(첫 도입 회차) 조용히 넘어간다."""
+        a, seen = ps.judge_feeds({}, self.state, TODAY, self.cfg)
+        self.assertEqual((a, seen), ([], {"error": 0, "zero": 0, "ok": 0}))
+
+
 class ResilienceTest(unittest.TestCase):
     """관측자는 죽어도 파이프라인을 죽이지 않는다 — 단 조용히 죽지도 않는다."""
 

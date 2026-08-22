@@ -224,11 +224,14 @@ def collect_candidates(company, cfg):
             for x in got:
                 x.pop("feed_source", None)
             rows.extend(got)
+            fc.record("companion", label, "ok" if got else "zero", code, len(got))
             print(f"[동행] {label}: {len(got)}건")
             if not got:
                 print(f"[동행] {label}: 0건 — 피드 점검 대상", file=sys.stderr)
         except Exception as e:
+            fc.record("companion", label, "http_error", code, 0)
             print(f"[동행] {label} 파싱 실패 → 건너뜀 ({e})", file=sys.stderr)
+    fc.flush()
     seen, out = set(), []
     for x in rows:
         if x["url"] in seen:

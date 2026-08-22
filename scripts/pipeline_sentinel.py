@@ -65,6 +65,10 @@ DEFAULTS = {
              "companion_essays": "동행 관측 엔진"},
     # 소장이 던진 소재가 몇 회차 연속 잔존하면 경보할지 (full 기준)
     "materials_streak_limit": 2,
+    # 피드 요청 실패(http_error/timeout)가 몇 회 연속이면 경보할지.
+    # 0건(zero)보다 임계가 낮은 이유: 0건은 조용한 날일 수 있지만 요청 실패는
+    # 언제나 장애다. 이 구분이 fetch_status.json 원장으로 비로소 가능해졌다.
+    "feed_error_limit": 2,
 }
 
 
@@ -97,6 +101,7 @@ def load_state():
     st.setdefault("sent", {})
     st.setdefault("last_verdict", {})
     st.setdefault("materials", {"streak": 0, "alerted": False})
+    st.setdefault("feeds", {})
     return st
 
 
@@ -293,6 +298,76 @@ def judge_bots(cfg, today, step_outcomes, data_dir, now):
     return out, notes
 
 
+_KIND_KO = {"signals": "신호", "companion": "동행"}
+
+
+def judge_feeds(status, state, today, cfg):
+    """⑦ 소스별 fetch 결과 — **"조용한 날"과 "죽은 소스"를 구분한다.**
+
+    2026-08-22 동행 7소스 503 사고 전까지 sentinel 은 signals.json 의 결과물만
+    봤다. 그래서 동행 소스가 통째로 죽어도 아무 소리가 나지 않았다(사각지대).
+    이제 feed_client 가 남기는 data/fetch_status.json 을 읽어 판정한다:
+
+      http_error / timeout → **언제나 장애**다. 연속 2회면 경보.
+      zero (성공했는데 0건) → 그날 발표가 없었을 수도 있다. 임계는 관대하게
+        zero_streak_limit(운영값 4)를 그대로 쓴다.
+
+    신호 소스의 zero 는 judge_signals 가 signals.json 기준으로 이미 보고 있어
+    여기서 또 세지 않는다 — 같은 사실로 두 번 울리지 않기 위해서다.
+    (관찰자 원칙 유지: 수집기를 건드리지 않고 산출물만 읽는다)
+    """
+    err_limit = int(cfg.get("feed_error_limit", 2))
+    zero_limit = int(cfg.get("zero_streak_limit", 4))
+    srcs = (status or {}).get("sources") or {}
+    recs = state.setdefault("feeds", {})
+    out, seen = [], {"error": 0, "zero": 0, "ok": 0}
+
+    for key, s in sorted(srcs.items()):
+        if not isinstance(s, dict):
+            continue
+        kind = s.get("kind", "")
+        label = s.get("source", key)
+        outcome = s.get("outcome", "")
+        rec = recs.setdefault(key, {"err_streak": 0, "zero_streak": 0,
+                                    "err_alerted": False, "zero_alerted": False})
+        ko = _KIND_KO.get(kind, kind)
+
+        if outcome in ("http_error", "timeout"):
+            seen["error"] += 1
+            rec["zero_streak"], rec["zero_alerted"] = 0, False
+            rec["err_streak"] = int(rec.get("err_streak", 0)) + 1
+            if rec["err_streak"] >= err_limit and not rec.get("err_alerted"):
+                rec["err_alerted"] = True
+                what = f"HTTP {s['code']}" if s.get("code") else outcome
+                out.append(alert(f"feed:{key}",
+                                 f"{ko} {label}: {what} {rec['err_streak']}회 연속", today))
+            continue
+
+        # 여기부터는 요청 자체는 성공한 경우
+        was_err = rec.get("err_alerted", False)
+        rec["err_streak"], rec["err_alerted"] = 0, False
+        if was_err:
+            out.append(alert(f"feed-recover:{key}", f"{ko} {label}: 응답 회복 ✅",
+                             today, kind="recover"))
+        if outcome == "zero":
+            seen["zero"] += 1
+            rec["zero_streak"] = int(rec.get("zero_streak", 0)) + 1
+            # 신호 소스의 0건은 judge_signals 관할 — 중복 발화 금지
+            if kind != "signals" and rec["zero_streak"] >= zero_limit \
+                    and not rec.get("zero_alerted"):
+                rec["zero_alerted"] = True
+                out.append(alert(f"feed-zero:{key}",
+                                 f"{ko} {label}: 0건 {rec['zero_streak']}회 연속", today))
+        else:
+            seen["ok"] += 1
+            rec["zero_streak"], rec["zero_alerted"] = 0, False
+
+    # 원장에서 사라진 소스의 기록은 정리한다 (설정에서 뺀 소스가 유령으로 남지 않게)
+    for gone in [k for k in recs if k not in srcs]:
+        recs.pop(gone, None)
+    return out, seen
+
+
 def judge_materials(state, comp_state, today, cfg):
     """⑥ 소장이 던진 소재가 침묵 속에 썩는 것 방지.
 
@@ -432,8 +507,11 @@ def run():
     bot_alerts, bot_notes = judge_bots(cfg, today, steps, DATA_DIR, now)
     comp_state = read_json(DATA_DIR / "companion_state.json", {}) or {}
     mat_alerts = judge_materials(state, comp_state, today, cfg)
+    feed_status = read_json(DATA_DIR / "fetch_status.json", {}) or {}
+    feed_alerts, feed_seen = judge_feeds(feed_status, state, today, cfg)
 
-    alerts = sig_alerts + buf_alerts + snap_alerts + stale_alerts + bot_alerts + mat_alerts
+    alerts = (sig_alerts + buf_alerts + snap_alerts + stale_alerts
+              + bot_alerts + mat_alerts + feed_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(f"{n} {counts.get(n, 0)}건" for n in names) or "소스 없음"
@@ -442,8 +520,10 @@ def run():
     step_part = f" | 스텝 {steps}" if steps else ""
     pend = comp_state.get("materials_pending", 0)
     comp_part = f" | 동행 소재 잔존 {pend}" if pend else ""
+    feed_part = (f" | 피드 ok {feed_seen['ok']}·0건 {feed_seen['zero']}·실패 {feed_seen['error']}"
+                 if any(feed_seen.values()) else "")
     print(f"[정비] 판정 {today} {now.strftime('%H:%M')} — "
-          f"신호 {sig_part}{buf_part}{step_part}{comp_part}")
+          f"신호 {sig_part}{buf_part}{step_part}{comp_part}{feed_part}")
     for n in stale_notes + bot_notes:
         print(f"[정비] 참고: {n}", file=sys.stderr)
 
