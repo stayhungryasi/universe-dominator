@@ -204,14 +204,19 @@ def collect_candidates(company, cfg):
     except Exception as e:
         print(f"[동행] 수집 유틸 로드 실패 → 자동 수집 생략 ({e})", file=sys.stderr)
         return []
+    import feed_client as fc
     cap = int(cfg.get("rss_cap", 4))
     scan = int(cfg.get("scan_limit", 12))
     rows = []
-    for s in company.get("sources", []):
+    # 라벨에 회사를 담아야 관제탑이 어느 항로의 소스가 죽었는지 말할 수 있다
+    for s in fc.interleave_by_host(company.get("sources", [])):
+        label = f"{company['slug']}:{s['name']}"
+        text, outcome, code = fc.fetch(s["url"], label, "companion", headers=UA)
+        if text is None:
+            print(f"[동행] {label} 수집 실패 → 건너뜀 ({outcome} {code})", file=sys.stderr)
+            continue
         try:
-            r = requests.get(s["url"], headers=UA, timeout=25)
-            r.raise_for_status()
-            got = parse_rss(r.text, s["name"])
+            got = parse_rss(text, s["name"])
             if s.get("type") == "gnews":
                 got = resolve_gnews(got, s.get("domain", ""), cap, scan_limit=scan)
             else:
@@ -219,13 +224,11 @@ def collect_candidates(company, cfg):
             for x in got:
                 x.pop("feed_source", None)
             rows.extend(got)
-            print(f"[동행] {company['slug']} · {s['name']}: {len(got)}건")
+            print(f"[동행] {label}: {len(got)}건")
             if not got:
-                print(f"[동행] {company['slug']} · {s['name']}: 0건 — 피드 점검 대상",
-                      file=sys.stderr)
+                print(f"[동행] {label}: 0건 — 피드 점검 대상", file=sys.stderr)
         except Exception as e:
-            print(f"[동행] {company['slug']} · {s.get('name','?')} 수집 실패 → 건너뜀 ({e})",
-                  file=sys.stderr)
+            print(f"[동행] {label} 파싱 실패 → 건너뜀 ({e})", file=sys.stderr)
     seen, out = set(), []
     for x in rows:
         if x["url"] in seen:

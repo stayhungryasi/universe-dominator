@@ -121,6 +121,19 @@ def main():
           _ce.published_today([{"company": "spacex", "date": "2026-01-02", "origin": "직접"}],
                               "spacex", "2026-01-02"), False)
 
+    # ── 피드 공용 클라이언트: 레이트 리밋 방어 (2026-08-22 동행 7소스 503 사고) ──
+    # 한 번 던지고 포기하면 우아한 저하가 '조용히 비어가는' 것으로 끝난다.
+    import feed_client as _fc
+    check("피드: 503 은 재시도 대상", 503 in _fc.RETRY_CODES and 429 in _fc.RETRY_CODES, True)
+    check("피드: 백오프가 커지는가", list(_fc.BACKOFF) == sorted(_fc.BACKOFF)
+          and len(_fc.BACKOFF) >= 3, True)
+    check("피드: 같은 호스트 최소 간격", _fc.MIN_GAP >= 1.0, True)
+    _mix = [{"url": "https://news.google.com/1"}, {"url": "https://news.google.com/2"},
+            {"url": "https://openai.com/a"}, {"url": "https://deepmind.google/b"}]
+    _h = [_fc._host(x["url"]) for x in _fc.interleave_by_host(_mix)]
+    check("피드: 같은 호스트 연타 없음",
+          sum(1 for i in range(1, len(_h)) if _h[i] == _h[i - 1]), 0)
+
     # ── 보안 규칙 정본(firestore.rules)과 클라이언트 설정의 adminUid 일치 ──
     # 두 값이 어긋나면 소장이 자기 소재함에서 잠긴다. 콘솔에 붙여넣기 전에
     # 여기서 걸러야 "게시했는데 안 된다"를 겪지 않는다.

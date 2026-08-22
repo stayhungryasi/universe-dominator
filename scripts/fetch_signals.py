@@ -147,12 +147,20 @@ def resolve_gnews(rows, domain, cap, scan_limit=None):
 
 
 def collect(cfg):
+    """소스별 수집 — HTTP 는 feed_client 에 맡긴다(페이싱·재시도).
+
+    저하 동작은 그대로다: 한 소스가 죽어도 나머지는 계속 수집하고, 예외로
+    파이프라인을 세우지 않는다. 달라진 것은 503 을 한 번 맞고 포기하지 않는다는 점이다.
+    """
+    import feed_client as fc
     rows = []
-    for s in cfg["sources"]:
+    for s in fc.interleave_by_host(cfg["sources"]):
+        text, outcome, code = fc.fetch(s["url"], s["name"], "signals", headers=UA)
+        if text is None:
+            print(f"[신호] {s['name']} 수집 실패 → 건너뜀 ({outcome} {code})", file=sys.stderr)
+            continue
         try:
-            r = requests.get(s["url"], headers=UA, timeout=25)
-            r.raise_for_status()
-            got = parse_rss(r.text, s["name"])
+            got = parse_rss(text, s["name"])
             cap = cfg.get("rss_cap", 5)
             if s.get("type") == "hn":
                 got = [x for x in got
@@ -171,7 +179,7 @@ def collect(cfg):
                 print(f"[신호] {s['name']}: 0건 — 피드가 죽었을 수 있습니다 (경로 점검 필요)",
                       file=sys.stderr)
         except Exception as e:
-            print(f"[신호] {s['name']} 수집 실패 → 건너뜀 ({e})", file=sys.stderr)
+            print(f"[신호] {s['name']} 파싱 실패 → 건너뜀 ({e})", file=sys.stderr)
     return rows
 
 
