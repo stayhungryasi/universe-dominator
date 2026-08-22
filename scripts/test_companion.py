@@ -158,12 +158,46 @@ class LedgerTest(unittest.TestCase):
         self.assertTrue(a.startswith("spacex-"))
         self.assertNotEqual(a, ce.make_slug("spacex", "다른 제목", TODAY))
 
-    def test_real_thesis_files_are_placeholders_now(self):
-        """지금은 3사 모두 취재 전 — 첫 full 에서 발행 0 이 정상이다."""
+    def test_real_thesis_files_are_active_v1(self):
+        """2026-08-22 원장 v1 반영 — 3사 모두 살아 있어야 엔진이 집필한다.
+
+        머리글 형식은 소장이 정한다(인용줄 `> v1.0 · 날짜 · status: active`).
+        기계가 그 형식을 읽지 못하면 심장이 뛰어도 맥을 못 짚는 것이므로
+        버전·갱신일까지 실제 파일에서 확인한다.
+        """
         for slug in ("spacex", "alphabet", "anthropic"):
             t = ce.read_thesis(slug)
-            self.assertTrue(t["placeholder"], f"{slug} 논제가 플레이스홀더가 아님")
-            self.assertEqual(t["version"], 0)
+            self.assertFalse(t["placeholder"], f"{slug} 논제가 아직 잠겨 있다")
+            self.assertEqual(t["version"], "1.0", slug)
+            self.assertEqual(t["updated"], "2026-08-22", slug)
+            self.assertIn("핵심 가설", t["body"], slug)
+            self.assertIn("반증 조건", t["body"], slug)
+
+    def test_header_formats_both_parse(self):
+        """구 YAML 머리글과 신 인용줄 머리글 둘 다 읽는다 (형식 이행 중 사고 방지)."""
+        import tempfile, pathlib
+        with tempfile.TemporaryDirectory() as d:
+            old_dir = ce.THESIS_DIR
+            ce.THESIS_DIR = pathlib.Path(d)
+            try:
+                nl = chr(10)      # 지뢰 회피: 생성 코드에 개행 이스케이프를 쓰지 않는다
+                (ce.THESIS_DIR / "yaml.md").write_text(
+                    nl.join(["---", "version: 0", "updated: 2026-08-01",
+                             "status: placeholder", "---", "# x", ""]),
+                    encoding="utf-8")
+                y = ce.read_thesis("yaml")
+                self.assertTrue(y["placeholder"])
+                self.assertEqual(y["updated"], "2026-08-01")
+                (ce.THESIS_DIR / "quote.md").write_text(
+                    nl.join(["# T",
+                             "> v2.1 · 2026-09-09 · 승인: 소장 · status: active",
+                             "", "본문", ""]),
+                    encoding="utf-8")
+                q = ce.read_thesis("quote")
+                self.assertFalse(q["placeholder"])
+                self.assertEqual((q["version"], q["updated"]), ("2.1", "2026-09-09"))
+            finally:
+                ce.THESIS_DIR = old_dir
 
     def test_anthropic_tail_has_conflict_disclosure(self):
         html = ce.tail_html("anthropic", ["https://example.com/x"])

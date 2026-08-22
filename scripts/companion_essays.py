@@ -63,6 +63,14 @@ ANTHROPIC_COI = ("이해관계 고지: 이 사이트의 자동 분석은 Anthrop
 # 판단층 읽기 — 절대 쓰지 않는다
 # ────────────────────────────────────────────────────────────────
 
+# 원장 머리글 — 소장이 쓰는 형식이 곧 표준이다. 기계가 형식에 맞추지,
+# 판단층을 기계 편의로 고치지 않는다.
+#   인용줄 형식(v1 이후):  > v1.0 · 2026-08-22 · 승인: 소장 · status: active
+#   YAML 형식(플레이스홀더 세대):  --- \n version: 0 \n status: placeholder \n ---
+_META_LINE = re.compile(r"^>\s*v([0-9][0-9.]*)\s*[·|]\s*(\d{4}-\d{2}-\d{2})", re.M)
+_STATUS_IN_LINE = re.compile(r"status\s*:\s*([A-Za-z]+)")
+
+
 def read_thesis(slug):
     """논제 원장 → {"raw","body","version","updated","placeholder"}.
 
@@ -70,23 +78,33 @@ def read_thesis(slug):
     """
     p = THESIS_DIR / f"{slug}.md"
     if not p.exists():
-        return {"raw": "", "body": "", "version": 0, "updated": "", "placeholder": True}
+        return {"raw": "", "body": "", "version": "0", "updated": "", "placeholder": True}
     raw = p.read_text(encoding="utf-8")
     meta, body = {}, raw
     m = re.match(r"^---\s*\n(.*?)\n---\s*\n?(.*)$", raw, re.S)
-    if m:
+    if m:                                     # 구 YAML 머리글
         body = m.group(2)
         for line in m.group(1).splitlines():
             if ":" in line:
                 k, v = line.split(":", 1)
                 meta[k.strip()] = v.strip()
-    placeholder = (meta.get("status", "").lower() == "placeholder"
-                   or "논제 취재 중" in raw)
-    try:
-        version = int(meta.get("version", 0))
-    except ValueError:
-        version = 0
-    return {"raw": raw, "body": body.strip(), "version": version,
+    else:                                     # 인용줄 머리글
+        hm = _META_LINE.search(raw)
+        if hm:
+            meta["version"], meta["updated"] = hm.group(1), hm.group(2)
+            sm = _STATUS_IN_LINE.search(hm.group(0) + raw[hm.end():hm.end() + 120])
+            if sm:
+                meta["status"] = sm.group(1)
+
+    status = meta.get("status", "").lower()
+    # 판정 순서가 중요하다: status 가 명시돼 있으면 그것이 진실이고,
+    # 없을 때만 본문의 취재중 표식을 본다 (v1 본문에 '논제 취재 중'이라는
+    # 말이 인용으로 섞여도 원장이 잠기지 않게).
+    if status:
+        placeholder = (status == "placeholder")
+    else:
+        placeholder = "논제 취재 중" in raw
+    return {"raw": raw, "body": body.strip(), "version": meta.get("version", "0"),
             "updated": meta.get("updated", ""), "placeholder": placeholder}
 
 

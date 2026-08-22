@@ -501,29 +501,65 @@ def thesis_md_to_html(md):
     HTML 을 먼저 이스케이프하므로 원장에 태그가 섞여도 페이지가 깨지지 않는다.
     """
     esc = (md.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
-    out, in_ul = [], False
+    out, mode = [], None          # mode: None | "ul" | "ol"
+    # 머리글의 버전 줄은 카드 배지가 이미 보여준다 — 본문에서 한 번 더 찍지 않는다.
+    # (같은 인용 블록의 다른 줄, 예컨대 Anthropic 이해관계 고지는 그대로 살린다)
+    meta_line = re.compile(r"^&gt;\s*v[0-9][0-9.]*\s*[·|]\s*\d{4}-\d{2}-\d{2}")
+
+    para = []                     # 이어지는 산문 줄은 한 문단으로 (마크다운 기본 규칙)
+
+    def flush_para():
+        if para:
+            out.append("<p>" + " ".join(para) + "</p>")
+            para.clear()
+
+    def close_list():
+        nonlocal mode
+        if mode:
+            out.append(f"</{mode}>")
+            mode = None
+
+    def close():                  # 구조가 바뀌는 지점에서만 부른다
+        flush_para()
+        close_list()
+
     for raw in esc.split("\n"):
         line = raw.rstrip()
-        if line.startswith("- "):
-            if not in_ul:
-                out.append("<ul>"); in_ul = True
-            out.append(f"<li>{line[2:]}</li>")
-            continue
-        if in_ul:
-            out.append("</ul>"); in_ul = False
         if not line.strip():
+            flush_para()          # 빈 줄이 문단 경계다
+            continue
+        # 목록 항목의 이어지는 들여쓴 줄(근거·반증 조건)은 같은 항목 안에 붙인다
+        if mode and not para and raw.startswith("   ") and out and out[-1].endswith("</li>"):
+            out[-1] = out[-1][:-5] + " " + line.strip() + "</li>"
+            continue
+        m_ol = re.match(r"^(\d+)\.\s+(.*)$", line)
+        if line.startswith("- ") or m_ol:
+            want = "ol" if m_ol else "ul"
+            if mode != want:
+                close()
+                out.append(f"<{want}>")
+                mode = want
+            out.append(f"<li>{m_ol.group(2) if m_ol else line[2:]}</li>")
+            continue
+        if meta_line.match(line):
+            close()
             continue
         if line.startswith("## "):
+            close()
             out.append(f"<h2>{line[3:]}</h2>")
         elif line.startswith("# "):
+            close()
             out.append(f"<h1>{line[2:]}</h1>")
-        elif line.startswith("&gt; "):
-            out.append(f"<blockquote>{line[5:]}</blockquote>")
+        elif line.startswith("&gt;"):
+            close()
+            out.append(f"<blockquote>{line.lstrip('&gt;').strip()}</blockquote>")
         else:
-            out.append(f"<p>{line}</p>")
-    if in_ul:
-        out.append("</ul>")
+            close_list()          # 산문은 문단을 이어 붙인다 — flush 하지 않는다
+            para.append(line)
+    close()
     html = "".join(out)
+    # 연속된 인용줄은 한 덩어리로 (Anthropic 이해관계 고지가 3줄로 쪼개지지 않게)
+    html = html.replace("</blockquote><blockquote>", " ")
     return re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", html)
 
 

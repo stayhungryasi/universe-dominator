@@ -94,6 +94,15 @@ def main():
     check("동행: 3사 논제 원장 존재",
           sorted(p.name for p in (Path(__file__).parent.parent / "data" / "thesis").glob("*.md")),
           ["alphabet.md", "anthropic.md", "spacex.md"])
+    # 원장 v1 반영(2026-08-22) 이후: 3사가 잠긴 채로 배포되면 엔진이 영영 침묵한다.
+    # 머리글 형식(인용줄)을 파서가 못 읽는 순간이 곧 조용한 정지이므로 매 실행 확인한다.
+    check("동행: 3사 논제 v1 활성 (placeholder 아님)",
+          [_ce.read_thesis(s)["placeholder"] for s in ("spacex", "alphabet", "anthropic")],
+          [False, False, False])
+    check("동행: 논제 머리글 버전·갱신일 파싱",
+          sorted({(_ce.read_thesis(s)["version"], _ce.read_thesis(s)["updated"])
+                  for s in ("spacex", "alphabet", "anthropic")}),
+          [("1.0", "2026-08-22")])
     check("동행: 에세이 헌법 프롬프트 존재 (5축 규율 포함)",
           "5축" in _ce.load_prompt() or "① 실적" in _ce.load_prompt(), True)
     check("동행: 슬러그 멱등",
