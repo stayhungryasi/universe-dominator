@@ -87,6 +87,31 @@ def main():
     check("load_watch: 지역·잠재 유지", "NVDA" in w and "INTC" in w, True)
     check("load_watch: 점 티커 제외 유지", "005930.KS" not in w, True)
 
+    # ── 동행 관측: 판단층/기계층 분리와 침묵 규율 ──
+    # 이 엔진의 가장 중요한 성질은 '쓰지 않는 것'이다. 논제 없는 회사를 집필하거나
+    # 인용 규율을 어기면 노트가 스크랩으로 전락하므로 매 실행 방어선을 확인한다.
+    import companion_essays as _ce
+    check("동행: 3사 논제 원장 존재",
+          sorted(p.name for p in (Path(__file__).parent.parent / "data" / "thesis").glob("*.md")),
+          ["alphabet.md", "anthropic.md", "spacex.md"])
+    check("동행: 에세이 헌법 프롬프트 존재 (5축 규율 포함)",
+          "5축" in _ce.load_prompt() or "① 실적" in _ce.load_prompt(), True)
+    check("동행: 슬러그 멱등",
+          _ce.make_slug("spacex", "제목", "2026-01-02"),
+          _ce.make_slug("spacex", "제목", "2026-01-02"))
+    check("동행: verdict 안전 폴백",
+          _ce.build_entry("spacex", "t", "이상값", "<p>x</p>", [], "auto", "2026-01-02")["verdict"],
+          "판단 보류")
+    check("동행: anthropic 만 이해관계 고지",
+          ["이해관계 고지" in _ce.tail_html("anthropic", []),
+           "이해관계 고지" in _ce.tail_html("spacex", [])], [True, False])
+    check("동행: 인용 규율 — 정상 통과", _ce.check_quotes('<p>"short quote"</p>', 1), [])
+    check("동행: 인용 규율 — 긴 인용 적발",
+          len(_ce.check_quotes('<p>"' + " ".join(["w"] * 20) + '"</p>', 1)) > 0, True)
+    check("동행: 직접 게재는 하루 1편 상한 밖",
+          _ce.published_today([{"company": "spacex", "date": "2026-01-02", "origin": "직접"}],
+                              "spacex", "2026-01-02"), False)
+
     # ── 거인의 어깨: 동일 발행사 복수 클래스 표기 (2026-08-22 수리) ──
     # 사고: 버크셔 카드에 "Alphabet Inc" 가 두 줄로 똑같이 찍혔다(A주/C주).
     # 합산 병합은 금지 — 클래스별 증감(+45% vs +658%)이 매수 패턴 정보다.

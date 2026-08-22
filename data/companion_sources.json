@@ -1,0 +1,72 @@
+{
+ "_note": "동행 관측 소스 설정 — 신호 관측소(fetch_signals) 규칙을 그대로 이식했다. 회사당 회당 상한(cap)·우아한 저하·구글뉴스 원문 URL 복원 후 호스트 필터.",
+ "rss_cap": 4,
+ "scan_limit": 12,
+ "companies": [
+  {
+   "slug": "spacex",
+   "ko": "SpaceX",
+   "emoji": "🚀",
+   "sources": [
+    {
+     "name": "SpaceX 발사·로드맵",
+     "type": "gnews",
+     "domain": "",
+     "url": "https://news.google.com/rss/search?q=SpaceX+OR+Starship+OR+Starlink+when:7d&hl=en-US&gl=US&ceid=US:en"
+    },
+    {
+     "name": "SpaceX 자본·기업가치",
+     "type": "gnews",
+     "domain": "",
+     "url": "https://news.google.com/rss/search?q=SpaceX+(funding+OR+valuation+OR+IPO)+when:14d&hl=en-US&gl=US&ceid=US:en"
+    }
+   ]
+  },
+  {
+   "slug": "alphabet",
+   "ko": "Alphabet",
+   "emoji": "🔭",
+   "_why_narrow": "Alphabet/Google 은 노이즈가 압도적이라 쿼리를 좁게 잡는다. 일반 'Google' 검색은 제품 팁·루머가 대부분이라 5축에 닿지 않는다.",
+   "sources": [
+    {
+     "name": "Alphabet 실적·자본배분",
+     "type": "gnews",
+     "domain": "",
+     "url": "https://news.google.com/rss/search?q=Alphabet+(earnings+OR+capex+OR+%22capital+expenditure%22+OR+buyback)+when:14d&hl=en-US&gl=US&ceid=US:en"
+    },
+    {
+     "name": "Google 반독점·규제",
+     "type": "gnews",
+     "domain": "",
+     "url": "https://news.google.com/rss/search?q=Google+(antitrust+OR+ruling+OR+remedies)+when:14d&hl=en-US&gl=US&ceid=US:en"
+    },
+    {
+     "name": "Gemini·TPU 로드맵",
+     "type": "gnews",
+     "domain": "",
+     "url": "https://news.google.com/rss/search?q=(Gemini+OR+TPU)+Google+DeepMind+when:7d&hl=en-US&gl=US&ceid=US:en"
+    }
+   ]
+  },
+  {
+   "slug": "anthropic",
+   "ko": "Anthropic",
+   "emoji": "⚛️",
+   "_why_reuse": "anthropic.com 은 공개 RSS 가 없다(2026-08-17 실측 — 지뢰 지도 참조). fetch_signals 가 쓰는 구글뉴스 site: 우회를 그대로 재사용하고, 복원한 URL 의 호스트로 걸러 공식 발표만 남긴다. 보도 쿼리는 별도 소스.",
+   "sources": [
+    {
+     "name": "Anthropic 공식",
+     "type": "gnews",
+     "domain": "anthropic.com",
+     "url": "https://news.google.com/rss/search?q=site:anthropic.com&hl=en-US&gl=US&ceid=US:en"
+    },
+    {
+     "name": "Anthropic 보도",
+     "type": "gnews",
+     "domain": "",
+     "url": "https://news.google.com/rss/search?q=Anthropic+(Claude+OR+funding+OR+enterprise+OR+revenue)+when:7d&hl=en-US&gl=US&ceid=US:en"
+    }
+   ]
+  }
+ ]
+}
