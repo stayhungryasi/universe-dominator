@@ -17,8 +17,10 @@
     실질적으로 닿지 않으면 쓰지 않는다. 이 노트의 가치는 편수가 아니라 밀도다.
   · **논제 원장이 플레이스홀더면 그 회사는 집필하지 않는다.**
     논제 없는 에세이는 스크랩이다 — 관찰 대기 로그만 남긴다.
-  · **인용 규율**: 출처당 1회·15단어 미만. 위반하면 발행을 보류하고 다음 회차에
-    다시 쓴다 (스크랩 방지선이라 경고로 넘기지 않는다).
+  · **인용 규율(원문 대조)**: 막으려는 것은 따옴표가 아니라 스크랩이다. 수집된
+    텍스트에 실제로 있는 구절만 인용으로 세고(영문 15단어·한국어 60자·출처당 1회),
+    따옴표 없이 원문을 통째 옮긴 것도 잡는다. 위반하면 사유를 주고 1회 재생성,
+    그래도 걸리면 보류한다.
   · 회사당 하루 1편 (직접 게재는 상한 제외) · signal_column 식 이중 잠금.
 
 소재함(Firestore materials): 소장이 관측노트에서 던진 링크·메모를 우선 처리한다.
@@ -174,23 +176,96 @@ def published_today(essays, slug, today):
 
 _QUOTE_RE = re.compile(r"[\"“「『]([^\"”」』]{4,})[\"”」』]")
 
+EN_WORD_LIMIT = 15      # 영문 원문 인용 상한(단어)
+KO_CHAR_LIMIT = 60      # 한국어 원문 인용 상한(글자)
+BULK_WINDOW = 60        # 따옴표 밖에서 이만큼 연속으로 원문과 같으면 '통째 옮겨쓰기'
+MATCH_RATIO = 0.90      # 수집 텍스트와 이 비율 이상 겹치면 원문 인용으로 본다
 
-def check_quotes(html, n_sources):
-    """원문 인용은 출처당 1회·15단어 미만. 위반 목록을 돌려준다(빈 목록 = 통과).
 
-    뉴스 전문 요약을 복제하면 이 노트는 스크랩이 된다. 헌법이 금지한 선이라
-    경고로 넘기지 않고 발행을 보류시키는 근거로 쓴다.
+def _norm(s):
+    """공백만 정규화 — 대조는 문자 그대로 해야 오탐이 줄어든다."""
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s or "")).strip()
+
+
+def _is_latin(s):
+    """영문 인용인가 — 라틴 문자 비중으로 판별해 길이 기준을 고른다."""
+    letters = [c for c in s if c.isalpha()]
+    if not letters:
+        return True
+    return sum(1 for c in letters if ord(c) < 0x250) / len(letters) >= 0.6
+
+
+def _from_source(q, src):
+    """이 따옴표 구간이 **수집된 텍스트에서 실제로 옮겨온 것**인가.
+
+    핵심: 따옴표가 있다는 표면 특징이 아니라 '원문에서 가져왔는가'라는 정의로
+    검사한다. 한국어 글의 "검색 사망론" 같은 강조·용어 표기는 수집 텍스트에
+    없으므로 인용이 아니다 — 규율 대상에서 빠진다.
     """
-    text = re.sub(r"<[^>]+>", " ", html or "")
-    quotes = [q.strip() for q in _QUOTE_RE.findall(text) if q.strip()]
+    if not src:
+        return False
+    if q in src:
+        return True
+    # 부분 변형(조사·말줄임)까지 잡되, 겹치는 덩어리가 인용의 대부분일 때만.
+    try:
+        from difflib import SequenceMatcher
+        m = SequenceMatcher(None, q, src, autojunk=False).find_longest_match(
+            0, len(q), 0, len(src))
+        return m.size >= MATCH_RATIO * len(q)
+    except Exception:
+        return False
+
+
+def check_quotes(html, source_text, n_sources):
+    """인용 규율 — **원문 대조 방식**. 위반 목록을 돌려준다(빈 목록 = 통과).
+
+    막으려는 것은 '따옴표'가 아니라 '스크랩'이다. 그래서 검사도 그 정의로 한다:
+      · 수집된 텍스트(전문을 못 읽었으면 제목·요약)에 실제로 있는 구절만 인용으로 센다
+      · 원문 인용은 출처당 1회 · 영문 15단어 / 한국어 60자 미만
+      · 따옴표가 없어도 원문을 80자 연속으로 옮겼으면 통째 옮겨쓰기로 본다
+    수집 텍스트가 아예 없으면 대조할 근거가 없다 — 그때는 인용 판정을 하지 않는다
+    (원문을 못 읽었으면 모델도 인용할 재료가 없었다는 뜻이라 오탐만 남는다).
+    """
+    body = _norm(html)
+    src = _norm(source_text)
     bad = []
-    for q in quotes:
-        if len(q.split()) >= 15 or len(q) >= 80:
-            bad.append(f"긴 인용({len(q.split())}단어): {q[:40]}…")
+    if not src:
+        return bad
+
+    quoted = [q.strip() for q in _QUOTE_RE.findall(body) if q.strip()]
+    real = [q for q in quoted if _from_source(q, src)]
+
+    for q in real:
+        if _is_latin(q):
+            n = len(q.split())
+            if n >= EN_WORD_LIMIT:
+                bad.append(f"긴 인용({n}단어): {q[:40]}…")
+        elif len(q) >= KO_CHAR_LIMIT:
+            bad.append(f"긴 인용({len(q)}자): {q[:40]}…")
+
     limit = max(1, int(n_sources or 1))
-    if len(quotes) > limit:
-        bad.append(f"인용 {len(quotes)}회 > 출처 {limit}건 (출처당 1회)")
+    if len(real) > limit:
+        bad.append(f"원문 인용 {len(real)}회 > 출처 {limit}건 (출처당 1회)")
+
+    # 따옴표 없이 옮겨 적는 쪽이 오히려 스크랩에 가깝다 — 그것도 본다.
+    # 인용 구간은 위에서 이미 규율을 통과했으므로 걷어내고 본다. 그러지 않으면
+    # 허용된 영문 14단어 인용(≈80자)이 여기서 다시 걸려 오탐이 된다.
+    lifted = _bulk_lift(_QUOTE_RE.sub(" ", body), src)
+    if lifted:
+        bad.append(f"원문 통째 옮겨쓰기({len(lifted)}자 연속): {lifted[:40]}…")
     return bad
+
+
+def _bulk_lift(body, src, window=BULK_WINDOW):
+    """본문에 원문이 window 자 이상 연속으로 그대로 박혀 있으면 그 구간을 돌려준다."""
+    if len(body) < window or not src:
+        return ""
+    step = max(10, window // 3)
+    for i in range(0, len(body) - window + 1, step):
+        chunk = body[i:i + window]
+        if chunk in src:
+            return chunk
+    return ""
 
 
 # ────────────────────────────────────────────────────────────────
@@ -325,7 +400,8 @@ def mark_consumed(token, doc_name, note):
 # 집필
 # ────────────────────────────────────────────────────────────────
 
-def ask_claude(api_key, constitution, company, thesis, items, recent_titles, memo=""):
+def ask_claude(api_key, constitution, company, thesis, items, recent_titles, memo="",
+               feedback=""):
     """헌법 프롬프트 + 논제 원장 + 후보를 주고 판정·집필을 함께 시킨다.
 
     5축에 닿지 않으면 모델이 {"publish": false} 로 침묵을 택한다 — 그것이 정답이다.
@@ -335,6 +411,7 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
         "논제원장": thesis["body"][:6000],
         "최근에세이제목": recent_titles[:8],
         "소장메모": memo,
+        "직전_원고_반려사유": feedback,
         "후보": [{"제목": x.get("title", ""), "URL": x.get("url", ""),
                   "발행": x.get("pub", ""), "발췌": (x.get("article") or "")[:2500]}
                  for x in items],
@@ -423,6 +500,52 @@ def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=
 # 회차 실행
 # ────────────────────────────────────────────────────────────────
 
+def collected_text(items):
+    """이번 집필에 실제로 들어간 '수집된 텍스트' 전부 — 인용 대조의 유일한 근거.
+
+    전문 수집에 성공했으면 전문, 유료벽으로 막혔으면 제목·요약만 담긴다.
+    그래서 유료벽 대응이 따로 필요 없다: 못 읽은 원문은 대조 대상이 아니고,
+    읽은 제목·요약을 통째 옮기면 그건 여전히 잡힌다.
+    """
+    parts = []
+    for x in items or []:
+        for k in ("title", "pub", "article", "raw_desc"):
+            v = x.get(k)
+            if isinstance(v, str) and v.strip():
+                parts.append(v)
+    return " ".join(parts)
+
+
+def write_with_discipline(api_key, constitution, comp, thesis, items, recent, memo=""):
+    """집필 → 인용 규율 검사 → (위반이면) 사유를 주고 **1회 재생성** → 재검사.
+
+    한 번 걸렸다고 바로 보류하면, 모델이 규율을 몰라서 걸린 경우까지 버리게 된다.
+    반려 사유를 알려주고 다시 쓰게 하는 것이 사람 편집자가 하는 일이다.
+    두 번째도 걸리면 그때는 보류한다 — 방지선은 끝내 지켜야 하니까.
+    """
+    src = collected_text(items)
+    feedback = ""
+    for attempt in (1, 2):
+        res = ask_claude(api_key, constitution, comp, thesis, items, recent,
+                         memo=memo, feedback=feedback)
+        if not res.get("publish"):
+            return res, None
+        bad = check_quotes(res.get("body", ""), src, len(res.get("sources") or [1]))
+        if not bad:
+            return res, None
+        reason = " / ".join(bad)
+        if attempt == 1:
+            print(f"[동행] {comp['ko']}: 인용 규율 위반 — 사유를 주고 1회 재생성 ({reason})",
+                  file=sys.stderr)
+            feedback = ("직전 원고가 인용 규율에 걸렸다. 아래를 고쳐 다시 써라: "
+                        + reason +
+                        " — 원문을 옮기지 말고 해석을 써라. 강조가 필요하면 따옴표 대신 "
+                        "네 문장으로 설명하라.")
+            continue
+        return res, reason
+    return res, "재생성 후에도 인용 규율 위반"
+
+
 def run_material(mat, companies, api_key, constitution, essays, today):
     """소재 1건 처리 → 에세이 항목 또는 None. (직접 게재는 AI 를 부르지 않는다)"""
     comp = companies.get(mat.get("company"))
@@ -450,13 +573,12 @@ def run_material(mat, companies, api_key, constitution, essays, today):
     item = {"title": mat.get("title") or mat.get("url", ""), "url": mat.get("url", ""),
             "pub": "", "article": fetch_article_text(mat["url"]) if mat.get("url") else ""}
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"]][:8]
-    res = ask_claude(api_key, constitution, comp, thesis, [item], recent,
-                     memo=mat.get("memo", ""))
+    res, violation = write_with_discipline(api_key, constitution, comp, thesis, [item],
+                                           recent, memo=mat.get("memo", ""))
     if not res.get("publish"):
         return None, f"소재 판정 침묵 — {res.get('reason','')[:60]}"
-    bad = check_quotes(res.get("body", ""), len(res.get("sources") or [1]))
-    if bad:
-        return None, "인용 규율 위반 — 발행 보류 (" + " / ".join(bad[:2]) + ")"
+    if violation:
+        return None, "인용 규율 위반(재생성 후에도) — 발행 보류 :: " + violation
     srcs = res.get("sources") or ([mat["url"]] if mat.get("url") else [])
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
                        res.get("body", ""), srcs, "소재", today,
@@ -485,7 +607,8 @@ def run_auto(comp, api_key, constitution, essays, today):
         c["article"] = fetch_article_text(c["url"])
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"]][:8]
     try:
-        res = ask_claude(api_key, constitution, comp, thesis, cands[:5], recent)
+        res, violation = write_with_discipline(api_key, constitution, comp, thesis,
+                                               cands[:5], recent)
     except Exception as e:
         print(f"[동행] {comp['ko']} 집필 실패: {e} — 다음 회차 재시도", file=sys.stderr)
         return None
@@ -493,9 +616,10 @@ def run_auto(comp, api_key, constitution, essays, today):
         print(f"[동행] {comp['ko']}: 후보 {len(cands)} · 발행 0 — 5축 미달로 침묵 "
               f"({res.get('reason','')[:60]})")
         return None
-    bad = check_quotes(res.get("body", ""), len(res.get("sources") or [1]))
-    if bad:
-        print(f"[동행] {comp['ko']}: 인용 규율 위반 — 발행 보류 ({bad[0]})", file=sys.stderr)
+    if violation:
+        # 사유 전문을 남긴다 — 잘라 쓰면 왜 막혔는지 영영 모른다
+        print(f"[동행] {comp['ko']}: 인용 규율 위반(재생성 후에도) — 발행 보류 :: {violation}",
+              file=sys.stderr)
         return None
     print(f"[동행] {comp['ko']}: 후보 {len(cands)} · 발행 1 — 축 {res.get('axis','')}")
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),

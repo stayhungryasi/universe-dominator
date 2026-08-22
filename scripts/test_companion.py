@@ -7,7 +7,7 @@
   ② 직접 게재       — 소장 글 그대로, AI 호출 0회 (origin="직접")
   ③ 중요도 미달     — 5축 미달 판정 시 침묵 (원장 불변)
   ④ 논제 부재       — 원장이 플레이스홀더면 집필 스킵 ("논제 없는 에세이는 스크랩")
-추가: 인용 규율(출처당 1회·15단어 미만) 출력 검사.
+추가: 인용 규율(원문 대조 방식) — 오탐 2례 통과·진짜 위반 적발·재생성 1회.
 
 실행: python scripts/test_companion.py
 """
@@ -120,32 +120,105 @@ class SilenceTest(unittest.TestCase):
             self.assertEqual(ask.call_count, 0)
 
 
+SRC_EN = ("SpaceX said reusability is the key to lowering launch cost, and the "
+          "company reported Starlink revenue of 4.3 billion dollars in the quarter.")
+SRC_KO = ("스페이스X는 재사용이 발사 비용을 낮추는 핵심이라고 밝혔으며 이번 분기 "
+          "스타링크 매출은 43억 달러로 전체의 55퍼센트를 차지했다고 설명했다.")
+
+
 class QuoteDisciplineTest(unittest.TestCase):
-    """인용 규율 — 스크랩 방지선. 위반이면 발행을 보류한다."""
+    """인용 규율 — **원문 대조 방식**.
 
-    def test_clean_passes(self):
+    2026-08-22 사고: 표면 특징(따옴표·어절 수)으로 검사했더니 한국어 강조 표기와
+    한국어 서술문 길이가 인용으로 오인돼 정상 에세이 2편이 막혔다.
+    이제는 '수집된 텍스트에 실제로 있는가'라는 정의로 검사한다.
+    """
+
+    def test_korean_emphasis_is_not_a_quote(self):
+        """오탐 ①: 한국어 강조·용어 표기 — 수집 텍스트에 없으므로 인용이 아니다."""
+        html = ('<p>이른바 "검색 사망론"은 아직 실적에 없다. '
+                '우리는 이 회사를 "궤도의 건물주"라 부른다. '
+                '"통행료형" 사업의 정의가 여기서 갈린다.</p>')
+        self.assertEqual(ce.check_quotes(html, SRC_KO, 1), [],
+                         "원문에 없는 따옴표는 규율 대상이 아니다")
+
+    def test_korean_sentence_length_is_not_a_long_quote(self):
+        """오탐 ②: 한국어 15어절은 짧다 — 어절 수가 아니라 글자 수로 잰다."""
+        ko = "환경 특정 타겟 최적 프롬프트 에서만 작동 하며 실제 제약사 공정 에는 아직 못 미친다"
+        self.assertGreaterEqual(len(ko.split()), 15)
+        self.assertLess(len(ko), ce.KO_CHAR_LIMIT)
+        self.assertEqual(ce.check_quotes(f'<p>"{ko}"</p>', SRC_KO, 1), [])
+
+    def test_real_english_quote_within_limit_passes(self):
         html = '<p>회사는 "reusability is the key" 라고 밝혔다.</p>'
-        self.assertEqual(ce.check_quotes(html, 1), [])
+        self.assertEqual(ce.check_quotes(html, SRC_EN, 1), [])
 
-    def test_long_quote_flagged(self):
-        long_q = " ".join(["word"] * 20)
-        self.assertTrue(any("긴 인용" in b for b in ce.check_quotes(f'<p>"{long_q}"</p>', 1)))
+    def test_long_english_quote_from_source_flagged(self):
+        q = ("SpaceX said reusability is the key to lowering launch cost, "
+             "and the company reported Starlink revenue")
+        self.assertGreaterEqual(len(q.split()), ce.EN_WORD_LIMIT)
+        bad = ce.check_quotes(f'<p>"{q}"</p>', SRC_EN, 1)
+        self.assertTrue(any("긴 인용" in b and "단어" in b for b in bad), bad)
 
-    def test_too_many_quotes_flagged(self):
-        html = '<p>"first quote here" 그리고 "second quote here" 또 "third quote here"</p>'
-        bad = ce.check_quotes(html, 1)
+    def test_long_korean_quote_from_source_flagged(self):
+        """진짜 위반: 수집 텍스트를 60자 이상 그대로 옮긴 인용."""
+        q = SRC_KO[:70]
+        bad = ce.check_quotes(f'<p>"{q}"</p>', SRC_KO, 1)
+        self.assertTrue(any("긴 인용" in b and "자" in b for b in bad), bad)
+
+    def test_too_many_real_quotes_flagged(self):
+        html = ('<p>"reusability is the key" 그리고 "lowering launch cost" 또 '
+                '"Starlink revenue of 4.3" 이라고 한다.</p>')
+        bad = ce.check_quotes(html, SRC_EN, 1)
         self.assertTrue(any("출처당 1회" in b for b in bad), bad)
 
-    def test_violation_blocks_publication(self):
-        long_q = " ".join(["word"] * 20)
-        bad_res = dict(GOOD, body=f'<p>"{long_q}"</p>')
+    def test_bulk_lift_without_quotes_flagged(self):
+        """따옴표를 지워도 원문을 통째 옮기면 그게 더 스크랩에 가깝다."""
+        bad = ce.check_quotes(f"<p>{SRC_KO}</p>", SRC_KO, 3)
+        self.assertTrue(any("통째 옮겨쓰기" in b for b in bad), bad)
+
+    def test_no_collected_text_means_no_quote_judgment(self):
+        """수집 텍스트가 없으면 대조할 근거가 없다 — 인용 판정을 하지 않는다."""
+        self.assertEqual(ce.check_quotes('<p>"무엇이든"</p>', "", 1), [])
+
+    def test_paywalled_falls_back_to_title_and_summary(self):
+        """유료벽: 전문을 못 읽어도 제목·요약은 수집됐다 — 그것만 대조하면 된다."""
+        items = [{"title": "Starlink revenue hits record", "article": "",
+                  "raw_desc": "Quarterly revenue reached 4.3 billion dollars."}]
+        src = ce.collected_text(items)
+        self.assertIn("Starlink revenue hits record", src)
+        self.assertEqual(ce.check_quotes('<p>"궤도의 건물주"</p>', src, 1), [])
+
+
+class RegenerateTest(unittest.TestCase):
+    """위반 시 즉시 보류가 아니라 사유를 주고 1회 재생성한다."""
+
+    def _auto(self, side_effect):
         with mock.patch.object(ce, "read_thesis", return_value=LIVE_THESIS), \
              mock.patch.object(ce, "collect_candidates",
                                return_value=[{"title": "t", "url": "https://x/9"}]), \
-             mock.patch.object(ce, "fetch_article_text", return_value=""), \
-             mock.patch.object(ce, "ask_claude", return_value=bad_res):
-            self.assertIsNone(ce.run_auto(COMP, "key", "헌법", [], TODAY),
-                              "인용 규율 위반은 발행되지 않는다")
+             mock.patch.object(ce, "fetch_article_text", return_value=SRC_KO), \
+             mock.patch.object(ce, "ask_claude", side_effect=side_effect) as ask:
+            return ce.run_auto(COMP, "key", "헌법", [], TODAY), ask
+
+    def test_regenerates_once_then_publishes(self):
+        bad_res = dict(GOOD, body=f'<p>{SRC_KO}</p>')
+        entry, ask = self._auto([bad_res, GOOD])
+        self.assertEqual(ask.call_count, 2, "위반 1회는 재생성 기회를 준다")
+        self.assertIsNotNone(entry, "재생성이 통과하면 발행된다")
+        self.assertIn("인용 규율에 걸렸다", str(ask.call_args.kwargs.get("feedback", "")),
+                      "재생성 요청에 반려 사유가 실려야 한다")
+
+    def test_second_violation_holds(self):
+        bad_res = dict(GOOD, body=f'<p>{SRC_KO}</p>')
+        entry, ask = self._auto([bad_res, bad_res])
+        self.assertEqual(ask.call_count, 2, "재생성은 1회뿐 — 무한 반복하지 않는다")
+        self.assertIsNone(entry, "두 번째도 걸리면 보류한다")
+
+    def test_silence_does_not_trigger_regeneration(self):
+        entry, ask = self._auto([{"publish": False, "reason": "5축 미달"}])
+        self.assertEqual(ask.call_count, 1, "침묵은 위반이 아니다")
+        self.assertIsNone(entry)
 
 
 class LedgerTest(unittest.TestCase):

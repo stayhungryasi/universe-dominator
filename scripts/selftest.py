@@ -114,9 +114,18 @@ def main():
     check("동행: anthropic 만 이해관계 고지",
           ["이해관계 고지" in _ce.tail_html("anthropic", []),
            "이해관계 고지" in _ce.tail_html("spacex", [])], [True, False])
-    check("동행: 인용 규율 — 정상 통과", _ce.check_quotes('<p>"short quote"</p>', 1), [])
-    check("동행: 인용 규율 — 긴 인용 적발",
-          len(_ce.check_quotes('<p>"' + " ".join(["w"] * 20) + '"</p>', 1)) > 0, True)
+    # 인용 규율(원문 대조) — 2026-08-22 오탐 사고 재발 방지.
+    # 표면 특징으로 검사하면 한국어 강조 표기가 인용으로 오인돼 정상 글이 막힌다.
+    _src_ko = ("회사는 재사용이 발사 비용을 낮추는 핵심이라고 밝혔으며 이번 분기 매출은 "
+               "43억 달러로 전체의 55퍼센트를 차지했다고 설명했다")
+    check("동행: 인용 규율 — 원문에 없는 강조 표기는 통과",
+          _ce.check_quotes('<p>이른바 "검색 사망론"은 아직 실적에 없다</p>', _src_ko, 1), [])
+    check("동행: 인용 규율 — 원문 복제는 적발",
+          len(_ce.check_quotes("<p>" + _src_ko + "</p>", _src_ko, 3)) > 0, True)
+    check("동행: 인용 규율 — 수집 텍스트 없으면 판정 없음",
+          _ce.check_quotes('<p>"무엇이든"</p>', "", 1), [])
+    check("동행: 길이 기준이 언어별",
+          (_ce.EN_WORD_LIMIT, _ce.KO_CHAR_LIMIT), (15, 60))
     check("동행: 직접 게재는 하루 1편 상한 밖",
           _ce.published_today([{"company": "spacex", "date": "2026-01-02", "origin": "직접"}],
                               "spacex", "2026-01-02"), False)
