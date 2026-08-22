@@ -494,8 +494,60 @@ def inject_footer_links():
     print(f"[OK] 푸터 정책 링크 주입: {n}개 페이지")
 
 
+def thesis_md_to_html(md):
+    """논제 원장(md) → 안전한 HTML. 판단층이라 원본은 절대 건드리지 않고 표시만 변환한다.
+
+    지원 범위는 원장이 실제로 쓰는 문법으로 한정한다(제목·목록·인용·굵게).
+    HTML 을 먼저 이스케이프하므로 원장에 태그가 섞여도 페이지가 깨지지 않는다.
+    """
+    esc = (md.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+    out, in_ul = [], False
+    for raw in esc.split("\n"):
+        line = raw.rstrip()
+        if line.startswith("- "):
+            if not in_ul:
+                out.append("<ul>"); in_ul = True
+            out.append(f"<li>{line[2:]}</li>")
+            continue
+        if in_ul:
+            out.append("</ul>"); in_ul = False
+        if not line.strip():
+            continue
+        if line.startswith("## "):
+            out.append(f"<h2>{line[3:]}</h2>")
+        elif line.startswith("# "):
+            out.append(f"<h1>{line[2:]}</h1>")
+        elif line.startswith("&gt; "):
+            out.append(f"<blockquote>{line[5:]}</blockquote>")
+        else:
+            out.append(f"<p>{line}</p>")
+    if in_ul:
+        out.append("</ul>")
+    html = "".join(out)
+    return re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", html)
+
+
+def companion_data():
+    """동행 관측 주입 데이터 — 회사(논제 스냅샷) + 발행 에세이 원장."""
+    import companion_essays as ce
+    src = DATA_DIR / "companion_sources.json"
+    cfg = json.loads(src.read_text(encoding="utf-8")) if src.exists() else {"companies": []}
+    companies = []
+    for c in cfg.get("companies", []):
+        t = ce.read_thesis(c["slug"])
+        companies.append({
+            "slug": c["slug"], "ko": c.get("ko", c["slug"]), "emoji": c.get("emoji", ""),
+            "thesis": {"placeholder": t["placeholder"], "version": t["version"],
+                       "updated": t["updated"],
+                       "html": "" if t["placeholder"] else thesis_md_to_html(t["body"])},
+        })
+    ess = DATA_DIR / "essays.json"
+    essays = json.loads(ess.read_text(encoding="utf-8")).get("essays", []) if ess.exists() else []
+    return {"companies": companies, "essays": essays}
+
+
 def build_journal():
-    """journal.html — 판단 기록소 (비공개: 링크 미노출, 관리자 로그인 전용)"""
+    """journal.html — 관측노트 (한줄 노트 + 동행 관측 3사 탭)"""
     template_path = SCRIPTS_DIR / "journal-template.html"
     if not template_path.exists():
         print("[skip] journal-template.html 없음"); return
@@ -507,8 +559,13 @@ def build_journal():
     html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")
+    ce_data = companion_data()
+    html = html.replace("{{COMPANION_DATA}}", json.dumps(ce_data, ensure_ascii=False))
     (HERE / "journal.html").write_text(html, encoding="utf-8")
-    print(f"[OK] journal.html ({len(html):,} chars) — 관측노트(공개)")
+    waiting = [c["ko"] for c in ce_data["companies"] if c["thesis"]["placeholder"]]
+    print(f"[OK] journal.html ({len(html):,} chars) — 관측노트 · 동행 {len(ce_data['companies'])}사"
+          f" · 에세이 {len(ce_data['essays'])}편"
+          + (f" · 논제 취재 중: {', '.join(waiting)}" if waiting else ""))
 
 
 def build_placeholders():

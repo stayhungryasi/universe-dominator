@@ -132,6 +132,59 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .nt-del { background: none; border: none; color: var(--text-muted); font-size: 11.5px; cursor: pointer; margin-left: auto; font-family: inherit; }
 .nt-login { text-align: center; margin-top: 26px; }
 .nt-login button { background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; text-decoration: underline; font-family: inherit; }
+
+/* ── 동행 관측 ── 한 기업의 10년 항로를 관찰로 쌓는 탭. 논제(고정) 위에 에세이(누적). */
+.ce-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+.ce-tabs::-webkit-scrollbar { display: none; }
+.ce-tab { flex-shrink: 0; padding: 10px 14px; font-size: 13.5px; font-weight: 700; color: var(--text-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit; white-space: nowrap; transition: color .2s, border-color .2s; }
+.ce-tab:hover { color: var(--text-secondary); }
+.ce-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+
+.ce-thesis { background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; }
+.ce-thesis-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.ce-thesis-name { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
+.ce-thesis-ver { font-size: 11.5px; font-weight: 700; color: var(--gold); background: var(--gold-bg); border-radius: 100px; padding: 3px 10px; }
+.ce-thesis-body { font-size: 14px; line-height: 1.8; color: var(--text-secondary); }
+.ce-thesis-body h1 { font-size: 17px; color: var(--text); margin: 12px 0 6px; }
+.ce-thesis-body h2 { font-size: 15px; color: var(--text); margin: 14px 0 6px; }
+.ce-thesis-body ul { margin: 6px 0 6px 18px; }
+.ce-thesis-body li { margin: 3px 0; }
+.ce-thesis-body blockquote { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 12px; margin: 10px 0; color: var(--text-muted); }
+.ce-waiting { text-align: center; padding: 8px 0 4px; }
+.ce-waiting-icon { font-size: 34px; }
+.ce-waiting-text { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+
+.ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; scroll-margin-top: 70px; }
+.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: 11.5px; color: var(--text-muted); margin-bottom: 7px; }
+.ce-essay-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; line-height: 1.4; }
+.ce-essay-body { font-size: 14.5px; line-height: 1.8; }
+.ce-essay-body h3 { font-size: 14.5px; font-weight: 800; color: var(--gold); margin: 16px 0 6px; }
+.ce-essay-body p { margin: 6px 0; }
+.ce-essay-body ul { margin: 6px 0 6px 18px; }
+.ce-essay-body .ce-src { font-size: 12px; word-break: break-all; }
+.ce-essay-body .ce-src a { color: var(--gold); }
+.ce-essay-body .ce-disc, .ce-essay-body .ce-coi { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.6; }
+/* 판정 배지 — 약화도 숨기지 않는다. 반증의 기록이 있어야 확신의 기록이 신뢰를 얻는다. */
+.ce-verdict { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--line-strong); }
+.ce-v-강화 { color: #fff; background: linear-gradient(120deg, #565CE8, #3EC8D8); border-color: transparent; }
+[data-theme="dark"] .ce-v-강화 { background: linear-gradient(120deg, #8B93FF, #4FE0EF); color: #0A0B0F; }
+.ce-v-불변 { color: var(--text-secondary); }
+.ce-v-약화 { color: var(--text-muted); background: var(--bg); }
+.ce-v-보류 { color: var(--text-muted); border-style: dashed; }
+.ce-origin { font-size: 10.5px; font-weight: 800; color: var(--gold); }
+.ce-copy { background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--text-muted); font-size: 11px; padding: 3px 9px; cursor: pointer; font-family: inherit; margin-left: auto; }
+.ce-copy:hover { border-color: var(--gold); color: var(--gold); }
+
+.ce-inbox { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; }
+.ce-inbox-title { font-size: 13px; font-weight: 800; color: var(--gold); margin-bottom: 10px; }
+.ce-inbox input, .ce-inbox textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font-family: inherit; font-size: 13.5px; color: var(--text); box-sizing: border-box; margin-bottom: 7px; }
+.ce-inbox textarea { min-height: 80px; resize: vertical; }
+.ce-mode { display: flex; gap: 6px; margin-bottom: 8px; }
+.ce-mode button { flex: 1; padding: 8px; border-radius: 9px; border: 1px solid var(--line); background: var(--bg); color: var(--text-muted); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: inherit; }
+.ce-mode button.on { border-color: var(--gold); color: var(--gold); background: var(--gold-bg); }
+.ce-inbox-note { font-size: 11.5px; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
+.ce-mat { font-size: 12px; color: var(--text-secondary); border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 10px; }
+.ce-mat-item { padding: 5px 0; border-bottom: 1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -175,8 +228,22 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
       <h1 class="nt-title">관측노트</h1>
       <p class="nt-desc">관측소장의 생각 일지 — 세계는 순위표가 기록하고, 생각은 여기에 한 줄씩 쌓입니다.</p>
     </div>
-    <div id="ntCompose"></div>
-    <div id="ntBody"><div class="nt-count">📡 노트를 불러오는 중…</div></div>
+
+    <div class="ce-tabs" id="ceTabs"></div>
+
+    <!-- 한줄 노트 (기존) -->
+    <div id="paneNotes">
+      <div id="ntCompose"></div>
+      <div id="ntBody"><div class="nt-count">📡 노트를 불러오는 중…</div></div>
+    </div>
+
+    <!-- 동행 관측 (기업 탭) -->
+    <div id="paneCompanion" style="display:none">
+      <div id="ceInbox"></div>
+      <div id="ceThesis"></div>
+      <div id="ceEssays"></div>
+    </div>
+
     <div class="nt-login" id="ntLogin"></div>
   </div>
 </main>
@@ -207,6 +274,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, limit, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
+// 동행 관측 데이터 — build_site.py 가 essays.json + thesis/*.md 를 여기에 주입한다.
+// 논제(thesis)는 판단층이라 빌드 시점 스냅샷이고, 에세이는 파이프라인이 쌓는다.
+const CE = {{COMPANION_DATA}};
+
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let app, auth, db, me = null, cfg = null;
@@ -219,11 +290,156 @@ const fmtWhen = ts => {
 };
 const isAdmin = () => me && cfg && cfg.adminUid && me.uid === cfg.adminUid;
 
+/* ────────────────── 동행 관측 ──────────────────
+   탭: 한줄 노트 · 기업 3사. 해시 딥링크는 확립된 패턴을 따른다 —
+   #spacex/#alphabet/#anthropic 은 탭 해시, #essay-{slug} 는 에세이 영구 슬러그.
+   (research 의 #dx- / observatory 의 #log- 과 같은 문법)                     */
+let ceTab = 'notes', ceMode = 'essay';
+
+function renderTabs(){
+  const tabs = [{ id: 'notes', label: '한줄 노트' }].concat(
+    (CE.companies || []).map(c => ({ id: c.slug, label: c.emoji + ' ' + c.ko })));
+  $('ceTabs').innerHTML = tabs.map(t =>
+    '<button class="ce-tab' + (t.id === ceTab ? ' active' : '') + '" data-tab="' + t.id + '">' +
+    esc(t.label) + '</button>').join('');
+  document.querySelectorAll('.ce-tab').forEach(b => b.onclick = () => setTab(b.dataset.tab, true));
+}
+
+function setTab(id, push){
+  ceTab = id;
+  renderTabs();
+  const isNotes = (id === 'notes');
+  $('paneNotes').style.display = isNotes ? '' : 'none';
+  $('paneCompanion').style.display = isNotes ? 'none' : '';
+  if (!isNotes) renderCompany(id);
+  renderInbox();
+  if (push) history.replaceState(null, '', isNotes ? location.pathname : '#' + id);
+}
+
+function companyOf(slug){ return (CE.companies || []).find(c => c.slug === slug); }
+
+function renderCompany(slug){
+  const c = companyOf(slug) || { ko: slug, emoji: '', thesis: {} };
+  const th = c.thesis || {};
+  $('ceThesis').innerHTML = '<div class="ce-thesis">' +
+    '<div class="ce-thesis-head"><span class="ce-thesis-name">' + esc(c.emoji + ' ' + c.ko) + '</span>' +
+    (th.placeholder
+      ? '<span class="ce-thesis-ver">논제 취재 중 🔭</span>'
+      : '<span class="ce-thesis-ver">논제 v' + esc(th.version) + ' · 갱신 ' + esc(th.updated) + '</span>') +
+    '</div>' +
+    (th.placeholder
+      ? '<div class="ce-waiting"><div class="ce-waiting-icon">🔭</div>' +
+        '<div class="ce-waiting-text">10년 논제를 취재하는 중입니다. 논제가 서기 전까지는 ' +
+        '에세이를 쓰지 않습니다 — 논제 없는 기록은 스크랩이기 때문입니다.</div></div>'
+      : '<div class="ce-thesis-body">' + (th.html || '') + '</div>') +
+    '</div>';
+
+  const list = (CE.essays || []).filter(e => e.company === slug);
+  $('ceEssays').innerHTML = list.length ? list.map(e =>
+    '<div class="ce-essay" id="essay-' + esc(e.slug) + '">' +
+      '<div class="ce-essay-meta"><span>' + esc(e.date) + '</span>' +
+        '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
+        (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
+        '<button class="ce-copy" data-copy="' + esc(e.slug) + '">🔗 복사</button>' +
+      '</div>' +
+      '<div class="ce-essay-title">' + esc(e.title) + '</div>' +
+      '<div class="ce-essay-body">' + (e.html || '') + '</div>' +
+    '</div>').join('')
+    : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>';
+
+  document.querySelectorAll('.ce-copy').forEach(b => b.onclick = () => copyEssayLink(b));
+  openEssayFromHash();
+}
+
+// 약화도 회색으로 '명시'한다 — 숨기지 않는 것이 이 노트의 신뢰 조건이다
+function verdictClass(v){
+  return v === '강화' ? '강화' : v === '불변' ? '불변' : v === '약화' ? '약화' : '보류';
+}
+
+function essayUrl(slug){
+  return location.origin + location.pathname + '#essay-' + slug;
+}
+
+function copyEssayLink(btn){
+  const url = essayUrl(btn.dataset.copy);
+  const done = () => { const o = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = o; }, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done, () => window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url));
+  } else { window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url); }
+}
+
+function openEssayFromHash(){
+  const h = location.hash.replace('#', '');
+  if (!h.startsWith('essay-')) return;
+  const card = document.getElementById(h);
+  if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+}
+
+/* ── 소재 투입함 — 소장 로그인 시에만 노출 ── */
+function renderInbox(){
+  if (!isAdmin() || ceTab === 'notes') { $('ceInbox').innerHTML = ''; return; }
+  $('ceInbox').innerHTML = '<div class="ce-inbox">' +
+    '<div class="ce-inbox-title">📮 소재 투입함 — ' + esc((companyOf(ceTab) || {}).ko || '') + '</div>' +
+    '<input id="ceUrl" placeholder="링크 (선택)">' +
+    '<input id="ceTitle" placeholder="제목 (선택 — 직접 게재 시 에세이 제목이 됩니다)">' +
+    '<textarea id="ceMemo" placeholder="메모 — 에세이화라면 관점·지시, 직접 게재라면 본문 전체"></textarea>' +
+    '<div class="ce-mode">' +
+      '<button data-mode="essay" class="' + (ceMode === 'essay' ? 'on' : '') + '">에세이화</button>' +
+      '<button data-mode="direct" class="' + (ceMode === 'direct' ? 'on' : '') + '">직접 게재</button>' +
+    '</div>' +
+    '<button class="btn-gold" id="ceSend" style="width:100%">소재 투입</button>' +
+    '<div class="ce-inbox-note">다음 발사(하루 3회) 때 집필됩니다 — 즉시 반영되지 않습니다. ' +
+      '직접 게재는 AI가 손대지 않고 그대로 실립니다.</div>' +
+    '<div class="ce-mat" id="ceMats">내 소재를 불러오는 중…</div>' +
+  '</div>';
+  document.querySelectorAll('.ce-mode button').forEach(b => b.onclick = () => { ceMode = b.dataset.mode; renderInbox(); loadMaterials(); });
+  $('ceSend').onclick = sendMaterial;
+  loadMaterials();
+}
+
+async function sendMaterial(){
+  const memo = $('ceMemo').value.trim(), url = $('ceUrl').value.trim();
+  if (!memo && !url) { alert('링크나 메모 중 하나는 필요합니다.'); return; }
+  if (ceMode === 'direct' && !memo) { alert('직접 게재는 본문(메모)이 필요합니다.'); return; }
+  try {
+    await addDoc(collection(db, 'materials'), {
+      uid: me.uid, company: ceTab, mode: ceMode, url, memo,
+      title: $('ceTitle').value.trim(), consumed: false, created: serverTimestamp() });
+    $('ceMemo').value = ''; $('ceUrl').value = ''; $('ceTitle').value = '';
+    loadMaterials();
+  } catch(e){ alert('투입 실패: ' + e.message); }
+}
+
+// consumed 필터를 클라이언트에서 건다 — where+orderBy 복합 색인을 요구하지 않기 위해서다
+async function loadMaterials(){
+  const box = $('ceMats');
+  if (!box) return;
+  try {
+    const snap = await getDocs(query(collection(db, 'materials'), orderBy('created', 'desc'), limit(30)));
+    const mine = snap.docs.map(d => d.data()).filter(m => !m.consumed);
+    box.innerHTML = mine.length
+      ? '<b>대기 중인 소재 ' + mine.length + '건</b>' + mine.map(m =>
+          '<div class="ce-mat-item">' + esc((companyOf(m.company) || {}).ko || m.company) +
+          ' · ' + (m.mode === 'direct' ? '직접 게재' : '에세이화') + ' — ' +
+          esc((m.title || m.memo || m.url || '').slice(0, 60)) + '</div>').join('')
+      : '<b>대기 중인 소재 없음</b> — 모두 집필됐거나 판정이 끝났습니다.';
+  } catch(e){ box.innerHTML = '소재 목록을 불러오지 못했습니다 (보안 규칙 확인 필요).'; }
+}
+
 async function init(){
-  try { cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json(); } catch(e){ return; }
+  try { cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json(); } catch(e){ cfg = null; }
+  renderTabs();
+  // 해시 딥링크: #essay-{slug} 는 슬러그 접두사에서 회사를 되찾아 그 탭을 연다
+  const h = location.hash.replace('#', '');
+  if (h.startsWith('essay-')) {
+    const target = (CE.essays || []).find(e => e.slug === h.slice(6));
+    if (target) setTab(target.company, false);
+  } else if (companyOf(h)) {
+    setTab(h, false);
+  }
   if (!cfg || !cfg.apiKey) { $('ntBody').innerHTML = '<div class="nt-count">관측노트 개설 준비 중입니다.</div>'; return; }
   app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
-  onAuthStateChanged(auth, async u => { me = u; renderCompose(); renderLogin(); });
+  onAuthStateChanged(auth, async u => { me = u; renderCompose(); renderLogin(); renderInbox(); });
   await loadList();
 }
 
