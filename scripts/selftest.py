@@ -121,6 +121,26 @@ def main():
           _ce.published_today([{"company": "spacex", "date": "2026-01-02", "origin": "직접"}],
                               "spacex", "2026-01-02"), False)
 
+    # ── 보안 규칙 정본(firestore.rules)과 클라이언트 설정의 adminUid 일치 ──
+    # 두 값이 어긋나면 소장이 자기 소재함에서 잠긴다. 콘솔에 붙여넣기 전에
+    # 여기서 걸러야 "게시했는데 안 된다"를 겪지 않는다.
+    _root = Path(__file__).parent.parent
+    _rules_path = _root / "firestore.rules"
+    check("규칙: firestore.rules 존재", _rules_path.exists(), True)
+    if _rules_path.exists():
+        _rules = _rules_path.read_text(encoding="utf-8")
+        _admin = _json.loads((_root / "data" / "firebase_config.json")
+                             .read_text(encoding="utf-8")).get("adminUid", "")
+        check("규칙: adminUid 가 firebase_config 와 일치", bool(_admin) and _admin in _rules, True)
+        check("규칙: materials 절 존재 (v8)", "match /materials/" in _rules, True)
+        # 소재함이 실수로 공개되면 소장의 미발행 판단이 새어 나간다
+        check("규칙: materials 는 소장 전용",
+              "allow read: if isAdmin();" in _rules, True)
+        # 클라이언트가 실제로 쓰는 컬렉션이 규칙에 다 들어 있는가 (누락 = 기능 정지)
+        _need = ["posts", "users", "images", "judgments", "presence", "materials"]
+        check("규칙: 사용 중인 컬렉션 전부 등재",
+              [c for c in _need if f"match /{c}/" not in _rules], [])
+
     # ── 거인의 어깨: 동일 발행사 복수 클래스 표기 (2026-08-22 수리) ──
     # 사고: 버크셔 카드에 "Alphabet Inc" 가 두 줄로 똑같이 찍혔다(A주/C주).
     # 합산 병합은 금지 — 클래스별 증감(+45% vs +658%)이 매수 패턴 정보다.

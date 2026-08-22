@@ -1,0 +1,136 @@
+rules_version = '2';
+
+// ════════════════════════════════════════════════════════════════════════════
+// UNIVERTRIX — Firestore 보안 규칙  v8  (2026-08-22)
+// ════════════════════════════════════════════════════════════════════════════
+// v8 변경점: materials(동행 관측 소재함) 절 신설 — 소장만 읽기·쓰기·수정.
+//
+// ⚠️ 이 파일은 저장소의 '정본'이지만 **자동 배포되지 않는다.**
+//    Firebase 콘솔 → Firestore Database → 규칙 에 붙여넣고 [게시]해야 적용된다.
+//    반영 절차: 이 파일 수정 → 커밋 → 콘솔 붙여넣기 → 게시 → 완료.
+//    (CI 에 firebase-tools 배포를 붙이는 것은 미결 과제로 남긴다)
+//
+// ⚠️ 역구성 고지 — 정직하게 밝힌다:
+//    v7 까지의 규칙은 저장소에 파일로 존재한 적이 없다(콘솔에만 있었다).
+//    아래 v1~v7 해당 절은 **클라이언트 코드가 실제로 수행하는 읽기·쓰기 패턴에서
+//    역으로 구성**한 것이다. 각 절의 근거 코드 위치를 주석으로 달아 두었고,
+//    확인할 수 없어 추정한 대목은 `[추정]` 으로 표시했다.
+//    → 게시 전에 콘솔의 현행 v7 원문과 한 번 대조해 주시기 바란다. 특히
+//      `[추정]` 표시가 붙은 줄이 현행보다 느슨하면 그쪽을 따르는 것이 안전하다.
+// ════════════════════════════════════════════════════════════════════════════
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── 공통 ──────────────────────────────────────────────────────────────
+    // 관측소장(admin) 판별. data/firebase_config.json 의 adminUid 와 같은 값이어야 한다.
+    // 이 값이 어긋나면 소장이 자기 소재함에서 잠긴다.
+    function isAdmin() {
+      return request.auth != null
+             && request.auth.uid == 'hVQqzuCHmrbsaY1kCbFMKrPmhHJ2';
+    }
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── posts — 관제센터(커뮤니티) 글 ─────────────────────────────────────
+    // 근거: scripts/community-template.html
+    //   addDoc(collection(db,'posts'), {uid,name,photo,text,tags,img,imgId,pinned,created})
+    //   deleteDoc(doc(db,'posts',id))  — 작성자 또는 소장
+    // 봇(관제탑 공지)은 서비스 계정으로 쓰므로 이 규칙을 우회한다.
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() <= 5000;
+      // [추정] 글 수정 UI 는 클라이언트에 없다. 작성자·소장에게만 열어 둔다.
+      allow update: if isOwner(resource.data.uid) || isAdmin();
+      allow delete: if isOwner(resource.data.uid) || isAdmin();
+
+      // 좋아요 — 문서 id 가 곧 uid 다(중복 방지). 근거: toggleStar()
+      //   setDoc(doc(db,'posts',id,'stars',me.uid)) / deleteDoc(같은 경로)
+      match /stars/{uid} {
+        allow read: if true;
+        allow create, delete: if isOwner(uid);
+        allow update: if false;          // 토글은 생성·삭제로만 표현된다
+      }
+
+      // 댓글 — 근거: addDoc(collection(db,'posts',id,'comments'), …)
+      //             deleteDoc(doc(db,'posts',pid,'comments',cid))
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isSignedIn()
+                      && request.resource.data.uid == request.auth.uid;
+        allow update: if false;          // [추정] 댓글 수정 UI 없음
+        allow delete: if isOwner(resource.data.uid) || isAdmin();
+      }
+    }
+
+    // ── users — 닉네임 ────────────────────────────────────────────────────
+    // 근거: getDoc(doc(db,'users',uid)) 로 남의 닉네임을 읽고,
+    //       setDoc(doc(db,'users',me.uid),{nick}) 로 자기 것만 쓴다.
+    match /users/{uid} {
+      allow read: if true;
+      allow write: if isOwner(uid);
+    }
+
+    // ── images — 커뮤니티 첨부 이미지(data URI) ───────────────────────────
+    // 근거: addDoc(collection(db,'images'),{uid,data,created}) / getDoc(doc(db,'images',id))
+    match /images/{imageId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+                    && request.resource.data.uid == request.auth.uid;
+      // [추정] 이미지 수정·삭제 UI 없음 — 소장만 정리할 수 있게 둔다
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    // ── judgments — 관측노트 한줄 기록 ────────────────────────────────────
+    // 근거: scripts/journal-template.html — 읽기는 누구나, 기록·삭제는 소장만.
+    // 시차 관측 봇(parallax_journal)은 서비스 계정이라 이 규칙을 우회한다.
+    match /judgments/{noteId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── presence — 동시 접속자 카운터 ─────────────────────────────────────
+    // 근거: build_site.py PRESENCE_SNIPPET —
+    //   setDoc(doc(db,'presence',pid),{t:serverTimestamp()}) 를 익명으로 주기 호출하고
+    //   getCountFromServer(query(collection(db,'presence'), where('t','>',cutoff))) 로 센다.
+    // 로그인 없이 써야 하므로 유일하게 비인증 쓰기를 허용하는 컬렉션이다.
+    // 대신 문서에 t 하나만 담기게 막아 저장소 악용을 줄인다.
+    match /presence/{pingId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.keys().hasOnly(['t']);
+      allow delete: if false;
+    }
+
+    // ── materials — 동행 관측 소재함 (v8 신설) ────────────────────────────
+    // 소장이 관측노트에서 던지는 링크·메모. 동행 엔진이 다음 full 회차에 읽어
+    // 에세이로 집필하거나(essay) 그대로 게재한다(direct).
+    // 파이프라인은 서비스 계정으로 접근하므로 이 규칙의 적용을 받지 않는다
+    // (consumed=true 마킹도 서비스 계정이 한다).
+    // 근거: scripts/journal-template.html sendMaterial()/loadMaterials()
+    match /materials/{materialId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin()
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.consumed == false
+                    && request.resource.data.company in ['spacex', 'alphabet', 'anthropic']
+                    && request.resource.data.mode in ['essay', 'direct']
+                    && request.resource.data.memo is string
+                    && request.resource.data.memo.size() <= 20000;
+      // 소재는 소급 삭제하지 않는 것이 원칙이지만, 오투입 정정은 소장에게 남겨 둔다
+      allow update, delete: if isAdmin();
+    }
+
+    // ── 그 밖의 모든 경로는 잠근다 ────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
