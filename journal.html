@@ -154,13 +154,28 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ce-waiting-icon { font-size: 34px; }
 .ce-waiting-text { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
 
-.ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; scroll-margin-top: 70px; }
-.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: 11.5px; color: var(--text-muted); margin-bottom: 7px; }
-.ce-essay-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; line-height: 1.4; }
-.ce-essay-body { font-size: 14.5px; line-height: 1.8; }
-.ce-essay-body h3 { font-size: 14.5px; font-weight: 800; color: var(--gold); margin: 16px 0 6px; }
-.ce-essay-body p { margin: 6px 0; }
-.ce-essay-body ul { margin: 6px 0 6px 18px; }
+/* 에세이 본문 조판 = 관측일지 칼럼과 같은 급. 다만 헤더에는 칼럼의 비주얼
+   블록(makeColViz)을 넣지 않는다 — 에세이는 칼럼보다 호흡이 짧아 회사 아이콘 ·
+   날짜 · 판정만으로 충분하고, 그림은 본문 안 수치 차트가 맡는다. */
+.ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; scroll-margin-top: 80px; }
+.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; }
+.ce-essay-face { font-size: 15px; }
+.ce-essay-title { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; line-height: 1.35; }
+.ce-essay-body { font-size: 15.5px; line-height: 1.85; color: var(--text); letter-spacing: -0.003em; }
+.ce-essay-body h3 { font-size: 16px; font-weight: 800; color: var(--gold); margin: 22px 0 8px; letter-spacing: -0.02em; }
+.ce-essay-body h3:first-child { margin-top: 4px; }
+.ce-essay-body p { margin: 10px 0; }
+.ce-essay-body b { font-weight: 800; }
+.ce-essay-body ul, .ce-essay-body ol { margin: 10px 0 10px 20px; }
+.ce-essay-body li { margin: 4px 0; }
+.ce-essay-body .col-chart { margin: 18px 0; }
+.ce-essay-body .col-chart svg { width: 100%; height: auto; display: block; border-radius: 10px; }
+/* 차트 패널(#10141f)은 밤 테마 카드 배경과 명도가 가까워 그림의 경계가 사라진다.
+   낮에는 저절로 '개체'로 읽히지만 밤에는 실선 하나가 있어야 그림으로 읽힌다. */
+[data-theme="dark"] .ce-essay-body .col-chart svg { border: 1px solid var(--line-strong); }
+.ce-share { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.ce-share button { background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--text-muted); font-size: 11.5px; padding: 5px 11px; cursor: pointer; font-family: inherit; font-weight: 700; }
+.ce-share button:hover { border-color: var(--gold); color: var(--gold); }
 .ce-essay-body .ce-src { font-size: 12px; word-break: break-all; }
 .ce-essay-body .ce-src a { color: var(--gold); }
 .ce-essay-body .ce-disc, .ce-essay-body .ce-coi { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.6; }
@@ -172,8 +187,6 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ce-v-약화 { color: var(--text-muted); background: var(--bg); }
 .ce-v-보류 { color: var(--text-muted); border-style: dashed; }
 .ce-origin { font-size: 10.5px; font-weight: 800; color: var(--gold); }
-.ce-copy { background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--text-muted); font-size: 11px; padding: 3px 9px; cursor: pointer; font-family: inherit; margin-left: auto; }
-.ce-copy:hover { border-color: var(--gold); color: var(--gold); }
 
 .ce-inbox { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; }
 .ce-inbox-title { font-size: 13px; font-weight: 800; color: var(--gold); margin-bottom: 10px; }
@@ -488,19 +501,25 @@ function renderCompany(slug){
     '</div>';
 
   const list = (CE.essays || []).filter(e => e.company === slug);
-  $('ceEssays').innerHTML = list.length ? list.map(e =>
+  $('ceEssays').innerHTML = list.length ? list.map((e, i) =>
     '<div class="ce-essay" id="essay-' + esc(e.slug) + '">' +
-      '<div class="ce-essay-meta"><span>' + esc(e.date) + '</span>' +
+      '<div class="ce-essay-meta">' +
+        '<span class="ce-essay-face">' + esc(c.emoji) + '</span>' +
+        '<span>' + esc(e.date) + '</span>' +
         '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
         (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
-        '<button class="ce-copy" data-copy="' + esc(e.slug) + '">🔗 복사</button>' +
       '</div>' +
       '<div class="ce-essay-title">' + esc(e.title) + '</div>' +
+      '<div class="ce-share">' +
+        '<button data-copy="' + esc(e.slug) + '">🔗 링크 복사</button>' +
+        '<button data-copytext="' + i + '">📄 본문 복사</button>' +
+      '</div>' +
       '<div class="ce-essay-body">' + (e.html || '') + '</div>' +
     '</div>').join('')
     : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>';
 
-  document.querySelectorAll('.ce-copy').forEach(b => b.onclick = () => copyEssayLink(b));
+  document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => copyEssayLink(b));
+  document.querySelectorAll('[data-copytext]').forEach(b => b.onclick = () => copyEssayText(b, list));
   openEssayFromHash();
 }
 
@@ -513,12 +532,26 @@ function essayUrl(slug){
   return location.origin + location.pathname + '#essay-' + slug;
 }
 
-function copyEssayLink(btn){
-  const url = essayUrl(btn.dataset.copy);
+// 복사 장치는 관측일지 칼럼(copyColLink/copyColText)과 같은 문법이다
+function copyToClip(text, btn){
   const done = () => { const o = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = o; }, 1500); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(done, () => window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url));
-  } else { window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url); }
+    navigator.clipboard.writeText(text).then(done, () => window.prompt('아래 내용을 복사하세요 (Ctrl+C):', text.slice(0, 2000)));
+  } else { window.prompt('아래 내용을 복사하세요 (Ctrl+C):', text.slice(0, 2000)); }
+}
+
+function copyEssayLink(btn){ copyToClip(essayUrl(btn.dataset.copy), btn); }
+
+// 본문 복사 — 차트(SVG)는 텍스트로 옮길 수 없으므로 걷어내고 주소를 끝에 붙인다
+function copyEssayText(btn, list){
+  const e = list[Number(btn.dataset.copytext)];
+  if (!e) return;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = e.html || '';
+  tmp.querySelectorAll('svg, .col-chart').forEach(n => n.remove());
+  const nl = String.fromCharCode(10);
+  const body = (tmp.innerText || tmp.textContent || '').replace(/\n{3,}/g, nl + nl).trim();
+  copyToClip(e.title + nl + nl + body + nl + nl + essayUrl(e.slug), btn);
 }
 
 function openEssayFromHash(){

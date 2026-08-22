@@ -346,7 +346,8 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
  "verdict": "강화|불변|약화|판단 보류",
  "body": "<h3>·<p>·<ul>·<li> 만 쓴 HTML. 헌법의 6단 구조를 지키되 6번 출처·면책은 넣지 마라(엔진이 붙인다)",
  "sources": ["실제로 근거로 삼은 URL", "..."],
- "watch": ["다음 관측 포인트", "..."]}}""")
+ "watch": ["다음 관측 포인트", "..."],
+ "charts": [{{"title": "차트 제목", "subtitle": "부제·단위 설명", "unit": "단위(%·B·건 등, 없으면 빈 문자열)", "series": [{{"label": "항목", "value": 숫자}}]}}]}}""")
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
         headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
@@ -358,6 +359,27 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
     text = "".join(b.get("text", "") for b in r.json().get("content", []))
     text = re.sub(r"```(?:json)?", "", text).strip()
     return json.loads(text[text.find("{"):text.rfind("}") + 1])
+
+
+def render_charts(charts):
+    """수치 차트 — signal_column 의 기계를 **재사용**한다(복사하지 않는다).
+
+    두 벌이 되면 반드시 갈라진다: 항목<2 방어·오염값(NaN/inf) 방어·연도 계열
+    시간선 전환·다크 패널(#10141f)·UNIVERTRIX 각인이 관측일지 칼럼과 한 문법이어야
+    같은 사이트의 그림으로 읽힌다. 여기서는 그 함수를 부르기만 한다.
+    """
+    try:
+        from signal_column import render_chart
+    except Exception as e:
+        print(f"[동행] 차트 기계 로드 실패 → 차트 없이 발행 ({e})", file=sys.stderr)
+        return ""
+    out = ""
+    for ch in (charts or [])[:2]:
+        try:
+            out += render_chart(ch)
+        except Exception as e:
+            print(f"[동행] 차트 렌더 실패 → 건너뜀 ({e})", file=sys.stderr)
+    return out
 
 
 def tail_html(slug, sources):
@@ -374,14 +396,17 @@ def tail_html(slug, sources):
     return "".join(parts)
 
 
-def build_entry(slug, title, verdict, body_html, sources, origin, today):
+def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=None):
     verdict = verdict if verdict in VERDICTS else "판단 보류"
+    charts_html = render_charts(charts)
+    if charts_html:
+        print(f"[동행] {slug}: 원문 수치 차트 {charts_html.count('<svg')}개 동봉")
     return {
         "company": slug,
         "date": today,
         "title": title[:80],
         "verdict": verdict,
-        "html": body_html + tail_html(slug, sources),
+        "html": body_html + charts_html + tail_html(slug, sources),
         "sources": [s for s in (sources or []) if isinstance(s, str)][:6],
         "origin": origin,
         "slug": make_slug(slug, title, today),
@@ -428,7 +453,8 @@ def run_material(mat, companies, api_key, constitution, essays, today):
         return None, "인용 규율 위반 — 발행 보류 (" + " / ".join(bad[:2]) + ")"
     srcs = res.get("sources") or ([mat["url"]] if mat.get("url") else [])
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
-                       res.get("body", ""), srcs, "소재", today), "소재 에세이화"
+                       res.get("body", ""), srcs, "소재", today,
+                       charts=res.get("charts")), "소재 에세이화"
 
 
 def run_auto(comp, api_key, constitution, essays, today):
@@ -467,7 +493,8 @@ def run_auto(comp, api_key, constitution, essays, today):
         return None
     print(f"[동행] {comp['ko']}: 후보 {len(cands)} · 발행 1 — 축 {res.get('axis','')}")
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
-                       res.get("body", ""), res.get("sources"), "auto", today)
+                       res.get("body", ""), res.get("sources"), "auto", today,
+                       charts=res.get("charts"))
 
 
 def main():
