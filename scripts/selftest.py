@@ -87,6 +87,34 @@ def main():
     check("load_watch: 지역·잠재 유지", "NVDA" in w and "INTC" in w, True)
     check("load_watch: 점 티커 제외 유지", "005930.KS" not in w, True)
 
+    # ── 거인의 어깨: 동일 발행사 복수 클래스 표기 (2026-08-22 수리) ──
+    # 사고: 버크셔 카드에 "Alphabet Inc" 가 두 줄로 똑같이 찍혔다(A주/C주).
+    # 합산 병합은 금지 — 클래스별 증감(+45% vs +658%)이 매수 패턴 정보다.
+    from fetch_gurus import class_label as _cl, label_holdings as _lh
+    check("gurus: CL A 판별", _cl("CAP STK CL A"), "Class A")
+    check("gurus: CLASS B 판별", _cl("CLASS B"), "Class B")
+    check("gurus: 상투어는 판별 불가", [_cl(t) for t in ("COM", "SHS", "PAR $.01", "")],
+          [None, None, None, None])
+    check("gurus: ETF 신탁은 종목명이 클래스 필드에", _cl("RUSSELL 2000 ETF"), "Russell 2000 Etf")
+    _lab = lambda rows: [e["label"] for e in _lh(
+        [{"base": b, "mark": m, "title": t} for b, m, t in rows])]
+    check("gurus: 알파벳 A/C 구분",
+          _lab([("Alphabet Inc", "", "CAP STK CL A"), ("Alphabet Inc", "", "CAP STK CL C")]),
+          ["Alphabet Inc (Class A)", "Alphabet Inc (Class C)"])
+    check("gurus: 중복 아니면 접미 없음",
+          _lab([("Apple Inc", "", "COM"), ("Alphabet Inc", "", "CAP STK CL A")]),
+          ["Apple Inc", "Alphabet Inc"])
+    check("gurus: 판별 불가 폴백 + 순번",
+          _lab([("Foo Inc", "", "COM"), ("Foo Inc", "", "COM")]),
+          ["Foo Inc (별도 클래스)", "Foo Inc (별도 클래스 2)"])
+    check("gurus: PUT 표기는 클래스 뒤에",
+          _lab([("Spdr Tr", " (PUT)", "ENERGY SELECT SECTOR"),
+                ("Spdr Tr", " (PUT)", "FINANCIAL SELECT SECT")]),
+          ["Spdr Tr (Energy Select Sector) (PUT)", "Spdr Tr (Financial Select Sect) (PUT)"])
+    check("gurus: PUT/보통주는 원래 다른 줄 — 접미 없음",
+          _lab([("Ishares Tr", "", "COM"), ("Ishares Tr", " (PUT)", "COM")]),
+          ["Ishares Tr", "Ishares Tr (PUT)"])
+
     # ── 정비 관제탑(pipeline_sentinel) 판정 로직 — 침묵 실패 감시망의 자체 검증 ──
     # 경보가 '울려야 할 때만' 울리는지. 순수 함수만 부르므로 부작용·네트워크 없음.
     # (전 케이스는 scripts/test_sentinel.py — 여기엔 회귀 핵심만 둔다)

@@ -18,6 +18,7 @@
   - SEC 요청 간 0.5초 간격 + User-Agent 명시 (SEC 필수 요건)
 """
 import json
+import re
 import sys
 import time
 import urllib.error
@@ -103,7 +104,7 @@ def parse_infotable(xml_text):
     for el in root.iter():
         if localname(el.tag) != "infoTable":
             continue
-        rec = {"name": "", "cusip": "", "value": 0, "shares": 0, "put_call": ""}
+        rec = {"name": "", "cusip": "", "title": "", "value": 0, "shares": 0, "put_call": ""}
         for c in el.iter():
             ln = localname(c.tag)
             txt = (c.text or "").strip()
@@ -111,6 +112,10 @@ def parse_infotable(xml_text):
                 rec["name"] = txt
             elif ln == "cusip":
                 rec["cusip"] = txt
+            elif ln == "titleOfClass":
+                # 같은 발행사의 복수 클래스(Alphabet A/C)·복수 ETF(iShares Tr)를
+                # 가르는 유일한 필드 — 표기 구분에 쓴다
+                rec["title"] = txt
             elif ln == "value":
                 try:
                     rec["value"] = int(float(txt))  # 2023년~ 단위: 달러
@@ -135,6 +140,7 @@ def aggregate(rows):
         key = (r["cusip"], r["put_call"])
         if key not in agg:
             agg[key] = {"name": r["name"], "cusip": r["cusip"],
+                        "title": r.get("title", ""),
                         "put_call": r["put_call"], "value": 0, "shares": 0}
         agg[key]["value"] += r["value"]
         agg[key]["shares"] += r["shares"]
@@ -149,6 +155,72 @@ def pretty_name(raw):
         words.append(w.title() if w.upper() not in small or w == "&" else
                      (w if w == "&" else w.capitalize()))
     return " ".join(words)
+
+
+# titleOfClass 에서 의미를 지우고 남는 상투어 — 이것만 남으면 판별 불가로 본다
+_TITLE_NOISE = re.compile(
+    r"\b(COM|COMMON|STK|STOCK|CAP|CAPITAL|SHS|SH|SHARES|ORD|ORDINARY|NPV|USD|NEW|"
+    r"PAR|VALUE|VTG|VOTING|NON|UNIT|UNITS|BEN|INT|INTEREST|TR|TRUST)\b")
+_CLASS_RE = re.compile(r"\bCL(?:ASS)?\s*([A-Z0-9]{1,2})\b")
+_SERIES_RE = re.compile(r"\bSER(?:IES)?\s*([A-Z0-9]{1,2})\b")
+
+
+def class_label(title):
+    """13F titleOfClass → 사람이 읽는 클래스 구분. 판별 불가면 None.
+
+    'CAP STK CL C'      → 'Class C'      (알파벳 A/C 같은 복수 클래스)
+    'RUSSELL 2000 ETF'  → 'Russell 2000 Etf'  (iShares Tr 처럼 발행사명이 같고
+                                               실제 종목이 이 필드에 담기는 경우)
+    'COM' / 'PAR $.01'  → None           (상투어뿐 — 폴백으로 넘긴다)
+    """
+    t = (title or "").upper().strip()
+    if not t:
+        return None
+    m = _CLASS_RE.search(t)
+    if m:
+        return f"Class {m.group(1)}"
+    m = _SERIES_RE.search(t)
+    if m:
+        return f"Series {m.group(1)}"
+    rest = _TITLE_NOISE.sub(" ", t)
+    rest = " ".join(re.sub(r"[^A-Z0-9&. ]", " ", rest).split())
+    # 글자가 하나도 없으면 액면가 잔해('PAR $.01' → '.01') 같은 소음이다
+    if len(rest) < 3 or not re.search(r"[A-Z]", rest):
+        return None
+    return rest.title()
+
+
+def label_holdings(entries):
+    """한 매니저 카드 안에서 표시명이 2회 이상 겹치면 클래스 구분을 붙인다.
+
+    ⚠️ 합산 병합은 하지 않는다 — 클래스별 증감(+45% vs +658%)이 매수 패턴
+    정보이기 때문이다. 같은 이름 두 줄로 보이는 것이 버그였지, 두 줄인 것이
+    버그가 아니다.
+    entries: [{"base": 정돈된 발행사명, "mark": ' (PUT)' 등, "title": titleOfClass}]
+    → 각 항목에 "label" 을 채워 돌려준다.
+    """
+    counts = {}
+    for e in entries:
+        key = e["base"] + e["mark"]
+        counts[key] = counts.get(key, 0) + 1
+    seen = {}
+    for e in entries:
+        key = e["base"] + e["mark"]
+        if counts[key] < 2:
+            e["label"] = key
+            continue
+        cls = class_label(e.get("title")) or "별도 클래스"
+        label = f"{e['base']} ({cls}){e['mark']}"
+        seen[label] = seen.get(label, 0) + 1
+        if seen[label] > 1:   # 클래스 필드까지 같으면 순번으로라도 갈라 준다
+            label = f"{e['base']} ({cls} {seen[label]}){e['mark']}"
+        e["label"] = label
+    return entries
+
+
+def put_call_mark(put_call):
+    pc = (put_call or "").upper()
+    return " (PUT)" if pc == "PUT" else " (CALL)" if pc == "CALL" else ""
 
 
 def fetch_guru(cfg, top_n):
@@ -210,22 +282,29 @@ def fetch_guru(cfg, top_n):
             chg = f"{pct:+.0f}%" if abs(pct) >= 1 else "―"
         else:
             chg = "―"
-        label = pretty_name(h["name"]) + (" (PUT)" if h["put_call"].upper() == "PUT"
-                                          else " (CALL)" if h["put_call"].upper() == "CALL" else "")
         out_holdings.append({
-            "name": label,
+            "base": pretty_name(h["name"]),
+            "mark": put_call_mark(h["put_call"]),
+            "title": h.get("title", ""),
             "pct": round(h["value"] / total * 100, 1),
             "value_b": round(h["value"] / 1e9, 2),
             "chg": chg,
         })
+
+    # 표시명 확정 — 같은 카드 안 동명이인(복수 클래스)만 구분자를 얻는다
+    label_holdings(out_holdings)
+    out_holdings = [{"name": e["label"], "pct": e["pct"],
+                     "value_b": e["value_b"], "chg": e["chg"]} for e in out_holdings]
 
     # 전량 매도: 직전 분기 상위 top_n 안에 있었는데 이번에 완전히 사라진 종목
     exits = []
     if prev:
         cur_keys = {(h["cusip"], h["put_call"]) for h in cur["holdings"]}
         prev_top = sorted(prev["holdings"], key=lambda h: -h["value"])[:top_n]
-        exits = [pretty_name(h["name"]) for h in prev_top
-                 if (h["cusip"], h["put_call"]) not in cur_keys][:5]
+        gone = [h for h in prev_top if (h["cusip"], h["put_call"]) not in cur_keys][:5]
+        exits = [e["label"] for e in label_holdings(
+            [{"base": pretty_name(h["name"]), "mark": put_call_mark(h["put_call"]),
+              "title": h.get("title", "")} for h in gone])]
 
     q = f"{cur['period'][:4]}년 {(int(cur['period'][5:7]) - 1) // 3 + 1}분기"
     return {
