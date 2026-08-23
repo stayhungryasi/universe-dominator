@@ -2,23 +2,23 @@
  "version": 1,
  "sources": {
   "Hacker News 300+": {
-   "zero_streak": 0,
+   "zero_streak": 1,
    "alerted": false,
    "ever_seen": true
   },
   "OpenAI": {
-   "zero_streak": 9,
+   "zero_streak": 10,
    "alerted": true,
    "ever_seen": true
   },
   "Anthropic": {
-   "zero_streak": 0,
+   "zero_streak": 1,
    "alerted": false,
    "ever_seen": true
   },
   "Google DeepMind": {
-   "zero_streak": 3,
-   "alerted": false,
+   "zero_streak": 4,
+   "alerted": true,
    "ever_seen": true
   }
  },
@@ -37,19 +37,29 @@
    "date": "2026-08-23",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-08-24",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
   "2026-08-22": [
    "sentinel:signals:OpenAI:2026-08-22"
+  ],
+  "2026-08-24": [
+   "sentinel:signals:Google DeepMind:2026-08-24"
   ]
  },
  "last_verdict": {
-  "at": "2026-08-23 18:53",
-  "ok": true,
-  "alerts": []
+  "at": "2026-08-24 08:53",
+  "ok": false,
+  "alerts": [
+   "fetch_signals: Google DeepMind 0건 4회 연속"
+  ]
  },
- "last_run": "2026-08-23 18:53",
+ "last_run": "2026-08-24 08:53",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -110,7 +120,7 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 0,
+   "err_streak": 1,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
