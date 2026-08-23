@@ -221,6 +221,95 @@ class RegenerateTest(unittest.TestCase):
         self.assertIsNone(entry)
 
 
+class SourceIntegrityTest(unittest.TestCase):
+    """출처 무결성 — 2026-08-23 사고: 모델이 지어낸 문자열이 href 로 올라갔다.
+
+    "https://www.reuters.com (White House ... memo, 2026.08.20" 이 통째로 링크돼
+    클릭 불능이었다. 링크로 보이는데 아무 데도 가지 않는 쪽이 링크가 없는 것보다 나쁘다.
+    """
+
+    def test_valid_url(self):
+        for good in ("https://a.com/x", "http://b.co.kr/p?q=1"):
+            self.assertTrue(ce.valid_url(good), good)
+        for bad in ("https://www.reuters.com (White House memo, 2026.08.20",
+                    "로이터 (원문 기반)", "", None, "ftp://a.com/x", "https://nohost"):
+            self.assertFalse(ce.valid_url(bad), repr(bad))
+
+    def test_broken_source_rendered_as_text_not_link(self):
+        broken = "https://www.reuters.com (White House memo, 2026.08.20"
+        html = ce.tail_html("spacex", [{"url": broken, "full": True, "attempted": True}])
+        self.assertNotIn("<a href", html, "URL 이 아닌 값에 링크를 걸면 안 된다")
+        self.assertIn("링크 불가", html)
+
+    def test_valid_source_is_linked(self):
+        u = "https://www.hellot.net/news/article.html?no=114491"
+        html = ce.tail_html("spacex", [{"url": u, "full": True, "attempted": True}])
+        self.assertIn(f'<a href="{u}"', html)
+        self.assertIn('rel="noopener"', html)
+
+    def test_paywalled_source_is_labelled(self):
+        u = "https://www.wsj.com/x"
+        html = ce.tail_html("spacex", [{"url": u, "full": False, "attempted": True}])
+        self.assertIn(f'<a href="{u}"', html, "전문을 못 읽어도 그 URL 은 실재한다")
+        self.assertIn("유료벽 — 제목·요약 기반", html)
+        # 시도조차 안 한 소스에 유료벽이라 적으면 그건 거짓말이다
+        html2 = ce.tail_html("spacex", [{"url": u, "full": False, "attempted": False}])
+        self.assertNotIn("유료벽", html2)
+        self.assertIn("제목·요약 기반", html2)
+
+    def test_registry_drops_model_inventions(self):
+        """출처의 유일한 원천은 수집 원장 — 모델이 덧붙인 주소는 버린다."""
+        items = [{"url": "https://real.com/a", "article": "본문", "article_attempted": True}]
+        cited = ["https://real.com/a",
+                 "https://www.reuters.com (White House memo, 2026.08.20"]
+        reg = ce.source_registry(items, cited)
+        self.assertEqual([r["url"] for r in reg], ["https://real.com/a"])
+
+    def test_registry_falls_back_when_nothing_matches(self):
+        items = [{"url": "https://real.com/a", "article": "", "article_attempted": True}]
+        reg = ce.source_registry(items, ["https://made-up.example/z"])
+        self.assertEqual([r["url"] for r in reg], ["https://real.com/a"])
+        self.assertFalse(reg[0]["full"])
+
+    def test_model_written_tail_is_stripped(self):
+        body = ("<h3>다음 관측 포인트</h3><ul><li>3Q 실적</li></ul>"
+                "<h3>출처</h3><ul><li>로이터 (원문 기반)</li></ul>"
+                "<p><strong>면책:</strong> …</p>")
+        out = ce.strip_model_tail(body)
+        self.assertIn("다음 관측 포인트", out, "분석 문단은 건드리지 않는다")
+        self.assertNotIn("로이터", out)
+        self.assertNotIn("면책", out)
+
+    def test_build_entry_has_single_source_section(self):
+        e = ce.build_entry(
+            "spacex", "t", "강화",
+            "<p>분석</p><h3>출처</h3><ul><li>로이터</li></ul>",
+            [{"url": "https://real.com/a", "full": True, "attempted": True}],
+            "auto", TODAY)
+        self.assertEqual(e["html"].count("<h3>출처</h3>"), 1, "출처 절은 하나뿐이어야 한다")
+        self.assertIn("https://real.com/a", e["html"])
+        self.assertNotIn("로이터", e["html"])
+
+    def test_rerender_is_idempotent_and_fixes_old(self):
+        doc = {"essays": [{
+            "company": "spacex", "sources": ["https://ok.com/a", "https://x.com (설명)"],
+            "html": ("<p>분석</p><h3>출처</h3><ul class='ce-src'>"
+                     "<li><a href=\"https://x.com (설명)\">깨진 링크</a></li></ul>"
+                     "<p class='ce-disc'>면책</p>")}]}
+        n = ce.rerender_tails(doc)
+        self.assertEqual(n, 1)
+        h = doc["essays"][0]["html"]
+        self.assertIn("<p>분석</p>", h, "본문은 그대로")
+        self.assertIn('<a href="https://ok.com/a"', h)
+        self.assertNotIn('href="https://x.com (설명)"', h, "깨진 href 가 남으면 안 된다")
+        self.assertIn("링크 불가", h)
+        self.assertEqual(ce.rerender_tails(doc), 0, "두 번째 실행은 변경 없음(멱등)")
+
+    def test_normalize_accepts_old_string_schema(self):
+        recs = ce.normalize_sources(["https://a.com/x"])
+        self.assertEqual(recs, [{"url": "https://a.com/x", "full": True, "attempted": True}])
+
+
 class LedgerTest(unittest.TestCase):
     """원장·판단층 규율"""
 

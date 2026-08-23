@@ -465,18 +465,112 @@ def render_charts(charts):
     return out
 
 
+# 꼬리(출처·이해관계·면책)를 감싸는 표식 — 소급 재렌더의 경계가 된다
+TAIL_OPEN = '<div class="ce-tail">'
+TAIL_CLOSE = "</div>"
+# 모델이 헌법 6번을 스스로 써 버린 경우(엔진이 붙인다고 일렀는데도) 그 꼬리를 걷어낸다
+_MODEL_TAIL = re.compile(
+    r"<h3>\s*출처\s*</h3>(?:(?!<h3>).)*$", re.S)
+
+
+def valid_url(u):
+    """href 로 쓸 수 있는 값인가 — scheme + host 가 실제로 파싱되는가.
+
+    모델이 'https://www.reuters.com (White House ... memo, 2026.08.20)' 같은
+    설명 섞인 문자열을 출처라며 내놓은 적이 있다(2026-08-23 실측). 그대로 href 에
+    넣으면 클릭 불능 링크가 된다 — 링크로 보이는데 아무 데도 가지 않는 쪽이
+    링크가 없는 것보다 나쁘다.
+    """
+    if not isinstance(u, str):
+        return False
+    u = u.strip()
+    if " " in u or len(u) > 500:
+        return False
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(u)
+        return p.scheme in ("http", "https") and bool(p.netloc) and "." in p.netloc
+    except Exception:
+        return False
+
+
+def normalize_sources(raw):
+    """출처 레코드 정규화 — 구 스키마(문자열 목록)도 그대로 읽는다.
+
+    → [{"url": str, "full": bool, "attempted": bool}]
+    """
+    out = []
+    for s in raw or []:
+        if isinstance(s, str):
+            out.append({"url": s, "full": True, "attempted": True})
+        elif isinstance(s, dict) and s.get("url"):
+            out.append({"url": str(s["url"]),
+                        "full": bool(s.get("full", True)),
+                        "attempted": bool(s.get("attempted", True))})
+    return out[:6]
+
+
+def _esc(s):
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
+
+
 def tail_html(slug, sources):
-    """에세이 말미 고정 블록 — 출처 · 면책 · (anthropic 만) 이해관계."""
+    """에세이 말미 고정 블록 — 출처 · (anthropic 만) 이해관계 · 면책.
+
+    출처는 **모델 출력이 아니라 수집 단계가 실제로 요청한 URL**로만 만든다.
+    모델은 본문을 쓰고, 출처는 기계가 안다. URL 로 성립하지 않는 항목은
+    링크를 걸지 않고 텍스트로만 남긴다(정직하게 보이되 속이지는 않게).
+    """
     parts = []
-    links = [s for s in (sources or []) if isinstance(s, str) and s.startswith("http")]
-    if links:
-        lis = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{u[:90]}</a></li>'
-                      for u in links[:6])
-        parts.append(f"<h3>출처</h3><ul class='ce-src'>{lis}</ul>")
+    recs = normalize_sources(sources)
+    if recs:
+        lis = []
+        for r in recs:
+            u = r["url"].strip()
+            # 전문을 못 읽었으면 그 사실을 적는다 — 근거의 두께를 숨기지 않는다
+            if not r["full"]:
+                note = ("<span class='ce-src-note'> (유료벽 — 제목·요약 기반)</span>"
+                        if r["attempted"]
+                        else "<span class='ce-src-note'> (제목·요약 기반)</span>")
+            else:
+                note = ""
+            if valid_url(u):
+                lis.append(f'<li><a href="{_esc(u)}" target="_blank" rel="noopener">'
+                           f'{_esc(u[:90])}</a>{note}</li>')
+            else:
+                lis.append(f"<li>{_esc(u[:120])}<span class='ce-src-note'> "
+                           f"(링크 불가 — 주소 형식 아님)</span></li>")
+        parts.append("<h3>출처</h3><ul class='ce-src'>" + "".join(lis) + "</ul>")
     if slug == "anthropic":
         parts.append(f"<p class='ce-coi'>{ANTHROPIC_COI}</p>")
     parts.append(f"<p class='ce-disc'>{DISCLAIMER}</p>")
-    return "".join(parts)
+    return TAIL_OPEN + "".join(parts) + TAIL_CLOSE
+
+
+def strip_model_tail(body):
+    """모델이 스스로 붙인 출처·면책 꼬리를 걷어낸다.
+
+    헌법과 응답 스키마 둘 다 "6번 출처·면책은 넣지 마라(엔진이 붙인다)"고 이르지만
+    모델이 지키지 않는 회차가 있다. 그대로 두면 한 에세이에 출처 절이 두 개가 되고,
+    그중 하나는 검증되지 않은 모델의 기억이다 — 그쪽이 더 위험하다.
+    본문 끝의 <h3>출처</h3> 이후만 잘라낸다(분석 문단은 건드리지 않는다).
+    """
+    return _MODEL_TAIL.sub("", body or "").rstrip()
+
+
+def split_tail(html):
+    """기존 에세이 html 을 (본문, 꼬리) 로 가른다 — 소급 재렌더용."""
+    i = (html or "").find(TAIL_OPEN)
+    if i >= 0:
+        return html[:i], html[i:]
+    # 표식이 없는 구세대: 엔진이 붙인 출처/이해관계/면책의 시작점을 찾는다
+    for marker in ("<h3>출처</h3><ul class='ce-src'>", "<p class='ce-coi'>",
+                   "<p class='ce-disc'>"):
+        j = (html or "").find(marker)
+        if j >= 0:
+            return html[:j], html[j:]
+    return html or "", ""
 
 
 def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=None):
@@ -484,16 +578,36 @@ def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=
     charts_html = render_charts(charts)
     if charts_html:
         print(f"[동행] {slug}: 원문 수치 차트 {charts_html.count('<svg')}개 동봉")
+    recs = normalize_sources(sources)
     return {
         "company": slug,
         "date": today,
         "title": title[:80],
         "verdict": verdict,
-        "html": body_html + charts_html + tail_html(slug, sources),
-        "sources": [s for s in (sources or []) if isinstance(s, str)][:6],
+        "html": strip_model_tail(body_html) + charts_html + tail_html(slug, recs),
+        "sources": recs,
         "origin": origin,
         "slug": make_slug(slug, title, today),
     }
+
+
+def rerender_tails(doc):
+    """기발행 에세이의 출처 절을 sources[] 기준으로 다시 그린다 (멱등).
+
+    본문(분석)은 건드리지 않는다. 바뀌는 것은 '출처 표기'뿐 — 다만 모델이 본문 끝에
+    스스로 적어 둔 출처·면책 꼬리도 출처 표기라서 함께 기계 원장으로 교체한다.
+    """
+    n = 0
+    for e in doc.get("essays", []):
+        body, _old = split_tail(e.get("html", ""))
+        body = strip_model_tail(body)
+        recs = normalize_sources(e.get("sources"))
+        new = body + tail_html(e.get("company", ""), recs)
+        if new != e.get("html"):
+            e["html"] = new
+            e["sources"] = recs
+            n += 1
+    return n
 
 
 # ────────────────────────────────────────────────────────────────
@@ -514,6 +628,29 @@ def collected_text(items):
             if isinstance(v, str) and v.strip():
                 parts.append(v)
     return " ".join(parts)
+
+
+def source_registry(items, cited=None):
+    """이번 집필의 출처 원장 — **수집 단계가 실제로 요청한 URL**만 담는다.
+
+    모델의 sources 는 '어느 것을 근거로 썼는가'의 힌트로만 쓴다(cited). 원장에
+    없는 항목은 버린다 — 모델이 기억으로 지어낸 주소가 링크로 올라가는 것을
+    막는 유일한 방법이 이것이다.
+    cited 와 겹치는 게 하나도 없으면 원장 전체를 근거로 본다(그게 사실이므로).
+    """
+    reg = []
+    for x in items or []:
+        u = (x.get("url") or "").strip()
+        if not u:
+            continue
+        reg.append({"url": u, "full": bool(x.get("article")),
+                    "attempted": bool(x.get("article_attempted"))})
+    if not cited:
+        return reg[:6]
+    keys = [str(c).strip() for c in cited if isinstance(c, str)]
+    hit = [r for r in reg if any(r["url"] == k or r["url"] in k or k in r["url"]
+                                 for k in keys if k)]
+    return (hit or reg)[:6]
 
 
 def write_with_discipline(api_key, constitution, comp, thesis, items, recent, memo=""):
@@ -561,7 +698,8 @@ def run_material(mat, companies, api_key, constitution, essays, today):
             return None, "직접 게재인데 본문이 비어 있음"
         paras = "".join(f"<p>{line}</p>" for line in body.split("\n") if line.strip())
         title = (mat.get("title") or body.strip().splitlines()[0])[:80]
-        sources = [mat["url"]] if mat.get("url") else []
+        sources = ([{"url": mat["url"], "full": True, "attempted": False}]
+                   if mat.get("url") else [])
         return build_entry(comp["slug"], title, "불변", paras, sources, "직접", today), "직접 게재"
 
     thesis = read_thesis(comp["slug"])
@@ -571,7 +709,8 @@ def run_material(mat, companies, api_key, constitution, essays, today):
         return None, "API 키/헌법 프롬프트 없음"
 
     item = {"title": mat.get("title") or mat.get("url", ""), "url": mat.get("url", ""),
-            "pub": "", "article": fetch_article_text(mat["url"]) if mat.get("url") else ""}
+            "pub": "", "article_attempted": bool(mat.get("url")),
+            "article": fetch_article_text(mat["url"]) if mat.get("url") else ""}
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"]][:8]
     res, violation = write_with_discipline(api_key, constitution, comp, thesis, [item],
                                            recent, memo=mat.get("memo", ""))
@@ -579,9 +718,9 @@ def run_material(mat, companies, api_key, constitution, essays, today):
         return None, f"소재 판정 침묵 — {res.get('reason','')[:60]}"
     if violation:
         return None, "인용 규율 위반(재생성 후에도) — 발행 보류 :: " + violation
-    srcs = res.get("sources") or ([mat["url"]] if mat.get("url") else [])
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
-                       res.get("body", ""), srcs, "소재", today,
+                       res.get("body", ""),
+                       source_registry([item], res.get("sources")), "소재", today,
                        charts=res.get("charts")), "소재 에세이화"
 
 
@@ -597,13 +736,14 @@ def run_auto(comp, api_key, constitution, essays, today):
 
     cfg = load_json(SRC_PATH, {})
     cands = collect_candidates(comp, cfg)
-    seen_urls = {u for e in essays if e.get("company") == comp["slug"]
-                 for u in (e.get("sources") or [])}
+    seen_urls = {r["url"] for e in essays if e.get("company") == comp["slug"]
+                 for r in normalize_sources(e.get("sources"))}
     cands = [c for c in cands if c.get("url") not in seen_urls]
     if not cands:
         print(f"[동행] {comp['ko']}: 후보 0 · 발행 0 — 침묵")
         return None
     for c in cands[:3]:
+        c["article_attempted"] = True        # 유료벽 라벨은 '시도했는데 실패'일 때만
         c["article"] = fetch_article_text(c["url"])
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"]][:8]
     try:
@@ -623,7 +763,8 @@ def run_auto(comp, api_key, constitution, essays, today):
         return None
     print(f"[동행] {comp['ko']}: 후보 {len(cands)} · 발행 1 — 축 {res.get('axis','')}")
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
-                       res.get("body", ""), res.get("sources"), "auto", today,
+                       res.get("body", ""),
+                       source_registry(cands[:5], res.get("sources")), "auto", today,
                        charts=res.get("charts"))
 
 
@@ -640,6 +781,10 @@ def main():
     today = datetime.now(KST).strftime("%Y-%m-%d")
     doc = load_essays()
     essays = doc["essays"]
+    fixed = rerender_tails(doc)          # 기발행분 출처 절을 기계 원장 기준으로 (멱등)
+    if fixed:
+        save_essays(doc)
+        print(f"[동행] 기발행 에세이 {fixed}편의 출처 절을 수집 원장 기준으로 재렌더")
     state = load_state()
     published = []
 
