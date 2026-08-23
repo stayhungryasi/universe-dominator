@@ -175,10 +175,26 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 /* 에세이 본문 조판 = 관측일지 칼럼과 같은 급. 다만 헤더에는 칼럼의 비주얼
    블록(makeColViz)을 넣지 않는다 — 에세이는 칼럼보다 호흡이 짧아 회사 아이콘 ·
    날짜 · 판정만으로 충분하고, 그림은 본문 안 수치 차트가 맡는다. */
-.ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; scroll-margin-top: 80px; }
-.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: var(--note-meta); color: var(--text-muted); margin-bottom: 8px; }
-.ce-essay-face { font-size: var(--note-h); }
-.ce-essay-title { font-size: var(--note-title); line-height: var(--note-title-lh); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
+/* 아코디언 — 연표가 먼저, 전문은 클릭.
+   펼침은 max-height 전환 없이 즉시 display 전환이다: 본문에 차트 SVG 가 들어 있어
+   접힌 상태의 높이를 잴 수 없고, 재면 0 이나 잘린 값이 나온다. 애니메이션 한 번
+   보자고 그림이 깨지는 쪽을 택하지 않는다. */
+.ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; scroll-margin-top: 80px; overflow: hidden; }
+.ce-essay-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 18px; background: none; border: none; text-align: left; cursor: pointer; font-family: inherit; color: inherit; transition: background .15s; }
+.ce-essay-head:hover { background: var(--bg); }
+.ce-essay.open > .ce-essay-head { border-bottom: 1px solid var(--line); }
+.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-shrink: 0; font-size: var(--note-meta); color: var(--text-muted); }
+.ce-caret { margin-left: auto; flex-shrink: 0; color: var(--text-muted); font-size: var(--note-meta); transition: transform .15s; }
+.ce-essay.open .ce-caret { transform: rotate(90deg); }
+/* 제목은 head 안에서 한 줄 — 넘치면 말줄임(모바일 380px 에서 줄바꿈 대신) */
+.ce-essay-title { flex: 1; min-width: 0; font-size: var(--note-title); line-height: var(--note-title-lh); font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ce-essay-detail { display: none; padding: 16px 22px 20px; }
+.ce-essay.open > .ce-essay-detail { display: block; }
+@media (max-width: 480px) {
+  .ce-essay-head { gap: 8px; padding: 12px 14px; }
+  .ce-essay-detail { padding: 14px 16px 18px; }
+  .ce-essay-title { font-size: var(--note-h); }
+}
 .ce-essay-body { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text); letter-spacing: -0.003em; }
 .ce-essay-body h3 { font-size: var(--note-h); font-weight: var(--note-h-weight); color: var(--gold); margin: 20px 0 6px; letter-spacing: -0.02em; }
 .ce-essay-body h3:first-child { margin-top: 4px; }
@@ -520,27 +536,53 @@ function renderCompany(slug){
       : '<div class="ce-thesis-body">' + (th.html || '') + '</div>') +
     '</div>';
 
+  // 아코디언 — 연표가 먼저, 전문은 클릭. 한 항로에 에세이가 쌓일수록
+  // 전문을 다 펼쳐 두면 '언제 무슨 판정이 났는가'라는 시간의 축이 보이지 않는다.
+  // 기본은 최신 1편만 펼침. 독립 토글이라 여러 편을 동시에 열어 비교할 수 있다.
   const list = (CE.essays || []).filter(e => e.company === slug);
-  $('ceEssays').innerHTML = list.length ? list.map((e, i) =>
-    '<div class="ce-essay" id="essay-' + esc(e.slug) + '">' +
-      '<div class="ce-essay-meta">' +
-        '<span class="ce-essay-face">' + esc(c.emoji) + '</span>' +
-        '<span>' + esc(e.date) + '</span>' +
-        '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
-        (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
+  $('ceEssays').innerHTML = list.length ? list.map((e, i) => {
+    const open = (i === 0);
+    return '<div class="ce-essay' + (open ? ' open' : '') + '" id="essay-' + esc(e.slug) + '">' +
+      '<button class="ce-essay-head" data-toggle="' + esc(e.slug) + '"' +
+        ' aria-expanded="' + open + '" aria-controls="detail-' + esc(e.slug) + '">' +
+        '<span class="ce-essay-meta">' +
+          '<span>' + esc(e.date) + '</span>' +
+          '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
+          (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
+        '</span>' +
+        '<span class="ce-essay-title">' + esc(e.title) + '</span>' +
+        '<span class="ce-caret" aria-hidden="true">▸</span>' +
+      '</button>' +
+      '<div class="ce-essay-detail" id="detail-' + esc(e.slug) + '">' +
+        '<div class="ce-share">' +
+          '<button data-copy="' + esc(e.slug) + '">🔗 링크 복사</button>' +
+          '<button data-copytext="' + i + '">📄 본문 복사</button>' +
+        '</div>' +
+        '<div class="ce-essay-body">' + (e.html || '') + '</div>' +
       '</div>' +
-      '<div class="ce-essay-title">' + esc(e.title) + '</div>' +
-      '<div class="ce-share">' +
-        '<button data-copy="' + esc(e.slug) + '">🔗 링크 복사</button>' +
-        '<button data-copytext="' + i + '">📄 본문 복사</button>' +
-      '</div>' +
-      '<div class="ce-essay-body">' + (e.html || '') + '</div>' +
-    '</div>').join('')
+    '</div>';
+  }).join('')
     : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>';
 
+  document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => toggleEssay(b.dataset.toggle));
   document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => copyEssayLink(b));
   document.querySelectorAll('[data-copytext]').forEach(b => b.onclick = () => copyEssayText(b, list));
   openEssayFromHash();
+}
+
+// 독립 토글 — 한 편만 여는 단일 모드가 아니다(두 판정을 나란히 놓고 읽을 수 있게)
+function setEssayOpen(slug, open){
+  const card = document.getElementById('essay-' + slug);
+  if (!card) return false;
+  card.classList.toggle('open', open);
+  const head = card.querySelector('.ce-essay-head');
+  if (head) head.setAttribute('aria-expanded', String(open));
+  return true;
+}
+
+function toggleEssay(slug){
+  const card = document.getElementById('essay-' + slug);
+  if (card) setEssayOpen(slug, !card.classList.contains('open'));
 }
 
 // 약화도 회색으로 '명시'한다 — 숨기지 않는 것이 이 노트의 신뢰 조건이다
@@ -578,7 +620,9 @@ function openEssayFromHash(){
   const h = location.hash.replace('#', '');
   if (!h.startsWith('essay-')) return;
   const card = document.getElementById(h);
-  if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  if (!card) return;
+  setEssayOpen(h.slice(6), true);   // 링크로 들어온 편은 접힌 채로 두지 않는다
+  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
 /* ── 소재 투입함 — 소장 로그인 시에만 노출 ── */
