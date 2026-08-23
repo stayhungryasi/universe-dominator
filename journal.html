@@ -133,7 +133,24 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .nt-login { text-align: center; margin-top: 26px; }
 .nt-login button { background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; text-decoration: underline; font-family: inherit; }
 
-/* ── 동행 관측 ── 한 기업의 10년 항로를 관찰로 쌓는 탭. 논제(고정) 위에 에세이(누적). */
+/* ── 동행 관측 ── 한 기업의 10년 항로를 관찰로 쌓는 탭. 논제(고정) 위에 에세이(누적).
+
+   ⚠️ 타이포는 **눈금 하나**만 쓴다. 논제 원장과 에세이는 같은 화면에 나란히
+   놓이므로 본문 크기가 다르면 한쪽이 부록처럼 읽힌다(2026-08-23 통일 전:
+   원장 14px/1.8 · 에세이 15.5px/1.85 로 갈라져 있었다).
+   개별 요소에 px 를 다시 박지 말고 아래 변수만 참조할 것.
+     위계: 제목(--note-title) > 섹션(--note-h) > 본문(--note-body) > 메타(--note-meta)
+   한줄 노트(.nt-*)는 이 눈금 밖이다 — 짧은 호흡이 그 탭의 정체성이라 건드리지 않는다. */
+:root {
+  --note-title: 20px;      /* 에세이 제목 · 원장 카드 이름 */
+  --note-title-lh: 1.35;
+  --note-h: 17px;          /* 섹션 제목 — 에세이 h3 = 원장 h2 (같은 층) */
+  --note-h-weight: 700;
+  --note-body: 15.5px;     /* 본문 — 원장·에세이 동일 */
+  --note-body-lh: 1.7;
+  --note-meta: 12.5px;     /* 날짜·배지·버튼·출처·면책 */
+}
+
 .ce-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
 .ce-tabs::-webkit-scrollbar { display: none; }
 .ce-tab { flex-shrink: 0; padding: 10px 14px; font-size: 13.5px; font-weight: 700; color: var(--text-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit; white-space: nowrap; transition: color .2s, border-color .2s; }
@@ -142,51 +159,52 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 
 .ce-thesis { background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; }
 .ce-thesis-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-.ce-thesis-name { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
-.ce-thesis-ver { font-size: 11.5px; font-weight: 700; color: var(--gold); background: var(--gold-bg); border-radius: 100px; padding: 3px 10px; }
-.ce-thesis-body { font-size: 14px; line-height: 1.8; color: var(--text-secondary); }
-.ce-thesis-body h1 { font-size: 17px; color: var(--text); margin: 12px 0 6px; }
-.ce-thesis-body h2 { font-size: 15px; color: var(--text); margin: 14px 0 6px; }
-.ce-thesis-body ul { margin: 6px 0 6px 18px; }
-.ce-thesis-body li { margin: 3px 0; }
-.ce-thesis-body blockquote { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 12px; margin: 10px 0; color: var(--text-muted); }
+.ce-thesis-name { font-size: var(--note-title); line-height: var(--note-title-lh); font-weight: 800; letter-spacing: -0.02em; }
+.ce-thesis-ver { font-size: var(--note-meta); font-weight: 700; color: var(--gold); background: var(--gold-bg); border-radius: 100px; padding: 3px 10px; }
+.ce-thesis-body { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text); }
+.ce-thesis-body h1 { font-size: var(--note-h); font-weight: 800; color: var(--text); margin: 12px 0 6px; letter-spacing: -0.02em; }
+.ce-thesis-body h2 { font-size: var(--note-h); font-weight: var(--note-h-weight); color: var(--gold); margin: 20px 0 6px; letter-spacing: -0.02em; }
+.ce-thesis-body ul, .ce-thesis-body ol { margin: 8px 0 8px 20px; }
+.ce-thesis-body li { margin: 6px 0; }
+.ce-thesis-body p { margin: 8px 0; }
+.ce-thesis-body blockquote { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 12px; margin: 10px 0; color: var(--text-muted); font-size: var(--note-meta); line-height: 1.65; }
 .ce-waiting { text-align: center; padding: 8px 0 4px; }
 .ce-waiting-icon { font-size: 34px; }
-.ce-waiting-text { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+.ce-waiting-text { font-size: var(--note-meta); color: var(--text-muted); margin-top: 6px; }
 
 /* 에세이 본문 조판 = 관측일지 칼럼과 같은 급. 다만 헤더에는 칼럼의 비주얼
    블록(makeColViz)을 넣지 않는다 — 에세이는 칼럼보다 호흡이 짧아 회사 아이콘 ·
    날짜 · 판정만으로 충분하고, 그림은 본문 안 수치 차트가 맡는다. */
 .ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; scroll-margin-top: 80px; }
-.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; }
-.ce-essay-face { font-size: 15px; }
-.ce-essay-title { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; line-height: 1.35; }
-.ce-essay-body { font-size: 15.5px; line-height: 1.85; color: var(--text); letter-spacing: -0.003em; }
-.ce-essay-body h3 { font-size: 16px; font-weight: 800; color: var(--gold); margin: 22px 0 8px; letter-spacing: -0.02em; }
+.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: var(--note-meta); color: var(--text-muted); margin-bottom: 8px; }
+.ce-essay-face { font-size: var(--note-h); }
+.ce-essay-title { font-size: var(--note-title); line-height: var(--note-title-lh); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
+.ce-essay-body { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text); letter-spacing: -0.003em; }
+.ce-essay-body h3 { font-size: var(--note-h); font-weight: var(--note-h-weight); color: var(--gold); margin: 20px 0 6px; letter-spacing: -0.02em; }
 .ce-essay-body h3:first-child { margin-top: 4px; }
-.ce-essay-body p { margin: 10px 0; }
+.ce-essay-body p { margin: 8px 0; }
 .ce-essay-body b { font-weight: 800; }
-.ce-essay-body ul, .ce-essay-body ol { margin: 10px 0 10px 20px; }
-.ce-essay-body li { margin: 4px 0; }
+.ce-essay-body ul, .ce-essay-body ol { margin: 8px 0 8px 20px; }
+.ce-essay-body li { margin: 6px 0; }
 .ce-essay-body .col-chart { margin: 18px 0; }
 .ce-essay-body .col-chart svg { width: 100%; height: auto; display: block; border-radius: 10px; }
 /* 차트 패널(#10141f)은 밤 테마 카드 배경과 명도가 가까워 그림의 경계가 사라진다.
    낮에는 저절로 '개체'로 읽히지만 밤에는 실선 하나가 있어야 그림으로 읽힌다. */
 [data-theme="dark"] .ce-essay-body .col-chart svg { border: 1px solid var(--line-strong); }
 .ce-share { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
-.ce-share button { background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--text-muted); font-size: 11.5px; padding: 5px 11px; cursor: pointer; font-family: inherit; font-weight: 700; }
+.ce-share button { background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--text-muted); font-size: var(--note-meta); padding: 5px 11px; cursor: pointer; font-family: inherit; font-weight: 700; }
 .ce-share button:hover { border-color: var(--gold); color: var(--gold); }
-.ce-essay-body .ce-src { font-size: 12px; word-break: break-all; }
+.ce-essay-body .ce-src { font-size: var(--note-meta); word-break: break-all; }
 .ce-essay-body .ce-src a { color: var(--gold); }
-.ce-essay-body .ce-disc, .ce-essay-body .ce-coi { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.6; }
+.ce-essay-body .ce-disc, .ce-essay-body .ce-coi { font-size: var(--note-meta); color: var(--text-muted); margin-top: 10px; line-height: 1.6; }
 /* 판정 배지 — 약화도 숨기지 않는다. 반증의 기록이 있어야 확신의 기록이 신뢰를 얻는다. */
-.ce-verdict { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--line-strong); }
+.ce-verdict { font-size: var(--note-meta); font-weight: 800; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--line-strong); }
 .ce-v-강화 { color: #fff; background: linear-gradient(120deg, #565CE8, #3EC8D8); border-color: transparent; }
 [data-theme="dark"] .ce-v-강화 { background: linear-gradient(120deg, #8B93FF, #4FE0EF); color: #0A0B0F; }
 .ce-v-불변 { color: var(--text-secondary); }
 .ce-v-약화 { color: var(--text-muted); background: var(--bg); }
 .ce-v-보류 { color: var(--text-muted); border-style: dashed; }
-.ce-origin { font-size: 10.5px; font-weight: 800; color: var(--gold); }
+.ce-origin { font-size: var(--note-meta); font-weight: 800; color: var(--gold); }
 
 .ce-inbox { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; }
 .ce-inbox-title { font-size: 13px; font-weight: 800; color: var(--gold); margin-bottom: 10px; }
