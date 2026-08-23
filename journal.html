@@ -175,26 +175,12 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 /* 에세이 본문 조판 = 관측일지 칼럼과 같은 급. 다만 헤더에는 칼럼의 비주얼
    블록(makeColViz)을 넣지 않는다 — 에세이는 칼럼보다 호흡이 짧아 회사 아이콘 ·
    날짜 · 판정만으로 충분하고, 그림은 본문 안 수치 차트가 맡는다. */
-/* 아코디언 — 연표가 먼저, 전문은 클릭.
-   펼침은 max-height 전환 없이 즉시 display 전환이다: 본문에 차트 SVG 가 들어 있어
-   접힌 상태의 높이를 잴 수 없고, 재면 0 이나 잘린 값이 나온다. 애니메이션 한 번
-   보자고 그림이 깨지는 쪽을 택하지 않는다. */
-.ce-essay { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; scroll-margin-top: 80px; overflow: hidden; }
-.ce-essay-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 18px; background: none; border: none; text-align: left; cursor: pointer; font-family: inherit; color: inherit; transition: background .15s; }
-.ce-essay-head:hover { background: var(--bg); }
-.ce-essay.open > .ce-essay-head { border-bottom: 1px solid var(--line); }
-.ce-essay-meta { display: flex; align-items: center; gap: 9px; flex-shrink: 0; font-size: var(--note-meta); color: var(--text-muted); }
-.ce-caret { margin-left: auto; flex-shrink: 0; color: var(--text-muted); font-size: var(--note-meta); transition: transform .15s; }
-.ce-essay.open .ce-caret { transform: rotate(90deg); }
-/* 제목은 head 안에서 한 줄 — 넘치면 말줄임(모바일 380px 에서 줄바꿈 대신) */
-.ce-essay-title { flex: 1; min-width: 0; font-size: var(--note-title); line-height: var(--note-title-lh); font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ce-essay-detail { display: none; padding: 16px 22px 20px; }
-.ce-essay.open > .ce-essay-detail { display: block; }
-@media (max-width: 480px) {
-  .ce-essay-head { gap: 8px; padding: 12px 14px; }
-  .ce-essay-detail { padding: 14px 16px 18px; }
-  .ce-essay-title { font-size: var(--note-h); }
-}
+/* 아코디언 구조·동작은 공용 .ud-acc-* 에 있다 (build_site.py 의 ud-accordion-v1).
+   여기에는 이 탭의 '눈금'만 둔다 — 구조를 다시 적으면 그 순간 두 벌이 된다. */
+.ce-essay .ud-acc-title { font-size: var(--note-title); line-height: var(--note-title-lh); }
+.ce-essay .ud-acc-meta { font-size: var(--note-meta); }
+.ce-essay .ud-acc-caret { font-size: var(--note-meta); }
+@media (max-width: 480px) { .ce-essay .ud-acc-title { font-size: var(--note-h); } }
 .ce-essay-body { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text); letter-spacing: -0.003em; }
 .ce-essay-body h3 { font-size: var(--note-h); font-weight: var(--note-h-weight); color: var(--gold); margin: 20px 0 6px; letter-spacing: -0.02em; }
 .ce-essay-body h3:first-child { margin-top: 4px; }
@@ -381,6 +367,26 @@ document.addEventListener('DOMContentLoaded', function () {
 /* 메뉴 하단 헤어라인: 골드 → 오로라 */
 .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
 [data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+
+/* ── ud-accordion-v1 — 목록형 아코디언 공용 문법 ────────────────────────────
+   동행 관측 에세이(journal)와 관측일지 칼럼(observatory)이 **같은 구조**를 쓴다.
+   같은 것을 두 벌 구현하면 반드시 갈라지므로 구조·동작은 여기 한 곳에만 둔다.
+   각 페이지는 제목 크기 같은 '자기 눈금'만 따로 준다.
+
+   ⚠️ 펼침에 max-height 전환을 쓰지 않는다: 본문에 차트 SVG 가 들어 있어 접힌
+   상태의 높이를 잴 수 없다(0 이나 잘린 값이 나온다). 애니메이션 한 번 보자고
+   근거가 되는 그림이 깨지는 쪽을 택하지 않는다 — 상태 변화는 캐럿 회전이 알린다. */
+.ud-acc{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;scroll-margin-top:80px;overflow:hidden}
+.ud-acc-head{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:none;border:none;text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+.ud-acc-head:hover{background:var(--bg)}
+.ud-acc.open>.ud-acc-head{border-bottom:1px solid var(--line)}
+.ud-acc-meta{display:flex;align-items:center;gap:9px;flex-shrink:0;font-size:12.5px;color:var(--text-muted)}
+.ud-acc-title{flex:1;min-width:0;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ud-acc-caret{margin-left:auto;flex-shrink:0;color:var(--text-muted);font-size:12.5px;transition:transform .15s}
+.ud-acc.open .ud-acc-caret{transform:rotate(90deg)}
+.ud-acc-detail{display:none;padding:16px 22px 20px}
+.ud-acc.open>.ud-acc-detail{display:block}
+@media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:14px 16px 18px}}
 </style>
 
 </head>
@@ -542,18 +548,18 @@ function renderCompany(slug){
   const list = (CE.essays || []).filter(e => e.company === slug);
   $('ceEssays').innerHTML = list.length ? list.map((e, i) => {
     const open = (i === 0);
-    return '<div class="ce-essay' + (open ? ' open' : '') + '" id="essay-' + esc(e.slug) + '">' +
-      '<button class="ce-essay-head" data-toggle="' + esc(e.slug) + '"' +
+    return '<div class="ce-essay ud-acc' + (open ? ' open' : '') + '" id="essay-' + esc(e.slug) + '">' +
+      '<button class="ud-acc-head" data-toggle="' + esc(e.slug) + '"' +
         ' aria-expanded="' + open + '" aria-controls="detail-' + esc(e.slug) + '">' +
-        '<span class="ce-essay-meta">' +
+        '<span class="ud-acc-meta">' +
           '<span>' + esc(e.date) + '</span>' +
           '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
           (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
         '</span>' +
-        '<span class="ce-essay-title">' + esc(e.title) + '</span>' +
-        '<span class="ce-caret" aria-hidden="true">▸</span>' +
+        '<span class="ud-acc-title">' + esc(e.title) + '</span>' +
+        '<span class="ud-acc-caret" aria-hidden="true">▸</span>' +
       '</button>' +
-      '<div class="ce-essay-detail" id="detail-' + esc(e.slug) + '">' +
+      '<div class="ud-acc-detail" id="detail-' + esc(e.slug) + '">' +
         '<div class="ce-share">' +
           '<button data-copy="' + esc(e.slug) + '">🔗 링크 복사</button>' +
           '<button data-copytext="' + i + '">📄 본문 복사</button>' +
@@ -575,7 +581,7 @@ function setEssayOpen(slug, open){
   const card = document.getElementById('essay-' + slug);
   if (!card) return false;
   card.classList.toggle('open', open);
-  const head = card.querySelector('.ce-essay-head');
+  const head = card.querySelector('.ud-acc-head');
   if (head) head.setAttribute('aria-expanded', String(open));
   return true;
 }
