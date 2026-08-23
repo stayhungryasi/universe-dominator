@@ -5,8 +5,8 @@
    "source": "Hacker News 300+",
    "outcome": "ok",
    "code": 200,
-   "items": 1,
-   "ts": "2026-08-23 08:47"
+   "items": 4,
+   "ts": "2026-08-23 13:23"
   },
   "signals:OpenAI": {
    "kind": "signals",
@@ -14,15 +14,15 @@
    "outcome": "ok",
    "code": 200,
    "items": 5,
-   "ts": "2026-08-23 08:47"
+   "ts": "2026-08-23 13:23"
   },
   "signals:Anthropic": {
    "kind": "signals",
    "source": "Anthropic",
-   "outcome": "ok",
-   "code": 200,
-   "items": 5,
-   "ts": "2026-08-23 08:47"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-08-23 13:25"
   },
   "signals:Google DeepMind": {
    "kind": "signals",
@@ -30,7 +30,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 5,
-   "ts": "2026-08-23 08:47"
+   "ts": "2026-08-23 13:25"
   },
   "companion:spacex:SpaceX 발사·로드맵": {
    "kind": "companion",
@@ -75,19 +75,19 @@
   "companion:anthropic:Anthropic 공식": {
    "kind": "companion",
    "source": "anthropic:Anthropic 공식",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-08-23 08:53"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-08-23 13:33"
   },
   "companion:anthropic:Anthropic 보도": {
    "kind": "companion",
    "source": "anthropic:Anthropic 보도",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-08-23 08:53"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-08-23 13:34"
   }
  },
- "generated_label": "2026.08.23 08:53"
+ "generated_label": "2026.08.23 13:34"
 }
