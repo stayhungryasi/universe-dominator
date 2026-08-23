@@ -167,6 +167,32 @@ def main():
     _fs2 = {"feeds": {}}
     check("피드: 0건은 실패보다 관대(즉시 경보 아님)", _ps_feeds(_fz, _fs2)[0], [])
 
+    # ── 주입 지점 오염 방지 (2026-08-23 사고) ──
+    # 주입 함수는 전부 html.replace("</head>", CSS, 1) 로 **첫 번째** </head> 를 바꾼다.
+    # 템플릿 본문·주석에 그 문자열이 한 번이라도 더 있으면 주입 블록이 거기로 끼어들어
+    # <style> 한복판을 갈라 놓는다 — 실제로 CSS 절반이 파싱되지 않는 사고가 났다.
+    _root = Path(__file__).parent.parent
+    _bad_head = []
+    for _t in sorted(Path(__file__).parent.glob("*-template.html")):
+        _txt = _t.read_text(encoding="utf-8")
+        if _txt.count("</head>") != 1:
+            _bad_head.append(f"{_t.name}({_txt.count('</head>')}회)")
+    check("템플릿에 </head> 는 정확히 1회", _bad_head, [])
+    _bad_built = []
+    for _name in ("journal.html", "observatory.html", "research.html", "community.html"):
+        _f = _root / _name
+        if not _f.exists():
+            continue
+        _h = _f.read_text(encoding="utf-8")
+        _head = _h[:_h.find("</head>")]
+        # 첫 <style> 블록 안에 또 다른 <style> 이 끼어들었는가 = 주입 지점 오염
+        _i = _head.find("<style")
+        if _i >= 0:
+            _seg = _head[_i:_head.find("</style>") if "</style>" in _head else len(_head)]
+            if "<style" in _seg[6:]:
+                _bad_built.append(_name)
+    check("산출물 <style> 블록 오염 없음", _bad_built, [])
+
     # ── 보안 규칙 정본(firestore.rules)과 클라이언트 설정의 adminUid 일치 ──
     # 두 값이 어긋나면 소장이 자기 소재함에서 잠긴다. 콘솔에 붙여넣기 전에
     # 여기서 걸러야 "게시했는데 안 된다"를 겪지 않는다.

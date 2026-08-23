@@ -185,12 +185,8 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 [data-theme="dark"] { --cal-blue: #8fb0f5; --cal-blue-bg: rgba(56,110,225,0.2); --cal-wknd: #161b2b; }
 
 /* ── 🔬 필독 해부실 (신호 관측소 카드 문법 그대로) ── */
-.dx-index { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; margin-bottom: 18px; }
-.dx-index-title { font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
-.dx-index a { display: block; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; font-weight: 600; color: var(--text); text-decoration: none; line-height: 1.45; }
-.dx-index a:first-of-type { border-top: 0; }
-.dx-index a:hover { color: var(--gold); }
-.dx-index .dx-index-date { color: var(--text-muted); font-weight: 700; font-size: 12px; margin-right: 8px; font-variant-numeric: tabular-nums; }
+/* 목차 카드·헤어라인 행은 공용 .ud-index-* (build_site 의 ud-index-v1).
+   관측노트 동행 탭 에세이 목차가 같은 문법을 쓴다 — 한 곳에서만 정의한다. */
 .dx-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; scroll-margin-top: 90px; }
 .dx-card:target { border-color: var(--gold); }
 .dx-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; font-size: 11px; color: var(--text-muted); }
@@ -399,6 +395,20 @@ document.addEventListener('DOMContentLoaded', function () {
 /* 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점이 붙는다 */
 .ud-new-dot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:currentColor;animation:ud-new-pulse 2s ease-in-out infinite;vertical-align:middle}
 @keyframes ud-new-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── ud-index-v1 — 목록 앞의 목차(연표) 공용 문법 ──────────────────────────
+   필독 해부실(.dx-index)에서 뽑아 올렸다. 관측노트 동행 탭의 에세이 목차가
+   같은 일을 하므로 같은 문법을 쓴다 — 헤어라인 행, 골드 대문자 소제목.
+   행의 배치(block / flex)는 페이지가 정한다: 해부실은 제목이 길어 줄바꿈이 맞고,
+   에세이 목차는 날짜·판정·제목을 한 줄에 세우는 편이 연표로 읽힌다.
+   ⚠️ 이 블록은 head 끝에 나중에 주입된다 — 같은 특이도면 여기가 이긴다.
+   페이지에서 덮어쓰려면 특이도를 한 단 올려라(#id 등). */
+.ud-index{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.ud-index-title{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ud-index-row{display:block;width:100%;padding:7px 0;border:0;border-top:1px solid var(--line);background:none;text-align:left;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--text);text-decoration:none;line-height:1.45;cursor:pointer}
+.ud-index-row:first-of-type{border-top:0}
+.ud-index-row:hover{color:var(--gold)}
+.ud-index-date{color:var(--text-muted);font-weight:700;font-size:12px;margin-right:8px;font-variant-numeric:tabular-nums}
 </style>
 
 </head>
@@ -679,9 +689,9 @@ function renderDissect(){
   if (!items.length) { document.getElementById('list').innerHTML =
     '<div class="empty-note">🔬 해부실 준비 중 — 필독 신호가 지정되면 원문을 문단별로 해부해 이곳에 싣습니다.</div>'; return; }
   let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">필독 신호의 원문을 문단·섹션 단위로 재서술한 한국어 브리핑' + (label ? ' (최근 해부: ' + esc(label) + ' KST)' : '') + '</div>';
-  html += '<div class="dx-index"><div class="dx-index-title">해부 목록 ' + items.length + '건</div>' +
-    items.map(it => '<a href="#dx-' + esc(it.id) + '">' +
-      '<span class="dx-index-date">' + esc(it.date || '') + '</span>' +
+  html += '<div class="ud-index"><div class="ud-index-title">해부 목록 ' + items.length + '건</div>' +
+    items.map(it => '<a class="ud-index-row" href="#dx-' + esc(it.id) + '">' +
+      '<span class="ud-index-date">' + esc(it.date || '') + '</span>' +
       esc(it.ko_title || it.title) + '</a>').join('') + '</div>';
   const colLinks = (DATA.translations && DATA.translations.column_links) || {};
   html += items.map(it => {

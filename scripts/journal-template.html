@@ -209,6 +209,19 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 /* 차트 패널(#10141f)은 밤 테마 카드 배경과 명도가 가까워 그림의 경계가 사라진다.
    낮에는 저절로 '개체'로 읽히지만 밤에는 실선 하나가 있어야 그림으로 읽힌다. */
 [data-theme="dark"] .ce-essay-body .col-chart svg { border: 1px solid var(--line-strong); }
+/* 에세이 목차 — 카드·헤어라인 행은 공용 .ud-index-*. 여기선 한 줄 배치만.
+   날짜·판정·제목이 한 줄에 서야 '언제 무슨 판정이 났는가'가 한 화면에 들어온다.
+
+   ⚠️ 선택자에 #ceToc 를 붙인 이유: 공용 블록은 head 끝에 **나중에** 주입되므로
+   같은 특이도(클래스 1개)면 공용 쪽이 이긴다. 실제로 .ce-toc-row{display:flex} 가
+   .ud-index-row{display:block} 에 밀려 제목이 줄바꿈으로 흘렀다(2026-08-23 실측).
+   공용 문법을 페이지에서 덮어쓸 때는 특이도를 한 단 올릴 것. */
+#ceToc .ce-toc-row { display: flex; align-items: center; gap: 9px; }
+#ceToc .ud-index-date { flex-shrink: 0; margin-right: 0; }
+#ceToc .ce-verdict { flex-shrink: 0; }
+#ceToc .ce-toc-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 480px) { #ceToc .ce-toc-row { gap: 7px; } #ceToc .ud-index-date { font-size: 11px; } }
+
 .ce-share { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 .ce-share button { background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--text-muted); font-size: var(--note-meta); padding: 5px 11px; cursor: pointer; font-family: inherit; font-weight: 700; }
 .ce-share button:hover { border-color: var(--gold); color: var(--gold); }
@@ -293,6 +306,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
       <!-- 헌법은 맨 위에 — 고정 공지 → 소재 투입함 → 에세이 -->
       <div id="ceThesis"></div>
       <div id="ceInbox"></div>
+      <div id="ceToc"></div>
       <div id="ceEssays"></div>
     </div>
 
@@ -451,6 +465,18 @@ function renderCompany(slug){
   }).join('')
     : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>';
 
+  // 목차 — 연표가 한 화면에. 1편이어도 띄운다(연표의 시작점이다). 0편만 미표시.
+  $('ceToc').innerHTML = list.length
+    ? '<div class="ud-index"><div class="ud-index-title">관측 기록 ' + list.length + '편</div>' +
+      list.map(e =>
+        '<button class="ud-index-row ce-toc-row" data-goto="' + esc(e.slug) + '">' +
+          '<span class="ud-index-date">' + esc(e.date) + '</span>' +
+          '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
+          '<span class="ce-toc-label">' + esc(e.title) + '</span>' +
+        '</button>').join('') + '</div>'
+    : '';
+  document.querySelectorAll('[data-goto]').forEach(b => b.onclick = () => gotoEssay(b.dataset.goto));
+
   document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => toggleEssay(b.dataset.toggle));
   document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => copyEssayLink(b));
   document.querySelectorAll('[data-copytext]').forEach(b => b.onclick = () => copyEssayText(b, list));
@@ -470,6 +496,16 @@ function setEssayOpen(slug, open){
 function toggleEssay(slug){
   const card = document.getElementById('essay-' + slug);
   if (card) setEssayOpen(slug, !card.classList.contains('open'));
+}
+
+// 목차에서 고른 편으로 이동 — 펼치고, 스크롤하고, 주소를 그 편으로 갱신한다.
+// 해시를 갱신해야 그 자리에서 복사한 주소가 방금 본 화면과 같은 곳을 가리킨다.
+function gotoEssay(slug){
+  const card = document.getElementById('essay-' + slug);
+  if (!card) return;
+  setEssayOpen(slug, true);
+  history.replaceState(null, '', '#essay-' + slug);
+  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
 }
 
 // 약화도 회색으로 '명시'한다 — 숨기지 않는 것이 이 노트의 신뢰 조건이다
