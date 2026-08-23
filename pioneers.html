@@ -125,15 +125,210 @@ main { flex: 1; padding: 0 0 48px; }
 .footer-divider { color: var(--text-muted); font-weight: 400; }
 @media (max-width: 480px) { .nav-tab { padding: 12px 14px; font-size: 13px; } .pn-title { font-size: 24px; } }
 </style>
+<style>
+/* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+.update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+/* UNIVERTRIX 로고 (build_site.py 주입) */
+.brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+/* ── UNIVERTRIX 종합 로고 (오로라×궤도×호흡×서예) ── */
+.uvx{display:inline-flex;align-items:center;gap:13px;text-decoration:none}
+.uvx-lat{position:relative;display:inline-block}
+.uvx-word{font-size:20px;letter-spacing:.3em;font-weight:400;line-height:1;
+  background:linear-gradient(95deg,var(--text) 12%,var(--gold) 46%,var(--aurora2) 62%,var(--text) 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-variation-settings:'wght' 528}
+.uvx-orbit{position:absolute;inset:-12px -11px -8px -7px;width:calc(100% + 18px);height:calc(100% + 20px);pointer-events:none;overflow:visible}
+.uvx-orbit path{stroke:var(--gold);opacity:.9}
+.uvx-orbit circle{fill:var(--aurora2)}
+.uvx-kr{font-family:'Nanum Brush Script',cursive;font-size:26px;line-height:1;padding-left:13px;border-left:1px solid var(--text-muted);white-space:nowrap;
+  background:linear-gradient(95deg,var(--text) 10%,var(--gold) 42%,var(--aurora2) 60%,var(--text) 90%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+@media(prefers-reduced-motion:no-preference){
+  .uvx-word{animation:uvbreath 6s ease-in-out infinite}
+  .uvx-kr{animation:krbreath 6s ease-in-out infinite}
+  @keyframes uvbreath{0%,100%{font-variation-settings:'wght' 340}50%{font-variation-settings:'wght' 800}}
+  @keyframes krbreath{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+}
+[data-theme="dark"] .uvx-word{filter:drop-shadow(0 0 13px rgba(139,147,255,.4))}
+[data-theme="dark"] .uvx-kr{filter:drop-shadow(0 0 11px rgba(139,147,255,.35))}
+@media(max-width:760px){.uvx{gap:9px}.uvx-word{font-size:15.5px;letter-spacing:.22em}.uvx-kr{font-size:20px;padding-left:9px}.uvx-orbit{inset:-9px -8px -6px -5px}}
+.ud-logo-word .v { color: var(--gold); }
+@media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
+
+/* ud-hdr-refine-v2 — 상태 스트립 통합: 배지 3개 → 계기판 캡슐 하나 */
+.site-header-inner { padding: 15px 20px; }
+.header-right {
+  gap: 0; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 100px; padding: 3px 5px 3px 4px; align-items: center;
+  box-shadow: 0 1px 2px rgba(28,35,51,0.04);
+}
+.header-right .update-badge {
+  background: transparent; border: none; border-radius: 0;
+  padding: 5px 13px; color: var(--text-secondary);
+}
+[data-theme="dark"] .header-right .update-badge { border: none; }
+.header-right .update-badge .ud-clock { color: var(--gold); font-weight: 800; }
+.header-right .rate-badge {
+  background: transparent; border: none; border-radius: 0;
+  border-left: 1px solid var(--line); padding: 5px 13px;
+}
+.header-right .rate-badge:hover { border-color: var(--line); }
+.header-right .rate-badge:hover #usdKrwDisplay, .header-right .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.header-right .theme-toggle {
+  width: 34px; height: 30px; border: none; border-radius: 0 100px 100px 0;
+  border-left: 1px solid var(--line); background: transparent; margin-left: 0;
+}
+.header-right .theme-toggle:hover { color: var(--gold); }
+@media (max-width: 480px) {
+  .header-right { padding: 2px 3px 2px 2px; }
+  .header-right .update-badge, .header-right .rate-badge { padding: 4px 9px; }
+}
+
+/* ud-hdr-refine-v4 — 아이보리 복원: 헤더는 본문과 한 몸, 세련됨은 디테일에서.
+   (한때 페이지에 주입됐던 v3 네이비 블록을 아래 리셋이 캐스케이드로 무력화한다) */
+.site-header { background: var(--header-bg); border-bottom: none; position: relative; }
+.site-header::after { content: none; }
+.site-header .ud-logo, .site-header .ud-logo-word { color: var(--text); }
+.site-header .ud-logo-word { letter-spacing: 0.2em; }
+.site-header .ud-logo-word .v { color: var(--gold); }
+.site-header .ud-logo-mark { --gold: #9C7A3A; }
+[data-theme="dark"] .site-header .ud-logo-mark { --gold: #D4A658; }
+.site-header .header-right {
+  background: var(--bg-card); border-color: var(--line);
+  box-shadow: 0 1px 2px rgba(28,35,51,0.05);
+}
+.site-header .update-badge, .site-header .update-badge .ud-date { color: var(--text-secondary); }
+.site-header .update-badge .ud-clock { color: var(--gold); }
+.site-header .update-badge::before { background: var(--gold); box-shadow: none; }
+[data-theme="dark"] .site-header .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+.site-header .rate-badge { color: var(--text-secondary); border-left-color: var(--line); }
+.site-header .rate-badge #usdKrwDisplay { color: var(--text); }
+.site-header .rate-badge:hover #usdKrwDisplay, .site-header .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.site-header .theme-toggle { color: var(--text-secondary); border-left-color: var(--line); }
+.site-header .theme-toggle:hover { color: var(--gold); }
+/* 헤더+메뉴 = 하나의 아이보리 존, 경계는 메뉴 아래 은은한 골드 헤어라인 한 줄 */
+.site-nav { border-bottom: 1px solid var(--line); }
+.site-nav::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent 8%, rgba(156,122,58,0.38), transparent 92%);
+}
+[data-theme="dark"] .site-nav::after {
+  background: linear-gradient(90deg, transparent 8%, rgba(212,166,88,0.3), transparent 92%);
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var badge = document.querySelector('.update-badge');
+  if (!badge) return;
+  badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
+  var dt = badge.querySelector('.ud-date');
+  var clk = badge.querySelector('.ud-clock');
+  function tick() {
+    var now = new Date();
+    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).replace(/-/g, '.');
+    clk.textContent = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
+  }
+  tick();
+  setInterval(tick, 1000);
+});
+</script>
+<style id="wide-fix">.container{max-width:1280px}</style>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+<style id="ud-aurora-global-v1">
+/* ud-aurora-global-v1 — 전 페이지 오로라 팔레트 통일 (build_site 주입 · 멱등)
+   토큰 리맵이므로 각 페이지 기존 컴포넌트가 자동으로 새 팔레트를 입는다 */
+:root, [data-theme="light"] {
+  --bg:#FBFBFC; --bg-card:#F5F5F7; --bg-hover:#ECECF0;
+  --text:#16181D; --text-secondary:#4A4E58; --text-muted:#7E828B;
+  --gold:#565CE8; --gold-bg:rgba(86,92,232,0.08); --aurora2:#3EC8D8;
+  --line:#E8E9EC; --line-strong:#D8DAE0; --up:#565CE8;
+  --header-bg:rgba(251,251,252,0.92);
+  --tab-active-bg:var(--text); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--text);
+}
+[data-theme="dark"] {
+  --bg:#0A0B0F; --bg-card:#12141B; --bg-hover:#191C25;
+  --text:#F4F5F8; --text-secondary:#C3C7D1; --text-muted:#7C8290;
+  --gold:#8B93FF; --gold-bg:rgba(139,147,255,0.10); --aurora2:#4FE0EF;
+  --line:#1E2027; --line-strong:#2A2D38; --up:#8B93FF;
+  --header-bg:rgba(10,11,15,0.92);
+  --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--gold);
+}
+/* ── 정렬 통일: 헤더·메뉴·본문을 같은 1080px 기둥에 ── */
+.site-header-inner{max-width:1080px !important;margin:0 auto !important;padding:14px 20px !important;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.site-nav-inner{max-width:1080px !important;margin:0 auto !important;padding:0 20px !important;justify-content:space-between}
+/* 첫/끝 탭의 내부 패딩만큼 광학 보정 — 탭 '글자'가 로고 좌변·캡슐 우변과 정렬 */
+.site-nav-inner .nav-tab:first-child{margin-left:-14px}
+.site-nav-inner .nav-tab:last-child{margin-right:-14px}
+@media(max-width:860px){.site-nav-inner{justify-content:flex-start}.site-nav-inner .nav-tab:first-child,.site-nav-inner .nav-tab:last-child{margin:0}}
+.container{max-width:1080px !important}
+
+/* 메뉴 하단 헤어라인: 골드 → 오로라 */
+.site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
+[data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+
+/* ── ud-accordion-v1 — 목록형 아코디언 공용 문법 ────────────────────────────
+   동행 관측 에세이(journal)와 관측일지 칼럼(observatory)이 **같은 구조**를 쓴다.
+   같은 것을 두 벌 구현하면 반드시 갈라지므로 구조·동작은 여기 한 곳에만 둔다.
+   각 페이지는 제목 크기 같은 '자기 눈금'만 따로 준다.
+
+   ⚠️ 펼침에 max-height 전환을 쓰지 않는다: 본문에 차트 SVG 가 들어 있어 접힌
+   상태의 높이를 잴 수 없다(0 이나 잘린 값이 나온다). 애니메이션 한 번 보자고
+   근거가 되는 그림이 깨지는 쪽을 택하지 않는다 — 상태 변화는 캐럿 회전이 알린다. */
+.ud-acc{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;scroll-margin-top:80px;overflow:hidden}
+.ud-acc-head{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:none;border:none;text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+.ud-acc-head:hover{background:var(--bg)}
+.ud-acc.open>.ud-acc-head{border-bottom:1px solid var(--line)}
+.ud-acc-meta{display:flex;align-items:center;gap:9px;flex-shrink:0;font-size:12.5px;color:var(--text-muted)}
+.ud-acc-title{flex:1;min-width:0;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ud-acc-caret{margin-left:auto;flex-shrink:0;color:var(--text-muted);font-size:12.5px;transition:transform .15s}
+.ud-acc.open .ud-acc-caret{transform:rotate(90deg)}
+.ud-acc-detail{display:none;padding:16px 22px 20px}
+.ud-acc.open>.ud-acc-detail{display:block}
+@media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:14px 16px 18px}}
+
+/* ── ud-pin-v1 — 📌 고정 공지 카드 공용 문법 ────────────────────────────────
+   관제센터 공지(.post.pinned)에서 뽑아 올렸다. 관측노트의 논제 원장이 같은
+   '맨 위에 못 박힌 것' 이라는 뜻을 쓰므로 같은 표식을 써야 한 사이트로 읽힌다. */
+.ud-pin{border-color:var(--gold) !important;border-width:1.5px !important}
+.ud-pin-badge{display:inline-flex;align-items:center;flex-shrink:0;font-size:11px;font-weight:800;border-radius:100px;padding:2px 9px;background:var(--gold);color:#fff}
+/* 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점이 붙는다 */
+.ud-new-dot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:currentColor;animation:ud-new-pulse 2s ease-in-out infinite;vertical-align:middle}
+@keyframes ud-new-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── ud-index-v1 — 목록 앞의 목차(연표) 공용 문법 ──────────────────────────
+   필독 해부실(.dx-index)에서 뽑아 올렸다. 관측노트 동행 탭의 에세이 목차가
+   같은 일을 하므로 같은 문법을 쓴다 — 헤어라인 행, 골드 대문자 소제목.
+   행의 배치(block / flex)는 페이지가 정한다: 해부실은 제목이 길어 줄바꿈이 맞고,
+   에세이 목차는 날짜·판정·제목을 한 줄에 세우는 편이 연표로 읽힌다.
+   ⚠️ 이 블록은 head 끝에 나중에 주입된다 — 같은 특이도면 여기가 이긴다.
+   페이지에서 덮어쓰려면 특이도를 한 단 올려라(#id 등). */
+.ud-index{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.ud-index-title{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ud-index-row{display:block;width:100%;padding:7px 0;border:0;border-top:1px solid var(--line);background:none;text-align:left;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--text);text-decoration:none;line-height:1.45;cursor:pointer}
+.ud-index-row:first-of-type{border-top:0}
+.ud-index-row:hover{color:var(--gold)}
+.ud-index-date{color:var(--text-muted);font-weight:700;font-size:12px;margin-right:8px;font-variant-numeric:tabular-nums}
+</style>
+
 </head>
 <body>
 
 <header class="site-header">
   <div class="site-header-inner">
-    <div class="brand">
-      <a href="index.html"><span class="brand-star">✨</span><span>Stay hungry. ASI</span></a>
-      <span class="brand-tag">@stayhungryasi</span>
-    </div>
+    <a class="brand ud-logo uvx" href="index.html" aria-label="UNIVERTRIX 홈">
+      <span class="uvx-lat"><span class="uvx-word">UNIVERTRIX</span>
+        <svg class="uvx-orbit" viewBox="0 0 300 60" preserveAspectRatio="none" fill="none" aria-hidden="true">
+          <path d="M8 46 C 62 68, 150 -16, 288 20" stroke-width="1.6"/>
+          <circle cx="288" cy="20" r="3.4"/>
+        </svg></span>
+      <span class="uvx-kr">우주지배자</span>
+    </a>
     <div class="header-right">
       <span class="update-badge">2026.08.23</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
@@ -155,8 +350,8 @@ main { flex: 1; padding: 0 0 48px; }
     <a href="latent.html" class="nav-tab">잠재지배자</a>
     <a href="megatrend.html" class="nav-tab">메가트렌드</a>
     <a href="research.html" class="nav-tab">리서치</a>
-    <a href="community.html" class="nav-tab">커뮤니티</a>
-    <a href="my-universe.html" class="nav-tab">나의우주</a>
+    <a href="observatory.html" class="nav-tab">데이터 천문대</a>
+    <a href="community.html" class="nav-tab">관제센터</a><a href="journal.html" class="nav-tab">관측노트</a><a href="pioneers.html" class="nav-tab active">개척자</a>
   </div>
 </nav>
 
@@ -177,11 +372,12 @@ main { flex: 1; padding: 0 0 48px; }
 <footer class="site-footer">
   <div class="container">
     <div class="footer-brand">
-      <span>✨ Stay hungry. ASI</span>
+      <span>UNI<span style="color:var(--gold)">V</span>ERTRIX</span>
       <span class="footer-divider">·</span>
       <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
     </div>
   </div>
+<div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">사이트 소개</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">이용약관</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">개인정보처리방침</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">커뮤니티 운영정책</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>
 </footer>
 
 <script>
@@ -229,6 +425,46 @@ function esc(s) {
         <div class="pn-items">${items}</div>
       </div>`;
   }).join('');
+})();
+</script>
+<!-- uv-presence -->
+<script type="module">
+(async () => {
+  try {
+    const cfg = await (await fetch('data/firebase_config.json?v=' + Date.now())).json();
+    if (!cfg || !cfg.apiKey) return;
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const db = getFirestore(initializeApp(cfg, 'presence'));
+
+    let pid = localStorage.getItem('uv_pid');
+    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
+
+    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
+    const count = async () => {
+      try {
+        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
+        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
+        const n = snap.data().count;
+        if (n > 0) {
+          let el = document.getElementById('uvPresence');
+          if (!el) {
+            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
+            if (!ft) return;
+            el = document.createElement('div');
+            el.id = 'uvPresence';
+            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
+            ft.appendChild(el);
+          }
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> 지금 ' + n + '명이 우주를 관측 중';
+        }
+      } catch (e) {}
+    };
+    await beat(); await count();
+    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
+    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
+  } catch (e) {}
 })();
 </script>
 </body>
