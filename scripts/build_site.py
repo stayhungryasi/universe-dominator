@@ -563,6 +563,21 @@ def thesis_md_to_html(md):
     return re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", html)
 
 
+def thesis_one_line(md):
+    """논제 원장에서 '10년 논제' 한 문장만 뽑는다 (고정 공지 카드용).
+
+    판단층을 요약하지 않는다 — 소장이 쓴 첫 문장을 그대로 가져올 뿐이다.
+    """
+    m = re.search(r"^##\s*10년\s*논제\s*$(.*?)(?=^##\s|\Z)", md or "", re.S | re.M)
+    body = (m.group(1) if m else md or "")
+    body = re.sub(r"\s+", " ", re.sub(r"[*`>#-]", " ", body)).strip()
+    if not body:
+        return ""
+    # 첫 문장 — 마침표에서 끊되 숫자 뒤의 점($4.3B, 2026.08)은 문장 끝이 아니다
+    m2 = re.search(r"^(.{20,}?[^0-9]\.)(?:\s|$)", body)
+    return (m2.group(1) if m2 else body[:160].rstrip() + "…")
+
+
 def companion_data():
     """동행 관측 주입 데이터 — 회사(논제 스냅샷) + 발행 에세이 원장."""
     import companion_essays as ce
@@ -575,6 +590,7 @@ def companion_data():
             "slug": c["slug"], "ko": c.get("ko", c["slug"]), "emoji": c.get("emoji", ""),
             "thesis": {"placeholder": t["placeholder"], "version": t["version"],
                        "updated": t["updated"],
+                       "one": "" if t["placeholder"] else thesis_one_line(t["body"]),
                        "html": "" if t["placeholder"] else thesis_md_to_html(t["body"])},
         })
     ess = DATA_DIR / "essays.json"
@@ -712,6 +728,15 @@ AURORA_GLOBAL_CSS = """<link href="https://fonts.googleapis.com/css2?family=Nanu
 .ud-acc-detail{display:none;padding:16px 22px 20px}
 .ud-acc.open>.ud-acc-detail{display:block}
 @media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:14px 16px 18px}}
+
+/* ── ud-pin-v1 — 📌 고정 공지 카드 공용 문법 ────────────────────────────────
+   관제센터 공지(.post.pinned)에서 뽑아 올렸다. 관측노트의 논제 원장이 같은
+   '맨 위에 못 박힌 것' 이라는 뜻을 쓰므로 같은 표식을 써야 한 사이트로 읽힌다. */
+.ud-pin{border-color:var(--gold) !important;border-width:1.5px !important}
+.ud-pin-badge{display:inline-flex;align-items:center;flex-shrink:0;font-size:11px;font-weight:800;border-radius:100px;padding:2px 9px;background:var(--gold);color:#fff}
+/* 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점이 붙는다 */
+.ud-new-dot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:currentColor;animation:ud-new-pulse 2s ease-in-out infinite;vertical-align:middle}
+@keyframes ud-new-pulse{0%,100%{opacity:1}50%{opacity:.35}}
 </style>
 """
 

@@ -157,10 +157,26 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ce-tab:hover { color: var(--text-secondary); }
 .ce-tab.active { color: var(--text); border-bottom-color: var(--gold); }
 
-.ce-thesis { background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; }
-.ce-thesis-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+/* 논제 원장 = 📌 고정 공지. 카드 뼈대는 공용 .ud-acc + .ud-pin 이 맡는다.
+   접힌 높이는 3줄 이내 — 배지 줄 1 + 한 문장 2줄(클램프). */
+.ce-thesis { margin-bottom: 22px; }
+.ce-thesis .ud-acc-head { flex-direction: column; align-items: stretch; gap: 8px; padding: 16px 20px; }
+.ce-thesis-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .ce-thesis-name { font-size: var(--note-title); line-height: var(--note-title-lh); font-weight: 800; letter-spacing: -0.02em; }
-.ce-thesis-ver { font-size: var(--note-meta); font-weight: 700; color: var(--gold); background: var(--gold-bg); border-radius: 100px; padding: 3px 10px; }
+.ce-thesis-ver { font-size: var(--note-meta); font-weight: 700; color: var(--gold); background: var(--gold-bg); border-radius: 100px; padding: 3px 10px; white-space: nowrap; }
+.ce-thesis-more { margin-left: auto; display: flex; align-items: center; gap: 4px; font-size: var(--note-meta); font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+.ce-thesis-one { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* 좁은 폭에서는 라벨을 줄여 배지 줄이 한 줄로 남게 한다 — 접힌 카드는 어디서나 3줄 이내 */
+.ce-narrow-only { display: none; }
+@media (max-width: 560px) {
+  .ce-thesis .ud-acc-head { padding: 14px 16px; }
+  .ce-thesis-head { gap: 7px; flex-wrap: nowrap; }
+  .ce-wide-only { display: none; }
+  .ce-narrow-only { display: inline; }
+  .ce-thesis-name { font-size: var(--note-h); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ce-thesis-ver { font-size: 11px; padding: 2px 8px; }
+  .ce-thesis-more { margin-left: auto; }
+}
 .ce-thesis-body { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text); }
 .ce-thesis-body h1 { font-size: var(--note-h); font-weight: 800; color: var(--text); margin: 12px 0 6px; letter-spacing: -0.02em; }
 .ce-thesis-body h2 { font-size: var(--note-h); font-weight: var(--note-h-weight); color: var(--gold); margin: 20px 0 6px; letter-spacing: -0.02em; }
@@ -274,8 +290,9 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 
     <!-- 동행 관측 (기업 탭) -->
     <div id="paneCompanion" style="display:none">
-      <div id="ceInbox"></div>
+      <!-- 헌법은 맨 위에 — 고정 공지 → 소재 투입함 → 에세이 -->
       <div id="ceThesis"></div>
+      <div id="ceInbox"></div>
       <div id="ceEssays"></div>
     </div>
 
@@ -353,21 +370,58 @@ function setTab(id, push){
 
 function companyOf(slug){ return (CE.companies || []).find(c => c.slug === slug); }
 
+// 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점을 붙인다.
+// 브라우저 시계로 재는 이유: 빌드 시점에 굳히면 캐시된 페이지가 며칠 뒤에도
+// 'NEW' 를 달고 있게 된다 (거짓말이 된다).
+function isRecent(updated, days){
+  if (!updated) return false;
+  const t = Date.parse(updated + 'T00:00:00+09:00');
+  if (isNaN(t)) return false;
+  return (Date.now() - t) <= (days || 7) * 86400000 && Date.now() >= t - 86400000;
+}
+
 function renderCompany(slug){
   const c = companyOf(slug) || { ko: slug, emoji: '', thesis: {} };
   const th = c.thesis || {};
-  $('ceThesis').innerHTML = '<div class="ce-thesis">' +
-    '<div class="ce-thesis-head"><span class="ce-thesis-name">' + esc(c.emoji + ' ' + c.ko) + '</span>' +
-    (th.placeholder
-      ? '<span class="ce-thesis-ver">논제 취재 중 🔭</span>'
-      : '<span class="ce-thesis-ver">논제 v' + esc(th.version) + ' · 갱신 ' + esc(th.updated) + '</span>') +
+  // 논제 원장 = 📌 고정 공지. 헌법은 맨 위에 있어야 하고, 접힌 채로도
+  // '무엇을 믿고 있는가' 한 문장은 늘 보여야 한다. 전문은 클릭으로 편다.
+  const fresh = isRecent(th.updated);
+  $('ceThesis').innerHTML = '<div class="ce-thesis ud-acc ud-pin" id="thesisCard">' +
+    '<button class="ud-acc-head" id="thesisHead" aria-expanded="false" aria-controls="thesisBody">' +
+      '<span class="ce-thesis-head">' +
+        '<span class="ud-pin-badge">📌<span class="ce-wide-only"> 논제 원장</span></span>' +
+        '<span class="ce-thesis-name">' + esc(c.emoji + ' ' + c.ko) + '</span>' +
+        (th.placeholder
+          ? '<span class="ce-thesis-ver">논제 취재 중 🔭</span>'
+          : '<span class="ce-thesis-ver' + (fresh ? ' ud-new-dot' : '') + '"' +
+            (fresh ? ' title="최근 7일 안에 갱신된 판단층입니다"' : '') + '>' +
+            '<span class="ce-wide-only">논제 </span>v' + esc(th.version) +
+            ' · <span class="ce-wide-only">갱신 </span>' +
+            '<span class="ce-wide-only">' + esc(th.updated) + '</span>' +
+            '<span class="ce-narrow-only">' + esc(String(th.updated).slice(5)) + '</span>' +
+            '</span>') +
+        '<span class="ce-thesis-more"><span class="ce-wide-only">원장 전문 </span>' +
+          '<span class="ud-acc-caret" aria-hidden="true">▸</span></span>' +
+      '</span>' +
+      '<span class="ce-thesis-one">' +
+        (th.placeholder
+          ? '10년 논제를 취재하는 중입니다. 논제가 서기 전까지는 에세이를 쓰지 않습니다 — 논제 없는 기록은 스크랩이기 때문입니다.'
+          : esc(th.one || '')) +
+      '</span>' +
+    '</button>' +
+    '<div class="ud-acc-detail" id="thesisBody">' +
+      (th.placeholder
+        ? '<div class="ce-waiting"><div class="ce-waiting-icon">🔭</div>' +
+          '<div class="ce-waiting-text">논제가 서면 이 자리에 핵심 가설과 반증 조건이 들어섭니다.</div></div>'
+        : '<div class="ce-thesis-body">' + (th.html || '') + '</div>') +
     '</div>' +
-    (th.placeholder
-      ? '<div class="ce-waiting"><div class="ce-waiting-icon">🔭</div>' +
-        '<div class="ce-waiting-text">10년 논제를 취재하는 중입니다. 논제가 서기 전까지는 ' +
-        '에세이를 쓰지 않습니다 — 논제 없는 기록은 스크랩이기 때문입니다.</div></div>'
-      : '<div class="ce-thesis-body">' + (th.html || '') + '</div>') +
-    '</div>';
+  '</div>';
+  $('thesisHead').onclick = () => {
+    const card = $('thesisCard');
+    const open = !card.classList.contains('open');
+    card.classList.toggle('open', open);
+    $('thesisHead').setAttribute('aria-expanded', String(open));
+  };
 
   // 아코디언 — 연표가 먼저, 전문은 클릭. 한 항로에 에세이가 쌓일수록
   // 전문을 다 펼쳐 두면 '언제 무슨 판정이 났는가'라는 시간의 축이 보이지 않는다.

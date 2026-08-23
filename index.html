@@ -1171,6 +1171,15 @@ document.addEventListener('DOMContentLoaded', function () {
 .ud-acc-detail{display:none;padding:16px 22px 20px}
 .ud-acc.open>.ud-acc-detail{display:block}
 @media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:14px 16px 18px}}
+
+/* ── ud-pin-v1 — 📌 고정 공지 카드 공용 문법 ────────────────────────────────
+   관제센터 공지(.post.pinned)에서 뽑아 올렸다. 관측노트의 논제 원장이 같은
+   '맨 위에 못 박힌 것' 이라는 뜻을 쓰므로 같은 표식을 써야 한 사이트로 읽힌다. */
+.ud-pin{border-color:var(--gold) !important;border-width:1.5px !important}
+.ud-pin-badge{display:inline-flex;align-items:center;flex-shrink:0;font-size:11px;font-weight:800;border-radius:100px;padding:2px 9px;background:var(--gold);color:#fff}
+/* 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점이 붙는다 */
+.ud-new-dot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:currentColor;animation:ud-new-pulse 2s ease-in-out infinite;vertical-align:middle}
+@keyframes ud-new-pulse{0%,100%{opacity:1}50%{opacity:.35}}
 </style>
 
 </head>

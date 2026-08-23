@@ -160,10 +160,11 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .emoji-btn { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; font-size: 16px; padding: 3px 7px; cursor: pointer; }
 .emoji-btn:hover { border-color: var(--gold); }
 .pin-label { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--gold); font-weight: 700; cursor: pointer; }
-.post.pinned { border-color: var(--gold); border-width: 1.5px; }
+/* 📌 고정 표식은 공용 .ud-pin / .ud-pin-badge (build_site 의 ud-pin-v1).
+   관측노트 논제 원장이 같은 표식을 쓰므로 한 곳에서만 정의한다. */
 .badge { font-size: 11px; font-weight: 800; border-radius: 100px; padding: 2px 9px; margin-right: 6px; }
-.badge.notice { background: var(--gold); color: #fff; }
 .badge.hot { background: var(--gold-bg); color: var(--gold); }
+.ud-pin-badge { margin-right: 6px; }
 .post-img { margin-top: 10px; }
 .post-img img { max-width: 100%; max-height: 340px; border-radius: 10px; border: 1px solid var(--line); cursor: pointer; }
 .img-prev { position: relative; display: inline-block; margin-top: 8px; }
@@ -340,6 +341,15 @@ document.addEventListener('DOMContentLoaded', function () {
 .ud-acc-detail{display:none;padding:16px 22px 20px}
 .ud-acc.open>.ud-acc-detail{display:block}
 @media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:14px 16px 18px}}
+
+/* ── ud-pin-v1 — 📌 고정 공지 카드 공용 문법 ────────────────────────────────
+   관제센터 공지(.post.pinned)에서 뽑아 올렸다. 관측노트의 논제 원장이 같은
+   '맨 위에 못 박힌 것' 이라는 뜻을 쓰므로 같은 표식을 써야 한 사이트로 읽힌다. */
+.ud-pin{border-color:var(--gold) !important;border-width:1.5px !important}
+.ud-pin-badge{display:inline-flex;align-items:center;flex-shrink:0;font-size:11px;font-weight:800;border-radius:100px;padding:2px 9px;background:var(--gold);color:#fff}
+/* 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점이 붙는다 */
+.ud-new-dot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:currentColor;animation:ud-new-pulse 2s ease-in-out infinite;vertical-align:middle}
+@keyframes ud-new-pulse{0%,100%{opacity:1}50%{opacity:.35}}
 </style>
 
 </head>
@@ -597,9 +607,9 @@ function renderFeed(){
   const hot = posts.filter(p=>hotIds.includes(p.id)).sort((a,b)=>hotIds.indexOf(a.id)-hotIds.indexOf(b.id));
   const list = [...pinnedPosts, ...hot, ...rest];
   $('feed').innerHTML = list.length ? list.map(p =>
-    '<div class="post'+(p.pinned?' pinned':'')+'" id="p-'+p.id+'">'+
+    '<div class="post'+(p.pinned?' pinned ud-pin':'')+'" id="p-'+p.id+'">'+
       '<div class="post-head">'+
-      (p.pinned ? '<span class="badge notice">📌 공지</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 오늘의 인기 '+(hotIds.indexOf(p.id)+1)+'위</span>' : ''))+
+      (p.pinned ? '<span class="ud-pin-badge">📌 공지</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 오늘의 인기 '+(hotIds.indexOf(p.id)+1)+'위</span>' : ''))+
       avatarHtml(shownName(p.uid,p.name),p.photo)+'<span class="post-name">'+esc(shownName(p.uid,p.name))+'</span>'+
       '<span class="post-time">'+rel(p.created)+'</span>'+
       (me && (me.uid===p.uid || (window.__cfg && me.uid===window.__cfg.adminUid)) ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
