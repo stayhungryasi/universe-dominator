@@ -468,9 +468,29 @@ def render_charts(charts):
 # 꼬리(출처·이해관계·면책)를 감싸는 표식 — 소급 재렌더의 경계가 된다
 TAIL_OPEN = '<div class="ce-tail">'
 TAIL_CLOSE = "</div>"
-# 모델이 헌법 6번을 스스로 써 버린 경우(엔진이 붙인다고 일렀는데도) 그 꼬리를 걷어낸다
+# 모델이 헌법 6번을 스스로 써 버린 경우(엔진이 붙인다고 일렀는데도) 그 꼬리를 걷어낸다.
+#
+# 제목 변형에 주의: 처음엔 <h3>출처</h3> 하나만 잡았는데, 모델은 회차마다
+# "참고 자료" · "Sources" · "출처:" · <h4> · <p><strong>면책:</strong> 등으로 바꿔 쓴다
+# (2026-08-23 실측 — 10개 변형 중 9개가 새어 나갔다).
+# 반대로 느슨하게 풀면 "출처의 신뢰도는 어떠한가" 같은 **분석 절**을 먹는다.
+# 그래서 라벨을 **전체 일치**로만 잡는다: 제목 텍스트가 목록의 라벨 그 자체일 때만.
+_TAIL_LABEL = (
+    r"(?:출처\s*목록|인용\s*출처|자료\s*출처|출처"
+    r"|참고\s*자료|참고\s*문헌"
+    r"|투자\s*면책|면책\s*고지|면책"
+    r"|고지\s*사항"
+    r"|sources?|references?|bibliography|disclaimer|disclosure)"
+)
+# '출처 및 면책' 처럼 둘을 붙여 쓴 제목까지 (연결어는 한 번만 허용)
+_TAIL_HEAD_TEXT = (r"\s*" + _TAIL_LABEL +
+                   r"(?:\s*(?:및|와|과|·|/|,|&|and)\s*" + _TAIL_LABEL + r")?"
+                   r"\s*[:：.]?\s*")
 _MODEL_TAIL = re.compile(
-    r"<h3>\s*출처\s*</h3>(?:(?!<h3>).)*$", re.S)
+    r"(?:<h[2-6]>" + _TAIL_HEAD_TEXT + r"</h[2-6]>"
+    r"|<p>\s*<(?:strong|b)>" + _TAIL_HEAD_TEXT + r"</(?:strong|b)>)"
+    r"(?:(?!<h[2-6]>).)*$",
+    re.S | re.I)
 
 
 def valid_url(u):
@@ -554,9 +574,17 @@ def strip_model_tail(body):
     헌법과 응답 스키마 둘 다 "6번 출처·면책은 넣지 마라(엔진이 붙인다)"고 이르지만
     모델이 지키지 않는 회차가 있다. 그대로 두면 한 에세이에 출처 절이 두 개가 되고,
     그중 하나는 검증되지 않은 모델의 기억이다 — 그쪽이 더 위험하다.
-    본문 끝의 <h3>출처</h3> 이후만 잘라낸다(분석 문단은 건드리지 않는다).
+    본문 **끝**의 출처·면책 제목 이후만 잘라낸다(분석 문단은 건드리지 않는다).
+    출처 블록과 면책 블록이 따로 쌓여 있을 수 있어, 더 잘릴 것이 없을 때까지 반복한다.
+    끝에 붙은 것만 지우므로 본문 중간의 문단은 어떤 경우에도 살아남는다.
     """
-    return _MODEL_TAIL.sub("", body or "").rstrip()
+    out = (body or "").rstrip()
+    for _ in range(6):                      # 무한 루프 방지 — 꼬리가 6겹일 리는 없다
+        nxt = _MODEL_TAIL.sub("", out).rstrip()
+        if nxt == out:
+            break
+        out = nxt
+    return out
 
 
 def split_tail(html):

@@ -126,6 +126,16 @@ def main():
           _ce.check_quotes('<p>"무엇이든"</p>', "", 1), [])
     check("동행: 길이 기준이 언어별",
           (_ce.EN_WORD_LIMIT, _ce.KO_CHAR_LIMIT), (15, 60))
+    # 모델 꼬리 제거 — 제목 변형에 취약했던 정규식(2026-08-23). 잘라낼 것과
+    # 지킬 것을 함께 본다: 느슨하면 분석 절을 먹고, 빡빡하면 꼬리가 새어 나간다.
+    _cut = ["<h3>출처</h3><ul><li>a</li></ul>", "<h3>참고 자료</h3><p>a</p>",
+            "<h3>Sources</h3><p>a</p>", "<h4>출처:</h4><p>a</p>",
+            "<p><strong>면책:</strong> 권유 아님</p>"]
+    check("동행: 꼬리 제목 변형 전부 제거",
+          [_ce.strip_model_tail("<p>본문</p>" + t) for t in _cut],
+          ["<p>본문</p>"] * len(_cut))
+    _keep = "<p>본문</p><h3>출처의 신뢰도는 어떠한가</h3><p>분석</p>"
+    check("동행: 분석 절은 살아남는다 (오탐 방지)", _ce.strip_model_tail(_keep), _keep)
     check("동행: 직접 게재는 하루 1편 상한 밖",
           _ce.published_today([{"company": "spacex", "date": "2026-01-02", "origin": "직접"}],
                               "spacex", "2026-01-02"), False)

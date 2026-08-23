@@ -280,6 +280,48 @@ class SourceIntegrityTest(unittest.TestCase):
         self.assertNotIn("로이터", out)
         self.assertNotIn("면책", out)
 
+    def test_tail_heading_variants_are_all_stripped(self):
+        """모델은 회차마다 제목을 바꿔 쓴다 — 2026-08-23 실측: 10개 변형 중 9개가
+        <h3>출처</h3> 하나만 보는 정규식을 그대로 통과했다.
+        """
+        variants = [
+            "<h3>출처</h3><ul><li>로이터</li></ul>",
+            "<h3>참고 자료</h3><ul><li>로이터</li></ul>",
+            "<h3>참고문헌</h3><ul><li>로이터</li></ul>",
+            "<h3>Sources</h3><ul><li>Reuters</li></ul>",
+            "<h3>References</h3><ul><li>Reuters</li></ul>",
+            "<h3>출처:</h3><ul><li>로이터</li></ul>",
+            "<h4>출처</h4><ul><li>로이터</li></ul>",
+            "<h2>자료 출처</h2><p>로이터</p>",
+            "<p><strong>출처</strong> 로이터</p>",
+            "<p><strong>면책:</strong> 투자 권유가 아님</p>",
+            "<h3>출처 및 면책</h3><p>로이터 · 권유 아님</p>",
+            "<h3>Disclaimer</h3><p>not investment advice</p>",
+            # 출처 블록과 면책 블록이 따로 쌓인 2겹
+            "<h3>출처</h3><ul><li>a</li></ul><h3>면책 고지</h3><p>권유 아님</p>",
+        ]
+        for tail in variants:
+            with self.subTest(tail=tail[:32]):
+                self.assertEqual(ce.strip_model_tail("<p>분석</p>" + tail), "<p>분석</p>")
+
+    def test_analysis_headings_that_merely_mention_sources_survive(self):
+        """느슨하게 풀면 분석 절을 먹는다 — 라벨 '전체 일치'일 때만 잘라낸다."""
+        keep = [
+            "<p>분석</p><h3>출처의 신뢰도는 어떠한가</h3><p>중요한 분석</p>",
+            "<p>분석</p><h3>면책 조항이 의미하는 것</h3><p>중요한 분석</p>",
+            "<p>분석</p><h3>참고 자료를 어떻게 고를 것인가</h3><p>중요한 분석</p>",
+            "<h3>무슨 일이 있었나</h3><p>분석</p>",
+        ]
+        for body in keep:
+            with self.subTest(body=body[:40]):
+                self.assertEqual(ce.strip_model_tail(body), body)
+
+    def test_mid_body_source_block_survives(self):
+        """꼬리는 '끝에 붙은 것'만 지운다 — 뒤에 분석이 이어지면 본문이다."""
+        body = ("<p>a</p><h3>출처</h3><ul><li>x</li></ul>"
+                "<h3>다음 관측 포인트</h3><p>지켜볼 것</p>")
+        self.assertEqual(ce.strip_model_tail(body), body)
+
     def test_build_entry_has_single_source_section(self):
         e = ce.build_entry(
             "spacex", "t", "강화",
