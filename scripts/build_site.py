@@ -7,6 +7,7 @@ selftest.py 가 이 단일화를 매 실행마다 검증한다.
 """
 import json
 import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent.parent
@@ -714,10 +715,13 @@ AURORA_GLOBAL_CSS = """<link href="https://fonts.googleapis.com/css2?family=Nanu
    같은 것을 두 벌 구현하면 반드시 갈라지므로 구조·동작은 여기 한 곳에만 둔다.
    각 페이지는 제목 크기 같은 '자기 눈금'만 따로 준다.
 
+   여백·모서리·스크롤 여유는 필독 해부실 본문 카드(.dx-card)와 같은 값을 쓴다
+   — 같은 사이트의 '읽는 카드'는 한 톤이어야 한다(2026-08-24 실측 대조 후 정렬).
+
    ⚠️ 펼침에 max-height 전환을 쓰지 않는다: 본문에 차트 SVG 가 들어 있어 접힌
    상태의 높이를 잴 수 없다(0 이나 잘린 값이 나온다). 애니메이션 한 번 보자고
    근거가 되는 그림이 깨지는 쪽을 택하지 않는다 — 상태 변화는 캐럿 회전이 알린다. */
-.ud-acc{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;scroll-margin-top:80px;overflow:hidden}
+.ud-acc{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;scroll-margin-top:90px;overflow:hidden}
 .ud-acc-head{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:none;border:none;text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
 .ud-acc-head:hover{background:var(--bg)}
 .ud-acc.open>.ud-acc-head{border-bottom:1px solid var(--line)}
@@ -725,9 +729,9 @@ AURORA_GLOBAL_CSS = """<link href="https://fonts.googleapis.com/css2?family=Nanu
 .ud-acc-title{flex:1;min-width:0;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ud-acc-caret{margin-left:auto;flex-shrink:0;color:var(--text-muted);font-size:12.5px;transition:transform .15s}
 .ud-acc.open .ud-acc-caret{transform:rotate(90deg)}
-.ud-acc-detail{display:none;padding:16px 22px 20px}
+.ud-acc-detail{display:none;padding:22px 24px}
 .ud-acc.open>.ud-acc-detail{display:block}
-@media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:14px 16px 18px}}
+@media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:18px 16px}}
 
 /* ── ud-pin-v1 — 📌 고정 공지 카드 공용 문법 ────────────────────────────────
    관제센터 공지(.post.pinned)에서 뽑아 올렸다. 관측노트의 논제 원장이 같은
@@ -769,6 +773,38 @@ def inject_aurora_tokens():
         html = html.replace("</head>", AURORA_GLOBAL_CSS + "\n</head>", 1)
         f.write_text(html, encoding="utf-8"); n += 1
     print(f"[OK] 오로라 팔레트 주입: {n}개 페이지")
+    verify_pages()
+
+
+def verify_pages():
+    """산출물 검사 — 주입이 빠진 페이지가 하나라도 있으면 **시끄럽게** 죽는다.
+
+    2026-08-24: 빌드가 두 번 조용히 중간에 멈춰(헤드리스 크롬이 파일을 물고 있는
+    동안 쓰기가 막힌 것으로 추정) 오로라·공용 CSS 가 빠진 observatory.html 이 남았다.
+    페이지는 열리고 대부분 정상으로 보이는데 공용 컴포넌트만 민무늬가 된다 —
+    그 상태로 검증하면 '스타일이 안 먹는다'는 엉뚱한 결론에 이른다(실제로 두 번 겪었다).
+    빌드가 끝났다고 말하려면 산출물이 정말 그렇게 되었는지 확인하고 말해야 한다.
+    """
+    bad = []
+    for name in ALL_PAGES:
+        f = HERE / name
+        if not f.exists():
+            bad.append(f"{name}: 파일 없음")
+            continue
+        html = f.read_text(encoding="utf-8")
+        if "ud-aurora-global-v1" not in html:
+            bad.append(f"{name}: 오로라 주입 누락")
+            continue
+        head = html[:html.find("</head>")]
+        i = head.find("<style")
+        if i >= 0 and "<style" in head[i + 6:head.find("</style>")]:
+            bad.append(f"{name}: <style> 블록 오염(주입 지점 침범)")
+    if bad:
+        print("[FAIL] 산출물 검사 실패 — 빌드를 신뢰할 수 없습니다:", file=sys.stderr)
+        for b in bad:
+            print(f"    · {b}", file=sys.stderr)
+        sys.exit(1)
+    print(f"[OK] 산출물 검사: {len(ALL_PAGES)}개 페이지 주입·구조 정상")
 
 
 HEADER_FIX_CSS = """<style>

@@ -134,13 +134,13 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .col-viz svg { width: 100%; height: auto; display: block; }
 /* 카드 구조·동작은 공용 .ud-acc-* (build_site 의 ud-accordion-v1). 여기엔 눈금만.
    동행 관측 에세이와 같은 문법을 쓴다 — 같은 것을 두 벌 구현하지 않는다. */
-.col-card .ud-acc-title { font-size: 18px; }
+.col-card .ud-acc-title { font-size: 19px; line-height: 1.4; letter-spacing: -0.02em; }
 .col-card .ud-acc-meta { font-size: 12px; font-weight: 800; letter-spacing: 0.04em; }
 .col-date { color: var(--gold); }
 .col-kind { color: var(--text-muted); }
 .col-summary { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px; }
 .col-body { font-size: 14.5px; line-height: 1.85; }
-@media (max-width: 480px) { .col-card .ud-acc-title { font-size: 15.5px; } }
+@media (max-width: 480px) { .col-card .ud-acc-title { font-size: 17px; } }
 .col-chart { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); line-height: 0; }
 .col-chart svg { width: 100%; height: auto; display: block; }
 .col-share { display: flex; gap: 8px; margin: 0 0 14px; }
@@ -1300,7 +1300,14 @@ function renderColumns(){
   // 아코디언 — 연표가 먼저, 전문은 클릭. 기본은 최신 1편만 펼침.
   // 비주얼(col-viz)은 detail 안으로 들어간다: 접힌 목록은 날짜·유형·제목만 남아야
   // '언제 무슨 관측이 있었나'라는 시간의 축이 보인다.
-  document.getElementById('obsBody').innerHTML = cols.map((c, i) => {
+  // 목차 — 필독 해부실의 '해부 목록'을 그대로 쓴다(공용 .ud-index-*, 신규 CSS 없음).
+  // 링크라서 클릭하면 해시가 바뀌고, 기존 해시 처리기(openFromHash)가 펼치고 스크롤한다
+  // — 이미 뿌려진 #log-{colSeed} 공유 링크와 같은 경로다.
+  const toc = '<div class="ud-index"><div class="ud-index-title">관측 목록 ' + cols.length + '편</div>' +
+    cols.map(c => '<a class="ud-index-row" href="#' + colSlug(c) + '">' +
+      '<span class="ud-index-date">' + esc(c.date) + '</span>' +
+      esc(c.title) + '</a>').join('') + '</div>';
+  document.getElementById('obsBody').innerHTML = toc + cols.map((c, i) => {
     const open = (i === 0);
     return '<div class="col-card ud-acc'+(open?' open':'')+'" id="col-'+i+'" data-log="'+colSlug(c)+'">'+
       '<button class="ud-acc-head" onclick="toggleCol('+i+')" aria-expanded="'+open+'" aria-controls="colbody-'+i+'">'+
@@ -1378,6 +1385,9 @@ function setColOpen(card, open){
   const head = card.querySelector('.ud-acc-head');
   if (head) head.setAttribute('aria-expanded', String(open));
 }
+// 목차 클릭은 해시를 바꾼다 — 같은 처리기가 펼치고 스크롤한다 (경로를 둘로 만들지 않는다)
+window.addEventListener('hashchange', openFromHash);
+
 function openFromHash(){
   const h = location.hash.replace('#', '');
   if (!h.startsWith('log-')) return;
