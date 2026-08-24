@@ -7,8 +7,8 @@
    "ever_seen": true
   },
   "OpenAI": {
-   "zero_streak": 12,
-   "alerted": true,
+   "zero_streak": 0,
+   "alerted": false,
    "ever_seen": true
   },
   "Anthropic": {
@@ -17,7 +17,7 @@
    "ever_seen": true
   },
   "Google DeepMind": {
-   "zero_streak": 0,
+   "zero_streak": 1,
    "alerted": false,
    "ever_seen": true
   }
@@ -42,6 +42,11 @@
    "date": "2026-08-24",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-08-25",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
@@ -51,16 +56,19 @@
   "2026-08-24": [
    "sentinel:signals-recover:Google DeepMind:2026-08-24",
    "sentinel:signals:Google DeepMind:2026-08-24"
+  ],
+  "2026-08-25": [
+   "sentinel:signals-recover:OpenAI:2026-08-25"
   ]
  },
  "last_verdict": {
-  "at": "2026-08-24 19:14",
+  "at": "2026-08-25 08:54",
   "ok": false,
   "alerts": [
-   "fetch_signals: Google DeepMind 회복 — 오늘 1건 ✅"
+   "fetch_signals: OpenAI 회복 — 오늘 1건 ✅"
   ]
  },
- "last_run": "2026-08-24 19:14",
+ "last_run": "2026-08-25 08:54",
  "materials": {
   "streak": 0,
   "alerted": false
