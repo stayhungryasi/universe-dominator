@@ -155,6 +155,9 @@ jobs:
         run: python scripts/fetch_buffett.py || echo "::warning::fetch_buffett 실패 — 시차 관측은 기존 값 유지"
         env:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          # 10년물(DGS10) — 키가 있으면 FRED API 가 1순위. 없으면 사슬이
+          # Treasury.gov → ^TNX 로 내려간다(로그의 '출처' 로 어디서 잡혔는지 판별).
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         continue-on-error: true
 
       # 존 전이(탐색·본격·정당선 교차)만 관측노트에 기록 — 변화 없으면 침묵
