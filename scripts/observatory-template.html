@@ -209,12 +209,37 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .px-hard { margin-top: 20px; }
 .px-hard-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
 .px-hard-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
+/* 레전드벤치마크 — 시차 관측의 자산(.px-*)을 그대로 쓰고, 여기서만 필요한 것만 더한다.
+   새 색은 만들지 않는다: 양수는 액센트(--gold), 음수·미검정은 그라파이트(--text-muted). */
+.lg-rates { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px 16px; margin-bottom: 14px; font-size: 13.5px; color: var(--text-secondary); }
+.lg-rates .r-k { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--text-muted); }
+.lg-rates .r-v { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--text); }
+.lg-rates .r-bar { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--gold); }
+.lg-rates .r-sep { color: var(--line-strong); }
+.lg-badge { display: inline-block; margin-left: 5px; font-size: 11px; font-weight: 800;
+  white-space: nowrap; border: 1px solid var(--line-strong); border-radius: 100px;
+  padding: 2px 8px; color: var(--text-muted); cursor: help; }
+.lg-pos { color: var(--gold); }
+.lg-neg { color: var(--text-muted); }
+.lg-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; font-weight: 600; }
+.lg-zonetag { font-weight: 800; white-space: nowrap; font-size: 14.5px; }
+.lg-watch { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 15px 19px; margin: 16px 0; }
+.lg-watch-title { font-size: 13.5px; font-weight: 800; margin-bottom: 8px; }
+.lg-watch ul { margin: 0; padding-left: 18px; }
+.lg-watch li { font-size: 13px; line-height: 1.85; color: var(--text-secondary); }
+.lg-watch b { color: var(--gold); font-weight: 800; }
 @media (max-width: 480px) {
   .px-table { font-size: 13px; }
   .px-table td { padding: 12px 7px; }
   .px-why, .px-table th:last-child, .px-table td:last-child { display: none; }
   .px-zone { flex: 1 1 45%; }
   .px-gloss { padding: 4px 15px 6px; }
+  /* 레전드 표는 마지막 칸(버핏존)이 결론이라 숨기면 안 된다 — 전환율을 접는다.
+     (전환율은 PIK 배지로도 읽히므로 정보가 사라지지 않는다) */
+  .lg-c-conv { display: none; }
 }
 </style>
 </head>
@@ -264,6 +289,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
       <button class="obs-tab" data-t="map" onclick="setObsTab('map', this)">우주 지도</button>
       <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">관측일지</button>
       <button class="obs-tab" data-t="parallax" onclick="setObsTab('parallax', this)">시차 관측</button>
+      <button class="obs-tab" data-t="legend" onclick="setObsTab('legend', this)">레전드벤치마크</button>
     </div>
     <div id="obsBody"></div>
   </div>
@@ -303,6 +329,7 @@ function setObsTab(t, btn){
   if (t === 'solar') renderSolar();
   else if (t === 'map') renderMap();
   else if (t === 'parallax') renderParallax();
+  else if (t === 'legend') renderLegend();
   else renderColumns();
 }
 
@@ -1293,6 +1320,135 @@ function renderParallax(){
   host.innerHTML = html;
 }
 
+/* ── 레전드벤치마크 (표시층) ──────────────────────────────────────────
+   측정층 data/buffett.json 의 bench + 판단층에서 나른 DATA.legend 를 **표시만** 한다.
+   여기서 새로 판정하지 않는다: 버핏존·쿠폰·ROE 는 측정층이 이미 매긴 값을 읽을 뿐이고,
+   배지는 사람이 취재해 적어 넣은 칸(전환율·risk5·가드)을 그대로 비춘다. */
+const LG_ZONE_KO = { pass: '통과', prove_growth: '성장 입증 필요',
+                     bond_inferior: '국채 열위', untested: '미검정' };
+
+const LG_TIP = {
+  pik: '이자를 현금이 아니라 종이(재투자)로 받는 셈. 전환율이 음수라는 건 장부의 이익이 ' +
+       '주주 손에 오기 전에 공사판으로 되돌아갔다는 뜻이다.',
+  hard: '10년 뒤 월세 칸을 자신 있게 적을 수 없는 건물(risk5 사업 확실성 ✕). ' +
+        '낙제가 아니라 "모른다"는 정직 — 판단층에 사람이 그렇게 적어 두었다.',
+  peak: '시클리컬 전용 경고등. 정점 이익으로 계산한 쿠폰은 바닥처럼 보이는 천장이다 — ' +
+        '그래서 이 자리에서는 쿠폰을 산출하지 않는다.'
+};
+
+/* 퍼센트 표기 — null 은 반드시 —. 0 으로 흘려보내지 않는다(못 잰 것과 0 은 다르다). */
+function lgPct(v, digits){ return v == null ? '—' : (v * 100).toFixed(digits == null ? 1 : digits) + '%'; }
+function lgPp(v){ return v == null ? '—' : (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + 'p'; }
+
+/* 버크셔 13F 마감까지 남은 날 — 11/14 가 지났으면 내년치를 센다 */
+function lgDDay(){
+  const now = new Date();
+  let due = new Date(now.getFullYear(), 10, 14);       // 10 = 11월
+  if (due < now) due = new Date(now.getFullYear() + 1, 10, 14);
+  return Math.ceil((due - now) / 86400000);
+}
+
+const LG_GLOSSARY =
+  '<details class="px-gloss" open><summary>용어집 — 이 표의 눈금 읽는 법</summary><dl>' +
+  '<dt>버핏존</dt><dd>이 건물의 월세가 국채 이자를 이기는가. 10년 뒤 원가쿠폰이 국채의 3배를 넘으면 ' +
+    '<b>통과</b>, 1.5~3배면 <b>성장 입증 필요</b>(지금 값으론 모자라니 성장이 실제로 와야 한다), ' +
+    '1.5배 미만이면 <b>국채 열위</b> — 위험을 지고도 국채만 못하다는 뜻. 아직 취재가 안 끝나 ' +
+    '계산 자체를 못 한 건물은 <b>미검정</b>이다. 미검정은 나쁨이 아니라 백지다.</dd>' +
+  '<dt>PIK</dt><dd>월세를 현금이 아니라 차용증으로 받는 것. 장부에는 이익이 찍히는데 그 돈이 ' +
+    '주주에게 오기 전에 다시 공사판으로 들어간다면, 건물주가 손에 쥔 것은 종이뿐이다. ' +
+    '전환율(주주 손에 남은 몫 ÷ 장부 이익)이 음수인 건물에 이 배지가 붙는다.</dd>' +
+  '<dt>too hard</dt><dd>10년 뒤 월세 칸이 백지인 건물. 나쁜 건물이라서가 아니라 아무도 그 칸을 ' +
+    '자신 있게 못 적는 것 — 버핏은 그 경우 모든 투입은 투기라고 했다. 이 배지는 기계가 매기지 않는다. ' +
+    '판단층에서 사람이 "사업 확실성 ✕"라고 적은 건물에만 붙는다.</dd>' +
+  '</dl></details>';
+
+function lgRow(x, lg){
+  const b = x.bench || {};
+  const j = lg[x.ticker] || {};
+  const zone = LG_ZONE_KO[b.zone_buffett] || '미검정';
+  const roe = b.roe_minus_2x10y;
+  const roeCls = roe == null ? '' : (roe >= 0 ? 'lg-pos' : 'lg-neg');
+
+  // 쿠폰 칸 — g 가정을 반드시 병기한다. 가정을 감추면 숫자가 사실처럼 보인다.
+  let coupon;
+  if (j.guard || b.guard) {
+    coupon = '<span class="lg-neg">—</span>' +
+      '<span class="lg-badge" title="' + esc(LG_TIP.peak) + '">⚠ 정점 주의</span>';
+  } else if (b.coupon10y == null) {
+    coupon = '<span class="lg-neg">—</span>';
+  } else {
+    coupon = lgPct(b.coupon10y) + '<div class="lg-sub">g ' + lgPct(b.g_used) + ' 가정</div>';
+  }
+
+  const badges =
+    ((j.conv != null && j.conv < 0)
+      ? '<span class="lg-badge" title="' + esc(LG_TIP.pik) + '">PIK</span>' : '') +
+    ((j.cert === '✕')
+      ? '<span class="lg-badge" title="' + esc(LG_TIP.hard) + '">too hard</span>' : '');
+
+  return '<tr>' +
+    '<td><div class="px-tk">' + esc(x.ticker) + badges + '</div>' +
+      '<div class="px-name">' + esc(x.name) + '</div></td>' +
+    '<td class="px-num ' + roeCls + '">' + lgPp(roe) + '</td>' +
+    '<td class="px-num">' + coupon + '</td>' +
+    '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) + '</td>' +
+    '<td><span class="lg-zonetag">' + zone + '</span>' +
+      (b.note ? '<div class="lg-sub">' + esc(b.note) + '</div>' : '') + '</td>' +
+  '</tr>';
+}
+
+function renderLegend(){
+  const b = (DATA.buffett) || {};
+  const items = b.items || [];
+  const host = document.getElementById('obsBody');
+  if (!items.length) {
+    host.innerHTML = '<div class="obs-note">레전드벤치마크 준비 중 — 첫 측정이 끝나면 이곳에 실립니다.</div>';
+    return;
+  }
+  const lg = DATA.legend || {};
+  const rates = b.rates || {};
+
+  let html = '<div class="px-notice"><b>버핏존은 서한의 눈금을 오늘 시세에 대입한 산술 결과이며 ' +
+    '투자 권유가 아닙니다.</b> 10년 원가쿠폰의 g는 <b>가정</b>입니다. 가정이 바뀌면 결론도 바뀝니다 — ' +
+    '표의 모든 쿠폰 옆에 그 가정을 함께 적어 둔 이유입니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+
+  // 눈금 스트립 — 미배선 국채(KTB·JGB)는 null 이면 아예 적지 않는다.
+  // 0 으로 채우면 '금리 0%' 라는 거짓말이 되고, 표기하면 있는 척이 된다.
+  const parts = [];
+  const bar = rates.UST10 == null ? null : rates.UST10 * 3;
+  parts.push('<span class="r-k">UST10</span> <span class="r-v">' +
+    (rates.UST10 == null ? '—' : rates.UST10.toFixed(2) + '%') + '</span>');
+  ['KTB10', 'JGB10'].forEach(k => {
+    if (rates[k] != null) parts.push('<span class="r-k">' + k + '</span> <span class="r-v">' +
+      rates[k].toFixed(2) + '%</span>');
+  });
+  parts.push('<span class="r-k">국채×3 허들</span> <span class="r-bar">' +
+    (bar == null ? '—' : bar.toFixed(1) + '%') + '</span>');
+  html += '<div class="lg-rates">' + parts.join('<span class="r-sep">·</span>') + '</div>';
+
+  html += '<div class="px-asof">판단층 기준일 ' + esc(b.asof || '—') +
+    ' · 측정 ' + esc(b.generated_label || '—') + ' KST' +
+    (rates.source ? ' · 10년물 ' + esc(rates.source) : '') +
+    (rates.as_of ? ' (' + esc(rates.as_of) + ')' : '') + '</div>';
+
+  html += LG_GLOSSARY;
+
+  html += '<div class="px-wrap"><table class="px-table"><thead><tr>' +
+    '<th>종목</th><th>ROE−2×국채</th><th>10년 원가쿠폰</th>' +
+    '<th class="lg-c-conv">전환율</th><th>버핏존</th>' +
+    '</tr></thead><tbody>' +
+    items.map(x => lgRow(x, lg)).join('') + '</tbody></table></div>';
+
+  // 버크셔 관찰 카드 — 고정 3줄. 숫자는 판단층 상수이고 D-day 만 오늘 기준으로 센다.
+  html += '<div class="lg-watch"><div class="lg-watch-title">🔭 버크셔 관찰</div><ul>' +
+    '<li>버크셔 Q3 13F: <b>11/14</b> (D-' + lgDDay() + ')</li>' +
+    '<li>캐펙스/OCF &gt; <b>1.15</b> = 약세 신호</li>' +
+    '<li>클라우드 성장 &lt; <b>60%</b> = 의심 신호</li>' +
+    '</ul></div>';
+
+  host.innerHTML = html;
+}
+
 function renderColumns(){
   const cols = (DATA.columns || []);
   if (!cols.length) { document.getElementById('obsBody').innerHTML =
@@ -1403,7 +1559,10 @@ function toggleCol(i){
   if (el) setColOpen(el, !el.classList.contains('open'));
 }
 
-if (location.hash === '#parallax') {
+if (location.hash === '#legend') {
+  const btn = document.querySelector('.obs-tab[data-t="legend"]');
+  if (btn) setObsTab('legend', btn); else renderLegend();
+} else if (location.hash === '#parallax') {
   const btn = document.querySelector('.obs-tab[data-t="parallax"]');
   if (btn) setObsTab('parallax', btn); else renderParallax();
 } else if (location.hash && (location.hash.indexOf('#log-') === 0 || location.hash === '#columns')) {

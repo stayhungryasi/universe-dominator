@@ -365,6 +365,25 @@ def build_observatory():
             buffett = json.loads(bf_path.read_text(encoding="utf-8"))
         except Exception as e:
             print(f"[warn] buffett.json 읽기 실패(무시): {e}")
+    # 레전드벤치마크 표시층 — 판단층(buffett_config.json)에서 **표시에 필요한 칸만** 뽑는다.
+    # 측정층 산출물(buffett.json)에는 사람이 취재한 전환율·risk5 가 실리지 않는다.
+    # 여기서 기계가 판정하지 않는다 — 사람이 적어 넣은 값을 그대로 나른다.
+    legend = {}
+    lc_path = DATA_DIR / "buffett_config.json"
+    if lc_path.exists():
+        try:
+            for it in json.loads(lc_path.read_text(encoding="utf-8")).get("items", []):
+                b = it.get("buffett") or {}
+                conv = b.get("conversion") or {}
+                risk5 = b.get("risk5") or {}
+                legend[it.get("ticker")] = {
+                    "conv": conv.get("value"),
+                    "conv_basis": conv.get("basis"),
+                    "cert": risk5.get("business_certainty"),
+                    "guard": bool(b.get("cyclical_peak_guard")),
+                }
+        except Exception as e:
+            print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
@@ -372,6 +391,7 @@ def build_observatory():
         "tiles": tiles,
         "dissected": dissected,
         "buffett": buffett,
+        "legend": legend,
     }
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
