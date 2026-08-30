@@ -51,7 +51,9 @@ KEEP_DAYS = 7           # 발송 서명 보관 일수
 KEEP_BUFFETT = 14       # buffett 일별 관측 보관 일수
 
 DEFAULTS = {
-    # 소스가 이 횟수만큼 연속(full 실행 기준) 0건이면 경보
+    # 피드가 이 횟수만큼 연속(full 실행 기준) **0건 응답**(outcome=zero)이면 경보.
+    # 주의: '새 글이 0건'이 아니라 '피드가 통째로 비었다'이다 — 응답이 있는 한
+    # 신규 발행이 며칠 없어도 세지 않는다 (2026-08-30 DeepMind 오경보 수리).
     "zero_streak_limit": 2,
     # 측정 종수 급감 판정 임계 (전일 대비 감소율)
     "buffett_drop_ratio": 0.30,
@@ -91,6 +93,33 @@ def read_json(path, default=None):
         return default
 
 
+STATE_VERSION = 2       # 2: 신호 판정 근거가 captured 건수 → fetch outcome 으로 바뀜
+
+
+def migrate_state(st):
+    """상태 스키마 이관. 반환값은 사람이 읽을 이관 기록(없으면 빈 리스트).
+
+    v1 → v2 (2026-08-30): sources.* 의 zero_streak/alerted 는 '오늘 새 글이 몇 건
+    올라왔나'를 세던 **폐기된 자로**의 눈금이다. 새 판정(fetch outcome)에서는
+    의미가 다르므로 그대로 이어받으면 안 된다 — 이어받으면 오경보로 켜진
+    alerted:True 가 다음 ok 회차에 '회복 ✅' 을 발송한다. 죽은 적이 없는 소스에
+    회복을 알리는 것은 회복 알림 1회 규약의 오용이므로 눈금을 0으로 내린다.
+    ever_seen(기준선 확보 여부)은 자로가 바뀌어도 유효하므로 보존한다.
+    """
+    notes = []
+    if int(st.get("version", 1)) < 2:
+        reset = sorted(n for n, r in (st.get("sources") or {}).items()
+                       if isinstance(r, dict)
+                       and (r.get("zero_streak") or r.get("alerted")))
+        for r in (st.get("sources") or {}).values():
+            if isinstance(r, dict):
+                r["zero_streak"], r["alerted"] = 0, False
+        st["version"] = 2
+        notes.append("상태 v1→v2 이관 — 폐기된 captured 카운터 리셋"
+                     + (f" ({', '.join(reset)})" if reset else " (대상 없음)"))
+    return notes
+
+
 def load_state():
     st = read_json(STATE_PATH, None)
     if not isinstance(st, dict):
@@ -102,6 +131,8 @@ def load_state():
     st.setdefault("last_verdict", {})
     st.setdefault("materials", {"streak": 0, "alerted": False})
     st.setdefault("feeds", {})
+    for note in migrate_state(st):      # 조용한 이관 금지 — 탔으면 로그에 찍는다
+        print(f"[정비] {note}", file=sys.stderr)
     return st
 
 
@@ -139,42 +170,73 @@ def source_names():
         return []
 
 
-def judge_signals(signals, names, state, today, cfg):
-    """① 소스별 오늘 수집 건수. 연속 0건 → 경보, 0→N 회복 → ✅ 1회.
+def judge_signals(status, names, state, today, cfg):
+    """① 신호 소스별 판정 — **fetch 결과(outcome)로 판정한다.**
 
-    signals: data/signals.json 의 signals 리스트 (captured = 'YYYY-MM-DD HH:MM' KST)
+    2026-08-30 수리: 예전에는 signals.json 의 '오늘 captured 건수'로 판정했다.
+    그것은 소스가 살아있는가가 아니라 **그날 새 글이 올라왔는가**를 재는 자로였다.
+    Google DeepMind 는 매 회차 HTTP 200 으로 5건을 꾸준히 응답했으나 신규 발행이
+    없다는 이유로 7회차 연속 0건으로 집계돼 경보가 나갔다 — **조용한 발행처를
+    죽은 소스로 오인한 것.** 구분 수단(fetch_status.json)은 2026-08-22 에 이미
+    생겼는데 이 판정부만 그걸 안 읽고 있었다. 이제 원장을 직접 읽는다:
+
+      ok         → 응답 있음 = 소스는 살아있다. 새 글이 몇 건이든 침묵(카운터 리셋).
+      zero       → 요청은 성공했는데 피드가 통째로 비었다. 조용한 날일 수 있으므로
+                    관대한 임계(zero_streak_limit, 운영값 4)로 연속만 센다.
+      http_error → **죽은 소스 후보.** 단 경보는 judge_feeds(요청 계층) 관할이다
+      / timeout     — 거기서 이미 feed_error_limit(2)로 울린다. 같은 사실로 두 번
+                    울리지 않기 위해 여기서는 침묵하고, 0건 카운터도 멈춘다
+                    (응답이 없었으니 '오늘 발표가 없었다'는 판정 자체가 불가능하다).
+
+    status: data/fetch_status.json (키 = 'signals:{소스명}')
+    반환값 obs[소스명] = {"outcome": ..., "items": n} — 판정 근거를 로그에 남기기 위함.
     """
-    limit = int(cfg.get("zero_streak_limit", 2))
-    counts = {n: 0 for n in names}
-    for s in signals or []:
-        n = s.get("source")
-        if n in counts and str(s.get("captured", ""))[:10] == today:
-            counts[n] += 1
-
-    out = []
+    zero_limit = int(cfg.get("zero_streak_limit", 4))
+    led = (status or {}).get("sources") or {}
+    out, obs = [], {}
     srcs = state.setdefault("sources", {})
+
     for n in names:
         rec = srcs.setdefault(n, {"zero_streak": 0, "alerted": False, "ever_seen": False})
-        c = counts[n]
-        if c > 0:
+        row = led.get(f"signals:{n}")
+        outcome = row.get("outcome", "") if isinstance(row, dict) else ""
+        try:
+            items = int((row or {}).get("items") or 0)
+        except (TypeError, ValueError, AttributeError):
+            items = 0
+
+        if outcome not in ("ok", "zero", "http_error", "timeout"):
+            # 원장에 없거나 모르는 값 — 판정 불가. 카운터를 건드리지 않고
+            # obs 로 내보내 호출부가 로그에 남긴다 (침묵은 통과가 아니다).
+            obs[n] = {"outcome": outcome or "미기록", "items": 0}
+            continue
+
+        obs[n] = {"outcome": outcome, "items": items}
+
+        if outcome in ("http_error", "timeout"):
+            continue                      # judge_feeds 관할 — 중복 발화 금지
+
+        if outcome == "ok":
             was_alerted = rec.get("alerted", False)
             rec["zero_streak"] = 0
             rec["alerted"] = False
             rec["ever_seen"] = True
             if was_alerted:
                 out.append(alert(f"signals-recover:{n}",
-                                 f"fetch_signals: {n} 회복 — 오늘 {c}건 ✅",
+                                 f"fetch_signals: {n} 회복 — 응답 {items}건 ✅",
                                  today, kind="recover"))
             continue
-        # 0건 — 한 번도 수집된 적 없는 신규 소스는 아직 판정하지 않는다(기준선 없음)
+
+        # outcome == "zero" — 피드가 통째로 비었다
         rec["zero_streak"] = int(rec.get("zero_streak", 0)) + 1
+        # 한 번도 수집된 적 없는 신규 소스는 기준선이 없으므로 아직 판정하지 않는다
         if not rec.get("ever_seen"):
             continue
-        if rec["zero_streak"] >= limit and not rec.get("alerted"):
+        if rec["zero_streak"] >= zero_limit and not rec.get("alerted"):
             rec["alerted"] = True
             out.append(alert(f"signals:{n}",
                              f"fetch_signals: {n} 0건 {rec['zero_streak']}회 연속", today))
-    return out, counts
+    return out, obs
 
 
 def judge_buffett(buf, state, today, cfg):
@@ -312,8 +374,9 @@ def judge_feeds(status, state, today, cfg):
       zero (성공했는데 0건) → 그날 발표가 없었을 수도 있다. 임계는 관대하게
         zero_streak_limit(운영값 4)를 그대로 쓴다.
 
-    신호 소스의 zero 는 judge_signals 가 signals.json 기준으로 이미 보고 있어
-    여기서 또 세지 않는다 — 같은 사실로 두 번 울리지 않기 위해서다.
+    신호 소스의 zero 는 judge_signals 가 **같은 이 원장으로** 보고 있어 여기서 또
+    세지 않는다 — 같은 사실로 두 번 울리지 않기 위해서다. 거꾸로 신호 소스의
+    요청 실패는 여기가 유일한 관할이며, judge_signals 는 그 경우 침묵한다.
     (관찰자 원칙 유지: 수집기를 건드리지 않고 산출물만 읽는다)
     """
     err_limit = int(cfg.get("feed_error_limit", 2))
@@ -498,8 +561,9 @@ def run():
     state = load_state()
 
     names = source_names()
-    signals = (read_json(DATA_DIR / "signals.json", {}) or {}).get("signals", [])
-    sig_alerts, counts = judge_signals(signals, names, state, today, cfg)
+    # 신호 판정은 fetch 원장이 먼저 필요하다 (판정 근거가 결과물 → 요청 결과로 바뀜)
+    feed_status = read_json(DATA_DIR / "fetch_status.json", {}) or {}
+    sig_alerts, sig_obs = judge_signals(feed_status, names, state, today, cfg)
     buf_alerts, buf_cur = judge_buffett(read_json(DATA_DIR / "buffett.json", {}), state, today, cfg)
     snap_alerts = judge_snapshot(DATA_DIR / "snapshots", today)
     stale_alerts, stale_notes = judge_staleness(DATA_DIR, cfg, today, now)
@@ -507,14 +571,18 @@ def run():
     bot_alerts, bot_notes = judge_bots(cfg, today, steps, DATA_DIR, now)
     comp_state = read_json(DATA_DIR / "companion_state.json", {}) or {}
     mat_alerts = judge_materials(state, comp_state, today, cfg)
-    feed_status = read_json(DATA_DIR / "fetch_status.json", {}) or {}
     feed_alerts, feed_seen = judge_feeds(feed_status, state, today, cfg)
 
     alerts = (sig_alerts + buf_alerts + snap_alerts + stale_alerts
               + bot_alerts + mat_alerts + feed_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
-    sig_part = ", ".join(f"{n} {counts.get(n, 0)}건" for n in names) or "소스 없음"
+    sig_part = ", ".join(
+        f"{n} {sig_obs.get(n, {}).get('outcome', '미기록')}"
+        f"/{sig_obs.get(n, {}).get('items', 0)}건" for n in names) or "소스 없음"
+    # 원장에 없는 소스는 판정 자체가 안 된 것 — 경보는 아니지만 반드시 남긴다
+    sig_notes = [f"신호 {n}: fetch 원장에 기록 없음 — 판정 보류"
+                 for n in names if sig_obs.get(n, {}).get("outcome") == "미기록"]
     buf_part = (f" | buffett 측정 {buf_cur['measured']}·선행 {buf_cur['forward']}"
                 if buf_cur else " | buffett 없음")
     step_part = f" | 스텝 {steps}" if steps else ""
@@ -524,7 +592,7 @@ def run():
                  if any(feed_seen.values()) else "")
     print(f"[정비] 판정 {today} {now.strftime('%H:%M')} — "
           f"신호 {sig_part}{buf_part}{step_part}{comp_part}{feed_part}")
-    for n in stale_notes + bot_notes:
+    for n in sig_notes + stale_notes + bot_notes:
         print(f"[정비] 참고: {n}", file=sys.stderr)
 
     if alerts:

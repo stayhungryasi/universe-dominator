@@ -245,18 +245,40 @@ def main():
     # 경보가 '울려야 할 때만' 울리는지. 순수 함수만 부르므로 부작용·네트워크 없음.
     # (전 케이스는 scripts/test_sentinel.py — 여기엔 회귀 핵심만 둔다)
     import pipeline_sentinel as _ps
-    _st = {"sources": {}, "buffett": [], "sent": {}}
+    _st = {"version": _ps.STATE_VERSION, "sources": {}, "feeds": {}, "buffett": [], "sent": {}}
     _names = ["srcA"]
-    _sig = lambda n, day: [{"source": "srcA", "captured": f"{day} 10:00"} for _ in range(n)]
-    _ps.judge_signals(_sig(3, "2026-01-01"), _names, _st, "2026-01-01", _ps.DEFAULTS)  # 기준선
-    _a1, _ = _ps.judge_signals([], _names, _st, "2026-01-02", _ps.DEFAULTS)
+    # 판정 자로는 fetch_status 의 outcome — '새 글이 몇 건인가'가 아니라 '응답이 있었나'
+    _led = lambda outcome, items: {"sources": {"signals:srcA": {
+        "kind": "signals", "source": "srcA", "outcome": outcome,
+        "code": 200, "items": items}}}
+    _ps.judge_signals(_led("ok", 3), _names, _st, "2026-01-01", _ps.DEFAULTS)  # 기준선
+    # 회귀 핵심 ①: 응답이 멀쩡하면 새 글이 며칠 없어도 침묵 (2026-08-30 오경보의 정체)
+    for _i in range(7):
+        _a0, _ = _ps.judge_signals(_led("ok", 5), _names, _st, "2026-01-02", _ps.DEFAULTS)
+        if _a0:
+            break
+    check("sentinel: 조용한 발행처는 무경보(ok 7회)", _a0, [])
+    _a1, _ = _ps.judge_signals(_led("zero", 0), _names, _st, "2026-01-02", _ps.DEFAULTS)
     check("sentinel: 0건 1회는 침묵", _a1, [])
-    _a2, _ = _ps.judge_signals([], _names, _st, "2026-01-02", _ps.DEFAULTS)
+    _a2, _ = _ps.judge_signals(_led("zero", 0), _names, _st, "2026-01-02", _ps.DEFAULTS)
     check("sentinel: 0건 2회 연속 경보", len(_a2) == 1 and _a2[0]["kind"] == "alert", True)
-    _a3, _ = _ps.judge_signals(_sig(2, "2026-01-02"), _names, _st, "2026-01-02", _ps.DEFAULTS)
+    _a3, _ = _ps.judge_signals(_led("ok", 2), _names, _st, "2026-01-02", _ps.DEFAULTS)
     check("sentinel: 회복 알림 1회", len(_a3) == 1 and _a3[0]["kind"] == "recover", True)
-    _a4, _ = _ps.judge_signals(_sig(2, "2026-01-02"), _names, _st, "2026-01-02", _ps.DEFAULTS)
+    _a4, _ = _ps.judge_signals(_led("ok", 2), _names, _st, "2026-01-02", _ps.DEFAULTS)
     check("sentinel: 회복 후 재침묵", _a4, [])
+    # 회귀 핵심 ②: 요청 실패는 judge_feeds 단독 관할 — 한 사건에 두 번 울리지 않는다
+    _est = {"version": _ps.STATE_VERSION, "sources": {}, "feeds": {}, "buffett": [], "sent": {}}
+    _ps.judge_signals(_led("ok", 3), _names, _est, "2026-01-01", _ps.DEFAULTS)
+    for _i in range(2):
+        _sa, _ = _ps.judge_signals(_led("http_error", 0), _names, _est, "2026-01-02", _ps.DEFAULTS)
+        _fa, _ = _ps.judge_feeds(_led("http_error", 0), _est, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: 요청 실패는 정확히 1건만 경보", len(_sa + _fa), 1)
+    # 회귀 핵심 ③: 폐기된 자로의 눈금(v1)을 이어받아 헛 회복 알림을 쏘지 않는다
+    _mst = {"version": 1, "sources": {"srcA": {"zero_streak": 7, "alerted": True,
+                                               "ever_seen": True}}}
+    _ps.migrate_state(_mst)
+    _ma, _ = _ps.judge_signals(_led("ok", 5), _names, _mst, "2026-01-02", _ps.DEFAULTS)
+    check("sentinel: v1 이관 후 헛 회복 알림 없음", _ma, [])
     _bst = {"buffett": []}
     _mk = lambda m, f: {"items": [{"pe": 1, "basis": "forward"}] * f
                         + [{"pe": 1, "basis": "trailing"}] * (m - f)}
