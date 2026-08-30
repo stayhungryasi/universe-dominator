@@ -480,6 +480,15 @@ class FeedJudgeTest(unittest.TestCase):
         again, _ = ps.judge_feeds(self.st("ok", code=200), self.state, TODAY, self.cfg)
         self.assertEqual(again, [])
 
+    def test_rate_source_is_watched(self):
+        """레전드벤치마크의 10년물도 같은 원장에 실린다 — 죽으면 소리가 나야 한다."""
+        st = {"sources": {"rates:ust10": {"kind": "rates", "source": "ust10",
+                                          "outcome": "http_error", "code": 500}}}
+        for _ in range(2):
+            a, _ = ps.judge_feeds(st, self.state, TODAY, self.cfg)
+        self.assertEqual(len(a), 1)
+        self.assertIn("금리 ust10", a[0]["text"])
+
     def test_timeout_counts_as_error(self):
         for _ in range(2):
             a, _ = ps.judge_feeds(self.st("timeout", code=None), self.state, TODAY, self.cfg)

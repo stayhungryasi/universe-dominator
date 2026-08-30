@@ -8,6 +8,9 @@
 존 경계: 탐색선 +60% · 본격선 +40% · 정당선 0%  (config zones 기준)
   고평가(<0) < 관망(0~40%) < 본격(40~60%) < 탐색(60%↑)
 
+레전드벤치마크(2026-08-30): 괴리존과 **별개로** 버핏존(zone_buffett) 전이도 적는다.
+단 untested 가 낀 전이와 cause=scale(잰 자가 바뀜)은 시장 사건이 아니므로 제외한다.
+
 첫 실행일은 비교 기준이 없으므로 아무것도 적지 않는다(기준선만 저장).
 사건 서명 parallax:{ticker}:{전존>후존}:{날짜} 로 중복 발행을 막고,
 하루 최대 5건까지만 적는다(도배 방지).
@@ -40,6 +43,15 @@ TAG = "시차"
 
 ZONE_ORDER = ["고평가", "관망", "본격", "탐색"]
 
+# ── 레전드벤치마크: 버핏존 전이 ────────────────────────────────────
+# 기록 대상은 **판정이 실제로 바뀐 것**뿐이다. 두 가지는 사건이 아니다:
+#   ① untested 가 낀 전이 — '못 쟀다 → 쟀다'는 시장 사건이 아니라 취재 사건이다.
+#      (전 종목이 untested 인 1단계에서 취재가 시작되는 순간 34건이 터지는 것을 막는다)
+#   ② cause=scale — 잰 자가 바뀐 것(EPS 취재·성장률 갱신·가드 토글).
+#      기존 fingerprint 규율과 같은 뿌리: 눈금이 바뀐 것을 시장이 움직였다고 적으면 안 된다.
+BUFFETT_ZONES = ["bond_inferior", "prove_growth", "pass"]
+UNTESTED = "untested"
+
 
 def zone_of(gap, zones):
     if gap is None:
@@ -56,10 +68,13 @@ def zone_of(gap, zones):
 def load_state():
     if STATE_PATH.exists():
         try:
-            return json.loads(STATE_PATH.read_text(encoding="utf-8"))
+            st = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+            if isinstance(st, dict):
+                st.setdefault("bzones", {})
+                return st
         except Exception:
             pass
-    return {"zones": {}, "gaps": {}, "fp": {}, "posted": {}}
+    return {"zones": {}, "gaps": {}, "fp": {}, "bzones": {}, "posted": {}}
 
 
 def save_state(state):
@@ -68,9 +83,54 @@ def save_state(state):
     STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def sig(ticker, before, after, day):
-    key = f"parallax:{ticker}:{before}>{after}:{day}"
+def sig(ticker, before, after, day, kind="parallax"):
+    key = f"{kind}:{ticker}:{before}>{after}:{day}"
     return hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
+
+
+def _pct(x):
+    return "—" if x is None else f"{x * 100:.1f}%"
+
+
+def buffett_phrase(ticker, before, after, bench):
+    """선장님 지정 문구 — coupon10y 와 문턱(10y×3)을 나란히 적어 근거를 남긴다."""
+    rate = bench.get("rate10y")
+    bar = None if rate is None else 3.0 * (rate / 100.0)
+    g = bench.get("g_used")
+    g_txt = "—" if g is None else f"{g * 100:.1f}%"
+    return (f"{ticker} 버핏존 {before}→{after} · "
+            f"coupon10y {_pct(bench.get('coupon10y'))} vs 10y×3 {_pct(bar)} · g={g_txt}")
+
+
+def detect_buffett_events(items, prev_bzones):
+    """버핏존이 바뀐 종목만. untested 가 낀 전이와 cause=scale 은 사건이 아니다."""
+    events, skipped = [], []
+    for x in items:
+        bench = x.get("bench")
+        if not isinstance(bench, dict):
+            continue
+        after = bench.get("zone_buffett")
+        before = prev_bzones.get(x.get("ticker"))
+        if not after or not before or before == after:
+            continue                       # 첫 관측·미산출(가드)·변화 없음 → 침묵
+        if after == UNTESTED or before == UNTESTED:
+            skipped.append(f"{x.get('ticker')}(untested 전이)")
+            continue
+        if bench.get("cause") == "scale":
+            skipped.append(f"{x.get('ticker')}(자가 바뀜)")
+            continue
+        events.append({
+            "ticker": x.get("ticker"), "before": before, "after": after,
+            "kind": "buffett",
+            "text": buffett_phrase(x.get("ticker"), before, after, bench),
+        })
+    # 채권 우위로 떨어진 것부터 — 상한에 걸릴 때 나쁜 소식이 먼저 남도록
+    events.sort(key=lambda e: BUFFETT_ZONES.index(e["after"])
+                if e["after"] in BUFFETT_ZONES else 9)
+    if skipped:
+        print(f"[시차노트] 버핏존 전이 {len(skipped)}건은 기록 대상 아님 "
+              f"({', '.join(skipped[:6])})")
+    return events
 
 
 def phrase(ticker, before, after, gap_before, gap_after):
@@ -184,6 +244,9 @@ def main():
     today = datetime.now(KST).strftime("%Y-%m-%d")
 
     events = detect_events(items, zones, prev_zones, prev_gaps, prev_fp)
+    for e in events:
+        e.setdefault("kind", "parallax")
+    events += detect_buffett_events(items, state.get("bzones", {}))
 
     # 오늘의 존을 다음 실행의 기준선으로 먼저 갱신 (발행 실패해도 기준선은 전진)
     # 기준선도 존 판정 대상(선행)만 남긴다 — 후행 잔재가 남아 있으면 다음 날
@@ -206,13 +269,22 @@ def main():
               f"({', '.join(purged[:6])}{' 외' if len(purged) > 6 else ''})")
     state["zones"], state["gaps"], state["fp"] = new_zones, new_gaps, new_fp
 
+    # 버핏존 기준선 — 산출된 종목만 남긴다. 가드로 미산출(None)인 종목을 남겨두면
+    # 가드가 풀리는 날 '없음 → 판정' 이 전이로 잡힌다(유령 전이).
+    state["bzones"] = {x.get("ticker"): (x.get("bench") or {}).get("zone_buffett")
+                       for x in items
+                       if isinstance(x.get("bench"), dict)
+                       and (x.get("bench") or {}).get("zone_buffett")}
+
     if not events:
         save_state(state)
         print("[시차노트] 존 전이 없음 — 침묵")
         return 0
 
     posted_today = set(state.get("posted", {}).get(today, []))
-    fresh = [e for e in events if sig(e["ticker"], e["before"], e["after"], today) not in posted_today]
+    fresh = [e for e in events
+             if sig(e["ticker"], e["before"], e["after"], today, e.get("kind", "parallax"))
+             not in posted_today]
     if not fresh:
         save_state(state)
         print(f"[시차노트] 전이 {len(events)}건 모두 기록 완료 상태 — 침묵")
@@ -256,7 +328,8 @@ def main():
     for e in fresh:
         try:
             post_note(sa_info, token, admin_uid, e["text"])
-            posted_today.add(sig(e["ticker"], e["before"], e["after"], today))
+            posted_today.add(sig(e["ticker"], e["before"], e["after"], today,
+                                 e.get("kind", "parallax")))
             done += 1
             print(f"[시차노트] 기록: {e['text']}")
         except Exception as ex:

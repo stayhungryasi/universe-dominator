@@ -241,6 +241,134 @@ def main():
           _lab([("Ishares Tr", "", "COM"), ("Ishares Tr", " (PUT)", "COM")]),
           ["Ishares Tr", "Ishares Tr (PUT)"])
 
+    # ── 레전드벤치마크(fetch_buffett) — 판단층·측정층 분리 검증 ──────────────
+    # 이 절의 존재 이유는 하나다: **기존 괴리 값이 1원도 바뀌지 않는 것.**
+    # 새 판단층(buffett 블록)이 기존 정당MAX 괴리 경로에 한 방울도 섞이면 안 된다.
+    import json as _json
+    import fetch_buffett as _fb
+    _DATA = Path(__file__).parent.parent / "data"
+
+    # ① 회귀 핵심 — buffett 블록이 있든 없든 괴리·P/E·zoned 가 완전히 동일해야 한다
+    _base = {"ticker": "AAPL", "type": "씨즈형", "fair_max": 28, "forward_eps": 9.1}
+    _rich = dict(_base, buffett={
+        "as_of": "2026-08-30", "period": "2026Q2", "cyclical_peak_guard": False,
+        # 분기 EPS 2.85 는 forward_eps 9.1 과 자릿수가 다르다 — 섞이면 괴리가 폭주한다
+        "eps_adj": {"value": 2.85, "unit": "USD/qtr"},
+        "eps_adj_ttm": {"value": 11.4}, "roe_tangible": 0.35,
+        "g_cagr3y": 0.08, "g_consensus": 0.06})
+    check("벤치: buffett 블록은 괴리 경로에 안 섞인다",
+          _fb.measure_gap(_rich, 200.0, None), _fb.measure_gap(_base, 200.0, None))
+    check("벤치: 괴리 값 자체도 종전 그대로",
+          _fb.measure_gap(_rich, 200.0, None)[:4], (21.98, 0.274, "forward", True))
+
+    # 실제 판단층 전 종목으로 같은 대조 — 한 종목이라도 어긋나면 즉시 실패
+    _cfg_all = _json.loads((_DATA / "buffett_config.json").read_text(encoding="utf-8"))
+    _mismatch = []
+    for _it in _cfg_all.get("items", []):
+        _stripped = {k: v for k, v in _it.items() if k != "buffett"}
+        if _fb.measure_gap(_it, 137.0, 25.0) != _fb.measure_gap(_stripped, 137.0, 25.0):
+            _mismatch.append(_it.get("ticker"))
+    check("벤치: 실제 34종 전부 괴리 불변(블록 유무 대조)", _mismatch, [])
+
+    # ② null 은 null 로 — 0 치환 금지
+    check("벤치: g 한쪽만 있으면 null", _fb.pick_g(0.08, None), None)
+    check("벤치: g 는 둘 중 작은 쪽", _fb.pick_g(0.08, 0.06), 0.06)
+    check("벤치: ey 는 EPS 없으면 null", _fb.earnings_yield(None, 200.0), None)
+    check("벤치: coupon 은 g 없으면 null(성장 0 가정 금지)",
+          _fb.coupon_10y(0.05, None), None)
+
+    # ③ 존 경계 — 10y 4.0% 기준 3× = 12%, 1.5× = 6%
+    check("벤치: 3배 이상은 pass", _fb.zone_of_buffett(0.12, 4.0), "pass")
+    check("벤치: 1.5~3배는 prove_growth", _fb.zone_of_buffett(0.119, 4.0), "prove_growth")
+    check("벤치: 1.5배 미만은 bond_inferior", _fb.zone_of_buffett(0.059, 4.0), "bond_inferior")
+    check("벤치: coupon 없으면 untested", _fb.zone_of_buffett(None, 4.0), "untested")
+    check("벤치: 금리 없으면 untested", _fb.zone_of_buffett(0.12, None), "untested")
+
+    # ④ 분기 EPS 연환산 금지 — GOOG 는 eps_adj 가 있어도 TTM 이 없으면 untested
+    _goog = next(i for i in _cfg_all["items"] if i["ticker"] == "GOOG")
+    _gb = _fb.measure_bench(_goog, 200.0, {"UST10": 4.0})
+    check("벤치: GOOG 는 untested (분기 EPS 연환산 금지)", _gb["zone_buffett"], "untested")
+    check("벤치: GOOG coupon10y 는 null", _gb["coupon10y"], None)
+    check("벤치: GOOG ey 도 null (2.85×4 를 쓰지 않는다)", _gb["ey"], None)
+
+    # ⑤ 시클리컬 가드 — coupon10y·zone_buffett 을 아예 산출하지 않는다
+    _cyc = {"ticker": "MU", "type": "시클리컬",
+            "buffett": {"cyclical_peak_guard": True, "eps_adj_ttm": {"value": 10.0},
+                        "g_cagr3y": 0.05, "g_consensus": 0.05}}
+    _cb = _fb.measure_bench(_cyc, 100.0, {"UST10": 4.0})
+    check("벤치: 가드는 coupon10y 미산출", _cb["coupon10y"], None)
+    check("벤치: 가드도 존은 untested (못 잰 것은 한 칸에)", _cb["zone_buffett"], "untested")
+    check("벤치: 가드 사유가 note 에 남는다", "정점 가드" in _cb["note"], True)
+    # 가드가 없었다면 pass 였을 값이라는 것까지 확인 — 가드가 진짜로 막고 있는가
+    _cyc_off = {"ticker": "MU", "type": "시클리컬",
+                "buffett": {"cyclical_peak_guard": False, "eps_adj_ttm": {"value": 10.0},
+                            "g_cagr3y": 0.05, "g_consensus": 0.05}}
+    check("벤치: 가드를 끄면 실제로 판정된다(가드가 일하고 있다는 증거)",
+          _fb.measure_bench(_cyc_off, 100.0, {"UST10": 4.0})["zone_buffett"], "pass")
+
+    # ⑥ 시장별 10년물 — v1 은 미국만. 미배선 시장은 0 으로 채우지 않는다
+    check("벤치: .KS 는 한국물", _fb.market_of("005930.KS"), "KTB10")
+    check("벤치: 접미사 없으면 미국", _fb.market_of("AAPL"), "UST10")
+    _kr = {"ticker": "005930.KS", "type": "씨즈형",
+           "buffett": {"eps_adj_ttm": {"value": 5000}, "g_cagr3y": 0.05, "g_consensus": 0.05}}
+    _kb = _fb.measure_bench(_kr, 70000.0, {"UST10": 4.0, "KTB10": None})
+    check("벤치: 미배선 시장은 untested", _kb["zone_buffett"], "untested")
+    check("벤치: 미배선 금리는 null (0 아님)", _kb["rate10y"], None)
+
+    # ⑦ FRED CSV 파싱 — 주말·공휴일의 '.' 은 건너뛰고 마지막 실측치를 쓴다
+    check("벤치: FRED '.' 공백 건너뜀",
+          _fb.parse_fred_csv("observation_date,DGS10\n2026-08-28,4.21\n2026-08-29,.\n"),
+          ("2026-08-28", 4.21))
+
+    _tcsv = ('Date,"1 Mo","10 Yr","30 Yr"' + chr(10)
+             + "08/28/2026,3.84,4.73,5.22" + chr(10)
+             + "08/27/2026,3.85,4.70,5.20" + chr(10))
+    check("벤치: Treasury CSV 는 최신 행이 맨 위",
+          _fb.parse_treasury_csv(_tcsv), ("08/28/2026", 4.73))
+    check("벤치: Treasury CSV 에 10Yr 열이 없으면 null",
+          _fb.parse_treasury_csv('Date,"1 Mo"' + chr(10) + "08/28/2026,3.84" + chr(10)), None)
+
+    # ⑧ cause — 잰 자가 바뀌면 scale (관측노트가 이걸 보고 침묵한다)
+    _prev = {"eps_adj_ttm": 10.0, "g_used": 0.05, "guard": False,
+             "price": 100.0, "rate10y": 4.0}
+    check("벤치: EPS 취재가 바뀌면 scale",
+          _fb.classify_cause(_prev, dict(_prev, eps_adj_ttm=11.0)), "scale")
+    check("벤치: 주가만 움직이면 price",
+          _fb.classify_cause(_prev, dict(_prev, price=120.0)), "price")
+    check("벤치: 금리만 움직이면 rate",
+          _fb.classify_cause(_prev, dict(_prev, rate10y=4.8)), "rate")
+    check("벤치: 첫 관측은 원인 없음", _fb.classify_cause(None, _prev), None)
+
+    # ⑨ 히스토리 — 점 집합은 종전 그대로(gap 이 있을 때만), 칸만 얹는다
+    _h = {}
+    _fb.append_history(_h, "AAPL", "08-30", None, {"coupon10y": 0.1})
+    check("벤치: gap 없으면 점을 만들지 않는다(종전 규약)", _h, {})
+    _fb.append_history(_h, "AAPL", "08-30", 0.27, {"coupon10y": 0.1, "zone_buffett": "pass"})
+    check("벤치: 점에 벤치 칸이 얹힌다",
+          _h["AAPL"][-1], {"d": "08-30", "gap": 0.27, "coupon10y": 0.1, "zone_buffett": "pass"})
+
+    # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
+    import parallax_journal as _pj
+    _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {
+        "zone_buffett": z, "cause": cause, "coupon10y": 0.13, "rate10y": 4.0, "g_used": 0.06}}
+    check("노트: untested→판정 은 사건 아님",
+          _pj.detect_buffett_events([_mk_b("A", "pass")], {"A": "untested"}), [])
+    check("노트: 판정→untested 도 사건 아님",
+          _pj.detect_buffett_events([_mk_b("A", "untested")], {"A": "pass"}), [])
+    check("노트: cause=scale 은 사건 아님",
+          _pj.detect_buffett_events([_mk_b("A", "pass", "scale")], {"A": "prove_growth"}), [])
+    check("노트: 변화 없으면 침묵",
+          _pj.detect_buffett_events([_mk_b("A", "pass", "price")], {"A": "pass"}), [])
+    check("노트: 첫 관측은 침묵",
+          _pj.detect_buffett_events([_mk_b("A", "pass", "price")], {}), [])
+    _bev = _pj.detect_buffett_events([_mk_b("A", "pass", "price")], {"A": "prove_growth"})
+    check("노트: 실제 전이는 1건 기록", len(_bev), 1)
+    check("노트: 버핏존 문구 형식", _bev[0]["text"],
+          "A 버핏존 prove_growth→pass · coupon10y 13.0% vs 10y×3 12.0% · g=6.0%")
+    check("노트: 괴리존과 서명이 겹치지 않는다",
+          _pj.sig("A", "x", "y", "2026-08-30") != _pj.sig("A", "x", "y", "2026-08-30", "buffett"),
+          True)
+
     # ── 정비 관제탑(pipeline_sentinel) 판정 로직 — 침묵 실패 감시망의 자체 검증 ──
     # 경보가 '울려야 할 때만' 울리는지. 순수 함수만 부르므로 부작용·네트워크 없음.
     # (전 케이스는 scripts/test_sentinel.py — 여기엔 회귀 핵심만 둔다)
