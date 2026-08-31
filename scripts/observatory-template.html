@@ -224,6 +224,11 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .lg-pos { color: var(--gold); }
 .lg-neg { color: var(--text-muted); }
 .lg-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; font-weight: 600; }
+/* origin 표식 — 자동값에만 붙는다. 사람 값은 표식 없음이 곧 표식이다.
+   신규 색을 만들지 않는다: 뮤트 텍스트 + 기존 테두리 토큰만 쓴다. */
+.lg-auto { display: inline-block; margin-left: 5px; font-size: 10.5px; font-weight: 800;
+  color: var(--text-muted); border: 1px solid var(--line-strong); border-radius: 100px;
+  padding: 1px 6px; vertical-align: middle; cursor: help; }
 .lg-zonetag { font-weight: 800; white-space: nowrap; font-size: 14.5px; }
 .lg-watch { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px;
   padding: 15px 19px; margin: 16px 0; }
@@ -1371,10 +1376,31 @@ const LG_GLOSSARY =
    여기서는 그 문자열을 번역하는 게 아니라 **상태에서 다시 만든다**: 문자열을 매핑하면
    측정층이 새 사유를 추가하는 날 그 문장이 그대로 화면으로 새어 나온다.
    상태에서 만들면 모르는 상태는 빈 칸이 될지언정 내부 용어가 나갈 길이 없다. */
+/* "자동" 라벨 — 그 칸을 기계가 채웠을 때만. 사람 값에는 아무 표식도 붙이지 않는다
+   (표식이 없는 것이 사람이 적었다는 뜻이다). 자동값에 사람의 권위를 씌우지 않는 것이
+   이 라벨의 존재 이유다 — 공시 추출·AI 판정은 틀릴 수 있고, 화면이 그 사실을 말해야 한다. */
+const LG_AUTO_TIP = '기계가 채운 값 — 공시(SEC XBRL) 추출 또는 AI 취재입니다. ' +
+  '사람이 취재해 덮어쓰면 이 표식이 사라집니다.';
+function lgAuto(j, field){
+  return ((j.origin || {})[field] === 'auto')
+    ? '<span class="lg-auto" title="' + esc(LG_AUTO_TIP) + '">자동</span>' : '';
+}
+
+/* method 요약 — 어떤 자로 쟀는지 한 마디로. 원문 method 는 길고 태그명이 들어 있어
+   그대로 쓰지 않는다(기계 필드명 화면 노출 금지 — 작업 규칙 8). */
+function lgMethodKo(m){
+  if (!m) return '';
+  if (m.indexOf('SEC XBRL') === 0) return 'SEC XBRL 조정';
+  if (m.indexOf('GAAP 미조정') === 0) return 'GAAP 미조정';
+  return '';
+}
+
 function lgNote(b, j){
   if (j.guard || b.guard) return '정점 이익 함정 — 10년 쿠폰을 재지 않는 유형';
   if (b.coupon10y != null) {                      // 취재가 끝나 값이 산출된 상태
     const parts = [j.as_of, j.period].filter(Boolean);
+    const how = lgMethodKo(j.method);
+    if (how) parts.push(how);
     return parts.length ? '기준 ' + parts.join(' · ') : '';
   }
   if (b.eps_adj_ttm == null) return '취재 대기 — 12개월 조정이익 미확보';
@@ -1398,21 +1424,27 @@ function lgRow(x, lg){
   } else if (b.coupon10y == null) {
     coupon = '<span class="lg-neg">—</span>';
   } else {
-    coupon = lgPct(b.coupon10y) + '<div class="lg-sub">g ' + lgPct(b.g_used) + ' 가정</div>';
+    coupon = lgPct(b.coupon10y) + lgAuto(j, 'eps_adj_ttm') +
+      '<div class="lg-sub">g ' + lgPct(b.g_used) + ' 가정</div>';
   }
 
+  // 배지는 자동값으로도 붙되 "자동" 라벨을 동반한다 — 기계가 매긴 too hard 를
+  // 사람이 매긴 것처럼 보이게 두면, 근거 없는 판정에 권위가 생긴다.
   const badges =
     ((j.conv != null && j.conv < 0)
-      ? '<span class="lg-badge" title="' + esc(LG_TIP.pik) + '">PIK</span>' : '') +
+      ? '<span class="lg-badge" title="' + esc(LG_TIP.pik) + '">PIK</span>' +
+        lgAuto(j, 'conversion') : '') +
     ((j.cert === '✕')
-      ? '<span class="lg-badge" title="' + esc(LG_TIP.hard) + '">too hard</span>' : '');
+      ? '<span class="lg-badge" title="' + esc(LG_TIP.hard) + '">too hard</span>' +
+        lgAuto(j, 'risk5') : '');
 
   return '<tr>' +
     '<td><div class="px-tk">' + esc(x.ticker) + badges + '</div>' +
       '<div class="px-name">' + esc(x.name) + '</div></td>' +
-    '<td class="px-num ' + roeCls + '">' + lgPp(roe) + '</td>' +
+    '<td class="px-num ' + roeCls + '">' + lgPp(roe) + lgAuto(j, 'roe_tangible') + '</td>' +
     '<td class="px-num">' + coupon + '</td>' +
-    '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) + '</td>' +
+    '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) +
+      (j.conv == null ? '' : lgAuto(j, 'conversion')) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       (function(){ const n = lgNote(b, j);
         return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
@@ -1432,7 +1464,9 @@ function renderLegend(){
 
   let html = '<div class="px-notice"><b>버핏존은 서한의 눈금을 오늘 시세에 대입한 산술 결과이며 ' +
     '투자 권유가 아닙니다.</b> 10년 원가쿠폰의 g는 <b>가정</b>입니다. 가정이 바뀌면 결론도 바뀝니다 — ' +
-    '표의 모든 쿠폰 옆에 그 가정을 함께 적어 둔 이유입니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+    '표의 모든 쿠폰 옆에 그 가정을 함께 적어 둔 이유입니다. ' +
+    '<b>자동 취재 값은 공시·AI 추출에 기반하며 오류가 있을 수 있습니다</b> — ' +
+    '\'자동\' 표식이 붙은 값이 그것입니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
 
   // 눈금 스트립 — 미배선 국채(KTB·JGB)는 null 이면 아예 적지 않는다.
   // 0 으로 채우면 '금리 0%' 라는 거짓말이 되고, 표기하면 있는 척이 된다.

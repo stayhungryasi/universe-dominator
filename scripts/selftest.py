@@ -430,6 +430,56 @@ def main():
           [_fa.is_foreign(t) for t in ("005930.KS", "ASML", "TSM", "AAPL", "GOOG")],
           [True, True, True, False, False])
 
+    # ── AI 취재(buffett_scout) — 근거 없는 판정은 버린다 ────────────────────
+    # 이 절이 지키는 것은 정확도가 아니라 **정직**이다. Haiku 의 ○△✕ 는 근거 문장
+    # 없이는 장식이다. 근거가 없으면 칸을 비우는 쪽이 채우는 쪽보다 낫다.
+    import buffett_scout as _bs
+
+    _full = {"franchise": {"need": "○", "no_substitute": "△", "no_price_reg": "○"},
+             "risk5": {"business_certainty": "✕", "mgmt_ability": "△",
+                       "mgmt_fidelity": "✕", "price": "△", "tax_inflation": "○"},
+             "capalloc": {"period": "2026H1", "cash_positive": 1, "buyback": 0,
+                          "no_dilution": 0, "debt_discipline": 0, "score": 9},
+             "owner_earnings": {"display": "C", "display_reason": "캐펙스 전액"},
+             "notes": "증자 49.6B",
+             "evidence": {"franchise": "검색 점유율이 90%를 넘는다고 공시했다",
+                          "risk5": "반독점 소송이 진행 중이라고 밝혔다",
+                          "capalloc": "자사주 매입은 없었다고 공시했다",
+                          "owner_earnings": "캐펙스 가이던스를 상향했다"}}
+    _c, _kept = _bs.sanitize(_full)
+    check("취재: 근거 있는 항목은 실린다", sorted(_kept),
+          ["capalloc", "franchise", "notes", "owner_earnings", "risk5"])
+    check("취재: score 는 모델 값을 믿지 않고 다시 센다", _c["capalloc"]["score"], 1)
+    check("취재: confidence 는 항상 '하'", _c["confidence"], "하")
+    check("취재: 근거 문장을 함께 보관", "franchise" in _c["_evidence"], True)
+
+    # 근거가 없으면 — 판정이 아무리 그럴듯해도 버린다
+    _noev = dict(_full); _noev["evidence"] = {}
+    _c2, _kept2 = _bs.sanitize(_noev)
+    check("취재: 근거 없으면 정성 항목 전부 버림", sorted(_kept2), ["notes"])
+    check("취재: 버린 칸은 아예 안 실린다", "risk5" in _c2, False)
+    _short = dict(_full); _short["evidence"] = {"risk5": "짧음"}
+    check("취재: 형식만 갖춘 근거(10자 미만)도 근거가 아니다",
+          "risk5" in _bs.sanitize(_short)[0], False)
+    check("취재: ○△✕ 아닌 기호는 무시",
+          _bs.clean_marks({"need": "GOOD", "no_substitute": "△"},
+                          ["need", "no_substitute"]), {"no_substitute": "△"})
+    check("취재: 응답이 dict 아니면 아무것도 안 실린다", _bs.sanitize("nope"), ({}, []))
+
+    # 평시 침묵 — 분기가 그대로면 취재하지 않는다 (동행 관측과 같은 밀도 원칙)
+    _st = {"items": {"GOOG": {"scouted_at": "2026-08-01 10:00", "period": "2026Q2"}}}
+    check("취재: 첫 취재는 실행", _bs.needs_scout("NEW", {"period": "2026Q2"}, _st, [])[0], True)
+    check("취재: 분기 그대로 + 이벤트 없음 → 침묵",
+          _bs.needs_scout("GOOG", {"period": "2026Q2"}, _st, ["Alphabet stock rises"])[0], False)
+    check("취재: 신규 분기면 재취재",
+          _bs.needs_scout("GOOG", {"period": "2026Q3"}, _st, [])[0], True)
+    _ev = _bs.needs_scout("GOOG", {"period": "2026Q2"}, _st,
+                          ["Alphabet announces $70B buyback"])
+    check("취재: 이벤트 키워드면 분기 중에도 재취재", (_ev[0], "buyback" in _ev[1]), (True, True))
+    check("취재: 갱신된 항목만 집어낸다",
+          _bs.changed_fields({"risk5": {"a": "○"}, "notes": "x"},
+                             {"risk5": {"a": "✕"}, "notes": "x"}), ["risk5"])
+
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj
     _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {
