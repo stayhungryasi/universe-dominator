@@ -372,11 +372,20 @@ def build_observatory():
     lc_path = DATA_DIR / "buffett_config.json"
     if lc_path.exists():
         try:
-            for it in json.loads(lc_path.read_text(encoding="utf-8")).get("items", []):
+            _cfg = json.loads(lc_path.read_text(encoding="utf-8"))
+            try:                       # 측정층과 **같은** 병합기를 쓴다 (규칙 두 벌 금지)
+                import buffett_layers
+                _items = buffett_layers.merged_items(_cfg)
+            except Exception as e:
+                print(f"[warn] 판단층 병합 실패 → 사람 판단층만 표시: {e}")
+                _items = _cfg.get("items", [])
+            for it in _items:
                 b = it.get("buffett") or {}
+                og = it.get("buffett_origin") or {}
                 conv = b.get("conversion") or {}
                 risk5 = b.get("risk5") or {}
                 legend[it.get("ticker")] = {
+                    "origin": og,
                     "conv": conv.get("value"),
                     "conv_basis": conv.get("basis"),
                     "cert": risk5.get("business_certainty"),
@@ -384,6 +393,7 @@ def build_observatory():
                     # 취재가 끝나 값이 산출되면 비고에 "기준 {as_of} · {period}" 로 뜬다
                     "as_of": b.get("as_of"),
                     "period": b.get("period"),
+                    "method": b.get("method"),
                 }
         except Exception as e:
             print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")

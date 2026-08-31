@@ -474,7 +474,16 @@ def main():
         print("[시차] buffett_config.json 없음 — 판단층이 있어야 측정한다", file=sys.stderr)
         return 1
     cfg = json.loads(CFG_PATH.read_text(encoding="utf-8"))
-    items_cfg = cfg.get("items", [])
+    # 판단층은 두 겹(기계 + 사람)이다. 병합 규칙은 buffett_layers 한 곳에만 둔다 —
+    # 여기서 다시 해석하면 표시층과 어긋나 같은 종목이 두 얼굴을 갖게 된다.
+    try:
+        import buffett_layers
+        items_cfg = buffett_layers.merged_items(cfg)
+        t = buffett_layers.origin_tally(items_cfg)
+        print(f"[시차] 판단층 병합 — 사람 {t['human']}칸 · 자동 {t['auto']}칸 · 빈칸 {t['none']}")
+    except Exception as e:
+        items_cfg = cfg.get("items", [])
+        print(f"[시차] 판단층 병합 실패 → 사람 판단층만 사용 ({e})", file=sys.stderr)
     fh_key = os.environ.get("FINNHUB_API_KEY", "").strip()
     if not fh_key:
         print("[시차] FINNHUB_API_KEY 없음 — 후행 P/E 폴백 생략 (forward_eps 있는 종목만 측정)")

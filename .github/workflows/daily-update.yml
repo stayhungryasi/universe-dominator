@@ -147,6 +147,16 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
+      # 레전드벤치마크 기계 판단층 — 공시(SEC XBRL)에서 직접 잰다.
+      # buffett_auto.json 만 쓴다. 사람 판단층(buffett_config.json)은 읽지도 쓰지도 않는다.
+      # fetch_buffett 앞에 둔다: 측정층이 병합된 판단층을 읽어야 하기 때문.
+      - name: Auto-measure Buffett judgment layer (XBRL)
+        if: env.FULL_RUN == 'true'
+        run: python scripts/fetch_buffett_auto.py || echo "::warning::fetch_buffett_auto 실패 — 자동 판단층은 기존 값 유지"
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        continue-on-error: true
+
       # 시차 관측 — 판단층(buffett_config.json)에 오늘 시세를 곱해 괴리 측정
       # config 는 사람이 취재한 판단층이라 어떤 경우에도 재생성되지 않는다.
       # 실패해도 파이프라인 중단 안 됨 → 기존 buffett.json 유지 (탭은 어제 값으로 뜬다)

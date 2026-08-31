@@ -347,6 +347,89 @@ def main():
     check("벤치: 점에 벤치 칸이 얹힌다",
           _h["AAPL"][-1], {"d": "08-30", "gap": 0.27, "coupon10y": 0.1, "zone_buffett": "pass"})
 
+    # ── 판단층 병합(buffett_layers) — 기계가 채우고 사람이 덮어쓴다 ──────────
+    import buffett_layers as _bl
+
+    _human = {"eps_adj_ttm": {"value": None, "note": "미취재"},   # 자리표시자 = 없는 값
+              "roe_tangible": None,
+              "risk5": {"business_certainty": "✕"},              # 사람이 취재한 칸
+              "cyclical_peak_guard": False}                       # False 는 값이다
+    _auto = {"eps_adj_ttm": {"value": 9.2}, "roe_tangible": 0.31,
+             "risk5": {"business_certainty": "○"}, "cyclical_peak_guard": True,
+             "g_cagr3y": 0.08}
+    _m, _o = _bl.merge_block(_human, _auto)
+    check("병합: 사람이 비운 칸은 자동값", (_m["eps_adj_ttm"], _o["eps_adj_ttm"]),
+          ({"value": 9.2}, "auto"))
+    check("병합: 사람 값이 있으면 사람 값", (_m["risk5"], _o["risk5"]),
+          ({"business_certainty": "✕"}, "human"))
+    check("병합: 자리표시자(value null)는 값이 아니다", _o["roe_tangible"], "auto")
+    check("병합: False 는 값이다(가드는 사람 것)",
+          (_m["cyclical_peak_guard"], _o["cyclical_peak_guard"]), (False, "human"))
+    check("병합: 둘 다 없으면 null + origin 없음",
+          (_m["conversion"], _o["conversion"]), (None, None))
+    check("병합: 자동만 있는 칸도 실린다", (_m["g_cagr3y"], _o["g_cagr3y"]), (0.08, "auto"))
+    # 필드 단위여야 한다 — 블록 통째로 고르면 취재가 늘수록 화면이 비는 역설이 생긴다
+    check("병합: 한 칸 취재가 다른 칸을 지우지 않는다",
+          _m["eps_adj_ttm"] is not None and _m["risk5"]["business_certainty"] == "✕", True)
+    check("병합: 사람 판단층 원본 불변", _human["eps_adj_ttm"], {"value": None, "note": "미취재"})
+    _mi = _bl.merged_items({"items": [{"ticker": "T1", "buffett": _human}]}, {"T1": _auto})
+    check("병합: merged_items 가 origin 을 함께 싣는다",
+          _mi[0]["buffett_origin"]["eps_adj_ttm"], "auto")
+    check("병합: 자동층 없으면 사람 값 그대로",
+          _bl.merged_items({"items": [{"ticker": "T1", "buffett": _human}]}, {})[0]["buffett"]
+          ["risk5"], {"business_certainty": "✕"})
+
+    # 회귀: 판단층이 두 겹이 돼도 **괴리 경로는 1원도 안 바뀐다**
+    _cfg_m = _bl.merged_items(_cfg_all, {t["ticker"]: {"eps_adj_ttm": {"value": 99.0},
+                                                       "roe_tangible": 0.5}
+                                         for t in _cfg_all["items"]})
+    _bad = [a.get("ticker") for a, b in zip(_cfg_m, _cfg_all["items"])
+            if _fb.measure_gap(a, 137.0, 25.0) != _fb.measure_gap(b, 137.0, 25.0)]
+    check("병합: 자동값이 들어와도 괴리 경로 불변(34종)", _bad, [])
+
+    # ── 자동 측정(fetch_buffett_auto) — XBRL 픽스처 검산 ─────────────────────
+    import fetch_buffett_auto as _fa
+
+    # 사양서 GOOG 2026Q2 분해를 그대로 재현한 픽스처:
+    #   GAAP EPS 9.11 · 미실현이익 세후 6.26 → 조정 EPS 2.85
+    #   세후 6.26 이므로 세전 투자손익 = 6.26 / (1−0.21) = 7.9241/주
+    _SH = 12_000_000_000.0
+    def _q(ni_ps, gain_ps):
+        return {"report": {"ic": [{"concept": "NetIncomeLoss", "value": ni_ps * _SH},
+                                  {"concept": "EquitySecuritiesFvNiGainLoss",
+                                   "value": gain_ps * _SH},
+                                  {"concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+                                   "value": _SH}]}}
+    _reports = [_q(9.11 / 4, 7.9241 / 4) for _ in range(4)]   # 4분기 합 = 연간
+    _eps, _method, _n = _fa.eps_adj_ttm_from(_reports)
+    check("XBRL: 조정 EPS 가 사양서 2.85 와 ±5% 이내",
+          _eps is not None and abs(_eps - 2.85) / 2.85 <= 0.05, True)
+    check("XBRL: 쓴 태그를 method 에 남긴다",
+          "EquitySecuritiesFvNiGainLoss" in (_method or ""), True)
+    # 투자손익 태그가 하나도 없으면 **0 으로 치지 않고** 무조정임을 밝힌다
+    _plain = [{"report": {"ic": [{"concept": "NetIncomeLoss", "value": 2.0 * _SH},
+                                 {"concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+                                  "value": _SH}]}} for _ in range(4)]
+    _e2, _m2, _ = _fa.eps_adj_ttm_from(_plain)
+    check("XBRL: 투자손익 태그 없으면 무조정 명시", ("무조정" in _m2, round(_e2, 2)), (True, 8.0))
+    check("XBRL: 분기 4개 미만이면 null", _fa.eps_adj_ttm_from(_reports[:3])[0], None)
+    check("XBRL: 순이익 태그 없으면 null",
+          _fa.eps_adj_ttm_from([{"report": {"ic": []}}] * 4)[0], None)
+    check("XBRL: 있는 투자손익 태그만 합산",
+          _fa.invest_gain({"GainLossOnInvestments": 10.0, "EquitySecuritiesFvNiGainLoss": 5.0}),
+          (15.0, ["GainLossOnInvestments", "EquitySecuritiesFvNiGainLoss"]))
+    check("XBRL: 투자손익 태그 전무면 None(0 아님)", _fa.invest_gain({"NetIncomeLoss": 1})[0], None)
+    check("XBRL: 유형자기자본 음수면 null",
+          _fa.tangible_equity({"StockholdersEquity": 100.0, "Goodwill": 90.0,
+                               "FiniteLivedIntangibleAssetsNet": 30.0}), None)
+    check("XBRL: 유형자기자본 정상 산출",
+          _fa.tangible_equity({"StockholdersEquity": 100.0, "Goodwill": 20.0}), 80.0)
+    check("XBRL: 적자 구간 CAGR 은 null", _fa.cagr(-1.0, 2.0, 3.0), None)
+    check("XBRL: CAGR 계산", round(_fa.cagr(100.0, 133.1, 3.0), 4), 0.1)
+    check("자동: 해외 상장 판별",
+          [_fa.is_foreign(t) for t in ("005930.KS", "ASML", "TSM", "AAPL", "GOOG")],
+          [True, True, True, False, False])
+
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj
     _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {
