@@ -415,15 +415,36 @@ def main():
     check("XBRL: 분기 4개 미만이면 null", _fa.eps_adj_ttm_from(_reports[:3])[0], None)
     check("XBRL: 순이익 태그 없으면 null",
           _fa.eps_adj_ttm_from([{"report": {"ic": []}}] * 4)[0], None)
+    # 아래는 손으로 만든 dict 대신 **flatten 을 거쳐** 실제 경로를 탄다
+    _flat = lambda rows: _fa.flatten({"ic": [{"concept": c, "value": v} for c, v in rows]})
     check("XBRL: 있는 투자손익 태그만 합산",
-          _fa.invest_gain({"GainLossOnInvestments": 10.0, "EquitySecuritiesFvNiGainLoss": 5.0}),
-          (15.0, ["GainLossOnInvestments", "EquitySecuritiesFvNiGainLoss"]))
-    check("XBRL: 투자손익 태그 전무면 None(0 아님)", _fa.invest_gain({"NetIncomeLoss": 1})[0], None)
+          _fa.invest_gain(_flat([("us-gaap_GainLossOnInvestments", 10.0),
+                                 ("EquitySecuritiesFvNiGainLoss", 5.0)])),
+          (15.0, ["us-gaap_GainLossOnInvestments", "EquitySecuritiesFvNiGainLoss"]))
+    check("XBRL: 투자손익 태그 전무면 None(0 아님)",
+          _fa.invest_gain(_flat([("NetIncomeLoss", 1)]))[0], None)
     check("XBRL: 유형자기자본 음수면 null",
-          _fa.tangible_equity({"StockholdersEquity": 100.0, "Goodwill": 90.0,
-                               "FiniteLivedIntangibleAssetsNet": 30.0}), None)
+          _fa.tangible_equity(_flat([("StockholdersEquity", 100.0), ("Goodwill", 90.0),
+                                     ("FiniteLivedIntangibleAssetsNet", 30.0)])), None)
     check("XBRL: 유형자기자본 정상 산출",
-          _fa.tangible_equity({"StockholdersEquity": 100.0, "Goodwill": 20.0}), 80.0)
+          _fa.tangible_equity(_flat([("StockholdersEquity", 100.0), ("Goodwill", 20.0)])), 80.0)
+
+    # 2026-08-31 실전 사고 회귀 — 접두사·대소문자·문자열 값 때문에 측정이 0 이 되던 것
+    check("XBRL: us-gaap_ 접두사를 벗겨 맞춘다",
+          _fa.pick(_flat([("us-gaap_NetIncomeLoss", 7.0)]), ["NetIncomeLoss"]),
+          (7.0, "us-gaap_NetIncomeLoss"))
+    check("XBRL: 콜론 접두사도 같다",
+          _fa.pick(_flat([("us-gaap:NetIncomeLoss", 7.0)]), ["NetIncomeLoss"])[0], 7.0)
+    check("XBRL: 문자열 숫자도 읽는다", _fa.to_num("1,234.5"), 1234.5)
+    check("XBRL: 회계식 음수 표기", _fa.to_num("(2,000)"), -2000.0)
+    check("XBRL: 숫자 아닌 값은 None(0 아님)", _fa.to_num("N/A"), None)
+    _pref = [{"report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": "2000"},
+                                {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+                                 "value": 1000}]}} for _ in range(4)]
+    check("XBRL: 접두사·문자열 섞여도 EPS 산출", round(_fa.eps_adj_ttm_from(_pref)[0], 2), 8.0)
+    check("XBRL: 실패하면 실제 태그를 로그에 남긴다",
+          "실제 태그" in _fa.eps_adj_ttm_from([{"report": {"ic": [
+              {"concept": "us-gaap_Revenues", "value": 1}]}}] * 4)[1], True)
     check("XBRL: 적자 구간 CAGR 은 null", _fa.cagr(-1.0, 2.0, 3.0), None)
     check("XBRL: CAGR 계산", round(_fa.cagr(100.0, 133.1, 3.0), 4), 0.1)
     check("자동: 해외 상장 판별",

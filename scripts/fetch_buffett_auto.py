@@ -79,39 +79,83 @@ def is_foreign(ticker):
     return t.endswith(FOREIGN_SUFFIX) or t in FOREIGN_TICKERS
 
 
+def norm(concept):
+    """concept 를 비교용으로 정규화한다.
+
+    2026-08-31 첫 실전에서 미국 19종이 전부 '순이익 태그 없음' 으로 떨어졌다.
+    Finnhub 응답은 정상이었다(ok/200, 분기 33~49건) — 즉 **태그 이름 표기가
+    내 기대와 달랐다.** 회사·기간마다 'us-gaap_NetIncomeLoss' · 'us-gaap:NetIncomeLoss' ·
+    'NetIncomeLoss' 가 섞여 온다. 정확 일치로 재면 표기 하나 다른 것 때문에
+    측정 전체가 조용히 0 이 된다.
+    """
+    c = str(concept or "")
+    for sep in (":", "_"):
+        if sep in c:
+            c = c.rsplit(sep, 1)[-1]
+    return c.lower()
+
+
+def to_num(v):
+    """숫자 · 숫자문자열 → float. 아니면 None (0 으로 치지 않는다)."""
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, (int, float)):
+        return float(v)
+    if isinstance(v, str):
+        t = v.strip().replace(",", "").replace("$", "")
+        if t.startswith("(") and t.endswith(")"):      # 회계식 음수 표기
+            t = "-" + t[1:-1]
+        try:
+            return float(t)
+        except ValueError:
+            return None
+    return None
+
+
 def flatten(report):
-    """Finnhub financials-reported 의 한 회차 report(bs/ic/cf) → {concept: value}.
+    """한 회차 report(bs/ic/cf) → {정규화 concept: (값, 원래이름)}.
 
     같은 concept 이 여러 번 나오면 **처음 것**을 쓴다(연결 → 부문 순으로 오는 관례).
     """
     out = {}
     for section in ("ic", "bs", "cf"):
         for row in (report or {}).get(section) or []:
-            c = (row or {}).get("concept")
-            v = (row or {}).get("value")
+            c = norm((row or {}).get("concept"))
             if not c or c in out:
                 continue
-            if isinstance(v, bool) or not isinstance(v, (int, float)):
+            v = to_num((row or {}).get("value"))
+            if v is None:
                 continue
-            out[c] = float(v)
+            out[c] = (v, (row or {}).get("concept"))
     return out
 
 
 def pick(flat, tags):
-    """태그 목록 중 **먼저 발견되는** 값 → (값, 태그명). 없으면 (None, None)."""
+    """태그 목록 중 **먼저 발견되는** 값 → (값, 원래 태그명). 없으면 (None, None)."""
     for t in tags:
-        if t in flat:
-            return flat[t], t
+        hit = flat.get(norm(t))
+        if hit is not None:
+            return hit[0], hit[1]
     return None, None
+
+
+def sample_concepts(flat, n=14):
+    """진단용 — 실제로 무엇이 왔는지 눈으로 본다.
+
+    태그가 안 맞을 때 '없다'만 찍으면 다음에도 똑같이 헤맨다. 무엇이 왔는지를
+    남겨야 다음 회차에 맞출 수 있다 (침묵은 통과가 아니다).
+    """
+    return ", ".join(sorted(orig or k for k, (v, orig) in list(flat.items())[:n]))
 
 
 def invest_gain(flat):
     """존재하는 투자손익 태그만 합산 → (합계, 쓴 태그들). 하나도 없으면 (None, [])."""
     used, total = [], 0.0
     for t in INVEST_TAGS:
-        if t in flat:
-            total += flat[t]
-            used.append(t)
+        hit = flat.get(norm(t))
+        if hit is not None:
+            total += hit[0]
+            used.append(hit[1] or t)
     return (total, used) if used else (None, [])
 
 
@@ -136,13 +180,14 @@ def eps_adj_ttm_from(reports):
         flat = flatten(q.get("report") if isinstance(q, dict) else None)
         inc, why = adjusted_income(flat)
         if inc is None:
-            return None, f"{why} — 조정 불가", len(quarters)
+            return None, f"{why} — 조정 불가 · 실제 태그: {sample_concepts(flat)}", len(quarters)
         total += inc
         if why not in notes:
             notes.append(why)
-    shares, sh_tag = pick(flatten((quarters[0] or {}).get("report")), DILUTED_TAGS)
+    head = flatten((quarters[0] or {}).get("report"))
+    shares, sh_tag = pick(head, DILUTED_TAGS)
     if not shares or shares <= 0:
-        return None, "희석주식수 태그 없음", len(quarters)
+        return None, f"희석주식수 태그 없음 · 실제 태그: {sample_concepts(head)}", len(quarters)
     return total / shares, "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}", len(quarters)
 
 
@@ -294,7 +339,7 @@ def build_block(c, key, now):
         te = tangible_equity(flat)
         if te:
             ni_ttm = eps * (pick(flat, DILUTED_TAGS)[0] or 0)
-            if ni_ttm:
+            if ni_ttm:  # pick 은 (값, 태그명) 을 준다 — [0] 이 값
                 block["roe_tangible"] = round(ni_ttm / te, 4)
         else:
             block["notes"] = "유형자기자본 0 이하 — ROE 미산출"
