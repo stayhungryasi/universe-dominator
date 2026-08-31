@@ -445,6 +445,33 @@ def main():
     check("XBRL: 실패하면 실제 태그를 로그에 남긴다",
           "실제 태그" in _fa.eps_adj_ttm_from([{"report": {"ic": [
               {"concept": "us-gaap_Revenues", "value": 1}]}}] * 4)[1], True)
+    # 2026-08-31 2차 실전 사고 회귀 — 누적기간 보고가 섞여 EPS 가 2~3배 부풀던 것.
+    # 무서운 이유: 자릿수·부호가 맞아 '통과' 라는 결론까지 정상으로 찍혔다.
+    import datetime as _dt
+    def _rep(days, ni, sh=1000.0):
+        st = _dt.date(2026, 1, 1)
+        return {"startDate": str(st), "endDate": str(st + _dt.timedelta(days=days)),
+                "report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": ni},
+                                  {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+                                   "value": sh}]}}
+    _mixed = [_rep(91, 1000.0), _rep(365, 4000.0), _rep(91, 1000.0),
+              _rep(182, 2000.0), _rep(91, 1000.0), _rep(91, 1000.0)]
+    _kept, _drop = _fa.quarterly_only(_mixed)
+    check("XBRL: 누적기간 보고를 걸러낸다", (len(_kept), _drop), (4, 2))
+    check("XBRL: 분기만 합산하면 EPS 가 맞는다",
+          round(_fa.eps_adj_ttm_from(_mixed)[0], 3), 4.0)
+    check("XBRL: 날짜 없으면 거르지 않는다(구 응답 호환)",
+          _fa.quarterly_only([{"report": {}}])[0] != [], True)
+    # 주식수 태그가 없어도 희석EPS 에서 되돌려 구한다 (GOOG·AVGO 실패 사례)
+    _noshare = _fa.flatten({"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": 5000.0},
+                                   {"concept": "us-gaap_EarningsPerShareDiluted", "value": 5.0}]})
+    check("XBRL: 주식수 없으면 희석EPS 로 역산", _fa.diluted_shares(_noshare)[0], 1000.0)
+    # 타당성 방지선 — 부풀림만 막고, 실적 급감(반대 방향)은 막지 않는다
+    check("XBRL: 선행 4배 초과는 보류", _fa.implausible(40.0, 9.1), True)
+    check("XBRL: 정상 범위는 통과", _fa.implausible(12.0, 9.1), False)
+    check("XBRL: 급감 방향은 막지 않는다", _fa.implausible(1.0, 9.1), False)
+    check("XBRL: 선행 EPS 없으면 대조 불가 → 통과", _fa.implausible(40.0, None), False)
+
     check("XBRL: 적자 구간 CAGR 은 null", _fa.cagr(-1.0, 2.0, 3.0), None)
     check("XBRL: CAGR 계산", round(_fa.cagr(100.0, 133.1, 3.0), 4), 0.1)
     check("자동: 해외 상장 판별",

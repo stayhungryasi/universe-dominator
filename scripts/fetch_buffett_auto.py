@@ -170,11 +170,80 @@ def adjusted_income(flat):
     return ni - gain * (1.0 - TAX_RATE), f"{ni_tag} − ({'+'.join(used)})×{1 - TAX_RATE:.2f}"
 
 
+def period_days(rep):
+    """이 보고가 덮는 기간(일). 날짜가 없으면 None."""
+    a, b = (rep or {}).get("startDate"), (rep or {}).get("endDate")
+    if not a or not b:
+        return None
+    try:
+        d0 = datetime.strptime(str(a)[:10], "%Y-%m-%d")
+        d1 = datetime.strptime(str(b)[:10], "%Y-%m-%d")
+    except ValueError:
+        return None
+    n = (d1 - d0).days
+    return n if n > 0 else None
+
+
+def quarterly_only(reports):
+    """**분기 보고만** 남긴다 → (걸러진 목록, 버린 수).
+
+    2026-08-31 2차 실전 사고: 태그를 고치고 나니 값이 나왔는데 **2~3배 부풀어 있었다**
+    (MSFT 35.74 · AAPL 17.57 — 실제 TTM 의 약 2.7배). Finnhub 의 'quarterly' 피드에는
+    누적 기간 보고(반기·9개월·연간)가 섞여 온다. 그걸 4개 더하면 같은 분기를 여러 번
+    세게 된다. 무서운 점은 **결과가 그럴듯해 보인다는 것** — 자릿수가 맞고 부호도 맞아서
+    화면에 '통과' 라는 결론까지 정상적으로 찍혔다(MSFT 쿠폰 34.9%).
+    그래서 기간 길이로 거른다: 80~100일만 분기다.
+    날짜가 아예 없으면 거르지 않되(구 응답 호환) 그 사실을 세어 로그에 남긴다.
+    """
+    kept, dropped = [], 0
+    for r in reports or []:
+        n = period_days(r)
+        if n is None or 80 <= n <= 100:
+            kept.append(r)
+        else:
+            dropped += 1
+    return kept, dropped
+
+
+def diluted_shares(flat):
+    """희석주식수 → (값, 근거). 태그가 없으면 순이익 ÷ 희석EPS 로 되돌려 구한다.
+
+    GOOG·AVGO 는 주식수 태그를 싣지 않고 EarningsPerShareDiluted 만 싣는다.
+    거기서 포기하면 대형주가 통째로 빠진다 — 같은 공시 안에 답이 있는데도.
+    """
+    sh, tag = pick(flat, DILUTED_TAGS)
+    if sh and sh > 0:
+        return sh, tag
+    ni, _ = pick(flat, NET_INCOME_TAGS)
+    eps, eps_tag = pick(flat, ["EarningsPerShareDiluted", "EarningsPerShareBasicAndDiluted"])
+    if ni and eps and eps != 0:
+        derived = ni / eps
+        if derived > 0:
+            return derived, f"{eps_tag} 역산"
+    return None, None
+
+
+def implausible(eps_ttm, fwd_eps):
+    """판단층의 선행 EPS 와 대조한 타당성 — 과대 산출만 막는다.
+
+    막으려는 것 한 문장: **집계 오류로 부풀려진 EPS 가 화면에 결론으로 나가는 것.**
+    그래서 '부풀림' 방향만 본다(4배 초과). 반대쪽(실적 급감·사이클 저점)은 정상일 수
+    있으므로 막지 않는다 — 표면 특징으로 정상을 막지 않기 위해서다(2026-08-22 교훈).
+    선행 EPS 가 없으면 대조할 자가 없으니 통과시킨다.
+    """
+    if eps_ttm is None or not isinstance(fwd_eps, (int, float)) or isinstance(fwd_eps, bool):
+        return False
+    if fwd_eps <= 0:
+        return False
+    return eps_ttm > fwd_eps * 4.0
+
+
 def eps_adj_ttm_from(reports):
     """최근 4분기 → (eps, method, 분기수). 4분기가 안 되면 (None, 사유, n)."""
-    quarters = (reports or [])[:4]
+    only, dropped = quarterly_only(reports)
+    quarters = only[:4]
     if len(quarters) < 4:
-        return None, f"분기 부족({len(quarters)}/4)", len(quarters)
+        return None, f"분기 부족({len(quarters)}/4, 누적기간 {dropped}건 제외)", len(quarters)
     total, notes = 0.0, []
     for q in quarters:
         flat = flatten(q.get("report") if isinstance(q, dict) else None)
@@ -185,9 +254,9 @@ def eps_adj_ttm_from(reports):
         if why not in notes:
             notes.append(why)
     head = flatten((quarters[0] or {}).get("report"))
-    shares, sh_tag = pick(head, DILUTED_TAGS)
+    shares, sh_tag = diluted_shares(head)
     if not shares or shares <= 0:
-        return None, f"희석주식수 태그 없음 · 실제 태그: {sample_concepts(head)}", len(quarters)
+        return None, f"희석주식수 없음 · 실제 태그: {sample_concepts(head)}", len(quarters)
     return total / shares, "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}", len(quarters)
 
 
@@ -215,6 +284,7 @@ def cagr3y_from(reports):
     분기 보고가 12개(3년) 이상 있어야 성립한다. 없으면 null — 짧은 이력을
     긴 성장률로 늘려 적는 것이 이 자리에서 가장 하기 쉬운 거짓말이다.
     """
+    reports, _ = quarterly_only(reports)
     if len(reports or []) < 16:
         return None
     def ttm(idx):
@@ -325,6 +395,10 @@ def build_block(c, key, now):
 
     eps, method, nq = eps_adj_ttm_from(reports)
     block["source"] = f"Finnhub financials-reported · 분기 {len(reports)}건"
+    if eps is not None and implausible(eps, c.get("forward_eps")):
+        print(f"[자동취재] {ticker}: EPS {eps:.2f} 가 선행 {c.get('forward_eps')} 의 4배 초과 "
+              f"— 집계 오류 의심으로 보류", file=sys.stderr)
+        eps, method = None, f"타당성 보류 — 산출 {eps:.2f} vs 선행 {c.get('forward_eps')}"
     if eps is None:
         block["method"] = f"산출 불가 — {method}"
         block["confidence"] = None
