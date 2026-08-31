@@ -285,8 +285,9 @@ def cagr3y_from(reports):
     긴 성장률로 늘려 적는 것이 이 자리에서 가장 하기 쉬운 거짓말이다.
     """
     reports, _ = quarterly_only(reports)
-    if len(reports or []) < 16:
+    if len(reports or []) < 8:
         return None
+
     def ttm(idx):
         tot = 0.0
         for q in reports[idx:idx + 4]:
@@ -295,8 +296,37 @@ def cagr3y_from(reports):
                 return None
             tot += inc
         return tot
-    now, before = ttm(0), ttm(12)
-    return cagr(before, now, 3.0)
+
+    def end_of(i):
+        try:
+            return datetime.strptime(str((reports[i] or {}).get("endDate"))[:10], "%Y-%m-%d")
+        except (ValueError, TypeError, IndexError):
+            return None
+
+    # 3년 전 창은 **날짜로** 찾는다 — 인덱스 12칸이 3년 전이라는 보장이 없다.
+    # 2026-08-31 실측: 그렇게 쟀더니 NVDA 가 연 482% 로 나왔다(3년에 190배).
+    # 수정 공시·결번 때문에 목록의 12칸 뒤가 3년 전이 아니었던 것이다.
+    # 숫자가 크게 나오면 성장주라서 그런 줄 알기 쉽다 — 그래서 더 위험하다.
+    head = end_of(0)
+    if head is None:
+        return None
+    # 밴드 안에서 **3년에 가장 가까운** 창을 고른다. 첫 번째로 걸리는 것을 쓰면
+    # 늘 밴드의 아래끝(2.5년)을 잡아 성장률이 계통적으로 부풀려진다.
+    base, base_years, best = None, None, None
+    for i in range(4, len(reports) - 3):
+        d = end_of(i)
+        if d is None:
+            continue
+        years = (head - d).days / 365.25
+        if not (2.5 <= years <= 3.5):
+            continue
+        gap = abs(years - 3.0)
+        if best is None or gap < best:
+            base, base_years, best = i, years, gap
+    if base is None:
+        return None
+    now, before = ttm(0), ttm(base)
+    return cagr(before, now, base_years)
 
 
 # ────────────────────────────────────────────────────────────────

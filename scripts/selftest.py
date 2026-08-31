@@ -472,6 +472,22 @@ def main():
     check("XBRL: 급감 방향은 막지 않는다", _fa.implausible(1.0, 9.1), False)
     check("XBRL: 선행 EPS 없으면 대조 불가 → 통과", _fa.implausible(40.0, None), False)
 
+    # 3년 창은 인덱스가 아니라 날짜로 — 결번·수정공시가 있어도 진짜 3년을 잰다
+    def _q(end, ni):
+        st = end - _dt.timedelta(days=91)
+        return {"startDate": str(st), "endDate": str(end),
+                "report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": ni},
+                                  {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+                                   "value": 1000.0}]}}
+    _e = _dt.date(2026, 6, 30)
+    _series = [_q(_e - _dt.timedelta(days=91 * i), 200.0 if i < 4 else 100.0) for i in range(20)]
+    _g = _fa.cagr3y_from(_series)          # 최근 TTM 800 vs 3년 전 400 → 2배/3년
+    check("XBRL: 3년 CAGR 은 날짜로 창을 잡는다(3년에 가장 가까운 창)",
+          abs(_g - (2 ** (1 / 3) - 1)) < 0.01, True)
+    _short = [_q(_e - _dt.timedelta(days=91 * i), 100.0) for i in range(8)]
+    check("XBRL: 3년 치가 없으면 null(짧은 이력을 늘려 적지 않는다)",
+          _fa.cagr3y_from(_short), None)
+
     check("XBRL: 적자 구간 CAGR 은 null", _fa.cagr(-1.0, 2.0, 3.0), None)
     check("XBRL: CAGR 계산", round(_fa.cagr(100.0, 133.1, 3.0), 4), 0.1)
     check("자동: 해외 상장 판별",
