@@ -89,14 +89,19 @@
   ],
   "2026-08-29": [
    "sentinel:signals:Google DeepMind:2026-08-29"
+  ],
+  "2026-08-31": [
+   "sentinel:feed:signals:Hacker News 300+:2026-08-31"
   ]
  },
  "last_verdict": {
-  "at": "2026-08-31 10:37",
-  "ok": true,
-  "alerts": []
+  "at": "2026-08-31 19:07",
+  "ok": false,
+  "alerts": [
+   "신호 Hacker News 300+: HTTP 502 2회 연속"
+  ]
  },
- "last_run": "2026-08-31 10:37",
+ "last_run": "2026-08-31 19:07",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -157,9 +162,9 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "signals:OpenAI": {
