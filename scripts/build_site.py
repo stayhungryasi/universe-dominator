@@ -381,6 +381,9 @@ def build_observatory():
                     "conv_basis": conv.get("basis"),
                     "cert": risk5.get("business_certainty"),
                     "guard": bool(b.get("cyclical_peak_guard")),
+                    # 취재가 끝나 값이 산출되면 비고에 "기준 {as_of} · {period}" 로 뜬다
+                    "as_of": b.get("as_of"),
+                    "period": b.get("period"),
                 }
         except Exception as e:
             print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")

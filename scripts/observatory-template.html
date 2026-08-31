@@ -1362,6 +1362,23 @@ const LG_GLOSSARY =
     '판단층에서 사람이 "사업 확실성 ✕"라고 적은 건물에만 붙는다.</dd>' +
   '</dl></details>';
 
+/* 비고 — 측정층의 note 문자열을 **그대로 뿌리지 않는다.**
+   그 문장은 운영자·CI 로그를 위한 것이라 기계 필드명이 들어 있다.
+   여기서는 그 문자열을 번역하는 게 아니라 **상태에서 다시 만든다**: 문자열을 매핑하면
+   측정층이 새 사유를 추가하는 날 그 문장이 그대로 화면으로 새어 나온다.
+   상태에서 만들면 모르는 상태는 빈 칸이 될지언정 내부 용어가 나갈 길이 없다. */
+function lgNote(b, j){
+  if (j.guard || b.guard) return '정점 이익 함정 — 10년 쿠폰을 재지 않는 유형';
+  if (b.coupon10y != null) {                      // 취재가 끝나 값이 산출된 상태
+    const parts = [j.as_of, j.period].filter(Boolean);
+    return parts.length ? '기준 ' + parts.join(' · ') : '';
+  }
+  if (b.eps_adj_ttm == null) return '취재 대기 — 12개월 조정이익 미확보';
+  if (b.g_used == null) return '취재 대기 — 성장률 가정 미확보';
+  if (b.rate10y == null) return '해당 시장 국채 금리 미연결';
+  return '';
+}
+
 function lgRow(x, lg){
   const b = x.bench || {};
   const j = lg[x.ticker] || {};
@@ -1393,7 +1410,8 @@ function lgRow(x, lg){
     '<td class="px-num">' + coupon + '</td>' +
     '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
-      (b.note ? '<div class="lg-sub">' + esc(b.note) + '</div>' : '') + '</td>' +
+      (function(){ const n = lgNote(b, j);
+        return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
   '</tr>';
 }
 
