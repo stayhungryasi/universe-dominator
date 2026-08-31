@@ -1,79 +1,34 @@
 {
- "generated_label": "2026-08-31 23:20",
- "generated_at": "2026-08-31T23:20:15.106512+09:00",
+ "generated_label": "2026-08-31 23:39",
+ "generated_at": "2026-08-31T23:39:05.896195+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-08-31",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 7.4866
+    "value": 3.3251
    },
-   "roe_tangible": 1.065,
-   "g_cagr3y": 1.2759,
+   "roe_tangible": 0.473,
+   "g_cagr3y": 4.8212,
    "g_consensus": 0.9527,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "✕",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "notes": "대형 세입자 전원의 자체칩 이탈 예고로 10년 후 사업 기반이 근본적으로 훼손될 위험 존재.",
-   "_evidence": {
-    "franchise": "대형 세입자 전원이 자체칩으로 이탈 예고 — 10년 뒤 월세를 적을 수 없다",
-    "risk5": "대형 고객 의존도 심화 시 장기 수익성 불확실; 자체칩 개발 가속화로 GPU 칩셋 대체 위험"
-   }
+   "confidence": "중"
   },
   "AAPL": {
    "as_of": "2026-08-31",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 17.5666
+    "value": 9.6109
    },
-   "roe_tangible": 2.4361,
-   "g_cagr3y": 0.0552,
+   "roe_tangible": 1.3328,
+   "g_cagr3y": 0.4656,
    "g_consensus": 0.1791,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "B"
-   },
-   "notes": "세계 최강의 소비자 프랜차이즈이나 성숙 시장에서 구조적 성장 한계.",
-   "_evidence": {
-    "franchise": "Apple은 브랜드 충성도와 생태계 락인에서 비할 데 없는 소비자 프랜차이즈를 보유.",
-    "risk5": "매출 성장이 저조하고 밸류에이션이 높아 가격 리스크가 뚜렷함.",
-    "capalloc": "지속적인 자본 환원(배당·자사주)과 현금 창출 능력 입증.",
-    "owner_earnings": "성숙 기업의 높은 프리미엄 밸류에이션 대비 성장 부재로 수익 창출력 대비 기대수익률 제한적."
-   }
+   "confidence": "중"
   },
   "GOOG": {
    "as_of": "2026-08-31",
@@ -83,7 +38,7 @@
    "roe_tangible": null,
    "g_cagr3y": null,
    "g_consensus": 0.2982,
-   "method": "산출 불가 — 희석주식수 태그 없음 · 실제 태그: CostsAndExpenses, EarningsPerShareBasic, EarningsPerShareDiluted, GeneralAndAdministrativeExpense, IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments, IncomeTaxExpenseBenefit, NetIncomeLoss, NonoperatingIncomeExpense, OperatingIncomeLoss, OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax, ResearchAndDevelopmentExpense, Revenues, SellingAndMarketingExpense, goog:ChargeRelatedToResolutionOfInvestigation",
+   "method": "산출 불가 — 분기 부족(1/4, 누적기간 3건 제외)",
    "source": "Finnhub financials-reported · 분기 4건",
    "confidence": "하",
    "franchise": {
@@ -105,14 +60,14 @@
    },
    "owner_earnings": {
     "display": "A",
-    "display_reason": "검색 해자 강화, Cloud 82% 성장, AI 수익화 가속"
+    "display_reason": "Q2 2026 revenue 24% 성장, Cloud 82% 급증으로 AI 수익화 가시화"
    },
-   "notes": "반독점 리스크는 현존하나 검증 가능한 수준, 자본배분 규율 우수, TPU 풀스택 진행 중",
+   "notes": "검색 해자는 공고하나 규제 리스크(반독점, TPU 해석)와 AI 투자 수익성 검증 시점 사이의 긴장이 주요 관찰 대상",
    "_evidence": {
-    "franchise": "Search moat remains defensible; Cloud 82% surge indicates platform leverage; AI monetization sustaining competitive advantage",
-    "risk5": "Antitrust concerns cited but no material revenue impact disclosed; management executing capex discipline despite AI spending pressure",
-    "capalloc": "Revenue up 24% YoY with positive cash generation; active buyback program maintained; no dilutive equity issuance",
-    "owner_earnings": "Q2 2026 earnings top estimates; strong Cloud growth and AI monetization reported"
+    "franchise": "검색 해자 공포·반독점이 검증 가능한 공포인지가 관건",
+    "risk5": "What worried investors about Alphabet - 규제 우려 상존",
+    "capalloc": "Alphabet Q2 2026 earnings: revenue up 24%, Cloud surges 82%",
+    "owner_earnings": "Alphabet Earnings: Strong AI Monetization Continues to Spearhead Results"
    }
   },
   "MSFT": {
@@ -120,84 +75,28 @@
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 35.7428
+    "value": 12.3575
    },
-   "roe_tangible": 0.9679,
-   "g_cagr3y": 0.349,
+   "roe_tangible": 0.3346,
+   "g_cagr3y": 0.6415,
    "g_consensus": 0.1738,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 46건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024H2"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "캐펙스/매출 30%대 유지로 현금 흐름 투명성 감소"
-   },
-   "notes": "클라우드 인프라 투자 급증(캐펙스 고착)으로 수익 모형 복잡화 중; 전환비용 해자는 견고하나 자본 효율성 악화 추이 감시 필수",
-   "_evidence": {
-    "franchise": "엔터프라이즈 소프트웨어·클라우드 구독 모델로 고착 비용 최소화; Azure·M365 생태계 전환비용 극대",
-    "risk5": "AI 투자 수익화 불명확·경쟁 심화로 가격결정력 하락 리스크 증가; 경영진 자본배분 규율은 유지되나 인프라 캐펙스 급증으로 재량성 제약",
-    "capalloc": "최근 분기 자사주 매입 지속, 순차입금 관리 중; 다만 생성형AI 데이터센터 투자로 자본집약도 역사적 고점 근접",
-    "owner_earnings": "보고 이익(A)과 자유현금흐름(C) 간 괴리 확대—캐펙스 규모화로 순이익→현금 변환율 30% 이상 악화"
-   }
+   "confidence": "중"
   },
   "AMZN": {
    "as_of": "2026-08-31",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 12.7967
+    "value": 5.6083
    },
-   "roe_tangible": 0.3325,
-   "g_cagr3y": 0.3454,
+   "roe_tangible": 0.1457,
+   "g_cagr3y": null,
    "g_consensus": 0.2796,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "△",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "notes": "AWS 통행료 사업이 핵심이나 저마진 리테일과의 혼합체 구조로 순수 씨즈형보다 할인 평가.",
-   "_evidence": {
-    "franchise": "AWS는 클라우드 인프라 기반의 높은 전환비용과 고객 종속성을 보유한 통행료 사업.",
-    "risk5": "리테일 저마진 고자본 특성이 사업 확실성과 수익성을 제약하는 위험요소.",
-    "capalloc": "최근 자본배분 정책에 대한 구체적 데이터 부족."
-   }
+   "confidence": "중"
   },
   "TSM": {
    "as_of": "2026-08-31",
@@ -215,24 +114,25 @@
   },
   "AVGO": {
    "as_of": "2026-08-31",
-   "period": null,
+   "period": "2026Q2",
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": null,
+   "eps_adj_ttm": {
+    "value": 3.664
+   },
    "roe_tangible": null,
-   "g_cagr3y": 0.501,
+   "g_cagr3y": null,
    "g_consensus": 0.4663,
-   "method": "산출 불가 — 희석주식수 태그 없음 · 실제 태그: avgo_Amortizationofacquisitionrelatedintangibleassetscostofproductssold, avgo_Amortizationofacquisitionrelatedintangibleassetsoperatingexpenses, avgo_CostofProductsSold, avgo_CostofSubscriptionsandServices, avgo_RestructuringChargesCostOfProductsSold, us-gaap_CostOfRevenue, us-gaap_GrossProfit, us-gaap_InterestExpense, us-gaap_OperatingExpenses, us-gaap_OperatingIncomeLoss, us-gaap_ResearchAndDevelopmentExpense, us-gaap_RestructuringSettlementAndImpairmentProvisions, us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap_SellingGeneralAndAdministrativeExpense",
+   "method": "SEC XBRL 조정 · us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLossAvailableToCommonStockholdersBasic (투자손익 태그 없음 — 무조정) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 35건",
    "confidence": "하",
+   "notes": "AI 칩 수요 주기에 대한 10년 추정 불확실성(±30% 초과)이 투자판단의 핵심 제약.",
    "franchise": {
     "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
+    "no_substitute": "○"
    },
    "risk5": {
     "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
+    "price": "△"
    },
    "capalloc": {
     "cash_positive": 1,
@@ -241,11 +141,10 @@
     "score": 3,
     "period": "2026H1"
    },
-   "notes": "커스텀 AI 칩 수요에 대한 10년 추정 불확실성(±30% 초과)이 평가의 핵심 제약요인.",
    "_evidence": {
-    "franchise": "반도체 인프라 공급자로서 AI 데이터센터 전환의 핵심 수혜자; 고객 대체 어려움.",
-    "risk5": "AI 칩 사이클 정점 타이밍 및 규모에 대한 장기 예측 불가; 현재 주가가 이미 성장 기대를 상당히 반영.",
-    "capalloc": "반도체 산업 표준적 현금 창출 및 주주환원 기조 유지."
+    "franchise": "반도체 인프라(데이터센터 연결성)에 대한 구조적 수요 증가.",
+    "risk5": "커스텀 AI 칩 시장의 고객 집중도 및 기술 지속성 불명확.",
+    "capalloc": "반도체 산업 특성상 지속적 현금 창출 및 배분 능력."
    }
   },
   "SPCX": {
@@ -260,7 +159,32 @@
    "g_consensus": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "score": 0,
+    "period": "2026H1"
+   },
+   "owner_earnings": {
+    "display": "C",
+    "display_reason": "순손실 지속으로 오너수익 추정 불가능"
+   },
+   "notes": "상장 예정이지만 현재 재무공시 부족으로 평가범위 극광폭",
+   "_evidence": {
+    "franchise": "로켓·스타링크·xAI·X 복합체로 우주통신·AI 독점성 보유",
+    "risk5": "순손실 지속 중이나 기술리스크와 경제순환 리스크 병존",
+    "capalloc": "상장 전 IPO 자금 조달 예정으로 현 시점 캐시배분 평가 불가",
+    "owner_earnings": "10년 쿠폰 추정범위 최광폭으로 순이익 신뢰도 낮음"
+   }
   },
   "2222.SR": {
    "as_of": "2026-08-31",
@@ -274,35 +198,99 @@
    "g_consensus": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3
+   },
+   "notes": "유가 사이클 의존도가 높아 현금흐름 예측 가능성이 구조적으로 제한됨.",
+   "_evidence": {
+    "franchise": "석유 수요는 필수재이나 가격 규제(OPEC+) 영향 큼.",
+    "risk5": "유가 변동성이 수익성을 크게 좌우하며 경영진 능력으로 극복 불가능한 외생변수 존재.",
+    "capalloc": "높은 현금창출 능력과 배당·자사주 정책 지속 이력."
+   }
   },
   "META": {
    "as_of": "2026-08-31",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 45.2225
+    "value": 23.984
    },
-   "roe_tangible": 0.5296,
-   "g_cagr3y": 0.207,
+   "roe_tangible": 0.2809,
+   "g_cagr3y": null,
    "g_consensus": 0.1841,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 40건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 0,
+    "score": 2
+   },
+   "notes": "40억 네트워크 효과는 견고하나 캐펙스 규율 상실이 프랜차이즈 가치를 훼손하는 중",
+   "_evidence": {
+    "franchise": "40억 네트워크 효과",
+    "risk5": "슈퍼인텔리전스 지출 규율 부재",
+    "capalloc": "캐펙스 공포에 싸인 프랜차이즈"
+   }
   },
   "TSLA": {
    "as_of": "2026-08-31",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 1.5385
+    "value": 1.2827
    },
-   "roe_tangible": 0.0647,
-   "g_cagr3y": -0.1392,
+   "roe_tangible": 0.054,
+   "g_cagr3y": null,
    "g_consensus": 0.3832,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "△",
+    "no_substitute": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "notes": "차·로봇·에너지 사업의 수익성 가시화 부족으로 정상적 재무평가 곤란",
+   "_evidence": {
+    "franchise": "전기차·에너지·로봇 등 다중 사업 포트폴리오는 필요성이 있으나 각 사업의 경제적 해자 입증 미흡",
+    "risk5": "고성장 기술기업으로서 미래 사업 확실성과 경영 능력 평가의 불확실성 높음",
+    "capalloc": "과거 현금 창출 및 자사주 매입 실적 있으나 최근 뉴스 부재로 최신 상황 미확인"
+   }
   },
   "005930.KS": {
    "as_of": "2026-08-31",
@@ -321,10 +309,10 @@
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 67.3126
+    "value": 4.9921
    },
-   "roe_tangible": 0.7757,
-   "g_cagr3y": 0.6468,
+   "roe_tangible": 0.0575,
+   "g_cagr3y": 3.8115,
    "g_consensus": 0.2615,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
@@ -336,9 +324,9 @@
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "g_cagr3y": 0.3674,
+   "g_cagr3y": null,
    "g_consensus": 0.1179,
-   "method": "산출 불가 — 희석주식수 태그 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
+   "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
    "confidence": null
   },
@@ -347,10 +335,10 @@
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 36.5254
+    "value": 15.4701
    },
-   "roe_tangible": 1.8494,
-   "g_cagr3y": 0.5191,
+   "roe_tangible": 0.7833,
+   "g_cagr3y": 0.4566,
    "g_consensus": 0.2759,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
@@ -361,10 +349,10 @@
    "period": "2026Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 38.5229
+    "value": 21.0198
    },
-   "roe_tangible": 0.2879,
-   "g_cagr3y": 0.0649,
+   "roe_tangible": 0.1571,
+   "g_cagr3y": null,
    "g_consensus": 0.168,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
@@ -375,10 +363,10 @@
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 4.2914
+    "value": 2.3426
    },
-   "roe_tangible": 0.5187,
-   "g_cagr3y": 0.0585,
+   "roe_tangible": 0.2831,
+   "g_cagr3y": 0.0888,
    "g_consensus": 0.1153,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
@@ -389,12 +377,12 @@
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 3.9376
+    "value": 1.7977
    },
-   "roe_tangible": 0.2829,
-   "g_cagr3y": 0.1159,
+   "roe_tangible": 0.1292,
+   "g_cagr3y": null,
    "g_consensus": 0.0513,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
    "confidence": "중"
   },
@@ -429,10 +417,10 @@
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 10.5778
+    "value": 3.9379
    },
-   "roe_tangible": 1.262,
-   "g_cagr3y": 0.112,
+   "roe_tangible": 0.4698,
+   "g_cagr3y": 1.4174,
    "g_consensus": 0.1646,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
@@ -443,10 +431,10 @@
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 17.5392
+    "value": 8.2339
    },
-   "roe_tangible": 0.7094,
-   "g_cagr3y": 0.0603,
+   "roe_tangible": 0.333,
+   "g_cagr3y": 0.9336,
    "g_consensus": 0.1718,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
@@ -457,10 +445,10 @@
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 15.5625
+    "value": 9.8095
    },
    "roe_tangible": null,
-   "g_cagr3y": 0.3399,
+   "g_cagr3y": null,
    "g_consensus": 0.1542,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 33건",
@@ -472,7 +460,7 @@
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 3.4531
+    "value": 1.0935
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -498,27 +486,25 @@
   },
   "SNDK": {
    "as_of": "2026-08-31",
-   "period": "2026Q3",
+   "period": null,
    "cyclical_peak_guard": true,
-   "eps_adj_ttm": {
-    "value": 25.5779
-   },
-   "roe_tangible": 0.4485,
+   "eps_adj_ttm": null,
+   "roe_tangible": null,
    "g_cagr3y": null,
    "g_consensus": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "method": "산출 불가 — 분기 부족(2/4, 누적기간 10건 제외)",
    "source": "Finnhub financials-reported · 분기 12건",
-   "confidence": "중"
+   "confidence": null
   },
   "STX": {
    "as_of": "2026-08-31",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 20.0088
+    "value": 3.0929
    },
    "roe_tangible": null,
-   "g_cagr3y": 0.0668,
+   "g_cagr3y": -0.1864,
    "g_consensus": 0.2099,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
@@ -530,12 +516,12 @@
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -2.0055
+    "value": -0.2793
    },
-   "roe_tangible": -0.2486,
+   "roe_tangible": -0.0346,
    "g_cagr3y": null,
    "g_consensus": 0.4064,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 22건",
    "confidence": "중"
   },
@@ -558,9 +544,9 @@
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 3.2006
+    "value": -0.1927
    },
-   "roe_tangible": 1.6298,
+   "roe_tangible": -0.0981,
    "g_cagr3y": null,
    "g_consensus": 0.2251,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
@@ -624,5 +610,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-08-31 23:21"
+ "scout_label": "2026-08-31 23:40"
 }
