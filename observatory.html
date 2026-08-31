@@ -1525,6 +1525,10 @@ function renderParallax(){
    배지는 사람이 취재해 적어 넣은 칸(전환율·risk5·가드)을 그대로 비춘다. */
 const LG_ZONE_KO = { pass: '통과', prove_growth: '성장 입증 필요',
                      bond_inferior: '국채 열위', untested: '미검정' };
+/* 금리 라벨도 화면에서는 우리말로 — UST10·KTB10 은 원장 키(기계 이름)다.
+   한국·일본물은 아직 null 이라 안 뜨지만, 배선되는 날 같은 실수를 반복하지 않도록
+   지금 함께 우리말로 둔다. */
+const LG_RATE_KO = { UST10: '미국 10년물', KTB10: '한국 10년물', JGB10: '일본 10년물' };
 
 const LG_TIP = {
   pik: '이자를 현금이 아니라 종이(재투자)로 받는 셈. 전환율이 음수라는 건 장부의 이익이 ' +
@@ -1633,11 +1637,11 @@ function renderLegend(){
   // 0 으로 채우면 '금리 0%' 라는 거짓말이 되고, 표기하면 있는 척이 된다.
   const parts = [];
   const bar = rates.UST10 == null ? null : rates.UST10 * 3;
-  parts.push('<span class="r-k">UST10</span> <span class="r-v">' +
+  parts.push('<span class="r-k">' + LG_RATE_KO.UST10 + '</span> <span class="r-v">' +
     (rates.UST10 == null ? '—' : rates.UST10.toFixed(2) + '%') + '</span>');
   ['KTB10', 'JGB10'].forEach(k => {
-    if (rates[k] != null) parts.push('<span class="r-k">' + k + '</span> <span class="r-v">' +
-      rates[k].toFixed(2) + '%</span>');
+    if (rates[k] != null) parts.push('<span class="r-k">' + (LG_RATE_KO[k] || k) + '</span> ' +
+      '<span class="r-v">' + rates[k].toFixed(2) + '%</span>');
   });
   parts.push('<span class="r-k">국채×3 허들</span> <span class="r-bar">' +
     (bar == null ? '—' : bar.toFixed(1) + '%') + '</span>');
