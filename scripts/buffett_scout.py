@@ -24,6 +24,7 @@ owner_earnings A/B/C 근거 · notes.
      (2026-08-17 AMZN 사고의 뿌리와 같다: 자가 바뀐 것을 시장이 움직였다고 적으면 안 된다)
      대신 텔레그램에 한 줄 남겨 운영자가 눈금이 흔들린 사실을 알게 한다.
 """
+import hashlib
 import json
 import os
 import re
@@ -71,18 +72,48 @@ def save_state(state):
 # 판정부 — 순수 함수
 # ────────────────────────────────────────────────────────────────
 
+def event_hits(headlines):
+    """§6 이벤트 키워드 적중 목록 (정렬·중복 제거) — 해시의 재료."""
+    hit = set()
+    for k in EVENT_KEYWORDS:
+        if any(k.lower() in (h or "").lower() for h in (headlines or [])):
+            hit.add(k)
+    return sorted(hit)
+
+
+def event_hash(headlines):
+    """적중 키워드 집합의 지문. **같은 이벤트가 계속 잡혀도 한 번만 취재한다.**
+
+    헤드라인 원문으로 해시하면 같은 사건의 기사가 하나 더 올라올 때마다 지문이
+    바뀌어 매일 재취재하게 된다. 우리가 알고 싶은 것은 '어떤 종류의 사건이
+    잡혔는가'이므로 **키워드 집합**으로 해시한다.
+    """
+    hits = event_hits(headlines)
+    if not hits:
+        return ""
+    return hashlib.sha1("|".join(hits).encode("utf-8")).hexdigest()[:12]
+
+
 def needs_scout(ticker, auto_block, state, headlines):
-    """재취재해야 하는가 → (여부, 사유). 평시엔 False 여야 한다."""
+    """재취재해야 하는가 → (여부, 사유).
+
+    2026-09-01 개정: 판단 근거를 **'값이 바뀌었나'에서 'period 가 새로운가 ·
+    이벤트 해시가 달라졌나'로** 옮겼다. 값 변경으로 판단하려면 값을 먼저 받아야
+    하고, 그러려면 Haiku 를 이미 호출한 뒤다 — 즉 비용은 다 치르고 나서 "안 바뀌었네"
+    하는 구조였다. 이제 호출 **전에** 게이트를 통과해야 한다.
+    """
     prev = (state.get("items") or {}).get(ticker) or {}
     period = (auto_block or {}).get("period")
     if not prev.get("scouted_at"):
         return True, "첫 취재"
-    if period and period != prev.get("period"):
+    # 구 상태 파일은 필드명이 'period' 였다. 이름이 바뀌었다고 이미 취재한 종목을
+    # 다시 부르면 개명 비용을 Haiku 호출로 치르게 된다 — 옛 이름도 읽어 준다.
+    last_period = prev.get("last_period") or prev.get("period")
+    if period and period != last_period:
         return True, f"신규 분기 {period}"
-    hit = [k for k in EVENT_KEYWORDS
-           if any(k.lower() in (h or "").lower() for h in (headlines or []))]
-    if hit:
-        return True, "이벤트 " + ", ".join(hit[:3])
+    h = event_hash(headlines)
+    if h and h != prev.get("last_event_hash"):
+        return True, "이벤트 " + ", ".join(event_hits(headlines)[:3])
     return False, ""
 
 
@@ -217,23 +248,42 @@ def ask(api_key, c, headlines):
     return json.loads(text[text.find("{"):text.rfind("}") + 1])
 
 
-def notify(changes):
-    """텔레그램 한 줄 — 관측노트에는 적지 않는다(눈금 변경 ≠ 시장 사건)."""
+def digest(changes):
+    """하루 1건으로 묶은 한 줄 — 종목별 개별 발송은 폐지했다(도배)."""
+    tickers = [tk for tk, _ in changes]
+    head = f"자동 취재 갱신 {len(tickers)}종: " + "·".join(tickers[:8])
+    return head + (f" 외 {len(tickers) - 8}종" if len(tickers) > 8 else "")
+
+
+def notify(changes, state, today):
+    """갱신 알림 — **소장 DM 전용 · 하루 1건.**
+
+    ① 관측노트에는 적지 않는다(눈금 변경 ≠ 시장 사건).
+    ② 공개 채널로 흘리지 않는다. 자동 취재가 무엇을 고쳤는지는 운영 내부 사정이다.
+       수신처가 없으면 **공개로 폴백하지 않고** 로그로만 남긴다.
+    ③ 하루에 한 번만. 같은 날 두 번째 full 에서는 이미 보냈으면 침묵한다.
+    """
     if not changes:
-        return
+        return False
+    if state.get("notified_on") == today:
+        print(f"[취재] 갱신 {len(changes)}종 — 오늘 이미 알림 발송 → 재발송 안 함")
+        return False
+    text = digest(changes)
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-    if not token:
-        print("[취재] TELEGRAM_BOT_TOKEN 없음 — 갱신 알림 생략", file=sys.stderr)
-        return
+    chat = os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
+    if not token or not chat:
+        print(f"[취재] DM 수신처 미등록 — 발송 생략(공개 채널 폴백 없음): {text}",
+              file=sys.stderr)
+        return False
     try:
         from send_telegram_briefing import send_telegram, esc
-        chat = (os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
-                or os.environ.get("TELEGRAM_CHAT_ID", "").strip() or "@stayhungryasi")
-        for tk, fields in changes[:5]:
-            send_telegram(token, chat, esc(f"{tk} 자동 취재 갱신: {', '.join(fields)}"))
-        print(f"[취재] 갱신 알림 {min(len(changes), 5)}건 발송")
+        send_telegram(token, chat, esc(text))
+        state["notified_on"] = today
+        print(f"[취재] 갱신 알림 1건 발송 → DM ({text})")
+        return True
     except Exception as e:
         print(f"[취재] 알림 실패 ({e})", file=sys.stderr)
+        return False
 
 
 def main():
@@ -257,10 +307,11 @@ def main():
         heads = []
         prev = state["items"].get(tk) or {}
         # 헤드라인은 '분기가 안 바뀐' 종목에만 필요하다 — 첫 취재·신규 분기는 이미 확정
-        if prev.get("scouted_at") and (block.get("period") == prev.get("period")):
+        if prev.get("scouted_at") and (block.get("period") == prev.get("last_period")):
             heads = fetch_headlines(c.get("name", ""), tk)
         go, why = needs_scout(tk, block, state, heads)
         if not go:
+            # **Haiku 를 부르지 않고** 넘어간다 — 게이트가 호출 앞에 있어야 비용이 준다
             skipped += 1
             continue
         try:
@@ -269,17 +320,18 @@ def main():
             print(f"[취재] {tk} 질의 실패 → 건너뜀 ({type(e).__name__}: {e})", file=sys.stderr)
             continue
         clean, kept = sanitize(raw)
+        stamp = {"scouted_at": now.strftime("%Y-%m-%d %H:%M"),
+                 "last_period": block.get("period"),
+                 "last_event_hash": event_hash(heads)}
         if not kept:
             print(f"[취재] {tk}: 근거 있는 항목 0 — 아무것도 쓰지 않는다 ({why})")
-            state["items"][tk] = {"scouted_at": now.strftime("%Y-%m-%d %H:%M"),
-                                  "period": block.get("period")}
+            state["items"][tk] = stamp
             done += 1
             continue
         diff = changed_fields(block, clean)
         block.update(clean)
         items[tk] = block
-        state["items"][tk] = {"scouted_at": now.strftime("%Y-%m-%d %H:%M"),
-                              "period": block.get("period")}
+        state["items"][tk] = stamp
         if diff and prev.get("scouted_at"):
             changes.append((tk, diff))
         done += 1
@@ -295,8 +347,10 @@ def main():
         feed_client.flush()
     except Exception:
         pass
-    notify(changes)
-    print(f"[취재] 취재 {done}종 · 평시 침묵 {skipped}종 · 갱신 알림 {len(changes)}건")
+    sent = notify(changes, state, now.strftime("%Y-%m-%d"))
+    save_state(state)                     # notified_on 을 남기려면 알림 뒤에 한 번 더
+    print(f"[취재] 취재 {done}종 · 평시 침묵 {skipped}종 · "
+          f"갱신 {len(changes)}종 · DM {'1건' if sent else '0건'}")
     return 0
 
 

@@ -514,15 +514,17 @@ def send_telegram(token, chat_id, text):
 
 
 def alert_chat_id():
-    """전용 경보 채널이 있으면 그리로, 없으면 브리핑과 동일한 해석 체계로 폴백.
+    """정비 경보의 수신처 — **소장 DM 전용.** 없으면 아무 데도 보내지 않는다.
 
-    (TELEGRAM_CHAT_ID → '@stayhungryasi' 순서는 send_telegram_briefing.main 과 같다.
-     경보를 브리핑과 분리하고 싶어지면 TELEGRAM_ALERT_CHAT_ID 만 등록하면 된다 —
-     지금은 미등록이 선장님 결정이며, 소음이 거슬릴 때 쓰는 퇴로로 남겨둔다.)
+    2026-09-01 채널 분리 확정: 공개 채널(@stayhungryasi)은 **관측 결과만** 싣는다
+    (브리핑·왕좌·동행·필독). 정비 경보·회복 알림은 운영 내부 사정이라 구독자에게
+    보일 이유가 없다 — 실제로 '응답 회복 ✅' 같은 내부 문구가 공개 채널로 나갔다.
+
+    폴백 방향을 **뒤집었다.** 예전에는 전용 채널이 없으면 공개 채널로 흘렀는데,
+    그 방향의 폴백은 "설정을 안 하면 새는" 구조다. 안전한 기본값은 침묵이다:
+    미등록이면 None 을 돌려주고 호출부가 로그로만 남긴다.
     """
-    return (os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
-            or os.environ.get("TELEGRAM_CHAT_ID", "").strip()
-            or "@stayhungryasi")
+    return os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip() or None
 
 
 def dispatch(alerts, now, today, state):
@@ -540,6 +542,13 @@ def dispatch(alerts, now, today, state):
         print(text)
         return False
     chat = alert_chat_id()
+    if not chat:
+        # 공개 채널로 흘려보내지 않는다. 경보를 못 보내는 것보다 잘못된 사람에게
+        # 보내는 것이 나쁘다 — 대신 로그에는 전문을 남겨 흔적이 사라지지 않게 한다.
+        print("[정비] TELEGRAM_ALERT_CHAT_ID 미등록 — DM 전용이므로 발송 생략 "
+              "(공개 채널 폴백 없음). 아래는 발송하려던 내용:", file=sys.stderr)
+        print(text)
+        return False
     try:
         send_telegram(token, chat, text)
     except Exception as e:
@@ -616,10 +625,14 @@ def main():
         print("[정비] 관측 자체 실패 — 파이프라인은 계속 진행합니다", file=sys.stderr)
         try:
             token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-            if token:
-                send_telegram(token, alert_chat_id(),
+            chat = alert_chat_id()
+            if token and chat:
+                send_telegram(token, chat,
                               "🚨 UNIVERTRIX 정비 관제 자체가 실패했습니다 — "
                               "Actions 로그의 traceback 확인 필요")
+            elif token:
+                print("[정비] 자체 실패 경보도 DM 전용 — 수신처 미등록으로 발송 생략",
+                      file=sys.stderr)
         except Exception as e:
             print(f"[정비] 경보 발송 실패: {e}", file=sys.stderr)
         return 0

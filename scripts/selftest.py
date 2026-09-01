@@ -531,7 +531,7 @@ def main():
     check("취재: 응답이 dict 아니면 아무것도 안 실린다", _bs.sanitize("nope"), ({}, []))
 
     # 평시 침묵 — 분기가 그대로면 취재하지 않는다 (동행 관측과 같은 밀도 원칙)
-    _st = {"items": {"GOOG": {"scouted_at": "2026-08-01 10:00", "period": "2026Q2"}}}
+    _st = {"items": {"GOOG": {"scouted_at": "2026-08-01 10:00", "last_period": "2026Q2"}}}
     check("취재: 첫 취재는 실행", _bs.needs_scout("NEW", {"period": "2026Q2"}, _st, [])[0], True)
     check("취재: 분기 그대로 + 이벤트 없음 → 침묵",
           _bs.needs_scout("GOOG", {"period": "2026Q2"}, _st, ["Alphabet stock rises"])[0], False)
@@ -543,6 +543,137 @@ def main():
     check("취재: 갱신된 항목만 집어낸다",
           _bs.changed_fields({"risk5": {"a": "○"}, "notes": "x"},
                              {"risk5": {"a": "✕"}, "notes": "x"}), ["risk5"])
+
+    # ── 채널 분리(2026-09-01) — 내부 알림이 공개 채널로 새지 않는다 ──────────
+    # 막으려는 것 한 문장: **운영 내부 사정이 구독자에게 보이는 것.**
+    # 그래서 '공개 채널 변수가 있어도 발송하지 않는가'로 검사한다.
+    import os as _os
+    import pipeline_sentinel as _ps
+    import buffett_scout as _bs
+    _leak_env = {"TELEGRAM_BOT_TOKEN": "tok", "TELEGRAM_CHAT_ID": "@public",
+                 "TELEGRAM_ALERT_CHAT_ID": ""}
+    _saved = {k: _os.environ.get(k) for k in _leak_env}
+    try:
+        _os.environ.update(_leak_env)
+        check("채널: 수신처 미등록이면 None (공개 폴백 없음)", _ps.alert_chat_id(), None)
+        _sent = []
+        _o = _ps.send_telegram
+        try:
+            _ps.send_telegram = lambda t, c, x: _sent.append(c)
+            _st_d = {"sent": {}}
+            _ps.dispatch([_ps.alert("x", "내부 경보", "2026-09-01")],
+                         __import__("datetime").datetime(2026, 9, 1), "2026-09-01", _st_d)
+        finally:
+            _ps.send_telegram = _o
+        check("채널: 공개 채널이 설정돼 있어도 경보는 안 나간다", _sent, [])
+        check("채널: 못 보낸 경보는 서명도 남기지 않는다(다음 회차 재시도)",
+              _st_d.get("sent", {}).get("2026-09-01"), None)
+        # 등록되면 그리로만 간다
+        _os.environ["TELEGRAM_ALERT_CHAT_ID"] = "12345"
+        check("채널: 등록되면 DM 으로", _ps.alert_chat_id(), "12345")
+        _sent2 = []
+        _o = _ps.send_telegram
+        try:
+            _ps.send_telegram = lambda t, c, x: _sent2.append(c)
+            _ps.dispatch([_ps.alert("y", "내부 경보", "2026-09-01")],
+                         __import__("datetime").datetime(2026, 9, 1), "2026-09-01", {"sent": {}})
+        finally:
+            _ps.send_telegram = _o
+        check("채널: 수신처는 DM 하나뿐", _sent2, ["12345"])
+    finally:
+        for k, v in _saved.items():
+            if v is None:
+                _os.environ.pop(k, None)
+            else:
+                _os.environ[k] = v
+
+    # ── 스카우트 게이트 재현 — 같은 period 면 Haiku 를 부르지 않는다 ──────────
+    _prev = {"items": {"AAPL": {"scouted_at": "2026-09-01 10:00",
+                                "last_period": "2026Q3", "last_event_hash": ""}}}
+    check("스카우트: 같은 period·이벤트 없음 → 침묵",
+          _bs.needs_scout("AAPL", {"period": "2026Q3"}, _prev, ["Apple stock rises"])[0], False)
+    check("스카우트: 새 period → 재취재",
+          _bs.needs_scout("AAPL", {"period": "2026Q4"}, _prev, [])[0], True)
+    _h1 = ["Apple announces $100B buyback"]
+    check("스카우트: 새 이벤트 → 재취재",
+          _bs.needs_scout("AAPL", {"period": "2026Q3"}, _prev, _h1)[0], True)
+    # 같은 이벤트가 계속 잡혀도 한 번만 — 해시가 같으면 침묵
+    _prev2 = {"items": {"AAPL": dict(_prev["items"]["AAPL"],
+                                     last_event_hash=_bs.event_hash(_h1))}}
+    check("스카우트: 같은 이벤트 재등장은 침묵",
+          _bs.needs_scout("AAPL", {"period": "2026Q3"}, _prev2, _h1)[0], False)
+    check("스카우트: 기사 문구가 달라도 키워드가 같으면 같은 지문",
+          _bs.event_hash(["A announces buyback"]) == _bs.event_hash(["B plans buyback now"]),
+          True)
+
+    # 실전 재현 — main() 을 실제로 두 번 돌려 **호출 횟수**를 센다.
+    # 게이트가 Haiku 호출 '앞'에 있는지는 함수 단위로는 증명되지 않는다(배선 문제).
+    import json as _js2
+    _tmp = Path(__file__).parent.parent / "data" / "_selftest_scout"
+    _calls = {"ask": 0, "send": 0}
+    _o_ask, _o_head, _o_notify = _bs.ask, _bs.fetch_headlines, None
+    _o_cfg, _o_auto, _o_state = _bs.CFG_PATH, _bs.AUTO_PATH, _bs.STATE_PATH
+    try:
+        _tmp.mkdir(parents=True, exist_ok=True)
+        (_tmp / "cfg.json").write_text(_js2.dumps(
+            {"items": [{"ticker": "AAPL", "name": "Apple", "type": "씨즈형"}]},
+            ensure_ascii=False), encoding="utf-8")
+        (_tmp / "auto.json").write_text(_js2.dumps(
+            {"items": {"AAPL": {"period": "2026Q3"}}}, ensure_ascii=False), encoding="utf-8")
+        (_tmp / "state.json").write_text("{}", encoding="utf-8")
+        _bs.CFG_PATH, _bs.AUTO_PATH = _tmp / "cfg.json", _tmp / "auto.json"
+        _bs.STATE_PATH = _tmp / "state.json"
+        _bs.fetch_headlines = lambda *a, **k: []
+
+        def _fake_ask(*a, **k):
+            _calls["ask"] += 1
+            return {"risk5": {"business_certainty": "○"},
+                    "evidence": {"risk5": "공시에서 확인된 근거 문장이다"}}
+        _bs.ask = _fake_ask
+        _envp = {"ANTHROPIC_API_KEY": "k", "TELEGRAM_BOT_TOKEN": "t",
+                 "TELEGRAM_ALERT_CHAT_ID": "12345"}
+        _sv = {k: _os.environ.get(k) for k in _envp}
+        _os.environ.update(_envp)
+        import send_telegram_briefing as _tg2
+        _o_send = _tg2.send_telegram
+        _tg2.send_telegram = lambda *a, **k: _calls.__setitem__("send", _calls["send"] + 1)
+        try:
+            _bs.main()                                  # 1회차 — 첫 취재
+            _first = _calls["ask"]
+            _bs.main()                                  # 2회차 — 같은 period
+            check("스카우트: 같은 period 로 두 번 돌려도 호출은 1회뿐",
+                  (_first, _calls["ask"]), (1, 1))
+            check("스카우트: 값이 안 바뀌면 DM 0건", _calls["send"], 0)
+            # period 를 바꾸면 다시 취재하고 DM 1건
+            (_tmp / "auto.json").write_text(_js2.dumps(
+                {"items": {"AAPL": {"period": "2026Q4"}}}, ensure_ascii=False), encoding="utf-8")
+            _bs.ask = lambda *a, **k: (_calls.__setitem__("ask", _calls["ask"] + 1) or
+                                       {"risk5": {"business_certainty": "✕"},
+                                        "evidence": {"risk5": "새 분기 공시의 근거 문장이다"}})
+            _bs.main()
+            check("스카우트: 새 period 면 재취재", _calls["ask"], 2)
+            check("스카우트: 갱신 DM 은 정확히 1건", _calls["send"], 1)
+            _bs.main()                                  # 같은 날 재실행 — 묶음 중복 금지
+            check("스카우트: 같은 날 재실행해도 DM 은 늘지 않는다", _calls["send"], 1)
+        finally:
+            _tg2.send_telegram = _o_send
+            for k, v in _sv.items():
+                if v is None:
+                    _os.environ.pop(k, None)
+                else:
+                    _os.environ[k] = v
+    finally:
+        _bs.ask, _bs.fetch_headlines = _o_ask, _o_head
+        _bs.CFG_PATH, _bs.AUTO_PATH, _bs.STATE_PATH = _o_cfg, _o_auto, _o_state
+        import shutil as _sh
+        _sh.rmtree(_tmp, ignore_errors=True)
+    check("스카우트: 구 상태 필드명(period)도 읽어 헛 재취재를 막는다",
+          _bs.needs_scout("GOOG", {"period": "2026Q2"},
+                          {"items": {"GOOG": {"scouted_at": "x", "period": "2026Q2"}}},
+                          [])[0], False)
+    check("스카우트: 묶음 문구 형식",
+          _bs.digest([("AAPL", ["risk5"]), ("GOOG", ["capalloc"])]),
+          "자동 취재 갱신 2종: AAPL·GOOG")
 
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj

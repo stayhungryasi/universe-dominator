@@ -166,7 +166,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # 취재 갱신 알림도 DM 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
         continue-on-error: true
 
       # 시차 관측 — 판단층(buffett_config.json)에 오늘 시세를 곱해 괴리 측정
@@ -240,7 +241,8 @@ jobs:
         run: python scripts/pipeline_sentinel.py
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # 공개 채널(TELEGRAM_CHAT_ID)은 **의도적으로 넘기지 않는다.** 정비 경보는
+          # 소장 DM 전용이고, 변수가 여기 있으면 언젠가 다시 폴백 경로가 생긴다.
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           SENTINEL_STEPS: >-
             parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }}

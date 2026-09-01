@@ -321,11 +321,29 @@ class DispatchTest(unittest.TestCase):
                 ps.dispatch([], NOW, TODAY, state)
             self.assertEqual(send.call_count, 0, "전 항목 정상이면 텔레그램 호출 0회")
 
-    def test_alert_chat_preference(self):
+    def test_alert_chat_is_dm_only(self):
+        """정비 경보는 소장 DM 전용 — 공개 채널로 폴백하지 않는다 (2026-09-01).
+
+        예전 계약은 'ALERT 없으면 공개 채널' 이었다. 그 방향의 폴백은 **설정을
+        안 하면 새는** 구조여서 실제로 '응답 회복 ✅' 같은 내부 문구가 공개
+        채널로 나갔다. 안전한 기본값은 침묵이다.
+        """
         self.assertEqual(ps.alert_chat_id(), "@alerts")
-        with mock.patch.dict(os.environ, {"TELEGRAM_ALERT_CHAT_ID": ""}):
-            with mock.patch.dict(os.environ, {"TELEGRAM_CHAT_ID": "@fallback"}):
-                self.assertEqual(ps.alert_chat_id(), "@fallback")
+        with mock.patch.dict(os.environ, {"TELEGRAM_ALERT_CHAT_ID": "",
+                                          "TELEGRAM_CHAT_ID": "@public"}):
+            self.assertIsNone(ps.alert_chat_id(), "공개 채널로 폴백하면 안 된다")
+
+    def test_no_send_when_dm_unset(self):
+        """수신처가 없으면 **아무 데도 보내지 않는다** — 로그로만 남긴다."""
+        state = fresh_state()
+        with mock.patch.dict(os.environ, {"TELEGRAM_ALERT_CHAT_ID": "",
+                                          "TELEGRAM_CHAT_ID": "@public"}):
+            with mock.patch.object(ps, "send_telegram") as send:
+                sent = ps.dispatch([ps.alert("x", "내부 경보", TODAY)], NOW, TODAY, state)
+        self.assertFalse(sent)
+        self.assertEqual(send.call_count, 0)
+        # 못 보낸 사건은 서명도 남기지 않는다 — 수신처가 생기면 다시 시도해야 한다
+        self.assertNotIn(TODAY, state.get("sent", {}))
 
     def test_dedup_same_day(self):
         state = fresh_state()
@@ -576,11 +594,22 @@ class ResilienceTest(unittest.TestCase):
 
     def test_self_failure_is_loud(self):
         with mock.patch.object(ps, "run", side_effect=RuntimeError("판정부 폭발")):
-            with mock.patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "tok"}):
+            with mock.patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "tok",
+                                              "TELEGRAM_ALERT_CHAT_ID": "12345"}):
                 with mock.patch.object(ps, "send_telegram") as send:
                     self.assertEqual(ps.main(), 0)
                     self.assertEqual(send.call_count, 1)
                     self.assertIn("정비 관제 자체가 실패", send.call_args[0][2])
+
+    def test_self_failure_still_respects_dm_only(self):
+        """관제탑이 죽었을 때조차 공개 채널로 새지 않는다."""
+        with mock.patch.object(ps, "run", side_effect=RuntimeError("판정부 폭발")):
+            with mock.patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "tok",
+                                              "TELEGRAM_ALERT_CHAT_ID": "",
+                                              "TELEGRAM_CHAT_ID": "@public"}):
+                with mock.patch.object(ps, "send_telegram") as send:
+                    self.assertEqual(ps.main(), 0)
+                    self.assertEqual(send.call_count, 0)
 
 
 if __name__ == "__main__":
