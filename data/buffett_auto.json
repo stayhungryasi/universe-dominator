@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-01 11:04",
- "generated_at": "2026-09-01T11:04:44.097153+09:00",
+ "generated_label": "2026-09-01 17:58",
+ "generated_at": "2026-09-01T17:58:13.909944+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-01",
@@ -28,34 +28,7 @@
    "g_consensus": 0.1791,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "강한 캐시플로우 대비 주가가 공정가~고평가 범위에서 성장 모멘텀 부족"
-   },
-   "notes": "Tim Cook 후임 체제 전환 중, 칩 공급 제약과 AI 기기 기대감이 교차하는 전환기",
-   "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; 소비자 프랜차이즈 최강 지위 유지",
-    "risk5": "Tim Cook's 15-Year Tenure Transformed the Company's Stock; 경영진 교체 시점이나 기업의 사업 견실성은 입증됨",
-    "capalloc": "Apple (AAPL) Could Be 20% Overvalued As Earnings And Dividend Land; 현금 창출 능력 증명되나 주가 대비 매력도 제한적",
-    "owner_earnings": "Apple (AAPL) Stock Looks Pricey On Cash Flow Yet Fair On Earnings; Macro Takeaways from Apple Earnings"
-   }
+   "confidence": "중"
   },
   "GOOG": {
    "as_of": "2026-09-01",
@@ -76,6 +49,7 @@
    "risk5": {
     "business_certainty": "△",
     "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
     "price": "△"
    },
    "capalloc": {
@@ -86,14 +60,14 @@
    },
    "owner_earnings": {
     "display": "A",
-    "display_reason": "검색 해자 유지, 클라우드 82% 급증, AI 수익화 본격화"
+    "display_reason": "Q2 수익 24% 증가, Cloud 매출 폭증으로 실질 소유자 수익 성장 검증되었으나 주가 반응 부진은 가치 평가 리스크 반영"
    },
-   "notes": "반독점 규제 위험이 검증 가능한 공포인지 확인 필수. Reddit 경쟁 헤드라인은 검색 점유율 실질 영향 증명 대기",
+   "notes": "Berkshire 3단 매수 신호 이전, 반독점 공포의 실질성 판단 필수 - 현재 수익력은 강건하나 해자 침식 속도가 핵심 관찰 포인트",
    "_evidence": {
-    "franchise": "Alphabet Earnings Rise 24%, Cloud surges 82% - 검색 및 클라우드 양축 성장",
-    "risk5": "What worried investors about Alphabet - 규제 및 가격 압박 우려 존재하나 실적 타격 미미",
-    "capalloc": "Alphabet Inc. (GOOG) Q2 Earnings and Revenues Top Estimates - 이익 증가로 자본배분 여력 확보",
-    "owner_earnings": "Alphabet Earnings: Strong AI Monetization Continues to Spearhead Results"
+    "franchise": "Search moat challenged by Reddit; antitrust scrutiny ongoing",
+    "risk5": "AI monetization proven (+82% Cloud growth) but search revenue pressure and $15B stock decline despite earnings beat",
+    "capalloc": "Strong cash generation maintains buyback despite earnings-driven stock weakness",
+    "owner_earnings": "Profit quadrupled to $112B fueled by AI investments with sustained cash positive position"
    }
   },
   "MSFT": {
@@ -129,7 +103,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.44
+    "value": 13.37
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -158,7 +132,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.12
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -197,16 +171,11 @@
     "score": 3,
     "period": "2026H1"
    },
-   "owner_earnings": {
-    "display": "C",
-    "display_reason": "유가 사이클 종속성으로 인한 이익 예측 불가능성"
-   },
-   "notes": "지정학적 프리미엄(이란 전쟁)에 의존한 수익성으로 구조적 예측 불가능",
+   "notes": "지정학적 프리미엄(Iran war)에 의존한 수익성으로 구조적 가시성 결여",
    "_evidence": {
     "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher",
-    "risk5": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계; Aramco CEO warns of 'catastrophic' consequences if oil crisis continues",
-    "capalloc": "Aramco posts drop in annual profit, announces first buyback; Saudi Aramco Q4 2025 sees slight stock dip despite strong cash flow",
-    "owner_earnings": "Aramco Q4 2025 net income falls 20.5% to $17.76bn"
+    "risk5": "유가 사이클이 쿠폰을 결정 — Q4 2025 net income falls 20.5%, Q2 profit soars on higher prices",
+    "capalloc": "Aramco posts drop in annual profit, announces first buyback; Saudi Aramco Q2 2026 earnings beat sees strong cash flow"
    }
   },
   "META": {
@@ -236,19 +205,24 @@
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
    "confidence": "하",
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
    "capalloc": {
     "cash_positive": 0,
     "score": 0,
     "period": "2026H1"
    },
    "owner_earnings": {
-    "display": "C",
-    "display_reason": "자유현금흐름 악화, 마진율 하락, 수익성 부진 보도 지배적"
+    "display": "C"
    },
-   "notes": "330배 밸류에이션 대비 수익성 악화 추세, 평가 난제 상태",
+   "notes": "이익 부진과 여유현금흐름 악화로 기업가치 산정 범위 밖.",
    "_evidence": {
-    "capalloc": "free cash flow turns negative and margins slide",
-    "owner_earnings": "Tesla misses on earnings, as free cash flow turns negative and margins slide"
+    "risk5": "Tesla misses on earnings, as free cash flow turns negative and margins slide; Tesla stock down 17% in 2026",
+    "capalloc": "free cash flow turns negative",
+    "owner_earnings": "profit miss, margins slide, negative free cash flow"
    }
   },
   "005930.KS": {
@@ -264,11 +238,11 @@
    "confidence": "하",
    "franchise": {
     "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
+    "no_substitute": "○",
+    "no_price_reg": "△"
    },
    "risk5": {
-    "business_certainty": "✕",
+    "business_certainty": "△",
     "mgmt_ability": "○",
     "price": "✕"
    },
@@ -281,14 +255,14 @@
    },
    "owner_earnings": {
     "display": "B",
-    "display_reason": "기록적 수익 대비 주가 급락으로 이익 질 의문, 메모리 사이클 정점 우려"
+    "display_reason": "기록적 수익 대비 주가 부진, 투자자 신뢰 결여 신호"
    },
-   "notes": "메모리 사이클 피크 우려 속 실적 개선 미흡 평가; 주주환원 강화도 약세 반전 실패",
+   "notes": "메모리 사이클 정점 우려와 2028년까지 공급 부족 지속으로 수익성 지속성 불확실; 주주환원 강화도 주가 약세 반전 실패",
    "_evidence": {
-    "franchise": "Samsung and AI chip stocks fall after 19-fold rise in profit fails to impress investors; 메모리 사업 대체 불가 지위 확보",
-    "risk5": "Samsung sees chip shortage extending to 2028 vs 경기 부양 수익 vs 2027-28 공급 과잉 우려의 모순된 신호; Micron, Samsung, SK Hynix just dragged memory stocks into a bear market",
-    "capalloc": "Samsung Electronics Reclaims Top Market Cap on 90 Trillion Won Buyback Hopes; SK Hynix Announces ₩40 Trillion Buyback and Cancellation",
-    "owner_earnings": "Samsung Posts Record Earnings, Shares Plunge as Analysts Split; chip profit jumps almost 50-fold but shares slump on AI boom stall jitters"
+    "franchise": "Memory supply crunch to last through 2028, long-term supply deals secure demand",
+    "risk5": "Shares slump on jitters AI boom may stall; Chip peak fears flare as earnings outlook cut",
+    "capalloc": "90 Trillion Won buyback hopes; Samsung Posts Record Earnings",
+    "owner_earnings": "19-fold jump in profit fails to impress investors; shares plunge despite record earnings"
    }
   },
   "MU": {
@@ -326,25 +300,25 @@
     "mgmt_ability": "○",
     "mgmt_fidelity": "○",
     "price": "△",
-    "tax_inflation": "△"
+    "tax_inflation": "○"
    },
    "capalloc": {
-    "cash_positive": 1,
+    "cash_positive": 0,
     "buyback": 1,
     "no_dilution": 1,
     "debt_discipline": 1,
-    "score": 4,
-    "period": "2024Q4"
+    "score": 3,
+    "period": "2024Q2"
    },
    "owner_earnings": {
     "display": "B"
    },
-   "notes": "플로트 복리를 통한 장기 자본 증식 엔진; 보증금 성격의 비용 구조로 인해 전통적 수익성 지표 제외",
+   "notes": "신임 CEO 그렉 에이블 체제에서 현금 배치 개시, 플로트 수익성 유지하며 주가는 P/E 준거로는 측정 부적절.",
    "_evidence": {
-    "franchise": "보험 사업의 플로트는 대체 불가능한 저비용 자금원; 다양한 자회사 포트폴리오가 경제적 해자 형성",
-    "risk5": "확보된 보험 풀과 다각화된 자산 기반으로 사업 확실성 높음; Berkshire 계열사의 운영 기록과 Buffett의 자본배분 능력 입증됨; 다만 장기 금리 변동과 인플레이션이 보험 언더라이팅과 투자 수익성에 영향",
-    "capalloc": "현금 축적으로 buyback 역량 보유; 부채 규율 유지로 재무 안정성 확보",
-    "owner_earnings": "플로트 성장과 운영 이익을 합산하되, GAAP 순이익과 괴리 발생 — 버핏 서한의 특수 평가 대상"
+    "franchise": "보험 플로트라는 대체 불가능한 자금 원천으로 영속적 경제적 해자 보유.",
+    "risk5": "Berkshire earnings rose last quarter and CEO Greg Abel is starting to deploy Buffett's massive cash hoard; Buffett remains active at 96.",
+    "capalloc": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2; Greg Abel Just Gave Investors $4.5 Billion Reasons to Take a Closer Look.",
+    "owner_earnings": "Berkshire (BRK.B) Following A Recent Pullback Still Looks Cheap Against Fair Value; Stock Looks Undervalued On Fair Value And Earnings."
    }
   },
   "LLY": {
@@ -359,7 +333,22 @@
    "g_consensus": 0.2759,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "notes": "특허절벽으로 인한 매출 낭떨어지기 리스크가 프랜차이즈 가치 평가의 핵심 불확실성",
+   "_evidence": {
+    "franchise": "의약품 포트폴리오의 높은 진입장벽과 임상 효과에 기반한 대체불가능성",
+    "risk5": "특허만료 일정이 명확하게 인쇄되어 있어 비즈니스 확실성 저하"
+   }
   },
   "JPM": {
    "as_of": "2026-09-01",
@@ -492,7 +481,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.98
+    "value": 0.99
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -547,7 +536,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.57
+    "value": 60.45
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -575,7 +564,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1010.69
+    "value": 1009.8
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -589,7 +578,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1248.31
+    "value": 1252.97
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -603,7 +592,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 514.94
+    "value": 518.83
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -617,7 +606,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.29
+    "value": 31.28
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -627,5 +616,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-01 11:05"
+ "scout_label": "2026-09-01 17:59"
 }
