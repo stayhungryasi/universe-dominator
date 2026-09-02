@@ -285,11 +285,18 @@ jobs:
         if: failure()
         env:
           TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TG_CHAT: ${{ secrets.TELEGRAM_ALERT_CHAT_ID || secrets.TELEGRAM_CHAT_ID || '@stayhungryasi' }}
+          # 경성 실패 경보도 **소장 DM 전용**. 예전 폴백(공개 채널 → @stayhungryasi)은
+          # 채널 분리 확정(2026-09-01)의 예외가 아니었는데 YAML 에 남아 있었다 —
+          # 파이썬 쪽만 고치고 여기를 놓쳤다. 미등록이면 로그 경고로 끝낸다.
+          TG_CHAT: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           if [ -z "$TG_TOKEN" ]; then
             echo "::warning::[정비] TELEGRAM_BOT_TOKEN 없음 — 경성 실패 경보 발송 불가"
+            exit 0
+          fi
+          if [ -z "$TG_CHAT" ]; then
+            echo "::warning::[정비] TELEGRAM_ALERT_CHAT_ID 미등록 — DM 전용이라 발송 생략 (공개 폴백 없음)"
             exit 0
           fi
           MSG="🚨 UNIVERTRIX 워크플로 경성 실패: $RUN_URL"

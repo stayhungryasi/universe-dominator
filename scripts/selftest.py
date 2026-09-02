@@ -664,6 +664,21 @@ def main():
             else:
                 _os.environ[k] = v
 
+    # 워크플로 YAML 도 같은 규율을 지키는지 — **파이썬만 고치고 YAML 을 놓쳤던**
+    # 것이 2026-09-02 누수의 형태다(경성 실패 경보에 공개 채널 폴백이 남아 있었다).
+    # 방지선은 코드가 아니라 '발송 경로 전체'를 봐야 한다.
+    _wf = (Path(__file__).parent.parent / ".github" / "workflows" / "daily-update.yml")
+    if _wf.exists():
+        _y = _wf.read_text(encoding="utf-8")
+        _pub = [ln.strip() for ln in _y.splitlines()
+                if "secrets.TELEGRAM_CHAT_ID" in ln or "@stayhungryasi" in ln]
+        _pub = [ln for ln in _pub if not ln.lstrip().startswith("#")]
+        check("채널: 워크플로에서 공개 채널을 쓰는 곳은 브리핑 한 곳뿐", len(_pub), 1)
+        check("채널: 그 한 곳이 TELEGRAM_CHAT_ID 배선인지",
+              _pub[0].startswith("TELEGRAM_CHAT_ID:") if _pub else "", True)
+        check("채널: 폴백 연산자(||)로 공개 채널을 끌어오지 않는다",
+              any("TELEGRAM_ALERT_CHAT_ID ||" in ln for ln in _y.splitlines()), False)
+
     # ── 스카우트 게이트 재현 — 같은 period 면 Haiku 를 부르지 않는다 ──────────
     _prev = {"items": {"AAPL": {"scouted_at": "2026-09-01 10:00",
                                 "last_period": "2026Q3", "last_event_hash": ""}}}
