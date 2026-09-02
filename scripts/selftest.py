@@ -505,6 +505,35 @@ def main():
           _fa.cagr3y_from(_shortl)[0], None)
     check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_shortl)[1]), True)
 
+    # ── g 3중 가드 (2026-09-02 v2) ──────────────────────────────────────────
+    # ⓐ 40% 초과 전망은 채택 거부(수집층) · ⓑ 채택분도 20% 캡(측정층) · ⓒ 교차검증
+    # 없는 단독 가정은 화면에 '가정 약함'. 셋 다 같은 것을 막는다: **단기 숫자가
+    # 10년 복리 자리에 앉는 것.**
+    check("가드ⓐ: 전망 45% 는 채택 거부", _fa.vet_forward_growth(0.45, "s")[0], None)
+    check("가드ⓑ: 30% 는 20% 로 캡(원값 보존)", _fb.cap_g(0.30), (0.20, 0.30))
+    check("가드ⓑ: 15% 는 그대로(캡 흔적 없음)", _fb.cap_g(0.15), (0.15, None))
+    check("가드ⓑ: 없는 값은 없는 채로", _fb.cap_g(None), (None, None))
+    _capped = {"ticker": "X", "type": "씨즈형",
+               "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.30,
+                           "g_forward": 0.35}}
+    _cb = _fb.measure_bench(_capped, 100.0, {"UST10": 4.75})
+    check("가드ⓑ: 캡이 실제 쿠폰에 반영된다", _cb["g_used"], 0.20)
+    check("가드ⓑ: 캡 전 값을 화면에 넘긴다", _cb["g_capped_from"], 0.30)
+    _weak = {"ticker": "X", "type": "씨즈형",
+             "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.10,
+                         "g_forward": 0.08}}
+    check("가드ⓒ: 과거·전망이 모두 있으면 가정 약함 아님",
+          _fb.measure_bench(_weak, 100.0, {"UST10": 4.75})["g_weak"], False)
+
+    # 통과 가격 — 쿠폰이 국채×3 과 같아지는 주가 (수동 대조)
+    #   eps 10 · g 10% · 10y 4.75% → 10×1.1^10 ÷ 0.1425 = 25.9374/0.1425 = 182.02
+    check("통과가격: 역산 검산", _fb.pass_price(10.0, 0.10, 4.75), 182.02)
+    check("통과가격: 그 가격에서 쿠폰이 정확히 허들",
+          round(_fb.coupon_10y(10.0 / 181.98, 0.10), 4), round(3 * 0.0475, 4))
+    check("통과가격: g 없으면 없음", _fb.pass_price(10.0, None, 4.75), None)
+    check("통과가격: 적자면 없음", _fb.pass_price(-1.0, 0.10, 4.75), None)
+    check("통과가격: 금리 없으면 없음", _fb.pass_price(10.0, 0.10, None), None)
+
     # ── 오너어닝·전환율 (2026-09-02) — 빈칸의 원인은 '숫자가 없어서' 였다 ──────
     # 스카우트는 display 만 주고 A/B/C 의 **수치를 주지 않는다**(줄 수도 없다).
     # 그래서 전환율에 넣을 값 자체가 없었다 → 기계가 A안을 계산한다.

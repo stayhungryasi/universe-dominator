@@ -1379,6 +1379,8 @@ const LG_GLOSSARY =
 /* "자동" 라벨 — 그 칸을 기계가 채웠을 때만. 사람 값에는 아무 표식도 붙이지 않는다
    (표식이 없는 것이 사람이 적었다는 뜻이다). 자동값에 사람의 권위를 씌우지 않는 것이
    이 라벨의 존재 이유다 — 공시 추출·AI 판정은 틀릴 수 있고, 화면이 그 사실을 말해야 한다. */
+const LG_WEAK_TIP = '전망치만으로 세운 가정입니다 — 과거 실적 성장률로 교차 검증되지 ' +
+  '않았습니다. 숫자는 나왔지만 그 숫자를 받쳐주는 실적 이력이 없다는 뜻입니다.';
 const LG_AUTO_TIP = '기계가 채운 값 — 공시(SEC XBRL) 추출 또는 AI 취재입니다. ' +
   '사람이 취재해 덮어쓰면 이 표식이 사라집니다.';
 function lgAuto(j, field){
@@ -1424,8 +1426,12 @@ function lgRow(x, lg){
   } else if (b.coupon10y == null) {
     coupon = '<span class="lg-neg">—</span>';
   } else {
+    // g 표기 — 캡을 씌웠으면 **원값을 함께 적는다**(감춘 조정은 조정이 아니다)
+    const gTxt = (b.g_capped_from != null)
+      ? 'g ' + lgPct(b.g_used) + ' 캡(전망 ' + lgPct(b.g_capped_from) + ')'
+      : 'g ' + lgPct(b.g_used) + ' 전망';
     coupon = lgPct(b.coupon10y) + lgAuto(j, 'eps_adj_ttm') +
-      '<div class="lg-sub">g ' + lgPct(b.g_used) + ' 전망</div>';
+      '<div class="lg-sub">' + gTxt + '</div>';
   }
 
   // 배지는 자동값으로도 붙되 "자동" 라벨을 동반한다 — 기계가 매긴 too hard 를
@@ -1446,6 +1452,8 @@ function lgRow(x, lg){
     '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) +
       (j.conv == null ? '' : lgAuto(j, 'conversion')) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
+      // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다
+      (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">가정 약함</span>' : '') +
       (function(){ const n = lgNote(b, j);
         return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
   '</tr>';

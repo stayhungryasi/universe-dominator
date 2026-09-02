@@ -88,6 +88,10 @@ TNX_URL = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX"
 MARKET_BY_SUFFIX = {".KS": "KTB10", ".T": "JGB10", ".TW": "TW10", ".SR": "SA10"}
 RATE_UNIMPLEMENTED = {"KTB10": "한국 10년물 미배선(v1)", "JGB10": "일본 10년물 미배선(v1)",
                       "TW10": "대만 10년물 미배선(v1)", "SA10": "사우디 10년물 미배선(v1)"}
+# 10년 복리 가정의 보수 상한. 연 20% 를 10년 복리하면 6.2배다 — 그 이상을
+# 10년 내내 가정하는 것은 전망이 아니라 소원이다. 넘으면 **캡을 씌우되 원값을
+# 함께 적는다**(감춘 조정은 조정이 아니다).
+G_CAP = 0.20
 ZONE_PASS, ZONE_PROVE, ZONE_INFERIOR = "pass", "prove_growth", "bond_inferior"
 ZONE_UNTESTED = "untested"
 
@@ -283,6 +287,18 @@ def pick_g(cagr3y, forward):
     return min(a, b)
 
 
+def cap_g(g):
+    """상한 20% 캡 → (적용값, 원값|None).
+
+    원값을 함께 돌려주는 이유: 캡을 씌웠다는 사실이 화면에서 사라지면 그건
+    조정이 아니라 은폐다. 표기는 "g 20% 캡(전망 34%)" 처럼 둘 다 적는다.
+    """
+    v = _num(g)
+    if v is None:
+        return None, None
+    return (G_CAP, v) if v > G_CAP else (v, None)
+
+
 def coupon_10y(ey, g):
     """10년 뒤 쿠폰 = ey × (1+g)^10. g 가 null 이면 성장을 0으로 가정하지 않는다."""
     ey, g = _num(ey), _num(g)
@@ -303,6 +319,20 @@ def zone_of_buffett(coupon, rate_pct):
     if c >= 1.5 * r:
         return ZONE_PROVE
     return ZONE_INFERIOR
+
+
+def pass_price(eps_ttm, g, rate_pct):
+    """버핏존이 열리는 가격 — 쿠폰이 국채×3 과 같아지는 주가.
+
+        coupon = (eps/price)×(1+g)^10 = 3r  →  price = eps×(1+g)^10 ÷ (3r)
+
+    목표가가 아니라 **지금 눈금으로 계산한 산술**이다. g 가정이 바뀌면 이 가격도
+    바뀐다 — 그래서 화면에 g 를 늘 함께 적는다.
+    """
+    eps, gg, r = _num(eps_ttm), _num(g), _num(rate_pct)
+    if eps is None or gg is None or r is None or r <= 0 or eps <= 0:
+        return None
+    return round(eps * ((1.0 + gg) ** 10) / (3.0 * (r / 100.0)), 2)
 
 
 def classify_cause(prev, now):
@@ -339,12 +369,19 @@ def measure_bench(c, price, rates, prev_bench=None):
 
     eps_ttm = _num(b.get("eps_adj_ttm"))
     roe = _num(b.get("roe_tangible"))
-    g = pick_g(b.get("g_cagr3y"), b.get("g_forward"))
+    g_raw = pick_g(b.get("g_cagr3y"), b.get("g_forward"))
+    g, g_capped_from = cap_g(g_raw)
+    # 전망만으로 판정에 이른 경우 — 과거 실적으로 교차 검증되지 않은 가정이다.
+    # (현행 pick_g 는 둘 다 요구하므로 평시엔 켜지지 않는다. 규칙이 완화되는 날을
+    #  대비한 표식이며, 켜지면 화면이 '가정 약함'이라고 말한다.)
+    g_weak = bool(g is not None and _num(b.get("g_cagr3y")) is None
+                  and _num(b.get("g_forward")) is not None)
     ey = earnings_yield(eps_ttm, price)
 
     out = {
         "market": market, "rate10y": rate, "guard": guard,
         "eps_adj_ttm": eps_ttm, "roe_tangible": roe, "g_used": g, "price": _num(price),
+        "g_capped_from": g_capped_from, "g_weak": g_weak,
         "ey": None if ey is None else round(ey, 6),
         "ey_minus_10y": None if (ey is None or rate is None) else round(ey - rate / 100.0, 6),
         "roe_minus_2x10y": (None if (roe is None or rate is None)
@@ -370,6 +407,7 @@ def measure_bench(c, price, rates, prev_bench=None):
         out["note"] = ("eps_adj_ttm 미취재 — 분기 EPS 연환산 금지" if eps_ttm is None
                        else ("성장률 미취재(3y CAGR·전망 중 결측)" if g is None
                              else "10년물 없음"))
+    out["pass_price"] = pass_price(eps_ttm, g, rate)
     out["cause"] = classify_cause(prev_bench, out)
     return out
 
