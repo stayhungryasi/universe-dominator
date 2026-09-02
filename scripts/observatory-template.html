@@ -247,6 +247,19 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
   cursor: pointer; }
 .lg-fold:hover { color: var(--text); }
 .lg-price { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 800; }
+/* 해부창 — 행을 누르면 그 아래 한 칸이 열린다. 새 색 없이 카드 배경만 쓴다. */
+.px-table tr.lg-clickable { cursor: pointer; }
+.px-table tr.lg-clickable:hover td { background: var(--bg-card); }
+.lg-open td { padding-top: 0; padding-bottom: 0; }
+.lg-dissect { padding: 14px 12px 18px; font-size: 13px; line-height: 1.8;
+  color: var(--text-secondary); }
+.lg-calc { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--text);
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 10px; overflow-x: auto; white-space: nowrap; }
+.lg-fields { display: grid; grid-template-columns: 108px 1fr; gap: 4px 12px; }
+.lg-fk { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+.lg-fv { font-size: 12.5px; }
+@media (max-width: 480px) { .lg-fields { grid-template-columns: 92px 1fr; } }
 .lg-gapto { font-size: 12px; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
 @media (max-width: 480px) {
   .lg-c-price { max-width: 92px; overflow: hidden; text-overflow: ellipsis; }
@@ -1349,6 +1362,7 @@ const LG_ZONE_KO = { pass: '통과', prove_growth: '성장 입증 필요',
 const LG_ORDER = ['pass', 'prove_growth', 'bond_inferior', 'untested'];
 let lgFilter = null;        // 존 스트립 필터 (null = 전체)
 let lgBlankOpen = false;    // 백지 그룹 접힘 상태 — 기본은 접힘
+let lgOpenRow = null;       // 해부창이 열린 종목 (한 번에 하나)
 /* 금리 라벨도 화면에서는 우리말로 — UST10·KTB10 은 원장 키(기계 이름)다.
    한국·일본물은 아직 null 이라 안 뜨지만, 배선되는 날 같은 실수를 반복하지 않도록
    지금 함께 우리말로 둔다. */
@@ -1453,6 +1467,46 @@ function lgPassPrice(x, b){
     (diff * 100).toFixed(0) + '%</div>';
 }
 
+/* 계산 전개 — 결론만 보여주면 눈금을 못 되짚는다. 한 줄로 전 과정을 편다. */
+function lgCalcLine(b){
+  if (b.coupon10y == null || b.ey == null) return '';
+  const bar = b.rate10y == null ? null : 3 * (b.rate10y / 100);
+  return 'EY ' + lgPct(b.ey) + ' × (1+g ' + lgPct(b.g_used) + ')^10 = 쿠폰 ' +
+    lgPct(b.coupon10y) + ' vs 허들 ' + lgPct(bar);
+}
+
+/* 필드별 출처 — 취재 우선순위가 한눈에 보이게. 사람 값은 '취재', 자동은 '자동',
+   빈 칸은 '—'. 무엇을 취재하면 이 종목이 판정에 이르는지가 이 표에서 읽힌다. */
+const LG_FIELD_KO = { eps_adj_ttm: '조정 EPS', roe_tangible: '유형 ROE',
+                      g_forward: '전망 성장률', g_cagr3y: '3년 성장률',
+                      conversion: '전환율', risk5: '리스크 5', franchise: '프랜차이즈',
+                      capalloc: '자본배분', owner_earnings: '오너어닝' };
+function lgOriginKo(v){ return v === 'human' ? '취재' : v === 'auto' ? '자동' : '—'; }
+
+function lgDissect(x, j){
+  const b = x.bench || {};
+  const og = j.origin || {};
+  const calc = lgCalcLine(b);
+  let h = '<div class="lg-dissect">';
+  if (calc) h += '<div class="lg-calc">' + esc(calc) + '</div>';
+  else h += '<div class="lg-calc">아직 계산이 서지 않습니다 — 아래에서 빈 칸을 보세요</div>';
+  h += '<div class="lg-fields">';
+  Object.keys(LG_FIELD_KO).forEach(f => {
+    h += '<div class="lg-fk">' + LG_FIELD_KO[f] + '</div>' +
+         '<div class="lg-fv">' + lgOriginKo(og[f]) + '</div>';
+  });
+  h += '</div>';
+  const bits = [];
+  if (j.method) bits.push('측정 ' + esc(lgMethodKo(j.method) || j.method));
+  if (b.g_used != null) bits.push('성장률 ' + lgPct(b.g_used) +
+    (b.g_capped_from != null ? ' (캡 전 ' + lgPct(b.g_capped_from) + ')' : ''));
+  if (j.as_of) bits.push('기준 ' + esc(j.as_of));
+  if (j.period) bits.push(esc(j.period));
+  if (bits.length) h += '<div class="lg-sub" style="margin-top:10px">' +
+    bits.join(' · ') + '</div>';
+  return h + '</div>';
+}
+
 function lgRow(x, lg){
   const b = x.bench || {};
   const j = lg[x.ticker] || {};
@@ -1486,7 +1540,10 @@ function lgRow(x, lg){
       ? '<span class="lg-badge" title="' + esc(LG_TIP.hard) + '">too hard</span>' +
         lgAuto(j, 'risk5') : '');
 
-  return '<tr>' +
+  const open = (lgOpenRow === x.ticker);
+  const detail = open
+    ? '<tr class="lg-open"><td colspan="6">' + lgDissect(x, j) + '</td></tr>' : '';
+  return '<tr class="lg-clickable" onclick="lgToggleRow(\'' + esc(x.ticker) + '\')">' +
     '<td><div class="px-tk">' + esc(x.ticker) + badges + '</div>' +
       '<div class="px-name">' + esc(x.name) + '</div></td>' +
     '<td class="px-num ' + roeCls + '">' + lgPp(roe) + lgAuto(j, 'roe_tangible') + '</td>' +
@@ -1499,7 +1556,7 @@ function lgRow(x, lg){
       (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">가정 약함</span>' : '') +
       (function(){ const n = lgNote(b, j);
         return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
-  '</tr>';
+  '</tr>' + detail;
 }
 
 function renderLegend(){
@@ -1602,6 +1659,11 @@ function renderLegend(){
 
 function lgSetFilter(z){
   lgFilter = (lgFilter === z) ? null : z;
+  renderLegend();
+}
+
+function lgToggleRow(tk){
+  lgOpenRow = (lgOpenRow === tk) ? null : tk;
   renderLegend();
 }
 
