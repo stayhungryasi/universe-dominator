@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-02 22:17",
- "generated_at": "2026-09-02T22:17:39.624797+09:00",
+ "generated_label": "2026-09-02 23:03",
+ "generated_at": "2026-09-02T23:03:07.375719+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-02",
@@ -11,8 +11,8 @@
    },
    "roe_tangible": 0.8156,
    "g_cagr3y": 1.6188,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": "중"
@@ -26,8 +26,8 @@
    },
    "roe_tangible": 1.151,
    "g_cagr3y": 0.0913,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": "하",
@@ -36,18 +36,27 @@
     "no_substitute": "○",
     "no_price_reg": "△"
    },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2024Q4"
+    "score": 2,
+    "period": "2024H2"
    },
-   "notes": "소비자 프랜차이즈 최강이나 성장 부재로 주가 상한선 28배 PER.",
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "실적 상향 달성하나 성장 성숙화로 가치창출 둔화"
+   },
+   "notes": "최강 소비자 프랜차이즈이나 AI 모멘텀 부족으로 프리미엄 정당성 약화, 현재 밸류에이션 상한 근처",
    "_evidence": {
-    "franchise": "Apple의 생태계 Lock-in과 Brand Moat는 소비자 프랜차이즈 최강 수준.",
-    "capalloc": "지속적인 자사주 매입과 현금 흐름 기반 배당금 지급으로 자본배분 규율 우수."
+    "franchise": "Apple (AAPL) Stock Looks Pricey On Cash Flow Yet Fair On Earnings; 소비자 선호도 및 브랜드 프리미엄 지속",
+    "risk5": "Apple (AAPL) Stock Could Be 28% Overvalued On Fresh AI Mac Launches; Jim Cramer says Nvidia should do a half-trillion dollar, Apple-style stock buyback",
+    "capalloc": "Jim Cramer says Nvidia should do a half-trillion dollar, Apple-style stock buyback",
+    "owner_earnings": "Apple (AAPL) Q3 2024 Earnings: Results, Market Reaction & History; Apple stock rises after Q2 earnings top estimates on strong iPhone, China sales"
    }
   },
   "GOOG": {
@@ -59,8 +68,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 4건",
    "confidence": "하",
@@ -73,22 +82,24 @@
     "business_certainty": "△",
     "mgmt_ability": "○",
     "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
+    "price": "△"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2024Q4"
+    "score": 2,
+    "period": "2026H1"
    },
-   "notes": "검색 해자는 검증 가능하나 반독점 리스크와 AI 생성형 경쟁이 사업 확실성을 잠식 중.",
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "AI capex intensity creates gap between reported earnings and sustainable owner earnings; monetization proven but reinvestment rate structurally elevated"
+   },
+   "notes": "Toll-taking emerging on AI but validation gap on whether antitrust fears are priced-in risk or real franchise constraint; capex discipline remains key watch",
    "_evidence": {
-    "franchise": "검색 광고의 대체 불가능성과 규모의 경제; 반독점 리스크는 실행 단계 미진입",
-    "risk5": "AI 생성형 검색 출현으로 광고 모델 불확실성 증가; 경영진 자본배분 기록 우수; 반독점 소송 진행 중",
-    "capalloc": "순현금 증가 추세, 자사주 매입 지속, 신규 발행 없음"
+    "franchise": "Alphabet Quadruples Profit, Fueled by A.I. Investments; Strong AI Monetization Continues to Spearhead Results",
+    "risk5": "What worried investors about Alphabet; Alphabet shares fall as rising AI investment overshadows strong quarterly earnings",
+    "capalloc": "15 Billion Reasons Alphabet Shares Are Sinking After Reporting Strong Earnings Growth",
+    "owner_earnings": "Strong AI Monetization Continues to Spearhead Results"
    }
   },
   "MSFT": {
@@ -100,8 +111,8 @@
    },
    "roe_tangible": 0.4547,
    "g_cagr3y": 0.1985,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 46건",
    "confidence": "중"
@@ -115,8 +126,8 @@
    },
    "roe_tangible": 0.217,
    "g_cagr3y": 1.0016,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
    "confidence": "중"
@@ -130,8 +141,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -145,8 +156,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": 0.2958,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) / us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 35건",
    "confidence": "중",
@@ -161,8 +172,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -176,11 +187,39 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "유가 사이클 의존성으로 인한 이익 변동성이 크며 예측 불가능"
+   },
+   "notes": "에너지 수요는 구조적 필수재이나 지정학적 변수와 에너지 전환이 장기 현금흐름 예측 가능성을 훼손",
+   "_evidence": {
+    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher vs. Aramco posts drop in annual profit",
+    "risk5": "Aramco CEO warns of 'catastrophic' consequences if oil crisis continues; Q4 2025 net income falls 20.5% to $17.76bn",
+    "capalloc": "announces first buyback; strong cash flow despite Q4 earnings dip",
+    "owner_earnings": "Q2 2026 earnings beat but Q4 2025 net income falls 20.5%; profit volatility driven by oil price swings"
+   }
   },
   "META": {
    "as_of": "2026-09-02",
@@ -191,8 +230,8 @@
    },
    "roe_tangible": 0.3224,
    "g_cagr3y": 0.4792,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 40건",
    "confidence": "중"
@@ -206,13 +245,37 @@
    },
    "roe_tangible": 0.046,
    "g_cagr3y": -0.3096,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
    "confidence": "하",
-   "notes": "차량·로봇·에너지 사업의 미래 현금흐름 가시성 부족으로 장기 프랜차이즈 가치 평가 곤란.",
-   "_evidence": {}
+   "franchise": {
+    "need": "△",
+    "no_substitute": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "수익성 약화와 자본지출 증가로 실제 주주귀속이익 판단 불가"
+   },
+   "notes": "차량·로봇·에너지 사업 다각화 중 핵심 수익모델 불명확; Optimus 지연과 마진 변동성 높음",
+   "_evidence": {
+    "franchise": "Robotaxi 및 Optimus 프로젝트 미완성으로 경쟁우위 지속성 미불명",
+    "risk5": "Q2 수익 부진, 자본지출 증가, Optimus 지연으로 사업 불확실성 상존",
+    "capalloc": "Capital expenditure growth 및 약한 현금흐름 보도",
+    "owner_earnings": "Earnings miss와 약한 분기 수익성으로 순이익 품질 판단 곤란"
+   }
   },
   "005930.KS": {
    "as_of": "2026-09-02",
@@ -221,8 +284,8 @@
    "eps_adj_ttm": null,
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": null
@@ -236,8 +299,8 @@
    },
    "roe_tangible": 0.5093,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": "중"
@@ -249,8 +312,8 @@
    "eps_adj_ttm": null,
    "roe_tangible": null,
    "g_cagr3y": 0.1553,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
    "confidence": null
@@ -264,8 +327,8 @@
    },
    "roe_tangible": 1.4219,
    "g_cagr3y": 0.641,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": "중"
@@ -279,8 +342,8 @@
    },
    "roe_tangible": 0.1618,
    "g_cagr3y": 0.1192,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
    "confidence": "중"
@@ -294,8 +357,8 @@
    },
    "roe_tangible": 0.3098,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": "중"
@@ -309,8 +372,8 @@
    },
    "roe_tangible": 0.2181,
    "g_cagr3y": 0.1426,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
    "confidence": "중"
@@ -322,8 +385,8 @@
    "eps_adj_ttm": null,
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": null
@@ -337,8 +400,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -352,8 +415,8 @@
    },
    "roe_tangible": 0.6338,
    "g_cagr3y": 0.1091,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": "중"
@@ -367,8 +430,8 @@
    },
    "roe_tangible": 0.3535,
    "g_cagr3y": 0.0248,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": "중"
@@ -382,8 +445,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": 0.3058,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 33건",
    "confidence": "중",
@@ -398,12 +461,38 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "중",
-   "notes": "유형자기자본 0 이하 — ROE 미산출"
+   "confidence": "하",
+   "notes": "RPO $20B 돌파 및 AI 보안 수요 강세가 유기적 성장을 뒷받침하나, 적극적 M&A 전략(Console 인수)이 기저 성장률 해석을 모호하게 함",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "M&A 상각비로 인한 GAAP 기반 이익 왜곡으로 진정한 경제적 수익성 판단 곤란"
+   },
+   "_evidence": {
+    "franchise": "Palo Alto Earnings Reignite Debate Over Organic Growth, Acquisitions; $1 trillion AI security gap cited by CEO; platform consolidation strategy validation in progress",
+    "risk5": "AI security demand driving Q4 beat but guidance divergence signals execution or market timing risk; multiple acquisitions raise integration complexity",
+    "capalloc": "Crossed $20B in RPO; active M&A deployment (Console acquisition)",
+    "owner_earnings": "GAAP earnings basis compromised by acquisition-related amortization per reference notes; adjusted metrics required for true owner earnings visibility"
+   }
   },
   "ARM": {
    "as_of": "2026-09-02",
@@ -414,8 +503,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -429,23 +518,37 @@
    },
    "roe_tangible": 0.0475,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · ProfitLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / ProfitLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding · 2012Q4 기준(최신 분기 결번)",
    "source": "Finnhub financials-reported · 분기 12건",
    "confidence": "하",
    "franchise": {
-    "need": "○",
-    "no_substitute": "○"
+    "need": "△",
+    "no_substitute": "△"
    },
    "risk5": {
     "business_certainty": "✕",
-    "price": "✕"
+    "mgmt_ability": "△",
+    "price": "△"
    },
-   "notes": "NAND 순수 사이클로 예측 가능성 최악 수준의 반도체 제조업체.",
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 0,
+    "score": 2,
+    "period": "2032"
+   },
+   "owner_earnings": {
+    "display": "C",
+    "display_reason": "사이클 저점에서의 수익 추정은 예측 신뢰도 최하단"
+   },
+   "notes": "낸드 사이클 하강국면에서 $31B 설비투자 공시는 타이밍 리스크, 강한 매수 평가와 실적 부진 사이의 괴리 심화",
    "_evidence": {
-    "franchise": "메모리 칩은 필수 요소이나 SNDK는 범용 상품화 경쟁 중",
-    "risk5": "NAND 가격 사이클의 심각한 변동성으로 수익 불확실성 극대, 경기에 극도로 민감"
+    "franchise": "메모리 업계는 상품화 심화로 대체불가성 약함",
+    "risk5": "낸드 순수 사이클 특성상 예측 불가능성 최악; 설비투자 규모 대비 수익성 불확실",
+    "capalloc": "$14B 자사주매입 공시 및 $31B 일본 설비투자 병행; Buffett의 대규모 자사주매입 경고 관련 헤드라인",
+    "owner_earnings": "혼조 가이던스로 시장 반응 엇갈림(Sandisk slips as mixed guidance overshadows strong Q4 results)"
    }
   },
   "STX": {
@@ -457,8 +560,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": -0.0696,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding · 2025Q3 기준(최신 분기 결번)",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": "중",
@@ -473,19 +576,11 @@
    },
    "roe_tangible": 0.0043,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding · 2025Q3 기준(최신 분기 결번)",
    "source": "Finnhub financials-reported · 분기 22건",
-   "confidence": "하",
-   "owner_earnings": {
-    "display": "C",
-    "display_reason": "GAAP 이익 기반이 얇아 진정한 이익 창출력 측정 불가."
-   },
-   "notes": "좋은 회사와 측정 가능한 회사는 다르다는 평가가 핵심—사이버보안 필요성은 높으나 현금 흐름 기반 가치 산정 어려움.",
-   "_evidence": {
-    "owner_earnings": "GAAP 이익 기반이 얇아 P/E 시차계 자체가 안 잡힘"
-   }
+   "confidence": "중"
   },
   "2454.TW": {
    "as_of": "2026-09-02",
@@ -496,38 +591,11 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2024H2"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI ASIC 신규 사업 성장 중이나 모바일 사이클 종속성으로 인한 실적 변동성 상존"
-   },
-   "notes": "Nvidia 35억 달러 투자 유입으로 AI ASIC 수주 확대 중이나, 모바일 칩셋 의존도 높고 주가 급등으로 밸류에이션 리스크 고조",
-   "_evidence": {
-    "franchise": "Google TPU 수주 확보, Nvidia 전략적 투자 유입으로 AI ASIC 수급독점성 강화; 다만 모바일 사이클 민감도 상존",
-    "risk5": "Q2 실적 초강세(NT$152.1B)로 경영능력 입증되었으나, AI ASIC 성장성 미검증 상태; 주가 NT$4,000 돌파로 가격 거품 우려",
-    "capalloc": "Nvidia 컨버터블본드 NT$35억 달러로 자금조달, 부채 규율 양호",
-    "owner_earnings": "AI ASIC 목표 NT$20억 달러(전년 2배), 모바일 하강 시점 도래 신호로 수익구조 전환 진행 중"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-09-02",
@@ -538,8 +606,8 @@
    },
    "roe_tangible": 1.4403,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 21건",
    "confidence": "중"
@@ -553,8 +621,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -568,8 +636,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -583,8 +651,8 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
@@ -598,12 +666,12 @@
    },
    "roe_tangible": null,
    "g_cagr3y": null,
-   "g_forward": NaN,
-   "g_forward_source": "yfinance 장기 성장률",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-02 22:18"
+ "scout_label": "2026-09-02 23:04"
 }
