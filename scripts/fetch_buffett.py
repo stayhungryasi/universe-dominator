@@ -368,7 +368,7 @@ def measure_bench(c, price, rates, prev_bench=None):
     out["zone_buffett"] = zone_of_buffett(coupon, rate)
     if out["zone_buffett"] == ZONE_UNTESTED and not out["note"]:
         out["note"] = ("eps_adj_ttm 미취재 — 분기 EPS 연환산 금지" if eps_ttm is None
-                       else ("성장률 미취재(3y CAGR·컨센서스 중 결측)" if g is None
+                       else ("성장률 미취재(3y CAGR·전망 중 결측)" if g is None
                              else "10년물 없음"))
     out["cause"] = classify_cause(prev_bench, out)
     return out

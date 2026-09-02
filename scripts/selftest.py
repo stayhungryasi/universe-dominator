@@ -445,7 +445,7 @@ def main():
           [(y, q) for y, q, _, _ in _fa.quarter_incomes(_ytd, _ytd.annual)],
           [(2026, 4), (2026, 3), (2026, 2), (2026, 1)])
     check("XBRL: 차분 결과는 분기값",
-          round(_fa.quarter_incomes(_ytd, _ytd.annual)[0][2] / _SH, 4),
+          round(_fa.quarter_incomes(_ytd, _ytd.annual)[0][2]['adj'] / _SH, 4),
           round(_per_ni - _per_gain * (1 - 0.21), 4))
 
     # 투자손익 태그가 하나도 없으면 **0 으로 치지 않고** 무조정임을 밝힌다
@@ -504,6 +504,33 @@ def main():
     check("XBRL: 3년 치가 없으면 null(짧은 이력을 늘려 적지 않는다)",
           _fa.cagr3y_from(_shortl)[0], None)
     check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_shortl)[1]), True)
+
+    # ── 오너어닝·전환율 (2026-09-02) — 빈칸의 원인은 '숫자가 없어서' 였다 ──────
+    # 스카우트는 display 만 주고 A/B/C 의 **수치를 주지 않는다**(줄 수도 없다).
+    # 그래서 전환율에 넣을 값 자체가 없었다 → 기계가 A안을 계산한다.
+    def _w(adj, ni, dna, capex):
+        return [(2026, q, {"adj": adj, "ni": ni, "dna": dna, "capex": capex}, "w")
+                for q in (4, 3, 2, 1)]
+    _oe, _cv = _fa.owner_earnings_from(_w(8.75, 8.0, 1.75, 11.225))
+    check("오너어닝: A안 = 순이익(유지캐펙스 = 감가상각)", _oe["variants"]["A"]["value"], 32.0)
+    check("오너어닝: C안 = 순이익 + 감가상각 − 캐펙스 전액",
+          _oe["variants"]["C"]["value"], -5.9)
+    check("오너어닝: 기본 표시는 A안", _oe["display"], "A")
+    check("전환율: A ÷ 조정순이익", _cv["value"], round(32.0 / 35.0, 4))
+    check("전환율: 근거를 남긴다", "감가상각" in _cv["basis"], True)
+    # 감가상각·캐펙스가 없으면 C안은 만들지 않는다 (0 으로 치지 않는다)
+    _oe2, _cv2 = _fa.owner_earnings_from(_w(8.75, 8.0, None, None))
+    check("오너어닝: 감가상각 없으면 C안 없음", "C" in _oe2["variants"], False)
+    check("전환율: A안만으로도 산출된다", _cv2 is not None, True)
+    check("오너어닝: 순이익이 없으면 아예 없음",
+          _fa.owner_earnings_from(_w(8.75, None, 1.0, 1.0)), (None, None))
+    _oe3, _cv3 = _fa.owner_earnings_from(_w(-1.0, 8.0, 1.0, 1.0))
+    check("전환율: 조정순이익이 0 이하면 비율은 없음(의미 상실)", _cv3, None)
+    # 사람이 지정한 전환율이 자동값을 이긴다 (GOOG C안 유지)
+    _mg, _og = _bl.merge_block({"conversion": {"value": -0.17, "basis": "C/조정순이익 35.0"}},
+                               {"conversion": {"value": 0.914, "basis": "A ÷ 조정순이익"}})
+    check("전환율: 사람 지정이 자동을 이긴다",
+          (_mg["conversion"]["value"], _og["conversion"]), (-0.17, "human"))
 
     # ── 전망 g (2026-09-02) — 과거 성장률을 미래 가정으로 쓰지 않는다 ─────────
     # 막으려는 것 한 문장: **잘 나간 구간의 성장을 영원히 이어붙이는 것.**

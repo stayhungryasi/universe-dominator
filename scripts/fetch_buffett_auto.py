@@ -66,6 +66,17 @@ INVEST_TAGS = ["GainLossOnInvestments",
                "DebtAndEquitySecuritiesGainLoss"]
 DILUTED_TAGS = ["WeightedAverageNumberOfDilutedSharesOutstanding",
                 "WeightedAverageNumberOfDilutedSharesOutstandingBasicAndDiluted"]
+# 오너어닝 = 순이익 + 감가상각 − 유지캐펙스 (1986 주주서한)
+#   A안: 유지캐펙스 = 감가상각      → 오너어닝 = 순이익 (가장 관대한 가정)
+#   C안: 유지캐펙스 = 캐펙스 전액    → 성장투자까지 유지비로 본다 (가장 보수적)
+#   B안은 '성장 이전 런레이트' 추정이라 사람 취재 영역이다 — 기계가 만들지 않는다.
+DNA_TAGS = ["DepreciationDepletionAndAmortization",
+            "DepreciationAmortizationAndAccretionNet",
+            "DepreciationAndAmortization",
+            "DepreciationNonproduction"]
+CAPEX_TAGS = ["PaymentsToAcquirePropertyPlantAndEquipment",
+              "PaymentsToAcquireProductiveAssets",
+              "PaymentsToAcquireOtherPropertyPlantAndEquipment"]
 EQUITY_TAGS = ["StockholdersEquity",
                "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"]
 GOODWILL_TAGS = ["Goodwill"]
@@ -272,21 +283,33 @@ def quarter_incomes(reports, annual=None):
             continue
         if (y, q) in raw:
             continue                       # 같은 분기의 수정 공시 — 최신 것만
-        inc, why = adjusted_income(flatten((r or {}).get("report")))
+        flat = flatten((r or {}).get("report"))
+        inc, why = adjusted_income(flat)
         if inc is None:
             continue
-        raw[(y, q)] = (inc, why, period_days(r))
+        raw[(y, q)] = ({"adj": inc,
+                        "ni": pick(flat, NET_INCOME_TAGS)[0],
+                        "dna": pick(flat, DNA_TAGS)[0],
+                        "capex": pick(flat, CAPEX_TAGS)[0]}, why, period_days(r))
 
     # ① 진짜 분기값 — 누적(100일 초과)이면 같은 해 직전 분기를 뺀다
+    def diff(cur, prev):
+        """지표별 차분 — 한쪽이 없는 지표는 None 으로 둔다(0 치환 금지)."""
+        out = {}
+        for k, v in cur.items():
+            pv = (prev or {}).get(k)
+            out[k] = None if v is None else (v if pv is None else v - pv)
+        return out
+
     tq = {}
-    for (y, q), (inc, why, days) in raw.items():
+    for (y, q), (vals, why, days) in raw.items():
         if q == 1 or (days is not None and days <= 100):
-            tq[(y, q)] = (inc, why)
+            tq[(y, q)] = (vals, why)
             continue
         prev = raw.get((y, q - 1))
         if prev is None:
             continue                        # 직전 누적이 없으면 차분 불가 → 버린다
-        tq[(y, q)] = (inc - prev[0], why)
+        tq[(y, q)] = (diff(vals, prev[0]), why)
 
     # ② 회계연도 4분기는 10-Q 가 없다 — 10-K(연간)에만 있다. 2026-09-02 실측:
     #    조립된 분기 목록에 **Q4 가 하나도 없었고**, 그래서 연속 4분기 창이 영원히
@@ -299,12 +322,19 @@ def quarter_incomes(reports, annual=None):
         three = [tq.get((y, k)) for k in (1, 2, 3)]
         if any(v is None for v in three):
             continue
-        inc, why = adjusted_income(flatten((r or {}).get("report")))
+        flat = flatten((r or {}).get("report"))
+        inc, why = adjusted_income(flat)
         if inc is None:
             continue
-        tq[(y, 4)] = (inc - sum(v[0] for v in three), f"{why} (FY−Q1~Q3)")
+        fy = {"adj": inc, "ni": pick(flat, NET_INCOME_TAGS)[0],
+              "dna": pick(flat, DNA_TAGS)[0], "capex": pick(flat, CAPEX_TAGS)[0]}
+        q4 = {}
+        for k, v in fy.items():
+            parts = [t[0].get(k) for t in three]
+            q4[k] = None if v is None or any(x is None for x in parts) else v - sum(parts)
+        tq[(y, 4)] = (q4, f"{why} (FY−Q1~Q3)")
 
-    out = [(y, q, v[0], v[1]) for (y, q), v in tq.items()]
+    out = [(y, q, v[0], v[1]) for (y, q), v in tq.items()]   # v[0] = 지표 묶음
     out.sort(reverse=True)
     return out
 
@@ -338,7 +368,7 @@ def eps_adj_ttm_from(reports):
     if window is None:
         got = ", ".join(f"{y}Q{q}" for y, q, _, _ in qs[:8])
         return None, f"연속 4분기 없음(조립된 분기: {got})", len(qs)
-    total = sum(x[2] for x in window)
+    total = sum(x[2]["adj"] for x in window)
     notes = []
     for x in window:
         if x[3] not in notes:
@@ -348,8 +378,36 @@ def eps_adj_ttm_from(reports):
     if not shares or shares <= 0:
         return None, f"희석주식수 없음 · 실제 태그: {sample_concepts(head)}", len(qs)
     stale = "" if offset == 0 else f" · {window[0][0]}Q{window[0][1]} 기준(최신 분기 결번)"
+    eps_adj_ttm_from.last_window = window        # 오너어닝이 같은 창을 쓰도록
     return (total / shares,
             "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}" + stale, len(qs))
+
+
+def owner_earnings_from(window):
+    """TTM 창 → 오너어닝 변형과 전환율. 못 구한 칸은 None.
+
+    display 는 **A안**을 기본으로 둔다(선장님 지정). 사람이 판단층에서 display 를
+    지정하면 병합에서 사람 값이 이긴다 — 여기서는 자동 기본값만 만든다.
+    전환율 = 표시 변형 ÷ 조정순이익. 조정순이익이 0 이하면 비율이 의미를 잃으므로 None.
+    """
+    adj = sum(x[2]["adj"] for x in window)
+    ni = [x[2].get("ni") for x in window]
+    dna = [x[2].get("dna") for x in window]
+    capex = [x[2].get("capex") for x in window]
+    if any(v is None for v in ni):
+        return None, None
+    ni_t = sum(ni)
+    variants = {"A": {"value": round(ni_t, 2), "basis": "유지캐펙스 = 감가상각"}}
+    if not any(v is None for v in dna) and not any(v is None for v in capex):
+        variants["C"] = {"value": round(ni_t + sum(dna) - sum(capex), 2),
+                         "basis": "유지캐펙스 = 캐펙스 전액"}
+    oe = {"variants": variants, "display": "A",
+          "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"}
+    if adj <= 0:
+        return oe, None
+    conv = {"value": round(variants["A"]["value"] / adj, 4),
+            "basis": "A(감가상각 기준) ÷ 조정순이익"}
+    return oe, conv
 
 
 def tangible_equity(flat):
@@ -386,7 +444,7 @@ def cagr3y_from(reports):
             return None
         if (w[0][0] - w[-1][0]) * 4 + (w[0][1] - w[-1][1]) != 3:
             return None                     # 결번이 낀 창은 쓰지 않는다
-        return sum(x[2] for x in w)
+        return sum(x[2]["adj"] for x in w)
 
     base = next((i for i in range(0, len(qs) - 3) if ttm(i) is not None), None)
     if base is None:
@@ -564,6 +622,7 @@ def build_block(c, key, now):
         "period": None,
         "cyclical_peak_guard": ("시클리컬" in (c.get("type") or "")),
         "eps_adj_ttm": None, "roe_tangible": None,
+        "owner_earnings": None, "conversion": None,
         "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
     }
@@ -609,6 +668,13 @@ def build_block(c, key, now):
         latest = reports[0] or {}
         block["period"] = (f"{latest.get('year')}Q{latest.get('quarter')}"
                            if latest.get("year") else None)
+        win = getattr(eps_adj_ttm_from, "last_window", None)
+        if win:
+            oe, conv = owner_earnings_from(win)
+            if oe:
+                block["owner_earnings"] = oe
+            if conv:
+                block["conversion"] = conv
         flat = flatten(latest.get("report"))
         te = tangible_equity(flat)
         if te:
