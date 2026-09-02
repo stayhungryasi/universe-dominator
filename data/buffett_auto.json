@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-02 21:41",
- "generated_at": "2026-09-02T21:41:12.777757+09:00",
+ "generated_label": "2026-09-02 21:59",
+ "generated_at": "2026-09-02T21:59:31.791640+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-02",
@@ -11,7 +11,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2026Q1~2027Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2027Q1, 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3)",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": null
   },
@@ -24,37 +24,9 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q2~2026Q2)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1)",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "A",
-    "display_reason": "수익 추정치 상향 및 일관된 실적 초과 달성"
-   },
-   "notes": "소비자 프랜차이즈 강력하나 성장 부재로 프리미엄 밸류에이션(현재 고가) 정당화 어려움",
-   "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
-    "risk5": "Apple stock rises after Q2 earnings top estimates on strong iPhone, China sales",
-    "capalloc": "Jim Cramer says Nvidia should do a half-trillion dollar, Apple-style stock buyback",
-    "owner_earnings": "Apple (AAPL) Q3 Earnings and Revenues Beat Estimates"
-   }
+   "confidence": null
   },
   "GOOG": {
    "as_of": "2026-09-02",
@@ -78,7 +50,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q3~2026Q3)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q1, 2023Q3)",
    "source": "Finnhub financials-reported · 분기 46건",
    "confidence": null
   },
@@ -91,7 +63,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q2, 2024Q1, 2023Q3, 2023Q2)",
    "source": "Finnhub financials-reported · 분기 42건",
    "confidence": null
   },
@@ -119,7 +91,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q2~2026Q2)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1)",
    "source": "Finnhub financials-reported · 분기 35건",
    "confidence": null
   },
@@ -151,7 +123,24 @@
    "g_forward_source": "yfinance 장기 성장률",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "에너지 필수재 지위 대비 유가 연동 수익성이 투자 신뢰도를 제약; 현금 배분 규율은 양호",
+   "_evidence": {
+    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher; Aramco reports $26.9B profit in third quarter, down slightly over lower oil prices",
+    "capalloc": "announces first buyback; strong cash flow; Saudi Aramco plans US dollar Islamic bonds"
+   }
   },
   "META": {
    "as_of": "2026-09-02",
@@ -162,7 +151,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1, 2023Q3)",
    "source": "Finnhub financials-reported · 분기 40건",
    "confidence": null
   },
@@ -175,9 +164,36 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1, 2023Q3)",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "수익성 개선(마진 상승)과 자본지출 확대 사이의 불일치로 인한 불확실성"
+   },
+   "notes": "EV 판매 강세 대비 매출 부진, 로보택시·옵티무스 지연으로 핵심 성장 동력의 타이밍 불투명",
+   "_evidence": {
+    "franchise": "Record deliveries와 EV 시장 내 강고한 입지, 하지만 500 Semi 주문 등 신규 사업 라인은 추정 범위 외",
+    "risk5": "Earnings miss despite strong EV sales와 delayed Optimus는 수익성과 기술 실현 가능성 모두에 의문 제기; Elon Musk의 robotaxi에 대한 신중한 발언",
+    "capalloc": "Record revenue but weak Q2 profitability and cash flow; capital expenditure growth 가속화로 현금 배분 불균형 시사",
+    "owner_earnings": "Auto margins jump로 단기 수익성 개선이나, shares fall on capital expenditure growth and delayed Optimus는 소유자 수익 실현의 지연을 암시"
+   }
   },
   "005930.KS": {
    "as_of": "2026-09-02",
@@ -201,7 +217,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q3~2026Q3)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2)",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": null
   },
@@ -214,7 +230,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2023Q3, 2023Q2, 2023Q1)",
    "source": "Finnhub financials-reported · 분기 47건",
    "confidence": null
   },
@@ -227,7 +243,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1, 2023Q3)",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": null
   },
@@ -240,7 +256,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1, 2023Q3)",
    "source": "Finnhub financials-reported · 분기 43건",
    "confidence": null
   },
@@ -253,7 +269,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2026Q1~2027Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2027Q1, 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3)",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": null
   },
@@ -266,7 +282,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q1~2026Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1, 2023Q3)",
    "source": "Finnhub financials-reported · 분기 47건",
    "confidence": null
   },
@@ -307,7 +323,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q3~2026Q3)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2)",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": null
   },
@@ -320,7 +336,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q2~2026Q2)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1)",
    "source": "Finnhub financials-reported · 분기 49건",
    "confidence": null
   },
@@ -333,7 +349,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2026Q1~2027Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2027Q1, 2026Q3, 2026Q2, 2026Q1, 2025Q1, 2023Q3, 2023Q2, 2023Q1)",
    "source": "Finnhub financials-reported · 분기 33건",
    "confidence": null
   },
@@ -346,7 +362,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q3~2026Q3)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2)",
    "source": "Finnhub financials-reported · 분기 41건",
    "confidence": null
   },
@@ -355,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.96
+    "value": 0.99
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -374,9 +390,37 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q3~2026Q3)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2012Q3, 2012Q2, 2012Q1, 2011Q3)",
    "source": "Finnhub financials-reported · 분기 12건",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "✕",
+    "no_substitute": "✕",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 0,
+    "score": 2,
+    "period": "2032H2"
+   },
+   "owner_earnings": {
+    "display": "C",
+    "display_reason": "낸드 플래시 메모리의 예측 불가능한 사이클 속에서 실적 가시성 최하단"
+   },
+   "notes": "대규모 일본 투자($31B)와 자사주 매입($14B)은 사이클 저점 판단에 기반하나, 메모리 수급 변동성이 매우 큼",
+   "_evidence": {
+    "franchise": "NAND 순수 사이클 — 메모리 중 예측 가능성 최하단",
+    "risk5": "Sandisk: Don't Underestimate The Cycle; 대규모 자본배분 결정이 사이클 타이밍에 민감",
+    "capalloc": "Sandisk Commits To $31 Billion Japan Manufacturing Investment through 2032; Sandisk Just Announced a $14 Billion Stock Buyback Authorization",
+    "owner_earnings": "SNDK Q4 Earnings Beat Estimates, Revenues Rise on Datacenter Growth 但 사이클성 업종의 본질적 한계"
+   }
   },
   "STX": {
    "as_of": "2026-09-02",
@@ -387,7 +431,7 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q3~2026Q3)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2)",
    "source": "Finnhub financials-reported · 분기 48건",
    "confidence": null
   },
@@ -400,33 +444,9 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2025Q2~2027Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2027Q1, 2026Q3, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1)",
    "source": "Finnhub financials-reported · 분기 22건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1
-   },
-   "owner_earnings": {
-    "display": "C",
-    "display_reason": "GAAP 이익 기반이 얇아 측정 가능한 owner earnings를 도출할 수 없음"
-   },
-   "notes": "사이버보안 프랜차이즈 가치는 명확하나 실질 수익력 측정 불가능으로 투자판단 유보",
-   "_evidence": {
-    "franchise": "엔드포인트 보안 플랫폼의 높은 전환비용과 교체 불가능성",
-    "risk5": "SaaS 구독 모델의 사업 연속성은 양호하나 경쟁 심화 리스크 존재, 가격이 현저히 높음",
-    "capalloc": "SaaS 기업으로서 현금 창출 능력 보유",
-    "owner_earnings": "GAAP 이익 기반이 얇아 P/E 시차계 자체가 안 잡힘"
-   }
+   "confidence": null
   },
   "2454.TW": {
    "as_of": "2026-09-02",
@@ -441,7 +461,9 @@
    "g_forward_source": "yfinance 장기 성장률",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "notes": "팹리스 우량사지만 모바일 칩셋 수요 사이클에 매우 종속적인 구조",
+   "_evidence": {}
   },
   "MRVL": {
    "as_of": "2026-09-02",
@@ -452,9 +474,24 @@
    "g_cagr3y": null,
    "g_forward": NaN,
    "g_forward_source": "yfinance 장기 성장률",
-   "method": "산출 불가 — 최근 4분기가 연속이 아님(2026Q1~2027Q1)",
+   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2027Q1, 2026Q3, 2026Q2, 2026Q1, 2025Q3, 2025Q2, 2025Q1, 2024Q3)",
    "source": "Finnhub financials-reported · 분기 21건",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "notes": "커스텀 실리콘 수주의 통행료 특성과 고객 집중 리스크로 인한 쿠폰 변동성이 핵심 제약.",
+   "_evidence": {
+    "franchise": "커스텀 실리콘 수주는 통행료 성향을 보유하나 고객 집중 리스크로 인한 쿠폰 변동 크다.",
+    "risk5": "시클리컬 산업 특성과 고객 집중도로 인한 사업 확실성 제약, 경계 수준의 가격 리스크."
+   }
   },
   "285A.T": {
    "as_of": "2026-09-02",
@@ -470,27 +507,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "하",
-   "franchise": {
-    "need": "✕",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "debt_discipline": 0,
-    "score": 0
-   },
-   "notes": "순수 사이클 제조업으로서 수급 변동성이 높으며 대규모 자본집약적 구조로 인한 자본배분 불확실성 상존.",
-   "_evidence": {
-    "franchise": "NAND 메모리 산업은 고도로 경쟁적이며 상품화된 시장으로 가격 결정력 부재.",
-    "risk5": "반도체 사이클 산업의 전형적 특성으로 수익 변동성 심대; 기술 세대 전환 리스크 존재.",
-    "capalloc": "자본집약적 산업 특성상 지속적 대규모 투자 필수로 자유현금흐름 제약."
-   }
+   "notes": "Kioxia exhibits classic cyclical semiconductor trap: exceptional near-term numbers masked by structural NAND oversupply risk and extreme valuation volatility suggesting speculative bubble dynamics rather than franchise quality.",
+   "_evidence": {}
   },
   "8035.T": {
    "as_of": "2026-09-02",
@@ -505,22 +523,7 @@
    "g_forward_source": "yfinance 장기 성장률",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "notes": "반도체 장비 시장의 과점 구조(LRCX, AMAT와 동일)로 인한 높은 경제적 해자 보유.",
-   "_evidence": {
-    "franchise": "반도체 제조 장비의 기술적 진입장벽과 고객 전환비용으로 인한 과점 지위",
-    "risk5": "업계 리더 지위와 안정적 기술 우위로 경기 사이클 속에서도 사업 확실성 유지"
-   }
+   "confidence": "중"
   },
   "6857.T": {
    "as_of": "2026-09-02",
@@ -535,20 +538,7 @@
    "g_forward_source": "yfinance 장기 성장률",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "△"
-   },
-   "notes": "반도체 테스트 장비의 필수 공급사이나 고객 집중도와 AI 사이클 변동성이 높은 시클리컬 구조.",
-   "_evidence": {
-    "franchise": "테스트 과점 시장에서 높은 진입장벽 보유",
-    "risk5": "AI 테스터 수요 사이클 진폭이 장비 3사 대비 크다는 참고 판단에 따른 사이클 리스크"
-   }
+   "confidence": "중"
   },
   "2308.TW": {
    "as_of": "2026-09-02",
@@ -563,28 +553,8 @@
    "g_forward_source": "yfinance 장기 성장률",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2
-   },
-   "notes": "AI 전력 인프라 부품의 과점 지위는 강하나 사이클 상한 진입과 전력 수요 성장 둔화로 확장성 제약.",
-   "_evidence": {
-    "franchise": "AI 데이터센터 전력 인프라의 핵심 부품 공급자로서 구조적 수요 보유",
-    "risk5": "사이클 상한 도달 및 전력 인프라 성장률 한계로 비즈니스 확실성 감소, 현 주가는 고성장 가정을 반영한 수준으로 평가됨",
-    "capalloc": "산업 내 현금 생성 능력은 양호하나 구체적 재무 공시 부재로 확인 불가"
-   }
+   "confidence": "중"
   }
  },
- "scout_label": "2026-09-02 21:41"
+ "scout_label": "2026-09-02 22:00"
 }
