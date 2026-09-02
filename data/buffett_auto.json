@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-02 10:18",
- "generated_at": "2026-09-02T10:18:56.450213+09:00",
+ "generated_label": "2026-09-02 17:10",
+ "generated_at": "2026-09-02T17:10:50.837728+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-02",
@@ -75,7 +75,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.5
+    "value": 13.46
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -104,7 +104,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.11
+    "value": -1.1
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -191,37 +191,7 @@
    "g_consensus": 0.1179,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "A"
-   },
-   "notes": "Greg Abel 체제에서 현금 배치 적극화, 플로트 복리 동학 유지 중, 공정가치 대비 할인 지속.",
-   "_evidence": {
-    "franchise": "보증금(플로트) 기반 보험사업의 대체불가능한 경제적 해자 보유",
-    "risk5": "Greg Abel의 현금 배치 의사결정과 Berkshire의 다각화된 포트폴리오가 경영 능력과 신실성을 입증; 주가 변동성은 공정가치 대비 할인으로 평가",
-    "capalloc": "Q2 2026에서 buyback 재개 및 증액 투자 실행, 현금 잔고 감소는 자산배치 적극화 신호, 순차입 증가 없음",
-    "owner_earnings": "플로트 복리 동학과 보험사업 수익성이 전통적 EPS 지표를 초과하는 실질 소유자 수익 창출"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-09-02",
@@ -265,21 +235,20 @@
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
     "debt_discipline": 1,
-    "score": 4,
-    "period": "2024H2"
+    "score": 3,
+    "period": "2026H1"
    },
    "owner_earnings": {
     "display": "B",
-    "display_reason": "사이클 구간 상향기에 있으나 규제 리스크와 경제 복잡성 증가로 지속성 불확실"
+    "display_reason": "사이클 구조와 규제 리스크로 인한 멀티플 할인 필요"
    },
-   "notes": "기록적 분기 실적과 자본배분 공격성(배당+$50B 자사주)은 강점이나, Dimon의 '복잡한 경제환경' 경고와 규제 감시 강화가 사이클 정점 신호",
+   "notes": "Jamie Dimon의 '점점 복잡해지는 경제 리스크' 경고와 규제 감시 강화가 중요 변수",
    "_evidence": {
-    "franchise": "Core deposit franchise and market position in institutional banking",
-    "risk5": "CEO Jamie Dimon flags 'increasingly complex' economic risks; Fresh regulatory scrutiny noted",
-    "capalloc": "Dividend hike and $50 billion buyback announced; trading revenue exceeds expectations, strong capital generation",
-    "owner_earnings": "Record quarter results; cyclical nature and regulatory headwinds create near-term visibility limits"
+    "franchise": "JPMorgan tops estimates on Wall Street results, Dimon flags 'increasingly complex' economic risks",
+    "risk5": "JPMorgan Chase (JPM) Faces Fresh Regulatory Scrutiny; CEO flags 'increasingly complex' economic risks",
+    "capalloc": "JPMorgan Raises 2026 NII Outlook",
+    "owner_earnings": "Q2 Earnings Report shows investment banking and trading revenue surge but cyclical sensitivity remains"
    }
   },
   "WMT": {
@@ -294,33 +263,7 @@
    "g_consensus": 0.1153,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2024Q2"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "eCommerce 23% 성장과 마진 개선에도 불구하고 6년 최저 매출 성장률로 매출 예측력 약화"
-   },
-   "notes": "의약품 가격 하락과 오피오이드 합의금이 수익성 압박; 밸류에이션 상단 영역으로 평가",
-   "_evidence": {
-    "franchise": "예측 가능성은 최상급이나 저마진 리테일 비즈니스 모델",
-    "risk5": "코어 비즈니스 지속 성장 + 아웃룩 상향 조정으로 경영능력 확인; 의약품 가격 하락과 오피오이드 정산금이 확실성 저해",
-    "capalloc": "Walmart raises outlook (현금 생성 능력 지속) + 23% eCommerce 성장으로 재투자 진행 중",
-    "owner_earnings": "Weakest sales growth in over six years vs. 7% earnings gain + higher margins 간 괴리"
-   }
+   "confidence": "중"
   },
   "AMD": {
    "as_of": "2026-09-02",
@@ -337,23 +280,30 @@
    "confidence": "하",
    "franchise": {
     "need": "○",
-    "no_substitute": "○"
+    "no_substitute": "△",
+    "no_price_reg": "△"
    },
    "risk5": {
     "business_certainty": "△",
+    "mgmt_ability": "△",
     "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
+    "debt_discipline": 0,
+    "score": 1,
     "period": "2026H1"
    },
-   "notes": "AI 칩 사이클의 수명이 NVDA와 동일하게 제한적이며, 참고 판단에서 10년 쿠폰 범위 초과 지적.",
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "데이터센터 매출 2배 증가 등 실적은 우수하나 월스트리트 기대치 미달로 평가절하"
+   },
+   "notes": "AI 칩 수요 장기화는 인정되나 NVDA 대비 점유율 압박 및 경쟁 심화 우려, 과다한 부채 증자 계획이 자본 규율 약화 신호",
    "_evidence": {
-    "franchise": "AI 데이터센터 칩 수요 확립으로 필수성 인정, 하지만 NVDA 대비 기술적 대체 가능성 존재.",
-    "risk5": "AI 칩 수급 사이클 불확실성으로 사업 확실성 △, 현 주가가 장기 이익 창출 능력을 과도히 반영.",
-    "capalloc": "반도체 업체로서 현금 창출 능력 입증되었으나, 최근 헤드라인 부재로 자본배분 정책 직접 근거 불충분."
+    "franchise": "Google의 AI 칩 전략 다각화, SpaceX의 NVDA 칩 선택, Nutanix 등 고객사 포트폴리오 다양화 수준 평가",
+    "risk5": "AMD Q2 실적 'beat-and-raise'였으나 월스트리트 기대 미달로 주가 8-9% 급락, Elon Musk의 NVDA 칩 commitment는 경쟁 위험 신호, NVDA가 1분기 데이터센터 매출로 AMD 2배 달성",
+    "capalloc": "AMD $4-5 billion 신규 부채 증자 계획 발표 - 현금 창출에도 불구하고 부채 의존 가속화",
+    "owner_earnings": "Record revenue with doubled data center sales 달성했으나 'not an exceptional result' 평가, capex 수준에 대한 시장 의문 제기"
    }
   },
   "000660.KS": {
@@ -372,16 +322,28 @@
     "no_substitute": "○",
     "no_price_reg": "△"
    },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
    "capalloc": {
     "cash_positive": 1,
-    "debt_discipline": 0,
-    "score": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
     "period": "2026H1"
    },
-   "notes": "캐펙스 의존적 비즈니스 모델로 인한 자본 할당 제약이 심각.",
+   "owner_earnings": {
+    "display": "A",
+    "display_reason": "기록적 분기순이익과 72-76% 영업마진이 공식 수익으로 명시되나, 사이클 업계의 시간적 가시성 제한"
+   },
+   "notes": "삼성·SK하이닉스 실적 파동이 미국 메모리 시장 신호로 기능하는 구조적 영향력 보유, 20조 캐펙스 필수 구조는 자본 배분 경직성을 시사",
    "_evidence": {
-    "franchise": "증축 공사(캐펙스 20조) 없이는 월세 인상 불가능 — 독과점적 필수재이나 공급 확대 강제로 인한 가격 결정권 제약",
-    "capalloc": "캐펙스 20조 규모 필수 지출로 인해 채무 부담 증가 불가피"
+    "franchise": "HBM4 mass production 진입 및 3년 초과 수요 초과 선언; 20조 캐펙스 없이는 월세 인상 불가능한 구조적 제약",
+    "risk5": "기록 분기순이익 달성(Q2 2026 영업마진 76%), 동시에 '메모리 정점화 없음' 재선언으로 사이클 정점 불확실성 상존",
+    "capalloc": "40조 원 자사주 매입·소각, 26.5억 달러 미국 ADR 공모 성공",
+    "owner_earnings": "Q2 2026 영업마진 76%, 분기 수익 79.3조 원 기록"
    }
   },
   "ASML": {
@@ -389,7 +351,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.51
+    "value": 28.97
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -397,27 +359,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2
-   },
-   "notes": "노광 장비 독점이나 반도체 사이클 변동성이 수익 안정성을 제약.",
-   "_evidence": {
-    "franchise": "EUV 노광 기술의 대체 불가능한 지위로 고객 lock-in 구축.",
-    "risk5": "반도체 산업 사이클에 따른 수주 변동성이 사업 확실성 저하; 지정학적 규제 리스크(중국 수출 제한).",
-    "capalloc": "반도체 장비 업체로서 강한 현금 흐름 창출과 보수적 재무 관리."
-   }
+   "notes": "Toll-road monopoly in EUV tempered by order cycle volatility; current valuation fully reflects near-term AI tailwinds.",
+   "_evidence": {}
   },
   "LRCX": {
    "as_of": "2026-09-02",
@@ -431,7 +374,29 @@
    "g_consensus": 0.1646,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3
+   },
+   "notes": "반도체 장비 과점 기업으로 브랜드 가치 높으나 웨이퍼팹 캐펙스 사이클 종속성이 수익 변동성의 주요 제약요소.",
+   "_evidence": {
+    "franchise": "반도체 제조공정 필수 장비 공급자로 대체 불가능한 기술적 지위 보유",
+    "risk5": "고객 집중도와 산업 사이클 의존도가 높아 수익 확실성 하락; 경영진 능력은 시장 선도 위치로 입증됨",
+    "capalloc": "일반적인 반도체 장비업체의 강한 현금창출 능력과 배당·자사주 병행 정책"
+   }
   },
   "AMAT": {
    "as_of": "2026-09-02",
@@ -445,7 +410,29 @@
    "g_consensus": 0.1718,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3
+   },
+   "notes": "반도체 장비 과점 기업으로 프리미엄 인정하나 사이클 정점 근처에서 밸류에이션 위험 높음.",
+   "_evidence": {
+    "franchise": "반도체 공정 기술 진화에 필수 불가결한 노광·식각 장비 독점에 가까운 지위",
+    "risk5": "메모리/파운드리 투자 사이클 의존도 높고 지정학적 규제(中 수출 제한) 리스크 상존",
+    "capalloc": "역사적으로 영업현금흐름 양수 기업이며 자사주 매입과 배당을 병행"
+   }
   },
   "DELL": {
    "as_of": "2026-09-02",
@@ -482,7 +469,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.99
+    "value": 0.96
    },
    "roe_tangible": null,
    "g_cagr3y": null,
@@ -617,5 +604,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-02 10:19"
+ "scout_label": "2026-09-02 17:11"
 }
