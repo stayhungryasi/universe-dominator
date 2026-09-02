@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-02 23:03",
- "generated_at": "2026-09-02T23:03:07.375719+09:00",
+ "generated_label": "2026-09-02 23:49",
+ "generated_at": "2026-09-02T23:49:18.625114+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-02",
@@ -10,6 +10,24 @@
     "value": 5.7333
    },
    "roe_tangible": 0.8156,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 159613000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 156270000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.1414,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 1.6188,
    "g_forward": null,
    "g_forward_source": null,
@@ -25,39 +43,30 @@
     "value": 8.3
    },
    "roe_tangible": 1.151,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 122575000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 124137000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.0913,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2024H2"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "실적 상향 달성하나 성장 성숙화로 가치창출 둔화"
-   },
-   "notes": "최강 소비자 프랜차이즈이나 AI 모멘텀 부족으로 프리미엄 정당성 약화, 현재 밸류에이션 상한 근처",
-   "_evidence": {
-    "franchise": "Apple (AAPL) Stock Looks Pricey On Cash Flow Yet Fair On Earnings; 소비자 선호도 및 브랜드 프리미엄 지속",
-    "risk5": "Apple (AAPL) Stock Could Be 28% Overvalued On Fresh AI Mac Launches; Jim Cramer says Nvidia should do a half-trillion dollar, Apple-style stock buyback",
-    "capalloc": "Jim Cramer says Nvidia should do a half-trillion dollar, Apple-style stock buyback",
-    "owner_earnings": "Apple (AAPL) Q3 2024 Earnings: Results, Market Reaction & History; Apple stock rises after Q2 earnings top estimates on strong iPhone, China sales"
-   }
+   "confidence": "중"
   },
   "GOOG": {
    "as_of": "2026-09-02",
@@ -67,40 +76,26 @@
     "value": 32.3984
    },
    "roe_tangible": null,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 10737000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 4건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI capex intensity creates gap between reported earnings and sustainable owner earnings; monetization proven but reinvestment rate structurally elevated"
-   },
-   "notes": "Toll-taking emerging on AI but validation gap on whether antitrust fears are priced-in risk or real franchise constraint; capex discipline remains key watch",
-   "_evidence": {
-    "franchise": "Alphabet Quadruples Profit, Fueled by A.I. Investments; Strong AI Monetization Continues to Spearhead Results",
-    "risk5": "What worried investors about Alphabet; Alphabet shares fall as rising AI investment overshadows strong quarterly earnings",
-    "capalloc": "15 Billion Reasons Alphabet Shares Are Sinking After Reporting Strong Earnings Growth",
-    "owner_earnings": "Strong AI Monetization Continues to Spearhead Results"
-   }
+   "confidence": "중"
   },
   "MSFT": {
    "as_of": "2026-09-02",
@@ -110,6 +105,20 @@
     "value": 16.7917
    },
    "roe_tangible": 0.4547,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 125216000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.1985,
    "g_forward": null,
    "g_forward_source": null,
@@ -125,6 +134,24 @@
     "value": 8.35
    },
    "roe_tangible": 0.217,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 90798000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 10234000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 1.0016,
    "g_forward": null,
    "g_forward_source": null,
@@ -140,6 +167,8 @@
     "value": 13.5
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -155,6 +184,20 @@
     "value": 6.001
    },
    "roe_tangible": null,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 29317000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.2958,
    "g_forward": null,
    "g_forward_source": null,
@@ -171,6 +214,8 @@
     "value": -1.1
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -186,40 +231,14 @@
     "value": 1.69
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "유가 사이클 의존성으로 인한 이익 변동성이 크며 예측 불가능"
-   },
-   "notes": "에너지 수요는 구조적 필수재이나 지정학적 변수와 에너지 전환이 장기 현금흐름 예측 가능성을 훼손",
-   "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher vs. Aramco posts drop in annual profit",
-    "risk5": "Aramco CEO warns of 'catastrophic' consequences if oil crisis continues; Q4 2025 net income falls 20.5% to $17.76bn",
-    "capalloc": "announces first buyback; strong cash flow despite Q4 earnings dip",
-    "owner_earnings": "Q2 2026 earnings beat but Q4 2025 net income falls 20.5%; profit volatility driven by oil price swings"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-09-02",
@@ -229,6 +248,24 @@
     "value": 27.53
    },
    "roe_tangible": 0.3224,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 70587000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 15555000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.4792,
    "g_forward": null,
    "g_forward_source": null,
@@ -244,38 +281,26 @@
     "value": 1.0943
    },
    "roe_tangible": 0.046,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 3862000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 0.9976,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": -0.3096,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "하",
-   "franchise": {
-    "need": "△",
-    "no_substitute": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "수익성 약화와 자본지출 증가로 실제 주주귀속이익 판단 불가"
-   },
-   "notes": "차량·로봇·에너지 사업 다각화 중 핵심 수익모델 불명확; Optimus 지연과 마진 변동성 높음",
-   "_evidence": {
-    "franchise": "Robotaxi 및 Optimus 프로젝트 미완성으로 경쟁우위 지속성 미불명",
-    "risk5": "Q2 수익 부진, 자본지출 증가, Optimus 지연으로 사업 불확실성 상존",
-    "capalloc": "Capital expenditure growth 및 약한 현금흐름 보도",
-    "owner_earnings": "Earnings miss와 약한 분기 수익성으로 순이익 품질 판단 곤란"
-   }
+   "confidence": "중"
   },
   "005930.KS": {
    "as_of": "2026-09-02",
@@ -283,6 +308,8 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -298,6 +325,24 @@
     "value": 44.1935
    },
    "roe_tangible": 0.5093,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 50469000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 34220000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -311,6 +356,8 @@
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": 0.1553,
    "g_forward": null,
    "g_forward_source": null,
@@ -326,6 +373,24 @@
     "value": 28.0823
    },
    "roe_tangible": 1.4219,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 25276700000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 18662400000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0047,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.641,
    "g_forward": null,
    "g_forward_source": null,
@@ -341,6 +406,20 @@
     "value": 21.6525
    },
    "roe_tangible": 0.1618,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 58899000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.1192,
    "g_forward": null,
    "g_forward_source": null,
@@ -356,6 +435,24 @@
     "value": 2.5632
    },
    "roe_tangible": 0.3098,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 22736000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 9051000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.1089,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -371,6 +468,20 @@
     "value": 3.0358
    },
    "roe_tangible": 0.2181,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 5009000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.1426,
    "g_forward": null,
    "g_forward_source": null,
@@ -384,6 +495,8 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -399,6 +512,8 @@
     "value": 29.47
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -414,6 +529,24 @@
     "value": 5.3122
    },
    "roe_tangible": 0.6338,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 6708202000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 6178737000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.1091,
    "g_forward": null,
    "g_forward_source": null,
@@ -429,6 +562,24 @@
     "value": 8.7401
    },
    "roe_tangible": 0.3535,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 8508000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 6347000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.2183,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.0248,
    "g_forward": null,
    "g_forward_source": null,
@@ -444,6 +595,24 @@
     "value": 12.8186
    },
    "roe_tangible": null,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 8409000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 8430000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": 0.3058,
    "g_forward": null,
    "g_forward_source": null,
@@ -460,39 +629,31 @@
     "value": 1.1328
    },
    "roe_tangible": null,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 842800000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 1017300000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "하",
-   "notes": "RPO $20B 돌파 및 AI 보안 수요 강세가 유기적 성장을 뒷받침하나, 적극적 M&A 전략(Console 인수)이 기저 성장률 해석을 모호하게 함",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "M&A 상각비로 인한 GAAP 기반 이익 왜곡으로 진정한 경제적 수익성 판단 곤란"
-   },
-   "_evidence": {
-    "franchise": "Palo Alto Earnings Reignite Debate Over Organic Growth, Acquisitions; $1 trillion AI security gap cited by CEO; platform consolidation strategy validation in progress",
-    "risk5": "AI security demand driving Q4 beat but guidance divergence signals execution or market timing risk; multiple acquisitions raise integration complexity",
-    "capalloc": "Crossed $20B in RPO; active M&A deployment (Console acquisition)",
-    "owner_earnings": "GAAP earnings basis compromised by acquisition-related amortization per reference notes; adjusted metrics required for true owner earnings visibility"
-   }
+   "confidence": "중",
+   "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "ARM": {
    "as_of": "2026-09-02",
@@ -502,6 +663,8 @@
     "value": 0.99
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -517,39 +680,26 @@
     "value": 2.7104
    },
    "roe_tangible": 0.0475,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 417404000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · ProfitLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / ProfitLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding · 2012Q4 기준(최신 분기 결번)",
    "source": "Finnhub financials-reported · 분기 12건",
-   "confidence": "하",
-   "franchise": {
-    "need": "△",
-    "no_substitute": "△"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 0,
-    "score": 2,
-    "period": "2032"
-   },
-   "owner_earnings": {
-    "display": "C",
-    "display_reason": "사이클 저점에서의 수익 추정은 예측 신뢰도 최하단"
-   },
-   "notes": "낸드 사이클 하강국면에서 $31B 설비투자 공시는 타이밍 리스크, 강한 매수 평가와 실적 부진 사이의 괴리 심화",
-   "_evidence": {
-    "franchise": "메모리 업계는 상품화 심화로 대체불가성 약함",
-    "risk5": "낸드 순수 사이클 특성상 예측 불가능성 최악; 설비투자 규모 대비 수익성 불확실",
-    "capalloc": "$14B 자사주매입 공시 및 $31B 일본 설비투자 병행; Buffett의 대규모 자사주매입 경고 관련 헤드라인",
-    "owner_earnings": "혼조 가이던스로 시장 반응 엇갈림(Sandisk slips as mixed guidance overshadows strong Q4 results)"
-   }
+   "confidence": "중"
   },
   "STX": {
    "as_of": "2026-09-02",
@@ -559,6 +709,24 @@
     "value": 6.5526
    },
    "roe_tangible": null,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 1494000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 1511000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": -0.0696,
    "g_forward": null,
    "g_forward_source": null,
@@ -575,6 +743,20 @@
     "value": 0.0349
    },
    "roe_tangible": 0.0043,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 18112000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 2.0149,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -590,6 +772,8 @@
     "value": 60.41
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -605,12 +789,47 @@
     "value": 2.8285
    },
    "roe_tangible": 1.4403,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 2526700000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 21건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "debt_discipline": 1,
+    "score": 2
+   },
+   "notes": "커스텀 실리콘 수주의 높은 고객 집중 리스크와 쿠폰 변동성이 장기 수익 안정성을 제약.",
+   "_evidence": {
+    "franchise": "커스텀 실리콘 수주는 통행료 성향을 띠나 고객 집중 리스크 존재",
+    "risk5": "시클리컬 산업 특성과 고객 의존도로 사업 확실성 낮음; 경영진 기술력은 검증됨",
+    "capalloc": "반도체 업종 일반적 현금 창출 능력과 부채 관리 역량 필요"
+   }
   },
   "285A.T": {
    "as_of": "2026-09-02",
@@ -620,6 +839,8 @@
     "value": 1009.8
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -635,12 +856,35 @@
     "value": 1253.54
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "LRCX·AMAT 동일 구조의 장비 과점 기업으로서 사이클 민감도 높음; 최근 헤드라인은 AI 모멘텀과 수익성 우려가 혼재",
+   "_evidence": {
+    "franchise": "Tokyo Electron: Expecting Revenue Acceleration And Margin Expansion; 장비 과점 구조로 LRCX·AMAT와 동일",
+    "risk5": "We Think That There Are Some Issues For Tokyo Electron Beyond Its Promising Earnings; Semiconductor Rout 및 Profit-Taking 반복 표현",
+    "capalloc": "Tokyo Electron Lifts First-Half Net Profit Forecast to ¥349 Billion; A Look At Tokyo Electron Valuation After Buyback Plan Stock Split"
+   }
   },
   "6857.T": {
    "as_of": "2026-09-02",
@@ -650,12 +894,38 @@
     "value": 517.39
    },
    "roe_tangible": null,
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "AI 추론 수요 폭발적 성장으로 예측상향하지만 시클리컬 진폭이 크고 밸류에이션 일시정지 신호 나타남"
+   },
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026Q1"
+   },
+   "notes": "테스터 시장 구조 변화 중 독과점 강화 중이나 반도체 사이클 민감도 높음",
+   "_evidence": {
+    "franchise": "Explosive Growth in AI Inference Demand Transforms Tester Market Structure",
+    "risk5": "Stock Price Volatility와 Profit-Taking이 반복되는 시클리컬 패턴, Semiconductor Rout 헤드라인 다수",
+    "capalloc": "Raises Full-Year Forecast에서 수익성 개선 확인",
+    "owner_earnings": "Valuation Check As Shares Pause After Strong Multi-Year Run"
+   }
   },
   "2308.TW": {
    "as_of": "2026-09-02",
@@ -665,6 +935,8 @@
     "value": 31.33
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
@@ -673,5 +945,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-02 23:04"
+ "scout_label": "2026-09-02 23:50"
 }
