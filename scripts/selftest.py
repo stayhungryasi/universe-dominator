@@ -481,12 +481,13 @@ def main():
                                    "value": 1000.0}]}}
     _e = _dt.date(2026, 6, 30)
     _series = [_q(_e - _dt.timedelta(days=91 * i), 200.0 if i < 4 else 100.0) for i in range(20)]
-    _g = _fa.cagr3y_from(_series)          # 최근 TTM 800 vs 3년 전 400 → 2배/3년
+    _g, _gwhy = _fa.cagr3y_from(_series)   # 최근 TTM 800 vs 3년 전 400 → 2배/3년
     check("XBRL: 3년 CAGR 은 날짜로 창을 잡는다(3년에 가장 가까운 창)",
           abs(_g - (2 ** (1 / 3) - 1)) < 0.01, True)
     _short = [_q(_e - _dt.timedelta(days=91 * i), 100.0) for i in range(8)]
     check("XBRL: 3년 치가 없으면 null(짧은 이력을 늘려 적지 않는다)",
-          _fa.cagr3y_from(_short), None)
+          _fa.cagr3y_from(_short)[0], None)
+    check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_short)[1]), True)
 
     check("XBRL: 적자 구간 CAGR 은 null", _fa.cagr(-1.0, 2.0, 3.0), None)
     check("XBRL: CAGR 계산", round(_fa.cagr(100.0, 133.1, 3.0), 4), 0.1)

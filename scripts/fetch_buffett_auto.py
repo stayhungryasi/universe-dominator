@@ -286,7 +286,7 @@ def cagr3y_from(reports):
     """
     reports, _ = quarterly_only(reports)
     if len(reports or []) < 8:
-        return None
+        return None, f"분기 부족({len(reports or [])})"
 
     def ttm(idx):
         tot = 0.0
@@ -309,7 +309,7 @@ def cagr3y_from(reports):
     # 숫자가 크게 나오면 성장주라서 그런 줄 알기 쉽다 — 그래서 더 위험하다.
     head = end_of(0)
     if head is None:
-        return None
+        return None, "최신 보고 날짜 없음"
     # 밴드 안에서 **3년에 가장 가까운** 창을 고른다. 첫 번째로 걸리는 것을 쓰면
     # 늘 밴드의 아래끝(2.5년)을 잡아 성장률이 계통적으로 부풀려진다.
     base, base_years, best = None, None, None
@@ -324,9 +324,17 @@ def cagr3y_from(reports):
         if best is None or gap < best:
             base, base_years, best = i, years, gap
     if base is None:
-        return None
+        span = None
+        d = end_of(len(reports) - 4)
+        if d:
+            span = round((head - d).days / 365.25, 2)
+        return None, f"3년 창 없음(가장 오래된 창 {span}년, 분기 {len(reports)}건)"
     now, before = ttm(0), ttm(base)
-    return cagr(before, now, base_years)
+    if now is None or before is None:
+        return None, f"창은 찾았으나 합산 실패(현재 {now} · {base_years:.1f}년전 {before})"
+    v = cagr(before, now, base_years)
+    return v, (f"{base_years:.1f}년 창" if v is not None
+               else f"CAGR 불가(현재 {now:.0f} · 과거 {before:.0f} — 적자 구간)")
 
 
 # ────────────────────────────────────────────────────────────────
@@ -448,7 +456,11 @@ def build_block(c, key, now):
         else:
             block["notes"] = "유형자기자본 0 이하 — ROE 미산출"
 
-    block["g_cagr3y"] = (lambda v: round(v, 4) if v is not None else None)(cagr3y_from(reports))
+    g3, g3_why = cagr3y_from(reports)
+    block["g_cagr3y"] = round(g3, 4) if g3 is not None else None
+    if g3 is None:
+        # 왜 못 쟀는지를 남긴다 — '없다'만 찍으면 다음에도 똑같이 헤맨다
+        print(f"[자동취재] {ticker}: 3년 CAGR 미산출 — {g3_why}", file=sys.stderr)
     block["g_consensus"] = (lambda v: round(v, 4) if v is not None else None)(
         fetch_consensus_growth(ticker, key))
     return block, ("ok" if eps is not None else "zero")
