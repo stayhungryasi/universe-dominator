@@ -331,7 +331,7 @@ def measure_bench(c, price, rates, prev_bench=None):
 
     eps_ttm = _num(b.get("eps_adj_ttm"))
     roe = _num(b.get("roe_tangible"))
-    g = pick_g(b.get("g_cagr3y"), b.get("g_consensus"))
+    g = pick_g(b.get("g_cagr3y"), b.get("g_forward"))
     ey = earnings_yield(eps_ttm, price)
 
     out = {

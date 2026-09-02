@@ -255,7 +255,7 @@ def main():
         # 분기 EPS 2.85 는 forward_eps 9.1 과 자릿수가 다르다 — 섞이면 괴리가 폭주한다
         "eps_adj": {"value": 2.85, "unit": "USD/qtr"},
         "eps_adj_ttm": {"value": 11.4}, "roe_tangible": 0.35,
-        "g_cagr3y": 0.08, "g_consensus": 0.06})
+        "g_cagr3y": 0.08, "g_forward": 0.06})
     check("벤치: buffett 블록은 괴리 경로에 안 섞인다",
           _fb.measure_gap(_rich, 200.0, None), _fb.measure_gap(_base, 200.0, None))
     check("벤치: 괴리 값 자체도 종전 그대로",
@@ -294,7 +294,7 @@ def main():
     # ⑤ 시클리컬 가드 — coupon10y·zone_buffett 을 아예 산출하지 않는다
     _cyc = {"ticker": "MU", "type": "시클리컬",
             "buffett": {"cyclical_peak_guard": True, "eps_adj_ttm": {"value": 10.0},
-                        "g_cagr3y": 0.05, "g_consensus": 0.05}}
+                        "g_cagr3y": 0.05, "g_forward": 0.05}}
     _cb = _fb.measure_bench(_cyc, 100.0, {"UST10": 4.0})
     check("벤치: 가드는 coupon10y 미산출", _cb["coupon10y"], None)
     check("벤치: 가드도 존은 untested (못 잰 것은 한 칸에)", _cb["zone_buffett"], "untested")
@@ -302,7 +302,7 @@ def main():
     # 가드가 없었다면 pass 였을 값이라는 것까지 확인 — 가드가 진짜로 막고 있는가
     _cyc_off = {"ticker": "MU", "type": "시클리컬",
                 "buffett": {"cyclical_peak_guard": False, "eps_adj_ttm": {"value": 10.0},
-                            "g_cagr3y": 0.05, "g_consensus": 0.05}}
+                            "g_cagr3y": 0.05, "g_forward": 0.05}}
     check("벤치: 가드를 끄면 실제로 판정된다(가드가 일하고 있다는 증거)",
           _fb.measure_bench(_cyc_off, 100.0, {"UST10": 4.0})["zone_buffett"], "pass")
 
@@ -310,7 +310,7 @@ def main():
     check("벤치: .KS 는 한국물", _fb.market_of("005930.KS"), "KTB10")
     check("벤치: 접미사 없으면 미국", _fb.market_of("AAPL"), "UST10")
     _kr = {"ticker": "005930.KS", "type": "씨즈형",
-           "buffett": {"eps_adj_ttm": {"value": 5000}, "g_cagr3y": 0.05, "g_consensus": 0.05}}
+           "buffett": {"eps_adj_ttm": {"value": 5000}, "g_cagr3y": 0.05, "g_forward": 0.05}}
     _kb = _fb.measure_bench(_kr, 70000.0, {"UST10": 4.0, "KTB10": None})
     check("벤치: 미배선 시장은 untested", _kb["zone_buffett"], "untested")
     check("벤치: 미배선 금리는 null (0 아님)", _kb["rate10y"], None)
@@ -393,28 +393,56 @@ def main():
     # 사양서 GOOG 2026Q2 분해를 그대로 재현한 픽스처:
     #   GAAP EPS 9.11 · 미실현이익 세후 6.26 → 조정 EPS 2.85
     #   세후 6.26 이므로 세전 투자손익 = 6.26 / (1−0.21) = 7.9241/주
+    # 실제 응답 형태를 따른다: year·quarter 가 있고 손익계산서는 **누적(YTD)** 이다.
     _SH = 12_000_000_000.0
-    def _q(ni_ps, gain_ps):
-        return {"report": {"ic": [{"concept": "NetIncomeLoss", "value": ni_ps * _SH},
-                                  {"concept": "EquitySecuritiesFvNiGainLoss",
-                                   "value": gain_ps * _SH},
-                                  {"concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
-                                   "value": _SH}]}}
-    _reports = [_q(9.11 / 4, 7.9241 / 4) for _ in range(4)]   # 4분기 합 = 연간
-    _eps, _method, _n = _fa.eps_adj_ttm_from(_reports)
-    check("XBRL: 조정 EPS 가 사양서 2.85 와 ±5% 이내",
+    import datetime as _dt
+
+    def _rpt(year, q, ytd_ni, ytd_gain=None, sh=_SH, days=None):
+        rows = [{"concept": "us-gaap_NetIncomeLoss", "value": ytd_ni * sh},
+                {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+                 "value": sh}]
+        if ytd_gain is not None:
+            rows.append({"concept": "us-gaap_EquitySecuritiesFvNiGainLoss",
+                         "value": ytd_gain * sh})
+        end = _dt.date(year, 3 * q, 28)
+        span = days if days is not None else 91 * q          # 누적 기간
+        return {"year": year, "quarter": q,
+                "startDate": str(end - _dt.timedelta(days=span)), "endDate": str(end),
+                "report": {"ic": rows}}
+
+    # 분기별 EPS 9.11/4 · 투자손익 7.9241/4 이 매 분기 같다고 두고 누적으로 싣는다
+    _per_ni, _per_gain = 9.11 / 4, 7.9241 / 4
+    _ytd = [_rpt(2026, q, _per_ni * q, _per_gain * q) for q in (4, 3, 2, 1)]
+    _eps, _method, _n = _fa.eps_adj_ttm_from(_ytd)
+    check("XBRL: 누적 보고를 차분해 조정 EPS 2.85 (±5%)",
           _eps is not None and abs(_eps - 2.85) / 2.85 <= 0.05, True)
     check("XBRL: 쓴 태그를 method 에 남긴다",
           "EquitySecuritiesFvNiGainLoss" in (_method or ""), True)
+
+    # 2026-09-02 실전 사고 회귀 — 기간 길이로 거르면 Q1 만 남아 '4개 연도의 Q1 합'이 된다.
+    # 그 합이 그럴듯해 보였던 것이 이 사고의 핵심이다(애플 9.61).
+    _q1only = [_rpt(y, 1, 5.0) for y in (2026, 2025, 2024, 2023)]
+    check("XBRL: 서로 다른 해의 Q1 4개는 TTM 이 아니다(연속 아님 → 거부)",
+          _fa.eps_adj_ttm_from(_q1only)[0], None)
+    check("XBRL: 거부 사유가 로그에 남는다",
+          "연속이 아님" in _fa.eps_adj_ttm_from(_q1only)[1], True)
+    # 회사가 이미 분기 단위로 싣는 경우(누적 아님)는 차분하지 않는다
+    _disc = [_rpt(2026, q, 2.0, days=91) for q in (4, 3, 2, 1)]
+    check("XBRL: 분기 단위로 싣는 회사는 그대로 합산", round(_fa.eps_adj_ttm_from(_disc)[0], 2), 8.0)
+    check("XBRL: 진짜 분기 목록은 최신순", [(y, q) for y, q, _, _ in _fa.quarter_incomes(_ytd)],
+          [(2026, 4), (2026, 3), (2026, 2), (2026, 1)])
+    check("XBRL: 차분 결과는 분기값", round(_fa.quarter_incomes(_ytd)[0][2] / _SH, 4),
+          round(_per_ni - _per_gain * (1 - 0.21), 4))
+
     # 투자손익 태그가 하나도 없으면 **0 으로 치지 않고** 무조정임을 밝힌다
-    _plain = [{"report": {"ic": [{"concept": "NetIncomeLoss", "value": 2.0 * _SH},
-                                 {"concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
-                                  "value": _SH}]}} for _ in range(4)]
+    _plain = [_rpt(2026, q, 2.0 * q) for q in (4, 3, 2, 1)]
     _e2, _m2, _ = _fa.eps_adj_ttm_from(_plain)
     check("XBRL: 투자손익 태그 없으면 무조정 명시", ("무조정" in _m2, round(_e2, 2)), (True, 8.0))
-    check("XBRL: 분기 4개 미만이면 null", _fa.eps_adj_ttm_from(_reports[:3])[0], None)
+    check("XBRL: 분기 4개 미만이면 null", _fa.eps_adj_ttm_from(_ytd[:3])[0], None)
     check("XBRL: 순이익 태그 없으면 null",
-          _fa.eps_adj_ttm_from([{"report": {"ic": []}}] * 4)[0], None)
+          _fa.eps_adj_ttm_from([{"year": 2026, "quarter": q, "report": {"ic": []}}
+                                for q in (4, 3, 2, 1)])[0], None)
+
     # 아래는 손으로 만든 dict 대신 **flatten 을 거쳐** 실제 경로를 탄다
     _flat = lambda rows: _fa.flatten({"ic": [{"concept": c, "value": v} for c, v in rows]})
     check("XBRL: 있는 투자손익 태그만 합산",
@@ -428,8 +456,6 @@ def main():
                                      ("FiniteLivedIntangibleAssetsNet", 30.0)])), None)
     check("XBRL: 유형자기자본 정상 산출",
           _fa.tangible_equity(_flat([("StockholdersEquity", 100.0), ("Goodwill", 20.0)])), 80.0)
-
-    # 2026-08-31 실전 사고 회귀 — 접두사·대소문자·문자열 값 때문에 측정이 0 이 되던 것
     check("XBRL: us-gaap_ 접두사를 벗겨 맞춘다",
           _fa.pick(_flat([("us-gaap_NetIncomeLoss", 7.0)]), ["NetIncomeLoss"]),
           (7.0, "us-gaap_NetIncomeLoss"))
@@ -438,56 +464,54 @@ def main():
     check("XBRL: 문자열 숫자도 읽는다", _fa.to_num("1,234.5"), 1234.5)
     check("XBRL: 회계식 음수 표기", _fa.to_num("(2,000)"), -2000.0)
     check("XBRL: 숫자 아닌 값은 None(0 아님)", _fa.to_num("N/A"), None)
-    _pref = [{"report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": "2000"},
-                                {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-                                 "value": 1000}]}} for _ in range(4)]
-    check("XBRL: 접두사·문자열 섞여도 EPS 산출", round(_fa.eps_adj_ttm_from(_pref)[0], 2), 8.0)
-    check("XBRL: 실패하면 실제 태그를 로그에 남긴다",
-          "실제 태그" in _fa.eps_adj_ttm_from([{"report": {"ic": [
-              {"concept": "us-gaap_Revenues", "value": 1}]}}] * 4)[1], True)
-    # 2026-08-31 2차 실전 사고 회귀 — 누적기간 보고가 섞여 EPS 가 2~3배 부풀던 것.
-    # 무서운 이유: 자릿수·부호가 맞아 '통과' 라는 결론까지 정상으로 찍혔다.
-    import datetime as _dt
-    def _rep(days, ni, sh=1000.0):
-        st = _dt.date(2026, 1, 1)
-        return {"startDate": str(st), "endDate": str(st + _dt.timedelta(days=days)),
-                "report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": ni},
-                                  {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-                                   "value": sh}]}}
-    _mixed = [_rep(91, 1000.0), _rep(365, 4000.0), _rep(91, 1000.0),
-              _rep(182, 2000.0), _rep(91, 1000.0), _rep(91, 1000.0)]
-    _kept, _drop = _fa.quarterly_only(_mixed)
-    check("XBRL: 누적기간 보고를 걸러낸다", (len(_kept), _drop), (4, 2))
-    check("XBRL: 분기만 합산하면 EPS 가 맞는다",
-          round(_fa.eps_adj_ttm_from(_mixed)[0], 3), 4.0)
-    check("XBRL: 날짜 없으면 거르지 않는다(구 응답 호환)",
-          _fa.quarterly_only([{"report": {}}])[0] != [], True)
-    # 주식수 태그가 없어도 희석EPS 에서 되돌려 구한다 (GOOG·AVGO 실패 사례)
-    _noshare = _fa.flatten({"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": 5000.0},
-                                   {"concept": "us-gaap_EarningsPerShareDiluted", "value": 5.0}]})
-    check("XBRL: 주식수 없으면 희석EPS 로 역산", _fa.diluted_shares(_noshare)[0], 1000.0)
-    # 타당성 방지선 — 부풀림만 막고, 실적 급감(반대 방향)은 막지 않는다
+    check("XBRL: 주식수 없으면 희석EPS 로 역산",
+          _fa.diluted_shares(_flat([("us-gaap_NetIncomeLoss", 5000.0),
+                                    ("us-gaap_EarningsPerShareDiluted", 5.0)]))[0], 1000.0)
     check("XBRL: 선행 4배 초과는 보류", _fa.implausible(40.0, 9.1), True)
     check("XBRL: 정상 범위는 통과", _fa.implausible(12.0, 9.1), False)
     check("XBRL: 급감 방향은 막지 않는다", _fa.implausible(1.0, 9.1), False)
     check("XBRL: 선행 EPS 없으면 대조 불가 → 통과", _fa.implausible(40.0, None), False)
 
-    # 3년 창은 인덱스가 아니라 날짜로 — 결번·수정공시가 있어도 진짜 3년을 잰다
-    def _q(end, ni):
-        st = end - _dt.timedelta(days=91)
-        return {"startDate": str(st), "endDate": str(end),
-                "report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": ni},
-                                  {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-                                   "value": 1000.0}]}}
-    _e = _dt.date(2026, 6, 30)
-    _series = [_q(_e - _dt.timedelta(days=91 * i), 200.0 if i < 4 else 100.0) for i in range(20)]
-    _g, _gwhy = _fa.cagr3y_from(_series)   # 최근 TTM 800 vs 3년 전 400 → 2배/3년
-    check("XBRL: 3년 CAGR 은 날짜로 창을 잡는다(3년에 가장 가까운 창)",
-          abs(_g - (2 ** (1 / 3) - 1)) < 0.01, True)
-    _short = [_q(_e - _dt.timedelta(days=91 * i), 100.0) for i in range(8)]
+    # 3년 CAGR — 진짜 분기 목록 위에서 12칸이 곧 3년이다
+    _long = []
+    for y in (2026, 2025, 2024, 2023, 2022):
+        base = 4.0 if y >= 2026 else 2.0 if y >= 2023 else 1.0
+        _long += [_rpt(y, q, base * q) for q in (4, 3, 2, 1)]
+    _g3, _why3 = _fa.cagr3y_from(_long)     # 최근 TTM 16 vs 3년 전 8 → 2배/3년
+    check("XBRL: 3년 CAGR (12분기 뒤 = 3년)",
+          abs(_g3 - (2 ** (1 / 3) - 1)) < 0.01, True)
     check("XBRL: 3년 치가 없으면 null(짧은 이력을 늘려 적지 않는다)",
-          _fa.cagr3y_from(_short)[0], None)
-    check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_short)[1]), True)
+          _fa.cagr3y_from(_long[:8])[0], None)
+    check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_long[:8])[1]), True)
+
+    # ── 전망 g (2026-09-02) — 과거 성장률을 미래 가정으로 쓰지 않는다 ─────────
+    # 막으려는 것 한 문장: **잘 나간 구간의 성장을 영원히 이어붙이는 것.**
+    check("전망g: +5y 행을 고른다",
+          _fa.ltg_from_growth_table([("0q", 0.05), ("+1y", 0.10), ("+5y", 0.08)]), 0.08)
+    check("전망g: 과거 행(-5y)은 절대 고르지 않는다",
+          _fa.ltg_from_growth_table([("-5y", 0.30)]), None)
+    check("전망g: 과거 행만 있고 전망이 없으면 null (과거로 대체 금지)",
+          _fa.ltg_from_growth_table([("0q", 0.05), ("-5y", 0.42)]), None)
+    check("전망g: LTG 라벨도 인식", _fa.ltg_from_growth_table([("LTG", 0.07)]), 0.07)
+    check("전망g: 퍼센트 표기 방어", _fa.ltg_from_growth_table([("+5y", 12.0)]), 0.12)
+    check("전망g: 연간 추정 2개년 CAGR",
+          round(_fa.growth_from_annual_estimates(
+              [{"period": "2027-12-31", "epsAvg": 12.1},
+               {"period": "2026-12-31", "epsAvg": 10.0}]), 3), 0.21)
+    check("전망g: 추정 1개면 null",
+          _fa.growth_from_annual_estimates([{"period": "2026-12-31", "epsAvg": 10.0}]), None)
+    check("전망g: 적자 추정이면 null",
+          _fa.growth_from_annual_estimates(
+              [{"period": "2026-12-31", "epsAvg": -1.0},
+               {"period": "2027-12-31", "epsAvg": 2.0}]), None)
+    _nofwd = {"ticker": "X", "type": "씨즈형",
+              "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.20, "g_forward": None}}
+    check("전망g: 전망 없으면 존은 미검정(과거 CAGR 단독 사용 금지)",
+          _fb.measure_bench(_nofwd, 100.0, {"UST10": 4.0})["zone_buffett"], "untested")
+    _both = {"ticker": "X", "type": "씨즈형",
+             "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.20, "g_forward": 0.06}}
+    check("전망g: 둘 다 있으면 작은 쪽(전망)이 쓰인다",
+          _fb.measure_bench(_both, 100.0, {"UST10": 4.0})["g_used"], 0.06)
 
     check("XBRL: 적자 구간 CAGR 은 null", _fa.cagr(-1.0, 2.0, 3.0), None)
     check("XBRL: CAGR 계산", round(_fa.cagr(100.0, 133.1, 3.0), 4), 0.1)

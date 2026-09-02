@@ -16,7 +16,9 @@
   roe_tangible = 조정 TTM 순이익 ÷ (자본총계 − 영업권 − 무형자산)
     유형자기자본이 0 이하면 null. 음수로 나눈 ROE 는 숫자가 아니라 착시다.
   g_cagr3y = 3년 조정 EPS CAGR (4분기 합산 3개 시점)
-  g_consensus = Finnhub 장기 성장률 컨센서스
+  g_forward = **전망** 성장률 (yfinance 장기 → Finnhub 연간 추정 CAGR)
+    과거 성장률(epsGrowth5Y 등)은 쓰지 않는다 — 잘 나간 구간을 영원히 이어붙이는
+    것이라 정점 이익 함정의 다른 얼굴이다(2026-09-02 확정).
     → 둘 중 **하나라도 없으면 g 는 null**. 측정층 pick_g 의 원칙을 그대로 따른다
       (낙관 단일값 금지 — 사양서 §2).
 
@@ -238,26 +240,70 @@ def implausible(eps_ttm, fwd_eps):
     return eps_ttm > fwd_eps * 4.0
 
 
+def quarter_incomes(reports):
+    """진짜 분기 조정순이익 목록 → [(연, 분기, 값, 근거)] 최신순.
+
+    2026-09-02 진단이 지목한 것: 필터를 통과한 '분기'가 16건인데 12년을 덮고 있었다.
+    즉 **연 1건만 남아 있었다.** 원인은 Finnhub 분기 보고의 손익계산서가 **누적(YTD)**
+    이라는 것 — Q1 91일 · Q2 182일 · Q3 273일 · FY 365일이다. 80~100일 필터는 Q1 만
+    남겼고, 그 결과 TTM 이 '서로 다른 4개 연도의 Q1 합' 이 되어 있었다.
+
+    무서운 대목: 그 합이 **그럴듯했다.** 애플은 Q1(홀리데이)이 가장 큰 분기라
+    네 해치 Q1 을 더하니 연간 EPS 와 비슷한 9.61 이 나왔다. 자릿수가 맞으니
+    아무도 되묻지 않는다.
+
+    그래서 기간 길이로 거르지 않고 **차분한다**: 누적 보고(100일 초과)면
+    같은 해 직전 분기의 누적을 빼서 그 분기만 남긴다. 회사가 이미 분기 단위로
+    싣는 경우(100일 이하)는 그대로 쓴다.
+    """
+    ytd = {}
+    for r in reports or []:
+        y, q = (r or {}).get("year"), (r or {}).get("quarter")
+        if not isinstance(y, int) or q not in (1, 2, 3, 4):
+            continue
+        if (y, q) in ytd:
+            continue                       # 같은 분기의 수정 공시 — 최신 것만
+        inc, why = adjusted_income(flatten((r or {}).get("report")))
+        if inc is None:
+            continue
+        ytd[(y, q)] = (inc, why, period_days(r))
+
+    out = []
+    for (y, q), (inc, why, days) in ytd.items():
+        if q == 1 or (days is not None and days <= 100):
+            out.append((y, q, inc, why))    # 이미 분기 단위
+            continue
+        prev = ytd.get((y, q - 1))
+        if prev is None:
+            continue                        # 직전 누적이 없으면 차분 불가 → 버린다
+        out.append((y, q, inc - prev[0], why))
+    out.sort(reverse=True)
+    return out
+
+
 def eps_adj_ttm_from(reports):
     """최근 4분기 → (eps, method, 분기수). 4분기가 안 되면 (None, 사유, n)."""
-    only, dropped = quarterly_only(reports)
-    quarters = only[:4]
-    if len(quarters) < 4:
-        return None, f"분기 부족({len(quarters)}/4, 누적기간 {dropped}건 제외)", len(quarters)
-    total, notes = 0.0, []
-    for q in quarters:
-        flat = flatten(q.get("report") if isinstance(q, dict) else None)
-        inc, why = adjusted_income(flat)
-        if inc is None:
-            return None, f"{why} — 조정 불가 · 실제 태그: {sample_concepts(flat)}", len(quarters)
-        total += inc
-        if why not in notes:
-            notes.append(why)
-    head = flatten((quarters[0] or {}).get("report"))
+    qs = quarter_incomes(reports)
+    if len(qs) < 4:
+        flat0 = flatten(((reports or [{}])[0] or {}).get("report"))
+        return None, (f"분기 부족({len(qs)}/4) · 실제 태그: {sample_concepts(flat0)}"), len(qs)
+    window = qs[:4]
+    # 창이 실제로 1년을 덮는지 확인한다 — 연 1건만 남는 종류의 사고를 여기서 잡는다
+    span = (window[0][0] - window[-1][0]) * 4 + (window[0][1] - window[-1][1])
+    if span != 3:
+        return None, (f"최근 4분기가 연속이 아님({window[-1][0]}Q{window[-1][1]}"
+                      f"~{window[0][0]}Q{window[0][1]})"), len(qs)
+    total = sum(x[2] for x in window)
+    notes = []
+    for x in window:
+        if x[3] not in notes:
+            notes.append(x[3])
+    head = flatten(((reports or [{}])[0] or {}).get("report"))
     shares, sh_tag = diluted_shares(head)
     if not shares or shares <= 0:
-        return None, f"희석주식수 없음 · 실제 태그: {sample_concepts(head)}", len(quarters)
-    return total / shares, "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}", len(quarters)
+        return None, f"희석주식수 없음 · 실제 태그: {sample_concepts(head)}", len(qs)
+    return (total / shares,
+            "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}", len(qs))
 
 
 def tangible_equity(flat):
@@ -284,56 +330,26 @@ def cagr3y_from(reports):
     분기 보고가 12개(3년) 이상 있어야 성립한다. 없으면 null — 짧은 이력을
     긴 성장률로 늘려 적는 것이 이 자리에서 가장 하기 쉬운 거짓말이다.
     """
-    reports, _ = quarterly_only(reports)
-    if len(reports or []) < 8:
-        return None, f"분기 부족({len(reports or [])})"
+    qs = quarter_incomes(reports)
+    if len(qs) < 16:
+        return None, f"분기 부족({len(qs)}/16 — 3년 비교 불가)"
 
-    def ttm(idx):
-        tot = 0.0
-        for q in reports[idx:idx + 4]:
-            inc, _ = adjusted_income(flatten((q or {}).get("report")))
-            if inc is None:
-                return None
-            tot += inc
-        return tot
-
-    def end_of(i):
-        try:
-            return datetime.strptime(str((reports[i] or {}).get("endDate"))[:10], "%Y-%m-%d")
-        except (ValueError, TypeError, IndexError):
+    def ttm(i):
+        w = qs[i:i + 4]
+        if len(w) < 4:
             return None
+        if (w[0][0] - w[-1][0]) * 4 + (w[0][1] - w[-1][1]) != 3:
+            return None                     # 결번이 낀 창은 쓰지 않는다
+        return sum(x[2] for x in w)
 
-    # 3년 전 창은 **날짜로** 찾는다 — 인덱스 12칸이 3년 전이라는 보장이 없다.
-    # 2026-08-31 실측: 그렇게 쟀더니 NVDA 가 연 482% 로 나왔다(3년에 190배).
-    # 수정 공시·결번 때문에 목록의 12칸 뒤가 3년 전이 아니었던 것이다.
-    # 숫자가 크게 나오면 성장주라서 그런 줄 알기 쉽다 — 그래서 더 위험하다.
-    head = end_of(0)
-    if head is None:
-        return None, "최신 보고 날짜 없음"
-    # 밴드 안에서 **3년에 가장 가까운** 창을 고른다. 첫 번째로 걸리는 것을 쓰면
-    # 늘 밴드의 아래끝(2.5년)을 잡아 성장률이 계통적으로 부풀려진다.
-    base, base_years, best = None, None, None
-    for i in range(4, len(reports) - 3):
-        d = end_of(i)
-        if d is None:
-            continue
-        years = (head - d).days / 365.25
-        if not (2.5 <= years <= 3.5):
-            continue
-        gap = abs(years - 3.0)
-        if best is None or gap < best:
-            base, base_years, best = i, years, gap
-    if base is None:
-        span = None
-        d = end_of(len(reports) - 4)
-        if d:
-            span = round((head - d).days / 365.25, 2)
-        return None, f"3년 창 없음(가장 오래된 창 {span}년, 분기 {len(reports)}건)"
-    now, before = ttm(0), ttm(base)
+    # 3년 전 창은 **분기 번호로** 잡는다(정확히 12분기 뒤). 날짜·인덱스로 잡던 두 번의
+    # 시도가 모두 실패했다: 인덱스는 결번에 흔들렸고(NVDA 482%), 날짜는 누적 보고
+    # 때문에 창 자체를 못 찾았다(전 종목 null). 진짜 분기 목록 위에서는 12칸이 3년이다.
+    now, before = ttm(0), ttm(12)
     if now is None or before is None:
-        return None, f"창은 찾았으나 합산 실패(현재 {now} · {base_years:.1f}년전 {before})"
-    v = cagr(before, now, base_years)
-    return v, (f"{base_years:.1f}년 창" if v is not None
+        return None, f"연속 4분기 창 확보 실패(현재 {now} · 3년전 {before})"
+    v = cagr(before, now, 3.0)
+    return v, ("3년 창" if v is not None
                else f"CAGR 불가(현재 {now:.0f} · 과거 {before:.0f} — 적자 구간)")
 
 
@@ -365,22 +381,89 @@ def fetch_reports(ticker, key):
         return [], "timeout", None
 
 
-def fetch_consensus_growth(ticker, key):
-    """Finnhub 장기 성장률 컨센서스(%) → 소수. 없으면 None."""
-    url = f"https://finnhub.io/api/v1/stock/metric?symbol={ticker}&metric=all&token={key}"
+# ── 전망 성장률 ──────────────────────────────────────────────────
+# **과거 성장률을 미래 가정으로 쓰지 않는다** (2026-09-02 선장님 확정).
+# epsGrowth5Y 같은 실적 성장률을 10년 쿠폰의 g 에 넣으면, 잘 나간 구간의 성장을
+# 영원히 이어붙이는 셈이 된다 — 정점 이익 함정의 다른 얼굴이다. 실제로 그 값으로
+# AAPL·LLY 가 '통과' 판정을 받았다. 전망치가 없으면 **null → 미검정**이 정답이다.
+LTG_LABELS = ("+5y", "5y", "ltg", "longterm", "long term", "next 5 years")
+
+
+def ltg_from_growth_table(pairs):
+    """(라벨, 값) 목록에서 장기 성장률 한 개를 고른다 → 소수 | None.
+
+    yfinance growth_estimates 의 행 라벨은 버전마다 '+5y' · 'LTG' 등으로 다르다.
+    과거 행('-5y')은 **절대 고르지 않는다** — 그게 이 규율의 핵심이다.
+    """
+    for label, value in pairs or []:
+        key = str(label).strip().lower()
+        if key.startswith("-"):
+            continue                      # 과거 행 — 쳐다보지 않는다
+        if any(k in key for k in LTG_LABELS):
+            v = to_num(value)
+            if v is None:
+                continue
+            return v / 100.0 if abs(v) > 1.5 else v      # 퍼센트 표기 방어
+    return None
+
+
+def growth_from_annual_estimates(rows):
+    """연간 EPS 추정 2개년 → CAGR. 추정이 2개 미만이거나 적자면 None.
+
+    rows: [{"period": "2027-12-31", "epsAvg": 9.9}, ...] (순서 무관)
+    """
+    pts = []
+    for r in rows or []:
+        v = to_num((r or {}).get("epsAvg"))
+        d = str((r or {}).get("period") or "")[:10]
+        if v is None or len(d) < 10:
+            continue
+        try:
+            pts.append((datetime.strptime(d, "%Y-%m-%d"), v))
+        except ValueError:
+            continue
+    pts.sort()
+    if len(pts) < 2:
+        return None
+    (d0, v0), (d1, v1) = pts[0], pts[-1]
+    years = (d1 - d0).days / 365.25
+    if years < 0.5:
+        return None
+    return cagr(v0, v1, years)
+
+
+def fetch_forward_growth(ticker, key):
+    """전망 성장률 → (값, 출처). 없으면 (None, 사유).
+
+    1순위 yfinance 장기 성장률(+5y/LTG) · 2순위 Finnhub 연간 EPS 추정 2개년 CAGR.
+    """
     try:
-        r = requests.get(url, headers=UA, timeout=20)
+        import yfinance
+        tbl = yfinance.Ticker(ticker).growth_estimates
+        if tbl is not None and len(tbl):
+            col = tbl.columns[0]
+            pairs = [(idx, tbl.loc[idx, col]) for idx in tbl.index]
+            v = ltg_from_growth_table(pairs)
+            if v is not None:
+                return v, "yfinance 장기 성장률"
+    except Exception as e:
+        print(f"[자동취재] {ticker} yfinance 전망 실패 ({type(e).__name__})", file=sys.stderr)
+
+    if not key:
+        return None, "전망 없음(yfinance 미확보 · Finnhub 키 없음)"
+    try:
+        r = requests.get("https://finnhub.io/api/v1/stock/eps-estimate"
+                         f"?symbol={ticker}&freq=annual&token={key}",
+                         headers=UA, timeout=20)
         time.sleep(1.1)
         if r.status_code != 200:
-            return None
-        m = (r.json() or {}).get("metric") or {}
-    except Exception:
-        return None
-    for k in ("epsGrowth5Y", "epsGrowth3Y", "revenueGrowth5Y"):
-        v = m.get(k)
-        if isinstance(v, (int, float)) and not isinstance(v, bool):
-            return float(v) / 100.0
-    return None
+            return None, f"Finnhub 추정 HTTP {r.status_code}"
+        v = growth_from_annual_estimates((r.json() or {}).get("data") or [])
+        if v is not None:
+            return v, "Finnhub 연간 추정 CAGR"
+    except Exception as e:
+        print(f"[자동취재] {ticker} Finnhub 추정 실패 ({type(e).__name__})", file=sys.stderr)
+    return None, "전망 성장률 미확보"
 
 
 def fetch_foreign_eps(ticker):
@@ -410,7 +493,7 @@ def build_block(c, key, now):
         "period": None,
         "cyclical_peak_guard": ("시클리컬" in (c.get("type") or "")),
         "eps_adj_ttm": None, "roe_tangible": None,
-        "g_cagr3y": None, "g_consensus": None,
+        "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
     }
 
@@ -420,6 +503,9 @@ def build_block(c, key, now):
         block["method"] = "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)"
         block["source"] = "yfinance TTM 희석 EPS"
         block["confidence"] = "중" if eps is not None else None
+        gf, gf_src = fetch_forward_growth(ticker, "")     # 해외는 yfinance 만
+        block["g_forward"] = round(gf, 4) if gf is not None else None
+        block["g_forward_source"] = gf_src if gf is not None else None
         return block, ("ok" if eps is not None else "zero")
 
     if not key:
@@ -461,8 +547,11 @@ def build_block(c, key, now):
     if g3 is None:
         # 왜 못 쟀는지를 남긴다 — '없다'만 찍으면 다음에도 똑같이 헤맨다
         print(f"[자동취재] {ticker}: 3년 CAGR 미산출 — {g3_why}", file=sys.stderr)
-    block["g_consensus"] = (lambda v: round(v, 4) if v is not None else None)(
-        fetch_consensus_growth(ticker, key))
+    gf, gf_src = fetch_forward_growth(ticker, key)
+    block["g_forward"] = round(gf, 4) if gf is not None else None
+    block["g_forward_source"] = gf_src if gf is not None else None
+    if gf is None:
+        print(f"[자동취재] {ticker}: 전망 성장률 미확보 — {gf_src}", file=sys.stderr)
     return block, ("ok" if eps is not None else "zero")
 
 
