@@ -542,6 +542,20 @@ def main():
     check("NaN: 전망이 NaN 이면 존은 미검정",
           _fb.measure_bench(_nanb, 100.0, {"UST10": 4.75})["zone_buffett"], "untested")
 
+    # 상식 가드 — 단기 반등률이 10년 복리 가정 자리에 앉는 것을 막는다
+    check("가드: 40% 이하는 채택", _fa.vet_forward_growth(0.40, "src")[0], 0.40)
+    check("가드: 40% 초과는 버린다(깎지 않는다)", _fa.vet_forward_growth(0.55, "src")[0], None)
+    check("가드: 사유를 note 로 남긴다",
+          _fa.vet_forward_growth(0.55, "src")[2], "전망치 이상(55%) — 취재 필요")
+    check("가드: 없는 값은 그대로 없음", _fa.vet_forward_growth(None, None)[0], None)
+    check("가드: 음수 전망은 막지 않는다(역성장은 정상 관측)",
+          _fa.vet_forward_growth(-0.10, "src")[0], -0.10)
+    _wild = {"ticker": "X", "type": "씨즈형",
+             "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.30,
+                         "g_forward": None}}
+    check("가드: 전망이 버려지면 존은 미검정(과거 CAGR 단독 금지)",
+          _fb.measure_bench(_wild, 100.0, {"UST10": 4.75})["zone_buffett"], "untested")
+
     _nofwd = {"ticker": "X", "type": "씨즈형",
               "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.20, "g_forward": None}}
     check("전망g: 전망 없으면 존은 미검정(과거 CAGR 단독 사용 금지)",

@@ -438,6 +438,11 @@ def fetch_reports(ticker, key, freq="quarterly"):
 # 영원히 이어붙이는 셈이 된다 — 정점 이익 함정의 다른 얼굴이다. 실제로 그 값으로
 # AAPL·LLY 가 '통과' 판정을 받았다. 전망치가 없으면 **null → 미검정**이 정답이다.
 LTG_LABELS = ("+5y", "5y", "ltg", "longterm", "long term", "next 5 years")
+# 10년 복리 가정에 단기 반등률이 들어오는 것을 막는 상식선.
+# 연 40% 를 10년 복리하면 29배다 — 그런 성장을 10년 내내 가정하는 것은 전망이
+# 아니라 소원이다. 넘으면 채택하지 않고 **취재로 넘긴다**(0 이나 상한값으로
+# 깎지 않는다 — 못 믿을 값을 그럴듯한 값으로 바꾸면 오류가 더 안 보인다).
+G_FORWARD_MAX = 0.40
 
 
 def ltg_from_growth_table(pairs):
@@ -481,6 +486,21 @@ def growth_from_annual_estimates(rows):
     if years < 0.5:
         return None
     return cagr(v0, v1, years)
+
+
+def vet_forward_growth(g, source):
+    """전망 g 상식 가드 → (값, 출처, note).
+
+    막으려는 것 한 문장: **단기 반등률이 10년 복리 가정 자리에 앉는 것.**
+    적자에서 흑자로 돌아선 해의 '성장률', 일회성 기저효과, 데이터 오류가 여기로 들어온다.
+    상한을 넘으면 깎지 않고 **버린다** — 40% 를 39.9% 로 바꿔 두면 못 믿을 값이
+    믿을 만한 값처럼 보인다. 사람이 취재해 덮어쓸 자리로 넘기는 것이 맞다.
+    """
+    if g is None:
+        return None, source, ""
+    if g > G_FORWARD_MAX:
+        return None, None, f"전망치 이상({g * 100:.0f}%) — 취재 필요"
+    return g, source, ""
 
 
 def fetch_forward_growth(ticker, key):
@@ -555,8 +575,11 @@ def build_block(c, key, now):
         block["source"] = "yfinance TTM 희석 EPS"
         block["confidence"] = "중" if eps is not None else None
         gf, gf_src = fetch_forward_growth(ticker, "")     # 해외는 yfinance 만
+        gf, gf_src, gf_note = vet_forward_growth(gf, gf_src)
         block["g_forward"] = round(gf, 4) if gf is not None else None
         block["g_forward_source"] = gf_src if gf is not None else None
+        if gf_note:
+            block["notes"] = " · ".join(x for x in (block.get("notes"), gf_note) if x)
         return block, ("ok" if eps is not None else "zero")
 
     if not key:
@@ -601,10 +624,13 @@ def build_block(c, key, now):
         # 왜 못 쟀는지를 남긴다 — '없다'만 찍으면 다음에도 똑같이 헤맨다
         print(f"[자동취재] {ticker}: 3년 CAGR 미산출 — {g3_why}", file=sys.stderr)
     gf, gf_src = fetch_forward_growth(ticker, key)
+    gf, gf_src, gf_note = vet_forward_growth(gf, gf_src)
     block["g_forward"] = round(gf, 4) if gf is not None else None
     block["g_forward_source"] = gf_src if gf is not None else None
+    if gf_note:
+        block["notes"] = " · ".join(x for x in (block.get("notes"), gf_note) if x)
     if gf is None:
-        print(f"[자동취재] {ticker}: 전망 성장률 미확보 — {gf_src}", file=sys.stderr)
+        print(f"[자동취재] {ticker}: 전망 성장률 미채택 — {gf_note or gf_src}", file=sys.stderr)
     return block, ("ok" if eps is not None else "zero")
 
 
