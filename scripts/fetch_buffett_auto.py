@@ -240,7 +240,7 @@ def implausible(eps_ttm, fwd_eps):
     return eps_ttm > fwd_eps * 4.0
 
 
-def quarter_incomes(reports):
+def quarter_incomes(reports, annual=None):
     """진짜 분기 조정순이익 목록 → [(연, 분기, 값, 근거)] 최신순.
 
     2026-09-02 진단이 지목한 것: 필터를 통과한 '분기'가 16건인데 12년을 덮고 있었다.
@@ -256,34 +256,64 @@ def quarter_incomes(reports):
     같은 해 직전 분기의 누적을 빼서 그 분기만 남긴다. 회사가 이미 분기 단위로
     싣는 경우(100일 이하)는 그대로 쓴다.
     """
-    ytd = {}
+    raw = {}
     for r in reports or []:
         y, q = (r or {}).get("year"), (r or {}).get("quarter")
         if not isinstance(y, int) or q not in (1, 2, 3, 4):
             continue
-        if (y, q) in ytd:
+        if (y, q) in raw:
             continue                       # 같은 분기의 수정 공시 — 최신 것만
         inc, why = adjusted_income(flatten((r or {}).get("report")))
         if inc is None:
             continue
-        ytd[(y, q)] = (inc, why, period_days(r))
+        raw[(y, q)] = (inc, why, period_days(r))
 
-    out = []
-    for (y, q), (inc, why, days) in ytd.items():
+    # ① 진짜 분기값 — 누적(100일 초과)이면 같은 해 직전 분기를 뺀다
+    tq = {}
+    for (y, q), (inc, why, days) in raw.items():
         if q == 1 or (days is not None and days <= 100):
-            out.append((y, q, inc, why))    # 이미 분기 단위
+            tq[(y, q)] = (inc, why)
             continue
-        prev = ytd.get((y, q - 1))
+        prev = raw.get((y, q - 1))
         if prev is None:
             continue                        # 직전 누적이 없으면 차분 불가 → 버린다
-        out.append((y, q, inc - prev[0], why))
+        tq[(y, q)] = (inc - prev[0], why)
+
+    # ② 회계연도 4분기는 10-Q 가 없다 — 10-K(연간)에만 있다. 2026-09-02 실측:
+    #    조립된 분기 목록에 **Q4 가 하나도 없었고**, 그래서 연속 4분기 창이 영원히
+    #    만들어지지 않았다(전 종목 미검정). FY − (Q1+Q2+Q3) 로 복원한다.
+    #    앞 단계에서 이미 진짜 분기값을 만들었으므로 누적·분기 어느 표기든 같은 식이다.
+    for r in annual or []:
+        y = (r or {}).get("year")
+        if not isinstance(y, int) or (y, 4) in tq:
+            continue
+        three = [tq.get((y, k)) for k in (1, 2, 3)]
+        if any(v is None for v in three):
+            continue
+        inc, why = adjusted_income(flatten((r or {}).get("report")))
+        if inc is None:
+            continue
+        tq[(y, 4)] = (inc - sum(v[0] for v in three), f"{why} (FY−Q1~Q3)")
+
+    out = [(y, q, v[0], v[1]) for (y, q), v in tq.items()]
     out.sort(reverse=True)
+    return out
+
+
+class _WithAnnual(list):
+    """분기 목록에 연간 목록을 함께 들고 다니는 얇은 껍데기(시그니처 변경 최소화)."""
+    annual = ()
+
+
+def _attach_annual(reports, annual):
+    out = _WithAnnual(reports or [])
+    out.annual = annual or []
     return out
 
 
 def eps_adj_ttm_from(reports):
     """최근 4분기 → (eps, method, 분기수). 4분기가 안 되면 (None, 사유, n)."""
-    qs = quarter_incomes(reports)
+    qs = quarter_incomes(reports, getattr(reports, "annual", None))
     if len(qs) < 4:
         flat0 = flatten(((reports or [{}])[0] or {}).get("report"))
         return None, (f"분기 부족({len(qs)}/4) · 실제 태그: {sample_concepts(flat0)}"), len(qs)
@@ -337,7 +367,7 @@ def cagr3y_from(reports):
     분기 보고가 12개(3년) 이상 있어야 성립한다. 없으면 null — 짧은 이력을
     긴 성장률로 늘려 적는 것이 이 자리에서 가장 하기 쉬운 거짓말이다.
     """
-    qs = quarter_incomes(reports)
+    qs = quarter_incomes(reports, getattr(reports, "annual", None))
     if len(qs) < 16:
         return None, f"분기 부족({len(qs)}/16 — 3년 비교 불가)"
 
@@ -377,10 +407,10 @@ def _record(source, outcome, code, items):
         print(f"[자동취재] 원장 기록 실패 ({e})", file=sys.stderr)
 
 
-def fetch_reports(ticker, key):
-    """Finnhub financials-reported (분기) → (reports, outcome, code)."""
+def fetch_reports(ticker, key, freq="quarterly"):
+    """Finnhub financials-reported → (reports, outcome, code)."""
     url = ("https://finnhub.io/api/v1/stock/financials-reported"
-           f"?symbol={ticker}&freq=quarterly&token={key}")
+           f"?symbol={ticker}&freq={freq}&token={key}")
     try:
         r = requests.get(url, headers=UA, timeout=25)
         time.sleep(1.1)                      # 무료 60 call/min 준수
@@ -528,6 +558,8 @@ def build_block(c, key, now):
     _record(ticker, outcome, code, len(reports))
     if not reports:
         return block, outcome
+    annual, _ao, _ac = fetch_reports(ticker, key, "annual")   # Q4 복원용
+    reports = _attach_annual(reports, annual)
 
     eps, method, nq = eps_adj_ttm_from(reports)
     block["source"] = f"Finnhub financials-reported · 분기 {len(reports)}건"

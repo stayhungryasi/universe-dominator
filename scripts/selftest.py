@@ -412,7 +412,10 @@ def main():
 
     # 분기별 EPS 9.11/4 · 투자손익 7.9241/4 이 매 분기 같다고 두고 누적으로 싣는다
     _per_ni, _per_gain = 9.11 / 4, 7.9241 / 4
-    _ytd = [_rpt(2026, q, _per_ni * q, _per_gain * q) for q in (4, 3, 2, 1)]
+    # 실제 응답에는 Q4 가 없다 — 10-K(연간)에서 FY−Q3 로 복원해야 한다
+    _ytd = _fa._attach_annual(
+        [_rpt(2026, q, _per_ni * q, _per_gain * q) for q in (3, 2, 1)],
+        [_rpt(2026, 4, _per_ni * 4, _per_gain * 4, days=365)])
     _eps, _method, _n = _fa.eps_adj_ttm_from(_ytd)
     check("XBRL: 누적 보고를 차분해 조정 EPS 2.85 (±5%)",
           _eps is not None and abs(_eps - 2.85) / 2.85 <= 0.05, True)
@@ -435,15 +438,19 @@ def main():
     check("XBRL: 최신 분기가 고립되면 한 칸 밀린 연속 창으로 측정", round(_ge, 2), 8.0)
     check("XBRL: 밀린 창은 그 사실을 밝힌다", "결번" in _gm, True)
     # 회사가 이미 분기 단위로 싣는 경우(누적 아님)는 차분하지 않는다
-    _disc = [_rpt(2026, q, 2.0, days=91) for q in (4, 3, 2, 1)]
+    _disc = _fa._attach_annual([_rpt(2026, q, 2.0, days=91) for q in (3, 2, 1)],
+                               [_rpt(2026, 4, 8.0, days=365)])
     check("XBRL: 분기 단위로 싣는 회사는 그대로 합산", round(_fa.eps_adj_ttm_from(_disc)[0], 2), 8.0)
-    check("XBRL: 진짜 분기 목록은 최신순", [(y, q) for y, q, _, _ in _fa.quarter_incomes(_ytd)],
+    check("XBRL: 진짜 분기 목록은 최신순",
+          [(y, q) for y, q, _, _ in _fa.quarter_incomes(_ytd, _ytd.annual)],
           [(2026, 4), (2026, 3), (2026, 2), (2026, 1)])
-    check("XBRL: 차분 결과는 분기값", round(_fa.quarter_incomes(_ytd)[0][2] / _SH, 4),
+    check("XBRL: 차분 결과는 분기값",
+          round(_fa.quarter_incomes(_ytd, _ytd.annual)[0][2] / _SH, 4),
           round(_per_ni - _per_gain * (1 - 0.21), 4))
 
     # 투자손익 태그가 하나도 없으면 **0 으로 치지 않고** 무조정임을 밝힌다
-    _plain = [_rpt(2026, q, 2.0 * q) for q in (4, 3, 2, 1)]
+    _plain = _fa._attach_annual([_rpt(2026, q, 2.0 * q) for q in (3, 2, 1)],
+                                [_rpt(2026, 4, 8.0, days=365)])
     _e2, _m2, _ = _fa.eps_adj_ttm_from(_plain)
     check("XBRL: 투자손익 태그 없으면 무조정 명시", ("무조정" in _m2, round(_e2, 2)), (True, 8.0))
     check("XBRL: 분기 4개 미만이면 null", _fa.eps_adj_ttm_from(_ytd[:3])[0], None)
@@ -481,16 +488,22 @@ def main():
     check("XBRL: 선행 EPS 없으면 대조 불가 → 통과", _fa.implausible(40.0, None), False)
 
     # 3년 CAGR — 진짜 분기 목록 위에서 12칸이 곧 3년이다
-    _long = []
+    _long, _lann = [], []
     for y in (2026, 2025, 2024, 2023, 2022):
         base = 4.0 if y >= 2026 else 2.0 if y >= 2023 else 1.0
-        _long += [_rpt(y, q, base * q) for q in (4, 3, 2, 1)]
+        _long += [_rpt(y, q, base * q) for q in (3, 2, 1)]
+        _lann.append(_rpt(y, 4, base * 4, days=365))
+    _long = _fa._attach_annual(_long, _lann)
     _g3, _why3 = _fa.cagr3y_from(_long)     # 최근 TTM 16 vs 3년 전 8 → 2배/3년
     check("XBRL: 3년 CAGR (12분기 뒤 = 3년)",
           abs(_g3 - (2 ** (1 / 3) - 1)) < 0.01, True)
+    check("XBRL: Q4 는 연간 보고에서 복원한다(10-Q 에는 없다)",
+          [(y, q) for y, q, _, _ in _fa.quarter_incomes(_long, _long.annual)][:4],
+          [(2026, 4), (2026, 3), (2026, 2), (2026, 1)])
+    _shortl = _fa._attach_annual(_long[:6], _lann[:2])
     check("XBRL: 3년 치가 없으면 null(짧은 이력을 늘려 적지 않는다)",
-          _fa.cagr3y_from(_long[:8])[0], None)
-    check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_long[:8])[1]), True)
+          _fa.cagr3y_from(_shortl)[0], None)
+    check("XBRL: 못 잰 이유를 함께 돌려준다", bool(_fa.cagr3y_from(_shortl)[1]), True)
 
     # ── 전망 g (2026-09-02) — 과거 성장률을 미래 가정으로 쓰지 않는다 ─────────
     # 막으려는 것 한 문장: **잘 나간 구간의 성장을 영원히 이어붙이는 것.**
