@@ -287,12 +287,18 @@ def eps_adj_ttm_from(reports):
     if len(qs) < 4:
         flat0 = flatten(((reports or [{}])[0] or {}).get("report"))
         return None, (f"분기 부족({len(qs)}/4) · 실제 태그: {sample_concepts(flat0)}"), len(qs)
-    window = qs[:4]
-    # 창이 실제로 1년을 덮는지 확인한다 — 연 1건만 남는 종류의 사고를 여기서 잡는다
-    span = (window[0][0] - window[-1][0]) * 4 + (window[0][1] - window[-1][1])
-    if span != 3:
-        return None, (f"최근 4분기가 연속이 아님({window[-1][0]}Q{window[-1][1]}"
-                      f"~{window[0][0]}Q{window[0][1]})"), len(qs)
+    # **연속된** 4분기 창을 최신 쪽부터 찾는다. 결번이 하나 있다고 측정을 통째로
+    # 포기하면(첫 시도가 그랬다) 전 종목이 미검정이 된다 — 한 칸 밀린 창이라도
+    # 그것은 여전히 진짜 TTM 이다. 다만 최신 창이 아니면 그 사실을 method 에 적는다.
+    window, offset = None, 0
+    for i in range(0, len(qs) - 3):
+        w = qs[i:i + 4]
+        if (w[0][0] - w[-1][0]) * 4 + (w[0][1] - w[-1][1]) == 3:
+            window, offset = w, i
+            break
+    if window is None:
+        got = ", ".join(f"{y}Q{q}" for y, q, _, _ in qs[:8])
+        return None, f"연속 4분기 없음(조립된 분기: {got})", len(qs)
     total = sum(x[2] for x in window)
     notes = []
     for x in window:
@@ -302,8 +308,9 @@ def eps_adj_ttm_from(reports):
     shares, sh_tag = diluted_shares(head)
     if not shares or shares <= 0:
         return None, f"희석주식수 없음 · 실제 태그: {sample_concepts(head)}", len(qs)
+    stale = "" if offset == 0 else f" · {window[0][0]}Q{window[0][1]} 기준(최신 분기 결번)"
     return (total / shares,
-            "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}", len(qs))
+            "SEC XBRL 조정 · " + " / ".join(notes) + f" ÷ {sh_tag}" + stale, len(qs))
 
 
 def tangible_equity(flat):
@@ -342,12 +349,17 @@ def cagr3y_from(reports):
             return None                     # 결번이 낀 창은 쓰지 않는다
         return sum(x[2] for x in w)
 
+    base = next((i for i in range(0, len(qs) - 3) if ttm(i) is not None), None)
+    if base is None:
+        return None, "연속 4분기 창 없음"
+
     # 3년 전 창은 **분기 번호로** 잡는다(정확히 12분기 뒤). 날짜·인덱스로 잡던 두 번의
     # 시도가 모두 실패했다: 인덱스는 결번에 흔들렸고(NVDA 482%), 날짜는 누적 보고
     # 때문에 창 자체를 못 찾았다(전 종목 null). 진짜 분기 목록 위에서는 12칸이 3년이다.
-    now, before = ttm(0), ttm(12)
+    now, before = ttm(base), ttm(base + 12)
     if now is None or before is None:
-        return None, f"연속 4분기 창 확보 실패(현재 {now} · 3년전 {before})"
+        got = ", ".join(f"{y}Q{q}" for y, q, _, _ in qs[base:base + 17:4])
+        return None, f"3년 전 창 확보 실패(창 시작 {got})"
     v = cagr(before, now, 3.0)
     return v, ("3년 창" if v is not None
                else f"CAGR 불가(현재 {now:.0f} · 과거 {before:.0f} — 적자 구간)")

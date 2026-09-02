@@ -424,8 +424,16 @@ def main():
     _q1only = [_rpt(y, 1, 5.0) for y in (2026, 2025, 2024, 2023)]
     check("XBRL: 서로 다른 해의 Q1 4개는 TTM 이 아니다(연속 아님 → 거부)",
           _fa.eps_adj_ttm_from(_q1only)[0], None)
-    check("XBRL: 거부 사유가 로그에 남는다",
-          "연속이 아님" in _fa.eps_adj_ttm_from(_q1only)[1], True)
+    check("XBRL: 거부 사유에 조립된 분기를 남긴다",
+          "조립된 분기" in _fa.eps_adj_ttm_from(_q1only)[1], True)
+    # 결번이 하나 있어도 한 칸 밀린 **연속** 창으로 측정한다 (전멸 방지)
+    # 최신 분기가 외따로 떨어져 있으면(직전 분기 결번) 한 칸 밀린 연속 창을 쓴다
+    _gap = ([_rpt(2027, 1, 3.0)]                      # 2026Q3·Q4 결번 → 2027Q1 은 고립
+            + [_rpt(2026, q, 2.0 * q) for q in (2, 1)]
+            + [_rpt(2025, q, 2.0 * q) for q in (4, 3, 2, 1)])
+    _ge, _gm, _ = _fa.eps_adj_ttm_from(_gap)
+    check("XBRL: 최신 분기가 고립되면 한 칸 밀린 연속 창으로 측정", round(_ge, 2), 8.0)
+    check("XBRL: 밀린 창은 그 사실을 밝힌다", "결번" in _gm, True)
     # 회사가 이미 분기 단위로 싣는 경우(누적 아님)는 차분하지 않는다
     _disc = [_rpt(2026, q, 2.0, days=91) for q in (4, 3, 2, 1)]
     check("XBRL: 분기 단위로 싣는 회사는 그대로 합산", round(_fa.eps_adj_ttm_from(_disc)[0], 2), 8.0)
