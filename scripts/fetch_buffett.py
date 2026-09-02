@@ -139,12 +139,15 @@ def market_of(ticker):
 
 
 def _num(x):
-    """숫자 · {"value": 숫자} · None 을 float|None 으로. **0 치환하지 않는다.**"""
+    """숫자 · {"value": 숫자} · None 을 float|None 으로. **0 치환하지 않는다.**
+
+    NaN·무한대는 값이 아니다 — 통과시키면 비교·min 이 조용히 어긋난다.
+    """
     if isinstance(x, dict):
         x = x.get("value")
     if isinstance(x, bool) or not isinstance(x, (int, float)):
         return None
-    return float(x)
+    return float(x) if math.isfinite(float(x)) else None
 
 
 def parse_fred_csv(text):
@@ -267,9 +270,14 @@ def earnings_yield(eps_ttm, price):
     return eps_ttm / price
 
 
-def pick_g(cagr3y, consensus):
-    """g_used = 둘 중 **작은** 쪽. 하나라도 없으면 null — 낙관 단일값 금지."""
-    a, b = _num(cagr3y), _num(consensus)
+def pick_g(cagr3y, forward):
+    """g_used = 둘 중 **작은** 쪽. 하나라도 없으면 null — 낙관 단일값 금지.
+
+    NaN 방어가 여기 있는 이유: min(x, NaN) 은 파이썬에서 **x 를 돌려준다.**
+    전망치가 NaN 으로 들어오면 "둘 다 있어야 한다"는 규칙이 조용히 무너지고
+    과거 CAGR 단독으로 결론이 나간다 (2026-09-02 실사고).
+    """
+    a, b = _num(cagr3y), _num(forward)
     if a is None or b is None:
         return None
     return min(a, b)

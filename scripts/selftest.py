@@ -525,6 +525,23 @@ def main():
           _fa.growth_from_annual_estimates(
               [{"period": "2026-12-31", "epsAvg": -1.0},
                {"period": "2027-12-31", "epsAvg": 2.0}]), None)
+    # 2026-09-02 NaN 사고 회귀 — min(x, NaN) 이 x 를 돌려주는 바람에 금지된 과거
+    # CAGR 이 조용히 g 로 쓰였다(AMZN 쿠폰 3381% '통과'). 없는 값은 반드시 None.
+    _nan = float("nan")
+    check("NaN: to_num 은 NaN 을 숫자로 보지 않는다", _fa.to_num(_nan), None)
+    check("NaN: 무한대도 아니다", _fa.to_num(float("inf")), None)
+    check("NaN: 문자열 nan 도 막는다", _fa.to_num("nan"), None)
+    check("NaN: 전망 표에서 NaN 행은 고르지 않는다",
+          _fa.ltg_from_growth_table([("+5y", _nan)]), None)
+    check("NaN: pick_g 는 NaN 을 없는 값으로 — 과거 CAGR 단독 사용 금지",
+          _fb.pick_g(0.09, _nan), None)
+    check("NaN: 정상값은 그대로", _fb.pick_g(0.09, 0.06), 0.06)
+    _nanb = {"ticker": "X", "type": "씨즈형",
+             "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.64,
+                         "g_forward": _nan}}
+    check("NaN: 전망이 NaN 이면 존은 미검정",
+          _fb.measure_bench(_nanb, 100.0, {"UST10": 4.75})["zone_buffett"], "untested")
+
     _nofwd = {"ticker": "X", "type": "씨즈형",
               "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.20, "g_forward": None}}
     check("전망g: 전망 없으면 존은 미검정(과거 CAGR 단독 사용 금지)",

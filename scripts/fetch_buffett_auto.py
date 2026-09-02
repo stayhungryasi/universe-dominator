@@ -30,6 +30,7 @@
 원칙: 개별 종목이 실패해도 전체는 계속한다. 못 잰 칸은 null 로 남긴다 — 0 치환 금지.
 """
 import json
+import math
 import os
 import sys
 import time
@@ -98,19 +99,27 @@ def norm(concept):
 
 
 def to_num(v):
-    """숫자 · 숫자문자열 → float. 아니면 None (0 으로 치지 않는다)."""
+    """숫자 · 숫자문자열 → float. 아니면 None (0 으로 치지 않는다).
+
+    **NaN·무한대는 숫자가 아니다.** 2026-09-02 사고: yfinance 가 장기 성장률을
+    NaN 으로 주는데 isinstance(float) 를 통과해 그대로 실렸고, 뒤에서
+    min(과거CAGR, NaN) 이 **과거CAGR 을 돌려주는** 바람에 금지된 과거 성장률이
+    조용히 g 로 쓰였다(AMZN 쿠폰 3381%, '통과'). 방지선이 있었는데 NaN 이 그 밑으로
+    통과한 것이다 — 없는 값은 반드시 None 이어야 한다.
+    """
     if isinstance(v, bool):
         return None
     if isinstance(v, (int, float)):
-        return float(v)
+        return float(v) if math.isfinite(float(v)) else None
     if isinstance(v, str):
         t = v.strip().replace(",", "").replace("$", "")
         if t.startswith("(") and t.endswith(")"):      # 회계식 음수 표기
             t = "-" + t[1:-1]
         try:
-            return float(t)
+            f = float(t)
         except ValueError:
             return None
+        return f if math.isfinite(f) else None
     return None
 
 
