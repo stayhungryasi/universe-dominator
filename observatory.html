@@ -236,6 +236,21 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .lg-watch ul { margin: 0; padding-left: 18px; }
 .lg-watch li { font-size: 13px; line-height: 1.85; color: var(--text-secondary); }
 .lg-watch b { color: var(--gold); font-weight: 800; }
+/* 존 요약 스트립 — 시차 관측의 .px-zone 을 그대로 쓰고 클릭만 얹는다 */
+.px-zone.lg-pick { cursor: pointer; }
+.px-zone.lg-pick:hover { border-color: var(--gold); }
+.px-zone.lg-on { border-color: var(--gold); }
+.px-zone.lg-on .z-n { color: var(--gold); }
+.lg-fold { width: 100%; text-align: left; margin-top: 14px; padding: 12px 16px;
+  border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--bg-card);
+  font-family: inherit; font-size: 13.5px; font-weight: 800; color: var(--text-secondary);
+  cursor: pointer; }
+.lg-fold:hover { color: var(--text); }
+.lg-price { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 800; }
+.lg-gapto { font-size: 12px; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
+@media (max-width: 480px) {
+  .lg-c-price { max-width: 92px; overflow: hidden; text-overflow: ellipsis; }
+}
 @media (max-width: 480px) {
   .px-table { font-size: 13px; }
   .px-table td { padding: 12px 7px; }
@@ -1530,6 +1545,9 @@ function renderParallax(){
    배지는 사람이 취재해 적어 넣은 칸(전환율·risk5·가드)을 그대로 비춘다. */
 const LG_ZONE_KO = { pass: '통과', prove_growth: '성장 입증 필요',
                      bond_inferior: '국채 열위', untested: '미검정' };
+const LG_ORDER = ['pass', 'prove_growth', 'bond_inferior', 'untested'];
+let lgFilter = null;        // 존 스트립 필터 (null = 전체)
+let lgBlankOpen = false;    // 백지 그룹 접힘 상태 — 기본은 접힘
 /* 금리 라벨도 화면에서는 우리말로 — UST10·KTB10 은 원장 키(기계 이름)다.
    한국·일본물은 아직 null 이라 안 뜨지만, 배선되는 날 같은 실수를 반복하지 않도록
    지금 함께 우리말로 둔다. */
@@ -1568,6 +1586,11 @@ const LG_GLOSSARY =
   '<dt>too hard</dt><dd>10년 뒤 월세 칸이 백지인 건물. 나쁜 건물이라서가 아니라 아무도 그 칸을 ' +
     '자신 있게 못 적는 것 — 버핏은 그 경우 모든 투입은 투기라고 했다. 이 배지는 기계가 매기지 않는다. ' +
     '판단층에서 사람이 "사업 확실성 ✕"라고 적은 건물에만 붙는다.</dd>' +
+  '<dt>통과 가격</dt><dd>버핏존이 열리는 주가. 1997년 주주서한의 셈법이다 — ' +
+    '앞으로 주식을 <b>살</b> 사람에게 가격 하락은 손실이 아니라 세일이다. ' +
+    '햄버거를 평생 사 먹을 사람이 소고기값 하락을 반길지 아쉬워할지 생각해 보라는 그 말. ' +
+    '그래서 이 칸은 예측이 아니라 <b>내가 기다리는 가격표를 미리 적어 두는 자리</b>다. ' +
+    '지금 눈금(g 가정) 위의 산술이므로 가정이 바뀌면 이 가격도 바뀐다.</dd>' +
   '</dl></details>';
 
 /* 비고 — 측정층의 note 문자열을 **그대로 뿌리지 않는다.**
@@ -1610,6 +1633,25 @@ function lgNote(b, j){
   return '';
 }
 
+/* 통과 가격 — "이 가격까지 내려오면 버핏존이 열린다".
+   목표가가 아니라 지금 눈금(g 가정) 위의 산술이다. 1997 주주서한의 순매수자 관점:
+   앞으로 살 사람에게 하락은 손실이 아니라 세일이다. 그 세일가를 미리 적어 두는 칸. */
+function lgPassPrice(x, b){
+  const pp = b.pass_price, cur = b.price;
+  if (pp == null || cur == null || cur <= 0) return '<span class="lg-neg">—</span>';
+  const cy = (x.currency === 'USD' || !x.currency) ? '$' : '';
+  const tail = cy ? '' : ' ' + esc(x.currency || '');
+  const money = cy + pp.toLocaleString(undefined, {maximumFractionDigits: 2}) + tail;
+  const diff = (pp - cur) / cur;
+  if (b.zone_buffett === 'pass') {
+    return '<span class="lg-price lg-pos">이미 통과</span>' +
+      '<div class="lg-gapto">여유 ' + (diff * 100).toFixed(0) + '%</div>';
+  }
+  return '<span class="lg-price">' + money + '</span>' +
+    '<div class="lg-gapto">현재가 ' + (diff >= 0 ? '+' : '') +
+    (diff * 100).toFixed(0) + '%</div>';
+}
+
 function lgRow(x, lg){
   const b = x.bench || {};
   const j = lg[x.ticker] || {};
@@ -1650,6 +1692,7 @@ function lgRow(x, lg){
     '<td class="px-num">' + coupon + '</td>' +
     '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) +
       (j.conv == null ? '' : lgAuto(j, 'conversion')) + '</td>' +
+    '<td class="px-num lg-c-price">' + lgPassPrice(x, b) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다
       (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">가정 약함</span>' : '') +
@@ -1673,7 +1716,9 @@ function renderLegend(){
     '투자 권유가 아닙니다.</b> 10년 원가쿠폰의 g는 <b>가정</b>입니다. 가정이 바뀌면 결론도 바뀝니다 — ' +
     '표의 모든 쿠폰 옆에 그 가정을 함께 적어 둔 이유입니다. ' +
     '<b>자동 취재 값은 공시·AI 추출에 기반하며 오류가 있을 수 있습니다</b> — ' +
-    '\'자동\' 표식이 붙은 값이 그것입니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+    '\'자동\' 표식이 붙은 값이 그것입니다. ' +
+    '<b>통과 가격은 현재 눈금(g 가정) 기준 산술이며 목표가가 아닙니다.</b> ' +
+    '어떤 항목도 매수·매도 신호가 아닙니다.</div>';
 
   // 눈금 스트립 — 미배선 국채(KTB·JGB)는 null 이면 아예 적지 않는다.
   // 0 으로 채우면 '금리 0%' 라는 거짓말이 되고, 표기하면 있는 척이 된다.
@@ -1694,22 +1739,74 @@ function renderLegend(){
     (rates.source ? ' · 10년물 ' + esc(rates.source) : '') +
     (rates.as_of ? ' (' + esc(rates.as_of) + ')' : '') + '</div>';
 
-  html += LG_GLOSSARY;
+  // 존 요약 스트립 — 시차 관측과 같은 4칸. 칸을 누르면 보드가 그 판정만 남긴다.
+  // 숨기는 장치가 아니라 **소음을 접는** 장치다: 합계는 언제나 전 종목이다.
+  const tally = {};
+  LG_ORDER.forEach(k => { tally[k] = 0; });
+  items.forEach(x => {
+    const z = ((x.bench || {}).zone_buffett) || 'untested';
+    tally[z] = (tally[z] || 0) + 1;
+  });
+  html += '<div class="px-strip">' + LG_ORDER.map(k =>
+    '<div class="px-zone lg-pick' + (lgFilter === k ? ' lg-on' : '') +
+    '" onclick="lgSetFilter(\'' + k + '\')" role="button" tabindex="0">' +
+    '<div class="z-name">' + LG_ZONE_KO[k] + '</div>' +
+    '<div class="z-n">' + tally[k] + '<span style="font-size:12px;font-weight:700">종</span>' +
+    '</div></div>').join('') + '</div>' +
+    '<div class="px-stripnote">합계 ' + items.length + '종' +
+    (lgFilter ? ' · <b>' + LG_ZONE_KO[lgFilter] + '</b>만 보는 중 — ' +
+       '<a href="#legend" onclick="lgSetFilter(null);return false;">전체 보기</a>' : '') +
+    '</div>';
 
-  html += '<div class="px-wrap"><table class="px-table"><thead><tr>' +
-    '<th>종목</th><th>ROE−2×국채</th><th>10년 원가쿠폰</th>' +
-    '<th class="lg-c-conv">전환율</th><th>버핏존</th>' +
-    '</tr></thead><tbody>' +
-    items.map(x => lgRow(x, lg)).join('') + '</tbody></table></div>';
-
-  // 버크셔 관찰 카드 — 고정 3줄. 숫자는 판단층 상수이고 D-day 만 오늘 기준으로 센다.
+  // 버크셔 관찰 카드 — 스트립 바로 아래. 고정 3줄이고 D-day 만 오늘 기준으로 센다.
   html += '<div class="lg-watch"><div class="lg-watch-title">🔭 버크셔 관찰</div><ul>' +
     '<li>버크셔 Q3 13F: <b>11/14</b> (D-' + lgDDay() + ')</li>' +
     '<li>캐펙스/OCF &gt; <b>1.15</b> = 약세 신호</li>' +
     '<li>클라우드 성장 &lt; <b>60%</b> = 의심 신호</li>' +
     '</ul></div>';
 
+  html += LG_GLOSSARY;
+
+  // 판정이 있는 종목이 위, 백지(미검정·정점주의)는 아래 접힘 그룹으로.
+  // 접는 것이지 숨기는 것이 아니다 — 눌러서 펼치면 34종이 다 있다.
+  const judged = [], blank = [];
+  items.forEach(x => {
+    const z = ((x.bench || {}).zone_buffett) || 'untested';
+    if (lgFilter && z !== lgFilter) return;
+    (z === 'untested' ? blank : judged).push(x);
+  });
+  judged.sort((a, c) => LG_ORDER.indexOf((a.bench || {}).zone_buffett) -
+                        LG_ORDER.indexOf((c.bench || {}).zone_buffett));
+
+  const head = '<div class="px-wrap"><table class="px-table"><thead><tr>' +
+    '<th>종목</th><th>ROE−2×국채</th><th>10년 원가쿠폰</th>' +
+    '<th class="lg-c-conv">전환율</th><th class="lg-c-price">통과 가격</th>' +
+    '<th>버핏존</th></tr></thead><tbody>';
+  if (judged.length) {
+    html += head + judged.map(x => lgRow(x, lg)).join('') + '</tbody></table></div>';
+  }
+  if (blank.length) {
+    html += '<button class="lg-fold" onclick="lgToggleBlank()">' +
+      (lgBlankOpen ? '▾' : '▸') + ' 백지·정점주의 ' + blank.length + '종' +
+      (lgBlankOpen ? '' : ' — 아직 판정에 필요한 칸이 비어 있는 종목') + '</button>';
+    if (lgBlankOpen) {
+      html += head + blank.map(x => lgRow(x, lg)).join('') + '</tbody></table></div>';
+    }
+  }
+  // coupon10y 스파크라인 자리 — 히스토리가 2주쯤 쌓인 뒤에 넣는다(점 2개로는 선이
+  // 아니라 착시다). 자리만 표시해 두고 데이터가 모이면 여기에 붙인다.
+
   host.innerHTML = html;
+}
+
+function lgSetFilter(z){
+  lgFilter = (lgFilter === z) ? null : z;
+  renderLegend();
+}
+
+function lgToggleBlank(){
+  lgBlankOpen = !lgBlankOpen;
+  renderLegend();
 }
 
 function renderColumns(){
