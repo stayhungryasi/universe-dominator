@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-03 10:24",
- "generated_at": "2026-09-03T10:24:29.971786+09:00",
+ "generated_label": "2026-09-03 17:22",
+ "generated_at": "2026-09-03T17:22:26.075228+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-03",
@@ -77,14 +77,8 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 10737000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "AI 수익화 가속 vs 거대 자본지출($77.1B 규모)로 실제 주주 귀속액 왜곡"
    },
    "conversion": {
     "value": 1.0,
@@ -95,7 +89,30 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 4건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H2"
+   },
+   "notes": "검색 해자는 견고하나 반독점·규제 리스크와 TPU 스택 투자 대비 ROI 검증 시점 임박",
+   "_evidence": {
+    "franchise": "Google News, Search 모노폴리 지속 + Cloud 사업 성장세",
+    "risk5": "cloud-fuelled earnings beat fails to address fundamental long-term issues; 15 Billion Reasons Alphabet Shares Are Sinking After Reporting Strong Earnings Growth",
+    "capalloc": "Alphabet Reports Q2 Results After the Bell Today. The Number That Decides the Stock Isn't Revenue or Earnings -- It's Capex; Q2 2026 Revenue Jumps 24%",
+    "owner_earnings": "Alphabet Slips as $77.1 Billion AI Gain Distorts Earnings; Strong AI Monetization Continues to Spearhead Results"
+   }
   },
   "MSFT": {
    "as_of": "2026-09-03",
@@ -211,7 +228,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.08
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -233,7 +250,7 @@
    "roe_tangible": null,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "유가 사이클에 완전히 종속된 이익 변동성으로 인해 정상화된 수익성 판단 불가"
+    "display_reason": "유가 사이클 종속 구조로 인해 정상화이익 추정의 신뢰도 제한"
    },
    "conversion": null,
    "g_cagr3y": null,
@@ -255,16 +272,15 @@
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
+    "score": 2,
+    "period": "2026Q3"
    },
-   "notes": "구조적으로 유가 사이클에 종속되어 있어 장기 예측 가능성 제한, 강한 현금 생성 능력에도 불구하고 '재앙적 결과' 경고 발언이 기업의 통제 불가능한 변수 노출을 시사",
+   "notes": "지정학적 프리미엄(이란 전쟁)에 의한 일시적 수익성 증대; 셰일가스 다각화 시도 중이나 장기 수익 예측가능성 약화",
    "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher",
-    "risk5": "Aramco CEO warns of 'catastrophic' consequences if oil crisis continues; Q2 2026 earnings beat as Iran war lifts oil prices - 지정학적 외부요인에 의한 수익 결정",
-    "capalloc": "Saudi Aramco reports $26.9B profit in third quarter; Saudi Aramco taps global debt markets with $4 billion bond issue",
-    "owner_earnings": "Earnings call transcript: Saudi Aramco Q4 2025 sees slight stock dip despite strong cash flow - 강한 현금 흐름도 주가 반응 약함"
+    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher - 수요의 필연성은 있으나 유가 사이클에 완전 종속",
+    "risk5": "Aramco CEO warns of 'catastrophic' consequences if oil crisis continues - 유가 변동성에 대한 경영진 우려 표시; business_certainty 최악 평가",
+    "capalloc": "Saudi Aramco reports $26.9B profit in third quarter - Q3 현금흐름 양호; Aramco and Maaden Move Ahead With Saudi Copper Mining Venture - 자본배분 활동 확인",
+    "owner_earnings": "Q2 2026 earnings beat as Iran war lifts oil prices vs Q3 down slightly over lower oil prices - 같은 분기 내 유가 변동에 따른 수익성 급등락"
    }
   },
   "META": {
@@ -383,44 +399,14 @@
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "플로트 복리 가치 창출이 주 수익원이나 공시 이익으로는 완전히 포착되지 않음"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": 0.1553,
    "g_forward": null,
    "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "notes": "Greg Abel 체제에서 현금 적극 배치, 자사주 매입 가속화되며 공정가치 대비 할인된 가격대 평가",
-   "_evidence": {
-    "franchise": "Berkshire의 보험 플로트는 대체 불가능한 자본 조달 수단이자 복리 엔진",
-    "risk5": "경영 능력(Abel의 현금 배치 공격성)과 기업 시스템 안정성 양호하나, 현재 주가 밸류에이션에서 불확실성 존재",
-    "capalloc": "Abel puts a big chunk of Berkshire's cash to work; Berkshire Hathaway (BRK.A) Makes First Net Stock Move In 14 Quarters",
-    "owner_earnings": "Q2 earnings rise year over year on diversified growth but float-driven intrinsic value creation not fully reflected in reported earnings"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-09-03",
@@ -464,8 +450,14 @@
    },
    "roe_tangible": 0.1618,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "기록적 분기 실적과 EPS 성장이 확인되나 사이클성과 규제 리스크로 인한 가시성 제약"
+    "variants": {
+     "A": {
+      "value": 58899000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -476,31 +468,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "notes": "Jamie Dimon이 '은행 환경이 거의 최상'이라 평가한 반면 동시에 '점점 복잡해지는 경제 리스크'를 경고하는 모순적 신호 발생",
-   "_evidence": {
-    "franchise": "JPMorgan notches record quarter as CEO Jamie Dimon calls the banking environment 'close to as good as it gets'",
-    "risk5": "JPMorgan Chase Faces Fresh Regulatory Scrutiny; Dimon flags 'increasingly complex' economic risks",
-    "capalloc": "JPMorgan tops estimates on Wall Street results; record quarter 성과로 현금 창출력 확인",
-    "owner_earnings": "JPMorgan Chase Earnings: Easily Hurdles Sky-High Expectations; Tops Q2 Earnings and Revenue Estimates"
-   }
+   "confidence": "중"
   },
   "WMT": {
    "as_of": "2026-09-03",
@@ -570,51 +538,21 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "Operating margin 76% suggests exceptional near-term earnings power, but cyclical memory chip industry and LTA term variability limit visibility beyond current AI cycle"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "notes": "Capex discipline constrained by 20T won capex requirement for 10-year revenue growth ceiling; US IPO ($28-29B) may signal peak cycle timing rather than durable value creation",
-   "_evidence": {
-    "franchise": "HBM4 enters mass production with 257% YoY revenue growth; Samsung and Micron competition suggests imperfect pricing power",
-    "risk5": "Q2 2026 76% operating margin and HBM4 ramp-up demonstrate execution; KOSPI volatility and memory stock bear market decline reflect cyclical uncertainty",
-    "capalloc": "₩40 trillion buyback and cancellation with 1 trillion won day-one execution; strong cash generation from 79.3T won Q2 revenue",
-    "owner_earnings": "Operating margin 76% in Q2 2026 with HBM4 mass production and Enterprise SSD doubling QoQ; but LTA terms vary by deal with deposit clauses"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-09-03",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.47
+    "value": 29.78
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -877,40 +815,14 @@
     "value": 60.71
    },
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI ASIC 수익화 초기 단계로 성장성은 있으나 모바일 사이클 종속성으로 불확실성 상존"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2024H2"
-   },
-   "notes": "Google·Nvidia의 대규모 전환사채 인수로 AI ASIC 수익 $2B 목표 달성 가능성 높아졌으나, 시클리컬 비즈니스 특성상 가격 변동성 극심",
-   "_evidence": {
-    "franchise": "Google·Nvidia가 $3.9B·$3.5B 규모 전환사채 인수로 MediaTek의 AI ASIC 플랫폼 수요 확증",
-    "risk5": "Q2 수익 NT$152.1B로 상단 가이던스 초과 달성, 다만 모바일 사이클 종속 시클리컬 사업 구조 유지, 주가 NT$4,000 돌파 후 거래정지 조치 발동으로 변동성 극심",
-    "capalloc": "Nvidia·Google 등으로부터 대규모 자본 유입으로 부채 규율 강화, 현금 증가 확실",
-    "owner_earnings": "AI ASIC 목표 수익 $2B로 상향, Q2 실적 가이던스 상단 초과 달성으로 경영 집행력 입증"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-09-03",
@@ -980,7 +892,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 517.39
+    "value": 514.13
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1010,5 +922,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-03 10:26"
+ "scout_label": "2026-09-03 17:24"
 }
