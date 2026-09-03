@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "ticker": "SPCX",
+  "company": "Space Exploration Technologies Corp.",
+  "run": {
+    "run_id": "2026-09",
+    "run_date": "2026-09-02",
+    "run_number": 1,
+    "previous_run_id": null,
+    "report_path": "reports/2026-09.md",
+    "notes": "최초 실행. 이전 상태 파일 없음. 모든 이정표는 미판정."
+  },
+  "market": {
+    "price_usd": 142.23,
+    "price_asof": "2026-09-02",
+    "price_source": "https://stockanalysis.com/stocks/spcx/",
+    "market_cap_usd_bn": 1930,
+    "shares_outstanding_bn": 13.57,
+    "net_cash_usd_bn": 60.6,
+    "enterprise_value_usd_bn": 1870,
+    "range_52w_usd": [104.83, 225.64],
+    "consensus_price_target_usd": 219.22,
+    "consensus_target_source": "https://public.com/stocks/spcx/forecast-price-target",
+    "morningstar_fair_value_usd": 63
+  },
+  "latest_reported_quarter": {
+    "period": "2Q26",
+    "report_date": "2026-08-04",
+    "source": "https://s21.q4cdn.com/184289198/files/doc_financials/2026/q2/SpaceX-Reports-Second-Quarter-2026-Results.pdf",
+    "revenue_usd_m": 7814,
+    "net_loss_usd_m": -541,
+    "adjusted_ebitda_usd_m": 3538,
+    "capex_usd_m": 18369,
+    "liquidity_usd_m": 100009,
+    "debt_and_finance_leases_usd_m": 39364,
+    "related_party_debt_usd_m": 13329,
+    "accumulated_deficit_usd_m": -41852,
+    "backlog_usd_m": 47500,
+    "six_month_ocf_usd_m": 3466,
+    "six_month_capex_usd_m": 28476,
+    "six_month_fcf_usd_m": -25010,
+    "segments": {
+      "space": {"revenue_usd_m": 962, "op_income_usd_m": -542, "adj_ebitda_usd_m": -205, "capex_usd_m": 1174},
+      "connectivity": {"revenue_usd_m": 4291, "op_income_usd_m": 1656, "adj_ebitda_usd_m": 2597, "capex_usd_m": 1367},
+      "ai": {"revenue_usd_m": 2561, "op_income_usd_m": -1257, "adj_ebitda_usd_m": 1146, "capex_usd_m": 15828}
+    },
+    "kpi": {
+      "starlink_subscribers_m": 12.0,
+      "starlink_arpu_usd_month": 66,
+      "total_launches": 38,
+      "customer_launches": 10,
+      "ai_nameplate_compute_gw": 1.4,
+      "derived_capex_per_gw_usd_bn": 39.6,
+      "derived_revenue_per_gw_usd_bn_yr": 6.3,
+      "derived_ai_payback_years": 6.3
+    }
+  },
+  "scenarios": {
+    "as_of": "2026-09-02",
+    "bull": {
+      "probability": 0.20,
+      "rationale": "AI 컴퓨트 수요 지속 + GW당 원가 우위 + Starship 완전 재사용으로 Starlink 용량 원가 붕괴",
+      "y2036": {"revenue_usd_bn": 705, "op_income_usd_bn": 229, "net_income_usd_bn": 167, "fcf_usd_bn": 130, "net_debt_usd_bn": 250},
+      "terminal_multiple": 25,
+      "value_per_share_usd": 81
+    },
+    "base": {
+      "probability": 0.50,
+      "rationale": "Starlink 성공하되 ARPU $50대로 하락, AI는 8GW에서 증설 중단·손실 축소 후 성장 둔화",
+      "y2036": {"revenue_usd_bn": 295, "op_income_usd_bn": 82, "net_income_usd_bn": 54, "fcf_usd_bn": 40, "net_debt_usd_bn": 180},
+      "terminal_multiple": 22,
+      "value_per_share_usd": 23
+    },
+    "bear": {
+      "probability": 0.30,
+      "rationale": "Kuiper·중국 경쟁으로 ARPU $40대 하락, Starship 재사용 미입증, 2029년 AI 계약 미갱신에 따른 대규모 손상과 반복 증자",
+      "y2036": {"revenue_usd_bn": 120, "op_income_usd_bn": 12, "net_income_usd_bn": 0, "fcf_usd_bn": -5, "net_debt_usd_bn": 200},
+      "terminal_multiple": null,
+      "value_per_share_usd": 3.5
+    }
+  },
+  "valuation": {
+    "discount_rate": 0.12,
+    "discount_rate_basis": "무위험 4.2%(추정) + ERP 5.0% x 베타 1.55",
+    "horizon_years": 10,
+    "share_count_2036_bn": 16.5,
+    "probability_weighted_value_usd": 29,
+    "multiple_crosscheck_usd": [53, 80],
+    "multiple_crosscheck_basis": "2027 컨센서스 매출 $72.4bn에 P/S 10~15배",
+    "fair_value_band_usd": [30, 80],
+    "fair_value_midpoint_usd": 55,
+    "upside_vs_price": -0.61,
+    "recommendation": "관망(비중 0%)",
+    "max_position_weight": 0.02,
+    "entry_trigger_price_usd": 80,
+    "implied_ai_segment_value_usd_bn": 1530,
+    "implied_ai_multiple_on_annualized_revenue": 150,
+    "implied_ai_multiple_on_contracted_arr": 59
+  },
+  "milestones": [
+    {"id": "A-2027-1", "axis": "A_starlink", "year": 2027, "statement": "가입자 2,000만 이상 AND ARPU $60 이상", "status": "미판정", "source": "분기 실적 Connectivity 표"},
+    {"id": "A-2028-1", "axis": "A_starlink", "year": 2028, "statement": "가입자 3,000만 이상, Starlink Mobile(D2C) 매출 별도 공시 $30억 이상", "status": "미판정", "source": "실적자료 부문 표"},
+    {"id": "A-2029-1", "axis": "A_starlink", "year": 2029, "statement": "Connectivity 연매출 $500억 이상, 영업이익률 40% 이상", "status": "미판정", "source": "연간 실적"},
+    {"id": "A-2030-1", "axis": "A_starlink", "year": 2030, "statement": "가입자 5,000만 이상, 상위 10개 해외시장 인허가 완료", "status": "미판정", "source": "각국 규제기관·회사 공시"},
+    {"id": "A-2032-1", "axis": "A_starlink", "year": 2032, "statement": "정부·군 매출 $200억 이상", "status": "미판정", "source": "DoD/우주군 계약 공시"},
+    {"id": "A-2036-1", "axis": "A_starlink", "year": 2036, "statement": "Connectivity 연매출 $1,200억 이상", "status": "미판정", "source": "연간 실적"},
+    {"id": "B-2027-1", "axis": "B_starship", "year": 2027, "statement": "궤도 투입 + 상단(Ship) 회수 성공 1회 이상", "status": "미판정", "source": "FAA 라이선스·비행 결과"},
+    {"id": "B-2027-2", "axis": "B_starship", "year": 2027, "statement": "연간 Starship 비행 12회 이상", "status": "미판정", "source": "발사 기록"},
+    {"id": "B-2028-1", "axis": "B_starship", "year": 2028, "statement": "동일 Ship 재비행 3회 이상", "status": "미판정", "source": "비행 기록"},
+    {"id": "B-2029-1", "axis": "B_starship", "year": 2029, "statement": "Space R&D ÷ 비행횟수 $1억/회 이하", "status": "미판정", "source": "실적 Space 표"},
+    {"id": "B-2030-1", "axis": "B_starship", "year": 2030, "statement": "연간 비행 100회 이상 AND Space 영업흑자 전환", "status": "미판정", "source": "연간 실적"},
+    {"id": "B-2033-1", "axis": "B_starship", "year": 2033, "statement": "달 유인 착륙(Artemis) 상업 계약 수익 인식", "status": "미판정", "source": "NASA 계약·실적"},
+    {"id": "C-2027-1", "axis": "C_ai", "year": 2027, "statement": "명판 용량 8GW 이상 AND AI 연매출 $400억 이상", "status": "미판정", "source": "실적 AI 표"},
+    {"id": "C-2027-2", "axis": "C_ai", "year": 2027, "statement": "GW당 연매출 $150억 이상 (2026-09 기준 $63억)", "status": "미판정", "source": "AI 인프라 매출 ÷ 명판 GW"},
+    {"id": "C-2028-1", "axis": "C_ai", "year": 2028, "statement": "AI 부문 영업이익(EBITDA 아님) 흑자", "status": "미판정", "source": "실적 AI 표"},
+    {"id": "C-2029-1", "axis": "C_ai", "year": 2029, "statement": "상위 2개 고객 매출 비중 50% 이하", "status": "미판정", "source": "10-K 고객 집중 주석"},
+    {"id": "C-2030-1", "axis": "C_ai", "year": 2030, "statement": "궤도 데이터센터 매출 > $0 (별도 공시)", "status": "미판정", "source": "부문 공시", "current_value": 0},
+    {"id": "C-2032-1", "axis": "C_ai", "year": 2032, "statement": "AI 연매출 $1,500억 이상, 영업이익률 20% 이상", "status": "미판정", "source": "연간 실적"},
+    {"id": "D-2027-1", "axis": "D_finance", "year": 2027, "statement": "추가 조달 $500억 이하 AND 증자 없음", "status": "미판정", "source": "8-K, S-3"},
+    {"id": "D-2028-1", "axis": "D_finance", "year": 2028, "statement": "순부채/조정EBITDA 3.0배 이하", "status": "미판정", "source": "대차대조표"},
+    {"id": "D-2029-1", "axis": "D_finance", "year": 2029, "statement": "GAAP 순이익 흑자 전환", "status": "미판정", "source": "연간 실적"},
+    {"id": "D-2030-1", "axis": "D_finance", "year": 2030, "statement": "연간 FCF 양전", "status": "미판정", "source": "현금흐름표"},
+    {"id": "D-2031-1", "axis": "D_finance", "year": 2031, "statement": "누적결손금 감소 시작", "status": "미판정", "source": "대차대조표"},
+    {"id": "D-2036-1", "axis": "D_finance", "year": 2036, "statement": "순부채 EBITDA 2배 이하 AND 자사주 매입 개시", "status": "미판정", "source": "연간 실적"},
+    {"id": "E-2027-1", "axis": "E_external", "year": 2027, "statement": "FAA Starship 연간 허가 50회 이상 유지", "status": "미판정", "source": "FAA 라이선스·EIS"},
+    {"id": "E-2028-1", "axis": "E_external", "year": 2028, "statement": "주요 5개 해외시장(인도·인니·브라질·EU·일본) 인허가 유지", "status": "미판정", "source": "각국 규제기관"},
+    {"id": "E-2027-2", "axis": "E_external", "year": 2027, "statement": "연간 충돌회피 기동 50만회 이하 AND 궤도 상실 위성 2% 이하", "status": "미판정", "source": "ESA Space Environment Report, FCC 보고"},
+    {"id": "E-2027-3", "axis": "E_external", "year": 2027, "statement": "Starlink의 분쟁 개입(우크라이나·대만형) 재발 0건", "status": "미판정", "source": "언론·정부 발표"},
+    {"id": "E-2027-4", "axis": "E_external", "year": 2027, "statement": "미 연방계약 신규 수주 전년 이상", "status": "미판정", "source": "USAspending·DoD 공시"}
+  ],
+  "scorecard": {
+    "achieved": 0,
+    "missed": 0,
+    "pending": 29,
+    "consecutive_miss_by_axis": {"A_starlink": 0, "B_starship": 0, "C_ai": 0, "D_finance": 0, "E_external": 0},
+    "forced_recalibration_rule": "동일 축에서 3개 연속 미달 시 해당 축 전제 폐기 후 3개 시나리오 전면 재산정"
+  },
+  "probability_adjustment_rules": [
+    {"condition": "3Q26/4Q26 실적에서 GW당 연매출 $100억 초과", "bull": 0.05, "bear": -0.05},
+    {"condition": "2027-06까지 Ship 회수 성공", "bull": 0.05, "bear": -0.05},
+    {"condition": "2027년 내 증자(전환사채 포함) 발생", "bear": 0.10, "bull": -0.05},
+    {"condition": "Starlink ARPU 2개 분기 연속 $60 하회", "bear": 0.05, "base": -0.05},
+    {"condition": "Kuiper가 2027년 말까지 미국 소비자 상용 요금제 미출시", "base": 0.05, "bear": -0.05},
+    {"condition": "AI 상위 2개 고객 계약 2029년 갱신 확인", "bull": 0.10, "bear": -0.10}
+  ],
+  "triggers_next_12m": [
+    {"id": "T1", "name": "3Q26 실적의 AI 단위경제(GW당 연매출, CAPEX/매출, 분기 FCF)", "expected_date": "2026-11-초(추정)", "status": "대기"},
+    {"id": "T2", "name": "12/8 락업 해제 후 30일 거래량·주가", "expected_date": "2026-12-08 ~ 2027-01-07", "status": "대기"},
+    {"id": "T3", "name": "Starship Flight 14 — Ship 캡처 시도", "expected_date": "2026-4Q(추정)", "status": "대기"},
+    {"id": "T4", "name": "Amazon Leo 미국 소비자 상용 개시 지역·요금", "expected_date": "2026-2H ~ 2027-1H", "status": "대기"},
+    {"id": "T5", "name": "추가 자금 조달 발표(채권/증자/JV)", "expected_date": "2027-1H(추정)", "status": "대기"}
+  ],
+  "musk_statements_as_milestone_candidates_only": [
+    {"date": "2026-08-04", "statement": "매출 $1조 도달 내부 전망을 2031년에서 2030년으로 앞당김, 2029년 가능성도 언급", "used_in_judgment": false},
+    {"date": "2026-08-04", "statement": "1년 내 하루 1회 Starship 비행 목표", "used_in_judgment": false},
+    {"date": "2026-08-04", "statement": "히트실드 문제는 현 시점 해결됨", "used_in_judgment": false},
+    {"date": "2026-08-04", "statement": "컴퓨트 배치의 내부 회수기간 1년 미만", "used_in_judgment": false, "note": "공시 기반 실측은 6.3년. 반증 대상으로 이정표 C-2027-2에 등록"}
+  ],
+  "open_questions_for_next_run": [
+    "10-Q 주석의 특수관계자 부채 $133억 상대방·금리·만기",
+    "EchoStar 스펙트럼 거래($170억 + 후속 $26억 보도)의 회계 처리 위치와 종결 시점",
+    "3Q26 실적일 확정 및 AI 고객 집중도 공시 여부"
+  ]
+}
