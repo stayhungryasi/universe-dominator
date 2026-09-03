@@ -274,6 +274,25 @@ def earnings_yield(eps_ttm, price):
     return eps_ttm / price
 
 
+def _rate(x):
+    """성장률 한 칸 읽기 — **단위를 명시적으로 다룬다.**
+
+      {"value": 13.0, "unit": "%"} → 0.13   (사람 판단층 관례: 퍼센트로 적는다)
+      {"value": 0.13}  · 0.13              → 0.13 (자동층 관례: 소수)
+
+    단위를 추측하지 않는 이유: 13.0 을 소수로 읽으면 1300% 가 되고, 그러면
+    20% 캡이 그 오류를 조용히 20% 로 덮어버린다 — 방지선이 오류를 가려주는
+    최악의 형태다. 그래서 사람 값은 unit 을 반드시 적고, 여기서 그것만 믿는다.
+    (자동층 값은 NVDA 1.62 처럼 1 을 넘는 정상 소수가 있어 크기로는 못 가른다)
+    """
+    if isinstance(x, dict):
+        v = _num(x.get("value"))
+        if v is None:
+            return None
+        return v / 100.0 if str(x.get("unit", "")).strip() == "%" else v
+    return _num(x)
+
+
 def pick_g(cagr3y, forward):
     """g_used = 둘 중 **작은** 쪽. 하나라도 없으면 null — 낙관 단일값 금지.
 
@@ -281,7 +300,7 @@ def pick_g(cagr3y, forward):
     전망치가 NaN 으로 들어오면 "둘 다 있어야 한다"는 규칙이 조용히 무너지고
     과거 CAGR 단독으로 결론이 나간다 (2026-09-02 실사고).
     """
-    a, b = _num(cagr3y), _num(forward)
+    a, b = _rate(cagr3y), _rate(forward)
     if a is None or b is None:
         return None
     return min(a, b)
@@ -374,8 +393,8 @@ def measure_bench(c, price, rates, prev_bench=None):
     # 전망만으로 판정에 이른 경우 — 과거 실적으로 교차 검증되지 않은 가정이다.
     # (현행 pick_g 는 둘 다 요구하므로 평시엔 켜지지 않는다. 규칙이 완화되는 날을
     #  대비한 표식이며, 켜지면 화면이 '가정 약함'이라고 말한다.)
-    g_weak = bool(g is not None and _num(b.get("g_cagr3y")) is None
-                  and _num(b.get("g_forward")) is not None)
+    g_weak = bool(g is not None and _rate(b.get("g_cagr3y")) is None
+                  and _rate(b.get("g_forward")) is not None)
     ey = earnings_yield(eps_ttm, price)
 
     out = {

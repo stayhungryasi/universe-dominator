@@ -525,6 +525,24 @@ def main():
     check("가드ⓒ: 과거·전망이 모두 있으면 가정 약함 아님",
           _fb.measure_bench(_weak, 100.0, {"UST10": 4.75})["g_weak"], False)
 
+    # 단위 — 사람은 %로 적고 기계는 소수로 적는다. 추측하지 않고 unit 만 믿는다.
+    check("단위: 사람 %표기를 소수로", _fb._rate({"value": 13.0, "unit": "%"}), 0.13)
+    check("단위: unit 없는 dict 는 소수 그대로", _fb._rate({"value": 0.13}), 0.13)
+    check("단위: 맨숫자는 소수 그대로(자동층 관례)", _fb._rate(0.13), 0.13)
+    check("단위: 1 넘는 자동 소수도 그대로(NVDA 1.62 는 정상)", _fb._rate(1.62), 1.62)
+    check("단위: 없는 값", _fb._rate(None), None)
+    _hp = {"ticker": "X", "type": "씨즈형",
+           "buffett": {"eps_adj_ttm": {"value": 16.79}, "g_cagr3y": 0.1985,
+                       "g_forward": {"value": 13.0, "unit": "%"}}}
+    check("단위: 사람 %값이 g_used 로 정확히 들어간다",
+          _fb.measure_bench(_hp, 500.0, {"UST10": 4.75})["g_used"], 0.13)
+    # 사람이 %를 안 적어 1300% 가 되는 사고 — 캡이 20% 로 '고쳐' 가리지 않는지
+    _bad = {"ticker": "X", "type": "씨즈형",
+            "buffett": {"eps_adj_ttm": {"value": 16.79}, "g_cagr3y": 0.1985,
+                        "g_forward": {"value": 13.0, "unit": "%"}}}
+    check("단위: 캡이 단위 오류를 덮지 않는다(정상값은 캡 흔적 없음)",
+          _fb.measure_bench(_bad, 500.0, {"UST10": 4.75})["g_capped_from"], None)
+
     # 통과 가격 — 쿠폰이 국채×3 과 같아지는 주가 (수동 대조)
     #   eps 10 · g 10% · 10y 4.75% → 10×1.1^10 ÷ 0.1425 = 25.9374/0.1425 = 182.02
     check("통과가격: 역산 검산", _fb.pass_price(10.0, 0.10, 4.75), 182.02)
