@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-03 17:22",
- "generated_at": "2026-09-03T17:22:26.075228+09:00",
+ "generated_label": "2026-09-03 20:29",
+ "generated_at": "2026-09-03T20:29:38.655677+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-03",
@@ -77,8 +77,14 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI 수익화 가속 vs 거대 자본지출($77.1B 규모)로 실제 주주 귀속액 왜곡"
+    "variants": {
+     "A": {
+      "value": 10737000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -89,30 +95,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 4건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H2"
-   },
-   "notes": "검색 해자는 견고하나 반독점·규제 리스크와 TPU 스택 투자 대비 ROI 검증 시점 임박",
-   "_evidence": {
-    "franchise": "Google News, Search 모노폴리 지속 + Cloud 사업 성장세",
-    "risk5": "cloud-fuelled earnings beat fails to address fundamental long-term issues; 15 Billion Reasons Alphabet Shares Are Sinking After Reporting Strong Earnings Growth",
-    "capalloc": "Alphabet Reports Q2 Results After the Bell Today. The Number That Decides the Stock Isn't Revenue or Earnings -- It's Capex; Q2 2026 Revenue Jumps 24%",
-    "owner_earnings": "Alphabet Slips as $77.1 Billion AI Gain Distorts Earnings; Strong AI Monetization Continues to Spearhead Results"
-   }
+   "confidence": "중"
   },
   "MSFT": {
    "as_of": "2026-09-03",
@@ -249,8 +232,8 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "유가 사이클 종속 구조로 인해 정상화이익 추정의 신뢰도 제한"
+    "display": "C",
+    "display_reason": "유가 사이클 의존성으로 인한 이익 예측 불가능성"
    },
    "conversion": null,
    "g_cagr3y": null,
@@ -261,7 +244,7 @@
    "confidence": "하",
    "franchise": {
     "need": "○",
-    "no_substitute": "△",
+    "no_substitute": "○",
     "no_price_reg": "✕"
    },
    "risk5": {
@@ -272,15 +255,16 @@
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "score": 2,
+    "debt_discipline": 1,
+    "score": 3,
     "period": "2026Q3"
    },
-   "notes": "지정학적 프리미엄(이란 전쟁)에 의한 일시적 수익성 증대; 셰일가스 다각화 시도 중이나 장기 수익 예측가능성 약화",
+   "notes": "CEO의 '국제적 석유 위기 경고'는 수요 구조적 약화 신호; 동시에 비석유사업(구리광산, 셰일가스) 다각화 시도 중",
    "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher - 수요의 필연성은 있으나 유가 사이클에 완전 종속",
-    "risk5": "Aramco CEO warns of 'catastrophic' consequences if oil crisis continues - 유가 변동성에 대한 경영진 우려 표시; business_certainty 최악 평가",
-    "capalloc": "Saudi Aramco reports $26.9B profit in third quarter - Q3 현금흐름 양호; Aramco and Maaden Move Ahead With Saudi Copper Mining Venture - 자본배분 활동 확인",
-    "owner_earnings": "Q2 2026 earnings beat as Iran war lifts oil prices vs Q3 down slightly over lower oil prices - 같은 분기 내 유가 변동에 따른 수익성 급등락"
+    "franchise": "전 세계 석유 수요의 기본적 필요성; 그러나 에너지 전환 추세에서 대체불가능성 약화",
+    "risk5": "유가 사이클이 쿠폰을 결정하는 구조; Q2 2026 실적 25% 증가 vs Q3 유가 하락으로 '약간의 감소'—예측 불가능",
+    "capalloc": "Q3 2026 $26.9B 이익 달성, 이슬람채권 발행 계획으로 자본관리 규율 시현",
+    "owner_earnings": "유가 변동성이 분기별 이익을 좌우(Q2 +25%, Q3 소폭 하락)하므로 정상화 이익 산정 곤란"
    }
   },
   "META": {
@@ -922,5 +906,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-03 17:24"
+ "scout_label": "2026-09-03 20:31"
 }
