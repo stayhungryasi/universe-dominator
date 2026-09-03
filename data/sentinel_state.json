@@ -2,7 +2,7 @@
  "version": 2,
  "sources": {
   "Hacker News 300+": {
-   "zero_streak": 1,
+   "zero_streak": 0,
    "alerted": false,
    "ever_seen": true
   },
@@ -87,6 +87,11 @@
    "date": "2026-09-02",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-09-03",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
@@ -99,11 +104,11 @@
   ]
  },
  "last_verdict": {
-  "at": "2026-09-02 23:52",
+  "at": "2026-09-03 10:29",
   "ok": true,
   "alerts": []
  },
- "last_run": "2026-09-02 23:52",
+ "last_run": "2026-09-03 10:29",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -165,7 +170,7 @@
   },
   "signals:Hacker News 300+": {
    "err_streak": 0,
-   "zero_streak": 1,
+   "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
@@ -506,6 +511,12 @@
    "zero_alerted": false
   },
   "scout:8035.T": {
+   "err_streak": 0,
+   "zero_streak": 0,
+   "err_alerted": false,
+   "zero_alerted": false
+  },
+  "scout:MRVL": {
    "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
