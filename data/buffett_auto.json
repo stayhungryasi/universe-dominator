@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-03 20:29",
- "generated_at": "2026-09-03T20:29:38.655677+09:00",
+ "generated_label": "2026-09-03 22:42",
+ "generated_at": "2026-09-03T22:42:03.096926+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-03",
@@ -44,18 +44,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "Services 수익 미스와 메모리 부족 영향으로 성장 둔화 신호"
    },
    "conversion": {
     "value": 1.0,
@@ -66,7 +56,30 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "buyback": 1,
+    "cash_positive": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "프리미엄 밸류에이션 대비 성장 모멘텀 약화, 근본적 경제 해자는 건전하나 주가는 이미 낙관 반영",
+   "_evidence": {
+    "franchise": "소비자 프랜차이즈 최강, 대체 불가능한 브랜드 및 생태계",
+    "risk5": "메모리 부족 영향 경고(CEO Tim Cook), Q3 서비스 수익 미스, 약한 매출 전망",
+    "capalloc": "자사주 매입 지속, 현금 창출 능력 유지",
+    "owner_earnings": "Q3 어닝서프라이즈에도 서비스 수익 부진 및 성장률 둔화"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-03",
@@ -164,7 +177,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.55
+    "value": 13.46
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -211,7 +224,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.08
+    "value": -1.1
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -231,41 +244,14 @@
     "value": 1.69
    },
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "C",
-    "display_reason": "유가 사이클 의존성으로 인한 이익 예측 불가능성"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026Q3"
-   },
-   "notes": "CEO의 '국제적 석유 위기 경고'는 수요 구조적 약화 신호; 동시에 비석유사업(구리광산, 셰일가스) 다각화 시도 중",
-   "_evidence": {
-    "franchise": "전 세계 석유 수요의 기본적 필요성; 그러나 에너지 전환 추세에서 대체불가능성 약화",
-    "risk5": "유가 사이클이 쿠폰을 결정하는 구조; Q2 2026 실적 25% 증가 vs Q3 유가 하락으로 '약간의 감소'—예측 불가능",
-    "capalloc": "Q3 2026 $26.9B 이익 달성, 이슬람채권 발행 계획으로 자본관리 규율 시현",
-    "owner_earnings": "유가 변동성이 분기별 이익을 좌우(Q2 +25%, Q3 소폭 하락)하므로 정상화 이익 산정 곤란"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-09-03",
@@ -906,5 +892,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-03 20:31"
+ "scout_label": "2026-09-03 22:43"
 }
