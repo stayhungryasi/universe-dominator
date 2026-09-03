@@ -841,6 +841,48 @@ def main():
           _bs.digest([("AAPL", ["risk5"]), ("GOOG", ["capalloc"])]),
           "자동 취재 갱신 2종: AAPL·GOOG")
 
+    # ── 무인 탐사선 준법 필터 (2026-09-03) ─────────────────────────────────
+    # 막으려는 것 한 문장: **"무엇을 얼마나 언제 사라"는 투자 권고가 공개 화면에
+    # 실리는 것.** 그래서 낱말이 아니라 **그 정의**로 검사한다 — '저가 경쟁 진입',
+    # '매출 내 비중 42%' 는 권고가 아니라 분석이고, 그것까지 자르면 오차단이다
+    # (2026-08-22 동행 에세이 오차단 교훈).
+    import agent_report as _ag
+    _NL = chr(10)          # 생성 코드에 개행 이스케이프를 쓰지 않는다
+    _doc = _NL.join(["## PHASE 3", "분석은 남는다", "## PHASE 4 — 투자 판단",
+                     "여기서 사라고 말한다", "## PHASE 5", "규칙은 남는다"])
+    _kept = _ag.drop_phase4(_doc)[0]
+    check("탐사선: PHASE 4 본문 제거", "여기서 사라고" in _kept, False)
+    check("탐사선: 앞뒤 절은 남는다",
+          ("분석은 남는다" in _kept, "규칙은 남는다" in _kept), (True, True))
+    check("탐사선: 잘라낸 자리에 안내를 남긴다(조용히 사라지지 않는다)",
+          "제외했습니다" in _kept, True)
+    check("탐사선: 권고 문단은 제외", _ag.is_reco("권고: 관망(비중 0%)"), True)
+    check("탐사선: 분할 매수 문단은 제외", _ag.is_reco("$80 이하에서만 분할 매수"), True)
+    check("탐사선: 최대 비중 문단은 제외", _ag.is_reco("최대 비중 = 2%"), True)
+    check("탐사선: 경쟁사 시장 진입은 분석이다(오차단 금지)",
+          _ag.is_reco("ARPU $60 미만이면 저가 경쟁 진입 확정"), False)
+    check("탐사선: 매출 비중도 분석이다", _ag.is_reco("Connectivity 매출 내 비중 42%"), False)
+    check("탐사선: 매수와 붙은 진입은 권고", _ag.is_reco("락업 해제 후 분할 진입 개시"), True)
+    # 표는 행 단위로 거른다 — 권고 한 줄 때문에 분석 표를 통째로 지우지 않는다
+    _tbl = _NL.join(["| 방식 | 판단 |", "|---|---|",
+                     "| 관망 | 현재의 기본 권고 |", "| 지표 | 매출 내 비중 42% |"])
+    _t2 = _ag.drop_reco_blocks(_tbl)[0]
+    check("탐사선: 표는 권고 행만 빠진다",
+          ("기본 권고" in _t2, "비중 42%" in _t2), (False, True))
+
+    # 실제 보고서로 — 산출물에 권고가 남지 않는지
+    _rp = Path(__file__).parent.parent / "agent-research" / "reports" / "2026-09.md"
+    if _rp.exists():
+        _body, _info = _ag.sanitize(_rp.read_text(encoding="utf-8"))
+        check("탐사선: 실보고서에서 PHASE 4 제거됨", _info["phase4"], True)
+        for _w in ("권고", "분할", "비중 2%", "PHASE 4"):
+            check("탐사선: 산출물에 '" + _w + "' 0건", _body.count(_w), 0)
+        # 정의 기준 최종 확인 — 남은 어떤 줄도 '권고'가 아니어야 한다
+        check("탐사선: 남은 줄 중 권고 형태 0건",
+              [ln.strip()[:50] for ln in _body.splitlines() if _ag.is_reco(ln)], [])
+        # 오차단 감시 — 필터가 본문을 통째로 삼키지 않았는지
+        check("탐사선: 분석은 살아남는다(본문 15k 이상)", len(_body) > 15000, True)
+
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj
     _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {

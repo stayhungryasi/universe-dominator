@@ -156,6 +156,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ce-tab { flex-shrink: 0; padding: 10px 14px; font-size: 13.5px; font-weight: 700; color: var(--text-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit; white-space: nowrap; transition: color .2s, border-color .2s; }
 .ce-tab:hover { color: var(--text-secondary); }
 .ce-tab.active { color: var(--text); border-bottom-color: var(--gold); }
+.ce-probe { font-size: 12.5px; color: var(--text-muted); margin: 10px 0 4px; }
 
 /* 논제 원장 = 📌 고정 공지. 카드 뼈대는 공용 .ud-acc + .ud-pin 이 맡는다.
    접힌 높이는 3줄 이내 — 배지 줄 1 + 한 문장 2줄(클램프). */
@@ -384,6 +385,16 @@ function isRecent(updated, days){
   return (Date.now() - t) <= (days || 7) * 86400000 && Date.now() >= t - 86400000;
 }
 
+/* 무인 탐사선과의 상호 링크 — 두 기록의 밀도가 다르다는 것을 독자가 알아야 한다.
+   여기는 사건 단위(무슨 일이 있었나), 저기는 월간 전면 재해부(10년 그림을 다시 그림). */
+const CE_PROBE = { spacex: 'observatory.html#agent' };
+function probeLink(slug){
+  return CE_PROBE[slug]
+    ? '<div class="ce-probe">월간 전면 재해부는 ' +
+      '<a href="' + CE_PROBE[slug] + '">데이터 천문대 🛰 무인 탐사선</a> 에서.</div>'
+    : '';
+}
+
 function renderCompany(slug){
   const c = companyOf(slug) || { ko: slug, emoji: '', thesis: {} };
   const th = c.thesis || {};
@@ -419,7 +430,7 @@ function renderCompany(slug){
           '<div class="ce-waiting-text">논제가 서면 이 자리에 핵심 가설과 반증 조건이 들어섭니다.</div></div>'
         : '<div class="ce-thesis-body">' + (th.html || '') + '</div>') +
     '</div>' +
-  '</div>';
+  '</div>' + probeLink(slug);
   $('thesisHead').onclick = () => {
     const card = $('thesisCard');
     const open = !card.classList.contains('open');

@@ -283,6 +283,118 @@ def build_community():
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
+AGENT_DISCLAIMER = ("무인 리서치 실험의 산출물이며 투자 권유가 아닙니다. "
+                    "확률·가치 추정은 기계 생성 가정입니다.")
+
+
+def render_agent_probe(ar):
+    """agent-research/ → 탭 HTML(문자열). 판단층은 읽기만 한다."""
+    st = ar.read_state()
+    files = ar.report_files()
+    if not st and not files:
+        return ""
+    esc = ar.esc
+    run = st.get("run") or {}
+    sc = st.get("scenarios") or {}
+    val = st.get("valuation") or {}
+    board = st.get("scorecard") or {}
+
+    h = ['<div class="ag-notice"><b>' + esc(AGENT_DISCLAIMER) + '</b></div>']
+
+    # 상단 카드 — 시나리오 확률 3개 · 적정가치 밴드 · 다음 관측 예정일
+    #   valuation.recommendation·max_position 계열은 **싣지 않는다**(준법 필터 ③)
+    cards = []
+    for key, ko in (("bull", "강세"), ("base", "기본"), ("bear", "약세")):
+        sc_i = sc.get(key) or {}
+        pr = sc_i.get("probability")
+        cards.append('<div class="ag-card"><div class="ag-k">' + ko + ' 시나리오</div>' +
+                     '<div class="ag-v">' + ('—' if pr is None else f"{pr * 100:.0f}%") +
+                     '</div><div class="ag-s">10년 뒤 주당 ' +
+                     ('—' if sc_i.get("value_per_share_usd") is None
+                      else '$' + str(sc_i["value_per_share_usd"])) + '</div></div>')
+    band = val.get("fair_value_band_usd") or []
+    band_txt = (f"${band[0]}~${band[1]}" if len(band) == 2 else "—")
+    cards.append('<div class="ag-card"><div class="ag-k">확률가중 적정가치 밴드</div>' +
+                 '<div class="ag-v">' + band_txt + '</div>' +
+                 '<div class="ag-s">중앙 ' +
+                 ('—' if val.get("fair_value_midpoint_usd") is None
+                  else '$' + str(val["fair_value_midpoint_usd"])) + '</div></div>')
+    h.append('<div class="ag-cards">' + "".join(cards) + '</div>')
+
+    nxt = next_probe_date(run.get("run_date") or "")
+    h.append('<div class="ag-meta">' + esc(run.get("run_id") or "—") + ' 회차 · 관측일 ' +
+             esc(run.get("run_date") or "—") + ' · 다음 관측 예정 ' + esc(nxt) +
+             ' (매월 1일)</div>')
+
+    # 이정표 채점표
+    ms = st.get("milestones") or []
+    if ms:
+        h.append('<div class="ag-h">이정표 채점표 — 달성 ' +
+                 str(board.get("achieved", 0)) + ' · 미달 ' + str(board.get("missed", 0)) +
+                 ' · 판정 대기 ' + str(board.get("pending", len(ms))) + '</div>')
+        rows = "".join(
+            '<tr><td>' + esc(m.get("year", "")) + '</td><td>' + esc(m.get("axis", "")) +
+            '</td><td>' + esc(m.get("statement", "")) + '</td><td>' +
+            esc(m.get("status", "")) + '</td></tr>' for m in ms)
+        h.append("<div class='ag-tw'><table class='ag-table'><thead><tr>"
+                 "<th>연도</th><th>축</th><th>이정표</th><th>판정</th></tr></thead><tbody>"
+                 + rows + "</tbody></table></div>")
+
+    # 지난달 대비 변화
+    ch = ar.read_changelog()
+    if ch.strip():
+        body, _ = ar.sanitize(ch)
+        h.append('<div class="ag-h">지난달 대비 변화</div>')
+        h.append('<div class="ag-body">' + ar.md_to_html(body) + '</div>')
+
+    # 최신 보고서 + 과거 회차 목차(해부실 폼 공용 클래스)
+    cut = {"phase4": False, "blocks": 0}
+    if files:
+        if len(files) > 1:
+            h.append('<div class="ud-index"><div class="ud-index-title">관측 회차 ' +
+                     str(len(files)) + '건</div>' +
+                     "".join('<a class="ud-index-row" href="#agent-' + f.stem + '">' +
+                             '<span class="ud-index-date">' + esc(f.stem) + '</span>' +
+                             esc(report_title(f)) + '</a>' for f in files) + '</div>')
+        for idx, f in enumerate(files):
+            raw = f.read_text(encoding="utf-8")
+            body, info = ar.sanitize(raw)
+            if idx == 0:
+                cut = info
+            open_attr = " open" if idx == 0 else ""
+            h.append('<details class="ag-run" id="agent-' + f.stem + '"' + open_attr +
+                     '><summary>' + esc(f.stem) + ' — ' + esc(report_title(f)) +
+                     '</summary><div class="ag-body">' + ar.md_to_html(body) +
+                     '</div></details>')
+    print(f"[OK] 무인 탐사선: 보고서 {len(files)}건 · PHASE4 제외 {cut['phase4']} · "
+          f"권고 블록 제외 {cut['blocks']}")
+
+    h.append('<div class="ag-link">사건 단위 기록은 '
+             '<a href="journal.html#companion">관측노트 동행 관측 🚀SpaceX</a> 에서.</div>')
+    return "".join(h)
+
+
+def report_title(f):
+    """보고서 첫 h1 을 제목으로. 없으면 파일명."""
+    try:
+        for ln in f.read_text(encoding="utf-8").splitlines():
+            if ln.startswith("# "):
+                return ln[2:].strip()
+    except Exception:
+        pass
+    return f.stem
+
+
+def next_probe_date(run_date):
+    """다음 관측 예정일 = 다음 달 1일."""
+    try:
+        y, m = int(run_date[:4]), int(run_date[5:7])
+    except (ValueError, IndexError):
+        return "매월 1일"
+    y, m = (y + 1, 1) if m == 12 else (y, m + 1)
+    return f"{y}-{m:02d}-01"
+
+
 def build_observatory():
     """observatory.html — 데이터 천문대 (오늘의 태양계 + 관측일지)"""
     template_path = SCRIPTS_DIR / "observatory-template.html"
@@ -397,6 +509,14 @@ def build_observatory():
                 }
         except Exception as e:
             print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")
+    # 🛰 무인 탐사선 — agent-research/ 를 **빌드 시점에** 정적 렌더한다.
+    #    클라이언트가 판단층 파일을 직접 긁으면 준법 필터를 우회할 길이 생긴다.
+    agent_html = ""
+    try:
+        import agent_report
+        agent_html = render_agent_probe(agent_report)
+    except Exception as e:
+        print(f"[warn] 무인 탐사선 렌더 실패(탭은 빈 상태): {e}")
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
@@ -405,6 +525,7 @@ def build_observatory():
         "dissected": dissected,
         "buffett": buffett,
         "legend": legend,
+        "agent": agent_html,
     }
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
