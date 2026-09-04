@@ -587,6 +587,39 @@ const DATA = {
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.09.05",
+      "period": "8.29 → 9.5 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "[유럽] <strong>TotalEnergies</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $196B</span>)",
+            "[유럽] <strong>Seagate Technology</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $189B</span>)",
+            "[유럽] <strong>Schneider Electric</strong> TOP 20 이탈",
+            "[유럽] <strong>Hermès</strong> TOP 20 이탈",
+            "[홍콩] <strong>Hongkong Land</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $18B</span>)",
+            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,350 (09/05 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.35"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.08.29",
       "period": "8.22 → 8.29 (주간)",
       "auto": true,
@@ -983,8 +1016,8 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_date": "2026-09-04",
-    "usd_krw": 1357.29
+    "fetched_date": "2026-09-05",
+    "usd_krw": 1350.35
   }
 };
 
