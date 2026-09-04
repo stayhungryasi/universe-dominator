@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-04 10:18",
- "generated_at": "2026-09-04T10:18:24.809785+09:00",
+ "generated_label": "2026-09-04 17:16",
+ "generated_at": "2026-09-04T17:16:57.091541+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-04",
@@ -66,29 +66,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "CEO succession risk coincides with AI inflection; valuation ceiling of 28x justified by mature franchise despite revenue momentum",
-   "_evidence": {
-    "franchise": "Apple: Why I Am Buying The Earnings Growth Despite The Premium Valuation; Apple Is Late to AI. That Could Be Its Biggest Opportunity",
-    "risk5": "Apple (AAPL) Stock Could Be 28% Overvalued On Fresh AI Mac Launches; Tim Cook's Final Earnings Call as Apple CEO Came the Same Week Apple Hit a $5 Trillion Market Cap",
-    "capalloc": "Jim Cramer says Nvidia should do a half-trillion dollar, Apple-style stock buyback; Apple's revenue rose 166% under Tim Cook while the stock increased 2,200%"
-   }
+   "confidence": "중"
   },
   "GOOG": {
    "as_of": "2026-09-04",
@@ -99,14 +77,8 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 10737000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "$77.1B AI gain distorts reported earnings; underlying operational leverage from Search + Cloud growth more conservative proxy"
    },
    "conversion": {
     "value": 1.0,
@@ -117,7 +89,30 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 4건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "Antitrust fear is verifiable regulatory headwind, not business deterioration; TPU vertical integration validates competitive moat deepening; valuation debate centers on AI capex ROI timeline, not franchise quality",
+   "_evidence": {
+    "franchise": "Search moat + Cloud 82% surge + AI integration",
+    "risk5": "Regulatory uncertainty (antitrust) vs. demonstrated earnings power and management execution",
+    "capalloc": "$77.1B gain, bond offering, continued AI investment",
+    "owner_earnings": "Reported profit inflated by $77.1B gain; underlying revenue growth +24% more durable metric"
+   }
   },
   "MSFT": {
    "as_of": "2026-09-04",
@@ -233,7 +228,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.17
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -255,7 +250,7 @@
    "roe_tangible": null,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "유가 사이클 의존으로 순이익 예측 불가능; Q3 $26.9B에서 하락 추세"
+    "display_reason": "유가 사이클 의존성으로 인한 수익 예측 불가능성"
    },
    "conversion": null,
    "g_cagr3y": null,
@@ -271,21 +266,22 @@
    },
    "risk5": {
     "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "price": "✕"
+    "mgmt_ability": "○",
+    "price": "✕",
+    "tax_inflation": "△"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
     "debt_discipline": 0,
     "score": 2,
-    "period": "2026Q3"
+    "period": "2026H1"
    },
-   "notes": "사우디 정부 부채 상환 압박이 자본배분 규율을 훼손; 유가 변동성이 사업 확실성을 근본적으로 제약",
+   "notes": "유가 변동과 지정학적 리스크(이란 전쟁, 파이프라인 공격)가 현금흐름을 지배하는 구조적 취약성",
    "_evidence": {
-    "franchise": "Global energy demand ensures substitute-free demand; oil price volatility undermines pricing power",
-    "risk5": "Aramco posts drop in annual profit, announces first buyback / Saudi Keeps Borrowing to Pay off Existing Debt",
-    "capalloc": "Aramco announces first buyback; Saudi Keeps Borrowing to Pay off Existing Debt indicates debt servicing pressure over shareholder returns",
+    "franchise": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계",
+    "risk5": "Saudi Keeps Borrowing to Pay off Existing Debt; Saudi Arabia's vital East-West oil pipeline attacked after ceasefire",
+    "capalloc": "Aramco posts drop in annual profit, announces first buyback; Saudi Aramco Q2 2026 earnings beat as Iran war lifts oil prices",
     "owner_earnings": "Saudi Aramco reports $26.9B profit in third quarter, down slightly over lower oil prices"
    }
   },
@@ -551,9 +547,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "notes": "20조 캐펙스 없이 10년 월세 인상 불가라는 제약 조건 대조; Nasdaq 상장으로 미국 소송 리스크 추가 노출; 기업 가치 순위(삼성 추월)는 주기적 타이밍 반영",
-   "_evidence": {}
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-09-04",
@@ -563,14 +557,41 @@
     "value": 28.81
    },
    "roe_tangible": null,
-   "owner_earnings": null,
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "EUV 리소그래피 독점과 AI 수요 성장에도 불구하고 수주 사이클 변동성이 현금흐름 예측성을 저해"
+   },
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2024H2"
+   },
+   "notes": "EUV 독점 통행료는 강하나 반도체 자본지출 사이클의 변동성으로 인해 순수 통행료(35점)에서 할인 적용 필요",
+   "_evidence": {
+    "franchise": "ASML's Dominant Position in EUV Signal Further Upside; AI-Driven Lithography Dominance",
+    "risk5": "Stock Looks Fully Priced After 161% Run; Is ASML Extremely Overvalued or a Bargain at 45x Forward Earnings?",
+    "capalloc": "ASML reports transactions under its current share buyback program",
+    "owner_earnings": "Earnings Stay Rich yet Stock Looks Fully Priced; Long-Term Prospects Vastly Improved but Valuation Questions In Focus"
+   }
   },
   "LRCX": {
    "as_of": "2026-09-04",
@@ -714,14 +735,38 @@
     "value": 1.02
    },
    "roe_tangible": null,
-   "owner_earnings": null,
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "record 실적 달성하나 $20B 미충족 수요로 성장 천장 노출"
+   },
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2027Q1"
+   },
+   "notes": "칩설계 로열티 통행료는 우수하나 시장가 대비 밸류에이션이 정당선을 지속 상회하며, 수급 제약이 성장성을 제한하는 단계",
+   "_evidence": {
+    "franchise": "Arm delivers record-breaking quarter and full-year results; AGI CPU 수요 강세로 로열티 기반 사업 모델 검증",
+    "risk5": "Arm Holdings stock fell 7% on record earnings: $20 billion in demand it cannot fill - 공급능력 한계가 성장 리스크로 작용",
+    "capalloc": "Record earnings 달성으로 현금 흐름 양호 기조 유지 중",
+    "owner_earnings": "Arm Holdings Could Be 40% Undervalued vs. 동시에 Arm Holdings Stock Fell 7% on Record Earnings - 밸류에이션 해석의 불확실성"
+   }
   },
   "SNDK": {
    "as_of": "2026-09-04",
@@ -859,14 +904,36 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 21건",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H2"
+   },
+   "notes": "AI 수주 통행료 모델이나 고객집중(Google 등) 리스크로 인한 쿠폰 변동성 상존",
+   "_evidence": {
+    "franchise": "AI demand boosts profit and revenue; long-term targets lifted",
+    "risk5": "Marvell shares tumble 6% as outlook underwhelms despite 37% revenue growth",
+    "capalloc": "Marvell Technology, Inc. Reports Second Quarter results with buyback signals"
+   }
   },
   "285A.T": {
    "as_of": "2026-09-04",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1007.57
+    "value": 1023.07
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -917,42 +984,18 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.86
+    "value": 31.33
    },
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "사이클 정점에서의 기록적 EPS는 지속 불가능한 성과이며 2027년 교체 사이클까지 불확실성 존재"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI 전력 인프라의 과점 지위는 확실하나 시클리컬 특성상 현재 밸류에이션은 사이클 정점을 반영 중",
-   "_evidence": {
-    "franchise": "AI Revenue Share Breaks 50%; Delta Electronics' Solid-State Transformer Tech Ready; AI Data Center Replacement Cycle Coming by 2027",
-    "risk5": "First-Half EPS Surpasses Any Full-Year Record but Component Shortage Risks Escalate; AI Investment Return Doubts Trigger Global Chip Stock Sell-Off",
-    "capalloc": "Record Q2 EPS of NT$9.68; First-Half EPS Hits NT$17.59",
-    "owner_earnings": "Taiwan Stocks Plunge 2,030 Points on AI Investment Return Doubts; Earnings Call references replacement cycle timing uncertainty through 2027"
-   }
+   "confidence": "중"
   }
  },
- "scout_label": "2026-09-04 10:19"
+ "scout_label": "2026-09-04 17:18"
 }
