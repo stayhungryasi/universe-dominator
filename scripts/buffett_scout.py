@@ -248,27 +248,52 @@ def ask(api_key, c, headlines):
     return json.loads(text[text.find("{"):text.rfind("}") + 1])
 
 
-def digest(changes):
-    """하루 1건으로 묶은 한 줄 — 종목별 개별 발송은 폐지했다(도배)."""
+def stale_line(stale):
+    """신선도 폐기 줄 — 무엇을 왜 버렸는지 종목·분기까지 적는다.
+
+    '몇 종 폐기' 만 적으면 다음 회차에 같은 종목이 또 걸려도 알아채지 못한다.
+    """
+    if not stale:
+        return ""
+    body = "·".join(f"{d.get('ticker')}({d.get('period')})" for d in stale[:8])
+    tail = f" 외 {len(stale) - 8}종" if len(stale) > 8 else ""
+    return f"XBRL 신선도 미달 {len(stale)}종 폐기: {body}{tail}"
+
+
+def digest(changes, stale=None):
+    """하루 1건으로 묶은 한 줄 — 종목별 개별 발송은 폐지했다(도배).
+
+    신선도 폐기도 같은 묶음에 싣는다: 눈금이 조용히 비는 사건이라 어딘가에서
+    반드시 소리가 나야 한다(2026-09-05 GOOG — 14년 묵은 EPS 가 무증상으로 통과).
+    """
     tickers = [tk for tk, _ in changes]
-    head = f"자동 취재 갱신 {len(tickers)}종: " + "·".join(tickers[:8])
-    return head + (f" 외 {len(tickers) - 8}종" if len(tickers) > 8 else "")
+    lines = []
+    if tickers:
+        lines.append(f"자동 취재 갱신 {len(tickers)}종: " + "·".join(tickers[:8])
+                     + (f" 외 {len(tickers) - 8}종" if len(tickers) > 8 else ""))
+    sl = stale_line(stale)
+    if sl:
+        lines.append(sl)
+    return "\n".join(lines)
 
 
-def notify(changes, state, today):
+def notify(changes, state, today, stale=None):
     """갱신 알림 — **소장 DM 전용 · 하루 1건.**
 
     ① 관측노트에는 적지 않는다(눈금 변경 ≠ 시장 사건).
     ② 공개 채널로 흘리지 않는다. 자동 취재가 무엇을 고쳤는지는 운영 내부 사정이다.
        수신처가 없으면 **공개로 폴백하지 않고** 로그로만 남긴다.
     ③ 하루에 한 번만. 같은 날 두 번째 full 에서는 이미 보냈으면 침묵한다.
+    ④ 취재 갱신이 0 이어도 **신선도 폐기가 있으면 발송한다** — 폐기는 취재 결과가
+       아니라 측정이 비었다는 사건이라, 취재가 조용한 날일수록 더 알려야 한다.
     """
-    if not changes:
+    if not changes and not stale:
         return False
     if state.get("notified_on") == today:
-        print(f"[취재] 갱신 {len(changes)}종 — 오늘 이미 알림 발송 → 재발송 안 함")
+        print(f"[취재] 갱신 {len(changes)}종·폐기 {len(stale or [])}종 — "
+              f"오늘 이미 알림 발송 → 재발송 안 함")
         return False
-    text = digest(changes)
+    text = digest(changes, stale)
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat = os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
     if not token or not chat:
@@ -288,15 +313,19 @@ def notify(changes, state, today):
 
 def main():
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-    if not api_key:
-        print("[취재] ANTHROPIC_API_KEY 없음 — 건너뜀")
-        return 0
     cfg = load_json(CFG_PATH, {})
     auto = load_json(AUTO_PATH, {"items": {}})
     items = auto.get("items") or {}
+    stale = auto.get("stale_discarded") or []      # fetch_buffett_auto 가 남긴 폐기 원장
     state = load_json(STATE_PATH, {"items": {}})
     state.setdefault("items", {})
     now = datetime.now(KST)
+    if not api_key:
+        # 취재는 못 해도 폐기 사실은 알린다 — 두 사건은 서로 다른 관할이다.
+        print("[취재] ANTHROPIC_API_KEY 없음 — 취재 건너뜀")
+        if notify([], state, now.strftime("%Y-%m-%d"), stale):
+            save_state(state)
+        return 0
 
     changes, done, skipped = [], 0, 0
     for c in cfg.get("items", []):
@@ -347,10 +376,10 @@ def main():
         feed_client.flush()
     except Exception:
         pass
-    sent = notify(changes, state, now.strftime("%Y-%m-%d"))
+    sent = notify(changes, state, now.strftime("%Y-%m-%d"), stale)
     save_state(state)                     # notified_on 을 남기려면 알림 뒤에 한 번 더
-    print(f"[취재] 취재 {done}종 · 평시 침묵 {skipped}종 · "
-          f"갱신 {len(changes)}종 · DM {'1건' if sent else '0건'}")
+    print(f"[취재] 취재 {done}종 · 평시 침묵 {skipped}종 · 갱신 {len(changes)}종 · "
+          f"신선도 폐기 {len(stale)}종 · DM {'1건' if sent else '0건'}")
     return 0
 
 

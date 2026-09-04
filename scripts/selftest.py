@@ -442,11 +442,93 @@ def main():
                                [_rpt(2026, 4, 8.0, days=365)])
     check("XBRL: 분기 단위로 싣는 회사는 그대로 합산", round(_fa.eps_adj_ttm_from(_disc)[0], 2), 8.0)
     check("XBRL: 진짜 분기 목록은 최신순",
-          [(y, q) for y, q, _, _ in _fa.quarter_incomes(_ytd, _ytd.annual)],
+          [(y, q) for y, q, *_ in _fa.quarter_incomes(_ytd, _ytd.annual)],
           [(2026, 4), (2026, 3), (2026, 2), (2026, 1)])
     check("XBRL: 차분 결과는 분기값",
           round(_fa.quarter_incomes(_ytd, _ytd.annual)[0][2]['adj'] / _SH, 4),
           round(_per_ni - _per_gain * (1 - 0.21), 4))
+
+    # ── XBRL 신선도 가드 (2026-09-05) ────────────────────────────────────────
+    # 막으려는 것 한 문장: **낡은 분기로 만든 TTM 이 조용히 존 판정에 쓰이는 것.**
+    # 실전 발각: GOOG 의 자동 EPS 32.3984 가 **2012Q3** 필링에서 나왔다. 분할 전
+    # 값이라 자릿수가 그럴듯해 EY 9.6% 로 원장에 앉아 있었고, g 만 채워졌으면
+    # 그날 2012년 이익으로 존이 매겨졌을 것이다. 무증상이 이 사고의 핵심이다.
+    _NOW = _dt.datetime(2026, 9, 5)
+
+    def _win(y, q, end):
+        """창의 최신 원소만 보면 되므로 최소 형태 — (연, 분기, 지표, 근거, 분기말)."""
+        return [(y, q, {"adj": 1.0}, "w", end)]
+
+    _st = _fa.stale_window(_win(2012, 3, "2012-09-30"), _NOW)
+    check("신선도: 14년 묵은 창은 폐기", (_st or {}).get("period"), "2012Q3")
+    check("신선도: 경과일을 함께 돌려준다", (_st or {}).get("age_days") > 5000, True)
+    check("신선도: 최근 분기는 통과(오탐 없음)",
+          _fa.stale_window(_win(2026, 2, "2026-06-30"), _NOW), None)
+    # 경계 — 270일 정확히는 통과, 하루 더 낡으면 폐기. 임계가 실제로 그 자리인지.
+    _edge = (_NOW - _dt.timedelta(days=_fa.STALE_TTM_DAYS)).strftime("%Y-%m-%d")
+    _over = (_NOW - _dt.timedelta(days=_fa.STALE_TTM_DAYS + 1)).strftime("%Y-%m-%d")
+    check("신선도: 임계 정확히(270일)는 통과",
+          _fa.stale_window(_win(2025, 4, _edge), _NOW), None)
+    check("신선도: 임계 하루 초과는 폐기",
+          bool(_fa.stale_window(_win(2025, 4, _over), _NOW)), True)
+    # 분기말이 없는 응답 — 달력 근사로 폴백하되 **폴백을 탔다는 사실을 남긴다**
+    _fb2 = _fa.stale_window(_win(2012, 3, None), _NOW)
+    check("신선도: 분기말 없으면 달력 근사로라도 잡는다", (_fb2 or {}).get("period"), "2012Q3")
+    check("신선도: 폴백을 탔다는 사실을 남긴다", (_fb2 or {}).get("fallback"), True)
+    check("신선도: 근사 폴백이 정상 분기를 막지 않는다",
+          _fa.stale_window(_win(2026, 2, None), _NOW), None)
+    check("신선도: 창이 없으면 판정하지 않는다", _fa.stale_window([], _NOW), None)
+    # 배선 ① — 조립된 분기가 분기말을 싣고 있는가(가드가 잴 자를 실제로 받는가)
+    check("신선도 배선: 조립된 분기가 분기말을 싣는다",
+          _fa.quarter_incomes(_ytd, _ytd.annual)[0][4], "2026-12-28")
+    check("신선도 배선: TTM 창 원소가 가드가 읽는 모양",
+          len((_fa.eps_adj_ttm_from(_ytd) or 0) and _fa.eps_adj_ttm_from.last_window[0]), 5)
+
+    # 배선 ② — **build_block 을 실제로 돌린다.** 판정부 단위 테스트가 전부 통과해도
+    # 배선이 끊겨 있으면 실전만 틀린다(2026-08-30 교훈). 낡은 픽스처를 넣고
+    # 원장·블록·로그까지 흘러오는지 본다.
+    _o_fr, _o_rec, _o_gf = _fa.fetch_reports, _fa._record, _fa.fetch_forward_growth
+    try:
+        _fa._record = lambda *a, **k: None
+        _fa.fetch_forward_growth = lambda *a, **k: (None, None)
+
+        def _wire(qs, ann):
+            _fa.fetch_reports = (lambda tk, key, kind="quarterly":
+                                 (ann, "ok", 200) if kind == "annual" else (qs, "ok", 200))
+            _fa.STALE_DISCARDED.clear()
+            return _fa.build_block({"ticker": "ZZZ", "type": "씨즈형"}, "k", _NOW)[0]
+
+        _old_blk = _wire([_rpt(2012, q, 2.0 * q) for q in (3, 2, 1)],
+                         [_rpt(2012, 4, 8.0, days=365)])
+        check("신선도 배선: 낡은 공시로 실행하면 EPS 가 폐기된다",
+              _old_blk["eps_adj_ttm"], None)
+        check("신선도 배선: 폐기 사유를 블록에 남긴다",
+              "XBRL 신선도 미달: 최신 2012Q4" in (_old_blk.get("notes") or ""), True)
+        check("신선도 배선: 같은 창에서 나온 오너어닝·전환율도 함께 비운다",
+              (_old_blk["owner_earnings"], _old_blk["conversion"]), (None, None))
+        check("신선도 배선: 폐기 원장에 종목·분기가 남는다",
+              [(d["ticker"], d["period"]) for d in _fa.STALE_DISCARDED],
+              [("ZZZ", "2012Q4")])
+        # 오탐 확인 — 같은 배선에 신선한 공시를 넣으면 통과해야 한다
+        _new_blk = _wire([_rpt(2026, q, 2.0 * q) for q in (3, 2, 1)],
+                         [_rpt(2026, 4, 8.0, days=365)])
+        check("신선도 배선: 신선한 공시는 그대로 측정된다",
+              round((_new_blk["eps_adj_ttm"] or {}).get("value"), 2), 8.0)
+        check("신선도 배선: 정상 회차엔 폐기 원장이 비어 있다", _fa.STALE_DISCARDED, [])
+        check("신선도 배선: 기준 시점은 TTM 창의 최신 분기", _new_blk["period"], "2026Q4")
+        check("신선도 배선: 창 구성 4분기를 산출물에 남긴다",
+              [w["period"] for w in _new_blk["ttm_window"]],
+              ["2026Q4", "2026Q3", "2026Q2", "2026Q1"])
+    finally:
+        _fa.fetch_reports, _fa._record, _fa.fetch_forward_growth = _o_fr, _o_rec, _o_gf
+        _fa.STALE_DISCARDED.clear()
+
+    # 누더기 TTM 금지 — 중간 분기가 비면 그 4개를 더하지 않는다(연속 창만 채택).
+    _hole = ([_rpt(2026, q, 2.0 * q) for q in (3, 2, 1)]
+             + [_rpt(2025, q, 2.0 * q) for q in (2, 1)])      # 2025Q3·Q4 결번
+    check("연속성: 결번을 건너뛴 4분기 합은 거부", _fa.eps_adj_ttm_from(_hole)[0], None)
+    check("연속성: 거부 사유에 조립된 분기를 남긴다",
+          "연속 4분기 없음" in _fa.eps_adj_ttm_from(_hole)[1], True)
 
     # 투자손익 태그가 하나도 없으면 **0 으로 치지 않고** 무조정임을 밝힌다
     _plain = _fa._attach_annual([_rpt(2026, q, 2.0 * q) for q in (3, 2, 1)],
@@ -498,7 +580,7 @@ def main():
     check("XBRL: 3년 CAGR (12분기 뒤 = 3년)",
           abs(_g3 - (2 ** (1 / 3) - 1)) < 0.01, True)
     check("XBRL: Q4 는 연간 보고에서 복원한다(10-Q 에는 없다)",
-          [(y, q) for y, q, _, _ in _fa.quarter_incomes(_long, _long.annual)][:4],
+          [(y, q) for y, q, *_ in _fa.quarter_incomes(_long, _long.annual)][:4],
           [(2026, 4), (2026, 3), (2026, 2), (2026, 1)])
     _shortl = _fa._attach_annual(_long[:6], _lann[:2])
     check("XBRL: 3년 치가 없으면 null(짧은 이력을 늘려 적지 않는다)",
@@ -840,6 +922,48 @@ def main():
     check("스카우트: 묶음 문구 형식",
           _bs.digest([("AAPL", ["risk5"]), ("GOOG", ["capalloc"])]),
           "자동 취재 갱신 2종: AAPL·GOOG")
+    # 신선도 폐기는 취재 결과가 아니라 **눈금이 비었다는 사건** — 같은 DM 묶음에 싣는다.
+    _stl = [{"ticker": "GOOG", "period": "2012Q3"}]
+    check("스카우트: 폐기가 묶음에 종목·분기까지 실린다",
+          _bs.digest([], _stl), "XBRL 신선도 미달 1종 폐기: GOOG(2012Q3)")
+    check("스카우트: 갱신과 폐기가 한 묶음 두 줄",
+          _bs.digest([("AAPL", ["risk5"])], _stl).count(chr(10)), 1)
+    # 발송까지 실제로 흘러오는지 — 가짜 송신부를 꽂아 본문과 상태를 함께 본다.
+    import sys as _sys
+    import types as _ty
+    _sent_box = []
+    _fake = _ty.ModuleType("send_telegram_briefing")
+    _fake.send_telegram = lambda tok, chat, text: _sent_box.append((chat, text))
+    _fake.esc = lambda t: t
+    _o_mod = _sys.modules.get("send_telegram_briefing")
+    _sv2 = {k: _os.environ.get(k) for k in
+            ("TELEGRAM_BOT_TOKEN", "TELEGRAM_ALERT_CHAT_ID", "TELEGRAM_CHAT_ID")}
+    try:
+        _sys.modules["send_telegram_briefing"] = _fake
+        _os.environ["TELEGRAM_BOT_TOKEN"] = "tok"
+        _os.environ["TELEGRAM_ALERT_CHAT_ID"] = "12345"
+        _os.environ.pop("TELEGRAM_CHAT_ID", None)
+        _st2 = {}
+        check("스카우트: 취재 갱신 0 이어도 폐기가 있으면 발송한다",
+              _bs.notify([], _st2, "2026-09-05", _stl), True)
+        check("스카우트: 폐기 DM 은 소장 DM 으로만 나간다",
+              [c for c, _t in _sent_box], ["12345"])
+        check("스카우트: 폐기 DM 본문에 종목·분기가 있다",
+              "GOOG(2012Q3)" in _sent_box[0][1], True)
+        check("스카우트: 같은 날 두 번째는 침묵",
+              _bs.notify([], _st2, "2026-09-05", _stl), False)
+        check("스카우트: 갱신도 폐기도 없으면 침묵",
+              _bs.notify([], {}, "2026-09-05", []), False)
+    finally:
+        if _o_mod is None:
+            _sys.modules.pop("send_telegram_briefing", None)
+        else:
+            _sys.modules["send_telegram_briefing"] = _o_mod
+        for _k, _v in _sv2.items():
+            if _v is None:
+                _os.environ.pop(_k, None)
+            else:
+                _os.environ[_k] = _v
 
     # ── 무인 탐사선 준법 필터 (2026-09-03) ─────────────────────────────────
     # 막으려는 것 한 문장: **"무엇을 얼마나 언제 사라"는 투자 권고가 공개 화면에

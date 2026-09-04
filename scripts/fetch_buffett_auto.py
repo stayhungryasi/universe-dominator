@@ -206,6 +206,23 @@ def period_days(rep):
     return n if n > 0 else None
 
 
+def end_of(rep):
+    """이 보고가 덮는 기간의 **종료일**(YYYY-MM-DD). 없으면 None.
+
+    분기 종료일은 신선도 가드의 유일한 직접 증거다 — 회계연도 라벨(2026Q3)은
+    회사마다 달력과 어긋나므로(MSFT 는 6월 결산) 라벨만으로 낡음을 재면 안 된다.
+    """
+    d = (rep or {}).get("endDate")
+    if not d:
+        return None
+    d = str(d)[:10]
+    try:
+        datetime.strptime(d, "%Y-%m-%d")
+    except ValueError:
+        return None
+    return d
+
+
 def quarterly_only(reports):
     """**분기 보고만** 남긴다 → (걸러진 목록, 버린 수).
 
@@ -290,7 +307,8 @@ def quarter_incomes(reports, annual=None):
         raw[(y, q)] = ({"adj": inc,
                         "ni": pick(flat, NET_INCOME_TAGS)[0],
                         "dna": pick(flat, DNA_TAGS)[0],
-                        "capex": pick(flat, CAPEX_TAGS)[0]}, why, period_days(r))
+                        "capex": pick(flat, CAPEX_TAGS)[0]}, why, period_days(r),
+                       end_of(r))
 
     # ① 진짜 분기값 — 누적(100일 초과)이면 같은 해 직전 분기를 뺀다
     def diff(cur, prev):
@@ -302,14 +320,15 @@ def quarter_incomes(reports, annual=None):
         return out
 
     tq = {}
-    for (y, q), (vals, why, days) in raw.items():
+    for (y, q), (vals, why, days, end) in raw.items():
         if q == 1 or (days is not None and days <= 100):
-            tq[(y, q)] = (vals, why)
+            tq[(y, q)] = (vals, why, end)
             continue
         prev = raw.get((y, q - 1))
         if prev is None:
             continue                        # 직전 누적이 없으면 차분 불가 → 버린다
-        tq[(y, q)] = (diff(vals, prev[0]), why)
+        # 차분 결과의 '분기말'은 누적 보고의 종료일이다(직전 누적의 종료일이 아니다).
+        tq[(y, q)] = (diff(vals, prev[0]), why, end)
 
     # ② 회계연도 4분기는 10-Q 가 없다 — 10-K(연간)에만 있다. 2026-09-02 실측:
     #    조립된 분기 목록에 **Q4 가 하나도 없었고**, 그래서 연속 4분기 창이 영원히
@@ -332,9 +351,10 @@ def quarter_incomes(reports, annual=None):
         for k, v in fy.items():
             parts = [t[0].get(k) for t in three]
             q4[k] = None if v is None or any(x is None for x in parts) else v - sum(parts)
-        tq[(y, 4)] = (q4, f"{why} (FY−Q1~Q3)")
+        tq[(y, 4)] = (q4, f"{why} (FY−Q1~Q3)", end_of(r))
 
-    out = [(y, q, v[0], v[1]) for (y, q), v in tq.items()]   # v[0] = 지표 묶음
+    # (연, 분기, 지표묶음, 근거, 분기말YYYY-MM-DD|None) — 종료일은 신선도 가드가 쓴다
+    out = [(y, q, v[0], v[1], v[2]) for (y, q), v in tq.items()]
     out.sort(reverse=True)
     return out
 
@@ -348,6 +368,57 @@ def _attach_annual(reports, annual):
     out = _WithAnnual(reports or [])
     out.annual = annual or []
     return out
+
+
+# TTM 이 이 일수보다 오래된 분기에서 끝나면 폐기한다. 270일 ≒ 3분기 —
+# 결산 지연·결번을 한 분기 더 봐주고도 '작년 것' 은 통과하지 못하는 눈금이다.
+STALE_TTM_DAYS = 270
+
+
+def quarter_end_guess(y, q):
+    """분기말 근사 — 종료일이 없는 응답을 위한 **폴백**(달력 분기 기준).
+
+    회계연도 라벨을 달력으로 읽으므로 6월 결산 회사는 실제보다 **최신 쪽**으로
+    치우친다. 그 방향은 의도적이다: 폴백이 틀릴 때 정상을 폐기하는 쪽(오탐)이
+    아니라 통과시키는 쪽으로 틀리게 둔다(2026-08-22 교훈 — 방지선의 오탐은
+    침묵보다 비싸다). 대신 폴백을 탔다는 사실은 반드시 로그에 남긴다.
+    """
+    if not isinstance(y, int) or q not in (1, 2, 3, 4):
+        return None
+    m = q * 3
+    return datetime(y, m, 31 if m in (3, 12) else 30)
+
+
+def stale_window(window, now):
+    """TTM 창이 낡았는가 → 낡았으면 사유 묶음, 신선하면 None. **순수 함수**.
+
+    막으려는 것 한 문장: **낡은 분기로 만든 TTM 이 조용히 존 판정에 쓰이는 것.**
+    그래서 표면 특징(보고 건수·태그 모양)이 아니라 **창의 최신 분기말과 오늘의
+    간격** 을 잰다 — 그것이 '낡음' 의 정의 그대로다.
+    (2026-09-05 GOOG: 2012Q3 필링으로 만든 EPS 32.40 이 EY 9.6% 로 원장에
+     앉아 있었다. 분할 전 값이라 자릿수까지 그럴듯해 아무도 되묻지 않았다.)
+    """
+    if not window:
+        return None
+    y, q = window[0][0], window[0][1]
+    label = f"{y}Q{q}"
+    end_s = window[0][4] if len(window[0]) > 4 else None
+    fallback = end_s is None
+    end = None
+    if end_s:
+        try:
+            end = datetime.strptime(end_s, "%Y-%m-%d")
+        except ValueError:
+            end, fallback = None, True
+    if end is None:
+        end = quarter_end_guess(y, q)
+    if end is None:
+        return None                     # 잴 자가 없다 — 낡았다고 단정하지 않는다
+    age = (now.replace(tzinfo=None) - end).days
+    if age <= STALE_TTM_DAYS:
+        return None
+    return {"period": label, "end": end_s or end.strftime("%Y-%m-%d"),
+            "age_days": age, "fallback": fallback}
 
 
 def eps_adj_ttm_from(reports):
@@ -366,7 +437,7 @@ def eps_adj_ttm_from(reports):
             window, offset = w, i
             break
     if window is None:
-        got = ", ".join(f"{y}Q{q}" for y, q, _, _ in qs[:8])
+        got = ", ".join(f"{y}Q{q}" for y, q, *_ in qs[:8])
         return None, f"연속 4분기 없음(조립된 분기: {got})", len(qs)
     total = sum(x[2]["adj"] for x in window)
     notes = []
@@ -455,7 +526,7 @@ def cagr3y_from(reports):
     # 때문에 창 자체를 못 찾았다(전 종목 null). 진짜 분기 목록 위에서는 12칸이 3년이다.
     now, before = ttm(base), ttm(base + 12)
     if now is None or before is None:
-        got = ", ".join(f"{y}Q{q}" for y, q, _, _ in qs[base:base + 17:4])
+        got = ", ".join(f"{y}Q{q}" for y, q, *_ in qs[base:base + 17:4])
         return None, f"3년 전 창 확보 실패(창 시작 {got})"
     v = cagr(before, now, 3.0)
     return v, ("3년 창" if v is not None
@@ -614,6 +685,9 @@ def fetch_foreign_eps(ticker):
     return None
 
 
+STALE_DISCARDED = []          # 이번 회차 신선도 폐기 목록 (DM 묶음·산출물에 실린다)
+
+
 def build_block(c, key, now):
     """종목 하나의 자동 판단 블록. 못 잰 칸은 null 로 남긴다."""
     ticker = c.get("ticker", "")
@@ -653,7 +727,23 @@ def build_block(c, key, now):
     reports = _attach_annual(reports, annual)
 
     eps, method, nq = eps_adj_ttm_from(reports)
+    win = getattr(eps_adj_ttm_from, "last_window", None) if eps is not None else None
     block["source"] = f"Finnhub financials-reported · 분기 {len(reports)}건"
+
+    # 신선도 가드 — 낡은 창은 EPS 도, 그 창에서 파생되는 오너어닝·전환율·ROE 도
+    # 통째로 폐기한다. 한 칸만 버리면 나머지가 낡은 창의 권위를 그대로 입는다.
+    stale = stale_window(win, now) if win else None
+    if stale:
+        note = f"XBRL 신선도 미달: 최신 {stale['period']}"
+        fb = " · 분기말 없음 → 달력 근사" if stale["fallback"] else ""
+        print(f"[자동취재] {ticker}: 신선도 미달 — 최신 분기 {stale['period']}"
+              f"(종료 {stale['end']}, {stale['age_days']}일 경과 > {STALE_TTM_DAYS})"
+              f" → eps_adj_ttm 폐기{fb}", file=sys.stderr)
+        STALE_DISCARDED.append({"ticker": ticker, "period": stale["period"],
+                                "end": stale["end"], "age_days": stale["age_days"],
+                                "fallback": stale["fallback"]})
+        block["notes"] = note
+        eps, method, win = None, note, None
     if eps is not None and implausible(eps, c.get("forward_eps")):
         print(f"[자동취재] {ticker}: EPS {eps:.2f} 가 선행 {c.get('forward_eps')} 의 4배 초과 "
               f"— 집계 오류 의심으로 보류", file=sys.stderr)
@@ -666,10 +756,14 @@ def build_block(c, key, now):
         block["method"] = method
         block["confidence"] = "중"          # 공시 직접 추출이나 태그 선택은 근사다
         latest = reports[0] or {}
-        block["period"] = (f"{latest.get('year')}Q{latest.get('quarter')}"
-                           if latest.get("year") else None)
-        win = getattr(eps_adj_ttm_from, "last_window", None)
+        # 기준 시점은 **TTM 창의 최신 분기**다. 예전엔 reports[0](최신 원문 보고)을
+        # 적었는데, 창이 한 칸 밀리면 화면이 실제보다 새 시점을 가리킨다.
+        block["period"] = (f"{win[0][0]}Q{win[0][1]}" if win else
+                           (f"{latest.get('year')}Q{latest.get('quarter')}"
+                            if latest.get("year") else None))
         if win:
+            block["ttm_window"] = [{"period": f"{y}Q{q}", "end": e}
+                                   for y, q, _v, _w, e in win]
             oe, conv = owner_earnings_from(win)
             if oe:
                 block["owner_earnings"] = oe
@@ -710,6 +804,7 @@ def main():
         print("[자동취재] FINNHUB_API_KEY 없음 — 미국 종목 XBRL 생략", file=sys.stderr)
 
     now = datetime.now(KST)
+    STALE_DISCARDED.clear()
     items, n_ok = {}, 0
     for c in cfg.get("items", []):
         tk = c.get("ticker", "")
@@ -730,6 +825,12 @@ def main():
 
     payload = {"generated_label": now.strftime("%Y-%m-%d %H:%M"),
                "generated_at": now.isoformat(), "items": items}
+    # 폐기는 조용히 하지 않는다 — 산출물에 남기고, buffett_scout 가 DM 묶음에 싣는다.
+    if STALE_DISCARDED:
+        payload["stale_discarded"] = list(STALE_DISCARDED)
+        names = "·".join(f"{d['ticker']}({d['period']})" for d in STALE_DISCARDED)
+        print(f"[자동취재] 신선도 미달 폐기 {len(STALE_DISCARDED)}종: {names}",
+              file=sys.stderr)
     OUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n",
                         encoding="utf-8")
     try:
