@@ -883,6 +883,30 @@ def main():
         # 오차단 감시 — 필터가 본문을 통째로 삼키지 않았는지
         check("탐사선: 분석은 살아남는다(본문 15k 이상)", len(_body) > 15000, True)
 
+    # ── 준법 분리 ⓑ안 (2026-09-04) — 원본 단계에서 이미 갈라져 있는가 ────────
+    # 렌더 필터는 **두 번째 겹**이다. 첫 겹은 원본이 애초에 권고를 담지 않는 것.
+    # 필터에만 기대면 렌더 경로가 하나 늘어나는 날(RSS·요약·API) 그리로 샌다.
+    _reports = sorted((Path(__file__).parent.parent / "agent-research" / "reports")
+                      .glob("*.md")) if (Path(__file__).parent.parent /
+                                         "agent-research" / "reports").exists() else []
+    _public = [f for f in _reports if not f.stem.endswith("_private")
+               and f.stem != "changelog"]
+    for _f in _public:
+        _t = _f.read_text(encoding="utf-8")
+        for _w in ("권고", "분할", "포지션 규모", "진입 방식", "비중 2%"):
+            check("분리: 본 보고서 " + _f.stem + " 에 '" + _w + "' 0건", _t.count(_w), 0)
+    check("분리: 공개 보고서가 실제로 있다", len(_public) > 0, True)
+    # 별지는 저장소에 들어오면 안 된다 — .gitignore 가 아니라 '없음'으로 확인한다
+    _ignored = (Path(__file__).parent.parent / ".gitignore")
+    check("분리: .gitignore 에 별지 규칙",
+          "_private.md" in _ignored.read_text(encoding="utf-8") if _ignored.exists() else False,
+          True)
+    # 마스터 프롬프트가 다음 회차에도 같은 규칙을 지키게 하는가
+    _mp = Path(__file__).parent.parent / "agent-research" / "prompts" / "spacex_master.md"
+    if _mp.exists():
+        check("분리: 마스터 프롬프트에 준법 분리 규칙",
+              "_private.md" in _mp.read_text(encoding="utf-8"), True)
+
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj
     _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {

@@ -14,3 +14,6 @@ prompts/spacex_master.md 의 지시에 따라 SpaceX(SPCX) 분석 문서를 만�
 - 머스크 발언은 판단 근거로 쓰지 않는다
 - 실행 시작 시 state/spacex_state.json이 있으면 먼저 읽고 "지난달 대비 변화"부터 쓴다
 - 한국어로 작성
+- **준법 분리**: 진입 방식·포지션 규모·매수/관망 권고는 `reports/YYYY-MM.md` 에 쓰지 않는다.
+  `reports/YYYY-MM_private.md` 에만 쓴다(이 파일은 .gitignore 로 로컬에만 남는다).
+  본 보고서의 PHASE 4 는 적정가치 산출·주가 반영 분해·판단 변경 트리거까지만.
