@@ -287,24 +287,85 @@ def translate_titles_ko(stocks_out):
         print(f"  [번역] 실패(무시): {e}", file=sys.stderr)
 
 
+def load_prev():
+    """직전 산출물 — 실패 시 기존 기사를 되살릴 유일한 근거."""
+    try:
+        return json.loads(OUT_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def merge_preserve(prev, fresh, now_label):
+    """티커별 보존 병합 → (병합 목록, 보존된 티커들).
+
+    2026-09-03 사고: 구글뉴스가 33종 중 21종에 비200 을 돌려줬는데, 코드는
+    **전 종목이 0건일 때만** 기존 파일을 지키게 돼 있었다(`if ok == 0`).
+    12종이 성공했으므로 파일 전체가 새로 쓰였고, 실패한 21종의 기사는 빈 배열로
+    덮여 사라졌다. 수집 실패가 **역사를 지운 것**이다.
+
+    보존은 티커 단위여야 한다: 성공한 티커만 갱신하고, 0건인 티커는 기존 기사를
+    그대로 둔다. 낡음 판정(2주 시효)은 표시층의 몫이라 여기서는 버리지 않고
+    `articles_asof` 로 **언제 수집한 것인지**만 남긴다 — 날짜를 잃으면 표시층이
+    낡음을 판정할 근거를 잃는다.
+    """
+    prev_map = {x.get("ticker"): x for x in (prev.get("stocks") or [])}
+    prev_label = prev.get("generated_label")
+    out, kept = [], []
+    for s in fresh:
+        if s.get("articles"):
+            out.append({**s, "articles_asof": now_label})
+            continue
+        old = prev_map.get(s.get("ticker")) or {}
+        if old.get("articles"):
+            out.append({**s, "articles": old["articles"],
+                        "articles_asof": old.get("articles_asof") or prev_label})
+            kept.append(s.get("ticker"))
+        else:
+            out.append({**s, "articles_asof": None})
+    return out, kept
+
+
 def main():
     print(f"[research] 시작 {TODAY.isoformat()}")
     targets = collect_targets()
     print(f"  대상 {len(targets)}개 (우주 TOP 20 + 잠재)")
 
-    stocks_out, ok = [], 0
+    # 수집은 feed_client 로 — 호스트 페이싱(2초+지터)·503/429 백오프·상태 원장을
+    # 다른 수집기(신호·동행·스카우트)와 **공유**한다. 같은 회차에 여러 스크립트가
+    # 같은 호스트를 두드리므로, 각자 자기 간격만 지켜서는 소용이 없다.
+    try:
+        import feed_client
+    except Exception as e:
+        feed_client = None
+        print(f"  [경고] feed_client 로드 실패 → 단순 요청으로 진행 ({e})", file=sys.stderr)
+
+    stocks_out, ok, n_err = [], 0, 0
     for t in targets:
         q, lang = query_for(t["name"])
-        xml_text = fetch(rss_url(q, lang))
-        time.sleep(FETCH_DELAY)
+        url = rss_url(q, lang)
+        tk = t.get("ticker") or t.get("name")
+        if feed_client:
+            xml_text, outcome, code = feed_client.fetch(url, tk, "research")
+        else:
+            xml_text = fetch(url)
+            outcome, code = ("ok" if xml_text else "http_error"), None
+            time.sleep(FETCH_DELAY)
         arts = parse_rss(xml_text) if xml_text else []
         if arts:
             ok += 1
             print(f"  [ok] {t['name']}: {len(arts)}건")
         else:
-            print(f"  [–] {t['name']}: 기사 없음/실패")
+            n_err += 1
+            print(f"  [–] {t['name']}: 기사 없음/실패 ({outcome})")
+        if feed_client:
+            # 원장 규약: 응답은 왔는데 기사가 0건이면 zero, 요청 자체가 실패면 그대로
+            feed_client.record("research", tk,
+                               ("ok" if arts else ("zero" if outcome == "ok" else outcome)),
+                               code, len(arts))
         stocks_out.append({**t, "articles": arts})
 
+    if feed_client:
+        feed_client.flush()
     if ok == 0:
         print("[중단] 수집 0건 — 기존 research.json 유지")
         sys.exit(0)
@@ -312,11 +373,18 @@ def main():
     translate_titles_ko(stocks_out)
     summarize_articles_ko(stocks_out)
 
+    label = TODAY.strftime("%Y.%m.%d %H:%M")
+    merged, kept = merge_preserve(load_prev(), stocks_out, label)
     out = {"generated_at": TODAY.isoformat(),
-           "generated_label": TODAY.strftime("%Y.%m.%d %H:%M"),
-           "stocks": stocks_out}
+           "generated_label": label,
+           "stocks": merged}
     OUT_PATH.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[OK] research.json 저장: {ok}/{len(targets)}개 종목 수집")
+    empty = sum(1 for x in merged if not x.get("articles"))
+    print(f"[OK] research.json 저장: {ok}/{len(targets)}개 수집 · "
+          f"기존 유지 {len(kept)}종 · 여전히 빈 종목 {empty}종")
+    if kept:
+        print(f"  [보존] 이번 회차 실패분은 기존 기사 유지: {', '.join(kept[:8])}"
+              f"{' 외' if len(kept) > 8 else ''}")
 
 
 if __name__ == "__main__":

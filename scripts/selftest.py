@@ -907,6 +907,90 @@ def main():
         check("분리: 마스터 프롬프트에 준법 분리 규칙",
               "_private.md" in _mp.read_text(encoding="utf-8"), True)
 
+    # ── 리서치 보존 병합 (2026-09-03 사고 재현) ────────────────────────────
+    # 사고: 구글뉴스가 33종 중 21종에 비200 을 돌려줬는데, 보호 장치가
+    # "전 종목이 0건일 때만" 기존 파일을 지키게 돼 있었다(if ok == 0).
+    # 12종이 성공했으므로 파일 전체가 새로 쓰였고 실패한 21종의 기사가 **삭제됐다.**
+    # 막으려는 것 한 문장: **수집 실패가 역사를 지우는 것.**
+    import fetch_research as _fr
+
+    _prev = {"generated_label": "2026.09.03 20:19", "stocks": [
+        {"ticker": "NVDA", "articles": [{"title": "구 기사 A"}]},
+        {"ticker": "AAPL", "articles": [{"title": "구 기사 B"}]},
+        {"ticker": "NEW1", "articles": []},
+    ]}
+    # 이번 회차: NVDA 실패(0건) · AAPL 성공 · NEW1 첫 성공
+    _fresh = [{"ticker": "NVDA", "articles": []},
+              {"ticker": "AAPL", "articles": [{"title": "새 기사"}]},
+              {"ticker": "NEW1", "articles": [{"title": "첫 기사"}]}]
+    _m, _kept = _fr.merge_preserve(_prev, _fresh, "2026.09.03 22:35")
+    _by = {x["ticker"]: x for x in _m}
+    check("리서치: 실패한 티커의 기존 기사가 살아남는다",
+          _by["NVDA"]["articles"], [{"title": "구 기사 A"}])
+    check("리서치: 보존된 티커를 알려준다", _kept, ["NVDA"])
+    check("리서치: 성공한 티커는 새 기사로 갱신",
+          _by["AAPL"]["articles"], [{"title": "새 기사"}])
+    check("리서치: 보존분은 수집 시점을 유지한다(표시층이 낡음을 판정할 근거)",
+          _by["NVDA"]["articles_asof"], "2026.09.03 20:19")
+    check("리서치: 갱신분은 이번 회차 시점", _by["AAPL"]["articles_asof"], "2026.09.03 22:35")
+    check("리서치: 원래 없던 종목은 새로 채워진다",
+          _by["NEW1"]["articles"], [{"title": "첫 기사"}])
+    # 사고 그대로의 비율 — 21/33 실패해도 한 건도 잃지 않아야 한다
+    _prev33 = {"generated_label": "L", "stocks":
+               [{"ticker": f"T{i}", "articles": [{"title": f"a{i}"}]} for i in range(33)]}
+    _fresh33 = [{"ticker": f"T{i}", "articles": ([] if i < 21 else [{"title": "new"}])}
+                for i in range(33)]
+    _m33, _k33 = _fr.merge_preserve(_prev33, _fresh33, "N")
+    check("리서치: 21/33 실패해도 빈 종목 0",
+          sum(1 for x in _m33 if not x.get("articles")), 0)
+    check("리서치: 보존 21종", len(_k33), 21)
+    # 이전 기록이 아예 없으면 보존할 것도 없다(빈 채로 두고 거짓말하지 않는다)
+    check("리서치: 과거가 없으면 빈 채로 둔다",
+          _fr.merge_preserve({}, [{"ticker": "X", "articles": []}], "N")[0][0]["articles"], [])
+
+    # 배선 실측 — 함수가 옳아도 main() 이 그것을 부르지 않으면 실전만 틀린다.
+    # (2026-08-31 sentinel 에서 배운 것과 같은 함정: 단위 테스트는 전부 통과하는데
+    #  배선이 끊겨 있으면 사고는 그대로 난다.)
+    import json as _js3, shutil as _sh3
+    _tmpd = Path(__file__).parent.parent / "data" / "_selftest_research"
+    _o_out, _o_tg = _fr.OUT_PATH, _fr.collect_targets
+    _o_tr, _o_sm, _o_parse = _fr.translate_titles_ko, _fr.summarize_articles_ko, _fr.parse_rss
+    import feed_client as _fc3
+    _o_fetch, _o_rec, _o_flush = _fc3.fetch, _fc3.record, _fc3.flush
+    try:
+        _tmpd.mkdir(parents=True, exist_ok=True)
+        _fr.OUT_PATH = _tmpd / "research.json"
+        _fr.OUT_PATH.write_text(_js3.dumps(
+            {"generated_label": "2026.09.03 20:19", "stocks": [
+                {"ticker": "AAA", "articles": [{"title": "지켜져야 할 기사"}]},
+                {"ticker": "BBB", "articles": [{"title": "구 기사"}]}]},
+            ensure_ascii=False), encoding="utf-8")
+        _fr.collect_targets = lambda: [{"ticker": "AAA", "name": "AAA"},
+                                       {"ticker": "BBB", "name": "BBB"}]
+        _fr.translate_titles_ko = lambda x: None
+        _fr.summarize_articles_ko = lambda x: None
+        # AAA 는 실패(본문 없음), BBB 는 성공 — 사고와 같은 부분 실패 상황
+        _fc3.fetch = lambda url, label, kind, **k: (
+            (None, "http_error", 429) if label == "AAA" else ("<xml/>", "ok", 200))
+        _fr.parse_rss = lambda t, limit=None: ([] if not t else [{"title": "새 기사"}])
+        _fc3.record = lambda *a, **k: None
+        _fc3.flush = lambda: None
+        _fr.main()
+        _res = _js3.loads(_fr.OUT_PATH.read_text(encoding="utf-8"))
+        _rb = {x["ticker"]: x for x in _res["stocks"]}
+        check("리서치(배선): 실패 종목의 기사가 파일에 살아남는다",
+              _rb["AAA"]["articles"], [{"title": "지켜져야 할 기사"}])
+        check("리서치(배선): 성공 종목은 갱신된다",
+              _rb["BBB"]["articles"], [{"title": "새 기사"}])
+    except SystemExit:
+        check("리서치(배선): 부분 실패에서 조기 종료하면 안 된다", "SystemExit", "")
+    finally:
+        _fr.OUT_PATH, _fr.collect_targets = _o_out, _o_tg
+        _fr.translate_titles_ko, _fr.summarize_articles_ko = _o_tr, _o_sm
+        _fr.parse_rss = _o_parse
+        _fc3.fetch, _fc3.record, _fc3.flush = _o_fetch, _o_rec, _o_flush
+        _sh3.rmtree(_tmpd, ignore_errors=True)
+
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj
     _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {
