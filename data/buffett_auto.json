@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-04 17:16",
- "generated_at": "2026-09-04T17:16:57.091541+09:00",
+ "generated_label": "2026-09-04 22:43",
+ "generated_at": "2026-09-04T22:43:37.197334+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-04",
@@ -77,8 +77,14 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "$77.1B AI gain distorts reported earnings; underlying operational leverage from Search + Cloud growth more conservative proxy"
+    "variants": {
+     "A": {
+      "value": 10737000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -89,30 +95,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 4건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "Antitrust fear is verifiable regulatory headwind, not business deterioration; TPU vertical integration validates competitive moat deepening; valuation debate centers on AI capex ROI timeline, not franchise quality",
-   "_evidence": {
-    "franchise": "Search moat + Cloud 82% surge + AI integration",
-    "risk5": "Regulatory uncertainty (antitrust) vs. demonstrated earnings power and management execution",
-    "capalloc": "$77.1B gain, bond offering, continued AI investment",
-    "owner_earnings": "Reported profit inflated by $77.1B gain; underlying revenue growth +24% more durable metric"
-   }
+   "confidence": "중"
   },
   "MSFT": {
    "as_of": "2026-09-04",
@@ -181,7 +164,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.51
+    "value": 13.47
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -228,7 +211,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.17
+    "value": -1.09
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -250,7 +233,7 @@
    "roe_tangible": null,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "유가 사이클 의존성으로 인한 수익 예측 불가능성"
+    "display_reason": "유가 사이클 종속으로 인한 수익 예측 가능성 구조적 한계"
    },
    "conversion": null,
    "g_cagr3y": null,
@@ -264,12 +247,6 @@
     "no_substitute": "○",
     "no_price_reg": "✕"
    },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
@@ -277,12 +254,11 @@
     "score": 2,
     "period": "2026H1"
    },
-   "notes": "유가 변동과 지정학적 리스크(이란 전쟁, 파이프라인 공격)가 현금흐름을 지배하는 구조적 취약성",
+   "notes": "유가 변동에 직결된 수익 구조 + 차입 지속 + SpaceX 대형 IPO 맥락에서 상대적 매력도 약화",
    "_evidence": {
-    "franchise": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계",
-    "risk5": "Saudi Keeps Borrowing to Pay off Existing Debt; Saudi Arabia's vital East-West oil pipeline attacked after ceasefire",
-    "capalloc": "Aramco posts drop in annual profit, announces first buyback; Saudi Aramco Q2 2026 earnings beat as Iran war lifts oil prices",
-    "owner_earnings": "Saudi Aramco reports $26.9B profit in third quarter, down slightly over lower oil prices"
+    "franchise": "Global crude oil demand anchors necessity; but price regulation exposure limits pricing power",
+    "capalloc": "Aramco posts drop in annual profit, announces first buyback | Saudi Keeps Borrowing to Pay off Existing Debt",
+    "owner_earnings": "Q3 2026 profit down slightly over lower oil prices; Q1 2026 earnings jump 26% on war premium—cyclical volatility evident"
    }
   },
   "META": {
@@ -408,7 +384,25 @@
    "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "플로트 복리 펀더멘탈은 건전하나 현재 주가는 공정가치 대비 정당한 수준, 버핏의 순주식매입 14분기만에 재개되며 현금배치 전환 신호",
+   "_evidence": {
+    "franchise": "보험 플로트 기반 수십 년 복리 모델, 대체 불가능한 사업 포트폴리오, 구조적 가격결정력 부재",
+    "capalloc": "Q2 현금 잔액 감소로 증가된 투자 및 자사주 매입 활발, 첫 순 주식 매입 14분기만에 재개, Greg Abel의 44.5억 달러 주식 매입"
+   }
   },
   "LLY": {
    "as_of": "2026-09-04",
@@ -557,10 +551,7 @@
     "value": 28.81
    },
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "EUV 리소그래피 독점과 AI 수요 성장에도 불구하고 수주 사이클 변동성이 현금흐름 예측성을 저해"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
@@ -583,14 +574,13 @@
     "buyback": 1,
     "debt_discipline": 1,
     "score": 3,
-    "period": "2024H2"
+    "period": "2026H1"
    },
-   "notes": "EUV 독점 통행료는 강하나 반도체 자본지출 사이클의 변동성으로 인해 순수 통행료(35점)에서 할인 적용 필요",
+   "notes": "EUV 독점으로 구조적 통행료 보유하나 칩 장비 수주 사이클의 변동성으로 순이익 불안정성 증가.",
    "_evidence": {
-    "franchise": "ASML's Dominant Position in EUV Signal Further Upside; AI-Driven Lithography Dominance",
-    "risk5": "Stock Looks Fully Priced After 161% Run; Is ASML Extremely Overvalued or a Bargain at 45x Forward Earnings?",
-    "capalloc": "ASML reports transactions under its current share buyback program",
-    "owner_earnings": "Earnings Stay Rich yet Stock Looks Fully Priced; Long-Term Prospects Vastly Improved but Valuation Questions In Focus"
+    "franchise": "Does ASML's Dominant Position in EUV Signal Further Upside",
+    "risk5": "ASML Stock Sinks As Market Gains와 Here's How Much Traders Expect ASML Stock to Move After Earnings로 보아 수주 사이클 변동성이 주가 변동성 유발",
+    "capalloc": "ASML reports transactions under its current share buyback program, ASML raises outlook on strong orders for advanced chipmaking equipment"
    }
   },
   "LRCX": {
@@ -735,38 +725,14 @@
     "value": 1.02
    },
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "record 실적 달성하나 $20B 미충족 수요로 성장 천장 노출"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2027Q1"
-   },
-   "notes": "칩설계 로열티 통행료는 우수하나 시장가 대비 밸류에이션이 정당선을 지속 상회하며, 수급 제약이 성장성을 제한하는 단계",
-   "_evidence": {
-    "franchise": "Arm delivers record-breaking quarter and full-year results; AGI CPU 수요 강세로 로열티 기반 사업 모델 검증",
-    "risk5": "Arm Holdings stock fell 7% on record earnings: $20 billion in demand it cannot fill - 공급능력 한계가 성장 리스크로 작용",
-    "capalloc": "Record earnings 달성으로 현금 흐름 양호 기조 유지 중",
-    "owner_earnings": "Arm Holdings Could Be 40% Undervalued vs. 동시에 Arm Holdings Stock Fell 7% on Record Earnings - 밸류에이션 해석의 불확실성"
-   }
+   "confidence": "중"
   },
   "SNDK": {
    "as_of": "2026-09-04",
@@ -904,36 +870,14 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 21건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H2"
-   },
-   "notes": "AI 수주 통행료 모델이나 고객집중(Google 등) 리스크로 인한 쿠폰 변동성 상존",
-   "_evidence": {
-    "franchise": "AI demand boosts profit and revenue; long-term targets lifted",
-    "risk5": "Marvell shares tumble 6% as outlook underwhelms despite 37% revenue growth",
-    "capalloc": "Marvell Technology, Inc. Reports Second Quarter results with buyback signals"
-   }
+   "confidence": "중"
   },
   "285A.T": {
    "as_of": "2026-09-04",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1023.07
+    "value": 1007.57
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -997,5 +941,5 @@
    "confidence": "중"
   }
  },
- "scout_label": "2026-09-04 17:18"
+ "scout_label": "2026-09-04 22:45"
 }
