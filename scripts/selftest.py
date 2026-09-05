@@ -625,6 +625,61 @@ def main():
     check("단위: 캡이 단위 오류를 덮지 않는다(정상값은 캡 흔적 없음)",
           _fb.measure_bench(_bad, 500.0, {"UST10": 4.75})["g_capped_from"], None)
 
+    # ── 레전드 측정층은 34종 전원 시세를 부른다 (2026-09-05) ─────────────────
+    # 막으려던 것: **시차 관측의 원칙 바구니가 레전드 판정까지 막는 것.**
+    # '추정불가 = 시세 미호출' 은 괴리(정당 MAX)를 안 매기겠다는 시차 쪽 규칙인데,
+    # 두 자로가 한 루프를 공유해 레전드까지 같이 막혔다 — NVDA·AVGO·AMD·TSLA 는
+    # 이익도 성장률도 있는데 주가가 없어 영원히 미검정이었다.
+    # 판정부 단위 테스트로는 절대 안 잡힌다(measure_bench 는 멀쩡했다). main() 을 돌린다.
+    import tempfile as _tf, pathlib as _pl
+    _o_main = (_fb.CFG_PATH, _fb.OUT_PATH, _fb.fetch_price, _fb.collect_rates,
+               _fb.load_prev)
+    _tmp2 = _pl.Path(_tf.mkdtemp())
+    _called = []
+    try:
+        _cfg2 = {"version": "t", "zones": {}, "items": [
+            {"ticker": "HARD", "name": "추정불가별", "type": "추정불가", "fair_max": None,
+             "rationale": "r", "buffett": {"eps_adj_ttm": {"value": 5.0},
+                                           "g_cagr3y": 0.10, "g_forward": 0.10}},
+            {"ticker": "NORM", "name": "보통별", "type": "씨즈형", "fair_max": 25,
+             "rationale": "r", "forward_eps": 5.0,
+             "buffett": {"eps_adj_ttm": {"value": 5.0},
+                         "g_cagr3y": 0.10, "g_forward": 0.10}}]}
+        (_tmp2 / "cfg.json").write_text(_json.dumps(_cfg2, ensure_ascii=False),
+                                        encoding="utf-8")
+        _fb.CFG_PATH = _tmp2 / "cfg.json"
+        _fb.OUT_PATH = _tmp2 / "out.json"
+        _fb.load_prev = lambda: {}
+        _fb.collect_rates = lambda prev: ({"UST10": 4.75, "source": "t", "as_of": "",
+                                           "note": ""}, "ok")
+        def _fp(tk, tries=3):
+            _called.append(tk)
+            return (100.0, "USD")
+        _fb.fetch_price = _fp
+        _fb.main()
+        _out = _json.loads(_fb.OUT_PATH.read_text(encoding="utf-8"))
+        _rows = {x["ticker"]: x for x in _out["items"]}
+        check("전원 시세: 추정불가 종목도 시세를 부른다", sorted(_called), ["HARD", "NORM"])
+        # ey 0.05 × 1.1^10 = 쿠폰 12.97% · 국채 4.75% → 3배(14.25%) 미만·1.5배 이상
+        check("전원 시세: 추정불가 종목에 주가·쿠폰 경로가 열린다",
+              (_rows["HARD"]["bench"]["price"], _rows["HARD"]["bench"]["coupon10y"],
+               _rows["HARD"]["bench"]["zone_buffett"]), (100.0, 0.129687, "prove_growth"))
+        check("전원 시세: 열린 뒤에는 '시세 미확보' 비고가 사라진다",
+              _rows["HARD"]["bench"]["note"], "")
+        check("전원 시세: 시세를 한 종목당 한 번만 부른다(중복 호출 없음)",
+              len(_called), len(set(_called)))
+        # 시차 관측 회귀 0 — 바구니 종목은 여전히 괴리·P/E 를 매기지 않는다
+        check("시차 회귀: 원칙 바구니는 여전히 괴리 미산출",
+              (_rows["HARD"]["basis"], _rows["HARD"]["gap"], _rows["HARD"]["pe"]),
+              ("too_hard", None, None))
+        check("시차 회귀: 보통 종목은 그대로 괴리를 매긴다",
+              (_rows["NORM"]["basis"], _rows["NORM"]["gap"] is not None), ("forward", True))
+    finally:
+        (_fb.CFG_PATH, _fb.OUT_PATH, _fb.fetch_price, _fb.collect_rates,
+         _fb.load_prev) = _o_main
+        import shutil as _sh2
+        _sh2.rmtree(_tmp2, ignore_errors=True)
+
     # ── 비고는 상태에서 생성한다 (2026-09-05 '10년물 없음' 오표기) ────────────
     # 막으려던 것: 결측 원인이 실제와 다른 문구로 나가는 것. 그래서 **원인별로**
     # 검사한다 — 하나의 대표 문구가 아니라 그 상태에서 나와야 할 이름 그대로.

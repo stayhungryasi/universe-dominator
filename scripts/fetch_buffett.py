@@ -598,15 +598,27 @@ def main():
                "eps_asof": c.get("eps_asof"), "price": None, "currency": "",
                "pe": None, "gap": None, "basis": "미취재", "note": "", "zoned": False,
                "cyclical": ("시클리컬" in (c.get("type") or "")),
-               "bench": measure_bench(c, None, rates, prev_bench.get(ticker))}
+               "bench": None}
 
-        # ① 원칙상 재지 않는 바구니 — 시세도 부르지 않는다
+        # ① 시세 — **34종 전원 부른다.**
+        # 예전엔 '추정불가 = 시세도 안 부른다' 였다. 그 규칙은 **시차 관측**의 것이다
+        # (정당 MAX 를 못 적는 별에 괴리를 매기지 않겠다는 원칙 바구니). 그런데 두 자로가
+        # 한 함수를 공유하는 바람에 레전드벤치마크까지 같이 막혔다: NVDA·AVGO·AMD·TSLA 는
+        # 이익도 성장률도 다 있는데 **주가가 없어서** 영원히 미검정이었다.
+        # 레전드에서 '추정불가' 는 배지일 뿐 측정 차단이 아니다 — 버핏존은 정당 MAX 가
+        # 아니라 이익수익률·성장률·국채로 매기므로 같은 이유로 막을 근거가 없다.
+        price, currency = fetch_price(ticker)
+        row["price"], row["currency"] = price, currency
+        row["bench"] = measure_bench(c, price, rates, prev_bench.get(ticker))
+
+        # ② 원칙상 **괴리를 재지 않는** 바구니 — 여기서 멈춘다(레전드는 위에서 이미 쟀다)
         basis = TYPE_BASIS.get(c.get("type"))
         if basis:
             row["basis"] = basis
             out_items.append(row)
             n_skipped += 1
-            print(f"[시차] {ticker}: 측정 제외 ({c.get('type')}) — 원칙 바구니")
+            print(f"[시차] {ticker}: 괴리 측정 제외 ({c.get('type')}) — 원칙 바구니"
+                  f" · 레전드 시세 {'ok' if price is not None else '실패'}")
             continue
 
         if row["fair_max"] is None:
@@ -616,18 +628,13 @@ def main():
             print(f"[시차] {ticker}: 정당 MAX 없음 — 건너뜀")
             continue
 
-        # ② 시세
-        price, currency = fetch_price(ticker)
-        row["price"], row["currency"] = price, currency
+        # ③ 시세는 위에서 이미 불렀다 — 여기서 두 번 부르지 않는다(호출 2배 방지)
         if price is None:
             row["note"] = "시세 취득 실패"
             out_items.append(row)
             n_unpriced += 1
             print(f"[시차] {ticker}: 시세 실패 — 괴리 미산출", file=sys.stderr)
             continue
-
-        # ③ 레전드벤치마크 — 시세가 잡힌 뒤 한 번만 계산한다 (측정층 단일 산출)
-        row["bench"] = measure_bench(c, price, rates, prev_bench.get(ticker))
 
         # ④ P/E — forward 우선, 없으면 후행 폴백. **buffett 블록은 여기 안 쓴다.**
         trailing = None
