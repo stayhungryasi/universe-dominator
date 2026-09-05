@@ -625,6 +625,42 @@ def main():
     check("단위: 캡이 단위 오류를 덮지 않는다(정상값은 캡 흔적 없음)",
           _fb.measure_bench(_bad, 500.0, {"UST10": 4.75})["g_capped_from"], None)
 
+    # ── 과거 다리: 사람이 취재한 3년 CAGR (2026-09-05) ───────────────────────
+    # 자동 3년 CAGR 은 공시 12분기 조립이 필요해 해외 상장에는 경로가 없다
+    # (TSM·ARM·WMT·PANW). 전망만 취재해도 g 가 서지 않아 영원히 미검정이었다.
+    # 사람이 과거 3년을 취재하면 그것을 둘째 다리로 쓴다 — min 규칙은 그대로다.
+    check("과거 다리: 자동이 있으면 자동이 이긴다(실측 > 취재)",
+          _fb.past_leg(0.12, {"value": 30.0, "unit": "%"}), 0.12)
+    check("과거 다리: 자동이 없으면 사람 취재값",
+          _fb.past_leg(None, {"value": 30.0, "unit": "%"}), {"value": 30.0, "unit": "%"})
+    check("과거 다리: 둘 다 없으면 없음", _fb.past_leg(None, None), None)
+    check("과거 다리: 자리표시자는 값이 아니다",
+          _fb.past_leg({"value": None}, {"value": 12.0, "unit": "%"}),
+          {"value": 12.0, "unit": "%"})
+    _hleg = {"ticker": "TSMX", "type": "플라이트세이프티형",
+             "buffett": {"eps_adj_ttm": {"value": 13.85}, "g_cagr3y": None,
+                         "cagr3y_human": {"value": 14.0, "unit": "%"},
+                         "g_forward": {"value": 17.5, "unit": "%"}}}
+    _hb = _fb.measure_bench(_hleg, 428.91, {"UST10": 4.77})
+    check("과거 다리: 취재 다리로 판정이 선다(더는 미검정 아님)",
+          _hb["zone_buffett"] != "untested", True)
+    check("과거 다리: min 규칙 불변 — 작은 쪽(14%)이 쓰인다", _hb["g_used"], 0.14)
+    check("과거 다리: 취재된 과거는 '가정 약함'이 아니다", _hb["g_weak"], False)
+    # 자동이 살아 있으면 사람 취재값이 판정을 바꾸지 못한다
+    _hauto = {"ticker": "X", "type": "씨즈형",
+              "buffett": {"eps_adj_ttm": {"value": 10.0}, "g_cagr3y": 0.08,
+                          "cagr3y_human": {"value": 25.0, "unit": "%"},
+                          "g_forward": {"value": 20.0, "unit": "%"}}}
+    check("과거 다리: 자동값이 있으면 취재값이 덮지 못한다",
+          _fb.measure_bench(_hauto, 100.0, {"UST10": 4.75})["g_used"], 0.08)
+    check("과거 다리: 전망이 없으면 취재 다리만으로는 서지 않는다",
+          _fb.measure_bench(
+              {"ticker": "X", "type": "씨즈형",
+               "buffett": {"eps_adj_ttm": {"value": 10.0},
+                           "cagr3y_human": {"value": 12.0, "unit": "%"}}},
+              100.0, {"UST10": 4.75})["g_used"], None)
+    check("과거 다리: 병합 스키마에 등재됐다", "cagr3y_human" in _bl.FIELDS, True)
+
     # ── 레전드 측정층은 34종 전원 시세를 부른다 (2026-09-05) ─────────────────
     # 막으려던 것: **시차 관측의 원칙 바구니가 레전드 판정까지 막는 것.**
     # '추정불가 = 시세 미호출' 은 괴리(정당 MAX)를 안 매기겠다는 시차 쪽 규칙인데,

@@ -33,7 +33,7 @@ AUTO_PATH = DATA_DIR / "buffett_auto.json"
 FIELDS = [
     "as_of", "period", "cyclical_peak_guard",
     "eps_adj", "eps_adj_ttm", "roe_tangible",
-    "g_cagr3y", "g_forward", "g_forward_source",
+    "g_cagr3y", "cagr3y_human", "g_forward", "g_forward_source",
     "owner_earnings", "conversion", "franchise", "risk5", "capalloc",
     "retention_test", "method", "source", "confidence", "notes",
 ]

@@ -293,6 +293,22 @@ def _rate(x):
     return _num(x)
 
 
+def past_leg(auto_cagr, human_cagr):
+    """과거 실적 다리 하나 고르기 — **실측이 취재를 이긴다.**
+
+    g 는 늘 두 다리(과거·전망)로 선다. 그런데 자동 3년 CAGR 은 공시에서 12분기를
+    조립해야 나오므로 해외 상장(ADR·비미국)에는 경로 자체가 없다 — TSM·ARM·WMT·PANW
+    가 전망만 취재된 채 영원히 미검정이었다. 사람이 과거 3년 성장률을 취재해 적으면
+    그것을 둘째 다리로 쓴다.
+
+    자동값이 있으면 자동이 이긴다: 자동은 **공시에서 잰 값**이고 사람 값은 취재한
+    값이다. 여기서 사람을 우선하면 실측 위에 전언이 앉는다 — 판단층 헌법이 사람
+    우선인 것은 '기계가 못 채운 칸'에 대한 규칙이지, 기계가 실제로 잰 숫자를
+    덮으라는 뜻이 아니다.
+    """
+    return auto_cagr if _rate(auto_cagr) is not None else human_cagr
+
+
 def pick_g(cagr3y, forward):
     """g_used = 둘 중 **작은** 쪽. 하나라도 없으면 null — 낙관 단일값 금지.
 
@@ -420,12 +436,14 @@ def measure_bench(c, price, rates, prev_bench=None):
 
     eps_ttm = _num(b.get("eps_adj_ttm"))
     roe = _num(b.get("roe_tangible"))
-    g_raw = pick_g(b.get("g_cagr3y"), b.get("g_forward"))
+    past = past_leg(b.get("g_cagr3y"), b.get("cagr3y_human"))
+    g_raw = pick_g(past, b.get("g_forward"))
     g, g_capped_from = cap_g(g_raw)
     # 전망만으로 판정에 이른 경우 — 과거 실적으로 교차 검증되지 않은 가정이다.
-    # (현행 pick_g 는 둘 다 요구하므로 평시엔 켜지지 않는다. 규칙이 완화되는 날을
-    #  대비한 표식이며, 켜지면 화면이 '가정 약함'이라고 말한다.)
-    g_weak = bool(g is not None and _rate(b.get("g_cagr3y")) is None
+    # (현행 pick_g 는 두 다리를 다 요구하므로 평시엔 켜지지 않는다. 규칙이 완화되는
+    #  날을 대비한 표식이며, 켜지면 화면이 '가정 약함'이라고 말한다.)
+    # 사람이 취재한 3년 CAGR 도 과거 다리로 친다 — 그것은 전망이 아니라 실적이다.
+    g_weak = bool(g is not None and _rate(past) is None
                   and _rate(b.get("g_forward")) is not None)
     ey = earnings_yield(eps_ttm, price)
 

@@ -1529,6 +1529,7 @@ function lgCalcLine(b){
    빈 칸은 '—'. 무엇을 취재하면 이 종목이 판정에 이르는지가 이 표에서 읽힌다. */
 const LG_FIELD_KO = { eps_adj_ttm: '조정 EPS', roe_tangible: '유형 ROE',
                       g_forward: '전망 성장률', g_cagr3y: '3년 성장률',
+                      cagr3y_human: '3년 성장률(취재)',
                       conversion: '전환율', risk5: '리스크 5', franchise: '프랜차이즈',
                       capalloc: '자본배분', owner_earnings: '오너어닝' };
 function lgOriginKo(v){ return v === 'human' ? '취재' : v === 'auto' ? '자동' : '—'; }
