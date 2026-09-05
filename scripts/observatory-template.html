@@ -1539,7 +1539,11 @@ function lgDissect(x, j){
   const calc = lgCalcLine(b);
   let h = '<div class="lg-dissect">';
   if (calc) h += '<div class="lg-calc">' + esc(calc) + '</div>';
-  else h += '<div class="lg-calc">아직 계산이 서지 않습니다 — 아래에서 빈 칸을 보세요</div>';
+  // 계산이 안 서면 **왜 안 서는지**를 그 자리에서 말한다. 측정층이 상태에서 만든
+  // 문구(bench.note)를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 되고,
+  // 새 결측 상태가 생기는 날 화면만 옛말을 한다(2026-09-05 '10년물 없음' 오표기).
+  else h += '<div class="lg-calc">아직 계산이 서지 않습니다' +
+    (b.note ? ' — ' + esc(b.note) : ' — 아래에서 빈 칸을 보세요') + '</div>';
   h += '<div class="lg-fields">';
   Object.keys(LG_FIELD_KO).forEach(f => {
     h += '<div class="lg-fk">' + LG_FIELD_KO[f] + '</div>' +

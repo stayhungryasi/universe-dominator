@@ -625,6 +625,41 @@ def main():
     check("단위: 캡이 단위 오류를 덮지 않는다(정상값은 캡 흔적 없음)",
           _fb.measure_bench(_bad, 500.0, {"UST10": 4.75})["g_capped_from"], None)
 
+    # ── 비고는 상태에서 생성한다 (2026-09-05 '10년물 없음' 오표기) ────────────
+    # 막으려던 것: 결측 원인이 실제와 다른 문구로 나가는 것. 그래서 **원인별로**
+    # 검사한다 — 하나의 대표 문구가 아니라 그 상태에서 나와야 할 이름 그대로.
+    _UN = _fb.untested_note
+    check("비고: 주가만 없으면 시세 미확보",
+          _UN(None, 5.0, 0.10, 4.75, "UST10", None), "시세 미확보")
+    check("비고: 이익만 없으면 취재 대기",
+          _UN(100.0, None, 0.10, 4.75, "UST10", None),
+          "취재 대기 — 12개월 조정이익 미확보")
+    check("비고: 성장률만 없으면 성장률 가정 미확보",
+          _UN(100.0, 5.0, None, 4.75, "UST10", None),
+          "성장률 가정 미확보(3y CAGR·전망 중 결측)")
+    check("비고: 금리 없을 때만 10년물 없음",
+          _UN(100.0, 5.0, 0.10, None, "UST10", None), "10년물 없음")
+    check("비고: 미배선 시장은 그 시장 이름으로",
+          _UN(100.0, 5.0, 0.10, None, "KTB10", None), "한국 10년물 미배선(v1)")
+    check("비고: 여러 칸이 비면 전부 이름을 부른다",
+          _UN(None, None, 0.10, 4.75, "UST10", None),
+          "시세 미확보 · 취재 대기 — 12개월 조정이익 미확보")
+    check("비고: 기계 필드명은 문구에 없다",
+          any(k in _UN(None, None, None, None, "UST10", None)
+              for k in ("eps_adj_ttm", "coupon10y", "g_used", "guard")), False)
+    # 실전 회귀 — NVDA 모양(주가만 없음)에 '10년물 없음'이 다시 붙으면 실패한다
+    _nvda = {"ticker": "NVDA", "type": "추정불가",
+             "buffett": {"eps_adj_ttm": {"value": 5.73}, "g_cagr3y": 1.62,
+                         "g_forward": {"value": 23.7, "unit": "%"}}}
+    _nb = _fb.measure_bench(_nvda, None, {"UST10": 4.77})
+    check("비고: 금리가 있는데 주가가 없으면 10년물 탓을 하지 않는다",
+          _nb["note"], "시세 미확보")
+    check("비고: 시클리컬 가드 문구에도 기계 필드명 없음",
+          "coupon10y" in _fb.measure_bench(
+              {"ticker": "X", "type": "시클리컬",
+               "buffett": {"cyclical_peak_guard": True}}, 100.0,
+              {"UST10": 4.75})["note"], False)
+
     # 통과 가격 — 쿠폰이 국채×3 과 같아지는 주가 (수동 대조)
     #   eps 10 · g 10% · 10y 4.75% → 10×1.1^10 ÷ 0.1425 = 25.9374/0.1425 = 182.02
     check("통과가격: 역산 검산", _fb.pass_price(10.0, 0.10, 4.75), 182.02)

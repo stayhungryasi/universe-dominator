@@ -376,6 +376,38 @@ def classify_cause(prev, now):
     return "price" if dp >= dr else "rate"
 
 
+def untested_note(price, eps_ttm, g, rate, market, coupon):
+    """왜 판정이 없는가 — **상태에서 생성한다.** 내부 문자열을 번역하지 않는다.
+
+    막으려는 것 한 문장: **결측 원인이 실제와 다른 문구로 화면에 나가는 것.**
+    2026-09-05 발각: 주가가 없어 쿠폰이 안 서는 종목(NVDA·AVGO·AMD·TSLA)에
+    "10년물 없음" 이 붙어 있었다. 국채 금리는 4.77% 로 멀쩡히 있었다. 원인은
+    비고를 **상태가 아니라 순서**로 정했기 때문이다 — eps 있고 g 있으면 나머지는
+    전부 금리 탓으로 떨어지는 else 였다. 새 결측 상태(주가 없음)가 생긴 날
+    매핑이 그대로 샌 것이다(CLAUDE.md 2026-08-31 레전드 보드 비고와 같은 뿌리).
+
+    그래서 여기서는 **빠진 것을 전부 이름으로 부른다.** 하나만 적으면 그것을
+    채웠을 때 다음 결측이 튀어나와 "고쳤는데 왜 그대로냐"가 된다.
+    기계 필드명(eps_adj_ttm·coupon10y)은 쓰지 않는다 — 이 문구는 화면에 나간다.
+    """
+    bits = []
+    if price is None:
+        bits.append("시세 미확보")
+    if eps_ttm is None:
+        bits.append("취재 대기 — 12개월 조정이익 미확보")
+    if g is None:
+        bits.append("성장률 가정 미확보(3y CAGR·전망 중 결측)")
+    if rate is None:
+        bits.append(RATE_UNIMPLEMENTED.get(market, "10년물 없음"))
+    if bits:
+        return " · ".join(bits)
+    # 빠진 칸이 없는데도 쿠폰이 서지 않는 경우 — 적자(음수 이익수익률)가 그것이다.
+    # 여기까지 오면 '못 잰 것'이 아니라 '재보니 계산이 성립하지 않는 것'이다.
+    if coupon is None:
+        return "이익이 음수 — 10년 쿠폰이 성립하지 않음"
+    return ""
+
+
 def measure_bench(c, price, rates, prev_bench=None):
     """레전드벤치마크 한 종목 — **순수 함수**(네트워크·시각 의존 없음).
 
@@ -414,18 +446,14 @@ def measure_bench(c, price, rates, prev_bench=None):
         # 별도의 None 상태를 만들지 않는 이유: 못 잰 것은 전부 untested 한 칸에
         # 모아야 "쟀는데 결론이 없다"와 헷갈리지 않는다. 사유는 note 로 남긴다.
         out["zone_buffett"] = ZONE_UNTESTED
-        out["note"] = "시클리컬 정점 가드 — coupon10y 미산출"
+        out["note"] = "시클리컬 정점 가드 — 10년 쿠폰 미산출"
         return out
 
-    if rate is None:
-        out["note"] = RATE_UNIMPLEMENTED.get(market, f"{market} 미배선")
     coupon = coupon_10y(ey, g)
     out["coupon10y"] = None if coupon is None else round(coupon, 6)
     out["zone_buffett"] = zone_of_buffett(coupon, rate)
-    if out["zone_buffett"] == ZONE_UNTESTED and not out["note"]:
-        out["note"] = ("eps_adj_ttm 미취재 — 분기 EPS 연환산 금지" if eps_ttm is None
-                       else ("성장률 미취재(3y CAGR·전망 중 결측)" if g is None
-                             else "10년물 없음"))
+    if out["zone_buffett"] == ZONE_UNTESTED:
+        out["note"] = untested_note(_num(price), eps_ttm, g, rate, market, coupon)
     out["pass_price"] = pass_price(eps_ttm, g, rate)
     out["cause"] = classify_cause(prev_bench, out)
     return out
