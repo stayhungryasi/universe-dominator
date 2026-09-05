@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-05 03:09",
- "generated_at": "2026-09-05T03:09:30.763405+09:00",
+ "generated_label": "2026-09-05 10:15",
+ "generated_at": "2026-09-05T10:15:43.467874+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-05",
@@ -223,7 +223,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.47
+    "value": 13.85
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -291,8 +291,26 @@
     "value": -1.09
    },
    "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
+   "g_cagr3y": null,
+   "g_forward": null,
+   "g_forward_source": null,
+   "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
+   "source": "yfinance TTM 희석 EPS",
+   "confidence": "중"
+  },
+  "2222.SR": {
+   "as_of": "2026-09-05",
+   "period": null,
+   "cyclical_peak_guard": true,
+   "eps_adj_ttm": {
+    "value": 1.69
+   },
+   "roe_tangible": null,
    "owner_earnings": {
-    "display": "C"
+    "display": "B",
+    "display_reason": "유가 사이클 의존도 높아 쿠폰성 이익의 예측 가능성 구조적 한계"
    },
    "conversion": null,
    "g_cagr3y": null,
@@ -304,43 +322,28 @@
    "franchise": {
     "need": "○",
     "no_substitute": "○",
-    "no_price_reg": "△"
+    "no_price_reg": "✕"
    },
    "risk5": {
     "business_certainty": "✕",
     "mgmt_ability": "○",
-    "price": "✕"
+    "price": "✕",
+    "tax_inflation": "△"
    },
    "capalloc": {
-    "cash_positive": 0,
-    "debt_discipline": 0,
-    "score": 0,
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
     "period": "2026H1"
    },
-   "notes": "로켓·위성·AI·소셜 플랫폼 복합체로 순손실 지속 중이며 IPO 이후 변동성 극심(30% 상승 vs 신저가 경신 반복), 정부 의존도 높음.",
+   "notes": "유가 변동성(Iran war, Hormuz reopening)이 분기별 이익 변동 초래하며 장기 현금흐름 예측 곤란",
    "_evidence": {
-    "franchise": "Starlink 위성통신과 로켓 발사 사업은 높은 진입장벽 보유; 다만 정부 계약 의존도 및 규제 리스크 존재",
-    "risk5": "순손실 지속·첫 실적 공시 시점의 극단적 변동성('$225 billion swing')·경영진 신뢰도 문제·$100B 루이지애나 우주기지 자본지출 계획 등으로 불확실성 극대화",
-    "capalloc": "공식 현금흐름표 없음·대규모 자본지출 확대 추진 중(자연가스 사업·신규 기지)·주주 반환 정책 불명",
-    "owner_earnings": "첫 실적 공시 직후 애널리스트 의견 양극단(earnings beat vs 'much further to decline')·수익성 경로 불명확"
+    "franchise": "Global energy demand, no substitute for crude oil in transportation and petrochemicals",
+    "risk5": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher vs. Saudi Arabia Set to Slash Oil Prices as Hormuz Reopens — geopolitical volatility determines earnings",
+    "capalloc": "announces first buyback, strong cash flow generation despite quarterly profit fluctuations",
+    "owner_earnings": "Q2 2026 earnings beat as Iran war lifts oil prices, Q3 profit down slightly over lower oil prices — earnings variability reflects commodity price dependency"
    }
-  },
-  "2222.SR": {
-   "as_of": "2026-09-05",
-   "period": null,
-   "cyclical_peak_guard": true,
-   "eps_adj_ttm": {
-    "value": 1.69
-   },
-   "roe_tangible": null,
-   "owner_earnings": null,
-   "conversion": null,
-   "g_cagr3y": null,
-   "g_forward": null,
-   "g_forward_source": null,
-   "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
-   "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
   },
   "META": {
    "as_of": "2026-09-05",
@@ -514,7 +517,7 @@
    "roe_tangible": null,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "플로트 복리 엔진은 건강하나 현금 배치 수익성 둔화 신호"
+    "display_reason": "플로트 복리 창출은 우수하나 공시 순이익은 변동성이 크고 실질 가치 창출을 정확히 반영하지 못함"
    },
    "conversion": null,
    "g_cagr3y": 0.1553,
@@ -532,8 +535,7 @@
     "business_certainty": "○",
     "mgmt_ability": "○",
     "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
+    "price": "△"
    },
    "capalloc": {
     "cash_positive": 0,
@@ -543,12 +545,12 @@
     "score": 3,
     "period": "2026H1"
    },
-   "notes": "96세 버핏 주재 하에 그렉 에이블 체제로의 전환기, 캐시 이동과 주식 매입 활동화로 자본배분 의지 재확인",
+   "notes": "Greg Abel 경영진이 현금을 적극 배치하며 14분기 만에 순주식 매입 재개, 보증금 질 개선과 자본배분 규율 유지 중",
    "_evidence": {
-    "franchise": "보험 플로트 기반의 무대체성 경제해자 유지, 다각화된 자회사 포트폴리오",
-    "risk5": "현금 잔액 감소 추세 보이며 투자·자사주매입 가속화로 공격적 자본배분 전개",
-    "capalloc": "Q2 2026에서 그렉 에이블이 현금 배치 주도, 주식 매입 14분기 만에 순증가, $4.5B 규모의 자본배분 활동",
-    "owner_earnings": "Fair value 대비 저평가 평가 다수이나 최근 79% 상승 후 수익성 둔화 신호, 현금 재배치 효율성 관찰 필요"
+    "franchise": "보험 플로트는 무이자 자금으로 영구적 경쟁 우위 제공, 대체 불가능한 사업 포트폴리오",
+    "risk5": "Buffett 96세 연령 우려 있으나 Abel 승계 체계 확립, 다각화된 사업 구조로 경영 불확실성 제한",
+    "capalloc": "Berkshire Hathaway Q2 2026 earnings: Greg Abel deploys cash; Berkshire Hathaway (BRK.A) Makes First Net Stock Move In 14 Quarters",
+    "owner_earnings": "Earnings Expected to Grow와 동시에 공시순이익 변동성 언급으로 현금 기준 성과 평가 필요"
    }
   },
   "LLY": {
@@ -767,7 +769,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.81
+    "value": 29.47
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1136,7 +1138,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1252.55
+    "value": 1253.02
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1170,7 +1172,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.33
+    "value": 32.49
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1213,5 +1215,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-05 03:11"
+ "scout_label": "2026-09-05 10:17"
 }
