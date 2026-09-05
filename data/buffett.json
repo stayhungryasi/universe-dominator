@@ -1,5 +1,5 @@
 {
- "generated_label": "2026-09-05 17:27",
+ "generated_label": "2026-09-05 21:57",
  "asof": "2026-09-03",
  "zones": {
   "explore": 0.6,
@@ -212,18 +212,18 @@
     "guard": false,
     "eps_adj_ttm": 13.85,
     "roe_tangible": null,
-    "g_used": null,
+    "g_used": 0.175,
     "price": 428.91,
     "g_capped_from": null,
     "g_weak": false,
     "ey": 0.032291,
     "ey_minus_10y": -0.015409,
     "roe_minus_2x10y": null,
-    "coupon10y": null,
-    "zone_buffett": "untested",
+    "coupon10y": 0.16198,
+    "zone_buffett": "pass",
     "cause": "scale",
-    "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
-    "pass_price": null
+    "note": "",
+    "pass_price": 485.5
    }
   },
   {
@@ -280,18 +280,18 @@
     "market": "UST10",
     "rate10y": 4.77,
     "guard": false,
-    "eps_adj_ttm": -1.08,
+    "eps_adj_ttm": -1.09,
     "roe_tangible": null,
     "g_used": null,
     "price": 147.95,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": -0.0073,
-    "ey_minus_10y": -0.055,
+    "ey": -0.007367,
+    "ey_minus_10y": -0.055067,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": null,
+    "cause": "scale",
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -593,18 +593,18 @@
     "guard": false,
     "eps_adj_ttm": 2.5632,
     "roe_tangible": 0.3098,
-    "g_used": null,
+    "g_used": 0.08,
     "price": 107.14,
     "g_capped_from": null,
     "g_weak": false,
     "ey": 0.023924,
     "ey_minus_10y": -0.023776,
     "roe_minus_2x10y": 0.2144,
-    "coupon10y": null,
-    "zone_buffett": "untested",
-    "cause": null,
-    "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
-    "pass_price": null
+    "coupon10y": 0.05165,
+    "zone_buffett": "bond_inferior",
+    "cause": "scale",
+    "note": "",
+    "pass_price": 38.67
    }
   },
   {
@@ -695,14 +695,14 @@
     "market": "UST10",
     "rate10y": 4.77,
     "guard": true,
-    "eps_adj_ttm": 30.7,
+    "eps_adj_ttm": 29.47,
     "roe_tangible": null,
     "g_used": null,
     "price": 1714.88,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.017902,
-    "ey_minus_10y": -0.029798,
+    "ey": 0.017185,
+    "ey_minus_10y": -0.030515,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
@@ -1004,13 +1004,13 @@
     "market": "TW10",
     "rate10y": null,
     "guard": true,
-    "eps_adj_ttm": 60.33,
+    "eps_adj_ttm": 61.37,
     "roe_tangible": null,
     "g_used": null,
     "price": 4415.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.013665,
+    "ey": 0.0139,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1763,8 +1763,8 @@
    {
     "d": "09-05",
     "gap": -0.2679,
-    "coupon10y": null,
-    "zone_buffett": "untested"
+    "coupon10y": 0.16198,
+    "zone_buffett": "pass"
    }
   ],
   "MU": [
@@ -2147,8 +2147,8 @@
    {
     "d": "09-05",
     "gap": -0.3046,
-    "coupon10y": null,
-    "zone_buffett": "untested"
+    "coupon10y": 0.05165,
+    "zone_buffett": "bond_inferior"
    }
   ],
   "ASML": [
