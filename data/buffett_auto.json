@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-05 16:18",
- "generated_at": "2026-09-05T16:18:02.545920+09:00",
+ "generated_label": "2026-09-05 17:06",
+ "generated_at": "2026-09-05T17:06:27.519939+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-05",
@@ -62,18 +62,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "매출 성장(16%)은 인상적이나 성장성 제약과 프리미엄 밸류에이션의 괴리"
    },
    "conversion": {
     "value": 1.0,
@@ -84,7 +74,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,7 +92,31 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "소비자 프랜차이즈 강력하나 AI 후발주자 위치가 향후 활주로 제약 요소",
+   "_evidence": {
+    "franchise": "Apple sales surge 16% on 'staggering' iPhone demand, strong iPhone and China sales",
+    "risk5": "Earnings beat on record-breaking iPhone sales demonstrates sustained demand; Tim Cook leadership continuity",
+    "capalloc": "Massive buyback program and stock buyback strategy noted; record cash generation from operations",
+    "owner_earnings": "Q3 earnings and revenues beat estimates consistently, but valuation at upper bound limits margin of safety"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-05",
@@ -223,7 +237,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.85
+    "value": 13.47
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -308,41 +322,14 @@
     "value": 1.69
    },
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "유가 사이클 의존도 높아 현금흐름 예측 가능성 구조적 한계"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "유가 변동성이 실적을 직접 좌우하는 구조적 취약점; 지정학적 리스크 상승 시 단기 수익성은 상승하나 장기 예측 불가능",
-   "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher; Aramco CEO warns of 'catastrophic' consequences if oil crisis continues",
-    "risk5": "Q4 2025 net income falls 20.5% to $17.76bn; Saudi Arabia Set to Slash Oil Prices as Hormuz Reopens",
-    "capalloc": "announces first buyback; Saudi Aramco Q2 2026 earnings beat as Iran war lifts oil prices; strong cash flow",
-    "owner_earnings": "Earnings call transcript: Saudi Aramco Q4 2025 sees slight stock dip despite strong cash flow"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-09-05",
@@ -514,43 +501,14 @@
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": 0.1553,
    "g_forward": null,
    "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "플로트 복리와 자본배분 규율은 견고하나 현금 축적에서 배치 전환 신호 포착, 주가는 공정가치 대비 △ 평가",
-   "_evidence": {
-    "franchise": "다중 보험사업과 철도·유틸리티 기반의 대체 불가능한 플로트 엔진",
-    "risk5": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2",
-    "capalloc": "Berkshire Hathaway Makes First Net Stock Move In 14 Quarters; Greg Abel Just Gave Investors $4.5 Billion Reasons to Take a Closer Look at Berkshire Hathaway; Greg Abel deploys cash",
-    "owner_earnings": "현금 보유량 감소와 적극적 배치로 인한 실적 불확실성 증가"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-09-05",
@@ -1214,5 +1172,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-05 16:19"
+ "scout_label": "2026-09-05 17:07"
 }
