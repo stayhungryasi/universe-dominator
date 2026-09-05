@@ -960,6 +960,15 @@ def main():
               _pub[0].startswith("TELEGRAM_CHAT_ID:") if _pub else "", True)
         check("채널: 폴백 연산자(||)로 공개 채널을 끌어오지 않는다",
               any("TELEGRAM_ALERT_CHAT_ID ||" in ln for ln in _y.splitlines()), False)
+        # 관문 배선 — 커밋 **앞**에 있고, 실패를 삼키지 않아야 한다.
+        # continue-on-error 가 붙으면 관문은 로그만 남기고 커밋은 그대로 나간다
+        # (2026-08-21 규칙 ④ '||' 가 실패를 삼키는 것과 같은 형태의 사고다).
+        _gi = _y.find("scripts/verify_pages.py")
+        _ci = _y.find("- name: Commit if changed")
+        check("관문 배선: 워크플로에 등록됐다", _gi >= 0, True)
+        check("관문 배선: 커밋 스텝보다 앞에 있다", 0 <= _gi < _ci, True)
+        check("관문 배선: 실패를 삼키지 않는다(continue-on-error 없음)",
+              "continue-on-error" in _y[_gi:_ci] or "||" in _y[_gi:_ci], False)
 
     # ── 스카우트 게이트 재현 — 같은 period 면 Haiku 를 부르지 않는다 ──────────
     _prev = {"items": {"AAPL": {"scouted_at": "2026-09-01 10:00",
@@ -1446,6 +1455,28 @@ def main():
               (_stage3 / "index.html").read_bytes(), _before3)
     finally:
         _sh3.rmtree(_stage3, ignore_errors=True)
+
+    # ── 커밋 전 관문 verify_pages.py (2026-09-05) ────────────────────────────
+    # 관문은 감시 대상과 **다른 다리로** 서 있어야 한다 — 같은 함수를 공유하면
+    # 그 함수가 죽는 날 검사도 같이 죽는다(2026-08-30 배선 교훈).
+    import verify_pages as _vp
+    _vp_src = _inspect.getsource(_vp)
+    check("관문: build_site 를 import 하지 않는다",
+          ("import build_site" in _vp_src or "from build_site" in _vp_src), False)
+    check("관문: 마커 5종을 스스로 들고 있다", len(_vp.MARKERS), 5)
+    check("관문: 정상 페이지는 통과",
+          _vp.check([("ok.html", "x" + "".join(_vp.MARKERS) + "</hea" + "d>")]), {})
+    _one = "".join(m for m in _vp.MARKERS if m != "uv-presence") + "</hea" + "d>"
+    check("관문: 마커 하나만 빠져도 잡는다",
+          _vp.check([("bad.html", _one)]), {"bad.html": ["접속자 카운터"]})
+    check("관문: head 끝 태그 없는 큰 파일은 실패로 본다",
+          "head 끝 태그 없음" in _vp.check([("x.html", "".join(_vp.MARKERS))])["x.html"],
+          True)
+    check("관문: 실제 저장소가 지금 통과 상태", _vp.main(), 0)
+    # 관문이 실제로 막는가 — 마커를 지운 사본으로 확인(실패할 수 없는 검사는 감시자가 아니다)
+    _pgs, _stubs = _vp.targets()
+    _broken = [(n, r.replace("ud-aurora-global-v1", "x")) for n, r in _pgs[:1]]
+    check("관문: 마커를 지우면 반드시 실패한다", bool(_vp.check(_broken)), True)
 
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를

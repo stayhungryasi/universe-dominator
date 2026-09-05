@@ -248,6 +248,17 @@ jobs:
             parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }}
         continue-on-error: true
 
+      # 커밋 직전 관문 — 주입이 빠진 페이지가 하나라도 있으면 여기서 멈춘다.
+      # build_site 의 원자적 교체와 **다른 다리**다: 같은 코드를 공유하면 그 코드가
+      # 죽는 날 검사도 같이 죽는다. continue-on-error 를 붙이지 않는 것이 요점 —
+      # 이 스텝이 실패하면 커밋 스텝에 도달하지 못한다(2026-09-05 빌드 중단 사고).
+      - name: Verify page injection markers (gate)
+        run: python scripts/verify_pages.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 관문 실패도 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
