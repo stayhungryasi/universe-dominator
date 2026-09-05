@@ -1370,6 +1370,83 @@ def main():
     check("ALL_PAGES: 미등록 페이지 없음 (파일↔목록)", _missing, [])
     check("ALL_PAGES: 유령 항목 없음 (목록↔파일)", _ghost, [])
 
+    # ── 빌드 중단 사고: 원자적 교체 (2026-09-05) ─────────────────────────────
+    # 막으려는 것 한 문장: **빌드가 중간에 죽어 주입이 빠진 페이지가 실제 경로에
+    # 남는 것.** 12페이지 생성은 끝났는데 주입 5종 전에 OSError 로 멈추자, 팔레트도
+    # 카운터도 없는 산출물이 작업 트리에 남았다. HTML 은 멀쩡하고 페이지도 열려서
+    # 눈으로는 안 잡힌다 — 산출물 검사는 주입 **뒤**에 있어 아예 실행되지 않았다.
+    # 그래서 검사를 늘리는 대신 **실제 경로를 건드리는 시점 자체를 옮긴다.**
+    #
+    # 이 테스트는 실제 빌드를 돌린다(약 8초). 판정부 단위 테스트로는 못 잡는
+    # 사고이기 때문이다 — 죽는 자리가 함수 안이 아니라 함수들 **사이**에 있다.
+    _MARKERS = ("ud-hdr-refine-v4", "uv-presence", "wide-fix",
+                "uv-policy-links", "ud-aurora-global-v1")
+    import shutil as _sh3, tempfile as _tf3
+    from unittest import mock as _mock3
+    _stage = Path(_tf3.mkdtemp())
+    _orig_write = Path.write_text
+
+    def _boom(self, data, *a, **kw):
+        """journal.html 쓰기에서만 터진다 — 실제 사고와 같은 지점."""
+        if self.name == "journal.html":
+            raise OSError(22, "Invalid argument")
+        return _orig_write(self, data, *a, **kw)
+
+    try:
+        # 직전 완성본을 실제 경로에 둔다 — 사고가 나도 이것이 그대로여야 한다
+        for _pg in _bs.ALL_PAGES:
+            _sh3.copy2(_root / _pg, _stage / _pg)
+        _before = {p: (_stage / p).read_bytes() for p in _bs.ALL_PAGES}
+        with _mock3.patch.object(_bs, "HERE", _stage),              _mock3.patch.object(Path, "write_text", _boom):
+            try:
+                _bs.main()
+            except OSError:
+                pass                      # 사고 재현 — 여기서 죽는 것이 정상이다
+        _stripped = sorted(p for p in _bs.ALL_PAGES
+                           if any(m not in (_stage / p).read_text(encoding="utf-8")
+                                  for m in _MARKERS))
+        check("원자적 빌드: 중단돼도 주입 빠진 페이지가 남지 않는다", _stripped, [])
+        _changed = sorted(p for p in _bs.ALL_PAGES
+                          if (_stage / p).read_bytes() != _before[p])
+        check("원자적 빌드: 중단 시 실제 경로는 직전 완성본 그대로", _changed, [])
+    finally:
+        _sh3.rmtree(_stage, ignore_errors=True)
+
+    # publish() 단위 — 교체 자체가 하는 일과 안 하는 일
+    _st2 = Path(_tf3.mkdtemp())
+    _dst2 = Path(_tf3.mkdtemp())
+    try:
+        (_dst2 / "a.html").write_text("old", encoding="utf-8")
+        (_st2 / "a.html").write_text("new", encoding="utf-8")
+        (_st2 / "b.html").write_text("new-b", encoding="utf-8")
+        (_st2 / "keep.json").write_text("{}", encoding="utf-8")
+        _n = _bs.publish(_st2, _dst2)
+        check("원자적 교체: html 만 옮긴다", (_n, sorted(f.name for f in _dst2.glob("*"))),
+              (2, ["a.html", "b.html"]))
+        check("원자적 교체: 기존 파일을 새 내용으로 갈아끼운다",
+              (_dst2 / "a.html").read_text(encoding="utf-8"), "new")
+        check("원자적 교체: 옮긴 파일은 스테이징에 남지 않는다",
+              sorted(f.name for f in _st2.glob("*")), ["keep.json"])
+    finally:
+        _sh3.rmtree(_st2, ignore_errors=True)
+        _sh3.rmtree(_dst2, ignore_errors=True)
+    # 산출물 검사가 죽으면 교체까지 가지 못한다 (검사 → 교체 순서 고정)
+    _stage3 = Path(_tf3.mkdtemp())
+    try:
+        for _pg in _bs.ALL_PAGES:
+            _sh3.copy2(_root / _pg, _stage3 / _pg)
+        _before3 = (_stage3 / "index.html").read_bytes()
+        with _mock3.patch.object(_bs, "HERE", _stage3),              _mock3.patch.object(_bs, "verify_pages",
+                                 side_effect=SystemExit(1)):
+            try:
+                _bs.main()
+            except SystemExit:
+                pass
+        check("원자적 교체: 산출물 검사 실패 시 실제 경로 불변",
+              (_stage3 / "index.html").read_bytes(), _before3)
+    finally:
+        _sh3.rmtree(_stage3, ignore_errors=True)
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)

@@ -6,13 +6,27 @@ build_site.py — 멀티페이지 사이트 빌드
 selftest.py 가 이 단일화를 매 실행마다 검증한다.
 """
 import json
+import os
 import re
+import shutil
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent.parent
 DATA_DIR = HERE / "data"
 SCRIPTS_DIR = HERE / "scripts"
+
+# ── 산출물이 놓이는 곳 — 빌드 중에는 **스테이징 디렉터리**를 가리킨다 ──────────
+# 2026-09-05 사고: journal.html 쓰기에서 OSError 로 빌드가 죽었는데, 그때는 이미
+# 12페이지 중 6개가 실제 경로에 쓰인 뒤였다. 그런데 주입 5종(팔레트·카운터·nav·
+# 푸터·헤더)은 **모든 페이지 생성이 끝난 뒤에** 돌기 때문에, 남은 것은 "HTML 은
+# 멀쩡하고 페이지도 열리는데 공용 스타일만 없는" 산출물이었다. 산출물 검사는
+# 주입 뒤에 있어 아예 실행되지 않았다 — 검사를 늘려도 못 잡는 자리다.
+#
+# 그래서 검사를 늘리는 대신 **실제 경로를 건드리는 시점을 옮긴다.** 빌드는 전부
+# 스테이징에서 하고, 검사까지 통과한 뒤에 os.replace 로 한 파일씩 갈아끼운다.
+# 어디서 죽든 실제 경로에는 직전 완성본이 그대로 남는다.
+OUT_DIR = HERE
 
 # ── 전 페이지 목록 — 단일 진실 공급원 (Single Source of Truth) ──────────────
 # 2026-08 관측노트 누락 사고: 이 목록이 fix_nav / inject_footer_links /
@@ -152,7 +166,7 @@ def build_main():
         sig_top = []
     html = html.replace("{{SIGNALS_JSON}}", json.dumps(sig_top, ensure_ascii=False))
 
-    out = HERE / "index.html"
+    out = OUT_DIR / "index.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -165,7 +179,7 @@ def build_latent():
     data = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
-    out = HERE / "latent.html"
+    out = OUT_DIR / "latent.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -180,7 +194,7 @@ def build_megatrend():
     data["meta"] = _header_meta()
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
-    out = HERE / "megatrend.html"
+    out = OUT_DIR / "megatrend.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -204,7 +218,7 @@ def build_about():
     html = html.replace("{{USD_KRW}}", usd_krw_str)
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")  # About은 어느 탭도 비활성
-    out = HERE / "about.html"
+    out = OUT_DIR / "about.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -258,7 +272,7 @@ def build_research():
     html = html.replace("{{DATA_JSON}}", json.dumps(rdata, ensure_ascii=False))
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "RESEARCH" else "")
-    out = HERE / "research.html"
+    out = OUT_DIR / "research.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -278,7 +292,7 @@ def build_community():
     html = html.replace("{{USD_KRW}}", usd_krw_str)
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "COMMUNITY" else "")
-    out = HERE / "community.html"
+    out = OUT_DIR / "community.html"
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -534,10 +548,10 @@ def build_observatory():
     html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")
-    (HERE / "observatory.html").write_text(html, encoding="utf-8")
+    (OUT_DIR / "observatory.html").write_text(html, encoding="utf-8")
     print(f"[OK] observatory.html ({len(html):,} chars)")
     # 구주소 리다이렉트 (북마크 보호)
-    (HERE / "my-universe.html").write_text(
+    (OUT_DIR / "my-universe.html").write_text(
         '<!doctype html><meta charset="utf-8">'
         '<meta http-equiv="refresh" content="0; url=observatory.html">'
         '<a href="observatory.html">데이터 천문대로 이동</a>', encoding="utf-8")
@@ -563,7 +577,7 @@ def build_pioneers():
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{USD_KRW}}",
                         f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
-    (HERE / "pioneers.html").write_text(html, encoding="utf-8")
+    (OUT_DIR / "pioneers.html").write_text(html, encoding="utf-8")
     print(f"[OK] pioneers.html ({len(html):,} chars)")
 
 
@@ -575,7 +589,7 @@ def fix_nav():
     n = 0
     pat = _re.compile(r'(<a href="community\.html"[^>]*>[^<]*</a>)(\s*)(<a href="observatory\.html"[^>]*>[^<]*</a>)')
     for name in pages:
-        f = HERE / name
+        f = OUT_DIR / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
@@ -621,7 +635,7 @@ def build_policies():
     html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")
-    (HERE / "policies.html").write_text(html, encoding="utf-8")
+    (OUT_DIR / "policies.html").write_text(html, encoding="utf-8")
     print(f"[OK] policies.html ({len(html):,} chars)")
 
 
@@ -637,7 +651,7 @@ def inject_footer_links():
     pages = ALL_PAGES
     n = 0
     for name in pages:
-        f = HERE / name
+        f = OUT_DIR / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
@@ -768,7 +782,7 @@ def build_journal():
         html = html.replace("{{ACTIVE_" + key + "}}", "")
     ce_data = companion_data()
     html = html.replace("{{COMPANION_DATA}}", json.dumps(ce_data, ensure_ascii=False))
-    (HERE / "journal.html").write_text(html, encoding="utf-8")
+    (OUT_DIR / "journal.html").write_text(html, encoding="utf-8")
     waiting = [c["ko"] for c in ce_data["companies"] if c["thesis"]["placeholder"]]
     print(f"[OK] journal.html ({len(html):,} chars) — 관측노트 · 동행 {len(ce_data['companies'])}사"
           f" · 에세이 {len(ce_data['essays'])}편"
@@ -794,7 +808,7 @@ def build_placeholders():
         html = html.replace("{{USD_KRW}}", usd_krw_str)
         for key in ("home","latent","mega","research","community","my"):
             html = html.replace("{{ACTIVE_"+key.upper()+"}}", "active" if p["active"]==key else "")
-        out = HERE / p["filename"]
+        out = OUT_DIR / p["filename"]
         out.write_text(html, encoding="utf-8")
         print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -813,7 +827,7 @@ def build_history(page_key, active_marker, out_filename):
     html = html.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
     for key in ("home","latent"):
         html = html.replace("{{ACTIVE_"+key.upper()+"}}", "active" if active_marker==key else "")
-    out = HERE / out_filename
+    out = OUT_DIR / out_filename
     out.write_text(html, encoding="utf-8")
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
@@ -918,7 +932,7 @@ def inject_aurora_tokens():
     pages = ALL_PAGES
     n = 0
     for name in pages:
-        f = HERE / name
+        f = OUT_DIR / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
@@ -941,7 +955,7 @@ def verify_pages():
     """
     bad = []
     for name in ALL_PAGES:
-        f = HERE / name
+        f = OUT_DIR / name
         if not f.exists():
             bad.append(f"{name}: 파일 없음")
             continue
@@ -1124,7 +1138,7 @@ def inject_presence():
     pages = ALL_PAGES
     n = 0
     for name in pages:
-        f = HERE / name
+        f = OUT_DIR / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
@@ -1141,7 +1155,7 @@ def inject_header_fix():
     pages = ALL_PAGES
     n = 0
     for name in pages:
-        f = HERE / name
+        f = OUT_DIR / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
@@ -1163,10 +1177,46 @@ def inject_header_fix():
     print(f"[OK] 헤더 일관성 CSS 주입: {n}개 페이지")
 
 
+def publish(staging, dest):
+    """스테이징의 산출물을 실제 경로로 **한 파일씩 원자 교체**한다.
+
+    os.replace 는 같은 파일시스템 안에서 원자적이다 — 교체 도중 죽어도 어떤 파일도
+    '반쯤 쓰인' 상태가 되지 않는다. 스테이징을 저장소 안에 두는 이유가 그것이다
+    (임시 폴더가 다른 드라이브면 원자성이 깨진다).
+
+    파일 단위 원자성이지 **묶음 단위는 아니다.** 교체 중간에 죽으면 새 페이지와 옛
+    페이지가 섞일 수 있다. 그래도 이번 사고(주입 빠진 페이지)는 막힌다: 스테이징의
+    모든 페이지가 이미 검사를 통과한 완성본이기 때문이다. 섞이더라도 양쪽 다 완성본이다.
+    """
+    moved = 0
+    for f in sorted(staging.glob("*.html")):
+        os.replace(str(f), str(dest / f.name))
+        moved += 1
+    return moved
+
+
 def main():
+    global OUT_DIR
     print("=" * 50)
     print("우주지배자 사이트 빌드 시작")
     print("=" * 50)
+    staging = HERE / "_build_tmp"
+    shutil.rmtree(staging, ignore_errors=True)
+    staging.mkdir(parents=True, exist_ok=True)
+    OUT_DIR = staging
+    try:
+        _build_all()
+        # 여기까지 왔다는 것은 주입 5종과 산출물 검사까지 끝났다는 뜻이다.
+        n = publish(staging, HERE)
+        print(f"[OK] 원자적 교체: {n}개 파일 → 실제 경로")
+    finally:
+        OUT_DIR = HERE
+        shutil.rmtree(staging, ignore_errors=True)
+    print("=" * 50)
+    print("빌드 완료")
+
+
+def _build_all():
     build_main()
     build_latent()
     build_megatrend()
@@ -1185,8 +1235,6 @@ def main():
     fix_nav()
     inject_footer_links()
     inject_aurora_tokens()
-    print("=" * 50)
-    print("빌드 완료")
 
 
 if __name__ == "__main__":
