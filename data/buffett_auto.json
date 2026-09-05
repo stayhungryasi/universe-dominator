@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-05 17:06",
- "generated_at": "2026-09-05T17:06:27.519939+09:00",
+ "generated_label": "2026-09-05 17:24",
+ "generated_at": "2026-09-05T17:24:55.434391+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-05",
@@ -63,7 +63,7 @@
    "roe_tangible": 1.151,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "매출 성장(16%)은 인상적이나 성장성 제약과 프리미엄 밸류에이션의 괴리"
+    "display_reason": "프리미엄 밸류에이션 대비 성장 정체, AI 기회 불확실성 상존"
    },
    "conversion": {
     "value": 1.0,
@@ -99,23 +99,23 @@
     "no_price_reg": "△"
    },
    "risk5": {
-    "business_certainty": "○",
+    "business_certainty": "△",
     "mgmt_ability": "○",
     "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "debt_discipline": 1,
+    "no_dilution": 1,
     "score": 3,
-    "period": "2026H1"
+    "period": "2024Q3"
    },
-   "notes": "소비자 프랜차이즈 강력하나 AI 후발주자 위치가 향후 활주로 제약 요소",
+   "notes": "강력한 프랜차이즈·자본배분 우수하나 현재 가격은 성장 없는 프리미엄 상태, 신경영진 전환기 리스크",
    "_evidence": {
-    "franchise": "Apple sales surge 16% on 'staggering' iPhone demand, strong iPhone and China sales",
-    "risk5": "Earnings beat on record-breaking iPhone sales demonstrates sustained demand; Tim Cook leadership continuity",
-    "capalloc": "Massive buyback program and stock buyback strategy noted; record cash generation from operations",
-    "owner_earnings": "Q3 earnings and revenues beat estimates consistently, but valuation at upper bound limits margin of safety"
+    "franchise": "소비자 프랜차이즈 최강 위상, 온디바이스 AI '경쟁무기'로 평가",
+    "risk5": "AI 늦출 우려 vs. 최대 기회, CEO 교체 전환기, 프리미엄 밸류에이션 취약",
+    "capalloc": "역대 최대 규모 자사주 매입 발표, 강한 현금 흐름 기반 자본 규율",
+    "owner_earnings": "Q3 실적 및 매출 추정치 상회, 마진 확대 기대, 단 밸류에이션 리스크"
    }
   },
   "GOOG": {
@@ -237,7 +237,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.47
+    "value": 13.85
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1017,14 +1017,39 @@
     "value": 60.33
    },
    "roe_tangible": null,
-   "owner_earnings": null,
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "AI ASIC 신사업 성장 중이나 모바일 사이클 종속성으로 인한 실적 변동성 존재"
+   },
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "Nvidia 투자 유입과 AI 칩 수주 확대로 신성장 동력 확보했으나, 주가 급등(NT$3,670 → NT$5,800 목표)에 따른 밸류에이션 과열 우려",
+   "_evidence": {
+    "franchise": "MediaTek Raises AI Market Share Target to 20%; First AI Accelerator to Enter Mass Production in Q4, Data Center Revenue to Surpass $2 Billion",
+    "risk5": "MediaTek Retreats 4.6%, Dodging Second-Stage Disposition as 20-Minute Matching Crisis Temporarily Eases; 모바일 사이클 종속성 지속",
+    "capalloc": "MediaTek Q1 Profit Hits NT$24.38 Billion, Up 5.6% QoQ",
+    "owner_earnings": "MediaTek ASIC Revenue Doubles, Igniting Two-Day Limit-Up Surge; MediaTek's June Revenue Hits NT$58 Billion, Third-Highest Ever"
+   }
   },
   "MRVL": {
    "as_of": "2026-09-05",
@@ -1172,5 +1197,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-05 17:07"
+ "scout_label": "2026-09-05 17:26"
 }
