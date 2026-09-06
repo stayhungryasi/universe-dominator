@@ -1,5 +1,5 @@
 {
- "generated_label": "2026-09-05 21:57",
+ "generated_label": "2026-09-06 10:19",
  "asof": "2026-09-03",
  "zones": {
   "explore": 0.6,
@@ -210,20 +210,20 @@
     "market": "UST10",
     "rate10y": 4.77,
     "guard": false,
-    "eps_adj_ttm": 13.85,
+    "eps_adj_ttm": 13.47,
     "roe_tangible": null,
     "g_used": 0.175,
     "price": 428.91,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.032291,
-    "ey_minus_10y": -0.015409,
+    "ey": 0.031405,
+    "ey_minus_10y": -0.016295,
     "roe_minus_2x10y": null,
-    "coupon10y": 0.16198,
+    "coupon10y": 0.157536,
     "zone_buffett": "pass",
     "cause": "scale",
     "note": "",
-    "pass_price": 485.5
+    "pass_price": 472.18
    }
   },
   {
@@ -291,7 +291,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "scale",
+    "cause": null,
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -602,7 +602,7 @@
     "roe_minus_2x10y": 0.2144,
     "coupon10y": 0.05165,
     "zone_buffett": "bond_inferior",
-    "cause": "scale",
+    "cause": null,
     "note": "",
     "pass_price": 38.67
    }
@@ -695,14 +695,14 @@
     "market": "UST10",
     "rate10y": 4.77,
     "guard": true,
-    "eps_adj_ttm": 29.47,
+    "eps_adj_ttm": 29.5,
     "roe_tangible": null,
     "g_used": null,
     "price": 1714.88,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.017185,
-    "ey_minus_10y": -0.030515,
+    "ey": 0.017202,
+    "ey_minus_10y": -0.030498,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
@@ -866,18 +866,18 @@
     "market": "UST10",
     "rate10y": 4.77,
     "guard": false,
-    "eps_adj_ttm": 0.97,
+    "eps_adj_ttm": 0.98,
     "roe_tangible": null,
     "g_used": null,
     "price": 252.09,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.003848,
-    "ey_minus_10y": -0.043852,
+    "ey": 0.003888,
+    "ey_minus_10y": -0.043812,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": null,
+    "cause": "scale",
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -1004,13 +1004,13 @@
     "market": "TW10",
     "rate10y": null,
     "guard": true,
-    "eps_adj_ttm": 61.37,
+    "eps_adj_ttm": 60.49,
     "roe_tangible": null,
     "g_used": null,
     "price": 4415.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.0139,
+    "ey": 0.013701,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1072,13 +1072,13 @@
     "market": "JGB10",
     "rate10y": null,
     "guard": true,
-    "eps_adj_ttm": 1007.57,
+    "eps_adj_ttm": 1007.51,
     "roe_tangible": null,
     "g_used": null,
     "price": 54460.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.018501,
+    "ey": 0.0185,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1285,6 +1285,12 @@
     "gap": 0.3743,
     "coupon10y": null,
     "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
+    "gap": 0.3743,
+    "coupon10y": null,
+    "zone_buffett": "untested"
    }
   ],
   "MSFT": [
@@ -1378,6 +1384,12 @@
    },
    {
     "d": "09-05",
+    "gap": 0.2552,
+    "coupon10y": 0.11407,
+    "zone_buffett": "prove_growth"
+   },
+   {
+    "d": "09-06",
     "gap": 0.2552,
     "coupon10y": 0.11407,
     "zone_buffett": "prove_growth"
@@ -1477,6 +1489,12 @@
     "gap": 0.4709,
     "coupon10y": 0.15559,
     "zone_buffett": "pass"
+   },
+   {
+    "d": "09-06",
+    "gap": 0.4709,
+    "coupon10y": 0.15559,
+    "zone_buffett": "pass"
    }
   ],
   "AAPL": [
@@ -1570,6 +1588,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.2037,
+    "coupon10y": 0.062146,
+    "zone_buffett": "bond_inferior"
+   },
+   {
+    "d": "09-06",
     "gap": -0.2037,
     "coupon10y": 0.062146,
     "zone_buffett": "bond_inferior"
@@ -1669,6 +1693,12 @@
     "gap": 0.0793,
     "coupon10y": 0.055174,
     "zone_buffett": "bond_inferior"
+   },
+   {
+    "d": "09-06",
+    "gap": 0.0793,
+    "coupon10y": 0.055174,
+    "zone_buffett": "bond_inferior"
    }
   ],
   "TSM": [
@@ -1765,6 +1795,12 @@
     "gap": -0.2679,
     "coupon10y": 0.16198,
     "zone_buffett": "pass"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.2679,
+    "coupon10y": 0.157536,
+    "zone_buffett": "pass"
    }
   ],
   "MU": [
@@ -1858,6 +1894,12 @@
    },
    {
     "d": "09-05",
+    "gap": 0.4165,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": 0.4165,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -1957,6 +1999,12 @@
     "gap": -0.2104,
     "coupon10y": 0.109657,
     "zone_buffett": "prove_growth"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.2104,
+    "coupon10y": 0.109657,
+    "zone_buffett": "prove_growth"
    }
   ],
   "JPM": [
@@ -2050,6 +2098,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.0592,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": -0.0592,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -2149,6 +2203,12 @@
     "gap": -0.3046,
     "coupon10y": 0.05165,
     "zone_buffett": "bond_inferior"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.3046,
+    "coupon10y": 0.05165,
+    "zone_buffett": "bond_inferior"
    }
   ],
   "ASML": [
@@ -2242,6 +2302,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.2326,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": -0.2326,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -2341,6 +2407,12 @@
     "gap": -0.5319,
     "coupon10y": null,
     "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.5319,
+    "coupon10y": null,
+    "zone_buffett": "untested"
    }
   ],
   "AMAT": [
@@ -2434,6 +2506,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.5171,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": -0.5171,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -2533,6 +2611,12 @@
     "gap": -0.5971,
     "coupon10y": null,
     "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.5971,
+    "coupon10y": null,
+    "zone_buffett": "untested"
    }
   ],
   "PANW": [
@@ -2626,6 +2710,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.6957,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": -0.6957,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -2725,6 +2815,12 @@
     "gap": -0.6946,
     "coupon10y": null,
     "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.6946,
+    "coupon10y": null,
+    "zone_buffett": "untested"
    }
   ],
   "SNDK": [
@@ -2818,6 +2914,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.4483,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": -0.4483,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -2917,6 +3019,12 @@
     "gap": -0.7645,
     "coupon10y": null,
     "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
+    "gap": -0.7645,
+    "coupon10y": null,
+    "zone_buffett": "untested"
    }
   ],
   "MRVL": [
@@ -3010,6 +3118,12 @@
    },
    {
     "d": "09-05",
+    "gap": -0.6538,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": -0.6538,
     "coupon10y": null,
     "zone_buffett": "untested"
@@ -3109,6 +3223,12 @@
     "gap": 1.6301,
     "coupon10y": null,
     "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
+    "gap": 1.6301,
+    "coupon10y": null,
+    "zone_buffett": "untested"
    }
   ],
   "000660.KS": [
@@ -3202,6 +3322,12 @@
    },
    {
     "d": "09-05",
+    "gap": 1.0644,
+    "coupon10y": null,
+    "zone_buffett": "untested"
+   },
+   {
+    "d": "09-06",
     "gap": 1.0644,
     "coupon10y": null,
     "zone_buffett": "untested"
