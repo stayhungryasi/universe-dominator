@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-06 10:17",
- "generated_at": "2026-09-06T10:17:08.804316+09:00",
+ "generated_label": "2026-09-06 17:12",
+ "generated_at": "2026-09-06T17:12:26.643543+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-06",
@@ -494,33 +494,7 @@
    "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "Greg Abel 신임 CEO 하에서 현금 배치 활동 가속화, 14분기 만에 순매수 전환.",
-   "_evidence": {
-    "franchise": "Berkshire Hathaway의 보험 플로트는 전통적 P/E 측정 불가능한 고유 자본 생성 엔진",
-    "risk5": "Buffett 96세 고령화 속 Abel 경영능력 입증, 다각화된 사업 포트폴리오로 사업 확실성 유지",
-    "capalloc": "Berkshire Hathaway, Under a New CEO, Starts to Spend Its Cash Pile; Berkshire Hathaway (BRK.A) Makes First Net Stock Move In 14 Quarters"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-09-06",
@@ -582,8 +556,14 @@
    },
    "roe_tangible": 0.1618,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "기록적 분기 수익 달성하나 금리·거래 사이클에 의존하는 구조적 변동성 내재"
+    "variants": {
+     "A": {
+      "value": 58899000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -594,7 +574,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -612,33 +592,7 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2024H2"
-   },
-   "notes": "CEO 다이먼의 '거의 최고 수준' 은행 환경 평가는 사이클 피크 신호; 레버리지 비즈니스 특성상 멀티플 할인 정당화",
-   "_evidence": {
-    "franchise": "JPMorgan은 자본시장과 기업금융에서 대체 불가능한 위치; 거래 수익 86% 증가는 시장 내 필수 플레이어 역할 입증",
-    "risk5": "CEO가 '점점 복잡한 경제 위험' 언급; 금리·거래량 사이클 의존도 높아 사이클 역풍 시 수익 변동성 증가 우려",
-    "capalloc": "$50억 자사주 매입 및 배당 인상 실행; 현금 흐름 양호한 상황에서 주주자본 귀속 명확",
-    "owner_earnings": "기록적 분기 수익(record profit)이나 거래 수익·금리 수준에 기반한 일시적 호황으로 해석 가능; 정상화 시 수익 하향 가능성"
-   }
+   ]
   },
   "WMT": {
    "as_of": "2026-09-06",
@@ -1204,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-06 10:18"
+ "scout_label": "2026-09-06 17:13"
 }
