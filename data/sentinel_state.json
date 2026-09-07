@@ -24,11 +24,6 @@
  },
  "buffett": [
   {
-   "date": "2026-08-23",
-   "measured": 21,
-   "forward": 21
-  },
-  {
    "date": "2026-08-24",
    "measured": 21,
    "forward": 21
@@ -97,20 +92,30 @@
    "date": "2026-09-06",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-09-07",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
   "2026-08-31": [
    "sentinel:feed-recover:signals:Hacker News 300+:2026-08-31",
    "sentinel:feed:signals:Hacker News 300+:2026-08-31"
+  ],
+  "2026-09-07": [
+   "sentinel:feed:signals:Hacker News 300+:2026-09-07"
   ]
  },
  "last_verdict": {
-  "at": "2026-09-06 22:09",
-  "ok": true,
-  "alerts": []
+  "at": "2026-09-07 10:24",
+  "ok": false,
+  "alerts": [
+   "신호 Hacker News 300+: timeout 2회 연속"
+  ]
  },
- "last_run": "2026-09-06 22:09",
+ "last_run": "2026-09-07 10:24",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -171,9 +176,9 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "signals:OpenAI": {
