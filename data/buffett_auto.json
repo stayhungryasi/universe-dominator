@@ -1,9 +1,9 @@
 {
- "generated_label": "2026-09-07 17:41",
- "generated_at": "2026-09-07T17:41:07.243985+09:00",
+ "generated_label": "2026-09-08 00:15",
+ "generated_at": "2026-09-08T00:15:43.971415+09:00",
  "items": {
   "NVDA": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -54,7 +54,7 @@
    ]
   },
   "AAPL": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -62,18 +62,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "실적 상회 달성하나 성장성 한계로 프리미엄 밸류에이션 정당화 약함"
    },
    "conversion": {
     "value": 1.0,
@@ -84,7 +74,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,10 +92,34 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2024H2"
+   },
+   "notes": "iPhone·Mac 수요 견조하고 주주귀속 강력하나, 28% 과대평가 우려와 성장 정체 신호 동시 존재",
+   "_evidence": {
+    "franchise": "Consumer franchise strongest position; iPhone, Mac demand sustained",
+    "risk5": "Q3 earnings beat but 5% post-earnings decline signals valuation concerns",
+    "capalloc": "Largest-ever stock buyback program announced under Tim Cook leadership",
+    "owner_earnings": "Revenue guidance tops estimates, $109.4B Q3 revenue achieved; yet stock valuation questioned as pricey on cash flow"
+   }
   },
   "GOOG": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -121,7 +135,7 @@
    "notes": "XBRL 신선도 미달: 최신 2012Q4"
   },
   "MSFT": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -168,7 +182,7 @@
    ]
   },
   "AMZN": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -219,7 +233,7 @@
    ]
   },
   "TSM": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -236,7 +250,7 @@
    "confidence": "중"
   },
   "AVGO": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -284,7 +298,7 @@
    "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "SPCX": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -301,7 +315,7 @@
    "confidence": "중"
   },
   "2222.SR": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -318,7 +332,7 @@
    "confidence": "중"
   },
   "META": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -369,7 +383,7 @@
    ]
   },
   "TSLA": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -416,7 +430,7 @@
    ]
   },
   "005930.KS": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -431,7 +445,7 @@
    "confidence": null
   },
   "MU": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -482,7 +496,7 @@
    ]
   },
   "BRK-B": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -497,7 +511,7 @@
    "confidence": null
   },
   "LLY": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -548,7 +562,7 @@
    ]
   },
   "JPM": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -595,7 +609,7 @@
    ]
   },
   "WMT": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -646,7 +660,7 @@
    ]
   },
   "AMD": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -693,7 +707,7 @@
    ]
   },
   "000660.KS": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -708,7 +722,7 @@
    "confidence": null
   },
   "ASML": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -725,7 +739,7 @@
    "confidence": "중"
   },
   "LRCX": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -776,7 +790,7 @@
    ]
   },
   "AMAT": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -827,7 +841,7 @@
    ]
   },
   "DELL": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -879,7 +893,7 @@
    "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "PANW": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -931,7 +945,7 @@
    "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "ARM": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -948,7 +962,7 @@
    "confidence": "중"
   },
   "SNDK": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -964,7 +978,7 @@
    "notes": "XBRL 신선도 미달: 최신 2012Q4"
   },
   "STX": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -980,7 +994,7 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "CRWD": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -996,7 +1010,7 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "2454.TW": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1013,7 +1027,7 @@
    "confidence": "중"
   },
   "MRVL": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1060,7 +1074,7 @@
    ]
   },
   "285A.T": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1077,7 +1091,7 @@
    "confidence": "중"
   },
   "8035.T": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1094,7 +1108,7 @@
    "confidence": "중"
   },
   "6857.T": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1111,7 +1125,7 @@
    "confidence": "중"
   },
   "2308.TW": {
-   "as_of": "2026-09-07",
+   "as_of": "2026-09-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1133,30 +1147,30 @@
    "ticker": "GOOG",
    "period": "2012Q4",
    "end": "2012-12-31",
-   "age_days": 4998,
+   "age_days": 4999,
    "fallback": false
   },
   {
    "ticker": "SNDK",
    "period": "2012Q4",
    "end": "2012-12-30",
-   "age_days": 4999,
+   "age_days": 5000,
    "fallback": false
   },
   {
    "ticker": "STX",
    "period": "2025Q3",
    "end": "2025-03-28",
-   "age_days": 528,
+   "age_days": 529,
    "fallback": false
   },
   {
    "ticker": "CRWD",
    "period": "2025Q3",
    "end": "2024-10-31",
-   "age_days": 676,
+   "age_days": 677,
    "fallback": false
   }
  ],
- "scout_label": "2026-09-07 17:42"
+ "scout_label": "2026-09-08 00:17"
 }
