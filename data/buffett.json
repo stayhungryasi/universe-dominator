@@ -1,5 +1,5 @@
 {
- "generated_label": "2026-09-10 10:26",
+ "generated_label": "2026-09-10 17:30",
  "asof": "2026-09-03",
  "zones": {
   "explore": 0.6,
@@ -46,7 +46,7 @@
     "roe_minus_2x10y": 0.7196,
     "coupon10y": 0.158712,
     "zone_buffett": "pass",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "pass_price": 246.52
    }
@@ -81,7 +81,7 @@
     "roe_minus_2x10y": 1.055,
     "coupon10y": 0.063058,
     "zone_buffett": "bond_inferior",
-    "cause": "rate",
+    "cause": null,
     "note": "",
     "pass_price": 138.09
    }
@@ -116,7 +116,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": null,
     "note": "취재 대기 — 12개월 조정이익 미확보 · 성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -151,7 +151,7 @@
     "roe_minus_2x10y": 0.3587,
     "coupon10y": 0.115937,
     "zone_buffett": "prove_growth",
-    "cause": "rate",
+    "cause": null,
     "note": "",
     "pass_price": 395.84
    }
@@ -186,7 +186,7 @@
     "roe_minus_2x10y": 0.121,
     "coupon10y": 0.05651,
     "zone_buffett": "bond_inferior",
-    "cause": "rate",
+    "cause": null,
     "note": "",
     "pass_price": 99.05
    }
@@ -210,20 +210,20 @@
     "market": "UST10",
     "rate10y": 4.8,
     "guard": false,
-    "eps_adj_ttm": 13.52,
+    "eps_adj_ttm": 13.41,
     "roe_tangible": null,
     "g_used": 0.175,
     "price": 435.36,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.031055,
-    "ey_minus_10y": -0.016945,
+    "ey": 0.030802,
+    "ey_minus_10y": -0.017198,
     "roe_minus_2x10y": null,
-    "coupon10y": 0.155778,
+    "coupon10y": 0.154511,
     "zone_buffett": "pass",
-    "cause": "price",
+    "cause": "scale",
     "note": "",
-    "pass_price": 470.97
+    "pass_price": 467.14
    }
   },
   {
@@ -256,7 +256,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": 0.101972,
     "zone_buffett": "prove_growth",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "pass_price": 258.03
    }
@@ -280,18 +280,18 @@
     "market": "UST10",
     "rate10y": 4.8,
     "guard": false,
-    "eps_adj_ttm": -1.1,
+    "eps_adj_ttm": -1.06,
     "roe_tangible": null,
     "g_used": null,
     "price": 147.55,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": -0.007455,
-    "ey_minus_10y": -0.055455,
+    "ey": -0.007184,
+    "ey_minus_10y": -0.055184,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": "scale",
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -303,7 +303,7 @@
    "fair_max": 13,
    "rationale": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계.",
    "eps_asof": null,
-   "price": 26.04,
+   "price": 26.12,
    "currency": "SAR",
    "pe": null,
    "gap": null,
@@ -318,10 +318,10 @@
     "eps_adj_ttm": 1.69,
     "roe_tangible": null,
     "g_used": null,
-    "price": 26.04,
+    "price": 26.12,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.0649,
+    "ey": 0.064701,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -360,7 +360,7 @@
     "roe_minus_2x10y": 0.2264,
     "coupon10y": 0.146803,
     "zone_buffett": "pass",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "pass_price": 666.41
    }
@@ -395,7 +395,7 @@
     "roe_minus_2x10y": -0.05,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": null,
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -407,10 +407,10 @@
    "fair_max": 12,
    "rationale": "메모리 사이클 + 파운드리 증축 부담. 다각화로 하이닉스보다 한 단계 위.",
    "eps_asof": "2026-07 F&Guide 역산(개략)",
-   "price": 264750.0,
+   "price": 269000.0,
    "currency": "KRW",
-   "pe": 4.73,
-   "gap": 1.5382,
+   "pe": 4.8,
+   "gap": 1.4981,
    "basis": "forward",
    "note": "",
    "zoned": false,
@@ -422,7 +422,7 @@
     "eps_adj_ttm": null,
     "roe_tangible": null,
     "g_used": null,
-    "price": 264750.0,
+    "price": 269000.0,
     "g_capped_from": null,
     "g_weak": false,
     "ey": null,
@@ -498,7 +498,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": null,
     "note": "취재 대기 — 12개월 조정이익 미확보 · 성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -533,7 +533,7 @@
     "roe_minus_2x10y": 1.3259,
     "coupon10y": 0.112111,
     "zone_buffett": "prove_growth",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "pass_price": 875.25
    }
@@ -602,7 +602,7 @@
     "roe_minus_2x10y": 0.2138,
     "coupon10y": 0.052289,
     "zone_buffett": "bond_inferior",
-    "cause": "rate",
+    "cause": null,
     "note": "",
     "pass_price": 38.43
    }
@@ -637,7 +637,7 @@
     "roe_minus_2x10y": 0.1221,
     "coupon10y": 0.022095,
     "zone_buffett": "bond_inferior",
-    "cause": "rate",
+    "cause": null,
     "note": "",
     "pass_price": 79.96
    }
@@ -649,10 +649,10 @@
    "fair_max": 10,
    "rationale": "원문 명시 사례 — 증축 공사(캐펙스 20조) 없이는 월세 인상 불가, 10년치 상한.",
    "eps_asof": "2026-07 F&Guide 역산(개략)",
-   "price": 1826000.0,
+   "price": 1853000.0,
    "currency": "KRW",
-   "pe": 5.37,
-   "gap": 0.862,
+   "pe": 5.45,
+   "gap": 0.8349,
    "basis": "forward",
    "note": "",
    "zoned": false,
@@ -664,7 +664,7 @@
     "eps_adj_ttm": null,
     "roe_tangible": null,
     "g_used": null,
-    "price": 1826000.0,
+    "price": 1853000.0,
     "g_capped_from": null,
     "g_weak": false,
     "ey": null,
@@ -695,14 +695,14 @@
     "market": "UST10",
     "rate10y": 4.8,
     "guard": true,
-    "eps_adj_ttm": 29.47,
+    "eps_adj_ttm": 28.88,
     "roe_tangible": null,
     "g_used": null,
     "price": 1729.52,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.017039,
-    "ey_minus_10y": -0.030961,
+    "ey": 0.016698,
+    "ey_minus_10y": -0.031302,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
@@ -842,7 +842,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "rate",
+    "cause": null,
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -866,18 +866,18 @@
     "market": "UST10",
     "rate10y": 4.8,
     "guard": false,
-    "eps_adj_ttm": 0.97,
+    "eps_adj_ttm": 0.98,
     "roe_tangible": null,
     "g_used": null,
     "price": 264.23,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.003671,
-    "ey_minus_10y": -0.044329,
+    "ey": 0.003709,
+    "ey_minus_10y": -0.044291,
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": "scale",
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -980,7 +980,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": null,
     "note": "취재 대기 — 12개월 조정이익 미확보 · 성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "pass_price": null
    }
@@ -992,7 +992,7 @@
    "fair_max": 15,
    "rationale": "팹리스 우량이나 모바일 사이클 종속.",
    "eps_asof": null,
-   "price": 4530.0,
+   "price": 4720.0,
    "currency": "TWD",
    "pe": null,
    "gap": null,
@@ -1007,10 +1007,10 @@
     "eps_adj_ttm": 60.59,
     "roe_tangible": null,
     "g_used": null,
-    "price": 4530.0,
+    "price": 4720.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.013375,
+    "ey": 0.012837,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1060,7 +1060,7 @@
    "fair_max": 8,
    "rationale": "낸드 순수 사이클 — SNDK와 동일 상한.",
    "eps_asof": null,
-   "price": 55620.0,
+   "price": 58090.0,
    "currency": "JPY",
    "pe": null,
    "gap": null,
@@ -1075,10 +1075,10 @@
     "eps_adj_ttm": 1008.9,
     "roe_tangible": null,
     "g_used": null,
-    "price": 55620.0,
+    "price": 58090.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.018139,
+    "ey": 0.017368,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1094,7 +1094,7 @@
    "fair_max": 18,
    "rationale": "장비 과점 — LRCX·AMAT와 동일 구조.",
    "eps_asof": null,
-   "price": 52330.0,
+   "price": 52810.0,
    "currency": "JPY",
    "pe": null,
    "gap": null,
@@ -1109,10 +1109,10 @@
     "eps_adj_ttm": 1251.21,
     "roe_tangible": null,
     "g_used": null,
-    "price": 52330.0,
+    "price": 52810.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.02391,
+    "ey": 0.023693,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1128,7 +1128,7 @@
    "fair_max": 16,
    "rationale": "테스트 과점이나 AI 테스터 수요 사이클 진폭이 장비 3사보다 큼.",
    "eps_asof": null,
-   "price": 32700.0,
+   "price": 33920.0,
    "currency": "JPY",
    "pe": null,
    "gap": null,
@@ -1143,10 +1143,10 @@
     "eps_adj_ttm": 515.59,
     "roe_tangible": null,
     "g_used": null,
-    "price": 32700.0,
+    "price": 33920.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.015767,
+    "ey": 0.0152,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1162,7 +1162,7 @@
    "fair_max": 18,
    "rationale": "AI 전력 인프라 부품 과점 — 사이클 상한이되 전력 수요의 활주로는 김.",
    "eps_asof": null,
-   "price": 1715.0,
+   "price": 1675.0,
    "currency": "TWD",
    "pe": null,
    "gap": null,
@@ -1177,10 +1177,10 @@
     "eps_adj_ttm": 31.41,
     "roe_tangible": null,
     "g_used": null,
-    "price": 1715.0,
+    "price": 1675.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.018315,
+    "ey": 0.018752,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1943,7 +1943,7 @@
    {
     "d": "09-10",
     "gap": -0.2788,
-    "coupon10y": 0.155778,
+    "coupon10y": 0.154511,
     "zone_buffett": "pass"
    }
   ],
@@ -3706,7 +3706,7 @@
    },
    {
     "d": "09-10",
-    "gap": 1.5382,
+    "gap": 1.4981,
     "coupon10y": null,
     "zone_buffett": "untested"
    }
@@ -3832,7 +3832,7 @@
    },
    {
     "d": "09-10",
-    "gap": 0.862,
+    "gap": 0.8349,
     "coupon10y": null,
     "zone_buffett": "untested"
    }

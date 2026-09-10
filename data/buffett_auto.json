@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-10 10:24",
- "generated_at": "2026-09-10T10:24:14.047142+09:00",
+ "generated_label": "2026-09-10 17:27",
+ "generated_at": "2026-09-10T17:27:55.867245+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-10",
@@ -223,7 +223,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.52
+    "value": 13.41
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -288,7 +288,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.06
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -377,14 +377,8 @@
    },
    "roe_tangible": 0.046,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 3862000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "C",
+    "display_reason": "자유현금흐름 악화, 마진 하락 보도와 실적 미스가 동시 발생"
    },
    "conversion": {
     "value": 0.9976,
@@ -395,7 +389,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -413,7 +407,28 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "△",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "score": 0
+   },
+   "notes": "자동차·로봇·에너지 사업 영역 모두 추정 범위 밖의 불확실성 노출, 밸류에이션 과다평가 신호",
+   "_evidence": {
+    "franchise": "Lyft-Waymo 경쟁심화, NHTSA 자동운전 조사 진행 중",
+    "risk5": "Tesla misses on earnings, as free cash flow turns negative and margins slide / Cybercab is still under NHTSA investigations",
+    "capalloc": "free cash flow turns negative",
+    "owner_earnings": "Tesla misses on revenue but beats on profit as auto margins jump / Tesla (TSLA) Stock Looks Overvalued Despite Big AI Hopes"
+   }
   },
   "005930.KS": {
    "as_of": "2026-09-10",
@@ -712,7 +727,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.47
+    "value": 28.88
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -935,7 +950,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.98
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1158,5 +1173,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-10 10:25"
+ "scout_label": "2026-09-10 17:29"
 }
