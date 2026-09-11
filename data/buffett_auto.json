@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-11 17:21",
- "generated_at": "2026-09-11T17:21:42.330762+09:00",
+ "generated_label": "2026-09-11 22:46",
+ "generated_at": "2026-09-11T22:46:37.019323+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-11",
@@ -62,18 +62,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "매출 초과 달성하나 AI 비용 상승과 성장 둔화 경고로 이익 질 악화"
    },
    "conversion": {
     "value": 1.0,
@@ -84,7 +74,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,7 +92,30 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "강력한 브랜드와 캐시플로우 대비 현재 밸류에이션은 과도하며, 혁신 (폴더블) 대비 성장 모멘텀 부족",
+   "_evidence": {
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
+    "risk5": "Apple Expects Slower Growth After AI Boom Drives Up Costs; Apple stock slides nearly 10% as Cook warns of memory shortage impact",
+    "capalloc": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue",
+    "owner_earnings": "Apple (AAPL) Stock Looks Pricey On Cash Flow Yet Fair On Earnings"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-11",
@@ -223,7 +236,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.31
+    "value": 13.57
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -288,7 +301,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.11
+    "value": -1.1
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -712,7 +725,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.86
+    "value": 29.53
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -935,7 +948,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.94
+    "value": 0.99
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1158,5 +1171,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-11 17:23"
+ "scout_label": "2026-09-11 22:48"
 }
