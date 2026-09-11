@@ -103,14 +103,19 @@
   "2026-09-07": [
    "sentinel:feed-recover:signals:Hacker News 300+:2026-09-07",
    "sentinel:feed:signals:Hacker News 300+:2026-09-07"
+  ],
+  "2026-09-11": [
+   "sentinel:feed-zero:research:6857.T:2026-09-11"
   ]
  },
  "last_verdict": {
-  "at": "2026-09-11 10:29",
-  "ok": true,
-  "alerts": []
+  "at": "2026-09-11 17:25",
+  "ok": false,
+  "alerts": [
+   "리서치 6857.T: 0건 4회 연속"
+  ]
  },
- "last_run": "2026-09-11 10:29",
+ "last_run": "2026-09-11 17:25",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -562,9 +567,9 @@
   },
   "research:6857.T": {
    "err_streak": 0,
-   "zero_streak": 3,
+   "zero_streak": 4,
    "err_alerted": false,
-   "zero_alerted": false
+   "zero_alerted": true
   },
   "research:8035.T": {
    "err_streak": 0,

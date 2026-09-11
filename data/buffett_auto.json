@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-11 10:25",
- "generated_at": "2026-09-11T10:25:07.380270+09:00",
+ "generated_label": "2026-09-11 17:21",
+ "generated_at": "2026-09-11T17:21:42.330762+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-11",
@@ -784,8 +784,18 @@
    },
    "roe_tangible": 0.3535,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "실적 상회에도 불구하고 고기대치 반영으로 주가 하락, 사이클 상한 신호"
+    "variants": {
+     "A": {
+      "value": 8508000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 6347000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.2183,
@@ -796,7 +806,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -814,30 +824,7 @@
      "period": "2025Q3",
      "end": "2025-07-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2024H2"
-   },
-   "notes": "AI 수요 강건하나 과점 프리미엄 평가 국면, 한국 $350B 투자 등 공급 확대 임박 신호 주의",
-   "_evidence": {
-    "franchise": "Applied Materials CEO Says the AI Boom Is Nowhere Near Over. His Order Book Is the Proof",
-    "risk5": "Applied Materials forecasts revenue above estimates, shares fall on high expectations; Can Applied Materials (AMAT) Still Look Cheap After A 237% Run?",
-    "capalloc": "Applied Materials Eyes Capacity Expansion as Profit, Revenue Grow",
-    "owner_earnings": "Applied Materials (AMAT) Beats Q3 Earnings and Revenue Estimates — Applied Materials Drops 34%. Here's Why You Should Buy the Dip in AMAT Stock"
-   }
+   ]
   },
   "DELL": {
    "as_of": "2026-09-11",
@@ -848,8 +835,18 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "C",
-    "display_reason": "AI 서버 매출 폭발이 저마진 OEM 비즈니스로 현금창출력 제한"
+    "variants": {
+     "A": {
+      "value": 8409000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 8430000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -860,7 +857,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 33건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -879,30 +876,7 @@
      "end": "2025-08-01"
     }
    ],
-   "notes": "AI 서버 $61B 파이프라인과 매출 성장은 인상적이나, 시클리컬 저마진 구조로 인한 주주가치 창출 미흡 우려; $5B 채권 발행으로 부채 재정의 필요성 노정",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H2"
-   },
-   "_evidence": {
-    "franchise": "AI 서버는 저마진 OEM 비즈니스로 대체재 존재(Supermicro, HPE)",
-    "risk5": "시클리컬 산업에서 AI 수요 지속성 불확실; 266% 3년 랠리로 밸류에이션 과도 우려",
-    "capalloc": "$5.0B 다중 트랜치 채권 발행으로 2026 선순위채 재정의 필요",
-    "owner_earnings": "AI 서버 매출 폭발과 주주 월세는 별개 - 저마진 OEM 구조가 현금 전환 제한"
-   }
+   "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "PANW": {
    "as_of": "2026-09-11",
@@ -1090,7 +1064,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1028.19
+    "value": 1010.77
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1184,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-11 10:26"
+ "scout_label": "2026-09-11 17:23"
 }
