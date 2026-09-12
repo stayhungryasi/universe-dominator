@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-12 10:25",
- "generated_at": "2026-09-12T10:25:40.197785+09:00",
+ "generated_label": "2026-09-12 17:13",
+ "generated_at": "2026-09-12T17:13:44.944007+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-12",
@@ -63,7 +63,7 @@
    "roe_tangible": 1.151,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "성장 정체 속 AI 비용 증가로 마진율 압박 전망"
+    "display_reason": "AI 비용 증가로 성장 둔화 신호, 프리미엄 밸류에이션 대비 활주로 제한"
    },
    "conversion": {
     "value": 1.0,
@@ -109,12 +109,12 @@
     "score": 2,
     "period": "2026H1"
    },
-   "notes": "소비자 프랜차이즈 강력하나 성장 없는 프리미엄 밸류에이션으로 상향 여력 제한적",
+   "notes": "강력한 프랜차이즈(iPhone, Mac 수요)와 새 CEO의 폴더블 전략이지만, AI 투자 부담과 성장 한계로 인해 28상한 내 평가 필요",
    "_evidence": {
-    "franchise": "Apple Expects Slower Growth After AI Boom Drives Up Costs; 1,200% 10년 수익률은 강력한 브랜드 자산 입증",
-    "risk5": "Apple stock slides nearly 10% as Cook warns of memory shortage impact; 신규 CEO의 폴더블 아이폰 공개에도 불구하고 성장 불확실성 심화",
-    "capalloc": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; Q3 earnings beat 달성으로 현금 창출력 지속 확인",
-    "owner_earnings": "Apple Expects Slower Growth After AI Boom Drives Up Costs; Macro Takeaways from Apple Earnings"
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
+    "risk5": "Apple Expects Slower Growth After AI Boom Drives Up Costs",
+    "capalloc": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue",
+    "owner_earnings": "Apple Expects Slower Growth After AI Boom Drives Up Costs"
    }
   },
   "GOOG": {
@@ -236,7 +236,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.57
+    "value": 13.73
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -301,7 +301,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.12
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -501,7 +501,7 @@
    "eps_adj_ttm": null,
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "A"
+    "display": "B"
    },
    "conversion": null,
    "g_cagr3y": 0.1553,
@@ -530,12 +530,12 @@
     "score": 3,
     "period": "2024H2"
    },
-   "notes": "플로트 복리의 본질적 가치와 현재 시장가 사이의 괴리가 재평가 중; 대규모 자본배분(82억 달러 자사주 매입, 현금 증설 투자)이 진행 중.",
+   "notes": "플로트 복리의 강점이 유지되나 현금 감소와 주요 포지션 집중(3개 종목에 50%)이 유동성 리스크 신호",
    "_evidence": {
-    "franchise": "Berkshire Hathaway의 보증금(float) 사업모형과 다중 자회사 포트폴리오는 대체 불가능한 경제적 해자를 형성.",
-    "risk5": "Warren Buffett의 경영능력과 신뢰도는 장기 기록으로 입증; 다각화된 사업 포트폴리오가 비즈니스 확실성 제공; 현재 밸류에이션은 '36% 저평가' 주장부터 '79% 상승 후 합리적' 평가까지 엇갈림.",
-    "capalloc": "Q2 기간 중 $82 Billion 자사주 매입 재개, 현금을 증설 투자에 배치(AI 매입 언급), 부채 규율 유지.",
-    "owner_earnings": "플로트형 기업으로서 회계이익(accounting earnings) 대신 플로트 생성 능력과 배분 효율성이 진정한 주주 수익(owner earnings)을 결정."
+    "franchise": "보증금(플로트)형 비즈니스 모델로 전통 P/E 평가 불가; 다중 자회사 시스템의 구조적 경호 해자",
+    "risk5": "리더십 전환기 불확실성과 $82B 자사주 매입 재개에도 불구하고 현금 잔고 후퇴; 집중된 포트폴리오 구조",
+    "capalloc": "Q2 현금 잔고 감소 속 증액 투자 및 자사주 매입 재개; 무이자부채 규율 유지",
+    "owner_earnings": "헤드라인 수익 공시 vs 실제 운영 이익 괴리; 플로트 코스트 음수 상황에서 회계 이익의 신뢰도 제한"
    }
   },
   "LLY": {
@@ -740,21 +740,48 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": null,
+   "owner_earnings": {
+    "display": "B",
+    "display_reason": "Q2 기록적 수익 달성(영업마진 76%) 후 즉각적 주가 부진으로 시장 예측성 부족"
+   },
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 0,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "캐펙스 20조 규모 필수 투자 약정으로 10년 현금흐름 제약, AI 칩 수요 확실하나 중국 경쟁 우려로 가격 안정성 훼손",
+   "_evidence": {
+    "franchise": "HBM4 양산 진입, 구글·AI 고객 강한 수요 = 대체불가 필요성 확보",
+    "risk5": "기록 이익 후 주가 10% 급락, 메모리칩 약세장 진입 신호 = 경기순환 비즈니스 근본 위험, 중국 경쟁 우려 헤드라인",
+    "capalloc": "26.5조 달러 자금조달 성공 및 ADR 공모 7배 초과 청약 = 현금 확보, 동시에 '캐펙스 20조 없이는 월세 인상 불가' 구조적 제약",
+    "owner_earnings": "Q2 79.3조 원 매출(YoY 257%), 수익은 예측을 하회했으나 즉각 주가 부진"
+   }
   },
   "ASML": {
    "as_of": "2026-09-12",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.53
+    "value": 29.72
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -977,7 +1004,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.99
+    "value": 1.03
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1042,7 +1069,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.42
+    "value": 60.52
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1200,5 +1227,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-12 10:27"
+ "scout_label": "2026-09-12 17:15"
 }
