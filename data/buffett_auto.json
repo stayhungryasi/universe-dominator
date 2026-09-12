@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-12 17:13",
- "generated_at": "2026-09-12T17:13:44.944007+09:00",
+ "generated_label": "2026-09-12 22:03",
+ "generated_at": "2026-09-12T22:03:02.998348+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-12",
@@ -63,7 +63,7 @@
    "roe_tangible": 1.151,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "AI 비용 증가로 성장 둔화 신호, 프리미엄 밸류에이션 대비 활주로 제한"
+    "display_reason": "성숙 기업의 프리미엄 가격에 성장 부재로 인한 기대치-현실 갭 확대"
    },
    "conversion": {
     "value": 1.0,
@@ -106,15 +106,16 @@
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "score": 2,
+    "no_dilution": 1,
+    "score": 3,
     "period": "2026H1"
    },
-   "notes": "강력한 프랜차이즈(iPhone, Mac 수요)와 새 CEO의 폴더블 전략이지만, AI 투자 부담과 성장 한계로 인해 28상한 내 평가 필요",
+   "notes": "혁신 신호(폴더블)에도 느린 성장 경고와 CEO 교체기 맞물려 재평가 시점",
    "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
-    "risk5": "Apple Expects Slower Growth After AI Boom Drives Up Costs",
-    "capalloc": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue",
-    "owner_earnings": "Apple Expects Slower Growth After AI Boom Drives Up Costs"
+    "franchise": "iPhone, Mac 수요 부진에도 브랜드 가치 유지; '성장 없는 프리미엄' 구조 심화",
+    "risk5": "Apple Expects Slower Growth After AI Boom Drives Up Costs; 새 CEO 체제 전환기 경영 불확실성",
+    "capalloc": "Nvidia Will Overtake Apple in Stock Buybacks and Dividends - 자본배분 우선순위 재편 신호",
+    "owner_earnings": "Apple stock slides nearly 10% as Cook warns of memory shortage impact - 실적 모멘텀 약화"
    }
   },
   "GOOG": {
@@ -236,7 +237,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.73
+    "value": 13.56
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -301,7 +302,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.12
+    "value": -1.1
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -500,43 +501,14 @@
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": 0.1553,
    "g_forward": null,
    "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024H2"
-   },
-   "notes": "플로트 복리의 강점이 유지되나 현금 감소와 주요 포지션 집중(3개 종목에 50%)이 유동성 리스크 신호",
-   "_evidence": {
-    "franchise": "보증금(플로트)형 비즈니스 모델로 전통 P/E 평가 불가; 다중 자회사 시스템의 구조적 경호 해자",
-    "risk5": "리더십 전환기 불확실성과 $82B 자사주 매입 재개에도 불구하고 현금 잔고 후퇴; 집중된 포트폴리오 구조",
-    "capalloc": "Q2 현금 잔고 감소 속 증액 투자 및 자사주 매입 재개; 무이자부채 규율 유지",
-    "owner_earnings": "헤드라인 수익 공시 vs 실제 운영 이익 괴리; 플로트 코스트 음수 상황에서 회계 이익의 신뢰도 제한"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-09-12",
@@ -740,48 +712,21 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "B",
-    "display_reason": "Q2 기록적 수익 달성(영업마진 76%) 후 즉각적 주가 부진으로 시장 예측성 부족"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 0,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "캐펙스 20조 규모 필수 투자 약정으로 10년 현금흐름 제약, AI 칩 수요 확실하나 중국 경쟁 우려로 가격 안정성 훼손",
-   "_evidence": {
-    "franchise": "HBM4 양산 진입, 구글·AI 고객 강한 수요 = 대체불가 필요성 확보",
-    "risk5": "기록 이익 후 주가 10% 급락, 메모리칩 약세장 진입 신호 = 경기순환 비즈니스 근본 위험, 중국 경쟁 우려 헤드라인",
-    "capalloc": "26.5조 달러 자금조달 성공 및 ADR 공모 7배 초과 청약 = 현금 확보, 동시에 '캐펙스 20조 없이는 월세 인상 불가' 구조적 제약",
-    "owner_earnings": "Q2 79.3조 원 매출(YoY 257%), 수익은 예측을 하회했으나 즉각 주가 부진"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-09-12",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.72
+    "value": 29.55
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1004,7 +949,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 1.03
+    "value": 0.98
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1227,5 +1172,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-12 17:15"
+ "scout_label": "2026-09-12 22:04"
 }
