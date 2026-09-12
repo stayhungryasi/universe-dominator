@@ -587,6 +587,37 @@ const DATA = {
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.09.12",
+      "period": "9.5 → 9.12 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "[한국] <strong>SK</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $24B</span>)",
+            "[한국] <strong>NAVER</strong> TOP 20 이탈",
+            "[유럽] <strong>Schneider Electric</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $190B</span>)",
+            "[유럽] <strong>Prosus</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,343 (09/12 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.34"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.09.05",
       "period": "8.29 → 9.5 (주간)",
       "auto": true,
@@ -1016,8 +1047,8 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_date": "2026-09-11",
-    "usd_krw": 1343.8
+    "fetched_date": "2026-09-12",
+    "usd_krw": 1342.79
   }
 };
 
