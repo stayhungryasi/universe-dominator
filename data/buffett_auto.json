@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-13 10:20",
- "generated_at": "2026-09-13T10:20:02.069110+09:00",
+ "generated_label": "2026-09-13 17:38",
+ "generated_at": "2026-09-13T17:38:26.613781+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-13",
@@ -62,8 +62,18 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "강한 캐시플로우 창출 능력이 있으나 성장 정체로 가치 상한 제약"
+    "variants": {
+     "A": {
+      "value": 122575000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 124137000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -74,7 +84,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -92,30 +102,7 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "소비자 프랜차이즈 최강이나 성장 부진과 AI 비용 증가로 프리미엄 평가 한계(MAX 28배)",
-   "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
-    "risk5": "Apple Expects Slower Growth After AI Boom Drives Up Costs; Apple Stock Looks Above Fair Value After Strong Run",
-    "capalloc": "Nvidia Will Overtake Apple in Stock Buybacks and Dividends Under New Apple CEO John Ternus",
-    "owner_earnings": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-09-13",
@@ -1171,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-13 10:21"
+ "scout_label": "2026-09-13 17:39"
 }
