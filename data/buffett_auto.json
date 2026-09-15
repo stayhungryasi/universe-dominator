@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-15 18:00",
- "generated_at": "2026-09-15T18:00:48.984171+09:00",
+ "generated_label": "2026-09-15 23:31",
+ "generated_at": "2026-09-15T23:31:11.989384+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-15",
@@ -223,7 +223,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.56
+    "value": 13.5
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -556,8 +556,14 @@
    },
    "roe_tangible": 0.1618,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "기록적 분기 수익과 거래 수익 급증이 사이클 정점 신호"
+    "variants": {
+     "A": {
+      "value": 58899000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -568,7 +574,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -586,31 +592,7 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "notes": "레버리지 사이클 업종으로서 현재 금리 환경 및 거래 활동 정점이 지속성 불명확",
-   "_evidence": {
-    "franchise": "JPMorgan tops estimates on Wall Street, 레버리지된 금융중개 기능으로 대체불가",
-    "risk5": "CEO Jamie Dimon calls the banking environment 'close to as good as it gets' - 피크 신호; 'increasingly complex' economic risks 경고",
-    "capalloc": "JPMorgan Earned $16.9 Billion in 1 Quarter - 높은 현금 생성, 배당금 여유 있음",
-    "owner_earnings": "Record Profit as Stock-Trading Climbs 86% - 거래 수익 비정상 증가로 정상화 시 수익 조정 필요"
-   }
+   ]
   },
   "WMT": {
    "as_of": "2026-09-15",
@@ -716,47 +698,21 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "C"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "초과 구독 7배 이상, 기록적 분기 이익 달성했으나 시클리컬 산업의 수급 변동성과 미국 소송 리스크 병존.",
-   "_evidence": {
-    "franchise": "HBM4 대량 생산 진입, AI 수요로 메모리 칩 초강세 사이클, Google·대형 과학기술 기업의 강한 수요 기반",
-    "risk5": "AI 수요 급증 사이클 정점 불확실성, 미국 상장 소송 리스크 추가, 메모리주 약세장 진입 신호(Micron·Samsung·SK Hynix 동시 낙장)",
-    "capalloc": "기록적 $37B 분기 이익 달성으로 현금 창출 강력, $26.5B 미국 상장으로 부채 규율 입증, 증축(캐펙스 20조) 없이는 월세 인상 불가 구조로 자본배분 제약 있음",
-    "owner_earnings": "분기 이익과 광고용 가이던스 간 괴리(60.5T vs 추정치), 시클리컬 피크 이익의 지속성 입증 부족"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-09-15",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.55
+    "value": 29.46
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1202,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-15 18:02"
+ "scout_label": "2026-09-15 23:32"
 }
