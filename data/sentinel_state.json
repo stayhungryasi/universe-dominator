@@ -104,15 +104,18 @@
    "sentinel:feed-zero:research:6857.T:2026-09-11"
   ],
   "2026-09-15": [
+   "sentinel:feed-zero:research:285A.T:2026-09-15",
    "sentinel:feed-zero:research:6857.T:2026-09-15"
   ]
  },
  "last_verdict": {
-  "at": "2026-09-15 10:50",
-  "ok": true,
-  "alerts": []
+  "at": "2026-09-15 18:04",
+  "ok": false,
+  "alerts": [
+   "리서치 285A.T: 0건 4회 연속"
+  ]
  },
- "last_run": "2026-09-15 10:50",
+ "last_run": "2026-09-15 18:04",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -558,13 +561,13 @@
   },
   "research:285A.T": {
    "err_streak": 0,
-   "zero_streak": 3,
+   "zero_streak": 4,
    "err_alerted": false,
-   "zero_alerted": false
+   "zero_alerted": true
   },
   "research:6857.T": {
    "err_streak": 0,
-   "zero_streak": 5,
+   "zero_streak": 6,
    "err_alerted": false,
    "zero_alerted": true
   },
@@ -660,7 +663,7 @@
   },
   "research:META": {
    "err_streak": 0,
-   "zero_streak": 1,
+   "zero_streak": 2,
    "err_alerted": false,
    "zero_alerted": false
   },
