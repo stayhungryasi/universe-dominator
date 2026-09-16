@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-16 17:55",
- "generated_at": "2026-09-16T17:55:38.032934+09:00",
+ "generated_label": "2026-09-16 23:24",
+ "generated_at": "2026-09-16T23:24:05.407504+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-16",
@@ -62,18 +62,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
     "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display_reason": "Q3 earnings and revenue beat estimates, strong iPhone and Mac demand 시현"
    },
    "conversion": {
     "value": 1.0,
@@ -84,7 +74,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,7 +92,30 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2024H2"
+   },
+   "notes": "세즈형 프랜차이즈 강건성 확인되나 성장 정체와 메모리 비용 우려로 상승력 제한",
+   "_evidence": {
+    "franchise": "Apple Heads Into Earnings This Month With This Analyst Seeing Margin Expansion",
+    "risk5": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue; strong iPhone, China sales",
+    "capalloc": "Apple stock rises after Q2 earnings top estimates",
+    "owner_earnings": "Apple revenue guidance tops estimates on booming iPhone, Mac demand"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-16",
@@ -223,7 +236,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.36
+    "value": 13.49
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -288,7 +301,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.06
+    "value": -1.1
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -556,14 +569,8 @@
    },
    "roe_tangible": 0.1618,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 58899000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "사이클 정점의 기록적 수익성은 지속성이 제한적이며 정상화된 수익력으로 재평가 필요"
    },
    "conversion": {
     "value": 1.0,
@@ -574,7 +581,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -592,7 +599,34 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2024H2"
+   },
+   "notes": "기록적 분기 수익($16.9B)과 주식 거래 급증(86%)은 금리 사이클과 시장 변동성 수혜로, CEO가 '매우 호의적' 환경을 지적했으나 '점증하는 경제적 복잡성'도 동시 언급",
+   "_evidence": {
+    "franchise": "JPMorgan notches record quarter as CEO Jamie Dimon calls the banking environment 'close to as good as it gets'",
+    "risk5": "CEO Jamie Dimon flags 'increasingly complex' economic risks; cyclical earnings peak creates price visibility challenge",
+    "capalloc": "JPMorgan Chase (JPM) Earned $16.9 Billion in 1 Quarter with bigger dividend, US$50B buyback and new co-presidents",
+    "owner_earnings": "Watch Earnings: JPMorgan (JPM) Sees Record Profit as Stock-Trading Climbs 86% & JPMorgan Chase (JPM) Stock Looks Reasonable On Earnings And Stretched On Price"
+   }
   },
   "WMT": {
    "as_of": "2026-09-16",
@@ -698,48 +732,21 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": {
-    "display": "C",
-    "display_reason": "사이클 업황 초입의 기록적 수익이지만 캐펙스 20조 투자 의무로 자유현금흐름 불확실"
-   },
+   "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 0,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "AI 칩 초호황 속 NASDAQ 상장 후 주가 약세, 기록 수익에도 불구하고 시장 회의적 반응 시사",
-   "_evidence": {
-    "franchise": "AI Demand Ignites Memory Super-Cycle, Prices Soar Nearly Fourfold in a Year",
-    "risk5": "Micron, Samsung, SK Hynix just dragged memory stocks into a bear market; SK hynix Posts Record $37 Billion Profit, But Shares Open 2% Lower",
-    "capalloc": "SK Hynix plans $28.6 billion buyback after share price declines; SK Hynix raises $26.5 billion in US offering",
-    "owner_earnings": "Q2 Revenue Jumps 257% YoY to 79.3T Won, Operating Margin Hits 76%; but reference note indicates capex 20조 requirement without which cannot raise rent 10 years ceiling"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-09-16",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.76
+    "value": 29.44
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -914,18 +921,8 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 842800000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 1017300000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "C",
+    "display_reason": "인수 상각으로 인한 GAAP 이익 기반 악화로 진정한 owner earnings 파악 어려움"
    },
    "conversion": {
     "value": 1.0,
@@ -936,7 +933,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -955,7 +952,30 @@
      "end": "2025-07-31"
     }
    ],
-   "notes": "유형자기자본 0 이하 — ROE 미산출"
+   "notes": "AI 수요 기반 실적 초과 달성 중이나 높은 밸류에이션과 인수 적극화에 따른 통합 리스크 존재",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "debt_discipline": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "Cybersecurity 플랫폼 통합 전략 진행 중이며 구독 전환 비용 특성상 높은 switching cost 보유",
+    "risk5": "Acquisition spree 지속으로 통합 실패 리스크 있으며, Stock looks fully priced after huge run",
+    "capalloc": "Closes its buyback - 주주 환원 정책 전환, 인수에 자본 재배치",
+    "owner_earnings": "GAAP 기준 선행 EPS는 인수 상각으로 이익 기반이 얇아 실제 owner earnings 파악 어려움"
+   }
   },
   "ARM": {
    "as_of": "2026-09-16",
@@ -1185,5 +1205,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-16 17:57"
+ "scout_label": "2026-09-16 23:25"
 }
