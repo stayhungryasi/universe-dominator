@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-16 10:43",
- "generated_at": "2026-09-16T10:43:23.735037+09:00",
+ "generated_label": "2026-09-16 17:55",
+ "generated_at": "2026-09-16T17:55:38.032934+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-16",
@@ -62,8 +62,18 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "매출 $109.4B 초과달성 but 성장 둔화, 가격규제 리스크로 프리미엄 정당성 약화"
+    "variants": {
+     "A": {
+      "value": 122575000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 124137000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -74,7 +84,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -92,29 +102,7 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "notes": "소비자 프랜차이즈 최강이나 성장 한계로 밸류에이션 천장 28에 근접, 신제품(폴더블) 기대감 vs 메모리 부족 경고 양립",
-   "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
-    "risk5": "Apple stock slides nearly 10% as Cook warns of memory shortage impact",
-    "capalloc": "Apple Stock Has Returned Nearly 1,200% in 10 Years",
-    "owner_earnings": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-09-16",
@@ -300,7 +288,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.06
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -710,21 +698,48 @@
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
    "roe_tangible": null,
-   "owner_earnings": null,
+   "owner_earnings": {
+    "display": "C",
+    "display_reason": "사이클 업황 초입의 기록적 수익이지만 캐펙스 20조 투자 의무로 자유현금흐름 불확실"
+   },
    "conversion": null,
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 0,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "AI 칩 초호황 속 NASDAQ 상장 후 주가 약세, 기록 수익에도 불구하고 시장 회의적 반응 시사",
+   "_evidence": {
+    "franchise": "AI Demand Ignites Memory Super-Cycle, Prices Soar Nearly Fourfold in a Year",
+    "risk5": "Micron, Samsung, SK Hynix just dragged memory stocks into a bear market; SK hynix Posts Record $37 Billion Profit, But Shares Open 2% Lower",
+    "capalloc": "SK Hynix plans $28.6 billion buyback after share price declines; SK Hynix raises $26.5 billion in US offering",
+    "owner_earnings": "Q2 Revenue Jumps 257% YoY to 79.3T Won, Operating Margin Hits 76%; but reference note indicates capex 20조 requirement without which cannot raise rent 10 years ceiling"
+   }
   },
   "ASML": {
    "as_of": "2026-09-16",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.46
+    "value": 29.76
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -847,8 +862,18 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI 서버 매출 폭발이 마진율 개선으로 이어지지 않는 저마진 OEM 구조"
+    "variants": {
+     "A": {
+      "value": 8409000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 8430000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -859,7 +884,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 33건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -878,29 +903,7 @@
      "end": "2025-08-01"
     }
    ],
-   "notes": "주가 266% 급등으로 밸류에이션 과열; $50억 신규 부채 발행으로 차입금 규율 약화",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 0,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI 서버는 엔터프라이즈 인프라의 필수 요소(Europa AI Architecture 출시)",
-    "risk5": "Dell Surges 9% after lifting fiscal 2027 forecast on AI server strength — AI 경기 순환 의존도 높음",
-    "capalloc": "Dell Technologies subsidiaries complete $5 billion senior notes offering with 2029–2037 maturities — 적극적 차입 확대",
-    "owner_earnings": "Why 1 Analyst Is Betting That DELL Stock Can Gain At Least Another 20% From Here & Dell Falls 4% Ahead of Earnings as Its 266% Rally Raises the Bar — 매출 폭발 대비 이익 성장 미흡 신호"
-   }
+   "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "PANW": {
    "as_of": "2026-09-16",
@@ -959,7 +962,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.98
+    "value": 0.99
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1088,7 +1091,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1029.83
+    "value": 1009.13
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1182,5 +1185,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-16 10:44"
+ "scout_label": "2026-09-16 17:57"
 }
