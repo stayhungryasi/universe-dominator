@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-17 18:31",
- "generated_at": "2026-09-17T18:31:43.485733+09:00",
+ "generated_label": "2026-09-17 23:29",
+ "generated_at": "2026-09-17T23:29:34.185151+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-17",
@@ -84,7 +84,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,7 +102,28 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "notes": "소비자 프랜차이즈 최강이나 활주로 최저 수준, 엔터프라이즈 AI 서버 진출 시도로 성장성 재평가 필요",
+   "_evidence": {
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
+    "risk5": "Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue; Apple Stock Has Returned Nearly 1,200% in 10 Years",
+    "capalloc": "Apple stock rises after Q2 earnings top estimates on strong iPhone, China sales"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-17",
@@ -223,7 +244,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.62
+    "value": 13.45
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -288,7 +309,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.16
+    "value": -1.1
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -712,7 +733,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.64
+    "value": 29.32
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -935,7 +956,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 1.0
+    "value": 0.98
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1158,5 +1179,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-17 18:33"
+ "scout_label": "2026-09-17 23:31"
 }
