@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-19 10:28",
- "generated_at": "2026-09-19T10:28:32.712855+09:00",
+ "generated_label": "2026-09-19 17:22",
+ "generated_at": "2026-09-19T17:22:34.816923+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-19",
@@ -63,7 +63,7 @@
    "roe_tangible": 1.151,
    "owner_earnings": {
     "display": "B",
-    "display_reason": "성장 없는 프리미엄 가격대에서 실적 회수 능력만 우수함"
+    "display_reason": "높은 수익성이나 성장성 약화로 인한 프리미엄 밸류에이션 위험"
    },
    "conversion": {
     "value": 1.0,
@@ -98,18 +98,16 @@
     "no_substitute": "○",
     "no_price_reg": "△"
    },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
    },
-   "notes": "최강 소비자 프랜차이즈이나 고가 밸류에이션 + 메모리 부족 경고로 상향 제한",
+   "notes": "소비자 프랜차이즈 강력하나 성장 견인력 부족으로 현 밸류에이션에서 상한 제약",
    "_evidence": {
-    "franchise": "Apple은 소비자 프랜차이즈 최강 기업으로 iPhone, Mac 수요 호조 지속 중",
-    "capalloc": "What Apple (AAPL)'s Massive Buyback And Chip Shift Means For Shareholders",
-    "owner_earnings": "Apple (AAPL) Stock Looks Pricey On Cash Flow Yet Fair On Earnings; Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue"
+    "franchise": "booming iPhone, Mac demand; exceeds Q3 earnings estimates with $109.4B revenue",
+    "risk5": "Earnings beat but stock fell 5% post-report; increasing impact from memory shortage flagged by CEO",
+    "owner_earnings": "Could be 20% overvalued; weak revenue forecast despite supply strength"
    }
   },
   "GOOG": {
@@ -231,7 +229,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.42
+    "value": 13.56
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -296,7 +294,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.08
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -655,50 +653,18 @@
   },
   "AMD": {
    "as_of": "2026-09-19",
-   "period": "2026Q1",
+   "period": null,
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": {
-    "value": 3.0358
-   },
-   "roe_tangible": 0.2181,
-   "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 5009000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
-   },
-   "conversion": {
-    "value": 1.0,
-    "basis": "A(감가상각 기준) ÷ 조정순이익"
-   },
-   "g_cagr3y": 0.1426,
+   "eps_adj_ttm": null,
+   "roe_tangible": null,
+   "owner_earnings": null,
+   "conversion": null,
+   "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "중",
-   "ttm_window": [
-    {
-     "period": "2026Q1",
-     "end": "2026-03-28"
-    },
-    {
-     "period": "2025Q4",
-     "end": "2025-12-27"
-    },
-    {
-     "period": "2025Q3",
-     "end": "2025-09-27"
-    },
-    {
-     "period": "2025Q2",
-     "end": "2025-06-28"
-    }
-   ]
+   "method": null,
+   "source": null,
+   "confidence": null
   },
   "000660.KS": {
    "as_of": "2026-09-19",
@@ -720,7 +686,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.33
+    "value": 30.24
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -843,8 +809,18 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI 서버 저마진 OEM 특성상 매출 성장이 순이익 성장으로 완전 전환되지 않음"
+    "variants": {
+     "A": {
+      "value": 8409000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 8430000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -855,7 +831,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 33건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -874,29 +850,7 @@
      "end": "2025-08-01"
     }
    ],
-   "notes": "AI 서버 수요 폭발로 매출·지표 우호적이나 시클리컬 업종 특성과 저마진 구조로 인한 주주수익률 제약 존재",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI Server Backlog Might Change The Case For Investing In Dell Stock — 백로그 기반 수요 확실성 있음",
-    "risk5": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength — 경영진 실행능력 입증; 그러나 Dell Stock Has Tripled in 2026 — 고평가 위험",
-    "capalloc": "Dell Technologies Boosts Fiscal Year Outlook by $25 Billion as Server Revenue Surges & Buyback Puts Valuation Back In Focus — 캐시 생성 및 자사주 매입 진행",
-    "owner_earnings": "AI 서버는 저마진 OEM — 매출 폭발과 주주 월세는 별개"
-   }
+   "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "PANW": {
    "as_of": "2026-09-19",
@@ -955,7 +909,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.98
+    "value": 1.02
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1101,7 +1055,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1301.2
+    "value": 1253.4
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1178,5 +1132,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-19 10:29"
+ "scout_label": "2026-09-19 17:24"
 }
