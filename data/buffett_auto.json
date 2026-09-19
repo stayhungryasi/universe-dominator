@@ -1,9 +1,9 @@
 {
- "generated_label": "2026-09-18 22:47",
- "generated_at": "2026-09-18T22:47:54.163532+09:00",
+ "generated_label": "2026-09-19 10:28",
+ "generated_at": "2026-09-19T10:28:32.712855+09:00",
  "items": {
   "NVDA": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -54,7 +54,7 @@
    ]
   },
   "AAPL": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -62,18 +62,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "성장 없는 프리미엄 가격대에서 실적 회수 능력만 우수함"
    },
    "conversion": {
     "value": 1.0,
@@ -84,7 +74,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,10 +92,28 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "최강 소비자 프랜차이즈이나 고가 밸류에이션 + 메모리 부족 경고로 상향 제한",
+   "_evidence": {
+    "franchise": "Apple은 소비자 프랜차이즈 최강 기업으로 iPhone, Mac 수요 호조 지속 중",
+    "capalloc": "What Apple (AAPL)'s Massive Buyback And Chip Shift Means For Shareholders",
+    "owner_earnings": "Apple (AAPL) Stock Looks Pricey On Cash Flow Yet Fair On Earnings; Apple exceeds Q3 earnings estimates, boasts $109.4 billion in revenue"
+   }
   },
   "GOOG": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -121,7 +129,7 @@
    "notes": "XBRL 신선도 미달: 최신 2012Q4"
   },
   "MSFT": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -168,7 +176,7 @@
    ]
   },
   "AMZN": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -219,7 +227,7 @@
    ]
   },
   "TSM": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -236,7 +244,7 @@
    "confidence": "중"
   },
   "AVGO": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -284,7 +292,7 @@
    "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "SPCX": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -301,7 +309,7 @@
    "confidence": "중"
   },
   "2222.SR": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -318,7 +326,7 @@
    "confidence": "중"
   },
   "META": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -369,7 +377,7 @@
    ]
   },
   "TSLA": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -416,7 +424,7 @@
    ]
   },
   "005930.KS": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -431,7 +439,7 @@
    "confidence": null
   },
   "MU": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -482,7 +490,7 @@
    ]
   },
   "BRK-B": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -494,28 +502,10 @@
    "g_forward_source": null,
    "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "플로트 복리와 주요 이익원(보험 외 사업)의 안정성이 주평가 기준; 현금 감소는 투자 확대와 자사주 매입의 결과로 자본배분 규율 유지.",
-   "_evidence": {
-    "franchise": "Berkshire Hathaway's Biggest Profit Source Isn't Its Stock Portfolio — 보험 및 다각화된 사업 기반의 진정한 수익력 입증",
-    "capalloc": "Cash Balances Retreat on Increased Investments and Share Buybacks in Q2 — 현금 감소는 투자 확대 및 자사주 매입으로 인한 적극적 자본배분"
-   }
+   "confidence": null
   },
   "LLY": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -566,7 +556,7 @@
    ]
   },
   "JPM": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -613,7 +603,7 @@
    ]
   },
   "WMT": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -664,7 +654,7 @@
    ]
   },
   "AMD": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -711,7 +701,7 @@
    ]
   },
   "000660.KS": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -726,7 +716,7 @@
    "confidence": null
   },
   "ASML": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -743,7 +733,7 @@
    "confidence": "중"
   },
   "LRCX": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -794,7 +784,7 @@
    ]
   },
   "AMAT": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -845,7 +835,7 @@
    ]
   },
   "DELL": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -853,18 +843,8 @@
    },
    "roe_tangible": null,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 8409000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 8430000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "AI 서버 저마진 OEM 특성상 매출 성장이 순이익 성장으로 완전 전환되지 않음"
    },
    "conversion": {
     "value": 1.0,
@@ -875,7 +855,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 33건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -894,10 +874,32 @@
      "end": "2025-08-01"
     }
    ],
-   "notes": "유형자기자본 0 이하 — ROE 미산출"
+   "notes": "AI 서버 수요 폭발로 매출·지표 우호적이나 시클리컬 업종 특성과 저마진 구조로 인한 주주수익률 제약 존재",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "AI Server Backlog Might Change The Case For Investing In Dell Stock — 백로그 기반 수요 확실성 있음",
+    "risk5": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength — 경영진 실행능력 입증; 그러나 Dell Stock Has Tripled in 2026 — 고평가 위험",
+    "capalloc": "Dell Technologies Boosts Fiscal Year Outlook by $25 Billion as Server Revenue Surges & Buyback Puts Valuation Back In Focus — 캐시 생성 및 자사주 매입 진행",
+    "owner_earnings": "AI 서버는 저마진 OEM — 매출 폭발과 주주 월세는 별개"
+   }
   },
   "PANW": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -949,7 +951,7 @@
    "notes": "유형자기자본 0 이하 — ROE 미산출"
   },
   "ARM": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -966,7 +968,7 @@
    "confidence": "중"
   },
   "SNDK": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -982,7 +984,7 @@
    "notes": "XBRL 신선도 미달: 최신 2012Q4"
   },
   "STX": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -998,7 +1000,7 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "CRWD": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -1014,11 +1016,11 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "2454.TW": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.75
+    "value": 60.76
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1031,7 +1033,7 @@
    "confidence": "중"
   },
   "MRVL": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1078,11 +1080,11 @@
    ]
   },
   "285A.T": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1007.58
+    "value": 1009.55
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1095,11 +1097,11 @@
    "confidence": "중"
   },
   "8035.T": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1248.77
+    "value": 1301.2
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1112,11 +1114,11 @@
    "confidence": "중"
   },
   "6857.T": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 517.1
+    "value": 516.01
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1129,11 +1131,11 @@
    "confidence": "중"
   },
   "2308.TW": {
-   "as_of": "2026-09-18",
+   "as_of": "2026-09-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.34
+    "value": 31.4
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1151,30 +1153,30 @@
    "ticker": "GOOG",
    "period": "2012Q4",
    "end": "2012-12-31",
-   "age_days": 5009,
+   "age_days": 5010,
    "fallback": false
   },
   {
    "ticker": "SNDK",
    "period": "2012Q4",
    "end": "2012-12-30",
-   "age_days": 5010,
+   "age_days": 5011,
    "fallback": false
   },
   {
    "ticker": "STX",
    "period": "2025Q3",
    "end": "2025-03-28",
-   "age_days": 539,
+   "age_days": 540,
    "fallback": false
   },
   {
    "ticker": "CRWD",
    "period": "2025Q3",
    "end": "2024-10-31",
-   "age_days": 687,
+   "age_days": 688,
    "fallback": false
   }
  ],
- "scout_label": "2026-09-18 22:49"
+ "scout_label": "2026-09-19 10:29"
 }
