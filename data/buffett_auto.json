@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-19 17:22",
- "generated_at": "2026-09-19T17:22:34.816923+09:00",
+ "generated_label": "2026-09-19 22:21",
+ "generated_at": "2026-09-19T22:21:14.695804+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-19",
@@ -62,8 +62,18 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "높은 수익성이나 성장성 약화로 인한 프리미엄 밸류에이션 위험"
+    "variants": {
+     "A": {
+      "value": 122575000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 124137000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -74,7 +84,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -92,23 +102,7 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "notes": "소비자 프랜차이즈 강력하나 성장 견인력 부족으로 현 밸류에이션에서 상한 제약",
-   "_evidence": {
-    "franchise": "booming iPhone, Mac demand; exceeds Q3 earnings estimates with $109.4B revenue",
-    "risk5": "Earnings beat but stock fell 5% post-report; increasing impact from memory shortage flagged by CEO",
-    "owner_earnings": "Could be 20% overvalued; weak revenue forecast despite supply strength"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-09-19",
@@ -229,7 +223,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.56
+    "value": 13.39
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -294,7 +288,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.08
+    "value": -1.1
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -653,18 +647,50 @@
   },
   "AMD": {
    "as_of": "2026-09-19",
-   "period": null,
+   "period": "2026Q1",
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": null,
-   "roe_tangible": null,
-   "owner_earnings": null,
-   "conversion": null,
-   "g_cagr3y": null,
+   "eps_adj_ttm": {
+    "value": 3.0358
+   },
+   "roe_tangible": 0.2181,
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 5009000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.0,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
+   "g_cagr3y": 0.1426,
    "g_forward": null,
    "g_forward_source": null,
-   "method": null,
-   "source": null,
-   "confidence": null
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "source": "Finnhub financials-reported · 분기 47건",
+   "confidence": "중",
+   "ttm_window": [
+    {
+     "period": "2026Q1",
+     "end": "2026-03-28"
+    },
+    {
+     "period": "2025Q4",
+     "end": "2025-12-27"
+    },
+    {
+     "period": "2025Q3",
+     "end": "2025-09-27"
+    },
+    {
+     "period": "2025Q2",
+     "end": "2025-06-28"
+    }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-09-19",
@@ -686,7 +712,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 30.24
+    "value": 29.06
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -909,7 +935,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 1.02
+    "value": 0.99
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1132,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-19 17:24"
+ "scout_label": "2026-09-19 22:22"
 }
