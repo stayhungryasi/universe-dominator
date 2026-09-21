@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-21 10:22",
- "generated_at": "2026-09-21T10:22:57.279032+09:00",
+ "generated_label": "2026-09-21 18:17",
+ "generated_at": "2026-09-21T18:17:00.103483+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-21",
@@ -556,14 +556,8 @@
    },
    "roe_tangible": 0.1618,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 58899000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     }
-    },
     "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display_reason": "기록적 순이익, 주식거래 수익 86% 증가로 실적 강세"
    },
    "conversion": {
     "value": 1.0,
@@ -574,7 +568,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -592,7 +586,33 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "사이클 구조 속 비즈니스 확실성 제약; NII 가이던스 $103B 및 규제 리스크 모니터 필요",
+   "_evidence": {
+    "franchise": "JPMorgan tops estimates on Wall Street results - Wall Street의 대체 불가능한 자본시장 중개 지위",
+    "risk5": "Dimon flags 'increasingly complex' economic risks - 거시경제 불확실성; 사이클성 금융기관",
+    "capalloc": "Bigger Dividend, US$50B Buyback and New Co-Presidents - 적극적 현금배분 및 자본규율 입증",
+    "owner_earnings": "JPMorgan tops estimates as trading revenue exceeds expectations - Record Profit as Stock-Trading Climbs 86%"
+   }
   },
   "WMT": {
    "as_of": "2026-09-21",
@@ -1158,5 +1178,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-21 10:24"
+ "scout_label": "2026-09-21 18:18"
 }
