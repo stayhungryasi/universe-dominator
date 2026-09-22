@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-22 10:49",
- "generated_at": "2026-09-22T10:49:22.242061+09:00",
+ "generated_label": "2026-09-22 17:50",
+ "generated_at": "2026-09-22T17:50:09.422367+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-22",
@@ -84,7 +84,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,7 +102,29 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3
+   },
+   "notes": "프리미엄 가격대에서 성장 제약 vs 견고한 서비스 마진(76%)과 자본배분 규율의 긴장",
+   "_evidence": {
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; 소비자 선호도 강화",
+    "risk5": "Apple stock at 39 Times Earnings Rests on Services' 76% Margin; 밸류에이션 리스크 명시, Cook warns of memory shortage impact로 공급 우려 발생",
+    "capalloc": "Apple (AAPL) Could Be 20% Overvalued As Earnings And Dividend Land; 활발한 배당과 자사주 매입 진행 중"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-22",
@@ -1000,7 +1022,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 64.63
+    "value": 60.62
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1115,7 +1137,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 33.94
+    "value": 31.31
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1158,5 +1180,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-22 10:50"
+ "scout_label": "2026-09-22 17:51"
 }
