@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-23 10:44",
- "generated_at": "2026-09-23T10:44:24.606787+09:00",
+ "generated_label": "2026-09-23 17:51",
+ "generated_at": "2026-09-23T17:51:39.779757+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-23",
@@ -223,7 +223,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.44
+    "value": 13.65
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -556,8 +556,14 @@
    },
    "roe_tangible": 0.1618,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "사이클 정점의 기록 실적, CEO의 '거의 최고 수준' 평가로 인한 미래 확실성 제약"
+    "variants": {
+     "A": {
+      "value": 58899000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -568,7 +574,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 43건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -586,33 +592,7 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "레버리지 기반 사이클 기업으로 현 멀티플은 사이클 피크 반영; 자본배분 우수하나 금리·신용 사이클 위험 내재",
-   "_evidence": {
-    "franchise": "JPMorgan notches record quarter as CEO Jamie Dimon calls the banking environment 'close to as good as it gets'",
-    "risk5": "CEO Jamie Dimon flags 'increasingly complex' economic risks; 은행 사이클 정점에서의 경고",
-    "capalloc": "$50B buyback 재개 및 배당 인상 재개 발표",
-    "owner_earnings": "Record profit as Stock-Trading Climbs 86% — 비정상적 고수익 이후 정상화 리스크"
-   }
+   ]
   },
   "WMT": {
    "as_of": "2026-09-23",
@@ -732,7 +712,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.09
+    "value": 29.71
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -955,7 +935,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 1.0
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1178,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-23 10:45"
+ "scout_label": "2026-09-23 17:53"
 }
