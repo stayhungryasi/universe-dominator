@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-23 17:51",
- "generated_at": "2026-09-23T17:51:39.779757+09:00",
+ "generated_label": "2026-09-23 23:24",
+ "generated_at": "2026-09-23T23:24:59.483401+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-23",
@@ -62,18 +62,8 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
     "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display_reason": "Q3 earnings 및 revenue guidance가 estimates를 상회하며 $109.4B 매출 달성."
    },
    "conversion": {
     "value": 1.0,
@@ -84,7 +74,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -102,7 +92,31 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "P/E 39배에서 Services 76% 마진이 주가 정당성의 핵심이나, 성장 런웨이 부재로 상한선 준수 필요.",
+   "_evidence": {
+    "franchise": "Consumer franchise strongest; iPhone, Mac demand booming.",
+    "risk5": "Apple exceeds Q3 earnings estimates; consistent execution on Services expansion.",
+    "capalloc": "Shrinking share count reflects disciplined buyback; positive free cash flow trajectory.",
+    "owner_earnings": "Q3 revenue $109.4B exceeds estimates with robust guidance."
+   }
   },
   "GOOG": {
    "as_of": "2026-09-23",
@@ -223,7 +237,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.65
+    "value": 13.42
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -935,7 +949,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 1.0
+    "value": 0.97
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1158,5 +1172,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-23 17:53"
+ "scout_label": "2026-09-23 23:26"
 }
