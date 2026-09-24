@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-24 10:39",
- "generated_at": "2026-09-24T10:39:38.628595+09:00",
+ "generated_label": "2026-09-24 17:45",
+ "generated_at": "2026-09-24T17:45:15.675150+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-24",
@@ -62,8 +62,18 @@
    },
    "roe_tangible": 1.151,
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "성장 없는 성숙기 기업으로 현금창출은 우수하나 실질 성장성 제한"
+    "variants": {
+     "A": {
+      "value": 122575000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 124137000000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -74,7 +84,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -92,30 +102,7 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3
-   },
-   "notes": "프리미엄 밸류에이션에서 인도 결제 진출·스테이블코인 등 신사업 기회는 실적 개선 증거 부재",
-   "_evidence": {
-    "franchise": "소비자 프랜차이즈 최강 기업으로 대체 불가능한 생태계",
-    "risk5": "Apple stock slides nearly 10% as Cook warns of memory shortage impact - 공급망 리스크 현재화",
-    "capalloc": "Apple (AAPL) Eyes India Payments With Apple Pay Debut; shrinking share count indicates active buyback",
-    "owner_earnings": "Apple revenue guidance tops estimates on booming iPhone, Mac demand - 성숙기 수요 개선 신호만 존재"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-09-24",
@@ -725,7 +712,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.19
+    "value": 29.13
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -948,7 +935,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.96
    },
    "roe_tangible": null,
    "owner_earnings": null,
@@ -1171,5 +1158,5 @@
    "fallback": false
   }
  ],
- "scout_label": "2026-09-24 10:41"
+ "scout_label": "2026-09-24 17:47"
 }
