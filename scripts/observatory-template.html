@@ -1424,7 +1424,7 @@ const LG_TIP = {
   hard: '10년 뒤 월세 칸을 자신 있게 적을 수 없는 건물(risk5 사업 확실성 ✕). ' +
         '낙제가 아니라 "모른다"는 정직 — 판단층에 사람이 그렇게 적어 두었다.',
   peak: '시클리컬 전용 경고등. 정점 이익으로 계산한 쿠폰은 바닥처럼 보이는 천장이다 — ' +
-        '그래서 이 자리에서는 쿠폰을 산출하지 않는다.'
+        '그래서 쿠폰은 참고로만 적고 존 판정과 통과 가격은 내지 않는다.'
 };
 
 /* 퍼센트 표기 — null 은 반드시 —. 0 으로 흘려보내지 않는다(못 잰 것과 0 은 다르다). */
@@ -1484,8 +1484,24 @@ function lgMethodKo(m){
   return '';
 }
 
+/* 정점 가드 — 쿠폰은 참고로 재되 존 판정만 보류한다(측정과 판정의 분리).
+   근거 문장은 판단층 사람 칸에만 있다. 없으면 '미기재'라고 **상태에서** 말한다 —
+   명단을 기계가 고치지 않는 대신, 근거가 비어 있다는 사실은 화면이 숨기지 않는다. */
+function lgGuardNote(b, j){
+  // 쿠폰이 안 섰으면 **무엇이 비어서**인지 이름으로 부른다(가드 탓으로 뭉개지 않는다)
+  const miss = [];
+  if (b.coupon10y == null) {
+    if (b.eps_adj_ttm == null) miss.push('12개월 조정이익 미확보');
+    if (b.g_used == null) miss.push('성장률 가정 미확보');
+  }
+  const head = b.coupon10y != null
+    ? '정점 가드 — 쿠폰 ' + lgPct(b.coupon10y) + ' 참고, 존 판정 보류'
+    : '정점 가드 — 존 판정 보류' + (miss.length ? ' · 쿠폰 미산출(' + miss.join('·') + ')' : '');
+  return head + (j.guard_reason ? '' : ' · 가드 근거 미기재(판단층 취재 필요)');
+}
+
 function lgNote(b, j){
-  if (j.guard || b.guard) return '정점 이익 함정 — 10년 쿠폰을 재지 않는 유형';
+  if (j.guard || b.guard) return lgGuardNote(b, j);
   if (b.coupon10y != null) {                      // 취재가 끝나 값이 산출된 상태
     const parts = [j.as_of, j.period].filter(Boolean);
     const how = lgMethodKo(j.method);
@@ -1554,7 +1570,11 @@ function lgDissect(x, j){
   const og = j.origin || {};
   const calc = lgCalcLine(b);
   let h = '<div class="lg-dissect">';
-  if (calc) h += '<div class="lg-calc">' + esc(calc) + '</div>';
+  const guarded = j.guard || b.guard;
+  if (guarded) h += '<div class="lg-sub">' + esc(lgGuardNote(b, j)) +
+    (j.guard_reason ? ' — 가드 근거: ' + esc(j.guard_reason) : '') + '</div>';
+  if (calc && guarded) h += '<div class="lg-calc">참고 · ' + esc(calc) + ' (판정에 쓰지 않음)</div>';
+  else if (calc) h += '<div class="lg-calc">' + esc(calc) + '</div>';
   // 계산이 안 서면 **왜 안 서는지**를 그 자리에서 말한다. 측정층이 상태에서 만든
   // 문구(bench.note)를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 되고,
   // 새 결측 상태가 생기는 날 화면만 옛말을 한다(2026-09-05 '10년물 없음' 오표기).
@@ -1587,7 +1607,9 @@ function lgRow(x, lg){
   // 쿠폰 칸 — g 가정을 반드시 병기한다. 가정을 감추면 숫자가 사실처럼 보인다.
   let coupon;
   if (j.guard || b.guard) {
-    coupon = '<span class="lg-neg">—</span>' +
+    // 참고값 — 판정에 쓰지 않는다는 표식을 값 옆에 붙인다
+    coupon = (b.coupon10y == null ? '<span class="lg-neg">—</span>'
+              : '<span class="lg-neg">' + lgPct(b.coupon10y) + ' 참고</span>') +
       '<span class="lg-badge" title="' + esc(LG_TIP.peak) + '">⚠ 정점 주의</span>';
   } else if (b.coupon10y == null) {
     coupon = '<span class="lg-neg">—</span>';

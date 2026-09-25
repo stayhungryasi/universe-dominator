@@ -409,6 +409,35 @@ def next_probe_date(run_date):
     return f"{y}-{m:02d}-01"
 
 
+def legend_rows(items):
+    """레전드 표시층 원장 — 병합된 판단층에서 **표시에 필요한 칸만** 뽑는다(순수 함수).
+
+    여기서 기계가 판정하지 않는다 — 사람이 적어 넣은 값과 기계가 잰 값을 그대로 나른다.
+    """
+    legend = {}
+    for it in items or []:
+        b = it.get("buffett") or {}
+        og = it.get("buffett_origin") or {}
+        conv = b.get("conversion") or {}
+        risk5 = b.get("risk5") or {}
+        reason = b.get("guard_reason")
+        legend[it.get("ticker")] = {
+            "origin": og,
+            "conv": conv.get("value"),
+            "conv_basis": conv.get("basis"),
+            "cert": risk5.get("business_certainty"),
+            "guard": bool(b.get("cyclical_peak_guard")),
+            # 가드 근거 문장(사람 전용) — 없으면 null. 화면이 '미기재'를 상태로 말한다
+            "guard_reason": reason.strip() if isinstance(reason, str) and reason.strip()
+            else None,
+            # 취재가 끝나 값이 산출되면 비고에 "기준 {as_of} · {period}" 로 뜬다
+            "as_of": b.get("as_of"),
+            "period": b.get("period"),
+            "method": b.get("method"),
+        }
+    return legend
+
+
 def build_observatory():
     """observatory.html — 데이터 천문대 (오늘의 태양계 + 관측일지)"""
     template_path = SCRIPTS_DIR / "observatory-template.html"
@@ -505,22 +534,7 @@ def build_observatory():
             except Exception as e:
                 print(f"[warn] 판단층 병합 실패 → 사람 판단층만 표시: {e}")
                 _items = _cfg.get("items", [])
-            for it in _items:
-                b = it.get("buffett") or {}
-                og = it.get("buffett_origin") or {}
-                conv = b.get("conversion") or {}
-                risk5 = b.get("risk5") or {}
-                legend[it.get("ticker")] = {
-                    "origin": og,
-                    "conv": conv.get("value"),
-                    "conv_basis": conv.get("basis"),
-                    "cert": risk5.get("business_certainty"),
-                    "guard": bool(b.get("cyclical_peak_guard")),
-                    # 취재가 끝나 값이 산출되면 비고에 "기준 {as_of} · {period}" 로 뜬다
-                    "as_of": b.get("as_of"),
-                    "period": b.get("period"),
-                    "method": b.get("method"),
-                }
+            legend = legend_rows(_items)
         except Exception as e:
             print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")
     # 🛰 무인 탐사선 — agent-research/ 를 **빌드 시점에** 정적 렌더한다.

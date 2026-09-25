@@ -32,6 +32,9 @@ AUTO_PATH = DATA_DIR / "buffett_auto.json"
 # 병합 대상 필드 — 여기 없는 키는 병합되지 않는다(스키마를 한 곳에서만 늘린다)
 FIELDS = [
     "as_of", "period", "cyclical_peak_guard",
+    # 가드 근거 문장 — **사람 전용.** 자동층은 이 칸을 만들지 않는다(가드는 판단이다).
+    # 비어 있으면 화면이 '가드 근거 미기재(판단층 취재 필요)'라고 말한다(legend-audit B).
+    "guard_reason",
     "eps_adj", "eps_adj_ttm", "roe_tangible",
     "g_cagr3y", "cagr3y_human", "g_forward", "g_forward_source",
     "owner_earnings", "conversion", "franchise", "risk5", "capalloc",

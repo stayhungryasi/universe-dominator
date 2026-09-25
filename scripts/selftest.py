@@ -291,14 +291,40 @@ def main():
     check("벤치: GOOG coupon10y 는 null", _gb["coupon10y"], None)
     check("벤치: GOOG ey 도 null (2.85×4 를 쓰지 않는다)", _gb["ey"], None)
 
-    # ⑤ 시클리컬 가드 — coupon10y·zone_buffett 을 아예 산출하지 않는다
+    # ⑤ 시클리컬 가드 — **측정과 판정의 분리**(2026-09-25 legend-audit B)
+    #    막으려는 것 한 문장: 정점 이익으로 계산한 쿠폰이 **판정**(존·통과가격)이 되는 것.
+    #    쿠폰 자체는 측정이다 — 재는 것까지 막으면 가드 종목은 사이클이 돌아도 영원히
+    #    숫자가 없어, 가드를 풀지 말지 판단할 재료마저 사라진다.
     _cyc = {"ticker": "MU", "type": "시클리컬",
             "buffett": {"cyclical_peak_guard": True, "eps_adj_ttm": {"value": 10.0},
                         "g_cagr3y": 0.05, "g_forward": 0.05}}
     _cb = _fb.measure_bench(_cyc, 100.0, {"UST10": 4.0})
-    check("벤치: 가드는 coupon10y 미산출", _cb["coupon10y"], None)
-    check("벤치: 가드도 존은 untested (못 잰 것은 한 칸에)", _cb["zone_buffett"], "untested")
+    check("B 가드: 쿠폰은 산출한다(측정)", _cb["coupon10y"] is not None, True)
+    check("B 가드: 쿠폰 값은 가드 없을 때와 같다",
+          _cb["coupon10y"], round(0.1 * 1.05 ** 10, 6))
+    check("벤치: 가드도 존은 untested (판정 보류)", _cb["zone_buffett"], "untested")
+    check("B 가드: 통과가격·경계는 만들지 않는다(판정의 파생)",
+          (_cb.get("pass_price"), _cb.get("borderline")), (None, False))
+    check("B 가드: 비고는 '존 판정 보류'", "존 판정 보류" in _cb["note"], True)
     check("벤치: 가드 사유가 note 에 남는다", "정점 가드" in _cb["note"], True)
+    # 가드 근거 칸 — 사람 판단층 전용. 병합기가 실어 날라야 화면이 '미기재'를 가릴 수 있다
+    import buffett_layers as _blg
+    check("B 가드: 병합기가 가드 근거 칸을 싣는다",
+          _blg.merge_block({"guard_reason": "사유"}, {})[0].get("guard_reason"), "사유")
+    # 표시층 원장 — 가드인데 근거가 없으면 그 상태가 화면까지 실려야 한다
+    import build_site as _bsg
+    _lrows = getattr(_bsg, "legend_rows", None)
+    if _lrows is None:
+        check("B 가드: 표시층 원장 함수(legend_rows) 존재", None, "legend_rows")
+    else:
+        _lr = _lrows([{"ticker": "MU", "buffett": {"cyclical_peak_guard": True},
+                       "buffett_origin": {}},
+                      {"ticker": "LRCX", "buffett": {"cyclical_peak_guard": True,
+                                                     "guard_reason": "웨이퍼팹 캐펙스 사이클"},
+                       "buffett_origin": {"guard_reason": "human"}}])
+        check("B 가드: 근거 없는 가드 종목은 '미기재' 상태로 실린다",
+              (_lr["MU"].get("guard_reason"), _lr["LRCX"].get("guard_reason")),
+              (None, "웨이퍼팹 캐펙스 사이클"))
     # 가드가 없었다면 pass 였을 값이라는 것까지 확인 — 가드가 진짜로 막고 있는가
     _cyc_off = {"ticker": "MU", "type": "시클리컬",
                 "buffett": {"cyclical_peak_guard": False, "eps_adj_ttm": {"value": 10.0},

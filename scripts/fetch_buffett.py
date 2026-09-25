@@ -30,8 +30,9 @@
                       coupon10y 없음      → untested
   **null 은 null 로 둔다 — 0 으로 치환하지 않는다.** 못 잰 것과 0 은 다르다.
   분기 EPS 를 4배 해 TTM 을 만들지 않는다 — eps_adj_ttm 이 채워질 때까지 untested.
-  cyclical_peak_guard 인 종목은 coupon10y·zone_buffett 을 아예 산출하지 않는다
+  cyclical_peak_guard 인 종목은 zone_buffett·통과가격을 산출하지 않는다(판정 보류)
   (정점 이익에서 수익률이 가장 좋아 보이는 함정 — 괴리 가드와 같은 이유).
+  쿠폰은 참고값으로 잰다 — 측정과 판정의 분리(2026-09-25 legend-audit B).
 
 출력: data/buffett.json
   { generated_label, asof, zones, rates, items:[...],
@@ -515,17 +516,22 @@ def measure_bench(c, price, rates, prev_bench=None):
         "coupon10y": None, "zone_buffett": None, "cause": None, "note": "",
     }
 
-    if guard:
-        # 정점 이익에서 수익률이 가장 좋아 보이는 함정 — coupon10y 를 산출하지 않는다.
-        # coupon10y 가 없으면 존은 규칙상 untested 다(= '아직 시험하지 않았다').
-        # 별도의 None 상태를 만들지 않는 이유: 못 잰 것은 전부 untested 한 칸에
-        # 모아야 "쟀는데 결론이 없다"와 헷갈리지 않는다. 사유는 note 로 남긴다.
-        out["zone_buffett"] = ZONE_UNTESTED
-        out["note"] = "시클리컬 정점 가드 — 10년 쿠폰 미산출"
-        return out
-
     coupon = coupon_10y(ey, g)
     out["coupon10y"] = None if coupon is None else round(coupon, 6)
+
+    if guard:
+        # 정점 이익에서 수익률이 가장 좋아 보이는 함정 — **판정만** 보류한다.
+        # 2026-09-25(legend-audit B) 측정과 판정을 분리했다: 쿠폰은 잰다(참고값).
+        # 막는 것은 그 쿠폰이 존·통과가격·경계라는 **판정**이 되는 것이다. 예전처럼
+        # 재는 것까지 막으면 사이클이 돌아도 숫자가 영원히 없어, 가드를 풀지 말지
+        # 판단할 재료마저 사라진다. 존은 여전히 untested(판정 없음) 한 칸에 둔다.
+        out["zone_buffett"] = ZONE_UNTESTED
+        out["borderline"] = False
+        out["note"] = ("시클리컬 정점 가드 — 쿠폰 참고, 존 판정 보류" if coupon is not None
+                       else "시클리컬 정점 가드 — 존 판정 보류 · "
+                       + untested_note(_num(price), eps_ttm, g, rate, market, coupon))
+        return out
+
     out["zone_buffett"] = zone_of_buffett(coupon, rate)
     if out["zone_buffett"] == ZONE_UNTESTED:
         out["note"] = untested_note(_num(price), eps_ttm, g, rate, market, coupon)
