@@ -36,6 +36,9 @@ FIELDS = [
     # 비어 있으면 화면이 '가드 근거 미기재(판단층 취재 필요)'라고 말한다(legend-audit B).
     "guard_reason",
     "eps_adj", "eps_adj_ttm", "roe_tangible",
+    # 유형 ROE 사람 취재 경로 — cagr3y_human 과 같은 규약(unit·basis·source·asof·
+    # confidence, **자동값이 있으면 자동 우선**). roe_basis 는 자동층이 남기는 결측 원인.
+    "roe_tangible_human", "roe_basis",
     "g_cagr3y", "cagr3y_human", "g_forward", "g_forward_source",
     "owner_earnings", "conversion", "franchise", "risk5", "capalloc",
     "retention_test", "method", "source", "confidence", "notes",

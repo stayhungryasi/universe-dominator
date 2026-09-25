@@ -482,6 +482,32 @@ def untested_note(price, eps_ttm, g, rate, market, coupon):
     return ""
 
 
+def roe_note(basis):
+    """유형 ROE 가 왜 없는가 — **상태에서 만든다**(legend-audit C).
+
+    자동층이 남긴 상태(roe_basis.status)와 출처 종류(kind)로 문장을 조립한다.
+    모르는 상태는 일반 문구로 떨어진다 — 내부 문자열이 화면으로 샐 길이 없다.
+    '(부채 조달 인수)' 같은 **원인 해석은 적지 않는다**: 같은 상태(영업권·무형 > 자기자본)
+    라도 AVGO 는 차입 인수, PANW 는 주식 인수다. 기계가 아는 것은 숫자뿐이다.
+    """
+    if not isinstance(basis, dict):
+        return "ROE 미산출"
+    st, kind = basis.get("status"), basis.get("kind")
+    if st == "income_missing":
+        return "12개월 이익 미확보 — ROE 산출 불가"
+    if st == "api_fail":
+        return ("해외 공시 조회 실패 — ROE 산출 불가" if kind == "yfinance"
+                else "공시 수집 실패 — ROE 산출 불가")
+    if st == "equity_missing":
+        return ("해외 공시 대차대조표 미확보 — ROE 산출 불가" if kind == "yfinance"
+                else "자기자본 항목 미매핑 — ROE 산출 불가")
+    if st == "equity_negative":
+        return "자기자본 음수 — ROE 산출 불가"
+    if st == "tangible_negative":
+        return "유형자본 음수 — ROE 산출 불가(영업권·무형자산 > 자기자본)"
+    return "ROE 미산출"
+
+
 def measure_bench(c, price, rates, prev_bench=None):
     """레전드벤치마크 한 종목 — **순수 함수**(네트워크·시각 의존 없음).
 
@@ -493,7 +519,13 @@ def measure_bench(c, price, rates, prev_bench=None):
     guard = bool(b.get("cyclical_peak_guard"))
 
     eps_ttm = _num(b.get("eps_adj_ttm"))
+    # 유형 ROE — 잰 값(자동·사람 오버라이드)이 먼저, 없으면 사람 취재 경로(단위 명시).
+    # 과거 다리(past_leg)와 같은 규약: 실측이 있으면 취재가 덮지 못한다.
     roe = _num(b.get("roe_tangible"))
+    roe_human = roe is None and _rate(b.get("roe_tangible_human")) is not None
+    if roe is None:
+        roe = _rate(b.get("roe_tangible_human"))
+    rbasis = b.get("roe_basis") if isinstance(b.get("roe_basis"), dict) else {}
     past = past_leg(b.get("g_cagr3y"), b.get("cagr3y_human"))
     g_raw = pick_g(past, b.get("g_forward"))
     g, g_capped_from = cap_g(g_raw)
@@ -514,6 +546,12 @@ def measure_bench(c, price, rates, prev_bench=None):
         "roe_minus_2x10y": (None if (roe is None or rate is None)
                             else round(roe - 2.0 * rate / 100.0, 6)),
         "coupon10y": None, "zone_buffett": None, "cause": None, "note": "",
+        # ROE 결측 사유(상태에서 생성) · 사람 취재값 사용 여부 · 해외 GAAP 미조정 여부
+        "roe_note": "" if roe is not None else roe_note(b.get("roe_basis")),
+        "roe_from_human": roe_human,
+        "roe_unadjusted": bool(roe is not None and not roe_human
+                               and (c.get("buffett_origin") or {}).get("roe_tangible") != "human"
+                               and rbasis.get("basis") == "GAAP 미조정"),
     }
 
     coupon = coupon_10y(ey, g)

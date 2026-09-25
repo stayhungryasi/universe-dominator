@@ -1548,6 +1548,21 @@ function lgEdge(b){
     '<div class="lg-sub">' + esc(txt) + '</div>';
 }
 
+/* ROE 칸 — 값이 있으면 값과 출처 표식, 없으면 **왜 없는지**(측정층이 상태에서 만든
+   roe_note 를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 된다).
+   ROE 는 있는데 그 시장 국채가 미배선이면 비교만 못 한 것이므로 ROE 자체는 보여 준다. */
+const LG_UNADJ_TIP = '해외 공시를 조정 없이 쓴 값 — 투자손익을 빼지 않은 회계 이익 기준입니다.';
+function lgRoeCell(b, j){
+  const roe = b.roe_minus_2x10y;
+  const tag = (b.roe_unadjusted
+      ? '<span class="lg-auto" title="' + esc(LG_UNADJ_TIP) + '">GAAP 미조정</span>' : '') +
+    (b.roe_from_human ? '' : lgAuto(j, 'roe_tangible'));
+  if (roe != null) return lgPp(roe) + tag;
+  if (b.roe_tangible != null)
+    return '—<div class="lg-sub">국채 금리 미연결 · 유형 ROE ' + lgPct(b.roe_tangible) + '</div>';
+  return '—' + (b.roe_note ? '<div class="lg-sub">' + esc(b.roe_note) + '</div>' : '');
+}
+
 /* 계산 전개 — 결론만 보여주면 눈금을 못 되짚는다. 한 줄로 전 과정을 편다. */
 function lgCalcLine(b){
   if (b.coupon10y == null || b.ey == null) return '';
@@ -1559,6 +1574,7 @@ function lgCalcLine(b){
 /* 필드별 출처 — 취재 우선순위가 한눈에 보이게. 사람 값은 '취재', 자동은 '자동',
    빈 칸은 '—'. 무엇을 취재하면 이 종목이 판정에 이르는지가 이 표에서 읽힌다. */
 const LG_FIELD_KO = { eps_adj_ttm: '조정 EPS', roe_tangible: '유형 ROE',
+                      roe_tangible_human: '유형 ROE(취재)',
                       g_forward: '전망 성장률', g_cagr3y: '3년 성장률',
                       cagr3y_human: '3년 성장률(취재)',
                       conversion: '전환율', risk5: '리스크 5', franchise: '프랜차이즈',
@@ -1638,7 +1654,7 @@ function lgRow(x, lg){
   return '<tr class="lg-clickable" onclick="lgToggleRow(\'' + esc(x.ticker) + '\')">' +
     '<td><div class="px-tk">' + esc(x.ticker) + badges + '</div>' +
       '<div class="px-name">' + esc(x.name) + '</div></td>' +
-    '<td class="px-num ' + roeCls + '">' + lgPp(roe) + lgAuto(j, 'roe_tangible') + '</td>' +
+    '<td class="px-num ' + roeCls + '">' + lgRoeCell(b, j) + '</td>' +
     '<td class="px-num">' + coupon + '</td>' +
     '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) +
       (j.conv == null ? '' : lgAuto(j, 'conversion')) + '</td>' +

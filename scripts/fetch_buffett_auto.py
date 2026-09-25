@@ -492,6 +492,108 @@ def tangible_equity(flat):
     return te if te > 0 else None
 
 
+def roe_state(equity, goodwill_intangibles, net_income):
+    """유형 ROE → (값|None, 상태). **원인별로 상태를 가른다**(legend-audit C).
+
+    예전엔 자본 태그가 없든, 자본이 음수든, 영업권이 자본보다 크든 전부
+    "유형자기자본 0 이하" 한 줄이었다 — 원인이 다르면 할 일도 다르다
+    (태그 미매핑은 기계가 고칠 일, 유형자본 음수는 산출 불가가 정답).
+      income_missing    12개월 이익이 없다
+      equity_missing    자본총계 항목을 못 찾았다
+      equity_negative   자본총계 자체가 음수(자사주·차입 누적 — DELL)
+      tangible_negative 자본은 양수인데 영업권+무형이 더 크다(인수 — AVGO·PANW)
+      ok
+    무형 항목이 아예 없으면 0 으로 본다(미국 경로 tangible_equity 와 같은 규약).
+    """
+    ni, eq = to_num(net_income), to_num(equity)
+    gi = to_num(goodwill_intangibles) or 0.0
+    if ni is None:
+        return None, "income_missing"
+    if eq is None:
+        return None, "equity_missing"
+    if eq <= 0:
+        return None, "equity_negative"
+    te = eq - gi
+    if te <= 0:
+        return None, "tangible_negative"
+    return round(ni / te, 4), "ok"
+
+
+def xbrl_roe(flat, window):
+    """미국 공시 경로 유형 ROE → (값|None, 근거 묶음).
+
+    분자는 **TTM 창의 조정순이익 합계** 그대로다. 예전엔 'EPS × 최신 희석주식수 태그'로
+    되돌려 만들었는데, 주식수 태그가 없는 회사(AVGO·GOOG — EPS 역산 경로)는 0 이 되어
+    비고도 없이 빠졌다. 같은 창에서 이미 잰 합계를 쓰면 되돌릴 일이 없다.
+    """
+    eq, _ = pick(flat, EQUITY_TAGS)
+    gw, _ = pick(flat, GOODWILL_TAGS)
+    intan, _ = pick(flat, INTANGIBLE_TAGS)
+    gi = None if gw is None and intan is None else (gw or 0.0) + (intan or 0.0)
+    ni = sum(x[2]["adj"] for x in window) if window else None
+    roe, status = roe_state(eq, gi, ni)
+    return roe, {"kind": "xbrl", "basis": "SEC XBRL 조정", "status": status,
+                 "equity": eq, "goodwill_intangibles": gi, "net_income_ttm": ni}
+
+
+# yfinance 대차대조표 행 이름 — 버전·시장마다 영업권 행이 따로 오기도, 합계만 오기도 한다
+YF_EQUITY_ROWS = ["Stockholders Equity", "Common Stock Equity"]
+YF_GI_TOTAL = "Goodwill And Other Intangible Assets"
+YF_GW, YF_INTAN = "Goodwill", "Other Intangible Assets"
+
+
+def foreign_roe_from(bs_col, net_income):
+    """해외 상장 유형 ROE — yfinance 대차대조표 한 열(dict) + TTM 순이익 → (값, 근거).
+
+    **조정하지 않은 GAAP 값**이다(투자손익 차감 없음) — 근거에 "GAAP 미조정" 을 못박는다.
+    통화는 같은 출처의 재무제표끼리 나누므로 비율에서 빠진다(TSM 은 둘 다 TWD).
+    """
+    col = bs_col or {}
+    eq = next((to_num(col.get(k)) for k in YF_EQUITY_ROWS if to_num(col.get(k)) is not None),
+              None)
+    gi = to_num(col.get(YF_GI_TOTAL))
+    if gi is None:
+        gw, ia = to_num(col.get(YF_GW)), to_num(col.get(YF_INTAN))
+        gi = None if gw is None and ia is None else (gw or 0.0) + (ia or 0.0)
+    roe, status = roe_state(eq, gi, net_income)
+    return roe, {"kind": "yfinance", "basis": "GAAP 미조정", "status": status,
+                 "equity": eq, "goodwill_intangibles": gi,
+                 "net_income_ttm": to_num(net_income)}
+
+
+def fetch_foreign_roe(ticker):
+    """yfinance 로 해외 상장 유형 ROE → (값|None, 근거). 실패하면 api_fail 상태로 남긴다."""
+    try:
+        import yfinance
+        t = yfinance.Ticker(ticker)
+        bs = t.quarterly_balance_sheet
+        if bs is None or bs.empty:
+            bs = t.balance_sheet
+        if bs is None or bs.empty:
+            return None, {"kind": "yfinance", "status": "equity_missing"}
+        c0 = bs.columns[0]
+        col = {idx: bs.loc[idx, c0] for idx in bs.index}
+        ni = None
+        for stmt, need in ((t.quarterly_income_stmt, 4), (t.income_stmt, 1)):
+            if stmt is None or stmt.empty:
+                continue
+            row = next((r for r in ("Net Income Common Stockholders", "Net Income")
+                        if r in stmt.index), None)
+            if row is None:
+                continue
+            vals = [to_num(v) for v in list(stmt.loc[row].iloc[:need])]
+            if len(vals) == need and all(v is not None for v in vals):
+                ni = sum(vals)
+                break
+        roe, basis = foreign_roe_from(col, ni)
+        basis["asof"] = str(c0)[:10]
+        basis["source"] = "yfinance 대차대조표·손익계산서"
+        return roe, basis
+    except Exception as e:
+        print(f"[자동취재] {ticker} yfinance ROE 실패 ({type(e).__name__})", file=sys.stderr)
+        return None, {"kind": "yfinance", "status": "api_fail"}
+
+
 def cagr(first, last, years):
     """CAGR — 시작·끝이 양수일 때만. 적자에서의 성장률은 숫자가 아니다."""
     if not first or not last or first <= 0 or last <= 0 or years <= 0:
@@ -695,7 +797,7 @@ def build_block(c, key, now):
         "as_of": now.strftime("%Y-%m-%d"),
         "period": None,
         "cyclical_peak_guard": ("시클리컬" in (c.get("type") or "")),
-        "eps_adj_ttm": None, "roe_tangible": None,
+        "eps_adj_ttm": None, "roe_tangible": None, "roe_basis": None,
         "owner_earnings": None, "conversion": None,
         "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
@@ -707,6 +809,12 @@ def build_block(c, key, now):
         block["method"] = "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)"
         block["source"] = "yfinance TTM 희석 EPS"
         block["confidence"] = "중" if eps is not None else None
+        # 유형 ROE — 예전엔 해외 경로에 계산 자체가 없어 12종이 영원히 빈칸이었다.
+        # yfinance 에 자본·영업권·무형이 있으면 **GAAP 미조정** 으로 잰다(legend-audit C).
+        roe, rb = fetch_foreign_roe(ticker)
+        block["roe_tangible"], block["roe_basis"] = roe, rb
+        if roe is None:
+            print(f"[자동취재] {ticker}: 유형 ROE 미산출 — {rb.get('status')}", file=sys.stderr)
         gf, gf_src = fetch_forward_growth(ticker, "")     # 해외는 yfinance 만
         gf, gf_src, gf_note = vet_forward_growth(gf, gf_src)
         block["g_forward"] = round(gf, 4) if gf is not None else None
@@ -722,6 +830,7 @@ def build_block(c, key, now):
     reports, outcome, code = fetch_reports(ticker, key)
     _record(ticker, outcome, code, len(reports))
     if not reports:
+        block["roe_basis"] = {"kind": "xbrl", "status": "api_fail"}
         return block, outcome
     annual, _ao, _ac = fetch_reports(ticker, key, "annual")   # Q4 복원용
     reports = _attach_annual(reports, annual)
@@ -751,6 +860,8 @@ def build_block(c, key, now):
     if eps is None:
         block["method"] = f"산출 불가 — {method}"
         block["confidence"] = None
+        # 이익이 폐기·미산출이면 ROE 도 서지 않는다 — 그 사실을 원인 칸에 남긴다
+        block["roe_basis"] = {"kind": "xbrl", "status": "income_missing"}
     else:
         block["eps_adj_ttm"] = {"value": round(eps, 4)}
         block["method"] = method
@@ -769,14 +880,14 @@ def build_block(c, key, now):
                 block["owner_earnings"] = oe
             if conv:
                 block["conversion"] = conv
-        flat = flatten(latest.get("report"))
-        te = tangible_equity(flat)
-        if te:
-            ni_ttm = eps * (pick(flat, DILUTED_TAGS)[0] or 0)
-            if ni_ttm:  # pick 은 (값, 태그명) 을 준다 — [0] 이 값
-                block["roe_tangible"] = round(ni_ttm / te, 4)
-        else:
-            block["notes"] = "유형자기자본 0 이하 — ROE 미산출"
+        roe, rb = xbrl_roe(flatten(latest.get("report")), win)
+        rb["asof"] = end_of(latest)
+        block["roe_tangible"], block["roe_basis"] = roe, rb
+        if roe is None:
+            # 원인별 문구는 측정층(fetch_buffett.roe_note)이 상태에서 만든다 — 여기는 로그만
+            print(f"[자동취재] {ticker}: 유형 ROE 미산출 — {rb['status']} "
+                  f"(자본 {rb['equity']} · 영업권+무형 {rb['goodwill_intangibles']})",
+                  file=sys.stderr)
 
     g3, g3_why = cagr3y_from(reports)
     block["g_cagr3y"] = round(g3, 4) if g3 is not None else None

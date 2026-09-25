@@ -687,6 +687,89 @@ def main():
               100.0, {"UST10": 4.75})["g_used"], None)
     check("과거 다리: 병합 스키마에 등재됐다", "cagr3y_human" in _bl.FIELDS, True)
 
+    # ── 유형 ROE 결측 (2026-09-25 legend-audit C) ───────────────────────────
+    # 막으려는 것 한 문장: **서로 다른 결측 원인이 한 문구로 뭉개지거나, 잴 수 있는 값을
+    # 경로가 없어서 못 재는 것.** 실측(9/25): ROE 결측 20종 = 해외 12(계산 경로 자체 없음) ·
+    # 유형자본 음수 2(AVGO 자본 996억 vs 영업권+무형 1,241억 · PANW 275억 vs 290억) ·
+    # 자기자본 음수 1(DELL −14억) · 이익 폐기 5(E 항목). 예전 비고는 전부
+    # "유형자기자본 0 이하" 한 줄이었다(DELL 은 자본 자체가 음수라 원인이 다르다).
+    _rs = getattr(_fa, "roe_state", None)
+    _rn = getattr(_fb, "roe_note", None)
+    if _rs is None or _rn is None:
+        check("C ROE: roe_state·roe_note 존재(원인별 분리)", None, "roe_state/roe_note")
+    else:
+        check("C ROE: AVGO 모양 — 유형자본 음수",
+              _rs(99.69e9, 124.126e9, 38.265e9), (None, "tangible_negative"))
+        check("C ROE: DELL 모양 — 자기자본 음수",
+              _rs(-1.427e9, 23.795e9, 11.378e9), (None, "equity_negative"))
+        check("C ROE: 이익 없으면 이익 결측", _rs(10e9, 1e9, None), (None, "income_missing"))
+        check("C ROE: 자본 항목 없으면 자본 결측", _rs(None, 1e9, 5e9), (None, "equity_missing"))
+        check("C ROE: TSM 모양 — GAAP 미조정 34.6%",
+              _rs(6432.518e9, 24.075e9, 2216.808e9), (0.3459, "ok"))
+        _avgo_b = {"kind": "xbrl", "status": "tangible_negative", "equity": 99.69e9,
+                   "goodwill_intangibles": 124.126e9, "net_income_ttm": 38.265e9}
+        check("C 비고: 유형자본 음수는 그 이름으로(영업권·무형 > 자기자본)",
+              _rn(_avgo_b), "유형자본 음수 — ROE 산출 불가(영업권·무형자산 > 자기자본)")
+        check("C 비고: 자기자본 음수는 다른 문구",
+              _rn(dict(_avgo_b, status="equity_negative", equity=-1.4e9)),
+              "자기자본 음수 — ROE 산출 불가")
+        check("C 비고: 해외 대차대조표 없음은 그 이름으로",
+              _rn({"kind": "yfinance", "status": "equity_missing"}),
+              "해외 공시 대차대조표 미확보 — ROE 산출 불가")
+        check("C 비고: 미국 공시에서 자본 태그가 안 잡히면 미매핑",
+              _rn({"kind": "xbrl", "status": "equity_missing"}),
+              "자기자본 항목 미매핑 — ROE 산출 불가")
+        check("C 비고: 이익 결측", _rn({"kind": "xbrl", "status": "income_missing"}),
+              "12개월 이익 미확보 — ROE 산출 불가")
+        check("C 비고: 수집 실패", _rn({"kind": "xbrl", "status": "api_fail"}),
+              "공시 수집 실패 — ROE 산출 불가")
+        check("C 비고: 모르는 상태는 기계 문자열을 내보내지 않는다",
+              _rn({"kind": "xbrl", "status": "weird_new_state"}), "ROE 미산출")
+    _fr = getattr(_fa, "foreign_roe_from", None)
+    if _fr is None:
+        check("C ROE: 해외 대차대조표 파서(foreign_roe_from) 존재", None, "foreign_roe_from")
+    else:
+        # yfinance 행 이름 그대로 — 한국·대만은 영업권 행 없이 '영업권+무형' 합계만 온다
+        _roe, _bas = _fr({"Stockholders Equity": 424.19e9,
+                          "Goodwill And Other Intangible Assets": 97.509e9}, 96.635e9)
+        check("C ROE: 해외 — 합계 행만 있어도 산출", _roe, round(96.635 / (424.19 - 97.509), 4))
+        check("C ROE: 해외 — 'GAAP 미조정' 기준을 싣는다", _bas.get("basis"), "GAAP 미조정")
+        check("C ROE: 해외 — 자본 행이 없으면 결측(0 치환 금지)",
+              _fr({"Goodwill": 1e9}, 5e9)[0], None)
+    # 미국 경로 — 희석주식수 태그가 없어도(AVGO·GOOG 모양) ROE 가 조용히 0 이 되지 않는다.
+    # 예전엔 ROE 분자를 'EPS × 최신 희석주식수 태그'로 되돌려 만들었는데 태그가 없으면
+    # 0 이 되어 `if ni_ttm:` 에서 **비고도 없이** 빠졌다. 분자는 TTM 창 합계 그대로 쓴다.
+    _xr = getattr(_fa, "xbrl_roe", None)
+    if _xr is None:
+        check("C ROE: 미국 경로(xbrl_roe) 존재", None, "xbrl_roe")
+    else:
+        _flat = _fa.flatten({"bs": [
+            {"concept": "us-gaap_StockholdersEquity", "value": 100.0},
+            {"concept": "us-gaap_Goodwill", "value": 30.0}]})
+        _win4 = [(2026, q, {"adj": 5.0}, "w", None) for q in (4, 3, 2, 1)]
+        check("C ROE: 희석주식수 태그 없이도 창 합계로 산출",
+              _xr(_flat, _win4)[0], round(20.0 / 70.0, 4))
+    # 사람 취재 경로 — cagr3y_human 과 같은 규약(자동값이 있으면 자동 우선)
+    _rh = {"value": 25.0, "unit": "%", "basis": "연차보고서 유형자본 기준",
+           "source": "사람 취재", "asof": "2026-09-25", "confidence": "중"}
+    check("C 취재: 자동이 없으면 사람 값(단위 % 해석)",
+          _fb.measure_bench({"ticker": "X", "type": "씨즈형",
+                             "buffett": {"roe_tangible_human": _rh}},
+                            100.0, {"UST10": 4.0})["roe_tangible"], 0.25)
+    check("C 취재: 자동이 있으면 자동이 이긴다",
+          _fb.measure_bench({"ticker": "X", "type": "씨즈형",
+                             "buffett": {"roe_tangible": 0.31, "roe_tangible_human": _rh}},
+                            100.0, {"UST10": 4.0})["roe_tangible"], 0.31)
+    check("C 취재: 병합 스키마에 등재(roe_tangible_human·roe_basis)",
+          ("roe_tangible_human" in _bl.FIELDS, "roe_basis" in _bl.FIELDS), (True, True))
+    _gb2 = _fb.measure_bench({"ticker": "TSMX", "type": "x",
+                              "buffett": {"roe_tangible": 0.3459,
+                                          "roe_basis": {"kind": "yfinance", "status": "ok",
+                                                        "basis": "GAAP 미조정"}}},
+                             100.0, {"UST10": 4.0})
+    check("C 표시: 해외 자동 ROE 는 'GAAP 미조정' 표식 상태를 싣는다",
+          _gb2.get("roe_unadjusted"), True)
+
     # ── 레전드 측정층은 34종 전원 시세를 부른다 (2026-09-05) ─────────────────
     # 막으려던 것: **시차 관측의 원칙 바구니가 레전드 판정까지 막는 것.**
     # '추정불가 = 시세 미호출' 은 괴리(정당 MAX)를 안 매기겠다는 시차 쪽 규칙인데,
