@@ -12,16 +12,16 @@
   "ARM": "고평가"
  },
  "gaps": {
-  "AAPL": -0.2415,
-  "GOOG": 0.3593,
-  "MSFT": 0.2596,
-  "AMZN": 0.1188,
-  "TSM": -0.304,
-  "META": 0.1667,
-  "LLY": -0.2322,
-  "WMT": -0.3076,
-  "PANW": -0.7399,
-  "ARM": -0.7486
+  "AAPL": -0.2449,
+  "GOOG": 0.3579,
+  "MSFT": 0.2185,
+  "AMZN": 0.1259,
+  "TSM": -0.3048,
+  "META": 0.2115,
+  "LLY": -0.2209,
+  "WMT": -0.3042,
+  "PANW": -0.7315,
+  "ARM": -0.7568
  },
  "posted": {},
  "fp": {
@@ -39,7 +39,7 @@
  "bzones": {
   "NVDA": "pass",
   "AAPL": "bond_inferior",
-  "GOOG": "untested",
+  "GOOG": "prove_growth",
   "MSFT": "prove_growth",
   "AMZN": "bond_inferior",
   "TSM": "prove_growth",
@@ -71,5 +71,165 @@
   "8035.T": "untested",
   "6857.T": "untested",
   "2308.TW": "untested"
- }
+ },
+ "bstate": {
+  "zones": {
+   "NVDA": "pass",
+   "AAPL": "bond_inferior",
+   "GOOG": "prove_growth",
+   "MSFT": "prove_growth",
+   "AMZN": "bond_inferior",
+   "TSM": "prove_growth",
+   "AVGO": "prove_growth",
+   "SPCX": "untested",
+   "2222.SR": "untested",
+   "META": "prove_growth",
+   "TSLA": "untested",
+   "005930.KS": "untested",
+   "MU": "untested",
+   "BRK-B": "untested",
+   "LLY": "prove_growth",
+   "JPM": "untested",
+   "WMT": "bond_inferior",
+   "AMD": "bond_inferior",
+   "000660.KS": "untested",
+   "ASML": "untested",
+   "LRCX": "untested",
+   "AMAT": "untested",
+   "DELL": "untested",
+   "PANW": "untested",
+   "ARM": "untested",
+   "SNDK": "untested",
+   "STX": "untested",
+   "CRWD": "untested",
+   "2454.TW": "untested",
+   "MRVL": "untested",
+   "285A.T": "untested",
+   "8035.T": "untested",
+   "6857.T": "untested",
+   "2308.TW": "untested"
+  },
+  "anchor": {
+   "NVDA": {
+    "price": 223.69,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 5.7333,
+    "g_used": 0.2,
+    "guard": false
+   },
+   "AAPL": {
+    "price": 337.457,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 8.3,
+    "g_used": 0.0913,
+    "guard": false
+   },
+   "GOOG": {
+    "price": 339.36,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 9.7623,
+    "g_used": 0.105,
+    "guard": false
+   },
+   "MSFT": {
+    "price": 514.75,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 16.7917,
+    "g_used": 0.13,
+    "guard": false
+   },
+   "AMZN": {
+    "price": 247.8,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 8.35,
+    "g_used": 0.055,
+    "guard": false
+   },
+   "TSM": {
+    "price": 451.675,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 13.49,
+    "g_used": 0.175,
+    "guard": false
+   },
+   "AVGO": {
+    "price": 351.567,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 6.001,
+    "g_used": 0.2,
+    "guard": false
+   },
+   "META": {
+    "price": 748.8,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 27.53,
+    "g_used": 0.133,
+    "guard": false
+   },
+   "LLY": {
+    "price": 1164.771,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 28.0823,
+    "g_used": 0.162,
+    "guard": false
+   },
+   "WMT": {
+    "price": 107.064,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 2.5632,
+    "g_used": 0.08,
+    "guard": false
+   },
+   "AMD": {
+    "price": 632.72,
+    "rate10y": 5.11,
+    "eps_adj_ttm": 3.0358,
+    "g_used": 0.1426,
+    "guard": false
+   }
+  },
+  "cand": {},
+  "date": "2026-09-25",
+  "base": {
+   "zones": {
+    "NVDA": "pass",
+    "AAPL": "bond_inferior",
+    "GOOG": "untested",
+    "MSFT": "prove_growth",
+    "AMZN": "bond_inferior",
+    "TSM": "prove_growth",
+    "AVGO": "prove_growth",
+    "SPCX": "untested",
+    "2222.SR": "untested",
+    "META": "prove_growth",
+    "TSLA": "untested",
+    "005930.KS": "untested",
+    "MU": "untested",
+    "BRK-B": "untested",
+    "LLY": "prove_growth",
+    "JPM": "untested",
+    "WMT": "bond_inferior",
+    "AMD": "bond_inferior",
+    "000660.KS": "untested",
+    "ASML": "untested",
+    "LRCX": "untested",
+    "AMAT": "untested",
+    "DELL": "untested",
+    "PANW": "untested",
+    "ARM": "untested",
+    "SNDK": "untested",
+    "STX": "untested",
+    "CRWD": "untested",
+    "2454.TW": "untested",
+    "MRVL": "untested",
+    "285A.T": "untested",
+    "8035.T": "untested",
+    "6857.T": "untested",
+    "2308.TW": "untested"
+   },
+   "anchor": {},
+   "cand": {}
+  }
+ },
+ "dm_sent": {}
 }

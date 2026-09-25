@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-25 18:06",
- "generated_at": "2026-09-25T18:06:05.800961+09:00",
+ "generated_label": "2026-09-25 23:47",
+ "generated_at": "2026-09-25T23:47:06.419438+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-25",
@@ -9,7 +9,17 @@
    "eps_adj_ttm": {
     "value": 5.7333
    },
+   "eps_status": null,
    "roe_tangible": 0.8156,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 195474000000.0,
+    "goodwill_intangibles": 24014000000.0,
+    "net_income_ttm": 139840090000.0,
+    "asof": "2026-04-26"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -60,7 +70,17 @@
    "eps_adj_ttm": {
     "value": 8.3
    },
+   "eps_status": null,
    "roe_tangible": 1.151,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 106491000000.0,
+    "goodwill_intangibles": null,
+    "net_income_ttm": 122575000000.0,
+    "asof": "2026-03-28"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -106,19 +126,84 @@
   },
   "GOOG": {
    "as_of": "2026-09-25",
-   "period": null,
+   "period": "2026Q1",
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": null,
-   "roe_tangible": null,
-   "owner_earnings": null,
-   "conversion": null,
-   "g_cagr3y": null,
+   "eps_adj_ttm": {
+    "value": 9.7623
+   },
+   "eps_status": null,
+   "roe_tangible": 0.2905,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 478746000000.0,
+    "goodwill_intangibles": 67218000000.0,
+    "net_income_ttm": 119551440000.0,
+    "asof": "2026-03-31"
+   },
+   "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 160208000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+   },
+   "conversion": {
+    "value": 1.3401,
+    "basis": "A(감가상각 기준) ÷ 조정순이익"
+   },
+   "g_cagr3y": 0.2464,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "산출 불가 — XBRL 신선도 미달: 최신 2012Q4",
-   "source": "Finnhub financials-reported · 분기 4건",
-   "confidence": null,
-   "notes": "XBRL 신선도 미달: 최신 2012Q4"
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
+   "source": "Finnhub financials-reported · 분기 32건 · GOOGL 조회",
+   "confidence": "하",
+   "ttm_window": [
+    {
+     "period": "2026Q1",
+     "end": "2026-03-31"
+    },
+    {
+     "period": "2025Q4",
+     "end": "2025-12-31"
+    },
+    {
+     "period": "2025Q3",
+     "end": "2025-09-30"
+    },
+    {
+     "period": "2025Q2",
+     "end": "2025-06-30"
+    }
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2026H1"
+   },
+   "notes": "검색 해자의 견고성은 검증되나 반독점 규제 리스크가 사업 확실성을 제약하는 변수.",
+   "_evidence": {
+    "franchise": "광고 검색에서 대체 불가능한 지위, TPU 풀스택 진화 중",
+    "risk5": "반독점 소송 진행 중으로 규제 리스크 현실화 가능성 존재",
+    "capalloc": "버크셔 매도 신호 3단계 대비 수익성 기반 자사주 매입 지속"
+   }
   },
   "MSFT": {
    "as_of": "2026-09-25",
@@ -127,7 +212,17 @@
    "eps_adj_ttm": {
     "value": 16.7917
    },
+   "eps_status": null,
    "roe_tangible": 0.4547,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 414367000000.0,
+    "goodwill_intangibles": 138986000000.0,
+    "net_income_ttm": 125216000000.0,
+    "asof": "2026-03-31"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -174,7 +269,17 @@
    "eps_adj_ttm": {
     "value": 8.35
    },
+   "eps_status": null,
    "roe_tangible": 0.217,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 441914000000.0,
+    "goodwill_intangibles": 23449000000.0,
+    "net_income_ttm": 90798000000.0,
+    "asof": "2026-03-31"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -223,9 +328,20 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.58
+    "value": 13.49
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.3459,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 6432518334000.0,
+    "goodwill_intangibles": 24074828000.0,
+    "net_income_ttm": 2216808460000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -242,7 +358,17 @@
    "eps_adj_ttm": {
     "value": 6.001
    },
+   "eps_status": null,
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "tangible_negative",
+    "equity": 87691000000.0,
+    "goodwill_intangibles": 126134000000.0,
+    "net_income_ttm": 29317000000.0,
+    "asof": "2026-05-03"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -280,8 +406,7 @@
      "period": "2025Q3",
      "end": "2025-08-03"
     }
-   ],
-   "notes": "유형자기자본 0 이하 — ROE 미산출"
+   ]
   },
   "SPCX": {
    "as_of": "2026-09-25",
@@ -290,7 +415,18 @@
    "eps_adj_ttm": {
     "value": -1.1
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": -0.0571,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 127224000000.0,
+    "goodwill_intangibles": 14040000000.0,
+    "net_income_ttm": -6459000000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -307,7 +443,18 @@
    "eps_adj_ttm": {
     "value": 1.69
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.2781,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 1569458000000.0,
+    "goodwill_intangibles": 142745000000.0,
+    "net_income_ttm": 396739000000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -324,7 +471,17 @@
    "eps_adj_ttm": {
     "value": 27.53
    },
+   "eps_status": null,
    "roe_tangible": 0.3224,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 243681000000.0,
+    "goodwill_intangibles": 24748000000.0,
+    "net_income_ttm": 70587000000.0,
+    "asof": "2026-03-31"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -375,7 +532,17 @@
    "eps_adj_ttm": {
     "value": 1.0943
    },
+   "eps_status": null,
    "roe_tangible": 0.046,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 84116000000.0,
+    "goodwill_intangibles": null,
+    "net_income_ttm": 3871480000.0,
+    "asof": "2026-03-31"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -420,7 +587,20 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
-   "roe_tangible": null,
+   "eps_status": {
+    "state": "foreign_missing"
+   },
+   "roe_tangible": 0.2794,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 565064740000000.0,
+    "goodwill_intangibles": 29386502000000.0,
+    "net_income_ttm": 149669173000000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -437,7 +617,17 @@
    "eps_adj_ttm": {
     "value": 44.1935
    },
+   "eps_status": null,
    "roe_tangible": 0.5093,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 100724000000.0,
+    "goodwill_intangibles": 1623000000.0,
+    "net_income_ttm": 50469000000.0,
+    "asof": "2026-05-28"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -486,14 +676,21 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "float_skip"
+   },
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "status": "income_missing"
+   },
    "owner_earnings": null,
    "conversion": null,
-   "g_cagr3y": 0.1553,
+   "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "산출 불가 — 희석주식수 없음 · 실제 태그: brka_CostOfLeasing, brka_InsuranceUnderwritingExpenses, brka_InvestmentIncomeInterestDividendAndOther, brka_RailroadTransportationRevenues, brka_SalesAndServiceRevenue, brka_ServiceRevenuesAndOtherIncome, brka_UtilityAndEnergyOperatingRevenues, us-gaap_CostOfGoodsAndServicesSold, us-gaap_GainLossOnInvestments, us-gaap_LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseIncurredClaims1, us-gaap_OperatingLeaseLeaseIncome, us-gaap_PolicyholderBenefitsAndClaimsIncurredNet, us-gaap_PremiumsEarnedNet, us-gaap_Revenues",
-   "source": "Finnhub financials-reported · 분기 47건",
+   "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
+   "source": null,
    "confidence": null
   },
   "LLY": {
@@ -503,7 +700,17 @@
    "eps_adj_ttm": {
     "value": 28.0823
    },
+   "eps_status": null,
    "roe_tangible": 1.4219,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 31198000000.0,
+    "goodwill_intangibles": 13504000000.0,
+    "net_income_ttm": 25158911000.0,
+    "asof": "2026-03-31"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -554,7 +761,17 @@
    "eps_adj_ttm": {
     "value": 21.6525
    },
+   "eps_status": null,
    "roe_tangible": 0.1618,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 364038000000.0,
+    "goodwill_intangibles": null,
+    "net_income_ttm": 58899000000.0,
+    "asof": "2026-03-31"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -601,7 +818,17 @@
    "eps_adj_ttm": {
     "value": 2.5632
    },
+   "eps_status": null,
    "roe_tangible": 0.3098,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 94330000000.0,
+    "goodwill_intangibles": 28152000000.0,
+    "net_income_ttm": 20502670000.0,
+    "asof": "2026-04-30"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -652,7 +879,17 @@
    "eps_adj_ttm": {
     "value": 3.0358
    },
+   "eps_status": null,
    "roe_tangible": 0.2181,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 64462000000.0,
+    "goodwill_intangibles": 41498000000.0,
+    "net_income_ttm": 5009000000.0,
+    "asof": "2026-03-28"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -697,7 +934,20 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
-   "roe_tangible": null,
+   "eps_status": {
+    "state": "foreign_missing"
+   },
+   "roe_tangible": 0.6275,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 262380610000000.0,
+    "goodwill_intangibles": 4283131000000.0,
+    "net_income_ttm": 161965390000000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -712,9 +962,20 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.77
+    "value": 29.11
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.639,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 21825400000.0,
+    "goodwill_intangibles": 5178100000.0,
+    "net_income_ttm": 10638400000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -731,7 +992,17 @@
    "eps_adj_ttm": {
     "value": 5.3122
    },
+   "eps_status": null,
    "roe_tangible": 0.6338,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 10584779000.0,
+    "goodwill_intangibles": null,
+    "net_income_ttm": 6708202000.0,
+    "asof": "2026-03-29"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -782,7 +1053,17 @@
    "eps_adj_ttm": {
     "value": 8.7401
    },
+   "eps_status": null,
    "roe_tangible": 0.3535,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 23909000000.0,
+    "goodwill_intangibles": 4154000000.0,
+    "net_income_ttm": 6983300000.0,
+    "asof": "2026-04-26"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -833,7 +1114,17 @@
    "eps_adj_ttm": {
     "value": 12.8186
    },
+   "eps_status": null,
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "equity_negative",
+    "equity": -1404000000.0,
+    "goodwill_intangibles": 23943000000.0,
+    "net_income_ttm": 8409000000.0,
+    "asof": "2026-05-01"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -875,8 +1166,7 @@
      "period": "2026Q2",
      "end": "2025-08-01"
     }
-   ],
-   "notes": "유형자기자본 0 이하 — ROE 미산출"
+   ]
   },
   "PANW": {
    "as_of": "2026-09-25",
@@ -885,7 +1175,17 @@
    "eps_adj_ttm": {
     "value": 1.1328
    },
+   "eps_status": null,
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "tangible_negative",
+    "equity": 27668000000.0,
+    "goodwill_intangibles": 29185000000.0,
+    "net_income_ttm": 842800000.0,
+    "asof": "2026-04-30"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -927,17 +1227,27 @@
      "period": "2025Q4",
      "end": "2025-07-31"
     }
-   ],
-   "notes": "유형자기자본 0 이하 — ROE 미산출"
+   ]
   },
   "ARM": {
    "as_of": "2026-09-25",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.89
+    "value": 0.98
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.1538,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 8630000000.0,
+    "goodwill_intangibles": 1840000000.0,
+    "net_income_ttm": 1044000000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -952,7 +1262,17 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "stale",
+    "period": "2012Q4",
+    "end": "2012-12-30",
+    "age_days": 5017
+   },
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "status": "income_missing"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -968,7 +1288,17 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "stale",
+    "period": "2025Q3",
+    "end": "2025-03-28",
+    "age_days": 546
+   },
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "status": "income_missing"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": -0.0696,
@@ -984,7 +1314,17 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "stale",
+    "period": "2025Q3",
+    "end": "2024-10-31",
+    "age_days": 694
+   },
    "roe_tangible": null,
+   "roe_basis": {
+    "kind": "xbrl",
+    "status": "income_missing"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -1002,7 +1342,18 @@
    "eps_adj_ttm": {
     "value": 60.78
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.2958,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 424190236000.0,
+    "goodwill_intangibles": 97509081000.0,
+    "net_income_ttm": 96634792000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -1019,7 +1370,17 @@
    "eps_adj_ttm": {
     "value": 2.8285
    },
+   "eps_status": null,
    "roe_tangible": 1.4403,
+   "roe_basis": {
+    "kind": "xbrl",
+    "basis": "SEC XBRL 조정",
+    "status": "ok",
+    "equity": 18215800000.0,
+    "goodwill_intangibles": 16461500000.0,
+    "net_income_ttm": 2526700000.0,
+    "asof": "2026-05-02"
+   },
    "owner_earnings": {
     "variants": {
      "A": {
@@ -1066,7 +1427,18 @@
    "eps_adj_ttm": {
     "value": 1009.73
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.5589,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 1398929000000.0,
+    "goodwill_intangibles": 406777000000.0,
+    "net_income_ttm": 554490000000.0,
+    "asof": "2026-03-31",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -1083,7 +1455,18 @@
    "eps_adj_ttm": {
     "value": 1250.94
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.2826,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 2069994000000.0,
+    "goodwill_intangibles": 37531000000.0,
+    "net_income_ttm": 574454000000.0,
+    "asof": "2026-03-31",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -1100,7 +1483,18 @@
    "eps_adj_ttm": {
     "value": 515.74
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.5276,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 795726000000.0,
+    "goodwill_intangibles": 84250000000.0,
+    "net_income_ttm": 375353000000.0,
+    "asof": "2026-03-31",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -1117,7 +1511,18 @@
    "eps_adj_ttm": {
     "value": 31.32
    },
-   "roe_tangible": null,
+   "eps_status": null,
+   "roe_tangible": 0.3518,
+   "roe_basis": {
+    "kind": "yfinance",
+    "basis": "GAAP 미조정",
+    "status": "ok",
+    "equity": 293710740000.0,
+    "goodwill_intangibles": 74962513000.0,
+    "net_income_ttm": 76962964000.0,
+    "asof": "2026-06-30",
+    "source": "yfinance 대차대조표·손익계산서"
+   },
    "owner_earnings": null,
    "conversion": null,
    "g_cagr3y": null,
@@ -1130,33 +1535,56 @@
  },
  "stale_discarded": [
   {
-   "ticker": "GOOG",
-   "period": "2012Q4",
-   "end": "2012-12-31",
-   "age_days": 5016,
-   "fallback": false
-  },
-  {
    "ticker": "SNDK",
    "period": "2012Q4",
    "end": "2012-12-30",
    "age_days": 5017,
-   "fallback": false
+   "fallback": false,
+   "assembled": [
+    "2026Q3",
+    "2026Q2",
+    "2026Q1",
+    "2025Q3",
+    "2012Q4",
+    "2012Q3",
+    "2012Q2",
+    "2012Q1"
+   ]
   },
   {
    "ticker": "STX",
    "period": "2025Q3",
    "end": "2025-03-28",
    "age_days": 546,
-   "fallback": false
+   "fallback": false,
+   "assembled": [
+    "2026Q3",
+    "2026Q2",
+    "2026Q1",
+    "2025Q3",
+    "2025Q2",
+    "2025Q1",
+    "2024Q4",
+    "2024Q3"
+   ]
   },
   {
    "ticker": "CRWD",
    "period": "2025Q3",
    "end": "2024-10-31",
    "age_days": 694,
-   "fallback": false
+   "fallback": false,
+   "assembled": [
+    "2027Q1",
+    "2026Q3",
+    "2025Q3",
+    "2025Q2",
+    "2025Q1",
+    "2024Q4",
+    "2024Q3",
+    "2024Q2"
+   ]
   }
  ],
- "scout_label": "2026-09-25 18:07"
+ "scout_label": "2026-09-25 23:48"
 }
