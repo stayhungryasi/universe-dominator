@@ -1508,7 +1508,9 @@ function lgNote(b, j){
     if (how) parts.push(how);
     return parts.length ? '기준 ' + parts.join(' · ') : '';
   }
-  if (b.eps_adj_ttm == null) return '취재 대기 — 12개월 조정이익 미확보';
+  // 이익 결측 사유는 측정층이 상태에서 만든 문장(eps_note)을 비춘다 — 플로트형·낡은 원장·
+  // 수집 실패가 전부 '취재 대기' 한 줄로 뭉개지지 않게(legend-audit E)
+  if (b.eps_adj_ttm == null) return b.eps_note || '취재 대기 — 12개월 조정이익 미확보';
   if (b.g_used == null) return '취재 대기 — 성장률 가정 미확보';
   if (b.rate10y == null) return '해당 시장 국채 금리 미연결';
   return '';
@@ -1574,6 +1576,7 @@ function lgCalcLine(b){
 /* 필드별 출처 — 취재 우선순위가 한눈에 보이게. 사람 값은 '취재', 자동은 '자동',
    빈 칸은 '—'. 무엇을 취재하면 이 종목이 판정에 이르는지가 이 표에서 읽힌다. */
 const LG_FIELD_KO = { eps_adj_ttm: '조정 EPS', roe_tangible: '유형 ROE',
+                      eps_adj_ttm_human: '조정 EPS(취재)',
                       roe_tangible_human: '유형 ROE(취재)',
                       g_forward: '전망 성장률', g_cagr3y: '3년 성장률',
                       cagr3y_human: '3년 성장률(취재)',

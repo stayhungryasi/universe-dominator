@@ -424,7 +424,9 @@ def stale_window(window, now):
 def eps_adj_ttm_from(reports):
     """최근 4분기 → (eps, method, 분기수). 4분기가 안 되면 (None, 사유, n)."""
     qs = quarter_incomes(reports, getattr(reports, "annual", None))
+    eps_adj_ttm_from.last_state = None      # 실패 사유 상태 — 화면 비고의 재료(legend-audit E)
     if len(qs) < 4:
+        eps_adj_ttm_from.last_state = "short_history"
         flat0 = flatten(((reports or [{}])[0] or {}).get("report"))
         return None, (f"분기 부족({len(qs)}/4) · 실제 태그: {sample_concepts(flat0)}"), len(qs)
     # **연속된** 4분기 창을 최신 쪽부터 찾는다. 결번이 하나 있다고 측정을 통째로
@@ -437,6 +439,7 @@ def eps_adj_ttm_from(reports):
             window, offset = w, i
             break
     if window is None:
+        eps_adj_ttm_from.last_state = "no_window"
         got = ", ".join(f"{y}Q{q}" for y, q, *_ in qs[:8])
         return None, f"연속 4분기 없음(조립된 분기: {got})", len(qs)
     total = sum(x[2]["adj"] for x in window)
@@ -447,6 +450,7 @@ def eps_adj_ttm_from(reports):
     head = flatten(((reports or [{}])[0] or {}).get("report"))
     shares, sh_tag = diluted_shares(head)
     if not shares or shares <= 0:
+        eps_adj_ttm_from.last_state = "no_shares"
         return None, f"희석주식수 없음 · 실제 태그: {sample_concepts(head)}", len(qs)
     stale = "" if offset == 0 else f" · {window[0][0]}Q{window[0][1]} 기준(최신 분기 결번)"
     eps_adj_ttm_from.last_window = window        # 오너어닝이 같은 창을 쓰도록
@@ -647,10 +651,36 @@ def _record(source, outcome, code, items):
         print(f"[자동취재] 원장 기록 실패 ({e})", file=sys.stderr)
 
 
-def fetch_reports(ticker, key, freq="quarterly"):
-    """Finnhub financials-reported → (reports, outcome, code)."""
-    url = ("https://finnhub.io/api/v1/stock/financials-reported"
-           f"?symbol={ticker}&freq={freq}&token={key}")
+# 심볼이 **다른 법인의 옛 공시**에 묶인 종목 — 대체 조회 사슬(legend-audit E).
+# 2026-09-25 실측: Finnhub 'GOOG' 은 분기 4건·최신 2012Q4 — 2015 지주사 전환 전
+# Google Inc.(CIK 1288776) 공시다. Alphabet(CIK 1652044) 공시는 거기 붙어 있지 않았다.
+# 순서: 자기 심볼 → 같은 법인의 다른 상장 클래스 → CIK 직접 지정. 첫 **신선한** 창을 쓴다.
+XBRL_ALIASES = {"GOOG": [("symbol", "GOOGL"), ("cik", "1652044")]}
+
+
+def xbrl_attempts(ticker):
+    """공시 조회 순서 — [(종류, 값)]. 대체가 없으면 자기 심볼 하나."""
+    return [("symbol", ticker)] + list(XBRL_ALIASES.get(ticker, []))
+
+
+def reports_url(query, freq, key):
+    kind, val = query
+    return ("https://finnhub.io/api/v1/stock/financials-reported"
+            f"?{kind}={val}&freq={freq}&token={key}")
+
+
+def choose_attempt(results):
+    """시도 결과 중 **첫 신선한 측정**을 고른다. 없으면 첫 시도(자기 심볼)를 돌려준다 —
+    전부 실패했을 때 남길 진단은 원래 심볼의 것이어야 다음에 같은 자리를 본다."""
+    for r in results:
+        if r.get("eps") is not None and not r.get("stale"):
+            return r
+    return results[0] if results else None
+
+
+def fetch_reports(ticker, key, freq="quarterly", query=None):
+    """Finnhub financials-reported → (reports, outcome, code). query=(종류, 값) 대체 조회."""
+    url = reports_url(query or ("symbol", ticker), freq, key)
     try:
         r = requests.get(url, headers=UA, timeout=25)
         time.sleep(1.1)                      # 무료 60 call/min 준수
@@ -797,11 +827,23 @@ def build_block(c, key, now):
         "as_of": now.strftime("%Y-%m-%d"),
         "period": None,
         "cyclical_peak_guard": ("시클리컬" in (c.get("type") or "")),
-        "eps_adj_ttm": None, "roe_tangible": None, "roe_basis": None,
+        "eps_adj_ttm": None, "eps_status": None, "roe_tangible": None, "roe_basis": None,
         "owner_earnings": None, "conversion": None,
         "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
     }
+
+    if "플로트형" in (c.get("type") or ""):
+        # 보험·투자 지주(BRK-B) — 투자평가손익이 이익을 지배한다. 투자손익 21% 세후 차감
+        # 같은 기계 조정은 이 회사의 이익을 설명하지 못한다(영업이익·플로트·평가손익을
+        # 따로 읽어야 한다). 그래서 공시를 부르지도 않고 **사람 취재 전용**으로 둔다.
+        # 2026-09-25 실측: 희석주식수 태그조차 없어(주당 지표가 A주 환산) 자동 EPS 가
+        # 매 회차 '희석주식수 없음' 으로 떨어지고 있었다(legend-audit E).
+        block["method"] = "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)"
+        block["eps_status"] = {"state": "float_skip"}
+        block["roe_basis"] = {"kind": "xbrl", "status": "income_missing"}
+        print(f"[자동취재] {ticker}: 플로트형 — 자동 조정 생략(사람 취재 전용)")
+        return block, "zero"
 
     if is_foreign(ticker):
         eps = fetch_foreign_eps(ticker)
@@ -809,6 +851,8 @@ def build_block(c, key, now):
         block["method"] = "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)"
         block["source"] = "yfinance TTM 희석 EPS"
         block["confidence"] = "중" if eps is not None else None
+        if eps is None:
+            block["eps_status"] = {"state": "foreign_missing"}
         # 유형 ROE — 예전엔 해외 경로에 계산 자체가 없어 12종이 영원히 빈칸이었다.
         # yfinance 에 자본·영업권·무형이 있으면 **GAAP 미조정** 으로 잰다(legend-audit C).
         roe, rb = fetch_foreign_roe(ticker)
@@ -827,36 +871,70 @@ def build_block(c, key, now):
         block["method"] = None
         return block, "zero"
 
-    reports, outcome, code = fetch_reports(ticker, key)
-    _record(ticker, outcome, code, len(reports))
+    # 공시 조회 — 자기 심볼이 옛 법인에 묶여 있으면 대체 조회 사슬을 탄다(legend-audit E)
+    results = []
+    for q in xbrl_attempts(ticker):
+        label = q[1] if q[0] == "symbol" else f"CIK {q[1]}"
+        reports, outcome, code = fetch_reports(ticker, key, query=q)
+        _record(ticker if q == ("symbol", ticker) else f"{ticker}@{label}",
+                outcome, code, len(reports))
+        r = {"q": q, "label": label, "reports": reports, "outcome": outcome,
+             "eps": None, "stale": None, "win": None, "method": None, "state": "api_fail"}
+        results.append(r)
+        if not reports:
+            continue
+        annual, _ao, _ac = fetch_reports(ticker, key, "annual", query=q)   # Q4 복원용
+        reports = _attach_annual(reports, annual)
+        eps, method, nq = eps_adj_ttm_from(reports)
+        win = getattr(eps_adj_ttm_from, "last_window", None) if eps is not None else None
+        r.update(reports=reports, eps=eps, method=method, win=win,
+                 state=getattr(eps_adj_ttm_from, "last_state", None),
+                 stale=stale_window(win, now) if win else None)
+        if eps is not None and not r["stale"]:
+            break
+        if len(xbrl_attempts(ticker)) > 1:
+            why = (f"창 {r['stale']['period']} 낡음" if r["stale"] else f"미산출({method})")
+            print(f"[자동취재] {ticker}: {label} 조회 — {why} → 다음 대체 조회", file=sys.stderr)
+    pick = choose_attempt(results)
+    if len(results) > 1:
+        print(f"[자동취재] {ticker}: 대체 조회 {len(results)}회 — 채택 {pick['label']}")
+    reports, eps, method, win = pick["reports"], pick["eps"], pick["method"], pick["win"]
     if not reports:
         block["roe_basis"] = {"kind": "xbrl", "status": "api_fail"}
-        return block, outcome
-    annual, _ao, _ac = fetch_reports(ticker, key, "annual")   # Q4 복원용
-    reports = _attach_annual(reports, annual)
-
-    eps, method, nq = eps_adj_ttm_from(reports)
-    win = getattr(eps_adj_ttm_from, "last_window", None) if eps is not None else None
-    block["source"] = f"Finnhub financials-reported · 분기 {len(reports)}건"
+        block["eps_status"] = {"state": "api_fail"}
+        return block, pick["outcome"]
+    alias = "" if pick["q"] == ("symbol", ticker) else f" · {pick['label']} 조회"
+    block["source"] = f"Finnhub financials-reported · 분기 {len(reports)}건{alias}"
 
     # 신선도 가드 — 낡은 창은 EPS 도, 그 창에서 파생되는 오너어닝·전환율·ROE 도
     # 통째로 폐기한다. 한 칸만 버리면 나머지가 낡은 창의 권위를 그대로 입는다.
-    stale = stale_window(win, now) if win else None
+    stale = pick["stale"]
     if stale:
         note = f"XBRL 신선도 미달: 최신 {stale['period']}"
         fb = " · 분기말 없음 → 달력 근사" if stale["fallback"] else ""
+        # 조립된 분기를 함께 남긴다 — 최신 분기가 **없는** 것인지(원장 정체·옛 법인)
+        # **결번으로 창이 밀린** 것인지(STX·CRWD) 다음 회차 로그에서 가를 수 있게
+        got = [f"{y}Q{q}" for y, q, *_ in
+               quarter_incomes(reports, getattr(reports, "annual", None))[:8]]
         print(f"[자동취재] {ticker}: 신선도 미달 — 최신 분기 {stale['period']}"
               f"(종료 {stale['end']}, {stale['age_days']}일 경과 > {STALE_TTM_DAYS})"
-              f" → eps_adj_ttm 폐기{fb}", file=sys.stderr)
+              f" → eps_adj_ttm 폐기{fb} · 조립된 분기: {', '.join(got) or '없음'}",
+              file=sys.stderr)
         STALE_DISCARDED.append({"ticker": ticker, "period": stale["period"],
                                 "end": stale["end"], "age_days": stale["age_days"],
-                                "fallback": stale["fallback"]})
+                                "fallback": stale["fallback"], "assembled": got})
         block["notes"] = note
+        block["eps_status"] = {"state": "stale", "period": stale["period"],
+                               "end": stale["end"], "age_days": stale["age_days"]}
         eps, method, win = None, note, None
+    method = (method or "") + alias
     if eps is not None and implausible(eps, c.get("forward_eps")):
         print(f"[자동취재] {ticker}: EPS {eps:.2f} 가 선행 {c.get('forward_eps')} 의 4배 초과 "
               f"— 집계 오류 의심으로 보류", file=sys.stderr)
         eps, method = None, f"타당성 보류 — 산출 {eps:.2f} vs 선행 {c.get('forward_eps')}"
+        block["eps_status"] = {"state": "implausible"}
+    if eps is None and not block.get("eps_status"):
+        block["eps_status"] = {"state": pick.get("state") or "unmeasured"}
     if eps is None:
         block["method"] = f"산출 불가 — {method}"
         block["confidence"] = None

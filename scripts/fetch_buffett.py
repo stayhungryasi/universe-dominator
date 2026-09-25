@@ -450,7 +450,7 @@ def edge_of(coupon, rate_pct):
     return line, round(lines[line], 4)
 
 
-def untested_note(price, eps_ttm, g, rate, market, coupon):
+def untested_note(price, eps_ttm, g, rate, market, coupon, eps_why=""):
     """왜 판정이 없는가 — **상태에서 생성한다.** 내부 문자열을 번역하지 않는다.
 
     막으려는 것 한 문장: **결측 원인이 실제와 다른 문구로 화면에 나가는 것.**
@@ -468,7 +468,7 @@ def untested_note(price, eps_ttm, g, rate, market, coupon):
     if price is None:
         bits.append("시세 미확보")
     if eps_ttm is None:
-        bits.append("취재 대기 — 12개월 조정이익 미확보")
+        bits.append(eps_why or "취재 대기 — 12개월 조정이익 미확보")
     if g is None:
         bits.append("성장률 가정 미확보(3y CAGR·전망 중 결측)")
     if rate is None:
@@ -480,6 +480,31 @@ def untested_note(price, eps_ttm, g, rate, market, coupon):
     if coupon is None:
         return "이익이 음수 — 10년 쿠폰이 성립하지 않음"
     return ""
+
+
+def eps_note(status, type_=""):
+    """12개월 조정이익이 왜 없는가 — **상태에서 만든다**(legend-audit E).
+
+    예전엔 원인이 무엇이든 '취재 대기 — 12개월 조정이익 미확보' 한 줄이었다. 낡은 원장,
+    수집 실패, 기계 조정이 무의미한 업종(플로트형)은 할 일이 서로 다르다.
+    모르는 상태는 종전 문구로 떨어진다 — 내부 문자열이 화면으로 나갈 길이 없다.
+    """
+    st = status.get("state") if isinstance(status, dict) else None
+    if st == "float_skip" or "플로트형" in (type_ or ""):
+        return "투자평가손익 지배 — 자동 조정 무의미, 사람 취재 전용"
+    if st == "stale" and status.get("period"):
+        return f"공시 최신 분기 미확보(창이 {status['period']}에 멈춤) — 12개월 조정이익 미확보"
+    if st == "api_fail":
+        return "공시 수집 실패 — 12개월 조정이익 미확보"
+    if st == "no_shares":
+        return "희석주식수 공시 없음 — 12개월 조정이익 미확보"
+    if st in ("short_history", "no_window"):
+        return "연속 4분기 공시 미확보 — 12개월 조정이익 미확보"
+    if st == "foreign_missing":
+        return "해외 공시 이익 미확보 — 12개월 조정이익 미확보"
+    if st == "implausible":
+        return "산출값 타당성 보류 — 12개월 조정이익 미확보"
+    return "취재 대기 — 12개월 조정이익 미확보"
 
 
 def roe_note(basis):
@@ -518,7 +543,12 @@ def measure_bench(c, price, rates, prev_bench=None):
     rate = _num((rates or {}).get(market))
     guard = bool(b.get("cyclical_peak_guard"))
 
+    # 조정 EPS — 잰 값(자동·사람 오버라이드)이 먼저, 없으면 사람 취재 경로.
+    # 과거 다리·유형 ROE 와 같은 규약: 실측이 있으면 취재가 덮지 못한다(legend-audit E).
     eps_ttm = _num(b.get("eps_adj_ttm"))
+    eps_human = eps_ttm is None and _num(b.get("eps_adj_ttm_human")) is not None
+    if eps_ttm is None:
+        eps_ttm = _num(b.get("eps_adj_ttm_human"))
     # 유형 ROE — 잰 값(자동·사람 오버라이드)이 먼저, 없으면 사람 취재 경로(단위 명시).
     # 과거 다리(past_leg)와 같은 규약: 실측이 있으면 취재가 덮지 못한다.
     roe = _num(b.get("roe_tangible"))
@@ -546,6 +576,9 @@ def measure_bench(c, price, rates, prev_bench=None):
         "roe_minus_2x10y": (None if (roe is None or rate is None)
                             else round(roe - 2.0 * rate / 100.0, 6)),
         "coupon10y": None, "zone_buffett": None, "cause": None, "note": "",
+        # 이익 결측 사유(상태에서 생성) · 사람 취재 EPS 사용 여부
+        "eps_note": "" if eps_ttm is not None else eps_note(b.get("eps_status"), c.get("type")),
+        "eps_from_human": eps_human,
         # ROE 결측 사유(상태에서 생성) · 사람 취재값 사용 여부 · 해외 GAAP 미조정 여부
         "roe_note": "" if roe is not None else roe_note(b.get("roe_basis")),
         "roe_from_human": roe_human,
@@ -567,12 +600,14 @@ def measure_bench(c, price, rates, prev_bench=None):
         out["borderline"] = False
         out["note"] = ("시클리컬 정점 가드 — 쿠폰 참고, 존 판정 보류" if coupon is not None
                        else "시클리컬 정점 가드 — 존 판정 보류 · "
-                       + untested_note(_num(price), eps_ttm, g, rate, market, coupon))
+                       + untested_note(_num(price), eps_ttm, g, rate, market, coupon,
+                                       out["eps_note"]))
         return out
 
     out["zone_buffett"] = zone_of_buffett(coupon, rate)
     if out["zone_buffett"] == ZONE_UNTESTED:
-        out["note"] = untested_note(_num(price), eps_ttm, g, rate, market, coupon)
+        out["note"] = untested_note(_num(price), eps_ttm, g, rate, market, coupon,
+                                    out["eps_note"])
     out["pass_price"] = pass_price(eps_ttm, g, rate)
     line, margin = edge_of(coupon, rate)
     out["edge_line"], out["edge_margin"] = line, margin

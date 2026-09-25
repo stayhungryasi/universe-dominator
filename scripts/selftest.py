@@ -550,7 +550,7 @@ def main():
         _fa.fetch_forward_growth = lambda *a, **k: (None, None)
 
         def _wire(qs, ann):
-            _fa.fetch_reports = (lambda tk, key, kind="quarterly":
+            _fa.fetch_reports = (lambda tk, key, kind="quarterly", query=None:
                                  (ann, "ok", 200) if kind == "annual" else (qs, "ok", 200))
             _fa.STALE_DISCARDED.clear()
             return _fa.build_block({"ticker": "ZZZ", "type": "씨즈형"}, "k", _NOW)[0]
@@ -717,6 +717,112 @@ def main():
                            "cagr3y_human": {"value": 12.0, "unit": "%"}}},
               100.0, {"UST10": 4.75})["g_used"], None)
     check("과거 다리: 병합 스키마에 등재됐다", "cagr3y_human" in _bl.FIELDS, True)
+
+    # ── EPS 결측 5종 (2026-09-25 legend-audit E) ────────────────────────────
+    # 막으려는 것 한 문장: **다른 법인의 옛 공시에 묶인 심볼 때문에 대형주가 영원히 빈칸인 것,
+    # 그리고 결측 사유가 전부 '취재 대기' 한 줄로 뭉개지는 것.**
+    # 실측: GOOG — Finnhub 'GOOG' 이 분기 4건(최신 2012Q4)만 준다. 2015 지주사 전환 전
+    # Google Inc. 공시다. SNDK — 옛 SanDisk(2012Q4)와 새 Sandisk 가 섞여 창이 옛 법인으로
+    # 밀렸다. STX·CRWD — 최신 분기 결번으로 창이 546·694일 전으로 밀려 신선도 폐기.
+    # BRK-B — 희석주식수 태그 없음(보험·투자 지주 — 투자평가손익이 이익을 지배).
+    _att = getattr(_fa, "xbrl_attempts", None)
+    if _att is None:
+        check("E GOOG: 심볼 대체 조회(xbrl_attempts) 존재", None, "xbrl_attempts")
+    else:
+        check("E GOOG: GOOG → GOOGL → CIK 직접 지정 순으로 시도",
+              _att("GOOG"), [("symbol", "GOOG"), ("symbol", "GOOGL"), ("cik", "1652044")])
+        check("E GOOG: 대체가 없는 종목은 자기 심볼만", _att("MSFT"), [("symbol", "MSFT")])
+        check("E GOOG: CIK 조회 URL",
+              "cik=1652044" in _fa.reports_url(("cik", "1652044"), "quarterly", "k"), True)
+        check("E GOOG: 심볼 조회 URL 은 종전 그대로",
+              _fa.reports_url(("symbol", "MSFT"), "annual", "k"),
+              "https://finnhub.io/api/v1/stock/financials-reported"
+              "?symbol=MSFT&freq=annual&token=k")
+        _pa = _fa.choose_attempt
+        check("E GOOG: 낡은 창은 버리고 신선한 대체 조회를 고른다",
+              _pa([{"q": ("symbol", "GOOG"), "eps": 32.4, "stale": {"period": "2012Q4"}},
+                   {"q": ("symbol", "GOOGL"), "eps": 9.1, "stale": None}])["q"],
+              ("symbol", "GOOGL"))
+        check("E GOOG: 전부 실패하면 첫 시도(자기 심볼)의 진단을 남긴다",
+              _pa([{"q": ("symbol", "GOOG"), "eps": None, "stale": {"period": "2012Q4"}},
+                   {"q": ("symbol", "GOOGL"), "eps": None, "stale": None}])["q"],
+              ("symbol", "GOOG"))
+    # 배선 — build_block 이 실제로 대체 조회를 타고, 채택한 쪽의 창으로 EPS 를 싣는가.
+    # 판정 함수가 다 맞아도 배선이 끊겨 있으면 실전만 틀린다(2026-08-30 교훈).
+    if _att is not None:
+        import feed_client as _fcw
+        _buf0 = dict(_fcw._buffer)
+        _q91 = lambda y, q: _rpt(y, q, 2.0, days=91)
+        _stale_r = [_q91(2012, q) for q in (4, 3, 2, 1)]
+        _fresh_r = [_q91(2026, 2), _q91(2026, 1), _q91(2025, 4), _q91(2025, 3)]
+        _calls_w = []
+
+        def _fake_fr(tk, key, freq="quarterly", query=None):
+            _calls_w.append((freq, query))
+            if freq == "annual":
+                return [], "zero", 200
+            return ((_stale_r if (query or ("symbol", tk))[1] == "GOOG" else _fresh_r),
+                    "ok", 200)
+        _o_fr2, _o_fg2 = _fa.fetch_reports, _fa.fetch_forward_growth
+        _fa.fetch_reports, _fa.fetch_forward_growth = _fake_fr, (lambda t, k: (None, "x"))
+        _fa.STALE_DISCARDED.clear()
+        try:
+            _gblk, _ = _fa.build_block({"ticker": "GOOG", "type": "씨즈형"}, "k",
+                                       _dt.datetime(2026, 9, 25))
+        finally:
+            _fa.fetch_reports, _fa.fetch_forward_growth = _o_fr2, _o_fg2
+            _fcw._buffer.clear()
+            _fcw._buffer.update(_buf0)
+        check("E 배선: GOOG 는 GOOGL 조회에서 신선한 창을 채택",
+              ((_gblk.get("eps_adj_ttm") or {}).get("value"), _gblk.get("period")), (8.0, "2026Q2"))
+        check("E 배선: 채택한 대체 조회를 출처에 밝힌다", "GOOGL 조회" in (_gblk.get("source") or ""),
+              True)
+        check("E 배선: 대체 조회로 살렸으면 신선도 폐기 원장에 올리지 않는다",
+              _fa.STALE_DISCARDED, [])
+        check("E 배선: CIK 까지 가지 않는다(첫 신선한 조회에서 멈춤)",
+              [q for f, q in _calls_w if f == "quarterly"],
+              [("symbol", "GOOG"), ("symbol", "GOOGL")])
+        _fa.STALE_DISCARDED.clear()
+
+    # 사람 취재 경로 — C 와 같은 규약(자동값이 있으면 자동 우선)
+    _eh = {"value": 9.1, "unit": "USD", "basis": "사람 조정", "source": "10-Q",
+           "asof": "2026-09-25", "confidence": "중"}
+    check("E 취재: 자동이 없으면 사람 EPS",
+          _fb.measure_bench({"ticker": "X", "type": "씨즈형",
+                             "buffett": {"eps_adj_ttm_human": _eh}},
+                            100.0, {"UST10": 4.0})["eps_adj_ttm"], 9.1)
+    check("E 취재: 자동이 있으면 자동이 이긴다",
+          _fb.measure_bench({"ticker": "X", "type": "씨즈형",
+                             "buffett": {"eps_adj_ttm": {"value": 8.0},
+                                         "eps_adj_ttm_human": _eh}},
+                            100.0, {"UST10": 4.0})["eps_adj_ttm"], 8.0)
+    check("E 취재: 병합 스키마에 등재(eps_adj_ttm_human·eps_status)",
+          ("eps_adj_ttm_human" in _bl.FIELDS, "eps_status" in _bl.FIELDS), (True, True))
+    # BRK-B — 플로트형은 자동 조정을 하지 않는다(공시를 부르지도 않는다)
+    _o_fr = _fa.fetch_reports
+    _called = []
+    _fa.fetch_reports = lambda *a, **k: (_called.append(a), ([], "zero", 200))[1]
+    try:
+        _bb, _ = _fa.build_block({"ticker": "BRK-B", "type": "플로트형"}, "k",
+                                 _dt.datetime(2026, 9, 25))
+    finally:
+        _fa.fetch_reports = _o_fr
+    check("E BRK-B: 플로트형은 공시 조정을 부르지 않는다", _called, [])
+    check("E BRK-B: 상태가 남는다", (_bb.get("eps_status") or {}).get("state"), "float_skip")
+    _brk = _fb.measure_bench({"ticker": "BRK-B", "type": "플로트형",
+                              "buffett": {"eps_status": {"state": "float_skip"}}},
+                             500.0, {"UST10": 4.0})
+    check("E BRK-B: 비고 — 투자평가손익 지배, 사람 취재 전용",
+          _brk.get("eps_note"), "투자평가손익 지배 — 자동 조정 무의미, 사람 취재 전용")
+    check("E 비고: 낡은 공시는 그 이름으로",
+          _fb.measure_bench({"ticker": "STX", "type": "시클리컬",
+                             "buffett": {"eps_status": {"state": "stale", "period": "2025Q3"}}},
+                            100.0, {"UST10": 4.0}).get("eps_note"),
+          "공시 최신 분기 미확보(창이 2025Q3에 멈춤) — 12개월 조정이익 미확보")
+    check("E 비고: 상태가 없으면 종전 문구",
+          _fb.measure_bench({"ticker": "X", "type": "씨즈형", "buffett": {}},
+                            100.0, {"UST10": 4.0}).get("eps_note"),
+          "취재 대기 — 12개월 조정이익 미확보")
 
     # ── 유형 ROE 결측 (2026-09-25 legend-audit C) ───────────────────────────
     # 막으려는 것 한 문장: **서로 다른 결측 원인이 한 문구로 뭉개지거나, 잴 수 있는 값을

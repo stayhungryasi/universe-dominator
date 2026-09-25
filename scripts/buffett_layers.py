@@ -39,6 +39,8 @@ FIELDS = [
     # 유형 ROE 사람 취재 경로 — cagr3y_human 과 같은 규약(unit·basis·source·asof·
     # confidence, **자동값이 있으면 자동 우선**). roe_basis 는 자동층이 남기는 결측 원인.
     "roe_tangible_human", "roe_basis",
+    # 조정 EPS 사람 취재 경로(같은 규약) · eps_status 는 자동층이 남기는 결측 상태(legend-audit E)
+    "eps_adj_ttm_human", "eps_status",
     "g_cagr3y", "cagr3y_human", "g_forward", "g_forward_source",
     "owner_earnings", "conversion", "franchise", "risk5", "capalloc",
     "retention_test", "method", "source", "confidence", "notes",
