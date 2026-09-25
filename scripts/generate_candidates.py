@@ -20,11 +20,22 @@ generate_candidates.py — 잠재지배자 후보 100% 순수 규칙 자동 선�
     대량 실패(관측 절반 이상)나 유니버스 수집 실패는 개별 결측이 아니라 장애다 —
     명단을 동결하고 fetch_status 원장에 http_error 로 남긴다(정비 관제탑이 읽는다).
 
+  ★ 관성(히스테리시스, 2026-09-25): 9/10~9/25 에 경계 종목이 하루 단위로 들락거렸다.
+    그날 기준을 통과한 순위 상위 14종을 매번 새로 뽑았기 때문이다. 이제 명단은 상태
+    (data/latent_state.json)를 갖고, 들어오는 문턱과 나가는 문턱이 다르다.
+      편입: 기준 충족 편입_연속_거래일(3) 연속 — 빈자리가 있을 때
+      교체: 만석이면 가장 약한 멤버보다 교체_순위_격차(10)계단 이상 앞선 날이
+            교체_연속_거래일(5) 연속일 때만. 그 전까지는 상태 파일에만 '대기'
+      제외: 기준 미달 제외_연속_거래일(5) 연속 (순위·모멘텀·시총·TOP20 전부)
+    거래일은 KST 평일. 하루 3회 full 이 돌아도 카운트는 거래일당 한 번만 움직인다.
+    latent_overrides.json 은 여전히 해설·테마만 덮어쓴다 — 선정에는 관여하지 않는다.
+
   데모:      python generate_candidates.py --demo
   미리보기:  python generate_candidates.py --preview
   라이브:    python generate_candidates.py
 """
 import sys
+import copy
 import json
 import re
 import time
@@ -44,6 +55,9 @@ LATEST_PATH = DATA_DIR / "latest.json"
 CRITERIA_PATH = DATA_DIR / "latent_criteria.json"
 OVERRIDES_PATH = DATA_DIR / "latent_overrides.json"
 PREVIEW_PATH = DATA_DIR / "latent_auto_preview.json"
+STATE_PATH = DATA_DIR / "latent_state.json"
+STATE_VERSION = 1
+TRANSITIONS_KEEP = 200   # 상태 파일에 남길 확정 전이 수(주간 이력이 읽는다)
 
 MAX_AUTO_FETCH = 60    # 종목 페이지 받을 최대 개수(부하 제한)
 FETCH_DELAY = 1.0
@@ -70,6 +84,11 @@ DEFAULT_CRITERIA = {
     "지역TOP20_제외": True,
     "AI섹터": ["반도체", "소프트웨어", "AI", "테크", "전력", "인터넷"],
     "결측_제외_연속일": 3,
+    "편입_연속_거래일": 3,
+    "제외_연속_거래일": 5,
+    "교체_순위_격차": 10,
+    "교체_연속_거래일": 5,
+    "신규_표시_일수": 7,
 }
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -306,7 +325,7 @@ def load_overrides():
 
 # ───────────────────────── 카드 ─────────────────────────
 def template_story(c):
-    return (f"{c['theme']} · 글로벌 {c['rank']}위 · 1년 +{c['momentum_1y']}% — "
+    return (f"{c['theme']} · 글로벌 {c['rank']}위 · 1년 {c['momentum_1y']:+}% — "
             f"폭발적 성장 모멘텀의 AI 가치사슬 후보.")
 
 
@@ -383,58 +402,111 @@ def run_live(preview=False):
     pool = pool[:MAX_AUTO_FETCH]
     print(f"  모멘텀 확인 대상 {len(pool)}개")
 
+    # 기존 멤버는 관측권(시총 상위 60) 밖이어도, TOP20 에 들었어도 반드시 관측한다 —
+    # 관측하지 않으면 '미달'과 '모름'을 구분할 수 없다.
     prev_cards = {(c.get("ticker") or "").upper(): c for c in load_prev_latent()}
-    passed, failed = [], set()
-    for c in pool:
+    state = load_state() or seed_state(prev_cards.values(), crit)
+    in_pool = {(c["ticker"] or "").upper() for c in pool}
+    watch = [uni[tk] for tk in sorted(state["members"]) if tk in uni and tk not in in_pool]
+    if watch:
+        print(f"  기존 멤버 추가 관측 {len(watch)}개: {', '.join(c['name'] for c in watch)}")
+
+    obs, rows = {}, {}
+    for c in pool + watch:
+        tk = (c["ticker"] or "").upper()
         s = stock_stats(c)
         time.sleep(FETCH_DELAY)
         rank, mom = s["rank"], s["momentum"]
         if rank is None or mom is None:
-            failed.add((c["ticker"] or "").upper())
+            obs[tk] = {"known": False, "name": c["name"]}
             print(f"  [skip] {c['name']}: 데이터 파싱 실패"); continue
-        if not (rank_lo <= rank <= rank_hi):
-            print(f"  [skip] {c['name']}: {rank}위 (범위 밖)"); continue
-        if mom < mom_min:
-            print(f"  [skip] {c['name']}: 1Y {mom:+}% (미달)"); continue
+        mc = s["mc"] or c["mc"]
+        o = {"known": True, "ok": False, "rank": rank, "momentum_1y": mom, "mc": mc,
+             "name": c["name"]}
+        obs[tk] = o
+        if tk in excluded:
+            print(f"  [skip] {c['name']}: {rank}위 ({excl_label} TOP20)")
+        elif not (mc_floor <= c["mc"] < cutoff):
+            print(f"  [skip] {c['name']}: 시총 ${c['mc']:.0f}B (범위 밖)")
+        elif not (rank_lo <= rank <= rank_hi):
+            print(f"  [skip] {c['name']}: {rank}위 (범위 밖)")
+        elif mom < mom_min:
+            print(f"  [skip] {c['name']}: 1Y {mom:+}% (미달)")
+        else:
+            o["ok"] = True
+            print(f"  [pass] {rank}위 {c['name']} ({c['theme']}) 1Y +{mom}%")
         c2 = dict(c)
-        c2["rank"] = rank; c2["momentum_1y"] = mom
-        c2["mc"] = s["mc"] or c["mc"]
+        c2["rank"] = rank; c2["momentum_1y"] = mom; c2["mc"] = mc
         c2["flag"] = s["flag"] or suffix_flag(c["ticker"]) or "🌐"
-        passed.append(c2)
-        print(f"  [pass] {rank}위 {c['name']} ({c['theme']}) 1Y +{mom}%")
+        rows[tk] = c2
 
-    if pool and len(failed) >= len(pool) * MASS_FAIL_RATIO:
-        print(f"[장애] 파싱 실패 {len(failed)}/{len(pool)} — 개별 결측이 아니라 수집 붕괴."
+    unknown = sum(1 for o in obs.values() if not o["known"])
+    passed = sum(1 for o in obs.values() if o.get("ok"))
+    if obs and unknown >= len(obs) * MASS_FAIL_RATIO:
+        print(f"[장애] 파싱 실패 {unknown}/{len(obs)} — 개별 결측이 아니라 수집 붕괴."
               " latent 유지(덮어쓰지 않음)")
-        ledger("http_error", len(passed))
+        ledger("http_error", passed)
         return
     if not passed:
         print("[정보] 조건 통과 0개 — latent 유지(덮어쓰지 않음)")
         ledger("zero", 0)
         return
-    ledger("ok", len(passed))
+    ledger("ok", passed)
 
-    passed.sort(key=lambda c: c["rank"])
-    passed = passed[:max_n]
-    for c in passed:  # 최종 통과분만 다기간 모멘텀 조회 (≤최대후보수 회)
-        c.update(fetch_multi_momentum(c["ticker"]))
-        time.sleep(0.5)
-    cards = [build_card(c, overrides) for c in passed]
-    # 결측 보존: 전일 명단 종목의 파싱 실패는 탈락이 아니라 승계
     today = TODAY.strftime("%Y-%m-%d")
-    miss_limit = int(crit.get("결측_제외_연속일", 3))
-    for tk in sorted(failed & set(prev_cards)):
-        card = carry_card(prev_cards[tk], today)
-        if card["carried_days"] >= miss_limit:
-            print(f"  [제외] {card.get('name')}: 결측 {card['carried_days']}거래일 연속")
+    state = step(state, obs, today, crit)
+    lim = limits(crit)
+    for t in state["transitions"]:
+        if t.get("date") == today:
+            word = "편입" if t.get("dir") == "in" else "제외"
+            print(f"  [전이] {t.get('name')} {word} 확정")
+    for tk, cnd in sorted(state["candidates"].items(), key=lambda kv: kv[1].get("rank") or 999):
+        print(f"  [대기] {cnd.get('name')} {cnd.get('rank')}위 — 편입 {cnd.get('streak_in')}/{lim['in']}"
+              f" · 교체 {cnd.get('swap_streak', 0)}/{lim['swap_days']}")
+
+    cards = []
+    members = state["members"]
+    for tk in sorted(members, key=lambda t: members[t].get("rank") or 999):
+        m = members[tk]
+        if tk in rows:
+            c = rows[tk]
+            c.update(fetch_multi_momentum(c["ticker"]))   # 멤버만 조회 (≤최대후보수 회)
+            time.sleep(0.5)
+            card = build_card(c, overrides)
+        elif tk in prev_cards:
+            card = {k: v for k, v in prev_cards[tk].items() if k not in STATUS_KEYS}
+            card["carried"] = True
+            print(f"  [승계] {card.get('name')}: 파싱 실패 → 전일 값 유지 "
+                  f"(결측 {m.get('carried_days', 0)}/{lim['miss']})")
+        else:
+            print(f"  [warn] {m.get('name') or tk}: 관측도 전일 카드도 없음 — 이번 회차 표시 생략")
             continue
-        print(f"  [승계] {card.get('name')}: 파싱 실패 → 전일 값 유지 "
-              f"(결측 {card['carried_days']}/{miss_limit})")
+        card.update(status_fields(m, today, lim))
         cards.append(card)
-    cards.sort(key=lambda c: c.get("rank") or 999)
-    cards = cards[:max_n]
-    print(f"  최종 {len(cards)}개")
-    (write_preview if preview else write_latent)(cards)
+    print(f"  최종 {len(cards)}개 (멤버 {len(members)} · 대기 {len(state['candidates'])})")
+    if preview:
+        write_preview(cards)          # 미리보기는 상태를 전진시키지 않는다
+        return
+    save_state(state)
+    if not cards:
+        print("[정보] 표시할 카드 0개 — latent 유지(덮어쓰지 않음)")
+        return
+    write_latent(cards)
+
+
+# ───────────────────────── 명단 상태(관성) ─────────────────────────
+STATUS_KEYS = ("status", "carried", "carried_days", "miss_limit", "streak_out",
+               "out_limit", "joined", "new_day")
+
+
+def limits(crit):
+    return {"in": int(crit.get("편입_연속_거래일", 3)),
+            "out": int(crit.get("제외_연속_거래일", 5)),
+            "margin": int(crit.get("교체_순위_격차", 10)),
+            "swap_days": int(crit.get("교체_연속_거래일", 5)),
+            "miss": int(crit.get("결측_제외_연속일", 3)),
+            "new_days": int(crit.get("신규_표시_일수", 7)),
+            "cap": int(crit.get("최대_후보수", 14))}
 
 
 def load_prev_latent():
@@ -444,16 +516,166 @@ def load_prev_latent():
         return []
 
 
-def carry_card(prev, today):
-    """전일 카드를 그대로 승계한다. 결측 일수는 거래일마다 한 번만 센다(같은 날 재실행 멱등)."""
-    card = dict(prev)
-    days = int(prev.get("carried_days") or 0) if prev.get("carried") else 0
-    if prev.get("carried_on") != today and is_trading_day(today):
-        days += 1
-        card["carried_on"] = today
-    card["carried"] = True
-    card["carried_days"] = days
-    return card
+def load_state():
+    if not STATE_PATH.exists():
+        return None
+    try:
+        st = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+        if isinstance(st, dict) and isinstance(st.get("members"), dict):
+            return st
+        print("[warn] latent_state.json 형식 이상 → 현재 명단으로 재시드", file=sys.stderr)
+    except Exception as e:
+        print(f"[warn] latent_state.json 읽기 실패({e}) → 현재 명단으로 재시드", file=sys.stderr)
+    return None
+
+
+def seed_state(cards, crit):
+    """첫 실행: 현재 명단 전원을 멤버로 시작한다(편입 카운트 충족 간주).
+
+    빈 상태로 시작하면 첫 full 에서 현 명단 전원이 '신규 후보'로 떨어져 명단이 비거나
+    요동한다. 시드 멤버는 편입일이 없으므로 '신규' 배지도 붙지 않는다.
+    """
+    need = limits(crit)["in"]
+    members = {}
+    for c in cards:
+        tk = (c.get("ticker") or "").upper()
+        if tk:
+            members[tk] = {"name": c.get("name", ""), "joined": None, "streak_in": need,
+                           "streak_out": 0, "carried_days": 0, "rank": c.get("rank")}
+    print(f"[시드] latent_state.json 없음 → 현재 명단 {len(members)}종을 멤버로 시작")
+    return {"version": STATE_VERSION, "date": None, "members": members,
+            "candidates": {}, "transitions": []}
+
+
+def save_state(state):
+    out = {"_설명": ("잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. "
+                   "base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).")}
+    out.update(state)
+    out["generated_at"] = TODAY.isoformat()
+    out["transitions"] = (state.get("transitions") or [])[-TRANSITIONS_KEEP:]
+    STATE_PATH.write_text(json.dumps(out, ensure_ascii=False, indent=1) + chr(10), encoding="utf-8")
+    print(f"[OK] latent_state.json 저장: 멤버 {len(state['members'])} · 대기 {len(state['candidates'])}")
+
+
+def step(state, obs, today, crit):
+    """하루치 관측을 명단 상태에 반영한다 — 순수 함수(네트워크·파일 없음).
+
+    obs: {티커: {"known", "ok", "rank", "momentum_1y", "mc", "name"}}
+      known=False 는 파싱 실패(모름). 관측에 아예 없는 기존 멤버도 모름으로 친다.
+    같은 날 재실행은 그날의 출발점(base)에서 다시 계산한다 — 카운트는 거래일당 1회.
+    """
+    st = copy.deepcopy(state)
+    if st.get("date") == today and isinstance(st.get("base"), dict):
+        st["members"] = copy.deepcopy(st["base"]["members"])
+        st["candidates"] = copy.deepcopy(st["base"]["candidates"])
+        st["transitions"] = [t for t in st.get("transitions", []) if t.get("date") != today]
+    else:
+        st["base"] = {"members": copy.deepcopy(st["members"]),
+                      "candidates": copy.deepcopy(st.get("candidates") or {})}
+    st["date"] = today
+    st["version"] = STATE_VERSION
+    members = st["members"]
+    cands = st.setdefault("candidates", {})
+    trans = st.setdefault("transitions", [])
+    if not is_trading_day(today):
+        return st                      # 주말: 명단·카운트 동결
+    lim = limits(crit)
+
+    def record_t(tk, name, direction, o, **why):
+        t = {"date": today, "ticker": tk, "name": name, "dir": direction}
+        for k in ("rank", "momentum_1y", "mc"):
+            if o.get(k) is not None:
+                t[k] = o[k]
+        t.update(why)
+        trans.append(t)
+
+    def expel(tk, **why):
+        m = members.pop(tk)
+        o = obs.get(tk) or {}
+        record_t(tk, m.get("name", ""), "out",
+                 o if o.get("known") else {"rank": m.get("rank")}, **why)
+
+    def admit(tk, **why):
+        c = cands.pop(tk)
+        o = obs[tk]
+        members[tk] = {"name": c.get("name", ""), "joined": today, "streak_in": c["streak_in"],
+                       "streak_out": 0, "carried_days": 0, "rank": c.get("rank")}
+        record_t(tk, c.get("name", ""), "in", o, streak_in=c["streak_in"], limit=lim["in"], **why)
+
+    # ① 기존 멤버 — 모름은 승계(결측 카운트), 미달은 제외 카운트
+    for tk in sorted(members):
+        m = members[tk]
+        o = obs.get(tk)
+        if not o or not o.get("known"):
+            m["carried_days"] = int(m.get("carried_days", 0)) + 1
+            if m["carried_days"] >= lim["miss"]:
+                expel(tk, carried_days=m["carried_days"], limit=lim["miss"])
+            continue
+        m["carried_days"] = 0
+        m["rank"] = o.get("rank") or m.get("rank")      # 순위 모름은 마지막 값 유지
+        if o.get("ok"):
+            m["streak_out"] = 0
+        else:
+            m["streak_out"] = int(m.get("streak_out", 0)) + 1
+            if m["streak_out"] >= lim["out"]:
+                expel(tk, streak_out=m["streak_out"], limit=lim["out"])
+
+    # ② 비멤버 — 편입 카운트. 모름은 카운트를 움직이지 않고, 미달·관측권 밖은 초기화
+    for tk, o in obs.items():
+        if tk in members or not o.get("known"):
+            continue
+        if o.get("ok"):
+            c = cands.setdefault(tk, {"streak_in": 0, "swap_streak": 0})
+            c["name"], c["rank"] = o.get("name", ""), o.get("rank") or c.get("rank")
+            c["streak_in"] = int(c.get("streak_in", 0)) + 1
+        else:
+            cands.pop(tk, None)
+    for tk in [t for t in cands if t not in obs or t in members]:
+        cands.pop(tk)
+
+    def ranked_ready():
+        return sorted((t for t in cands if (obs.get(t) or {}).get("ok")),
+                      key=lambda t: (cands[t].get("rank") or 999, t))
+
+    # ③ 빈자리 편입 — 충족 카운트를 채운 후보를 순위순으로
+    for tk in ranked_ready():
+        if len(members) < lim["cap"] and cands[tk]["streak_in"] >= lim["in"]:
+            admit(tk)
+
+    # ④ 만석 교체 — 가장 약한 멤버보다 격차 이상 앞선 날이 swap_days 연속일 때만
+    for tk in ranked_ready():
+        c = cands[tk]
+        if len(members) < lim["cap"] or not members:
+            c["swap_streak"] = 0
+            continue
+        weakest = max(members, key=lambda t: (members[t].get("rank") or 999, t))
+        w_rank = members[weakest].get("rank") or 999
+        if (c.get("rank") or 999) <= w_rank - lim["margin"]:
+            c["swap_streak"] = int(c.get("swap_streak", 0)) + 1
+        else:
+            c["swap_streak"] = 0
+        if c["swap_streak"] >= lim["swap_days"] and c["streak_in"] >= lim["in"]:
+            w_name = members[weakest].get("name", "")
+            expel(weakest, replaced_by=tk, replaced_by_name=c.get("name", ""),
+                  margin=lim["margin"], swap_streak=c["swap_streak"])
+            admit(tk, replacing=weakest, replacing_name=w_name, swap_streak=c["swap_streak"])
+    return st
+
+
+def status_fields(m, today, lim):
+    """카드에 싣는 상태 — 화면 문구는 템플릿이 이 숫자들에서 만든다(필드명 노출 금지)."""
+    out = {"status": "member", "streak_out": int(m.get("streak_out", 0)),
+           "out_limit": lim["out"], "carried_days": int(m.get("carried_days", 0)),
+           "miss_limit": lim["miss"], "joined": m.get("joined")}
+    if out["streak_out"] or out["carried_days"]:
+        out["status"] = "watch"
+    elif m.get("joined"):
+        t0 = datetime.strptime(m["joined"], "%Y-%m-%d")
+        age = (datetime.strptime(today, "%Y-%m-%d") - t0).days
+        if age < lim["new_days"]:
+            out["status"] = "new"
+            out["new_day"] = age + 1
+    return out
 
 
 def run_demo():

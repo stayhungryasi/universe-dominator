@@ -1614,6 +1614,58 @@ def main():
                                     _T14, _T14)
     check("잠재 ⓐ 변이: 원장 배선을 끊으면 검사가 잡는다", bool(_lgx), False)
 
+
+    # ⓑ 경계 요동 — 14·15위가 날마다 뒤집혀도 명단은 흔들리지 않는다
+    #   T14(기존)와 T15(도전자)의 순위가 150/151 ↔ 152/149 로 매일 교차한다
+    def _flip(i, tk):
+        if tk == "T14":
+            return (150 if i % 2 == 0 else 152, 150)
+        if tk == "T15":
+            return (151 if i % 2 == 0 else 149, 150)
+        return (30 + int(tk[1:]) * 8, 150)
+    _lb, _, _, _stb, _ = _lat_sim(_WEEK[:6], _flip, _T14, _T14 + ["T15"])
+    _chg = sum(1 for a, b in zip([sorted(_T14)] + _lb, _lb) if a != b)
+    check("잠재 ⓑ 경계 요동 6일: 명단 변동 ≤ 1회", _chg <= 1, True)
+    check("잠재 ⓑ 도전자는 대기(상태 파일에만)",
+          bool(_stb) and "T15" in (_stb.get("candidates") or {}) and "T15" not in _lb[-1],
+          True)
+    # 빈자리가 있으면 3거래일 연속 충족 후 편입 (1·2일째는 대기)
+    _lv, _, _, _, _ = _lat_sim(_WEEK[:4], lambda i, tk: (30 + int(tk[1:]) * 8, 150),
+                               _T14[:13], _T14[:13] + ["T15"])
+    check("잠재 ⓑ 빈자리 편입은 3거래일째", ["T15" in x for x in _lv],
+          [False, False, True, True])
+    # 기존 멤버는 기준 미달 5거래일 연속이어야 제외 (4일째까진 유지)
+    _lo, _, _, _, _lato = _lat_sim(
+        _WEEK[:6], lambda i, tk: (30 + int(tk[1:]) * 8, 40 if tk == "T03" else 150),
+        _T14, _T14)
+    check("잠재 ⓑ 미달 멤버는 5거래일째 제외", ["T03" in x for x in _lo],
+          [True, True, True, True, False, False])
+    # 만석이면 10계단 이상 앞선 상태가 5거래일 이어져야 가장 약한 멤버와 교체
+    _ls, _, _, _, _ = _lat_sim(
+        _WEEK[:6], lambda i, tk: (60, 150) if tk == "T15" else (30 + int(tk[1:]) * 8, 150),
+        _T14, _T14 + ["T15"])
+    check("잠재 ⓑ 교체는 5거래일째, 가장 약한 멤버와",
+          [("T15" in x, "T14" in x) for x in _ls],
+          [(False, True)] * 4 + [(True, False)] * 2)
+    # 주말은 거래일이 아니다 — 카운트가 움직이지 않는다
+    _lw, _, _, _stw, _ = _lat_sim(["2026-09-19", "2026-09-20"],
+                                  lambda i, tk: (30 + int(tk[1:]) * 8, 150),
+                                  _T14[:13], _T14[:13] + ["T15"])
+    check("잠재 ⓑ 주말은 카운트 동결",
+          (_lw[-1] == sorted(_T14[:13]),
+           ((_stw or {}).get("candidates") or {}).get("T15", {}).get("streak_in", 0)),
+          (True, 0))
+    # 하루 3회 full — 같은 날 재실행은 카운트를 한 번만 움직인다(그날 출발점에서 재계산)
+    _lr, _, _, _str, _ = _lat_sim(["2026-09-14"] * 3 + ["2026-09-15"],
+                                  lambda i, tk: (30 + int(tk[1:]) * 8, 150),
+                                  _T14[:13], _T14[:13] + ["T15"])
+    check("잠재 ⓑ 같은 날 3회 실행 = 1거래일",
+          (((_str or {}).get("candidates") or {}).get("T15", {}).get("streak_in"), "T15" in _lr[-1]),
+          (2, False))
+    # 첫 실행 시드: 현 명단 전원이 멤버로 시작한다(첫 full 에 전원 제외 카운트 사고 방지)
+    check("잠재 ⓑ 시드: 기존 14종 전원 멤버",
+          sorted((_stb or {}).get("members", {})) == sorted(_T14), True)
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)
