@@ -193,6 +193,9 @@ jobs:
         run: python scripts/parallax_journal.py || { echo "::warning::parallax_journal 실패 — 이번 회차 기록 생략"; exit 1; }
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # 버핏존 확정 전이 DM — 소장 DM 전용. 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
         continue-on-error: true
 
       # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진

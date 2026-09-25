@@ -10,6 +10,8 @@
 
 레전드벤치마크(2026-08-30): 괴리존과 **별개로** 버핏존(zone_buffett) 전이도 적는다.
 단 untested 가 낀 전이와 cause=scale(잰 자가 바뀜)은 시장 사건이 아니므로 제외한다.
+2026-09-25(legend-audit A): 버핏존은 **2거래일 연속 확인 후에만** 확정·기록하고,
+확정 전이는 소장 DM 으로도 보낸다(여유%·원인 명시). 하루짜리 역전은 '경계' 로그만.
 
 첫 실행일은 비교 기준이 없으므로 아무것도 적지 않는다(기준선만 저장).
 사건 서명 parallax:{ticker}:{전존>후존}:{날짜} 로 중복 발행을 막고,
@@ -52,6 +54,23 @@ ZONE_ORDER = ["고평가", "관망", "본격", "탐색"]
 BUFFETT_ZONES = ["bond_inferior", "prove_growth", "pass"]
 UNTESTED = "untested"
 
+# ── 버핏존 전이 확정 규칙 (2026-09-25 legend-audit A) ─────────────────
+# 막으려는 것 한 문장: **판정선 위에 선 종목의 하루짜리 흔들림이 사건으로 기록·발송되는 것.**
+# 9월 실측: 시장 전이 2건(META 9/12 여유 +0.3% · TSM 9/25 +1.5%)이 전부 판정선 ±2% 안쪽이었다.
+# 선 위에서는 금리 몇 bp·주가 1% 로 존이 뒤집힌다 — 그걸 매번 적으면 노트가 로그가 된다.
+#   ① 새 존이 **2거래일 연속**(KST 평일, 거래일당 1회 — 잠재지배자 명단과 같은 달력)
+#      관측돼야 확정한다. 1일짜리 역전은 '경계' 로그만 남긴다.
+#   ② 원인이 금리이고 금리 변동폭이 10bp 미만이면 확정하지 않는다(경계).
+#   ③ 원인·여유는 **확정 직전의 제자리(anchor)** 에서 잰다 — 전 회차가 아니라 마지막으로
+#      옛 존에 서 있던 관측과 비교해야 두 날에 걸친 움직임 전체가 원인에 잡힌다.
+CONFIRM_DAYS = 2
+RATE_MIN_BP = 10.0
+ZONE_KO = {"pass": "통과", "prove_growth": "성장 입증 필요",
+           "bond_inferior": "국채 열위", "untested": "미검정"}
+CAUSE_KO = {"price": "주가", "rate": "금리", "scale": "눈금 변경"}
+LINE_KO = {"pass": "통과가격", "prove": "국채 1.5배선 가격"}
+SNAP_KEYS = ("price", "rate10y", "eps_adj_ttm", "g_used", "guard")
+
 
 def zone_of(gap, zones):
     if gap is None:
@@ -80,6 +99,7 @@ def load_state():
 def save_state(state):
     cutoff = (datetime.now(KST) - timedelta(days=7)).strftime("%Y-%m-%d")
     state["posted"] = {d: v for d, v in state.get("posted", {}).items() if d >= cutoff}
+    state["dm_sent"] = {d: v for d, v in state.get("dm_sent", {}).items() if d >= cutoff}
     STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
@@ -92,45 +112,201 @@ def _pct(x):
     return "—" if x is None else f"{x * 100:.1f}%"
 
 
-def buffett_phrase(ticker, before, after, bench):
-    """선장님 지정 문구 — coupon10y 와 문턱(10y×3)을 나란히 적어 근거를 남긴다."""
+def margin_phrase(line, margin):
+    """판정선 여유 한 마디 — **상태(선·여유)에서 만든다.** 기계 이름은 쓰지 않는다."""
+    if line not in LINE_KO or margin is None:
+        return ""
+    if abs(margin) < 0.0005:
+        return f"현재가가 {LINE_KO[line]}와 같음"
+    side = "높음" if margin > 0 else "낮음"
+    return f"현재가가 {LINE_KO[line]}보다 {abs(margin) * 100:.1f}% {side}"
+
+
+def cause_phrase(cause, anchor, bench):
+    """원인과 그 크기 — 금리는 bp, 주가는 %. 원인을 못 가렸으면 그렇게 말한다."""
+    if cause == "rate":
+        r0, r1 = (anchor or {}).get("rate10y"), bench.get("rate10y")
+        if r0 is not None and r1 is not None:
+            return f"원인 금리 {(r1 - r0) * 100:+.0f}bp"
+    if cause == "price":
+        p0, p1 = (anchor or {}).get("price"), bench.get("price")
+        if p0 and p1:
+            return f"원인 주가 {(p1 / p0 - 1) * 100:+.1f}%"
+    if cause in CAUSE_KO:
+        return f"원인 {CAUSE_KO[cause]}"
+    return "원인 미상(비교 기준 없음)"
+
+
+def buffett_phrase(ticker, before, after, bench, cause=None, anchor=None, days=CONFIRM_DAYS):
+    """버핏존 확정 전이 한 줄 — 관측노트와 DM 이 같은 문장을 쓴다.
+
+    선장님 지정 골격(쿠폰과 문턱을 나란히)은 그대로 두되 **화면에 나가는 문장이라**
+    원장 키(coupon10y·10y×3·prove_growth)를 우리말로 바꿨다(작업 규칙 8).
+    여유%와 원인을 함께 적는다 — 선 위 1% 에서 넘어간 것과 20% 를 뚫은 것은 다른 사건이다.
+    """
     rate = bench.get("rate10y")
     bar = None if rate is None else 3.0 * (rate / 100.0)
     g = bench.get("g_used")
     g_txt = "—" if g is None else f"{g * 100:.1f}%"
-    return (f"{ticker} 버핏존 {before}→{after} · "
-            f"coupon10y {_pct(bench.get('coupon10y'))} vs 10y×3 {_pct(bar)} · g={g_txt}")
+    bits = [f"🔭 버핏존 — {ticker} {ZONE_KO.get(before, '—')}→{ZONE_KO.get(after, '—')}"
+            f" ({days}거래일 확인)",
+            cause_phrase(cause, anchor, bench)]
+    mp = margin_phrase(bench.get("edge_line"), bench.get("edge_margin"))
+    if mp:
+        bits.append(mp)
+    bits.append(f"10년 쿠폰 {_pct(bench.get('coupon10y'))} vs 국채×3 {_pct(bar)} · g {g_txt}")
+    return " · ".join(bits)
 
 
-def detect_buffett_events(items, prev_bzones):
-    """버핏존이 바뀐 종목만. untested 가 낀 전이와 cause=scale 은 사건이 아니다."""
-    events, skipped = [], []
+def _snap(bench):
+    return {k: bench.get(k) for k in SNAP_KEYS}
+
+
+def is_trading_day(day):
+    """KST 평일만 거래일로 센다 — 잠재지배자 명단(generate_candidates)과 같은 달력.
+    주말 회차는 시세가 멈춰 있어 확인 일수를 움직이지 않는다."""
+    return datetime.strptime(day, "%Y-%m-%d").weekday() < 5
+
+
+def new_bstate(zones=None):
+    return {"zones": dict(zones or {}), "anchor": {}, "cand": {}, "date": "", "base": None}
+
+
+def step_buffett(bstate, items, today):
+    """하루치 관측을 버핏존 확정 상태에 반영한다 — **순수 함수**(네트워크·파일 없음).
+
+    bstate: {zones: 확정 존, anchor: 확정 존에 마지막으로 서 있던 관측, cand: 후보,
+             date, base: 그날 출발점}
+    반환: (새 상태, 확정 사건 목록, 경계 로그 목록)
+    같은 날 재실행은 그날의 출발점에서 다시 계산한다 — 확인 일수는 거래일당 1회만 는다.
+    """
+    import copy
+    import fetch_buffett                     # 원인 규칙은 측정층 한 곳에만 둔다(두 벌 금지)
+    st = copy.deepcopy(bstate) if bstate else new_bstate()
+    for k in ("zones", "anchor", "cand"):
+        st.setdefault(k, {})
+    if st.get("date") == today and isinstance(st.get("base"), dict):
+        for k in ("zones", "anchor", "cand"):
+            st[k] = copy.deepcopy(st["base"][k])
+    else:
+        st["base"] = {k: copy.deepcopy(st[k]) for k in ("zones", "anchor", "cand")}
+    st["date"] = today
+    zones, anchor, cand = st["zones"], st["anchor"], st["cand"]
+    events, logs = [], []
+    trading = is_trading_day(today)
+
     for x in items:
         bench = x.get("bench")
-        if not isinstance(bench, dict):
+        tk = x.get("ticker")
+        if not isinstance(bench, dict) or not tk:
             continue
-        after = bench.get("zone_buffett")
-        before = prev_bzones.get(x.get("ticker"))
-        if not after or not before or before == after:
-            continue                       # 첫 관측·미산출(가드)·변화 없음 → 침묵
-        if after == UNTESTED or before == UNTESTED:
-            skipped.append(f"{x.get('ticker')}(untested 전이)")
+        z = bench.get("zone_buffett")
+        if not z:
             continue
-        if bench.get("cause") == "scale":
-            skipped.append(f"{x.get('ticker')}(자가 바뀜)")
+        conf = zones.get(tk)
+        if conf is None:                     # 첫 관측 — 기준선만
+            zones[tk], anchor[tk] = z, _snap(bench)
+            continue
+        if z == UNTESTED:                    # 못 쟀다 = 모름. 확정·후보 모두 동결
+            continue
+        if conf == UNTESTED:                 # 못 쟀다 → 쟀다: 취재 사건이지 시장 사건 아님
+            zones[tk], anchor[tk] = z, _snap(bench)
+            cand.pop(tk, None)
+            logs.append(f"{tk} 미검정→{ZONE_KO.get(z, z)} — 첫 판정, 재기준(기록 안 함)")
+            continue
+        if not trading:
+            continue                         # 주말: 확정·후보·제자리 모두 동결
+        if z == conf:
+            c = cand.pop(tk, None)
+            if c:
+                logs.append(f"{tk} 경계 — {ZONE_KO.get(c['zone'], c['zone'])} "
+                            f"{c['days']}일 만에 {ZONE_KO.get(z, z)}로 복귀(역전, 기록 안 함)")
+            anchor[tk] = _snap(bench)
+            continue
+        cause =fetch_buffett.classify_cause(anchor.get(tk), bench)
+        if cause == "scale":
+            zones[tk], anchor[tk] = z, _snap(bench)
+            cand.pop(tk, None)
+            logs.append(f"{tk} {ZONE_KO.get(conf, conf)}→{ZONE_KO.get(z, z)} — 눈금 변경, "
+                        f"재기준(기록 안 함)")
+            continue
+        c = cand.get(tk)
+        if c and c.get("zone") == z:
+            c["days"] = int(c.get("days", 0)) + 1
+        else:
+            c = {"zone": z, "days": 1, "since": today}
+        cand[tk] = c
+        mp = margin_phrase(bench.get("edge_line"), bench.get("edge_margin"))
+        r0, r1 = (anchor.get(tk) or {}).get("rate10y"), bench.get("rate10y")
+        if cause == "rate" and r0 is not None and r1 is not None \
+                and abs(r1 - r0) * 100 < RATE_MIN_BP:
+            logs.append(f"{tk} 경계 — {ZONE_KO.get(conf, conf)}→{ZONE_KO.get(z, z)} 원인 금리 "
+                        f"{(r1 - r0) * 100:+.0f}bp(<{RATE_MIN_BP:.0f}bp) · {mp} — 기록 보류")
+            continue
+        if c["days"] < CONFIRM_DAYS:
+            logs.append(f"{tk} 경계 — {ZONE_KO.get(conf, conf)}→{ZONE_KO.get(z, z)} 후보 "
+                        f"{c['days']}/{CONFIRM_DAYS}거래일 · {cause_phrase(cause, anchor.get(tk), bench)}"
+                        f" · {mp} — 확인 대기")
             continue
         events.append({
-            "ticker": x.get("ticker"), "before": before, "after": after,
-            "kind": "buffett",
-            "text": buffett_phrase(x.get("ticker"), before, after, bench),
+            "ticker": tk, "before": conf, "after": z, "kind": "buffett", "cause": cause,
+            "text": buffett_phrase(tk, conf, z, bench, cause, anchor.get(tk), c["days"]),
         })
+        zones[tk], anchor[tk] = z, _snap(bench)
+        cand.pop(tk, None)
+
+    # 명단에서 빠진 종목의 흔적은 정리한다 — 되살아나는 날 유령 전이를 막는다
+    live = {x.get("ticker") for x in items}
+    for k in ("zones", "anchor", "cand"):
+        st[k] = {t: v for t, v in st[k].items() if t in live}
     # 채권 우위로 떨어진 것부터 — 상한에 걸릴 때 나쁜 소식이 먼저 남도록
     events.sort(key=lambda e: BUFFETT_ZONES.index(e["after"])
                 if e["after"] in BUFFETT_ZONES else 9)
-    if skipped:
-        print(f"[시차노트] 버핏존 전이 {len(skipped)}건은 기록 대상 아님 "
-              f"({', '.join(skipped[:6])})")
-    return events
+    return st, events, logs
+
+
+def load_bstate(state):
+    """구 상태(bzones: {티커: 존})를 확정 존으로 이관한다 — 이관 사실은 로그에 남긴다."""
+    bs = state.get("bstate")
+    if isinstance(bs, dict) and isinstance(bs.get("zones"), dict):
+        return bs
+    old = state.get("bzones") or {}
+    print(f"[시차노트] 버핏존 상태 이관 — 구 기준선 {len(old)}종을 확정 존으로 승계"
+          f"(비교 기준 anchor 없음 → 첫 확정 문구는 '원인 미상')")
+    return new_bstate(old)
+
+
+def notify_dm(events, state, today):
+    """확정 전이 DM — **소장 DM 전용.** 수신처가 없으면 공개로 폴백하지 않고 로그만.
+
+    같은 날 재실행에서 같은 사건을 두 번 보내지 않는다(서명 원장).
+    """
+    if not events:
+        return 0
+    sent = set((state.get("dm_sent") or {}).get(today, []))
+    fresh = [e for e in events
+             if sig(e["ticker"], e["before"], e["after"], today, "buffett-dm") not in sent]
+    if not fresh:
+        print(f"[시차노트] 버핏존 확정 {len(events)}건 — 오늘 이미 DM 발송 → 재발송 안 함")
+        return 0
+    text = "\n".join(e["text"] for e in fresh)
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    chat = os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
+    if not token or not chat:
+        print(f"[시차노트] DM 수신처 미등록 — 발송 생략(공개 채널 폴백 없음): {text}",
+              file=sys.stderr)
+        return 0
+    try:
+        from send_telegram_briefing import send_telegram, esc
+        send_telegram(token, chat, esc(text))
+    except Exception as ex:
+        print(f"[시차노트] 버핏존 DM 실패 ({ex})", file=sys.stderr)
+        return 0
+    for e in fresh:
+        sent.add(sig(e["ticker"], e["before"], e["after"], today, "buffett-dm"))
+    state.setdefault("dm_sent", {})[today] = sorted(sent)
+    print(f"[시차노트] 버핏존 확정 DM {len(fresh)}건 발송 → DM")
+    return len(fresh)
 
 
 def phrase(ticker, before, after, gap_before, gap_after):
@@ -246,7 +422,10 @@ def main():
     events = detect_events(items, zones, prev_zones, prev_gaps, prev_fp)
     for e in events:
         e.setdefault("kind", "parallax")
-    events += detect_buffett_events(items, state.get("bzones", {}))
+    bstate, b_events, b_logs = step_buffett(load_bstate(state), items, today)
+    for line in b_logs:
+        print(f"[시차노트] {line}")
+    events += b_events
 
     # 오늘의 존을 다음 실행의 기준선으로 먼저 갱신 (발행 실패해도 기준선은 전진)
     # 기준선도 존 판정 대상(선행)만 남긴다 — 후행 잔재가 남아 있으면 다음 날
@@ -269,12 +448,12 @@ def main():
               f"({', '.join(purged[:6])}{' 외' if len(purged) > 6 else ''})")
     state["zones"], state["gaps"], state["fp"] = new_zones, new_gaps, new_fp
 
-    # 버핏존 기준선 — 산출된 종목만 남긴다. 가드로 미산출(None)인 종목을 남겨두면
-    # 가드가 풀리는 날 '없음 → 판정' 이 전이로 잡힌다(유령 전이).
-    state["bzones"] = {x.get("ticker"): (x.get("bench") or {}).get("zone_buffett")
-                       for x in items
-                       if isinstance(x.get("bench"), dict)
-                       and (x.get("bench") or {}).get("zone_buffett")}
+    # 버핏존 확정 상태 — bzones 는 **확정 존**의 거울로 남긴다(구 판독기 호환).
+    # 회차별 존이 아니라 확정 존이다: 하루짜리 역전이 기준선을 흔들지 않는다.
+    state["bstate"] = bstate
+    state["bzones"] = dict(bstate["zones"])
+    # DM 은 관측노트 기록(Firebase)과 독립이다 — 서비스 계정이 없다고 DM 까지 죽지 않는다
+    notify_dm(b_events, state, today)
 
     if not events:
         save_state(state)

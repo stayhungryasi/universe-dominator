@@ -370,26 +370,83 @@ def pass_price(eps_ttm, g, rate_pct):
     return round(eps * ((1.0 + gg) ** 10) / (3.0 * (r / 100.0)), 2)
 
 
+def _dlog(a, b):
+    """log(b/a) — 둘 다 양수일 때만. 아니면 None(0 으로 치지 않는다)."""
+    a, b = _num(a), _num(b)
+    if a is None or b is None or a <= 0 or b <= 0:
+        return None
+    return math.log(b / a)
+
+
+def cause_parts(prev, now):
+    """존 판정비(쿠폰 ÷ 허들)의 로그 변화를 원인별로 쪼갠다 → {scale, price, rate} | None.
+
+        쿠폰 ÷ 허들 = EPS × (1+g)^10 ÷ 주가 ÷ 금리   (상수 3·1.5 는 비율에서 빠진다)
+        Δlog = [ΔlogEPS + 10·Δlog(1+g)] − ΔlogP − ΔlogR
+                 └──────── scale ───────┘  price    rate
+    양수 = 통과 쪽으로 움직였다. 자 자체가 끊긴 경우(한쪽 null·부호 전환)는 크기를
+    잴 수 없으므로 None — 호출부가 scale 로 본다.
+    """
+    e = _dlog(prev.get("eps_adj_ttm"), now.get("eps_adj_ttm"))
+    g0, g1 = _num(prev.get("g_used")), _num(now.get("g_used"))
+    if (e is None and _num(prev.get("eps_adj_ttm")) != _num(now.get("eps_adj_ttm"))) or \
+       (g0 is None) != (g1 is None):
+        return None
+    s = (e or 0.0) + (10.0 * math.log((1.0 + g1) / (1.0 + g0)) if g0 is not None else 0.0)
+    p = _dlog(prev.get("price"), now.get("price"))
+    r = _dlog(prev.get("rate10y"), now.get("rate10y"))
+    return {"scale": s, "price": -(p or 0.0), "rate": -(r or 0.0)}
+
+
 def classify_cause(prev, now):
     """존이 바뀐 원인 — price · rate · scale.
 
     scale = 잰 자가 바뀐 것(EPS 취재·성장률 갱신·가드 토글). 시장 사건이 아니므로
     관측노트는 이걸 기록하지 않는다 (기존 fingerprint 규율과 같은 뿌리 —
     2026-08-17 AMZN 사고: 주가가 1원도 안 움직였는데 눈금이 바뀌어 전이가 찍혔다).
-    price·rate 는 둘 다 움직였을 때 로그 변화폭이 큰 쪽을 원인으로 본다.
+
+    원인 = **움직인 방향으로 가장 크게 민 성분**(cause_parts). 예전엔 EPS 가 1센트만
+    달라도 무조건 scale 이었다. 2026-09-25 TSM 발각: 해외 종목 EPS 는 환율 따라 매
+    회차 흔들려(13.26~13.73) 원인이 **영원히 scale** 이었고, 그래서 통과→성장 입증
+    전이가 기록 대상에서 조용히 빠졌다. 실제 분해는 금리 +15bp(−3.0%)·주가 +1.5%
+    (−1.5%)가 밀었고 EPS(+1.0%)는 오히려 반대쪽이었다 — 원인은 금리다.
     """
     if not isinstance(prev, dict):
         return None
-    for k in ("eps_adj_ttm", "g_used", "guard"):
-        if prev.get(k) != now.get(k):
-            return "scale"
-    p0, p1 = _num(prev.get("price")), _num(now.get("price"))
-    r0, r1 = _num(prev.get("rate10y")), _num(now.get("rate10y"))
-    dp = abs(math.log(p1 / p0)) if p0 and p1 and p0 > 0 and p1 > 0 else 0.0
-    dr = abs(math.log(r1 / r0)) if r0 and r1 and r0 > 0 and r1 > 0 else 0.0
-    if dp == 0.0 and dr == 0.0:
+    if bool(prev.get("guard")) != bool(now.get("guard")):
+        return "scale"
+    parts = cause_parts(prev, now)
+    if parts is None:
+        return "scale"                 # 자가 끊겼다(한쪽 결측·적자 전환) — 크기 비교 불가
+    total = parts["scale"] + parts["price"] + parts["rate"]
+    if total == 0.0 and not any(parts.values()):
         return None
-    return "price" if dp >= dr else "rate"
+    sign = 1.0 if total >= 0 else -1.0
+    # 같은 크기면 scale → price → rate 순으로 본다(자가 바뀐 것을 시장 탓으로 돌리지 않는다)
+    return max(("scale", "price", "rate"), key=lambda k: (parts[k] * sign,
+               {"scale": 2, "price": 1, "rate": 0}[k]))
+
+
+# 경계 띠 — 판정선 가격에서 현재가가 이 비율 안쪽이면 '경계' 로 표시한다.
+# 판정을 바꾸는 값이 아니다: 존은 그대로 두고 "이 판정은 선 위에 서 있다"는 사실만 말한다.
+EDGE_BAND = 0.05
+
+
+def edge_of(coupon, rate_pct):
+    """가장 가까운 판정선과 그 선 가격 대비 현재가 여유 → (선, 여유) | (None, None).
+
+    선 가격에서 쿠폰이 정확히 허들이 되므로 현재가 ÷ 선 가격 = 허들 ÷ 쿠폰:
+        통과선(국채×3)   여유 = 3r ÷ 쿠폰 − 1
+        1.5배선(국채×1.5) 여유 = 1.5r ÷ 쿠폰 − 1
+    양수 = 현재가가 선 가격보다 높다(그만큼 내려와야 선을 넘는다), 음수 = 낮다.
+    """
+    c, r = _num(coupon), _num(rate_pct)
+    if c is None or r is None or c <= 0 or r <= 0:
+        return None, None
+    r = r / 100.0
+    lines = {"pass": 3.0 * r / c - 1.0, "prove": 1.5 * r / c - 1.0}
+    line = min(lines, key=lambda k: abs(lines[k]))
+    return line, round(lines[line], 4)
 
 
 def untested_note(price, eps_ttm, g, rate, market, coupon):
@@ -473,6 +530,9 @@ def measure_bench(c, price, rates, prev_bench=None):
     if out["zone_buffett"] == ZONE_UNTESTED:
         out["note"] = untested_note(_num(price), eps_ttm, g, rate, market, coupon)
     out["pass_price"] = pass_price(eps_ttm, g, rate)
+    line, margin = edge_of(coupon, rate)
+    out["edge_line"], out["edge_margin"] = line, margin
+    out["borderline"] = bool(margin is not None and abs(margin) <= EDGE_BAND)
     out["cause"] = classify_cause(prev_bench, out)
     return out
 

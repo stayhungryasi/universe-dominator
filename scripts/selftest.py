@@ -1252,25 +1252,138 @@ def main():
 
     # ── 관측노트(parallax_journal) — 버핏존 전이 기록 규율 ──────────────────
     import parallax_journal as _pj
-    _mk_b = lambda t, z, cause=None: {"ticker": t, "bench": {
-        "zone_buffett": z, "cause": cause, "coupon10y": 0.13, "rate10y": 4.0, "g_used": 0.06}}
-    check("노트: untested→판정 은 사건 아님",
-          _pj.detect_buffett_events([_mk_b("A", "pass")], {"A": "untested"}), [])
-    check("노트: 판정→untested 도 사건 아님",
-          _pj.detect_buffett_events([_mk_b("A", "untested")], {"A": "pass"}), [])
-    check("노트: cause=scale 은 사건 아님",
-          _pj.detect_buffett_events([_mk_b("A", "pass", "scale")], {"A": "prove_growth"}), [])
-    check("노트: 변화 없으면 침묵",
-          _pj.detect_buffett_events([_mk_b("A", "pass", "price")], {"A": "pass"}), [])
-    check("노트: 첫 관측은 침묵",
-          _pj.detect_buffett_events([_mk_b("A", "pass", "price")], {}), [])
-    _bev = _pj.detect_buffett_events([_mk_b("A", "pass", "price")], {"A": "prove_growth"})
-    check("노트: 실제 전이는 1건 기록", len(_bev), 1)
-    check("노트: 버핏존 문구 형식", _bev[0]["text"],
-          "A 버핏존 prove_growth→pass · coupon10y 13.0% vs 10y×3 12.0% · g=6.0%")
     check("노트: 괴리존과 서명이 겹치지 않는다",
           _pj.sig("A", "x", "y", "2026-08-30") != _pj.sig("A", "x", "y", "2026-08-30", "buffett"),
           True)
+
+    # ── 버핏존 전이 요동 (2026-09-25 legend-audit A) ────────────────────────
+    # 막으려는 것 한 문장: **판정선 위 종목의 하루짜리 흔들림이 사건으로 기록·발송되는 것.**
+    # ① 원인 오분류 재현 — TSM 9/24 23:25 → 9/25 10:50 실측값 그대로.
+    #    EPS 는 환율로 13.44→13.58 흔들렸을 뿐(통과 쪽으로 +1.0%), 존을 민 것은
+    #    금리 4.96→5.11(+15bp)·주가 +1.5% 다. 예전 규칙은 EPS 가 달라졌다는 이유만으로
+    #    scale 을 매겨 이 전이를 기록 대상에서 조용히 뺐다.
+    _tsm0 = {"eps_adj_ttm": 13.44, "g_used": 0.175, "guard": False,
+             "price": 444.33, "rate10y": 4.96}
+    _tsm1 = {"eps_adj_ttm": 13.58, "g_used": 0.175, "guard": False,
+             "price": 451.15, "rate10y": 5.11}
+    check("A 원인: TSM 9/25 는 금리(EPS 환율 흔들림을 scale 로 오분류 금지)",
+          _fb.classify_cause(_tsm0, _tsm1), "rate")
+    check("A 원인: EPS 가 크게 바뀌면 여전히 scale(재측정)",
+          _fb.classify_cause(_tsm0, dict(_tsm1, eps_adj_ttm=9.0)), "scale")
+    check("A 원인: g 가 바뀌면 scale",
+          _fb.classify_cause(_tsm0, dict(_tsm0, g_used=0.10, price=450.0)), "scale")
+    check("A 원인: 이익 결측 전환은 scale(자가 끊김)",
+          _fb.classify_cause(_tsm0, dict(_tsm0, eps_adj_ttm=None)), "scale")
+    # ② 경계 여유 — TSM 9/25 실측: 현재가가 통과가격보다 1.5% 높다
+    _tsm_it = {"ticker": "TSM", "type": "플라이트세이프티형",
+               "buffett": {"eps_adj_ttm": {"value": 13.58}, "g_cagr3y": 0.191,
+                           "g_forward": 0.175}}
+    _tb = _fb.measure_bench(_tsm_it, 451.15, {"UST10": 5.11})
+    check("A 경계: TSM 은 통과선 기준", _tb.get("edge_line"), "pass")
+    check("A 경계: TSM 여유 +1.5%", round(_tb.get("edge_margin") or 0, 3), 0.015)
+    check("A 경계: ±5% 안쪽이면 경계", _tb.get("borderline"), True)
+    check("A 경계: 멀리 떨어지면 경계 아님",
+          _fb.measure_bench(_tsm_it, 300.0, {"UST10": 5.11}).get("borderline"), False)
+
+    # ③ 2거래일 확정 — 9/21(월)~9/25(금) 평일. 하루짜리 역전은 사건이 아니다.
+    def _bi(z, px, r=4.96, eps=13.44, t="TSM", margin=0.01):
+        return [{"ticker": t, "bench": {
+            "zone_buffett": z, "price": px, "rate10y": r, "eps_adj_ttm": eps,
+            "g_used": 0.175, "guard": False, "coupon10y": 0.15,
+            "edge_line": "pass", "edge_margin": margin}}]
+    _step = getattr(_pj, "step_buffett", None)
+    if _step is None:
+        check("A 확정: step_buffett 존재(2거래일 확정 규칙)", None, "step_buffett")
+    else:
+        _s, _e, _l = _step(None, _bi("pass", 440.0), "2026-09-21")
+        check("A 확정: 첫 관측은 기준선만", _e, [])
+        _s, _e, _l = _step(_s, _bi("prove_growth", 452.0), "2026-09-22")
+        check("A 확정: 1일째는 사건 아님(경계 로그)",
+              (_e, any("경계" in x and "1/2" in x for x in _l)), ([], True))
+        _s2, _e2, _l2 = _step(_s, _bi("pass", 445.0), "2026-09-23")
+        check("A 확정: 1일 만의 역전은 기록 없이 복귀 로그",
+              (_e2, any("복귀" in x for x in _l2)), ([], True))
+        # 같은 날 세 번 돌아도 확인 일수는 1 — 거래일당 1회
+        _s3, _e3, _ = _step(_s, _bi("prove_growth", 452.0), "2026-09-22")
+        _s3, _e3, _ = _step(_s3, _bi("prove_growth", 453.0), "2026-09-22")
+        check("A 확정: 같은 날 재실행은 확인 일수를 늘리지 않는다",
+              (_e3, _s3["cand"]["TSM"]["days"]), ([], 1))
+        _s4, _e4, _ = _step(_s, _bi("prove_growth", 455.0), "2026-09-23")
+        check("A 확정: 2거래일 연속이면 정확히 1건", len(_e4), 1)
+        check("A 확정: 확정 후 기준선이 새 존으로", _s4["zones"]["TSM"], "prove_growth")
+        _txt = (_e4 or [{}])[0].get("text", "")
+        check("A 문구: 여유%와 원인을 함께 적는다",
+              ("통과가격보다 1.0% 높음" in _txt, "원인 주가" in _txt), (True, True))
+        check("A 문구: 기계 필드명 0건",
+              [k for k in ("coupon10y", "10y×3", "prove_growth", "bond_inferior", "edge_",
+                           "rate10y", "eps_adj", "g_used", "guard") if k in _txt], [])
+        # 주말은 확인 일수를 움직이지 않는다 — 9/25(금) 1일째 → 9/26(토) 동결 → 9/28(월) 확정
+        _w, _, _ = _step(None, _bi("pass", 440.0), "2026-09-24")
+        _w, _, _ = _step(_w, _bi("prove_growth", 452.0), "2026-09-25")
+        _w, _we, _ = _step(_w, _bi("prove_growth", 452.0), "2026-09-26")
+        check("A 확정: 주말 회차는 확정하지 않는다", _we, [])
+        _w, _we, _ = _step(_w, _bi("prove_growth", 452.0), "2026-09-28")
+        check("A 확정: 다음 평일에 확정", len(_we), 1)
+        # 금리 원인 · 10bp 미만 → 이틀이 지나도 경계(기록 보류)
+        _r, _, _ = _step(None, _bi("pass", 440.0, r=4.95), "2026-09-21")
+        _r, _, _ = _step(_r, _bi("prove_growth", 440.0, r=5.00), "2026-09-22")
+        _r, _re, _rl = _step(_r, _bi("prove_growth", 440.0, r=5.02), "2026-09-23")
+        check("A 확정: 금리 원인 10bp 미만은 이틀째도 보류",
+              (_re, any("10bp" in x for x in _rl)), ([], True))
+        _r, _re, _ = _step(_r, _bi("prove_growth", 440.0, r=5.06), "2026-09-24")
+        check("A 확정: 금리가 10bp 이상 움직이면 확정", len(_re), 1)
+        # 눈금 변경(scale)은 재기준만 — 이틀이 지나도 사건 없음
+        _c, _, _ = _step(None, _bi("pass", 440.0), "2026-09-21")
+        _c, _ce, _ = _step(_c, _bi("prove_growth", 440.0, eps=9.0), "2026-09-22")
+        _c, _ce2, _ = _step(_c, _bi("prove_growth", 440.0, eps=9.0), "2026-09-23")
+        check("A 확정: 눈금 변경은 사건 아님(재기준)", (_ce, _ce2), ([], []))
+        # 미검정이 낀 전이는 사건 아님(종전 규율 유지)
+        _u, _, _ = _step(None, _bi("untested", 440.0), "2026-09-21")
+        _u, _ue, _ = _step(_u, _bi("pass", 440.0), "2026-09-22")
+        _u, _ue2, _ = _step(_u, _bi("pass", 440.0), "2026-09-23")
+        check("A 확정: 미검정→판정 은 사건 아님", (_ue, _ue2), ([], []))
+        _u, _ue3, _ = _step(_u, _bi("untested", 440.0), "2026-09-24")
+        _u, _ue4, _ = _step(_u, _bi("untested", 440.0), "2026-09-25")
+        check("A 확정: 판정→미검정 도 사건 아님", (_ue3, _ue4), ([], []))
+
+    # ④ DM — 소장 DM 전용 · 공개 폴백 없음 · 같은 날 1회
+    import types as _ty2
+    _fk = _ty2.ModuleType("send_telegram_briefing")
+    _fk.send_telegram = lambda tok, chat, text: _dm_box.append((chat, text))
+    _fk.esc = lambda s: s
+    _dm_box = []
+    _notify = getattr(_pj, "notify_dm", None)
+    if _notify is None:
+        check("A DM: notify_dm 존재", None, "notify_dm")
+    else:
+        import os as _os3
+        _o_mod2 = sys.modules.get("send_telegram_briefing")
+        _o_env = {k: _os3.environ.get(k) for k in
+                  ("TELEGRAM_BOT_TOKEN", "TELEGRAM_ALERT_CHAT_ID", "TELEGRAM_CHAT_ID")}
+        try:
+            sys.modules["send_telegram_briefing"] = _fk
+            _ev1 = [{"ticker": "TSM", "before": "pass", "after": "prove_growth", "text": "t"}]
+            _os3.environ["TELEGRAM_BOT_TOKEN"] = "tok"
+            _os3.environ["TELEGRAM_CHAT_ID"] = "@public"
+            _os3.environ.pop("TELEGRAM_ALERT_CHAT_ID", None)
+            _st_dm = {}
+            check("A DM: 수신처 없으면 보내지 않는다(공개 폴백 없음)",
+                  (_notify(_ev1, _st_dm, "2026-09-25"), _dm_box), (0, []))
+            _os3.environ["TELEGRAM_ALERT_CHAT_ID"] = "dm-1"
+            check("A DM: DM 으로 1건", (_notify(_ev1, _st_dm, "2026-09-25"),
+                                         [c for c, _ in _dm_box]), (1, ["dm-1"]))
+            check("A DM: 같은 날 재실행은 재발송 안 함",
+                  (_notify(_ev1, _st_dm, "2026-09-25"), len(_dm_box)), (0, 1))
+        finally:
+            for _k, _v in _o_env.items():
+                if _v is None:
+                    _os3.environ.pop(_k, None)
+                else:
+                    _os3.environ[_k] = _v
+            if _o_mod2 is None:
+                sys.modules.pop("send_telegram_briefing", None)
+            else:
+                sys.modules["send_telegram_briefing"] = _o_mod2
 
     # ── 정비 관제탑(pipeline_sentinel) 판정 로직 — 침묵 실패 감시망의 자체 검증 ──
     # 경보가 '울려야 할 때만' 울리는지. 순수 함수만 부르므로 부작용·네트워크 없음.

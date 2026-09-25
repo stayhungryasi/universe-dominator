@@ -1517,6 +1517,21 @@ function lgPassPrice(x, b){
     (diff * 100).toFixed(0) + '%</div>';
 }
 
+/* 경계 — 판정선 가격에서 ±5% 안쪽. 판정을 바꾸지 않고 "선 위에 서 있다"는 사실만 말한다.
+   문구는 측정층이 잰 상태(어느 선·여유 몇 %)에서 만든다. 선 이름을 매핑하는 게 아니라
+   모르는 선이면 아무것도 적지 않는다 — 내부 이름이 화면으로 샐 길이 없다. */
+const LG_LINE_KO = { pass: '통과가격', prove: '국채 1.5배선 가격' };
+function lgEdge(b){
+  if (!b.borderline || b.edge_margin == null || !LG_LINE_KO[b.edge_line]) return '';
+  const m = b.edge_margin;
+  const txt = Math.abs(m) < 0.0005 ? '현재가가 ' + LG_LINE_KO[b.edge_line] + '와 같음'
+    : '현재가가 ' + LG_LINE_KO[b.edge_line] + '보다 ' + (Math.abs(m) * 100).toFixed(1) + '% ' +
+      (m > 0 ? '높음' : '낮음');
+  return '<span class="lg-auto" title="판정선 가격의 ±5% 안쪽 — 주가·금리의 작은 움직임에도 ' +
+    '판정이 바뀔 수 있습니다. 존 전이는 2거래일 연속 확인된 것만 기록합니다.">경계</span>' +
+    '<div class="lg-sub">' + esc(txt) + '</div>';
+}
+
 /* 계산 전개 — 결론만 보여주면 눈금을 못 되짚는다. 한 줄로 전 과정을 편다. */
 function lgCalcLine(b){
   if (b.coupon10y == null || b.ey == null) return '';
@@ -1609,6 +1624,7 @@ function lgRow(x, lg){
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다
       (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">가정 약함</span>' : '') +
+      lgEdge(b) +
       (function(){ const n = lgNote(b, j);
         return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
   '</tr>' + detail;
