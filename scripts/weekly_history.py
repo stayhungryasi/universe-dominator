@@ -5,8 +5,9 @@ weekly_history.py — 주간 변동 자동 감지 → History entry 생성
   1. 오늘 스냅샷과 7일 전 스냅샷을 비교
   2. 지구(earth) 지역 기준으로 진입/이탈/순위변동/시총변동 감지
   3. history-top20.json 의 entries 맨 앞에 새 entry 추가
-  4. 잠재지배자(latent)는 큐레이션 영역이라 자동 비교 대상에서 제외
-     → 대신 latest.json의 latent 목록 변동만 가볍게 기록
+  4. 잠재지배자(latent): 편입·제외는 data/latent_state.json 의 **확정 전이**만 사건으로
+     기록한다(2026-09-25). 스냅샷 두 장의 차이는 그날의 요동일 수 있기 때문이다.
+     순위·모멘텀·시총 변동은 스냅샷 비교, 문턱에 걸린 종목은 '경계 관찰' 한 줄.
 
 실행: 토요일에만 (워크플로우에서 요일 체크)
 
@@ -25,6 +26,7 @@ SNAP_DIR = HERE / "data" / "snapshots"
 LATEST_PATH = HERE / "data" / "latest.json"
 HIST_TOP20_PATH = HERE / "data" / "history-top20.json"
 HIST_LATENT_PATH = HERE / "data" / "history-latent.json"
+LATENT_STATE_PATH = HERE / "data" / "latent_state.json"
 
 REGION_LABELS = {
     "earth": "지구", "us": "미국", "korea": "한국", "japan": "일본",
@@ -253,6 +255,97 @@ def build_latent_items(d, curr_snap):
     return items
 
 
+def load_latent_state():
+    """명단 관성 상태(generate_candidates 가 씀). 없거나 깨졌으면 None — 조용히 넘기지 않는다."""
+    if not LATENT_STATE_PATH.exists():
+        print("[정보] 잠재지배자: latent_state.json 없음 — 편입·제외 사건은 기록하지 않음"
+              "(스냅샷 두 장 비교는 폐지)")
+        return None
+    try:
+        st = json.loads(LATENT_STATE_PATH.read_text(encoding="utf-8"))
+        return st if isinstance(st, dict) else None
+    except Exception as e:
+        print(f"[warn] latent_state.json 읽기 실패({e}) — 편입·제외 사건 기록 생략")
+        return None
+
+
+def confirmed_transitions(state, prev_date, curr_date):
+    """이번 주 구간(prev_date, curr_date]에 확정된 전이만. 스냅샷 차이는 사건이 아니다."""
+    return [t for t in (state or {}).get("transitions", [])
+            if prev_date < (t.get("date") or "") <= curr_date]
+
+
+def _short_date(dstr):
+    dt = datetime.strptime(dstr, "%Y-%m-%d")
+    return f"{dt.month}.{dt.day}"
+
+
+def build_transition_items(trans, curr_snap):
+    """확정 전이 → 이력 문구. 사유는 전이에 실린 숫자에서 만든다(내부 문자열을 옮기지 않는다)."""
+    items, entered, grads = [], [], []
+    earth = _earth_tickers(curr_snap)
+    for t in trans:
+        name, when = t.get("name") or t.get("ticker", ""), _short_date(t["date"])
+        if t.get("dir") == "in":
+            entered.append(t)
+            facts = [f"{t['rank']}위"] if t.get("rank") else []
+            if t.get("mc"):
+                facts.append(fmt_mc(t["mc"]))
+            if t.get("momentum_1y") is not None:
+                facts.append(f"1Y {t['momentum_1y']:+}%")
+            if t.get("replacing_name"):
+                why = f"{t['replacing_name']} 자리 교체 · 우위 {t.get('swap_streak', '?')}거래일 연속"
+            else:
+                why = f"기준 충족 {t.get('streak_in', '?')}거래일 연속"
+            fact = f"(<span class='em-up'>{', '.join(facts)}</span>) " if facts else ""
+            items.append(f"<strong>{name}</strong> 잠재지배자 신규 편입 {fact}— {why}, {when} 확정")
+            continue
+        tk = t.get("ticker")
+        if tk in earth:
+            grads.append(t)
+            items.append(f"<strong>{name}</strong> — "
+                         f"<span class='em-up'>★ TOP 20 졸업 (글로벌 {earth[tk]}위)</span>")
+            continue
+        if t.get("replaced_by_name"):
+            why = f"{t['replaced_by_name']}에 자리 교체"
+        elif t.get("carried_days"):
+            why = f"데이터 결측 {t['carried_days']}거래일 연속"
+        elif t.get("streak_out"):
+            why = f"기준 미달 {t['streak_out']}거래일 연속"
+        else:
+            why = None
+        tail = f" — {why}, {when} 확정" if why else f", {when} 확정"
+        items.append(f"<strong>{name}</strong> 잠재지배자 제외{tail}")
+    return items, entered, grads
+
+
+def build_watch_line(state):
+    """'경계 관찰' 한 줄 — 제외 카운트가 도는 멤버와 대기 중인 후보. 낱말은 상태 숫자에서 만든다."""
+    if not state:
+        return None
+    lim = state.get("limits") or {}
+    members = state.get("members") or {}
+    parts = []
+    for tk, m in sorted(members.items(), key=lambda kv: -max(kv[1].get("streak_out", 0),
+                                                               kv[1].get("carried_days", 0))):
+        nm = m.get("name") or tk
+        if m.get("carried_days"):
+            parts.append(f"<strong>{nm}</strong> 데이터 결측 {m['carried_days']}/{lim.get('miss', '?')}")
+        elif m.get("streak_out"):
+            parts.append(f"<strong>{nm}</strong> 제외 카운트 {m['streak_out']}/{lim.get('out', '?')}")
+    full = len(members) >= int(lim.get("cap", 14))
+    for tk, c in sorted((state.get("candidates") or {}).items(),
+                        key=lambda kv: kv[1].get("rank") or 999):
+        nm = c.get("name") or tk
+        if c.get("streak_in", 0) < int(lim.get("in", 3)):
+            parts.append(f"<strong>{nm}</strong> 편입 카운트 {c.get('streak_in', 0)}/{lim.get('in', '?')}")
+        elif full and c.get("swap_streak"):
+            parts.append(f"<strong>{nm}</strong> 교체 카운트 {c['swap_streak']}/{lim.get('swap_days', '?')}")
+        elif full:
+            parts.append(f"<strong>{nm}</strong> 기준 충족 {c.get('streak_in')}거래일 · 빈자리 대기")
+    return " · ".join(parts) if parts else None
+
+
 def build_latent_extra_blocks(curr_latent, d):
     """잠재지배자 부가 블록: 섹터 분포 + 관전 포인트 (모두 데이터 기반 자동)."""
     blocks = []
@@ -383,30 +476,41 @@ def main():
         print("[정보] 우주지배자: 이번 주 유의미한 변동 없음")
 
     # ── 잠재지배자 (latent) ──
+    # 편입·제외는 명단 상태의 확정 전이만 적는다. 9/19 이력은 스냅샷 두 장을 비교해
+    # "ARM 편입·KIOXIA 제외"라 적었지만 9/21 부터 둘 다 명단에 있었다(경계 요동).
     prev_latent = prev_snap.get("latent", [])
     curr_latent = curr_snap.get("latent", [])
-    if not prev_latent:
-        print("[정보] 잠재지배자: 지난주 스냅샷에 latent 없음 — 다음 주부터 자동 기록 시작")
-    elif not curr_latent:
-        print("[정보] 잠재지배자: 현재 목록 비어있음 — 건너뜀")
-    else:
+    lstate = load_latent_state()
+    trans = confirmed_transitions(lstate, prev_date, curr_date)
+    litems, entered, grads = build_transition_items(trans, curr_snap)
+    if prev_latent and curr_latent:
         dl = diff_latent(prev_latent, curr_latent)
-        litems = build_latent_items(dl, curr_snap)
-        if litems:
-            lentry = _make_entry(litems, prev_date, curr_date, "잠재지배자 주간 변동 (자동 감지)")
-            lentry["blocks"].extend(build_latent_extra_blocks(curr_latent, dl))
-            fx = _fx_block()
-            if fx:
-                lentry["blocks"].append(fx)
-            _write_history(HIST_LATENT_PATH, {
-                "page_title": "잠재지배자 변동 이력",
-                "page_desc": "차세대 우주지배자 후보의 시점별 변동 기록",
-                "entries": [],
-            }, lentry)
-            _preview("잠재지배자 History", litems)
-        else:
-            print("[정보] 잠재지배자: 이번 주 변동 없음")
-
+        dl["entered"], dl["exited"] = [], []      # 명단 출입은 위의 확정 전이만
+        litems += build_latent_items(dl, curr_snap)
+    else:
+        print("[정보] 잠재지배자: 비교할 스냅샷 latent 없음 — 순위·모멘텀 변동 생략")
+    watch = build_watch_line(lstate)
+    if litems or watch:
+        lentry = _make_entry(litems, prev_date, curr_date, "잠재지배자 주간 변동 (자동 감지)")
+        if not litems:
+            lentry["blocks"] = []
+        if watch:
+            lentry["blocks"].append({"type": "items", "label": "경계 관찰", "items": [watch]})
+        if curr_latent:
+            lentry["blocks"].extend(build_latent_extra_blocks(
+                curr_latent, {"entered": entered,
+                              "exited": [dict(g, _grad=True) for g in grads]}))
+        fx = _fx_block()
+        if fx:
+            lentry["blocks"].append(fx)
+        _write_history(HIST_LATENT_PATH, {
+            "page_title": "잠재지배자 변동 이력",
+            "page_desc": "차세대 우주지배자 후보의 시점별 변동 기록",
+            "entries": [],
+        }, lentry)
+        _preview("잠재지배자 History", litems + ([watch] if watch else []))
+    else:
+        print("[정보] 잠재지배자: 이번 주 변동 없음")
 
 if __name__ == "__main__":
     main()

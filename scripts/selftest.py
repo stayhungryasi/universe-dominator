@@ -1666,6 +1666,41 @@ def main():
     check("잠재 ⓑ 시드: 기존 14종 전원 멤버",
           sorted((_stb or {}).get("members", {})) == sorted(_T14), True)
 
+
+    # ⓒ 이력은 확정 전이만 — 하루 빠졌다 돌아온 종목에 '제외'를 적지 않는다
+    #   T07 이 9/21(월) 하루만 기준 미달 → 그날 주간 이력 생성 → 9/22 복귀
+    _lc, _hc, _, _stc, _ = _lat_sim(
+        _WEEK, lambda i, tk: (30 + int(tk[1:]) * 8, 40 if (tk == "T07" and i == 5) else 150),
+        _T14, _T14, history_on="2026-09-21")
+    _ent = ((_hc or {}).get("entries") or [{}])[0]
+    _ev = [it for b in _ent.get("blocks", []) if b.get("type") == "items"
+           and "경계" not in (b.get("label") or "") for it in b.get("items", [])]
+    check("잠재 ⓒ 하루 이탈 종목에 '제외' 이력 없음",
+          [it for it in _ev if "Tick07" in it and "제외" in it], [])
+    _watch = [it for b in _ent.get("blocks", []) if "경계" in (b.get("label") or "")
+              for it in b.get("items", [])]
+    check("잠재 ⓒ 경계 관찰에 제외 카운트 표기",
+          any("Tick07" in it and "1/5" in it for it in _watch), True)
+    check("잠재 ⓒ 복귀 후 멤버 유지·전이 기록 없음",
+          ("T07" in _lc[-1],
+           [t for t in (_stc or {}).get("transitions", []) if t.get("ticker") == "T07"]),
+          (True, []))
+    # 거꾸로, 확정 전이는 반드시 적힌다 — 사건을 통째로 삼키는 이력도 감시자 실격이다
+    #   T03 이 첫날부터 미달(9/18 5거래일째 제외) · T15 가 빈자리로 편입(9/16 3거래일째)
+    _, _hp, _, _, _ = _lat_sim(
+        _WEEK[:6], lambda i, tk: (30 + int(tk[1:]) * 8, 40 if tk == "T03" else 150),
+        _T14[:13], _T14[:13] + ["T15"], history_on="2026-09-21")
+    _evp = [it for b in ((_hp or {}).get("entries") or [{}])[0].get("blocks", [])
+            if b.get("type") == "items" and "경계" not in (b.get("label") or "")
+            for it in b.get("items", [])]
+    check("잠재 ⓒ 확정 제외는 사유와 함께 기록",
+          any("Tick03" in it and "제외" in it and "5거래일" in it for it in _evp), True)
+    check("잠재 ⓒ 확정 편입은 사유와 함께 기록",
+          any("Tick15" in it and "편입" in it and "3거래일" in it for it in _evp), True)
+    check("잠재 ⓒ 화면 문구에 기계 필드명 없음",
+          [it for it in _ev + _watch
+           if any(k in it for k in ("streak", "carried", "pending", "watch"))], [])
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)

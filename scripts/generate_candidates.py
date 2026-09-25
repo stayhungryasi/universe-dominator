@@ -487,7 +487,7 @@ def run_live(preview=False):
     if preview:
         write_preview(cards)          # 미리보기는 상태를 전진시키지 않는다
         return
-    save_state(state)
+    save_state(state, lim)
     if not cards:
         print("[정보] 표시할 카드 0개 — latent 유지(덮어쓰지 않음)")
         return
@@ -547,11 +547,12 @@ def seed_state(cards, crit):
             "candidates": {}, "transitions": []}
 
 
-def save_state(state):
+def save_state(state, lim):
     out = {"_설명": ("잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. "
                    "base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).")}
     out.update(state)
     out["generated_at"] = TODAY.isoformat()
+    out["limits"] = lim            # 주간 이력의 '경계 관찰' 문구가 이 숫자로 분모를 만든다
     out["transitions"] = (state.get("transitions") or [])[-TRANSITIONS_KEEP:]
     STATE_PATH.write_text(json.dumps(out, ensure_ascii=False, indent=1) + chr(10), encoding="utf-8")
     print(f"[OK] latent_state.json 저장: 멤버 {len(state['members'])} · 대기 {len(state['candidates'])}")
