@@ -92,6 +92,30 @@ def load_auto(path=None):
         return {}
 
 
+def _day(v):
+    """날짜 문자열 앞 10자(YYYY-MM-DD)만 — 형식이 아니면 None."""
+    s = str(v or "")[:10]
+    return s if len(s) == 10 and s[4] == "-" and s[7] == "-" else None
+
+
+def asof_pair(human, auto):
+    """이 종목 판단 블록의 **갱신일** — 사람·자동 각각의 최신일과 둘 중 최신.
+
+    사람 날짜는 블록 as_of 와 사람 취재 칸(cagr3y_human 등)의 asof 중 최신,
+    자동 날짜는 자동 블록 as_of(측정 회차 날짜)다. 병합(merge_block)에서는 as_of 도
+    한 칸이라 사람 값이 이기는데, 그러면 매일 갱신되는 자동값이 사람의 옛 날짜 뒤에
+    가려진다(2026-09-25 legend-audit D). 시점은 병합하지 않고 둘 다 들고 다닌다.
+    """
+    human = human if isinstance(human, dict) else {}
+    auto = auto if isinstance(auto, dict) else {}
+    hs = [_day(human.get("as_of"))] + [_day(v.get("asof")) for v in human.values()
+                                        if isinstance(v, dict) and not is_null(v)]
+    hs = [d for d in hs if d]
+    h, a = (max(hs) if hs else None), _day(auto.get("as_of"))
+    both = [d for d in (h, a) if d]
+    return {"human": h, "auto": a, "latest": max(both) if both else None}
+
+
 def merged_items(cfg, auto=None):
     """config 의 items 를 **병합된 buffett 블록으로 바꿔** 돌려준다.
 
@@ -105,6 +129,7 @@ def merged_items(cfg, auto=None):
         block, origin = merge_block(it.get("buffett"), auto.get(it.get("ticker")))
         row["buffett"] = block
         row["buffett_origin"] = origin
+        row["buffett_asof"] = asof_pair(it.get("buffett"), auto.get(it.get("ticker")))
         out.append(row)
     return out
 

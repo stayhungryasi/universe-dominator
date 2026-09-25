@@ -405,6 +405,37 @@ def main():
           _bl.merged_items({"items": [{"ticker": "T1", "buffett": _human}]}, {})[0]["buffett"]
           ["risk5"], {"business_certainty": "✕"})
 
+    # ── 판단층 기준일 (2026-09-25 legend-audit D) ───────────────────────────
+    # 막으려는 것 한 문장: **매일 갱신되는 자동값이 사람 값의 날짜 뒤에 가려지는 것.**
+    # 실측: 화면 "판단층 기준일 2026-09-03" 은 사람 파일의 asof 였다. 자동층은 9/25 까지
+    # 매 회차 갱신됐고 스카우트도 9/25 에 돌았는데, 병합에서 as_of 는 사람 값이 이겨
+    # 행 비고까지 "기준 2026-09-03" 으로 굳어 있었다.
+    _ap = getattr(_bl, "asof_pair", None)
+    if _ap is None:
+        check("D 기준일: asof_pair 존재", None, "asof_pair")
+    else:
+        check("D 기준일: 사람·자동 각각의 최신일",
+              _ap({"as_of": "2026-09-03",
+                   "cagr3y_human": {"value": 19.1, "unit": "%", "asof": "2026-09-05"}},
+                  {"as_of": "2026-09-25"}),
+              {"human": "2026-09-05", "auto": "2026-09-25", "latest": "2026-09-25"})
+        check("D 기준일: 자동이 없으면 사람 날짜가 최신",
+              _ap({"as_of": "2026-09-03"}, None)["latest"], "2026-09-03")
+        _mi2 = _bl.merged_items({"items": [{"ticker": "T1", "buffett": {"as_of": "2026-09-03"}}]},
+                                {"T1": {"as_of": "2026-09-25"}})
+        check("D 기준일: 병합 행에 두 날짜가 함께 실린다",
+              (_mi2[0].get("buffett_asof") or {}).get("latest"), "2026-09-25")
+    import build_site as _bsd
+    _la = getattr(_bsd, "legend_asof", None)
+    if _la is None:
+        check("D 기준일: 헤더 기준일(legend_asof) 존재", None, "legend_asof")
+    else:
+        check("D 기준일: 헤더는 사람·자동 중 최신 갱신일",
+              _la({"asof": "2026-09-03"},
+                  {"generated_at": "2026-09-25T18:06:00+09:00", "scout_label": "2026-09-25 18:07"},
+                  [{"buffett_asof": {"human": "2026-09-05", "auto": "2026-09-25"}}]),
+              {"latest": "2026-09-25", "human": "2026-09-05", "auto": "2026-09-25"})
+
     # 회귀: 판단층이 두 겹이 돼도 **괴리 경로는 1원도 안 바뀐다**
     _cfg_m = _bl.merged_items(_cfg_all, {t["ticker"]: {"eps_adj_ttm": {"value": 99.0},
                                                        "roe_tangible": 0.5}

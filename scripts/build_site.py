@@ -430,12 +430,35 @@ def legend_rows(items):
             # 가드 근거 문장(사람 전용) — 없으면 null. 화면이 '미기재'를 상태로 말한다
             "guard_reason": reason.strip() if isinstance(reason, str) and reason.strip()
             else None,
-            # 취재가 끝나 값이 산출되면 비고에 "기준 {as_of} · {period}" 로 뜬다
-            "as_of": b.get("as_of"),
+            # 취재가 끝나 값이 산출되면 비고에 "기준 {as_of} · {period}" 로 뜬다.
+            # as_of 는 병합값(사람이 이긴다)이 아니라 **사람·자동 중 최신 갱신일**이다 —
+            # 자동층이 매일 다시 잰 값을 사람의 옛 날짜로 표시하지 않는다(legend-audit D)
+            "as_of": (it.get("buffett_asof") or {}).get("latest") or b.get("as_of"),
             "period": b.get("period"),
             "method": b.get("method"),
         }
     return legend
+
+
+def legend_asof(cfg, auto_doc, items):
+    """레전드 헤더의 '판단층 기준일' — 사람 값·자동 값 중 **최신 갱신일**(순수 함수).
+
+    예전엔 사람 파일의 asof(2026-09-03)만 보였다. 자동층은 full 마다 다시 재고 스카우트도
+    도는데 화면은 멈춘 것처럼 보였다. 날짜는 파일 시각(mtime)이 아니라 **내용 속
+    타임스탬프**에서 읽는다(CI 신선 체크아웃 지뢰).
+    """
+    def day(v):
+        s = str(v or "")[:10]
+        return s if len(s) == 10 and s[4] == "-" else None
+    hs = [day((cfg or {}).get("asof"))]
+    as_ = [day((auto_doc or {}).get("generated_at")), day((auto_doc or {}).get("scout_label"))]
+    for it in items or []:
+        pair = it.get("buffett_asof") or {}
+        hs.append(day(pair.get("human")))
+        as_.append(day(pair.get("auto")))
+    h = max([d for d in hs if d], default=None)
+    a = max([d for d in as_ if d], default=None)
+    return {"latest": max([d for d in (h, a) if d], default=None), "human": h, "auto": a}
 
 
 def build_observatory():
@@ -524,6 +547,7 @@ def build_observatory():
     # 측정층 산출물(buffett.json)에는 사람이 취재한 전환율·risk5 가 실리지 않는다.
     # 여기서 기계가 판정하지 않는다 — 사람이 적어 넣은 값을 그대로 나른다.
     legend = {}
+    legend_meta = {}
     lc_path = DATA_DIR / "buffett_config.json"
     if lc_path.exists():
         try:
@@ -535,6 +559,12 @@ def build_observatory():
                 print(f"[warn] 판단층 병합 실패 → 사람 판단층만 표시: {e}")
                 _items = _cfg.get("items", [])
             legend = legend_rows(_items)
+            _auto_doc = {}
+            try:
+                _auto_doc = json.loads((DATA_DIR / "buffett_auto.json").read_text(encoding="utf-8"))
+            except Exception as e:
+                print(f"[warn] buffett_auto.json 읽기 실패 — 기준일은 사람 값만: {e}")
+            legend_meta = legend_asof(_cfg, _auto_doc, _items)
         except Exception as e:
             print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")
     # 🛰 무인 탐사선 — agent-research/ 를 **빌드 시점에** 정적 렌더한다.
@@ -553,6 +583,7 @@ def build_observatory():
         "dissected": dissected,
         "buffett": buffett,
         "legend": legend,
+        "legend_meta": legend_meta,
         "agent": agent_html,
     }
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))

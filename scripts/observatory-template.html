@@ -1701,7 +1701,14 @@ function renderLegend(){
     (bar == null ? '—' : bar.toFixed(1) + '%') + '</span>');
   html += '<div class="lg-rates">' + parts.join('<span class="r-sep">·</span>') + '</div>';
 
-  html += '<div class="px-asof">판단층 기준일 ' + esc(b.asof || '—') +
+  // 판단층 기준일 = 사람 값·자동 값 중 최신 갱신일. 둘을 함께 적는다 — 자동이 매일
+  // 갱신돼도 사람 취재가 오래됐으면 그 사실 역시 보여야 한다(자동에 사람 권위를 씌우지 않는다).
+  // (시차 관측 탭의 기준일은 그대로 사람 파일 asof 다 — 정당 MAX 는 사람만 적는 값이다)
+  const lm = DATA.legend_meta || {};
+  const asofTxt = lm.latest
+    ? lm.latest + ' (자동 ' + (lm.auto || '—') + ' · 사람 ' + (lm.human || '—') + ')'
+    : (b.asof || '—');
+  html += '<div class="px-asof">판단층 기준일 ' + esc(asofTxt) +
     ' · 측정 ' + esc(b.generated_label || '—') + ' KST' +
     (rates.source ? ' · 10년물 ' + esc(rates.source) : '') +
     (rates.as_of ? ' (' + esc(rates.as_of) + ')' : '') + '</div>';
