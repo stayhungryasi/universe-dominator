@@ -14,6 +14,12 @@ generate_candidates.py — 잠재지배자 후보 100% 순수 규칙 자동 선�
   data/latent_overrides.json 은 (선택) 종목별 해설/테마를 예쁘게 덮어쓸 뿐,
   선정 자체엔 영향을 주지 않습니다. 없어도 자동 템플릿 해설로 동작.
 
+  ★ 결측 보존 (2026-09-25, 9/13 13종 사고): 종목 페이지 파싱 실패는 '기준 미달'이
+    아니라 '모름'이다. 기존 명단 종목이 파싱에 실패하면 전일 카드를 그대로 승계하고
+    (carried), 결측_제외_연속일(기본 3) 거래일 연속일 때만 제외한다.
+    대량 실패(관측 절반 이상)나 유니버스 수집 실패는 개별 결측이 아니라 장애다 —
+    명단을 동결하고 fetch_status 원장에 http_error 로 남긴다(정비 관제탑이 읽는다).
+
   데모:      python generate_candidates.py --demo
   미리보기:  python generate_candidates.py --preview
   라이브:    python generate_candidates.py
@@ -41,6 +47,8 @@ PREVIEW_PATH = DATA_DIR / "latent_auto_preview.json"
 
 MAX_AUTO_FETCH = 60    # 종목 페이지 받을 최대 개수(부하 제한)
 FETCH_DELAY = 1.0
+MASS_FAIL_RATIO = 0.5  # 관측 중 파싱 실패가 이 비율 이상이면 장애 — 명단 동결
+LEDGER_LABEL = "잠재지배자 선정"   # fetch_status 원장 키: latent:잠재지배자 선정
 
 BASE = "https://companiesmarketcap.com"
 # 기준파일의 섹터 약칭 → (표시 테마, 카테고리 URL)
@@ -61,6 +69,7 @@ DEFAULT_CRITERIA = {
     "최대_후보수": 14,
     "지역TOP20_제외": True,
     "AI섹터": ["반도체", "소프트웨어", "AI", "테크", "전력", "인터넷"],
+    "결측_제외_연속일": 3,
 }
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -101,6 +110,25 @@ def load_criteria():
         except Exception as e:
             print(f"[warn] latent_criteria.json 읽기 실패 → 기본값 사용 ({e})", file=sys.stderr)
     return c
+
+
+def is_trading_day(day):
+    """KST 평일만 거래일로 센다. 주말 회차는 시세가 멈춰 있어 카운트를 움직이지 않는다."""
+    return datetime.strptime(day, "%Y-%m-%d").weekday() < 5
+
+
+def ledger(outcome, items):
+    """선정 결과를 fetch_status 원장에 남긴다 — **내용 기준**(파싱 결과), 파일 시각 아님.
+
+    ok: 기준 통과 종목 있음 · zero: 수집은 됐으나 통과 0 · http_error: 수집 자체가 무너짐.
+    원장 기록 실패가 선정을 막지는 않는다(관측은 관측, 기록은 기록).
+    """
+    try:
+        import feed_client
+        feed_client.record("latent", LEDGER_LABEL, outcome, None, items)
+        feed_client.flush()
+    except Exception as e:
+        print(f"[warn] fetch_status 기록 실패 ({e})", file=sys.stderr)
 
 
 # ───────────────────────── 네트워크 ─────────────────────────
@@ -344,6 +372,10 @@ def run_live(preview=False):
     cutoff = top20_cutoff()
 
     uni = scrape_universe(sectors)
+    if not uni:
+        print("[장애] AI 가치사슬 유니버스 수집 실패 — latent 유지(덮어쓰지 않음)")
+        ledger("http_error", 0)
+        return
     excl_label = "+".join(excl_regions)
     print(f"  AI 가치사슬 유니버스 {len(uni)}개 · 제외({excl_label} TOP20) {len(excluded)}개")
     pool = [c for tk, c in uni.items() if tk not in excluded and mc_floor <= c["mc"] < cutoff]
@@ -351,12 +383,14 @@ def run_live(preview=False):
     pool = pool[:MAX_AUTO_FETCH]
     print(f"  모멘텀 확인 대상 {len(pool)}개")
 
-    passed = []
+    prev_cards = {(c.get("ticker") or "").upper(): c for c in load_prev_latent()}
+    passed, failed = [], set()
     for c in pool:
         s = stock_stats(c)
         time.sleep(FETCH_DELAY)
         rank, mom = s["rank"], s["momentum"]
         if rank is None or mom is None:
+            failed.add((c["ticker"] or "").upper())
             print(f"  [skip] {c['name']}: 데이터 파싱 실패"); continue
         if not (rank_lo <= rank <= rank_hi):
             print(f"  [skip] {c['name']}: {rank}위 (범위 밖)"); continue
@@ -369,17 +403,57 @@ def run_live(preview=False):
         passed.append(c2)
         print(f"  [pass] {rank}위 {c['name']} ({c['theme']}) 1Y +{mom}%")
 
+    if pool and len(failed) >= len(pool) * MASS_FAIL_RATIO:
+        print(f"[장애] 파싱 실패 {len(failed)}/{len(pool)} — 개별 결측이 아니라 수집 붕괴."
+              " latent 유지(덮어쓰지 않음)")
+        ledger("http_error", len(passed))
+        return
+    if not passed:
+        print("[정보] 조건 통과 0개 — latent 유지(덮어쓰지 않음)")
+        ledger("zero", 0)
+        return
+    ledger("ok", len(passed))
+
     passed.sort(key=lambda c: c["rank"])
     passed = passed[:max_n]
     for c in passed:  # 최종 통과분만 다기간 모멘텀 조회 (≤최대후보수 회)
         c.update(fetch_multi_momentum(c["ticker"]))
         time.sleep(0.5)
     cards = [build_card(c, overrides) for c in passed]
+    # 결측 보존: 전일 명단 종목의 파싱 실패는 탈락이 아니라 승계
+    today = TODAY.strftime("%Y-%m-%d")
+    miss_limit = int(crit.get("결측_제외_연속일", 3))
+    for tk in sorted(failed & set(prev_cards)):
+        card = carry_card(prev_cards[tk], today)
+        if card["carried_days"] >= miss_limit:
+            print(f"  [제외] {card.get('name')}: 결측 {card['carried_days']}거래일 연속")
+            continue
+        print(f"  [승계] {card.get('name')}: 파싱 실패 → 전일 값 유지 "
+              f"(결측 {card['carried_days']}/{miss_limit})")
+        cards.append(card)
+    cards.sort(key=lambda c: c.get("rank") or 999)
+    cards = cards[:max_n]
     print(f"  최종 {len(cards)}개")
-    if not cards:
-        print("[정보] 조건 통과 0개 — latent 유지(덮어쓰지 않음)")
-        return
     (write_preview if preview else write_latent)(cards)
+
+
+def load_prev_latent():
+    try:
+        return json.loads(LATEST_PATH.read_text(encoding="utf-8")).get("latent") or []
+    except Exception:
+        return []
+
+
+def carry_card(prev, today):
+    """전일 카드를 그대로 승계한다. 결측 일수는 거래일마다 한 번만 센다(같은 날 재실행 멱등)."""
+    card = dict(prev)
+    days = int(prev.get("carried_days") or 0) if prev.get("carried") else 0
+    if prev.get("carried_on") != today and is_trading_day(today):
+        days += 1
+        card["carried_on"] = today
+    card["carried"] = True
+    card["carried_days"] = days
+    return card
 
 
 def run_demo():

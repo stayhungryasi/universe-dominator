@@ -1478,6 +1478,142 @@ def main():
     _broken = [(n, r.replace("ud-aurora-global-v1", "x")) for n, r in _pgs[:1]]
     check("관문: 마커를 지우면 반드시 실패한다", bool(_vp.check(_broken)), True)
 
+    # ── 잠재지배자 명단 요동 (2026-09-25) ────────────────────────────────────
+    # 막으려는 것 한 문장: **기준 경계에 선 종목이 하루 단위로 명단을 들락거려,
+    # 명단과 주간 이력이 실제로 일어나지 않은 편입·제외를 말하는 것.**
+    # 9/10~9/25 에 KIOXIA·ARM 이 하루 단위로 편입/제외를 반복했고, 9/19 이력은
+    # "ARM 편입·KIOXIA 제외"라 적었지만 9/21 부터 둘 다 명단에 있었다. 9/13 은
+    # 파싱 실패 1건이 그대로 명단 탈락이 되어 13종이었다.
+    # 판정부 단위가 아니라 **실제 진입점**(run_live·weekly_history.main)을 모의
+    # 네트워크로 돌린다 — 배선이 끊겨도 실패해야 하기 때문이다(2026-08-30 교훈).
+    import generate_candidates as _gc
+    import weekly_history as _wh
+    import feed_client as _fcl
+    import json as _jl
+    import tempfile as _tfl
+    import shutil as _shl
+    from unittest import mock as _mkl
+    from datetime import datetime as _dtl
+
+    def _lat_card(tk, rank):
+        return {"rank": rank, "ticker": tk, "name": "Tick" + tk[1:], "country": "🇺🇸",
+                "mc": 900 - int(tk[1:]) * 10, "momentum_1y": 150, "theme": "AI 반도체",
+                "story": "-", "auto": True}
+
+    def _lat_sim(days, stats_fn, members, tickers, history_on=None):
+        """모의 우주에서 run_live 를 날마다 돌린다.
+
+        stats_fn(i, tk) → (rank, 1Y모멘텀) | None(파싱 실패). 반환: 날별 명단,
+        이력 항목(history_on 날), 원장의 latent 기록, 상태 파일.
+        """
+        tmp = Path(_tfl.mkdtemp())
+        d = tmp / "data"
+        (d / "snapshots").mkdir(parents=True)
+        earth = [{"rank": i, "ticker": f"E{i:02d}", "name": f"E{i:02d}", "mc": 6000 - i}
+                 for i in range(1, 21)]
+        latest = {"meta": {}, "regions": {"earth": {"stocks": earth}},
+                  "latent": [_lat_card(tk, 30 + int(tk[1:]) * 8) for tk in members]}
+        (d / "latest.json").write_text(_jl.dumps(latest, ensure_ascii=False), encoding="utf-8")
+        uni = {tk: {"name": "Tick" + tk[1:], "ticker": tk, "mc": 900 - int(tk[1:]) * 10,
+                    "url": f"https://x.invalid/{tk}/marketcap/", "theme": "AI 반도체"}
+               for tk in tickers}
+        lists, hist, ledger = [], None, None
+        try:
+            for i, day in enumerate(days):
+                now = _dtl.strptime(day + " 12:00", "%Y-%m-%d %H:%M").replace(tzinfo=_gc.KST)
+                cur = _jl.loads((d / "latest.json").read_text(encoding="utf-8"))
+                for _k in [k for k in _fcl._buffer if k.startswith("latent:")]:
+                    _fcl._buffer.pop(_k)   # 원장 버퍼는 프로세스 전역 — 앞 모의일의 기록을 지운다
+                (d / "snapshots" / f"{day}.json").write_text(_jl.dumps(
+                    {"date": day, "regions": {"earth": earth},
+                     "latent": cur.get("latent", [])}, ensure_ascii=False), encoding="utf-8")
+
+                def _stats(row, _i=i):
+                    got = stats_fn(_i, row["ticker"])
+                    if got is None:
+                        return {"rank": None, "momentum": None, "flag": None, "mc": None}
+                    return {"rank": got[0], "momentum": got[1], "flag": "🇺🇸", "mc": None}
+
+                with _mkl.patch.object(_gc, "DATA_DIR", d), \
+                        _mkl.patch.object(_gc, "LATEST_PATH", d / "latest.json"), \
+                        _mkl.patch.object(_gc, "CRITERIA_PATH", d / "_none.json"), \
+                        _mkl.patch.object(_gc, "OVERRIDES_PATH", d / "_none.json"), \
+                        _mkl.patch.object(_gc, "PREVIEW_PATH", d / "preview.json"), \
+                        _mkl.patch.object(_gc, "STATE_PATH", d / "latent_state.json", create=True), \
+                        _mkl.patch.object(_gc, "TODAY", now), \
+                        _mkl.patch.object(_gc, "scrape_universe", lambda s: dict(uni)), \
+                        _mkl.patch.object(_gc, "stock_stats", _stats), \
+                        _mkl.patch.object(_gc, "fetch_multi_momentum",
+                                          lambda tk: {"m1": None, "m3": None, "m6": None}), \
+                        _mkl.patch.object(_fcl, "STATUS_PATH", d / "fetch_status.json"), \
+                        _mkl.patch.object(_gc.time, "sleep", lambda s: None):
+                    _gc.run_live()
+                lat = _jl.loads((d / "latest.json").read_text(encoding="utf-8"))["latent"]
+                lists.append(sorted(c["ticker"] for c in lat))
+                if history_on == day:
+                    with _mkl.patch.object(_wh, "SNAP_DIR", d / "snapshots"), \
+                            _mkl.patch.object(_wh, "LATEST_PATH", d / "latest.json"), \
+                            _mkl.patch.object(_wh, "HIST_TOP20_PATH", d / "h20.json"), \
+                            _mkl.patch.object(_wh, "HIST_LATENT_PATH", d / "hl.json"), \
+                            _mkl.patch.object(_wh, "LATENT_STATE_PATH", d / "latent_state.json",
+                                              create=True), \
+                            _mkl.patch.object(_wh, "TODAY_KST", now):
+                        try:
+                            _wh.main()
+                        except SystemExit:
+                            pass
+                    hp = d / "hl.json"
+                    hist = _jl.loads(hp.read_text(encoding="utf-8")) if hp.exists() else {}
+            sp = d / "fetch_status.json"
+            if sp.exists():
+                srcs = _jl.loads(sp.read_text(encoding="utf-8")).get("sources", {})
+                ledger = {k: v for k, v in srcs.items() if v.get("kind") == "latent"}
+            stp = d / "latent_state.json"
+            state = _jl.loads(stp.read_text(encoding="utf-8")) if stp.exists() else None
+            return lists, hist, ledger, state, lat
+        finally:
+            _shl.rmtree(tmp, ignore_errors=True)
+
+    _T14 = [f"T{i:02d}" for i in range(1, 15)]
+    _WEEK = ["2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18",
+             "2026-09-21", "2026-09-22"]
+
+    # ⓐ 파싱 실패는 탈락이 아니다 — 전일 값으로 승계 (9/13 13종 사고)
+    _base_rank = lambda tk: 30 + int(tk[1:]) * 8
+    _la, _, _lg, _, _lat = _lat_sim(
+        ["2026-09-14"],
+        lambda i, tk: None if tk == "T05" else (_base_rank(tk), 150),
+        _T14, _T14)
+    check("잠재 ⓐ 파싱 실패 1종: 명단 14종 유지", len(_la[0]), 14)
+    _t05 = [c for c in _lat if c["ticker"] == "T05"]
+    check("잠재 ⓐ 결측 종목은 전일 값 승계 표시",
+          bool(_t05) and _t05[0].get("carried") is True and _t05[0].get("carried_days") == 1,
+          True)
+    # 3거래일 연속 결측이면 그때 제외 (영구 승계 금지)
+    _la3, _, _, _, _ = _lat_sim(
+        _WEEK[:3], lambda i, tk: None if tk == "T05" else (_base_rank(tk), 150), _T14, _T14)
+    check("잠재 ⓐ 결측 1·2일째 유지 → 3일째 제외",
+          ["T05" in x for x in _la3], [True, True, False])
+    # 원장 배선: 내용 기준 outcome 이 fetch_status 에 kind=latent 로 남는다
+    check("잠재 ⓐ fetch_status 에 선정 결과 등재(ok)",
+          [v.get("outcome") for v in (_lg or {}).values()], ["ok"])
+    # 조건 통과 0개 → 명단 유지 + 원장에 zero (로그로만 남기지 않는다)
+    _lz, _, _lgz, _, _ = _lat_sim(["2026-09-14"], lambda i, tk: (_base_rank(tk), 10),
+                                  _T14, _T14)
+    check("잠재 ⓐ 통과 0개: 명단 유지", len(_lz[0]), 14)
+    check("잠재 ⓐ 통과 0개: 원장에 zero",
+          [v.get("outcome") for v in (_lgz or {}).values()], ["zero"])
+    # 대량 파싱 실패(구조 붕괴) → 개별 결측이 아니라 장애: 명단 동결 + http_error
+    _lm, _, _lgm, _, _ = _lat_sim(["2026-09-14"], lambda i, tk: None, _T14, _T14)
+    check("잠재 ⓐ 대량 파싱 실패: 명단 동결 + 원장 http_error",
+          (len(_lm[0]), [v.get("outcome") for v in (_lgm or {}).values()]),
+          (14, ["http_error"]))
+    # 변이(mutation): 원장 기록을 끊으면 위 검사가 **반드시** 실패해야 한다
+    with _mkl.patch.object(_fcl, "record", lambda *a, **k: None):
+        _, _, _lgx, _, _ = _lat_sim(["2026-09-14"], lambda i, tk: (_base_rank(tk), 150),
+                                    _T14, _T14)
+    check("잠재 ⓐ 변이: 원장 배선을 끊으면 검사가 잡는다", bool(_lgx), False)
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)
