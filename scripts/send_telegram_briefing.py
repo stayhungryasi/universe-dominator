@@ -50,6 +50,32 @@ def fmt_mc(mc):
     return f"${mc/1000:.2f}T" if mc >= 1000 else f"${mc:.0f}B"
 
 
+def macro_line(meta):
+    """💱 한 줄 — 헤더 시장 지표 띠와 **같은 5종·같은 순서·같은 표기**(2026-09-26).
+
+    공개 채널은 관측 결과만 싣는다 — **숫자만, 해석 문장 금지.** 표기 규칙(WTI(전일)·
+    결측 —)은 헤더를 만드는 build_site 의 함수를 그대로 쓴다(규칙 두 벌 금지).
+    지표가 하나도 없는 구 데이터면 종전 USD/KRW 한 줄로 돌아간다.
+    """
+    usd_krw = meta.get("usd_krw")
+    head = f"💱 USD/KRW {usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else ""
+    macro = meta.get("macro") if isinstance(meta.get("macro"), dict) else {}
+    if not any(isinstance(v, dict) and v.get("value") is not None for v in macro.values()):
+        return head
+    try:
+        import build_site as bs
+    except Exception as e:
+        print(f"[브리핑] 시장 지표 표기 함수 로드 실패 → USD/KRW 만 ({e})", file=sys.stderr)
+        return head
+    today = meta.get("fetched_date") or ""
+    bits = [head or "💱 USD/KRW —"]
+    for key, label, _url, fmt in bs.MACRO_BADGES:
+        e = macro.get(key) if isinstance(macro.get(key), dict) else {}
+        bits.append(f"{bs._macro_label(key, label, e, today)} "
+                    f"{bs._macro_value(e.get('value'), fmt)}")
+    return " · ".join(bits)
+
+
 def load_prev_earth(today_str):
     """어제 스냅샷의 지구 리스트 (전일 시총·순위 비교용)"""
     if not SNAP_DIR.exists():
@@ -216,10 +242,10 @@ def build_briefing():
     except Exception:
         pass
 
-    # ── 💱 환율 ──
-    usd_krw = meta.get("usd_krw")
-    if isinstance(usd_krw, (int, float)):
-        lines.append(f"💱 USD/KRW {usd_krw:,.2f}")
+    # ── 💱 환율 · 시장 지표 ──
+    ml = macro_line(meta)
+    if ml:
+        lines.append(ml)
         lines.append("")
 
     lines.append(f"🔭 오늘의 우주 전체 보기 → {SITE}")

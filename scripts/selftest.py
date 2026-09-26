@@ -2190,6 +2190,27 @@ def main():
         check("시장지표 ③: 관문 — 배지 하나 빠지면 그 이름으로 잡는다",
               _vpm.check([("a.html", _cut)]), {"a.html": ["배지 미30년"]})
 
+    # ── 아침 브리핑 시장 지표 한 줄 (2026-09-26) — 숫자만, 해석 금지 ─────────
+    import send_telegram_briefing as _tgm
+    _mlf = getattr(_tgm, "macro_line", None)
+    if _mlf is None:
+        check("브리핑: macro_line 존재", None, "macro_line")
+    else:
+        _mm = {"fetched_date": "2026-09-26", "usd_krw": 1391.5, "macro": {
+            "wti": {"value": 67.9, "as_of": "2026-09-22", "measured_at": "2026-09-26T08:20+09:00"},
+            "ust10": {"value": 5.11, "as_of": "2026-09-25", "measured_at": "2026-09-26T08:20+09:00"},
+            "ust30": {"value": 5.42, "as_of": "2026-09-25", "measured_at": "2026-09-26T08:20+09:00"},
+            "usd_jpy": {"value": None, "note": "취득 실패(http_error) — 이전 값 없음"}}}
+        _line = _mlf(_mm)
+        check("브리핑: 헤더와 같은 5종·순서·표기(결측 —)", _line,
+              "💱 USD/KRW 1,391.50 · WTI(전일) $67.90 · 미10년 5.11% · 미30년 5.42% · USD/JPY —")
+        check("브리핑: 숫자만 — 해석·사유 문장 없음",
+              [w for w in ("실패", "상승", "하락", "우려", "신호", "http", "note") if w in _line], [])
+        check("브리핑: 지표가 없는 구 데이터는 종전 한 줄",
+              _mlf({"usd_krw": 1391.5}), "💱 USD/KRW 1,391.50")
+        _bl_txt = __import__("inspect").getsource(_tgm.build_briefing)
+        check("브리핑: 본문 조립이 macro_line 을 쓴다(배선)", "macro_line(meta)" in _bl_txt, True)
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)
