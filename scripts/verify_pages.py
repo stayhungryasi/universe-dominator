@@ -22,14 +22,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 
-# 주입 5종의 흔적. build_site 의 상수를 가져오지 않고 **문자열로 다시 적는다.**
+# 주입 6종의 흔적(2026-09-26 시장 지표 띠 추가). build_site 의 상수를 가져오지 않고 **문자열로 다시 적는다.**
 MARKERS = {
     "ud-hdr-refine-v4": "헤더 일관성",
     "uv-presence": "접속자 카운터",
     "wide-fix": "광폭 레이아웃",
     "uv-policy-links": "푸터 정책 링크",
     "ud-aurora-global-v1": "오로라 팔레트",
+    "ud-macro-v1": "시장 지표 띠",
 }
+
+# 시장 지표 띠의 배지 5개 — 띠 마커만 있고 배지가 빠진 페이지를 잡는다(2026-09-26).
+# 역시 build_site 의 상수를 가져오지 않고 문자열로 다시 적는다.
+MACRO_BADGE_KEYS = {"usd_krw": "USD/KRW", "wti": "WTI", "ust10": "미10년",
+                    "ust30": "미30년", "usd_jpy": "USD/JPY"}
 
 # 리다이렉트 스텁처럼 레이아웃이 없는 파일. head 끝 태그가 없고 아주 작다.
 STUB_MAX_BYTES = 1000
@@ -53,6 +59,8 @@ def check(pages):
     bad = {}
     for name, raw in pages:
         missing = [ko for m, ko in MARKERS.items() if m not in raw]
+        missing += [f"배지 {ko}" for k, ko in MACRO_BADGE_KEYS.items()
+                    if f'data-mk="{k}"' not in raw]
         if "</hea" + "d>" not in raw:
             missing.append("head 끝 태그 없음")
         if missing:

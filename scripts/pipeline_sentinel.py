@@ -362,7 +362,7 @@ def judge_bots(cfg, today, step_outcomes, data_dir, now):
 
 _KIND_KO = {"signals": "신호", "companion": "동행", "rates": "금리",
             "research": "리서치", "scout": "취재", "finnhub_xbrl": "공시",
-            "latent": "잠재지배자"}
+            "latent": "잠재지배자", "macro": "시장지표"}
 
 
 def judge_feeds(status, state, today, cfg):

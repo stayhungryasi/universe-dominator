@@ -3,6 +3,7 @@ fetch_data.py — companiesmarketcap.com에서 데이터 수집
 v2: 이름·티커 분리 + 국기 이모지 도출 + 권역 순서 변경
 """
 import json
+import os
 import re
 import sys
 import time
@@ -558,27 +559,110 @@ def get_description(ticker):
 
 
 # ─────────────────── 환율 ───────────────────
-def fetch_exchange_rate():
-    """USD/KRW 환율. frankfurter.app(ECB 데이터) → exchangerate-api 백업.
-    실패 시 None."""
+def fetch_fx(to="KRW", lo=1000, hi=2500):
+    """USD/{to} 환율 — frankfurter.app(ECB 데이터) → exchangerate-api 백업.
+
+    → (값, outcome, 코드, 관측일, 출처). 값이 상식 범위(lo~hi) 밖이면 버린다.
+    outcome 은 fetch_status 원장 규약(ok · zero · http_error) — 응답은 왔는데
+    숫자가 없으면 zero 다(내용 기준).
+    """
     apis = [
-        "https://api.frankfurter.app/latest?from=USD&to=KRW",
-        "https://api.exchangerate-api.com/v4/latest/USD",
+        ("frankfurter", f"https://api.frankfurter.app/latest?from=USD&to={to}"),
+        ("exchangerate-api", "https://api.exchangerate-api.com/v4/latest/USD"),
     ]
-    for url in apis:
+    reached, last_code = False, None
+    for name, url in apis:
         try:
             r = requests.get(url, headers={"User-Agent": UA}, timeout=10)
+            reached, last_code = True, r.status_code
             if r.status_code == 200:
                 data = r.json()
-                # frankfurter: data["rates"]["KRW"]
-                # exchangerate-api: data["rates"]["KRW"]
-                rate = data.get("rates", {}).get("KRW")
-                if rate and 1000 < rate < 2500:
-                    print(f"[환율] {rate:.2f} ({url.split('/')[2]})")
-                    return float(rate)
+                # frankfurter·exchangerate-api 둘 다 data["rates"][통화]
+                rate = data.get("rates", {}).get(to)
+                if isinstance(rate, (int, float)) and lo < rate < hi:
+                    print(f"[환율] USD/{to} {rate:.2f} ({url.split('/')[2]})")
+                    return float(rate), "ok", 200, str(data.get("date") or "")[:10], name
         except Exception as e:
             print(f"[환율] {url.split('/')[2]} 실패: {e}", file=sys.stderr)
-    return None
+    return None, ("zero" if reached else "http_error"), last_code, "", ""
+
+
+def fetch_exchange_rate():
+    """USD/KRW 환율. 실패 시 None. (구 이름 — fetch_fx 의 KRW 판)"""
+    return fetch_fx("KRW", 1000, 2500)[0]
+
+
+# ─────────────────── 헤더 시장 지표 띠 (2026-09-26) ───────────────────
+# 12페이지 헤더의 USD/KRW 옆 4종 + KRW 자신. **정적 렌더** — 브라우저는 아무것도 부르지
+# 않는다. 이 함수가 회차의 **유일한 측정점**이다: 레전드벤치마크(fetch_buffett)는 여기서
+# 잰 10년물을 승계하고 다시 부르지 않는다(두 화면이 다른 10년물을 보이지 않게).
+MACRO_KEYS = ("usd_krw", "usd_jpy", "ust10", "ust30", "wti")
+
+
+def macro_entry(got, prev_entry, now_iso):
+    """한 지표의 산출 → 원장 칸. 실패하면 **이전 값을 보존**하고 그 사실을 적는다.
+
+    결측은 null + 사유. 0 으로 채우지 않는다(0% 금리·0달러 유가는 거짓 판정이다).
+    """
+    val, outcome, _code, obs, src = got
+    if val is not None:
+        return {"value": round(float(val), 2), "as_of": obs or None, "source": src or None,
+                "measured_at": now_iso, "outcome": outcome, "carried": False, "note": None}
+    p = prev_entry if isinstance(prev_entry, dict) else {}
+    if p.get("value") is not None:
+        e = dict(p)
+        e.update(carried=True, outcome=outcome,
+                 note=f"이번 회차 취득 실패({outcome}) — 이전 값 유지")
+        return e
+    return {"value": None, "as_of": None, "source": None, "measured_at": None,
+            "outcome": outcome, "carried": False,
+            "note": f"취득 실패({outcome}) — 이전 값 없음"}
+
+
+def collect_macro(prev_macro, usd_krw=None, fetchers=None, now=None):
+    """시장 지표 5종 → macro 블록. 개별 실패가 전체를 막지 않는다(우아한 저하).
+
+    usd_krw: 이미 부른 KRW 결과를 넘기면 다시 부르지 않는다(meta.usd_krw 와 같은 값).
+    fetchers: 테스트용 주입 — {키: 호출} (네트워크 없이 검산하기 위해).
+    """
+    import fred_client
+    key = os.environ.get("FRED_API_KEY", "").strip()
+    fetchers = fetchers or {
+        "usd_krw": lambda: fetch_fx("KRW", 1000, 2500),
+        "usd_jpy": lambda: fetch_fx("JPY", 80, 250),
+        "ust10": lambda: fred_client.fetch_ust(10, key),
+        "ust30": lambda: fred_client.fetch_ust(30, key),
+        "wti": lambda: fred_client.fetch_wti(key),
+    }
+    now = now or datetime.now(KST)
+    now_iso = now.isoformat(timespec="minutes")
+    prev_macro = prev_macro if isinstance(prev_macro, dict) else {}
+    out = {}
+    for k in MACRO_KEYS:
+        try:
+            got = usd_krw if (k == "usd_krw" and usd_krw) else fetchers[k]()
+        except Exception as e:
+            print(f"[시장지표] {k} 예외 ({type(e).__name__}: {e})", file=sys.stderr)
+            got = (None, "http_error", None, "", "")
+        out[k] = macro_entry(got, prev_macro.get(k), now_iso)
+        e = out[k]
+        state = ("갱신" if not e["carried"] and e["value"] is not None
+                 else "이전 값 유지" if e["carried"] else "결측")
+        print(f"[시장지표] {k} {e['value']} ({state} · {got[1]} · {e.get('source') or '-'}"
+              f" · 관측 {e.get('as_of') or '-'})",
+              file=sys.stdout if state == "갱신" else sys.stderr)
+        try:                    # 원장 — 관제탑이 죽은 소스를 본다(내용 기준: 값이 있어야 1건)
+            import feed_client
+            feed_client.record("macro", k, got[1], got[2],
+                               1 if got[0] is not None else 0)
+        except Exception as ex:
+            print(f"[시장지표] 원장 기록 실패 ({ex})", file=sys.stderr)
+    try:
+        import feed_client
+        feed_client.flush()
+    except Exception:
+        pass
+    return out
 
 
 # ─────────────────── HTTP fetch ───────────────────
@@ -797,12 +881,14 @@ def main():
     existing_latent = []
     existing_history = []
     existing_usd_krw = 1480.0
+    existing_macro = {}
     if DATA_PATH.exists():
         try:
             existing = json.loads(DATA_PATH.read_text(encoding="utf-8"))
             existing_latent = existing.get("latent", [])
             existing_history = existing.get("history", [])
             existing_usd_krw = existing.get("meta", {}).get("usd_krw") or 1480.0
+            existing_macro = existing.get("meta", {}).get("macro") or {}
         except Exception:
             pass
     
@@ -810,11 +896,21 @@ def main():
     new_data["history"] = existing_history
     
     # 환율: 실시간 fetch → 실패 시 직전 값 → 그래도 없으면 1480
-    rate = fetch_exchange_rate()
+    krw = fetch_fx("KRW", 1000, 2500)
+    rate = krw[0]
     if rate is None:
         rate = existing_usd_krw
         print(f"[환율] fetch 실패, 직전 값 사용: {rate}")
     new_data["meta"]["usd_krw"] = round(rate, 2)
+
+    # 헤더 시장 지표 띠 — 부가 기능이라 실패해도 메인 수집은 계속한다.
+    # 실패하면 이전 macro 블록을 통째로 보존한다(자동 커밋 파일 — 이전 값 보존 병합).
+    try:
+        new_data["meta"]["macro"] = collect_macro(existing_macro, usd_krw=krw)
+    except Exception as e:
+        new_data["meta"]["macro"] = existing_macro
+        print(f"[시장지표] 수집 실패 → 이전 블록 보존 ({type(e).__name__}: {e})",
+              file=sys.stderr)
     
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     DATA_PATH.write_text(

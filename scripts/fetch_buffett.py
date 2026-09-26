@@ -79,13 +79,10 @@ PE_KEYS = ["peBasicExclExtraTTM", "peExclExtraTTM", "peTTM", "peInclExtraTTM",
 # 즉 키 없는 CSV 경로만 막혀 있다. 러너에서도 같은지는 확인할 수 없으므로
 # (첫 실전 호출) 사슬을 둔다 — 하나라도 살아 있으면 미국 종목은 측정된다.
 # 교차 검증: 2026-08-28 기준 Treasury 4.73% · ^TNX 4.72% (일치).
-FRED_CSV = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10"
-FRED_API = ("https://api.stlouisfed.org/fred/series/observations"
-            "?series_id=DGS10&file_type=json&sort_order=desc&limit=10&api_key=")
-TREASURY_CSV = ("https://home.treasury.gov/resource-center/data-chart-center/interest-rates/"
-                "daily-treasury-rates.csv/{year}/all?type=daily_treasury_yield_curve"
-                "&field_tdr_date_value={year}&page&_format=csv")
-TNX_URL = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX"
+# 사슬 구현은 fred_client 한 곳에만 있다(2026-09-26 헤더 시장 지표 띠와 공용).
+# 여기서는 구 이름을 그대로 다시 내보낸다 — 레전드와 헤더가 같은 10년물을 보게 하는 바닥.
+from fred_client import (parse_fred_csv, parse_treasury_csv,   # noqa: E402,F401
+                         fetch_ust10)
 MARKET_BY_SUFFIX = {".KS": "KTB10", ".T": "JGB10", ".TW": "TW10", ".SR": "SA10"}
 RATE_UNIMPLEMENTED = {"KTB10": "한국 10년물 미배선(v1)", "JGB10": "일본 10년물 미배선(v1)",
                       "TW10": "대만 10년물 미배선(v1)", "SA10": "사우디 10년물 미배선(v1)"}
@@ -153,118 +150,6 @@ def _num(x):
     if isinstance(x, bool) or not isinstance(x, (int, float)):
         return None
     return float(x) if math.isfinite(float(x)) else None
-
-
-def parse_fred_csv(text):
-    """fredgraph.csv 의 마지막 관측치. 휴일·주말은 '.' 이라 건너뛴다."""
-    last = None
-    for line in (text or "").splitlines()[1:]:
-        parts = line.strip().split(",")
-        if len(parts) < 2:
-            continue
-        try:
-            last = (parts[0], float(parts[1]))
-        except ValueError:
-            continue          # '.' = 그날 고시 없음 (주말·공휴일)
-    return last
-
-
-def parse_treasury_csv(text):
-    """Treasury 일별 수익률곡선 CSV 에서 '10 Yr' 최신값. 최신 행이 맨 위다."""
-    lines = [ln for ln in (text or "").splitlines() if ln.strip()]
-    if len(lines) < 2:
-        return None
-    header = [h.strip().strip('"') for h in lines[0].split(",")]
-    try:
-        col = header.index("10 Yr")
-    except ValueError:
-        return None
-    for ln in lines[1:]:
-        cells = [c.strip().strip('"') for c in ln.split(",")]
-        if len(cells) <= col:
-            continue
-        try:
-            return (cells[0], float(cells[col]))
-        except ValueError:
-            continue
-    return None
-
-
-def _get(url, timeout):
-    """(응답, 코드) — 실패해도 예외를 밖으로 내보내지 않는다. 코드가 있으면 '닿긴 했다'."""
-    try:
-        r = requests.get(url, headers=UA, timeout=timeout)
-        return r, r.status_code
-    except Exception as e:
-        print(f"[시차] 10년물 요청 실패 {url.split('/')[2]} ({type(e).__name__})",
-              file=sys.stderr)
-        return None, None
-
-
-def _src_fred_api(api_key):
-    if not api_key:
-        return None, None, ""
-    r, code = _get(FRED_API + api_key, 15)
-    if not r or code != 200:
-        return None, code, ""
-    for o in ((r.json() or {}).get("observations") or []):   # sort_order=desc
-        try:
-            return float(o.get("value")), code, o.get("date", "")
-        except (TypeError, ValueError):
-            continue                                          # '.' = 고시 없는 날
-    return None, code, ""
-
-
-def _src_fred_csv(_):
-    r, code = _get(FRED_CSV, 10)
-    if not r or code != 200:
-        return None, code, ""
-    got = parse_fred_csv(r.text)
-    return (got[1], code, got[0]) if got else (None, code, "")
-
-
-def _src_treasury(_):
-    year = datetime.now(KST).strftime("%Y")
-    r, code = _get(TREASURY_CSV.format(year=year), 15)
-    if not r or code != 200:
-        return None, code, ""
-    got = parse_treasury_csv(r.text)
-    return (got[1], code, got[0]) if got else (None, code, "")
-
-
-def _src_tnx(_):
-    r, code = _get(TNX_URL, 15)
-    if not r or code != 200:
-        return None, code, ""
-    try:
-        meta = (r.json().get("chart", {}).get("result") or [{}])[0].get("meta", {})
-        v = meta.get("regularMarketPrice")
-        return (float(v) if isinstance(v, (int, float)) and v > 0 else None), code, ""
-    except Exception:
-        return None, code, ""
-
-
-RATE_SOURCES = [("FRED API", _src_fred_api), ("FRED CSV", _src_fred_csv),
-                ("Treasury.gov", _src_treasury), ("Yahoo ^TNX", _src_tnx)]
-
-
-def fetch_ust10(api_key=""):
-    """미국 10년물(%) — (값, outcome, code, 관측일, 출처).
-
-    outcome 은 fetch_status 원장 규약 그대로: ok · zero · http_error.
-      ok         = 어느 한 곳에서든 숫자를 얻었다
-      zero       = 어딘가는 응답했는데 숫자가 하나도 없었다
-      http_error = 전 사슬이 응답조차 못 받았다
-    '조용한 날'과 '죽은 소스'를 가르는 그 규약 그대로다.
-    """
-    last_code, reached = None, False
-    for name, fn in RATE_SOURCES:
-        val, code, obs_day = fn(api_key)
-        if code is not None:
-            reached, last_code = True, code
-        if val is not None and val > 0:
-            return val, "ok", code, obs_day, name
-    return None, ("zero" if reached else "http_error"), last_code, "", ""
 
 
 def earnings_yield(eps_ttm, price):
@@ -684,38 +569,81 @@ def append_history(history, ticker, day, gap, bench=None):
     history[ticker] = series[-HISTORY_DAYS:]
 
 
-def collect_rates(prev_rates):
+LATEST_PATH = DATA_DIR / "latest.json"
+_UNSET = object()
+
+
+def load_macro_ust10(path=None):
+    """이번 회차 헤더 시장 지표 띠가 잰 10년물(latest.json meta.macro.ust10) — 없으면 None."""
+    try:
+        doc = json.loads(Path(path or LATEST_PATH).read_text(encoding="utf-8"))
+        u = ((doc.get("meta") or {}).get("macro") or {}).get("ust10")
+        return u if isinstance(u, dict) else None
+    except Exception:
+        return None
+
+
+def collect_rates(prev_rates, macro_ust10=_UNSET):
     """10년 금리 묶음 — 미국만 실측, 나머지는 v1 미배선(null).
+
+    2026-09-26: 헤더 시장 지표 띠(fetch_data.collect_macro)가 같은 회차 앞 스텝에서
+    같은 사슬로 10년물을 잰다. **그 값을 승계하고 다시 부르지 않는다** — 두 번 부르면
+    시각·폴백이 달라 헤더와 레전드가 서로 다른 10년물을 보일 수 있다(측정점은 하나).
+    원장 관할도 macro:ust10 하나로 옮기고 rates:ust10 은 지운다(같은 사실로 두 번 울리지 않게).
+    헤더 측정이 아예 없을 때(구 latest.json)만 종전대로 직접 부른다.
 
     실패하면 **전일값을 유지**한다(주말·공휴일 공백 포함). 다만 폴백을 탔다는
     사실은 반드시 로그에 남긴다 — 조용한 폴백은 검증한 줄 착각하게 만든다.
     """
+    if macro_ust10 is _UNSET:
+        macro_ust10 = load_macro_ust10()
     rates = {m: None for m in MARKET_BY_SUFFIX.values()}
     prev_rates = prev_rates if isinstance(prev_rates, dict) else {}
-    val, outcome, code, obs_day, src = fetch_ust10(os.environ.get("FRED_API_KEY", "").strip())
-    note = ""
-    if val is None:
-        val = _num(prev_rates.get("UST10"))
-        src = prev_rates.get("source") or ""
+    if isinstance(macro_ust10, dict):
+        val, outcome = _num(macro_ust10.get("value")), "inherited"
+        src, obs_day, note = macro_ust10.get("source") or "", macro_ust10.get("as_of") or "", ""
         if val is None:
-            note = f"UST10 취득 실패({outcome}) — 전일값도 없음 → 미국 종목도 untested"
+            val = _num(prev_rates.get("UST10"))
+            src = prev_rates.get("source") or ""
+            obs_day = prev_rates.get("as_of") or ""
+            note = (f"UST10 헤더 측정 결측 — 레전드 전일값 {val}% 유지 (헤더는 —)"
+                    if val is not None else "UST10 헤더 측정 결측 — 전일값도 없음 → 미국 종목도 untested")
+            print(f"[시차] {note}", file=sys.stderr)
+        elif macro_ust10.get("carried"):
+            note = f"UST10 이번 회차 취득 실패 — 이전 값 {val}% 유지 (헤더와 같은 값)"
+            print(f"[시차] {note}", file=sys.stderr)
         else:
-            # 폴백을 탔다는 사실은 반드시 시끄럽게 남긴다 (조용한 폴백 = 가짜 정상)
-            note = f"UST10 취득 실패({outcome}) — 전일값 {val}% 유지 (폴백)"
-        print(f"[시차] {note}", file=sys.stderr)
+            print(f"[시차] UST10 {val}% (헤더 측정 승계 · {src} {obs_day})")
+        try:
+            import feed_client
+            feed_client.forget("rates", "ust10")
+            feed_client.flush()
+        except Exception as e:
+            print(f"[시차] fetch_status 정리 실패 ({e})", file=sys.stderr)
     else:
-        print(f"[시차] UST10 {val}% ({src} {obs_day})")
+        val, outcome, code, obs_day, src = fetch_ust10(os.environ.get("FRED_API_KEY", "").strip())
+        note = ""
+        if val is None:
+            val = _num(prev_rates.get("UST10"))
+            src = prev_rates.get("source") or ""
+            if val is None:
+                note = f"UST10 취득 실패({outcome}) — 전일값도 없음 → 미국 종목도 untested"
+            else:
+                # 폴백을 탔다는 사실은 반드시 시끄럽게 남긴다 (조용한 폴백 = 가짜 정상)
+                note = f"UST10 취득 실패({outcome}) — 전일값 {val}% 유지 (폴백)"
+            print(f"[시차] {note}", file=sys.stderr)
+        else:
+            print(f"[시차] UST10 {val}% ({src} {obs_day}) — 헤더 측정 없음, 직접 조회")
+        try:                      # 원장 기록 — 관제탑이 죽은 금리 소스를 볼 수 있게
+            import feed_client
+            feed_client.record("rates", "ust10", outcome, code, 1 if val is not None else 0)
+            feed_client.flush()
+        except Exception as e:
+            print(f"[시차] fetch_status 기록 실패 ({e})", file=sys.stderr)
     rates["UST10"] = val
     rates["source"] = src
     rates["as_of"] = obs_day or prev_rates.get("as_of") or ""
     rates["note"] = note or "한국·일본·대만·사우디 10년물은 v1 미배선 — 해당 시장은 untested"
-
-    try:                      # 원장 기록 — 관제탑이 죽은 금리 소스를 볼 수 있게
-        import feed_client
-        feed_client.record("rates", "ust10", outcome, code, 1 if val is not None else 0)
-        feed_client.flush()
-    except Exception as e:
-        print(f"[시차] fetch_status 기록 실패 ({e})", file=sys.stderr)
     return rates, outcome
 
 

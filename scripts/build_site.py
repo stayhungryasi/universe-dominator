@@ -5,6 +5,7 @@ build_site.py — 멀티페이지 사이트 빌드
 새 페이지를 추가할 때 손대야 하는 곳도 ALL_PAGES 한 곳뿐이며,
 selftest.py 가 이 단일화를 매 실행마다 검증한다.
 """
+import html as html_mod
 import json
 import os
 import re
@@ -86,7 +87,8 @@ def _header_meta():
     """헤더 배지용 날짜·환율 (latest.json meta 기준)"""
     try:
         m = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
-        return {"fetched_date": m.get("fetched_date"), "usd_krw": m.get("usd_krw")}
+        return {"fetched_date": m.get("fetched_date"), "usd_krw": m.get("usd_krw"),
+                "macro": m.get("macro") or {}}
     except Exception:
         return {}
 
@@ -1222,6 +1224,130 @@ def inject_header_fix():
     print(f"[OK] 헤더 일관성 CSS 주입: {n}개 페이지")
 
 
+# ── 헤더 시장 지표 띠 (2026-09-26) ─────────────────────────────────────
+# USD/KRW 배지 옆에 4종. **정적 렌더** — 값은 빌드 시점에 latest.json meta.macro 에서
+# 박아 넣는다(브라우저는 아무것도 부르지 않는다). 12페이지 전부에 같은 규격으로 나가야
+# 하므로 페이지별 복붙이 아니라 ALL_PAGES 를 도는 공용 주입으로 둔다.
+# 순서는 선장님 지정: USD/KRW · WTI · 미10년 · 미30년 · USD/JPY
+MACRO_MARK = "ud-macro-v1"
+MACRO_BADGES = (
+    # (원장 키, 화면 라벨, 원본 링크, 표기 방식)
+    ("wti", "WTI", "https://fred.stlouisfed.org/series/DCOILWTICO", "usd"),
+    ("ust10", "미10년", "https://fred.stlouisfed.org/series/DGS10", "pct"),
+    ("ust30", "미30년", "https://fred.stlouisfed.org/series/DGS30", "pct"),
+    ("usd_jpy", "USD/JPY",
+     "https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY",
+     "fx"),
+)
+MACRO_CSS = """<style>
+/* ud-macro-v1 — 헤더 시장 지표 띠. 배지는 USD/KRW 와 같은 규격(rate-badge)을 쓴다.
+   좁은 폭에서는 줄바꿈하지 않고 띠 안에서 가로 스크롤한다(판형 전역 정리는 이월 건).
+   header-right 에는 줄어들 수 있게 하는 최소 속성만 준다 — 레이아웃을 새로 짜지 않는다. */
+.site-header .header-right { min-width: 0; max-width: 100%; flex-shrink: 1; flex-wrap: nowrap; }
+.ud-macro { display: inline-flex; align-items: center; flex-wrap: nowrap; min-width: 0;
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.ud-macro::-webkit-scrollbar { display: none; }
+.ud-macro .rate-badge { flex: 0 0 auto; white-space: nowrap; }
+.rate-badge .ud-mv { color: var(--text); font-weight: 800; }
+.rate-badge:hover .ud-mv { color: var(--gold); }
+</style>"""
+
+
+def _macro_value(v, fmt):
+    if not isinstance(v, (int, float)) or isinstance(v, bool):
+        return "—"                      # 결측은 대시 — 0 으로 흘려보내지 않는다
+    if fmt == "pct":
+        return f"{v:.2f}%"
+    if fmt == "usd":
+        return f"${v:,.2f}"
+    return f"{v:,.2f}"
+
+
+def _macro_title(e, today):
+    """title — '측정 HH:MM · 출처 …'. **상태에서 만든다**(원장 키·outcome 은 쓰지 않는다)."""
+    e = e if isinstance(e, dict) else {}
+    ts = str(e.get("measured_at") or "")
+    if not ts or e.get("value") is None:
+        return "측정값 없음 — 다음 전체 수집에서 측정"
+    when = ts[11:16] if ts[:10] == (today or "") else f"{ts[5:10]} {ts[11:16]}"
+    t = f"측정 {when} · 출처 {e.get('source') or '—'}"
+    if e.get("carried"):
+        t += " · 이번 회차 갱신 실패 — 이전 값"
+    return t
+
+
+def _macro_label(key, label, e, today):
+    """WTI 는 전일 종가 시리즈 — 관측일이 측정일보다 이르면 '(전일)' 을 붙인다(상태에서 생성)."""
+    e = e if isinstance(e, dict) else {}
+    measured = str(e.get("measured_at") or "")[:10]
+    if key == "wti" and e.get("value") is not None and e.get("as_of") \
+            and str(e["as_of"])[:10] < measured:
+        return label + "(전일)"
+    return label
+
+
+def macro_badges_html(macro, today):
+    """USD/KRW 옆 4개 배지 HTML — 순수 함수."""
+    macro = macro if isinstance(macro, dict) else {}
+    out = []
+    for key, label, url, fmt in MACRO_BADGES:
+        e = macro.get(key) if isinstance(macro.get(key), dict) else {}
+        out.append(
+            f'<a href="{url}" target="_blank" rel="noopener" class="rate-badge ud-mb" '
+            f'data-mk="{key}" title="{html_mod.escape(_macro_title(e, today))}">'
+            f'{_macro_label(key, label, e, today)} '
+            f'<span class="ud-mv">{_macro_value(e.get("value"), fmt)}</span>'
+            f'<span class="rate-badge-arrow" aria-hidden="true">↗</span></a>')
+    return "".join(out)
+
+
+_RATE_BADGE_RE = re.compile(r'<a[ ][^>]*class="rate-badge"[^>]*>.*?</a>', re.S)
+
+
+def macro_wrap(page, macro, today):
+    """USD/KRW 배지를 띠로 감싸고 4개를 잇는다 → (새 HTML, 성공 여부). 순수 함수."""
+    m = _RATE_BADGE_RE.search(page)
+    if not m:
+        return page, False
+    krw = m.group(0)
+    e = (macro or {}).get("usd_krw") if isinstance(macro, dict) else None
+    title = None
+    if isinstance(e, dict) and e.get("value") is not None:
+        title = html_mod.escape(_macro_title(e, today) + " · 네이버 실시간 환율 보기")
+    krw = krw.replace('class="rate-badge"', 'class="rate-badge" data-mk="usd_krw"', 1)
+    if title:
+        krw = re.sub(r'title="[^"]*"', lambda _m: f'title="{title}"', krw, count=1)
+    band = (f'<span class="ud-macro" data-band="{MACRO_MARK}">' + krw
+            + macro_badges_html(macro, today) + "</span>")
+    return page[:m.start()] + band + page[m.end():], True
+
+
+def inject_macro_badges():
+    """전 페이지 헤더에 시장 지표 띠 주입 (멱등 — 마커 검사 후 1회)."""
+    meta = _header_meta()
+    macro, today = meta.get("macro") or {}, meta.get("fetched_date") or ""
+    pages = ALL_PAGES
+    n, miss = 0, []
+    for name in pages:
+        f = OUT_DIR / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        if MACRO_MARK in html or "</head>" not in html:
+            continue
+        html, ok = macro_wrap(html, macro, today)
+        if not ok:
+            miss.append(name)
+            continue
+        html = html.replace("</head>", MACRO_CSS + chr(10) + "</head>", 1)
+        f.write_text(html, encoding="utf-8")
+        n += 1
+    if miss:
+        print(f"[warn] 시장 지표 띠 — USD/KRW 배지를 못 찾은 페이지: {miss}", file=sys.stderr)
+    print(f"[OK] 시장 지표 띠 주입: {n}개 페이지")
+
+
 def publish(staging, dest):
     """스테이징의 산출물을 실제 경로로 **한 파일씩 원자 교체**한다.
 
@@ -1251,7 +1377,7 @@ def main():
     OUT_DIR = staging
     try:
         _build_all()
-        # 여기까지 왔다는 것은 주입 5종과 산출물 검사까지 끝났다는 뜻이다.
+        # 여기까지 왔다는 것은 주입 6종과 산출물 검사까지 끝났다는 뜻이다.
         n = publish(staging, HERE)
         print(f"[OK] 원자적 교체: {n}개 파일 → 실제 경로")
     finally:
@@ -1276,6 +1402,7 @@ def _build_all():
     build_history("top20",  "home",   "history-top20.html")
     build_history("latent", "latent", "history-latent.html")
     inject_header_fix()
+    inject_macro_badges()
     inject_presence()
     fix_nav()
     inject_footer_links()

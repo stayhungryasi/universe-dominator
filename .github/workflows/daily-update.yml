@@ -53,6 +53,10 @@ jobs:
       - name: Fetch latest market cap data (+ daily snapshot)
         if: env.FULL_RUN == 'true'
         run: python scripts/fetch_data.py
+        env:
+          # 헤더 시장 지표 띠(UST10·UST30·WTI) — 기존 시크릿 재사용. 이 스텝이 10년물의
+          # 유일한 측정점이고, 레전드(fetch_buffett)는 여기서 잰 값을 승계한다.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         continue-on-error: false
 
       # 데이터 무결성 검증 — 종목 수·중복·정렬·전일 대비 실종 감시 → quality_report.json

@@ -331,6 +331,19 @@ document.addEventListener('DOMContentLoaded', function () {
   setInterval(tick, 1000);
 });
 </script>
+<style>
+/* ud-macro-v1 — 헤더 시장 지표 띠. 배지는 USD/KRW 와 같은 규격(rate-badge)을 쓴다.
+   좁은 폭에서는 줄바꿈하지 않고 띠 안에서 가로 스크롤한다(판형 전역 정리는 이월 건).
+   header-right 에는 줄어들 수 있게 하는 최소 속성만 준다 — 레이아웃을 새로 짜지 않는다. */
+.site-header .header-right { min-width: 0; max-width: 100%; flex-shrink: 1; flex-wrap: nowrap; }
+.ud-macro { display: inline-flex; align-items: center; flex-wrap: nowrap; min-width: 0;
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.ud-macro::-webkit-scrollbar { display: none; }
+.ud-macro .rate-badge { flex: 0 0 auto; white-space: nowrap; }
+.rate-badge .ud-mv { color: var(--text); font-weight: 800; }
+.rate-badge:hover .ud-mv { color: var(--gold); }
+</style>
 <style id="wide-fix">.container{max-width:1280px}</style>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
 <style id="ud-aurora-global-v1">
@@ -429,11 +442,11 @@ document.addEventListener('DOMContentLoaded', function () {
     </a>
     <div class="header-right">
       <span class="update-badge">2026.09.26</span>
-      <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+      <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="네이버 실시간 환율 보기">
         USD/KRW <span id="usdKrwDisplay">1,355.05</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="측정값 없음 — 다음 전체 수집에서 측정">WTI <span class="ud-mv">—</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="측정값 없음 — 다음 전체 수집에서 측정">미10년 <span class="ud-mv">—</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="측정값 없음 — 다음 전체 수집에서 측정">미30년 <span class="ud-mv">—</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="측정값 없음 — 다음 전체 수집에서 측정">USD/JPY <span class="ud-mv">—</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>

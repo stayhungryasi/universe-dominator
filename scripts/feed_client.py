@@ -130,13 +130,27 @@ def record(kind, label, outcome, code, items):
     }
 
 
+_forget = set()
+
+
+def forget(kind, label):
+    """원장에서 이 소스를 지운다 — 관할이 다른 키로 옮겨 갔을 때.
+
+    기록을 멈추기만 하면 옛 'ok' 가 원장에 영원히 남아, 관제탑이 죽은 소스를
+    산 것으로 본다(침묵하는 감시자). 옮겨 간 사실은 지워서 밝힌다.
+    """
+    key = f"{kind}:{label}"
+    _buffer.pop(key, None)
+    _forget.add(key)
+
+
 def flush():
     """원장에 **병합** 저장.
 
     fetch_signals 와 companion_essays 는 서로 다른 프로세스다. 통째로 덮어쓰면
     나중에 도는 쪽이 앞선 쪽의 기록을 지워, 관제탑이 절반만 보게 된다.
     """
-    if not _buffer:
+    if not _buffer and not _forget:
         return
     doc = {}
     try:
@@ -147,6 +161,8 @@ def flush():
         pass
     if not isinstance(doc.get("sources"), dict):
         doc["sources"] = {}
+    for key in _forget:
+        doc["sources"].pop(key, None)
     doc["sources"].update(_buffer)
     doc["generated_label"] = datetime.now(KST).strftime("%Y.%m.%d %H:%M")
     try:

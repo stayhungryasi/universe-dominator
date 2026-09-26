@@ -1704,7 +1704,7 @@ def main():
     import build_site as _bs
 
     _INJECTORS = ("fix_nav", "inject_footer_links", "inject_presence",
-                  "inject_header_fix", "inject_aurora_tokens")
+                  "inject_header_fix", "inject_aurora_tokens", "inject_macro_badges")
 
     check("ALL_PAGES: 상수 존재", isinstance(getattr(_bs, "ALL_PAGES", None), tuple), True)
     check("ALL_PAGES: 중복 없음",
@@ -1822,10 +1822,14 @@ def main():
     _vp_src = _inspect.getsource(_vp)
     check("관문: build_site 를 import 하지 않는다",
           ("import build_site" in _vp_src or "from build_site" in _vp_src), False)
-    check("관문: 마커 5종을 스스로 들고 있다", len(_vp.MARKERS), 5)
+    check("관문: 마커 6종을 스스로 들고 있다(2026-09-26 시장 지표 띠 추가)",
+          len(_vp.MARKERS), 6)
+    # 시장 지표 띠의 배지 5개도 페이지에 있어야 한다 — 정상 페이지 픽스처에 함께 싣는다
+    _badges = "".join(f'data-mk="{k}"' for k in _vp.MACRO_BADGE_KEYS)
     check("관문: 정상 페이지는 통과",
-          _vp.check([("ok.html", "x" + "".join(_vp.MARKERS) + "</hea" + "d>")]), {})
-    _one = "".join(m for m in _vp.MARKERS if m != "uv-presence") + "</hea" + "d>"
+          _vp.check([("ok.html", "x" + "".join(_vp.MARKERS) + _badges + "</hea" + "d>")]), {})
+    _one = ("".join(m for m in _vp.MARKERS if m != "uv-presence") + _badges
+            + "</hea" + "d>")
     check("관문: 마커 하나만 빠져도 잡는다",
           _vp.check([("bad.html", _one)]), {"bad.html": ["접속자 카운터"]})
     check("관문: head 끝 태그 없는 큰 파일은 실패로 본다",
@@ -2059,6 +2063,132 @@ def main():
     check("잠재 ⓒ 화면 문구에 기계 필드명 없음",
           [it for it in _ev + _watch
            if any(k in it for k in ("streak", "carried", "pending", "watch"))], [])
+
+    # ── 헤더 시장 지표 띠 (2026-09-26) ──────────────────────────────────────
+    # 막으려는 것 세 가지:
+    #   ① 한 회차의 수집 실패가 헤더를 '—' 로 비우거나 0 으로 채우는 것 (이전 값 보존)
+    #   ② 헤더와 레전드가 **서로 다른 10년물**을 보이는 것 (측정점은 하나)
+    #   ③ 12페이지 중 일부에만 배지가 붙는 것 (공용 주입 + 관문)
+    import fetch_data as _fdm
+    import feed_client as _fcm
+    _cm = getattr(_fdm, "collect_macro", None)
+    if _cm is None:
+        check("시장지표: collect_macro 존재", None, "collect_macro")
+    else:
+        _NOWM = _dt.datetime(2026, 9, 26, 8, 20, tzinfo=_fdm.KST)
+        _ok = lambda v, src="FRED API", obs="2026-09-25": (lambda: (v, "ok", 200, obs, src))
+        _fail = lambda outcome="http_error": (lambda: (None, outcome, None, "", ""))
+        _prev_m = {k: {"value": v, "as_of": "2026-09-24", "source": "FRED API",
+                       "measured_at": "2026-09-25T18:08", "carried": False, "note": None}
+                   for k, v in (("usd_krw", 1390.1), ("usd_jpy", 149.2), ("ust10", 5.11),
+                                ("ust30", 5.40), ("wti", 68.4))}
+        _buf0m = dict(_fcm._buffer)
+        _fcm._buffer.clear()
+        _o_flush = _fcm.flush
+        _fcm.flush = lambda: None                     # 원장 파일은 건드리지 않는다
+        try:
+            # ① 전부 실패 — 이전 값 보존 · 그 사실 기록 · 0 치환 없음
+            _m1 = _cm(_prev_m, fetchers={k: _fail() for k in _fdm.MACRO_KEYS}, now=_NOWM)
+            check("시장지표 ①: FRED 실패 시 이전 값 보존",
+                  (_m1["ust10"]["value"], _m1["ust30"]["value"], _m1["wti"]["value"]),
+                  (5.11, 5.40, 68.4))
+            check("시장지표 ①: 보존 사실을 표시한다(carried)",
+                  all(_m1[k]["carried"] for k in _fdm.MACRO_KEYS), True)
+            check("시장지표 ①: 보존값의 측정 시각은 원래 시각 그대로",
+                  _m1["ust10"]["measured_at"], "2026-09-25T18:08")
+            _m0 = _cm({}, fetchers={k: _fail("zero") for k in _fdm.MACRO_KEYS}, now=_NOWM)
+            check("시장지표 ①: 이전 값도 없으면 null + 사유(0 아님)",
+                  (_m0["wti"]["value"], bool(_m0["wti"]["note"])), (None, True))
+            check("시장지표 ①: 원장에 macro 5종 outcome 등재(내용 기준 0건)",
+                  sorted((v["source"], v["outcome"], v["items"]) for k, v in _fcm._buffer.items()
+                         if v.get("kind") == "macro"),
+                  sorted((k, "zero", 0) for k in _fdm.MACRO_KEYS))
+            # 성공 회차 — 새 값이 이전 값을 대체하고 측정 시각이 찍힌다
+            _m2 = _cm(_prev_m, fetchers={"usd_krw": _ok(1391.5, "frankfurter"),
+                                         "usd_jpy": _ok(148.9, "frankfurter"),
+                                         "ust10": _ok(5.13), "ust30": _ok(5.42),
+                                         "wti": _ok(67.9)}, now=_NOWM)
+            check("시장지표: 성공 회차는 새 값 · 측정 시각 · 출처",
+                  (_m2["ust10"]["value"], _m2["ust10"]["measured_at"], _m2["ust10"]["source"],
+                   _m2["ust10"]["carried"]), (5.13, "2026-09-26T08:20+09:00", "FRED API", False))
+            # ② 레전드 = 헤더 — 같은 구현, 같은 측정값
+            import fred_client as _frc
+            check("시장지표: Treasury 관측일은 ISO 로 맞춘다(출처별 날짜 모양 통일)",
+                  (_frc.iso_day("09/25/2026"), _frc.iso_day("2026-09-25")),
+                  ("2026-09-25", "2026-09-25"))
+            check("시장지표 ②: 레전드와 헤더가 같은 10년물 함수를 쓴다(중복 구현 금지)",
+                  _fb.fetch_ust10 is _frc.fetch_ust10, True)
+            _o_fu = _fb.fetch_ust10
+            _fb.fetch_ust10 = lambda *a, **k: (_ for _ in ()).throw(
+                AssertionError("레전드가 10년물을 다시 불렀다"))
+            _refetched = False
+            try:
+                _rt, _rout = _fb.collect_rates({"UST10": 4.9, "source": "옛값"}, _m2["ust10"])
+                _rtc, _ = _fb.collect_rates({"UST10": 4.9}, _m1["ust10"])
+            except AssertionError:
+                _refetched = True
+                _rt, _rtc = {"UST10": None, "source": None, "as_of": None}, {"UST10": None}
+            finally:
+                _fb.fetch_ust10 = _o_fu
+            check("시장지표 ②: 헤더가 잰 회차엔 레전드가 10년물을 다시 부르지 않는다",
+                  _refetched, False)
+            check("시장지표 ②: 레전드 UST10 = 헤더 UST10 (값·출처·관측일)",
+                  (_rt["UST10"], _rt["source"], _rt["as_of"]),
+                  (_m2["ust10"]["value"], _m2["ust10"]["source"], _m2["ust10"]["as_of"]))
+            check("시장지표 ②: 헤더가 이전 값을 보존한 회차에도 같은 값",
+                  _rtc["UST10"], _m1["ust10"]["value"])
+            import build_site as _bsm
+            _band = _bsm.macro_badges_html(_m2, "2026-09-26")
+            check("시장지표 ②: 헤더 배지에 레전드와 같은 숫자",
+                  f'{_rt["UST10"]:.2f}%' in _band, True)
+            check("시장지표 ②: 레전드가 승계하면 옛 rates 원장 항목을 지운다(관할 이전)",
+                  "rates:ust10" in _fcm._forget, True)
+        finally:
+            _fcm.flush = _o_flush
+            _fcm._buffer.clear()
+            _fcm._buffer.update(_buf0m)
+            _fcm._forget.discard("rates:ust10")
+        # 관제탑 배선 — macro 원장이 judge_feeds 로 흘러가 '정확히 1건' 울린다
+        import pipeline_sentinel as _psm
+        _stm = {"sources": {"macro:ust10": {"kind": "macro", "source": "ust10",
+                                             "outcome": "http_error", "code": 503, "items": 0}}}
+        _sst = {"feeds": {}}
+        _psm.judge_feeds(_stm, _sst, "2026-09-26", _psm.DEFAULTS)
+        _al, _ = _psm.judge_feeds(_stm, _sst, "2026-09-26", _psm.DEFAULTS)
+        check("시장지표 ①: 관제탑이 macro 요청 실패 2회에 정확히 1건",
+              len([a for a in _al if "시장지표" in str(a)]), 1)
+        # 표시층 — WTI 는 관측일이 측정일보다 이르면 '(전일)', 결측은 '—'
+        check("시장지표: WTI(전일) 라벨은 상태에서 생성",
+              'WTI(전일) <span class="ud-mv">$67.90</span>' in _band, True)
+        _bandn = _bsm.macro_badges_html({}, "2026-09-26")
+        check("시장지표: 결측은 — (0 아님)",
+              _bandn.count('<span class="ud-mv">—</span>'), 4)
+        check("시장지표: title 은 '측정 HH:MM · 출처'",
+              'title="측정 08:20 · 출처 FRED API"' in _band, True)
+        import re as _rem
+        _vis = _rem.sub(r"<[^>]+>", " ", _band)        # 보이는 글자만(속성·태그 제외)
+        check("시장지표: 화면 문구에 기계 필드명 없음",
+              [k for k in ("ust10", "ust30", "usd_jpy", "usd_krw", "wti", "outcome",
+                           "carried", "measured_at") if k in _vis], [])
+        # ③ 12템플릿 전부 — 공용 주입이 5배지를 만든다 + 관문이 빠진 배지를 잡는다
+        _tdir = Path(__file__).parent
+        _tpls = sorted(_tdir.glob("*template*.html"))
+        _bad3 = []
+        for _tp in _tpls:
+            _pg, _okw = _bsm.macro_wrap(_tp.read_text(encoding="utf-8"), _m2, "2026-09-26")
+            _got = [k for k in ("usd_krw", "wti", "ust10", "ust30", "usd_jpy")
+                    if f'data-mk="{k}"' in _pg]
+            if not _okw or len(_got) != 5 or _pg.count('data-mk="') != 5:
+                _bad3.append(_tp.name)
+        check("시장지표 ③: 템플릿 12개 확인", len(_tpls), 12)
+        check("시장지표 ③: 12템플릿 전부 5배지(각 1회)", _bad3, [])
+        import verify_pages as _vpm
+        _full, _ = _bsm.macro_wrap(_tpls[0].read_text(encoding="utf-8"), _m2, "2026-09-26")
+        _full = _full + " ".join(_vpm.MARKERS) + "</hea" + "d>"
+        _cut = _full.replace('data-mk="ust30"', "")
+        check("시장지표 ③: 관문 — 5배지가 다 있으면 통과", _vpm.check([("a.html", _full)]), {})
+        check("시장지표 ③: 관문 — 배지 하나 빠지면 그 이름으로 잡는다",
+              _vpm.check([("a.html", _cut)]), {"a.html": ["배지 미30년"]})
 
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
