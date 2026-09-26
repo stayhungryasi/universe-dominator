@@ -2158,13 +2158,18 @@ def main():
         check("시장지표 ①: 관제탑이 macro 요청 실패 2회에 정확히 1건",
               len([a for a in _al if "시장지표" in str(a)]), 1)
         # 표시층 — WTI 는 관측일이 측정일보다 이르면 '(전일)', 결측은 '—'
-        check("시장지표: WTI(전일) 라벨은 상태에서 생성",
-              'WTI(전일) <span class="ud-mv">$67.90</span>' in _band, True)
+        # 2026-09-26 폭 절약: 화면 라벨은 축약(WTI·10Y·30Y·JPY·KRW), 전체 이름·전일 여부는 title
+        check("시장지표: 헤더 WTI 는 축약 라벨 + title 에 '전일 종가'(상태에서 생성)",
+              ('>WTI <span class="ud-mv">$67.90</span>' in _band,
+               'title="WTI 원유 현물 · 전일 종가 · 측정 08:20 · 출처 FRED API"' in _band),
+              (True, True))
+        check("시장지표: 축약 라벨 4종이 화면에",
+              [k for k in (">WTI ", ">10Y ", ">30Y ", ">JPY ") if k not in _band], [])
         _bandn = _bsm.macro_badges_html({}, "2026-09-26")
         check("시장지표: 결측은 — (0 아님)",
               _bandn.count('<span class="ud-mv">—</span>'), 4)
-        check("시장지표: title 은 '측정 HH:MM · 출처'",
-              'title="측정 08:20 · 출처 FRED API"' in _band, True)
+        check("시장지표: title 은 '전체 이름 · 측정 HH:MM · 출처'",
+              'title="미국 10년물 국채 금리 · 측정 08:20 · 출처 FRED API"' in _band, True)
         import re as _rem
         _vis = _rem.sub(r"<[^>]+>", " ", _band)        # 보이는 글자만(속성·태그 제외)
         check("시장지표: 화면 문구에 기계 필드명 없음",
@@ -2178,17 +2183,26 @@ def main():
             _pg, _okw = _bsm.macro_wrap(_tp.read_text(encoding="utf-8"), _m2, "2026-09-26")
             _got = [k for k in ("usd_krw", "wti", "ust10", "ust30", "usd_jpy")
                     if f'data-mk="{k}"' in _pg]
-            if not _okw or len(_got) != 5 or _pg.count('data-mk="') != 5:
+            _krw_lbl = _rem.search(r'data-mk="usd_krw"[^>]*>\s*KRW\s*<span', _pg)
+            _krw_ttl = 'title="USD/KRW 환율 · ' in _pg
+            if not (_okw and len(_got) == 5 and _pg.count('data-mk="') == 5
+                    and _krw_lbl and _krw_ttl):
                 _bad3.append(_tp.name)
         check("시장지표 ③: 템플릿 12개 확인", len(_tpls), 12)
-        check("시장지표 ③: 12템플릿 전부 5배지(각 1회)", _bad3, [])
+        check("시장지표 ③: 12템플릿 전부 5배지(각 1회) · KRW 축약 라벨 · 전체 이름 title", _bad3, [])
+        # 날짜/시계 배지 — 초 제거(HH:MM) · 날짜 MM.DD · 30초 갱신
+        _hfc = _bsm.HEADER_FIX_CSS
+        check("헤더 시계: HH:MM(초 없음) · MM.DD · 30초 갱신",
+              ("hour: '2-digit', minute: '2-digit'" in _hfc, ".slice(5).replace('-', '.')" in _hfc,
+               "setInterval(tick, 30000)" in _hfc, "setInterval(tick, 1000)" in _hfc),
+              (True, True, True, False))
         import verify_pages as _vpm
         _full, _ = _bsm.macro_wrap(_tpls[0].read_text(encoding="utf-8"), _m2, "2026-09-26")
         _full = _full + " ".join(_vpm.MARKERS) + "</hea" + "d>"
         _cut = _full.replace('data-mk="ust30"', "")
         check("시장지표 ③: 관문 — 5배지가 다 있으면 통과", _vpm.check([("a.html", _full)]), {})
         check("시장지표 ③: 관문 — 배지 하나 빠지면 그 이름으로 잡는다",
-              _vpm.check([("a.html", _cut)]), {"a.html": ["배지 미30년"]})
+              _vpm.check([("a.html", _cut)]), {"a.html": ["배지 30Y"]})
 
     # ── 아침 브리핑 시장 지표 한 줄 (2026-09-26) — 숫자만, 해석 금지 ─────────
     import send_telegram_briefing as _tgm

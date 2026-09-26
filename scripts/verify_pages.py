@@ -34,8 +34,8 @@ MARKERS = {
 
 # 시장 지표 띠의 배지 5개 — 띠 마커만 있고 배지가 빠진 페이지를 잡는다(2026-09-26).
 # 역시 build_site 의 상수를 가져오지 않고 문자열로 다시 적는다.
-MACRO_BADGE_KEYS = {"usd_krw": "USD/KRW", "wti": "WTI", "ust10": "미10년",
-                    "ust30": "미30년", "usd_jpy": "USD/JPY"}
+MACRO_BADGE_KEYS = {"usd_krw": "KRW", "wti": "WTI", "ust10": "10Y",
+                    "ust30": "30Y", "usd_jpy": "JPY"}
 
 # 리다이렉트 스텁처럼 레이아웃이 없는 파일. head 끝 태그가 없고 아주 작다.
 STUB_MAX_BYTES = 1000

@@ -1124,13 +1124,15 @@ document.addEventListener('DOMContentLoaded', function () {
   badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
   var dt = badge.querySelector('.ud-date');
   var clk = badge.querySelector('.ud-clock');
+  // 2026-09-26 폭 절약: 날짜는 MM.DD, 시계는 HH:MM(초 없음) → 30초마다 갱신이면 충분하다
   function tick() {
     var now = new Date();
-    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).replace(/-/g, '.');
-    clk.textContent = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Asia/Seoul' });
+    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).slice(5).replace('-', '.');
+    clk.textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit',
+                                                      hour12: false, timeZone: 'Asia/Seoul' });
   }
   tick();
-  setInterval(tick, 1000);
+  setInterval(tick, 30000);
 });
 </script>"""
 
@@ -1287,16 +1289,31 @@ def _macro_label(key, label, e, today):
     return label
 
 
+# 헤더 띠 전용 축약 라벨(2026-09-26 폭 절약 — 1280px 에서 5개가 스크롤 없이 보이게).
+# 전체 이름은 title 로 옮긴다. 브리핑은 폭 제약이 없으므로 MACRO_BADGES 의 전체 라벨을 쓴다.
+MACRO_SHORT = {"usd_krw": "KRW", "wti": "WTI", "ust10": "10Y", "ust30": "30Y", "usd_jpy": "JPY"}
+MACRO_FULL = {"usd_krw": "USD/KRW 환율", "wti": "WTI 원유 현물", "ust10": "미국 10년물 국채 금리",
+              "ust30": "미국 30년물 국채 금리", "usd_jpy": "USD/JPY 환율"}
+
+
+def _macro_full_title(key, label, e, today):
+    """title — 전체 이름 + (WTI 전일 종가 여부) + 측정 시각·출처. 모두 상태에서 만든다."""
+    head = MACRO_FULL.get(key, label)
+    if _macro_label(key, label, e, today) != label:       # 관측일 < 측정일 → 전일 종가
+        head += " · 전일 종가"
+    return f"{head} · {_macro_title(e, today)}"
+
+
 def macro_badges_html(macro, today):
-    """USD/KRW 옆 4개 배지 HTML — 순수 함수."""
+    """USD/KRW 옆 4개 배지 HTML — 순수 함수. 화면엔 축약 라벨, 전체 이름은 title."""
     macro = macro if isinstance(macro, dict) else {}
     out = []
     for key, label, url, fmt in MACRO_BADGES:
         e = macro.get(key) if isinstance(macro.get(key), dict) else {}
         out.append(
             f'<a href="{url}" target="_blank" rel="noopener" class="rate-badge ud-mb" '
-            f'data-mk="{key}" title="{html_mod.escape(_macro_title(e, today))}">'
-            f'{_macro_label(key, label, e, today)} '
+            f'data-mk="{key}" title="{html_mod.escape(_macro_full_title(key, label, e, today))}">'
+            f'{MACRO_SHORT.get(key, label)} '
             f'<span class="ud-mv">{_macro_value(e.get("value"), fmt)}</span>'
             f'<span class="rate-badge-arrow" aria-hidden="true">↗</span></a>')
     return "".join(out)
@@ -1312,12 +1329,14 @@ def macro_wrap(page, macro, today):
         return page, False
     krw = m.group(0)
     e = (macro or {}).get("usd_krw") if isinstance(macro, dict) else None
-    title = None
+    title = MACRO_FULL["usd_krw"] + " · 네이버 실시간 환율 보기"
     if isinstance(e, dict) and e.get("value") is not None:
-        title = html_mod.escape(_macro_title(e, today) + " · 네이버 실시간 환율 보기")
+        title = MACRO_FULL["usd_krw"] + " · " + _macro_title(e, today) + " · 네이버 실시간 환율 보기"
     krw = krw.replace('class="rate-badge"', 'class="rate-badge" data-mk="usd_krw"', 1)
-    if title:
-        krw = re.sub(r'title="[^"]*"', lambda _m: f'title="{title}"', krw, count=1)
+    krw = re.sub(r'title="[^"]*"', lambda _m: f'title="{html_mod.escape(title)}"', krw, count=1)
+    # 화면 라벨만 축약 — 템플릿의 'USD/KRW ' 텍스트(값 span 앞)를 'KRW ' 로
+    krw = re.sub(r'>(\s*)USD/KRW(\s*)<span', lambda _m: f">{_m.group(1)}{MACRO_SHORT['usd_krw']}"
+                 f"{_m.group(2)}<span", krw, count=1)
     band = (f'<span class="ud-macro" data-band="{MACRO_MARK}">' + krw
             + macro_badges_html(macro, today) + "</span>")
     return page[:m.start()] + band + page[m.end():], True
