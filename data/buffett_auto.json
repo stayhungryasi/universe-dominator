@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-26 17:52",
- "generated_at": "2026-09-26T17:52:35.543221+09:00",
+ "generated_label": "2026-09-26 22:54",
+ "generated_at": "2026-09-26T22:54:58.983482+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-26",
@@ -143,8 +143,14 @@
     "asof": "2026-03-31"
    },
    "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 160208000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
     "display": "A",
-    "display_reason": "Strong revenue growth, Cloud profitability acceleration, and search moat cash generation support high-quality earnings"
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.3401,
@@ -174,28 +180,8 @@
      "end": "2025-06-30"
     }
    ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "Alphabet exhibits franchise characteristics with AI monetization momentum offsetting antitrust headwinds; valuation attractive relative to quality; TPU stack buildout supports moat durability",
-   "_evidence": {
-    "franchise": "Google News, Cloud surges 82%, search moat under regulatory scrutiny but not yet impaired",
-    "risk5": "Alphabet Trades for 17 Times Earnings vs S&P 500 at 25x; Strong AI Monetization Continues to Spearhead Results",
-    "capalloc": "Q2 2026 earnings: revenue up 24%",
-    "owner_earnings": "Record Revenue Growth and AI Innovations; Strong AI Monetization Continues"
-   }
+   "notes": "P/E 할인(17x)은 반독점 규제 리스크 및 AI 자본지출 지속성 불확실성을 정당화하나, 해자와 성장성(24% 수익 증가)이 다단계 매수 사례에 부합",
+   "_evidence": {}
   },
   "MSFT": {
    "as_of": "2026-09-26",
@@ -320,7 +306,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.49
+    "value": 13.43
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -405,7 +391,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.05
+    "value": -1.1
    },
    "eps_status": null,
    "roe_tangible": -0.0571,
@@ -683,7 +669,19 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2024H2"
+   },
+   "notes": "경영진 교체(Greg Abel) 국면에서 플로트 복리 엔진의 지속성과 자본배분 규율이 핵심 관찰점.",
+   "_evidence": {
+    "capalloc": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2"
+   }
   },
   "LLY": {
    "as_of": "2026-09-26",
@@ -954,7 +952,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.11
+    "value": 28.95
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1179,8 +1177,18 @@
     "asof": "2026-04-30"
    },
    "owner_earnings": {
-    "display": "C",
-    "display_reason": "인수 상각으로 인한 이익 기반 왜곡으로 GAAP P/E 신뢰도 저하"
+    "variants": {
+     "A": {
+      "value": 842800000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     },
+     "C": {
+      "value": 1017300000.0,
+      "basis": "유지캐펙스 = 캐펙스 전액"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -1191,7 +1199,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -1209,38 +1217,14 @@
      "period": "2025Q4",
      "end": "2025-07-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "플랫폼화 전략과 AI 방어 수요는 강하나 지속적 인수로 인한 자본배분 규율 미흡, 밸류에이션 상단 근처",
-   "_evidence": {
-    "franchise": "Cybersecurity SaaS 구독 전환비용 형성, Always On AI Defense 신규 사업부 출범으로 대체불가능성 강화",
-    "risk5": "Platformization 성장 지속성 불명확, 연속 인수로 인한 재무 통합 리스크 내재",
-    "capalloc": "Acquisition spree 지속, 자사주 매입 미언급, 부채를 통한 인수 펀딩 암시",
-    "owner_earnings": "GAAP 기준 선행 EPS는 인수 상각으로 이익 기반이 얇아 실제 주주수익 추정 어려움"
-   }
+   ]
   },
   "ARM": {
    "as_of": "2026-09-26",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.98
+    "value": 0.99
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1515,7 +1499,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.52
+    "value": 31.32
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1592,5 +1576,5 @@
    ]
   }
  ],
- "scout_label": "2026-09-26 17:54"
+ "scout_label": "2026-09-26 22:56"
 }
