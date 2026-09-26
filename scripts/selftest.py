@@ -2160,11 +2160,23 @@ def main():
         # 표시층 — WTI 는 관측일이 측정일보다 이르면 '(전일)', 결측은 '—'
         # 2026-09-26 폭 절약: 화면 라벨은 축약(WTI·10Y·30Y·JPY·KRW), 전체 이름·전일 여부는 title
         check("시장지표: 헤더 WTI 는 축약 라벨 + title 에 '전일 종가'(상태에서 생성)",
-              ('>WTI <span class="ud-mv">$67.90</span>' in _band,
+              ('>WTI <span class="ud-mv">$68</span>' in _band,
                'title="WTI 원유 현물 · 전일 종가 · 측정 08:20 · 출처 FRED API"' in _band),
               (True, True))
         check("시장지표: 축약 라벨 4종이 화면에",
               [k for k in (">WTI ", ">10Y ", ">30Y ", ">JPY ") if k not in _band], [])
+        # 2026-09-26 숫자 폭 여유 — 헤더만 WTI 정수·JPY 소수 1자리. 브리핑은 소수 2자리 유지
+        check("시장지표: 헤더 숫자 폭 — WTI $68 · JPY 148.9",
+              ('<span class="ud-mv">$68</span>' in _band, '<span class="ud-mv">148.9</span>' in _band),
+              (True, True))
+        check("시장지표: 헤더 WTI 100달러 이상도 정수($104)",
+              '<span class="ud-mv">$104</span>' in _bsm.macro_badges_html(
+                  {"wti": {"value": 103.6, "measured_at": "2026-09-26T08:20+09:00"}}, "2026-09-26"),
+              True)
+        _mcss = _bsm.MACRO_CSS
+        check("시장지표: 띠 배지 좌우 여백 11px — 480px 이하 규칙(9px)은 그대로",
+              ("@media (min-width: 481px)" in _mcss,
+               "padding-left: 11px; padding-right: 11px;" in _mcss), (True, True))
         _bandn = _bsm.macro_badges_html({}, "2026-09-26")
         check("시장지표: 결측은 — (0 아님)",
               _bandn.count('<span class="ud-mv">—</span>'), 4)

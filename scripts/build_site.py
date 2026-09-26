@@ -1251,6 +1251,10 @@ MACRO_CSS = """<style>
   scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .ud-macro::-webkit-scrollbar { display: none; }
 .ud-macro .rate-badge { flex: 0 0 auto; white-space: nowrap; }
+/* 띠 안 배지 좌우 여백 13→11px (1280px 여유 확보). 480px 이하 규칙(9px)은 건드리지 않는다 */
+@media (min-width: 481px) {
+  .site-header .header-right .ud-macro .rate-badge { padding-left: 11px; padding-right: 11px; }
+}
 .rate-badge .ud-mv { color: var(--text); font-weight: 800; }
 .rate-badge:hover .ud-mv { color: var(--gold); }
 </style>"""
@@ -1263,6 +1267,10 @@ def _macro_value(v, fmt):
         return f"{v:.2f}%"
     if fmt == "usd":
         return f"${v:,.2f}"
+    if fmt == "usd0":                   # 헤더 전용 — 정수 달러($72). 폭 여유 확보
+        return f"${v:,.0f}"
+    if fmt == "fx1":                    # 헤더 전용 — 소수 1자리(148.3)
+        return f"{v:,.1f}"
     return f"{v:,.2f}"
 
 
@@ -1292,6 +1300,9 @@ def _macro_label(key, label, e, today):
 # 헤더 띠 전용 축약 라벨(2026-09-26 폭 절약 — 1280px 에서 5개가 스크롤 없이 보이게).
 # 전체 이름은 title 로 옮긴다. 브리핑은 폭 제약이 없으므로 MACRO_BADGES 의 전체 라벨을 쓴다.
 MACRO_SHORT = {"usd_krw": "KRW", "wti": "WTI", "ust10": "10Y", "ust30": "30Y", "usd_jpy": "JPY"}
+# 헤더 띠 전용 숫자 폭 — WTI 정수($72) · JPY 소수 1자리(148.3). 100달러·자릿수 변화에도
+# 1280px 여유가 남게(2026-09-26). 브리핑은 MACRO_BADGES 의 표기(소수 2자리)를 그대로 쓴다.
+MACRO_HEADER_FMT = {"wti": "usd0", "usd_jpy": "fx1"}
 MACRO_FULL = {"usd_krw": "USD/KRW 환율", "wti": "WTI 원유 현물", "ust10": "미국 10년물 국채 금리",
               "ust30": "미국 30년물 국채 금리", "usd_jpy": "USD/JPY 환율"}
 
@@ -1314,7 +1325,7 @@ def macro_badges_html(macro, today):
             f'<a href="{url}" target="_blank" rel="noopener" class="rate-badge ud-mb" '
             f'data-mk="{key}" title="{html_mod.escape(_macro_full_title(key, label, e, today))}">'
             f'{MACRO_SHORT.get(key, label)} '
-            f'<span class="ud-mv">{_macro_value(e.get("value"), fmt)}</span>'
+            f'<span class="ud-mv">{_macro_value(e.get("value"), MACRO_HEADER_FMT.get(key, fmt))}</span>'
             f'<span class="rate-badge-arrow" aria-hidden="true">↗</span></a>')
     return "".join(out)
 
