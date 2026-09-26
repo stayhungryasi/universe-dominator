@@ -248,6 +248,10 @@ document.addEventListener('DOMContentLoaded', function () {
   scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .ud-macro::-webkit-scrollbar { display: none; }
 .ud-macro .rate-badge { flex: 0 0 auto; white-space: nowrap; }
+/* 띠 안 배지 좌우 여백 13→11px (1280px 여유 확보). 480px 이하 규칙(9px)은 건드리지 않는다 */
+@media (min-width: 481px) {
+  .site-header .header-right .ud-macro .rate-badge { padding-left: 11px; padding-right: 11px; }
+}
 .rate-badge .ud-mv { color: var(--text); font-weight: 800; }
 .rate-badge:hover .ud-mv { color: var(--gold); }
 </style>
