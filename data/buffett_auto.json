@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-27 10:44",
- "generated_at": "2026-09-27T10:44:00.639315+09:00",
+ "generated_label": "2026-09-27 18:32",
+ "generated_at": "2026-09-27T18:32:37.429653+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-27",
@@ -143,8 +143,14 @@
     "asof": "2026-03-31"
    },
    "owner_earnings": {
+    "variants": {
+     "A": {
+      "value": 160208000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
     "display": "A",
-    "display_reason": "Revenue up 24%, Cloud surges 82%로 강한 성장 입증되나 AI 지출 대비 수익화 검증 단계"
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.3401,
@@ -155,7 +161,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 32건 · GOOGL 조회",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -173,31 +179,7 @@
      "period": "2025Q2",
      "end": "2025-06-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "○"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "Search 해자는 견고하나 반독점 리스크와 AI 수익화 확실성이 평가의 핵심 변수; 17배 PER는 S&P 500 대비 저평가 신호",
-   "_evidence": {
-    "franchise": "Google News, Search 중심 해자 지속 + Cloud 고성장(82%)으로 다각화 진행 중",
-    "risk5": "What worried investors about Alphabet - 반독점 우려 현존; AI monetization continues to spearhead results - 수익화 진행 중이나 '15 Billion Reasons' 기사로 지출 우려 병존",
-    "capalloc": "Alphabet Q2 2026 earnings: revenue up 24% - 강한 캐시 생성 능력 입증",
-    "owner_earnings": "Record Revenue Growth and AI Innovations + Cloud surges 82% - 실제 성장률로 뒷받침"
-   }
+   ]
   },
   "MSFT": {
    "as_of": "2026-09-27",
@@ -1580,5 +1562,5 @@
    ]
   }
  ],
- "scout_label": "2026-09-27 10:45"
+ "scout_label": "2026-09-27 18:34"
 }
