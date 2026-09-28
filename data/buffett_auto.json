@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-28 10:55",
- "generated_at": "2026-09-28T10:55:49.276508+09:00",
+ "generated_label": "2026-09-28 19:07",
+ "generated_at": "2026-09-28T19:07:00.674817+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-28",
@@ -667,7 +667,19 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "회장 교체 후 재평가 진행 중; 플로트 기반 가치 창출 모델 유지, 현금 보유 감소는 투자 및 자사주 매입 증가에 기인.",
+   "_evidence": {
+    "capalloc": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2"
+   }
   },
   "LLY": {
    "as_of": "2026-09-28",
@@ -867,8 +879,14 @@
     "asof": "2026-03-28"
    },
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "수익 성장(50% 매출 증가, 데이터센터 107% 증가)은 실질적이나 주가 반응 부진으로 실적-밸류에이션 괴리 존재"
+    "variants": {
+     "A": {
+      "value": 5009000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -879,7 +897,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -897,27 +915,7 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1
-   },
-   "notes": "AI 칩 10년 쿠폰 추정이 NVDA 수준으로 과도한지 실적 기반 재검증 필요",
-   "_evidence": {
-    "franchise": "Advanced Micro Devices (AMD) Is Gaining Real World AI Adoption",
-    "risk5": "AMD Stock Tanks After Earnings, But The Dip Isn't Changing Wall Street's Or Retail Investors' Bullish View — 실적 대비 주가 약세 신호",
-    "capalloc": "AMD's revenue climbs 50% and data center sales doubled",
-    "owner_earnings": "'This was not an exceptional result': Why AMD stock tanked 5% after earnings"
-   }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-09-28",
@@ -1499,7 +1497,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.32
+    "value": 31.52
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1576,5 +1574,5 @@
    ]
   }
  ],
- "scout_label": "2026-09-28 10:57"
+ "scout_label": "2026-09-28 19:08"
 }
