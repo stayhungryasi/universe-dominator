@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-09-27",
+ "date": "2026-09-28",
  "members": {
   "ASML": {
    "name": "ASML",
@@ -41,7 +41,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 46
+   "rank": 49
   },
   "PANW": {
    "name": "Palo Alto Networks",
@@ -49,7 +49,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 51
+   "rank": 52
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -65,7 +65,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 63
+   "rank": 66
   },
   "SNDK": {
    "name": "Sandisk",
@@ -73,7 +73,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 65
+   "rank": 64
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -95,9 +95,9 @@
    "name": "KIOXIA Holdings Corporation",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 0,
+   "streak_out": 1,
    "carried_days": 0,
-   "rank": 102
+   "rank": 106
   },
   "8035.T": {
    "name": "Tokyo Electron",
@@ -105,7 +105,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 128
+   "rank": 129
   },
   "2308.TW": {
    "name": "Delta Electronics",
@@ -118,22 +118,22 @@
  },
  "candidates": {
   "6857.T": {
-   "streak_in": 1,
+   "streak_in": 2,
    "swap_streak": 0,
    "name": "Advantest",
-   "rank": 144
+   "rank": 141
   },
   "FTNT": {
-   "streak_in": 1,
+   "streak_in": 2,
    "swap_streak": 0,
    "name": "Fortinet",
-   "rank": 173
+   "rank": 175
   },
   "ASX": {
-   "streak_in": 1,
+   "streak_in": 2,
    "swap_streak": 0,
    "name": "ASE Group",
-   "rank": 195
+   "rank": 194
   }
  },
  "transitions": [],
@@ -273,7 +273,7 @@
    }
   }
  },
- "generated_at": "2026-09-27T23:41:14.010893+09:00",
+ "generated_at": "2026-09-28T10:44:53.149886+09:00",
  "limits": {
   "in": 3,
   "out": 5,
