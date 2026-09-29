@@ -264,6 +264,23 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 @media (max-width: 480px) {
   .lg-c-price { max-width: 92px; overflow: hidden; text-overflow: ellipsis; }
 }
+/* 레전드 표 전용 고정 판형(2026-09-29 우측 잘림 수리) — .px-table 이 auto 판형이라 긴 비고가
+   ROE·전환율 칸을 넓혀 버핏존을 px-wrap 밖으로 밀어냈다. 칸 폭은 colgroup 비율이 정하고
+   셀 내용은 칸 안에서 줄바꿈한다. **모든 규칙은 .lg-table 로 한정** — 시차 관측 표는 공용
+   .px-table 그대로다(공용 CSS 오염 금지). */
+.px-table.lg-table { table-layout: fixed; }
+.px-table.lg-table th, .px-table.lg-table td { overflow-wrap: anywhere; }
+.px-table.lg-table th, .px-table.lg-table td.px-num, .px-table.lg-table .px-tk { white-space: normal; }
+.px-table.lg-table .lg-price, .px-table.lg-table .lg-zonetag { white-space: nowrap; }
+/* 배지는 한 덩어리 — 칸 안 줄바꿈 규칙이 배지 글자('GAAP 미조정')를 쪼개지 않게 */
+.px-table.lg-table .lg-auto, .px-table.lg-table .lg-badge { white-space: nowrap; overflow-wrap: normal; }
+/* 비고 줄 — 원인 비고·기준 줄이 셀 대신 여기(colspan) 한 줄로 온다. 윗행과 한 몸으로 보이게 */
+.px-table.lg-table tr.lg-hasnote td { border-bottom: 0; padding-bottom: 6px; }
+.px-table.lg-table tr.lg-note-row td { padding: 0 10px 13px; font-size: 12px; font-weight: 600;
+  line-height: 1.6; color: var(--text-muted); }
+.lg-note { display: inline-block; margin-right: 16px; }
+/* 좁은 화면 — 칸을 짜부라뜨리지 않고 최소 폭을 준 뒤 px-wrap 가로 스크롤로 버핏존에 닿는다 */
+@media (max-width: 760px) { .px-table.lg-table { min-width: 720px; } }
 /* 🛰 무인 탐사선 — 기존 테마 변수만 쓴다(신규 색 금지). 다크 전용 아님. */
 .ag-notice { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 14px;
   padding: 15px 19px; margin-bottom: 16px; font-size: 12.5px; line-height: 1.75;
@@ -321,6 +338,11 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
   /* 레전드 표는 마지막 칸(버핏존)이 결론이라 숨기면 안 된다 — 전환율을 접는다.
      (전환율은 PIK 배지로도 읽히므로 정보가 사라지지 않는다) */
   .lg-c-conv { display: none; }
+  /* 예외 — 위 두 규칙이 레전드에서는 버핏존 칸(결론)과 한 칸짜리 비고·해부 행까지 숨기고
+     있었다(2026-09-29 실측). 레전드 표는 가로 스크롤로 전부 보여 준다. 고정 판형에서
+     전환율 칸만 숨기면 그 칸 폭이 빈 구멍으로 남으므로 전환율도 유지한다. */
+  .px-table.lg-table th:last-child, .px-table.lg-table td:last-child,
+  .px-table.lg-table .lg-c-conv { display: table-cell; }
 }
 </style>
 </head>
@@ -1500,14 +1522,19 @@ function lgGuardNote(b, j){
   return head + (j.guard_reason ? '' : ' · 가드 근거 미기재(판단층 취재 필요)');
 }
 
+/* 버핏존 칸에는 존 + 경계 + 짧은 비고만. 값이 산출된 종목의 "기준 날짜·분기·출처" 줄은
+   행 아래 비고 줄(lgBasisNote)로 간다 — 셀을 길게 늘려 칸을 넓히지 않게. */
+function lgBasisNote(b, j){
+  if (j.guard || b.guard || b.coupon10y == null) return '';
+  const parts = [j.as_of, j.period].filter(Boolean);
+  const how = lgMethodKo(j.method);
+  if (how) parts.push(how);
+  return parts.length ? '기준 ' + parts.join(' · ') : '';
+}
+
 function lgNote(b, j){
   if (j.guard || b.guard) return lgGuardNote(b, j);
-  if (b.coupon10y != null) {                      // 취재가 끝나 값이 산출된 상태
-    const parts = [j.as_of, j.period].filter(Boolean);
-    const how = lgMethodKo(j.method);
-    if (how) parts.push(how);
-    return parts.length ? '기준 ' + parts.join(' · ') : '';
-  }
+  if (b.coupon10y != null) return '';             // 산출된 종목의 기준 줄은 비고 줄로
   // 이익 결측 사유는 측정층이 상태에서 만든 문장(eps_note)을 비춘다 — 플로트형·낡은 원장·
   // 수집 실패가 전부 '취재 대기' 한 줄로 뭉개지지 않게(legend-audit E)
   if (b.eps_adj_ttm == null) return b.eps_note || '취재 대기 — 12개월 조정이익 미확보';
@@ -1560,9 +1587,14 @@ function lgRoeCell(b, j){
       ? '<span class="lg-auto" title="' + esc(LG_UNADJ_TIP) + '">GAAP 미조정</span>' : '') +
     (b.roe_from_human ? '' : lgAuto(j, 'roe_tangible'));
   if (roe != null) return lgPp(roe) + tag;
-  if (b.roe_tangible != null)
-    return '—<div class="lg-sub">국채 금리 미연결 · 유형 ROE ' + lgPct(b.roe_tangible) + '</div>';
-  return '—' + (b.roe_note ? '<div class="lg-sub">' + esc(b.roe_note) + '</div>' : '');
+  return '—';
+}
+/* ROE 칸의 원인 비고 — 셀이 아니라 **행 아래 비고 줄**로 보낸다. 긴 문장이 셀 안에 있으면
+   그 칸이 넓어져 버핏존(결론)을 표 밖으로 밀어냈다(2026-09-29, 1090px 에서 절반 잘림). */
+function lgRoeNote(b){
+  if (b.roe_minus_2x10y != null) return '';
+  if (b.roe_tangible != null) return '국채 금리 미연결 · 유형 ROE ' + lgPct(b.roe_tangible);
+  return b.roe_note || '';
 }
 
 /* 계산 전개 — 결론만 보여주면 눈금을 못 되짚는다. 한 줄로 전 과정을 편다. */
@@ -1654,16 +1686,28 @@ function lgRow(x, lg){
   const open = (lgOpenRow === x.ticker);
   const detail = open
     ? '<tr class="lg-open"><td colspan="6">' + lgDissect(x, j) + '</td></tr>' : '';
-  return '<tr class="lg-clickable" onclick="lgToggleRow(\'' + esc(x.ticker) + '\')">' +
+  // 비고 줄 — 긴 원인 문장·기준 줄은 셀이 아니라 행 바로 아래 한 줄(colspan)로.
+  // 칸 이름을 앞에 붙여 어느 칸의 사유인지 잃지 않는다. (쉬운 해석도 이 방식으로 들어온다)
+  const tk = esc(x.ticker);
+  const notes = [];
+  const roeN = lgRoeNote(b);
+  if (roeN) notes.push('ROE: ' + roeN);
+  if (j.conv == null && b.conv_note) notes.push('전환율: ' + b.conv_note);
+  const basis = lgBasisNote(b, j);
+  if (basis) notes.push(basis);
+  const noteRow = notes.length
+    ? '<tr class="lg-note-row lg-clickable" onclick="lgToggleRow(\'' + tk + '\')"><td colspan="6">' +
+      notes.map(n => '<span class="lg-note">' + esc(n) + '</span>').join('') + '</td></tr>' : '';
+  return '<tr class="lg-clickable' + (notes.length ? ' lg-hasnote' : '') +
+    '" onclick="lgToggleRow(\'' + tk + '\')">' +
     '<td><div class="px-tk">' + esc(x.ticker) + badges + '</div>' +
       '<div class="px-name">' + esc(x.name) + '</div></td>' +
     '<td class="px-num ' + roeCls + '">' + lgRoeCell(b, j) + '</td>' +
     '<td class="px-num">' + coupon + '</td>' +
-    // 전환율 — 자동은 C안(캐펙스 전액) 단독. 없으면 **왜 없는지**(측정층 conv_note 가
-    // 상태에서 만든 문장을 그대로 비춘다 — 감가상각 기준으로 메우지 않는다)
+    // 전환율 — 자동은 C안(캐펙스 전액) 단독. 없으면 셀에는 '—' 만, **왜 없는지**는 비고 줄에
+    // (측정층 conv_note 가 상태에서 만든 문장 — 감가상각 기준으로 메우지 않는다)
     '<td class="px-num lg-c-conv">' + (j.conv == null
-      ? '—' + (b.conv_note ? '<div class="lg-sub">' + esc(b.conv_note) + '</div>' : '')
-      : lgPct(j.conv, 0) + lgAuto(j, 'conversion')) + '</td>' +
+      ? '—' : lgPct(j.conv, 0) + lgAuto(j, 'conversion')) + '</td>' +
     '<td class="px-num lg-c-price">' + lgPassPrice(x, b) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다
@@ -1671,7 +1715,7 @@ function lgRow(x, lg){
       lgEdge(b) +
       (function(){ const n = lgNote(b, j);
         return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
-  '</tr>' + detail;
+  '</tr>' + noteRow + detail;
 }
 
 function renderLegend(){
@@ -1758,7 +1802,10 @@ function renderLegend(){
   judged.sort((a, c) => LG_ORDER.indexOf((a.bench || {}).zone_buffett) -
                         LG_ORDER.indexOf((c.bench || {}).zone_buffett));
 
-  const head = '<div class="px-wrap"><table class="px-table"><thead><tr>' +
+  // 고정 판형 — 칸 폭을 내용이 아니라 이 비율이 정한다(합 100%). 버핏존이 결론이라 가장 넓다.
+  const head = '<div class="px-wrap"><table class="px-table lg-table"><colgroup>' +
+    '<col style="width:15%"><col style="width:12%"><col style="width:17%">' +
+    '<col style="width:11%"><col style="width:13%"><col style="width:32%"></colgroup><thead><tr>' +
     '<th>종목</th><th>ROE−2×국채</th><th>10년 원가쿠폰</th>' +
     '<th class="lg-c-conv">전환율</th><th class="lg-c-price">통과 가격</th>' +
     '<th>버핏존</th></tr></thead><tbody>';

@@ -193,6 +193,26 @@ def main():
                 _bad_built.append(_name)
     check("산출물 <style> 블록 오염 없음", _bad_built, [])
 
+    # ── 레전드 표 우측 잘림 (2026-09-29) — auto 판형에서 긴 비고가 칸을 넓혀 버핏존을 밀어냈다 ──
+    # 고정 판형은 **레전드 전용(.lg-table)**이어야 한다. 공용 .px-table 에 걸면 시차 관측 표가
+    # 같이 바뀐다(공용 CSS 오염). 비고는 셀이 아니라 행 아래 비고 줄로 간다.
+    import re as _re_lg
+    _ob = (Path(__file__).parent / "observatory-template.html").read_text(encoding="utf-8")
+    _css = _ob[:_ob.find("</style>")]
+    check("레전드 표: 고정 판형은 .lg-table 전용(공용 .px-table 오염 없음)",
+          [ln.strip() for ln in _css.splitlines()
+           if ("table-layout" in ln or "overflow-wrap: anywhere" in ln or "min-width: 720px" in ln)
+           and ".lg-table" not in ln], [])
+    _cg = _re_lg.search(r"<colgroup>(.*?)</colgroup>", _ob[_ob.find("function renderLegend"):], _re_lg.S)
+    _cw = [float(w) for w in _re_lg.findall(r"width:(\d+(?:\.\d+)?)%", _cg.group(1))] if _cg else []
+    check("레전드 표: colgroup 6칸 · 합 100%", (len(_cw), sum(_cw)), (6, 100.0))
+    check("레전드 표: 전환율·ROE 원인 비고는 셀이 아니라 비고 줄로",
+          ("'전환율: ' + b.conv_note" in _ob, "'ROE: ' + roeN" in _ob,
+           "esc(b.conv_note) + '</div>'" in _ob, "esc(b.roe_note) + '</div>'" in _ob),
+          (True, True, False, False))
+    check("레전드 표: 480px 규칙이 버핏존(마지막 칸)을 숨기지 않는다(예외 규칙)",
+          ".px-table.lg-table th:last-child, .px-table.lg-table td:last-child" in _css, True)
+
     # ── 보안 규칙 정본(firestore.rules)과 클라이언트 설정의 adminUid 일치 ──
     # 두 값이 어긋나면 소장이 자기 소재함에서 잠긴다. 콘솔에 붙여넣기 전에
     # 여기서 걸러야 "게시했는데 안 된다"를 겪지 않는다.
