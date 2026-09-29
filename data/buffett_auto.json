@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-29 02:50",
- "generated_at": "2026-09-29T02:50:58.206698+09:00",
+ "generated_label": "2026-09-29 11:47",
+ "generated_at": "2026-09-29T11:47:47.206365+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-29",
@@ -82,18 +82,8 @@
     "asof": "2026-03-28"
    },
    "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "A",
-    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
+    "display": "B",
+    "display_reason": "수익 및 마진 확대는 긍정이나 성장 정체로 프리미엄 밸류에이션 정당성 약화"
    },
    "conversion": {
     "value": 1.0,
@@ -131,14 +121,14 @@
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
+    "score": 2,
     "period": "2026H1"
    },
-   "notes": "성숙한 소비자 프랜차이즈지만 성장 정체로 밸류에이션 상한선 접근",
+   "notes": "iPhone·Mac 수요 강세로 가이던스 상향이나 메모리 부족 경고와 10% 낙폭으로 밸류에이션 재평가 국면",
    "_evidence": {
-    "franchise": "booming iPhone, Mac demand; Apple Pay 확장 검토 중",
-    "capalloc": "Nvidia가 사상 최대 자사주 매입 기록 경신으로 Apple 추월, 강한 현금 창출 지속"
+    "franchise": "Consumer franchise strongest with no substitute, but growth runway lowest",
+    "capalloc": "Nvidia surpasses Apple with record $150B buyback authorization; Apple revenue guidance tops estimates",
+    "owner_earnings": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; margin expansion ahead"
    }
   },
   "GOOG": {
@@ -321,7 +311,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.43
+    "value": 13.5
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -884,8 +874,14 @@
     "asof": "2026-03-28"
    },
    "owner_earnings": {
-    "display": "B",
-    "display_reason": "AI칩 수요 실질화(데이터센터 매출 2배)하나 주가 반응은 약세로 현재 밸류에이션 기대치 초과"
+    "variants": {
+     "A": {
+      "value": 5009000000.0,
+      "basis": "유지캐펙스 = 감가상각"
+     }
+    },
+    "display": "A",
+    "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"
    },
    "conversion": {
     "value": 1.0,
@@ -896,7 +892,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -914,30 +910,7 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "NVDA 대비 경쟁 치열·대체 가능성 높음. $1조 밸류 도달 후 AI 야망 수행 난도 상향",
-   "_evidence": {
-    "franchise": "AMD's revenue climbs 50% and data center sales doubled / Advanced Micro Devices (AMD) is Gaining Real World AI Adoption",
-    "risk5": "AMD stock tanked 5% after earnings despite strong results / Is AMD Stock Priced Right Against Its Chip Peers?",
-    "capalloc": "CEO Predicts Demand Will Continue to Rise / Bank of America Sees AMD at $720 on CPU Demand",
-    "owner_earnings": "AMD posted Q2 earnings on Tuesday / 'This was not an exceptional result': Why AMD stock tanked 5% after earnings"
-   }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-09-29",
@@ -972,7 +945,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.95
+    "value": 29.41
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1435,7 +1408,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1009.62
+    "value": 1009.9
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1463,7 +1436,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1249.09
+    "value": 1251.43
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1491,7 +1464,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 516.8
+    "value": 516.07
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1596,5 +1569,5 @@
    ]
   }
  ],
- "scout_label": "2026-09-29 02:52"
+ "scout_label": "2026-09-29 11:49"
 }
