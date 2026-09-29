@@ -70,10 +70,19 @@ DILUTED_TAGS = ["WeightedAverageNumberOfDilutedSharesOutstanding",
 #   A안: 유지캐펙스 = 감가상각      → 오너어닝 = 순이익 (가장 관대한 가정)
 #   C안: 유지캐펙스 = 캐펙스 전액    → 성장투자까지 유지비로 본다 (가장 보수적)
 #   B안은 '성장 이전 런레이트' 추정이라 사람 취재 영역이다 — 기계가 만들지 않는다.
+# 자동 표시·전환율은 **C안 단독**이다(2026-09-29 선장님 확정). C 를 못 재면 빈칸 —
+# A 로 폴백하지 않는다. A 는 순이익과 같아서 전환율이 항등식으로 100% 가 된다.
 DNA_TAGS = ["DepreciationDepletionAndAmortization",
             "DepreciationAmortizationAndAccretionNet",
             "DepreciationAndAmortization",
             "DepreciationNonproduction"]
+# 현금흐름표의 감가상각 **가산 항목** — 회사마다 한 줄(합계)이거나 여러 줄(감가상각 +
+# 무형상각)이다. CF 구역 안의 줄은 서로 겹치지 않으므로 있는 것을 전부 더한다.
+# 구역을 가리지 않고 태그 이름으로 더하면 이중계상된다: MSFT 의 무형상각 4.7B 는
+# 손익·주석 쪽 값이고 CF 한 줄(34.3B)에 이미 들어 있다(2026-09-29 SEC 대조).
+DNA_CF_LINES = DNA_TAGS + ["Depreciation",
+                           "AmortizationOfIntangibleAssets",
+                           "OtherDepreciationAndAmortization"]
 CAPEX_TAGS = ["PaymentsToAcquirePropertyPlantAndEquipment",
               "PaymentsToAcquireProductiveAssets",
               "PaymentsToAcquireOtherPropertyPlantAndEquipment"]
@@ -159,6 +168,32 @@ def pick(flat, tags):
         if hit is not None:
             return hit[0], hit[1]
     return None, None
+
+
+def cf_dna(report):
+    """감가상각 = 현금흐름표(cf) 구역의 감가상각 가산 줄 합계 → (값|None, 쓴 태그들).
+
+    2026-09-29: MSFT·GOOG·AVGO·TSLA·AMD·MRVL 은 합계 태그 대신 Depreciation(+무형상각
+    별도 줄)으로 공시해 감가상각이 영원히 None → C안이 한 번도 서지 않았다.
+    CF 구역이 없는 보고(구조가 다른 원장)면 종전대로 합계 태그만 찾는다.
+    """
+    cf = (report or {}).get("cf")
+    if not isinstance(cf, list):
+        v, t = pick(flatten(report), DNA_TAGS)
+        return v, ([t] if t else [])
+    want = {norm(t) for t in DNA_CF_LINES}
+    seen, total, used = set(), 0.0, []
+    for row in cf:
+        c = norm((row or {}).get("concept"))
+        if c not in want or c in seen:
+            continue
+        v = to_num((row or {}).get("value"))
+        if v is None:
+            continue
+        seen.add(c)
+        total += v
+        used.append((row or {}).get("concept") or c)
+    return (total if used else None), used
 
 
 def sample_concepts(flat, n=14):
@@ -306,7 +341,7 @@ def quarter_incomes(reports, annual=None):
             continue
         raw[(y, q)] = ({"adj": inc,
                         "ni": pick(flat, NET_INCOME_TAGS)[0],
-                        "dna": pick(flat, DNA_TAGS)[0],
+                        "dna": cf_dna((r or {}).get("report"))[0],
                         "capex": pick(flat, CAPEX_TAGS)[0]}, why, period_days(r),
                        end_of(r))
 
@@ -346,7 +381,7 @@ def quarter_incomes(reports, annual=None):
         if inc is None:
             continue
         fy = {"adj": inc, "ni": pick(flat, NET_INCOME_TAGS)[0],
-              "dna": pick(flat, DNA_TAGS)[0], "capex": pick(flat, CAPEX_TAGS)[0]}
+              "dna": cf_dna((r or {}).get("report"))[0], "capex": pick(flat, CAPEX_TAGS)[0]}
         q4 = {}
         for k, v in fy.items():
             parts = [t[0].get(k) for t in three]
@@ -459,30 +494,39 @@ def eps_adj_ttm_from(reports):
 
 
 def owner_earnings_from(window):
-    """TTM 창 → 오너어닝 변형과 전환율. 못 구한 칸은 None.
+    """TTM 창 → (오너어닝 변형, 전환율, 전환율 결측 상태). 못 구한 칸은 None.
 
-    display 는 **A안**을 기본으로 둔다(선장님 지정). 사람이 판단층에서 display 를
-    지정하면 병합에서 사람 값이 이긴다 — 여기서는 자동 기본값만 만든다.
-    전환율 = 표시 변형 ÷ 조정순이익. 조정순이익이 0 이하면 비율이 의미를 잃으므로 None.
+    자동 표시·전환율은 **C안 단독**이다(2026-09-29 선장님 확정 — 9/2 의 A 기본을 뒤집음).
+    A안은 순이익과 같아서(감가상각을 더했다 그대로 뺀다) A ÷ 조정순이익 이 조정 없는
+    회사에서 항등식 1.0 이 된다 — MSFT·AMZN·META 가 전부 100% 로 보였던 이유다.
+    C 를 못 재면 **빈칸 + 원인 상태** — A 로 폴백하지 않는다(가장 관대한 가정이 조용히
+    기본값이 되는 것을 막는다). 값은 깎지 않는다: 1.0 을 넘으면 넘는 그대로.
+    사람이 판단층에서 display·전환율을 지정하면 병합(buffett_layers)에서 사람이 이긴다.
+    A 변형은 참고로 남긴다(표시·전환율에는 쓰지 않는다).
     """
     adj = sum(x[2]["adj"] for x in window)
     ni = [x[2].get("ni") for x in window]
     dna = [x[2].get("dna") for x in window]
     capex = [x[2].get("capex") for x in window]
     if any(v is None for v in ni):
-        return None, None
+        return None, None, {"state": "income_missing"}
     ni_t = sum(ni)
     variants = {"A": {"value": round(ni_t, 2), "basis": "유지캐펙스 = 감가상각"}}
-    if not any(v is None for v in dna) and not any(v is None for v in capex):
+    missing = [k for k, vs in (("dna", dna), ("capex", capex))
+               if any(v is None for v in vs)]
+    if not missing:
         variants["C"] = {"value": round(ni_t + sum(dna) - sum(capex), 2),
                          "basis": "유지캐펙스 = 캐펙스 전액"}
-    oe = {"variants": variants, "display": "A",
-          "display_reason": "자동 기본값 — 유지캐펙스를 감가상각으로 본 가장 관대한 가정"}
+    oe = {"variants": variants}
+    if missing:
+        oe.update(display=None, display_reason="자동 — 캐펙스 전액 기준 산출 불가")
+        return oe, None, {"state": "c_missing", "missing": missing}
+    oe.update(display="C", display_reason="자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정")
     if adj <= 0:
-        return oe, None
-    conv = {"value": round(variants["A"]["value"] / adj, 4),
-            "basis": "A(감가상각 기준) ÷ 조정순이익"}
-    return oe, conv
+        return oe, None, {"state": "adj_nonpositive"}
+    conv = {"value": round(variants["C"]["value"] / adj, 4), "variant": "C",
+            "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"}
+    return oe, conv, None
 
 
 def tangible_equity(flat):
@@ -829,6 +873,8 @@ def build_block(c, key, now):
         "cyclical_peak_guard": ("시클리컬" in (c.get("type") or "")),
         "eps_adj_ttm": None, "eps_status": None, "roe_tangible": None, "roe_basis": None,
         "owner_earnings": None, "conversion": None,
+        # 전환율이 왜 없는가 — 화면 비고의 재료(측정층 conv_note 가 문장으로 만든다)
+        "conversion_status": {"state": "unmeasured"},
         "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
     }
@@ -841,6 +887,7 @@ def build_block(c, key, now):
         # 매 회차 '희석주식수 없음' 으로 떨어지고 있었다(legend-audit E).
         block["method"] = "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)"
         block["eps_status"] = {"state": "float_skip"}
+        block["conversion_status"] = {"state": "float_skip"}
         block["roe_basis"] = {"kind": "xbrl", "status": "income_missing"}
         print(f"[자동취재] {ticker}: 플로트형 — 자동 조정 생략(사람 취재 전용)")
         return block, "zero"
@@ -851,6 +898,7 @@ def build_block(c, key, now):
         block["method"] = "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)"
         block["source"] = "yfinance TTM 희석 EPS"
         block["confidence"] = "중" if eps is not None else None
+        block["conversion_status"] = {"state": "foreign"}   # 해외 경로엔 현금흐름 조립이 없다
         if eps is None:
             block["eps_status"] = {"state": "foreign_missing"}
         # 유형 ROE — 예전엔 해외 경로에 계산 자체가 없어 12종이 영원히 빈칸이었다.
@@ -902,6 +950,7 @@ def build_block(c, key, now):
     if not reports:
         block["roe_basis"] = {"kind": "xbrl", "status": "api_fail"}
         block["eps_status"] = {"state": "api_fail"}
+        block["conversion_status"] = {"state": "api_fail"}
         return block, pick["outcome"]
     alias = "" if pick["q"] == ("symbol", ticker) else f" · {pick['label']} 조회"
     block["source"] = f"Finnhub financials-reported · 분기 {len(reports)}건{alias}"
@@ -940,6 +989,7 @@ def build_block(c, key, now):
         block["confidence"] = None
         # 이익이 폐기·미산출이면 ROE 도 서지 않는다 — 그 사실을 원인 칸에 남긴다
         block["roe_basis"] = {"kind": "xbrl", "status": "income_missing"}
+        block["conversion_status"] = {"state": "income_missing"}
     else:
         block["eps_adj_ttm"] = {"value": round(eps, 4)}
         block["method"] = method
@@ -953,11 +1003,16 @@ def build_block(c, key, now):
         if win:
             block["ttm_window"] = [{"period": f"{y}Q{q}", "end": e}
                                    for y, q, _v, _w, e in win]
-            oe, conv = owner_earnings_from(win)
+            oe, conv, cst = owner_earnings_from(win)
             if oe:
                 block["owner_earnings"] = oe
             if conv:
                 block["conversion"] = conv
+            block["conversion_status"] = cst
+            if cst:
+                # 원인을 로그에 남긴다 — 태그 미매핑이면 다음 회차에 맞출 단서가 된다
+                print(f"[자동취재] {ticker}: 전환율 미산출 — {cst['state']} "
+                      f"{cst.get('missing') or ''}".rstrip(), file=sys.stderr)
         roe, rb = xbrl_roe(flatten(latest.get("report")), win)
         rb["asof"] = end_of(latest)
         block["roe_tangible"], block["roe_basis"] = roe, rb

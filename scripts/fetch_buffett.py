@@ -418,6 +418,32 @@ def roe_note(basis):
     return "ROE 미산출"
 
 
+def conv_note(status):
+    """전환율이 왜 없는가 — **상태에서 만든다**(2026-09-29 전환율 회귀).
+
+    자동 전환율은 C안(캐펙스 전액) 단독이라 재료가 빠지면 빈칸이다 — 감가상각 기준(A)
+    으로 메우지 않는다. 그 빈칸이 '미취재' 로 뭉개지지 않게 빠진 재료를 이름으로 부른다.
+    모르는 상태는 일반 문구로 떨어진다 — 내부 문자열이 화면으로 샐 길이 없다.
+    """
+    st = status.get("state") if isinstance(status, dict) else None
+    if st == "c_missing":
+        names = {"dna": "감가상각", "capex": "캐펙스"}
+        miss = [names[m] for m in (status.get("missing") or []) if m in names]
+        return ("·".join(miss) + " 항목 미확보" if miss else "캐펙스 기준 재료 미확보") + \
+            " — 전환율 산출 불가"
+    if st == "adj_nonpositive":
+        return "조정순이익 0 이하 — 전환율 무의미"
+    if st == "income_missing":
+        return "12개월 이익 미확보 — 전환율 산출 불가"
+    if st == "foreign":
+        return "해외 공시 — 현금흐름 미조립, 전환율 산출 불가"
+    if st == "float_skip":
+        return "투자평가손익 지배 — 사람 취재 전용"
+    if st == "api_fail":
+        return "공시 수집 실패 — 전환율 산출 불가"
+    return "전환율 미산출"
+
+
 def measure_bench(c, price, rates, prev_bench=None):
     """레전드벤치마크 한 종목 — **순수 함수**(네트워크·시각 의존 없음).
 
@@ -467,6 +493,9 @@ def measure_bench(c, price, rates, prev_bench=None):
         # ROE 결측 사유(상태에서 생성) · 사람 취재값 사용 여부 · 해외 GAAP 미조정 여부
         "roe_note": "" if roe is not None else roe_note(b.get("roe_basis")),
         "roe_from_human": roe_human,
+        # 전환율 결측 사유(상태에서 생성) — 값이 있으면(자동·사람 무관) 비고 없음
+        "conv_note": ("" if _num(b.get("conversion")) is not None
+                      else conv_note(b.get("conversion_status"))),
         "roe_unadjusted": bool(roe is not None and not roe_human
                                and (c.get("buffett_origin") or {}).get("roe_tangible") != "human"
                                and rbasis.get("basis") == "GAAP 미조정"),

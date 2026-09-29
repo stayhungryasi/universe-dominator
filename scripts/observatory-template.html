@@ -1659,8 +1659,11 @@ function lgRow(x, lg){
       '<div class="px-name">' + esc(x.name) + '</div></td>' +
     '<td class="px-num ' + roeCls + '">' + lgRoeCell(b, j) + '</td>' +
     '<td class="px-num">' + coupon + '</td>' +
-    '<td class="px-num lg-c-conv">' + (j.conv == null ? '—' : lgPct(j.conv, 0)) +
-      (j.conv == null ? '' : lgAuto(j, 'conversion')) + '</td>' +
+    // 전환율 — 자동은 C안(캐펙스 전액) 단독. 없으면 **왜 없는지**(측정층 conv_note 가
+    // 상태에서 만든 문장을 그대로 비춘다 — 감가상각 기준으로 메우지 않는다)
+    '<td class="px-num lg-c-conv">' + (j.conv == null
+      ? '—' + (b.conv_note ? '<div class="lg-sub">' + esc(b.conv_note) + '</div>' : '')
+      : lgPct(j.conv, 0) + lgAuto(j, 'conversion')) + '</td>' +
     '<td class="px-num lg-c-price">' + lgPassPrice(x, b) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다

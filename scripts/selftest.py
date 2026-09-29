@@ -1012,21 +1012,89 @@ def main():
     def _w(adj, ni, dna, capex):
         return [(2026, q, {"adj": adj, "ni": ni, "dna": dna, "capex": capex}, "w")
                 for q in (4, 3, 2, 1)]
-    _oe, _cv = _fa.owner_earnings_from(_w(8.75, 8.0, 1.75, 11.225))
+    _oe, _cv, _cs = _fa.owner_earnings_from(_w(8.75, 8.0, 1.75, 11.225))
     check("오너어닝: A안 = 순이익(유지캐펙스 = 감가상각)", _oe["variants"]["A"]["value"], 32.0)
     check("오너어닝: C안 = 순이익 + 감가상각 − 캐펙스 전액",
           _oe["variants"]["C"]["value"], -5.9)
-    check("오너어닝: 기본 표시는 A안", _oe["display"], "A")
-    check("전환율: A ÷ 조정순이익", _cv["value"], round(32.0 / 35.0, 4))
-    check("전환율: 근거를 남긴다", "감가상각" in _cv["basis"], True)
-    # 감가상각·캐펙스가 없으면 C안은 만들지 않는다 (0 으로 치지 않는다)
-    _oe2, _cv2 = _fa.owner_earnings_from(_w(8.75, 8.0, None, None))
-    check("오너어닝: 감가상각 없으면 C안 없음", "C" in _oe2["variants"], False)
-    check("전환율: A안만으로도 산출된다", _cv2 is not None, True)
+    check("전환율: C ÷ 조정순이익", _cv["value"], round(-5.9 / 35.0, 4))
+    check("전환율: 근거를 남긴다", "캐펙스 전액" in _cv["basis"], True)
     check("오너어닝: 순이익이 없으면 아예 없음",
-          _fa.owner_earnings_from(_w(8.75, None, 1.0, 1.0)), (None, None))
-    _oe3, _cv3 = _fa.owner_earnings_from(_w(-1.0, 8.0, 1.0, 1.0))
-    check("전환율: 조정순이익이 0 이하면 비율은 없음(의미 상실)", _cv3, None)
+          _fa.owner_earnings_from(_w(8.75, None, 1.0, 1.0))[:2], (None, None))
+    _oe3, _cv3, _cs3 = _fa.owner_earnings_from(_w(-1.0, 8.0, 1.0, 1.0))
+    check("전환율: 조정순이익이 0 이하면 비율은 없음(의미 상실)",
+          (_cv3, (_cs3 or {}).get("state")), (None, "adj_nonpositive"))
+
+    # ── 전환율 회귀 (2026-09-29) — 자동 기본이 A안이라 전 종목이 ~100% 로 보였다 ──
+    # A안 = 순이익 + 감가상각 − 감가상각 = **순이익 그 자체**다. 투자손익 조정이 없는
+    # 회사는 A ÷ 조정순이익 이 항등식으로 1.0 — 클램프처럼 보였지만 클램프는 없었다.
+    # 막으려는 것 한 문장: **캐펙스를 무시한 가장 관대한 가정이 조용히 기본값이 되는 것.**
+    # AMZN 모양: A 90.8B · C 10.2B · 조정순이익 89B → 표시 전환율 ≈ 0.11 (100% 아님)
+    _amzn = _w(89.0 / 4, 90.8 / 4, 60.0 / 4, 140.6 / 4)
+    _oeA, _cvA, _csA = _fa.owner_earnings_from(_amzn)
+    check("회귀 AMZN: 기본 표시는 C안", _oeA["display"], "C")
+    check("회귀 AMZN: 전환율 ≈ 0.11 (C ÷ 조정순이익)", round(_cvA["value"], 2), 0.11)
+    check("회귀 AMZN: 전환율 근거가 C안", _cvA.get("variant"), "C")
+    # NVDA 모양: C 가 조정순이익보다 크면 1.0 을 넘는 그대로 — 클램프 없음
+    _nvda = _w(139.84 / 4, 159.61 / 4, 20.0 / 4, 20.19 / 4)
+    check("회귀 NVDA: 1.0 초과는 깎지 않는다(1.14 그대로)",
+          round(_fa.owner_earnings_from(_nvda)[1]["value"], 2), 1.14)
+    # C 불가(감가상각 미매핑) → A 로 폴백하지 않고 **빈칸 + 원인 상태**
+    _oe2, _cv2, _cs2 = _fa.owner_earnings_from(_w(8.75, 8.0, None, 11.0))
+    check("회귀 C불가: 전환율 빈칸(A 폴백 금지)", _cv2, None)
+    check("회귀 C불가: 표시안도 비운다(A 를 기본으로 두지 않는다)", _oe2["display"], None)
+    check("회귀 C불가: 원인 상태에 빠진 재료를 이름으로",
+          (_cs2 or {}).get("state"), "c_missing")
+    check("회귀 C불가: 빠진 것은 감가상각", (_cs2 or {}).get("missing"), ["dna"])
+    _cs4 = _fa.owner_earnings_from(_w(8.75, 8.0, None, None))[2]
+    check("회귀 C불가: 둘 다 빠지면 둘 다 부른다", (_cs4 or {}).get("missing"), ["dna", "capex"])
+    # 원인 비고는 상태에서 만든다 — 기계 필드명이 화면으로 새지 않는다
+    _cn = _fb.conv_note(_cs2)
+    check("회귀 비고: 감가상각 결측을 한국어로 부른다", "감가상각" in _cn, True)
+    check("회귀 비고: 기계 필드명 노출 금지",
+          any(k in _cn for k in ("dna", "capex", "c_missing", "conversion")), False)
+    check("회귀 비고: 캐펙스 결측", "캐펙스" in _fb.conv_note(
+        {"state": "c_missing", "missing": ["capex"]}), True)
+    check("회귀 비고: 모르는 상태는 일반 문구", _fb.conv_note({"state": "zzz_new"}), "전환율 미산출")
+    check("회귀 비고: 값이 있으면 비고 없음",
+          _fb.measure_bench({"ticker": "X", "buffett": {"conversion": {"value": 0.2},
+                                                        "conversion_status": None}},
+                            100.0, {"UST10": 4.75})["conv_note"], "")
+    check("회귀 비고: 병합 스키마에 등재(conversion_status)",
+          "conversion_status" in _bl.FIELDS, True)
+
+    # 감가상각은 **현금흐름표의 가산 항목만** 합산한다. MSFT 는 CF 한 줄(감가상각·상각 및
+    # 기타 34.3B)에 무형 상각이 이미 들어 있고, 무형 상각 4.7B 는 주석·손익 쪽 값이다 —
+    # 태그 이름으로 합치면 이중계상된다. AVGO·AMD 는 CF 에 두 줄이 따로 있다(합산이 정답).
+    _rep = lambda cf, ic=(): {"cf": [{"concept": "us-gaap_" + k, "value": v} for k, v in cf],
+                              "ic": [{"concept": "us-gaap_" + k, "value": v} for k, v in ic]}
+    check("감가상각: MSFT 모양 — CF 의 Depreciation 만(손익의 무형상각 합산 금지)",
+          _fa.cf_dna(_rep([("Depreciation", 34.3)], [("AmortizationOfIntangibleAssets", 4.7)]))[0],
+          34.3)
+    check("감가상각: AVGO 모양 — CF 두 줄은 합산",
+          round(_fa.cf_dna(_rep([("Depreciation", 0.57),
+                                 ("AmortizationOfIntangibleAssets", 8.06)]))[0], 2), 8.63)
+    check("감가상각: AAPL 모양 — 합계 태그 그대로",
+          _fa.cf_dna(_rep([("DepreciationDepletionAndAmortization", 11.7)]))[0], 11.7)
+    check("감가상각: CF 에 없으면 None(0 치환 금지)",
+          _fa.cf_dna(_rep([("PaymentsToAcquirePropertyPlantAndEquipment", 5.0)]))[0], None)
+
+    # 스카우트(AI)의 오너어닝 의견은 기계 변형·표시안을 지우지 않는다 — AAPL 에서
+    # 스카우트 회차마다 A/C 변형이 통째로 사라지고 있었다(block.update 덮어쓰기)
+    import buffett_scout as _bs
+    _mach = {"variants": {"C": {"value": 1.0}}, "display": "C", "display_reason": "자동"}
+    _mv = _bs.merge_ai_view(_mach, {"display": "B", "display_reason": "성장 정체"})
+    check("스카우트: 기계 변형 보존", _mv.get("variants"), {"C": {"value": 1.0}})
+    check("스카우트: 표시안은 기계 C 유지(AI 의견은 별도 칸)",
+          (_mv.get("display"), (_mv.get("ai_view") or {}).get("display")), ("C", "B"))
+    # 사람 display 지정은 계속 우선 — 필드 단위 병합(GOOG C안 −17% 불가침)
+    _mh, _oh = _bl.merge_block(
+        {"owner_earnings": {"display": "C", "variants": {"C": {"value": -5.9}}},
+         "conversion": {"value": -0.17}},
+        {"owner_earnings": {"display": "C", "variants": {"C": {"value": 60.0}}},
+         "conversion": {"value": 0.5, "variant": "C"}})
+    check("사람 우선: 표시안·전환율 모두 사람",
+          (_oh["owner_earnings"], _oh["conversion"], _mh["conversion"]["value"]),
+          ("human", "human", -0.17))
     # 사람이 지정한 전환율이 자동값을 이긴다 (GOOG C안 유지)
     _mg, _og = _bl.merge_block({"conversion": {"value": -0.17, "basis": "C/조정순이익 35.0"}},
                                {"conversion": {"value": 0.914, "basis": "A ÷ 조정순이익"}})

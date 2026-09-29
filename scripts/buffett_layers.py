@@ -42,7 +42,8 @@ FIELDS = [
     # 조정 EPS 사람 취재 경로(같은 규약) · eps_status 는 자동층이 남기는 결측 상태(legend-audit E)
     "eps_adj_ttm_human", "eps_status",
     "g_cagr3y", "cagr3y_human", "g_forward", "g_forward_source",
-    "owner_earnings", "conversion", "franchise", "risk5", "capalloc",
+    # conversion_status 는 자동층이 남기는 전환율 결측 원인(C안 재료 미확보 등) — 화면 비고의 재료
+    "owner_earnings", "conversion", "conversion_status", "franchise", "risk5", "capalloc",
     "retention_test", "method", "source", "confidence", "notes",
 ]
 

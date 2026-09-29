@@ -180,6 +180,21 @@ def sanitize(raw):
     return out, kept
 
 
+def merge_ai_view(machine_oe, ai_oe):
+    """AI 의 오너어닝 의견을 기계 블록 **옆에** 싣는다 — 기계 변형·표시안은 건드리지 않는다.
+
+    2026-09-29: block.update 가 owner_earnings 를 통째로 갈아 끼워, 스카우트 회차마다
+    AAPL 의 A/C 변형이 사라지고 AI 가 고른 'B'(기계가 셀 수 없는 안)가 표시안 자리에
+    앉았다. 표시안은 기계 C 기본 · 사람 오버라이드뿐이다 — AI 의견은 참고 칸이다.
+    """
+    out = dict(machine_oe) if isinstance(machine_oe, dict) else {}
+    out.pop("ai_view", None)
+    if isinstance(ai_oe, dict) and ai_oe.get("display") in ("A", "B", "C"):
+        out["ai_view"] = {"display": ai_oe["display"],
+                          "reason": str(ai_oe.get("display_reason") or "")[:200]}
+    return out
+
+
 def changed_fields(before, after):
     """무엇이 바뀌었나 — 텔레그램 한 줄에 쓸 목록."""
     out = []
@@ -357,6 +372,9 @@ def main():
             state["items"][tk] = stamp
             done += 1
             continue
+        if "owner_earnings" in clean:
+            clean["owner_earnings"] = merge_ai_view(block.get("owner_earnings"),
+                                                    clean["owner_earnings"])
         diff = changed_fields(block, clean)
         block.update(clean)
         items[tk] = block
