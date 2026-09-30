@@ -12,16 +12,16 @@
   "ARM": "고평가"
  },
  "gaps": {
-  "AAPL": -0.2307,
-  "GOOG": 0.3746,
-  "MSFT": 0.231,
-  "AMZN": 0.1326,
-  "TSM": -0.3135,
-  "META": 0.2628,
-  "LLY": -0.2274,
-  "WMT": -0.296,
-  "PANW": -0.7342,
-  "ARM": -0.7413
+  "AAPL": -0.2265,
+  "GOOG": 0.3661,
+  "MSFT": 0.2323,
+  "AMZN": 0.1311,
+  "TSM": -0.3128,
+  "META": 0.228,
+  "LLY": -0.2339,
+  "WMT": -0.3024,
+  "PANW": -0.7389,
+  "ARM": -0.7378
  },
  "posted": {},
  "fp": {
@@ -118,71 +118,71 @@
     "guard": false
    },
    "AAPL": {
-    "price": 331.21,
-    "rate10y": 5.17,
+    "price": 329.4,
+    "rate10y": 5.24,
     "eps_adj_ttm": 8.3,
     "g_used": 0.0913,
     "guard": false
    },
    "GOOG": {
-    "price": 335.23,
+    "price": 339.16,
     "rate10y": 5.17,
     "eps_adj_ttm": 9.7623,
     "g_used": 0.105,
     "guard": false
    },
    "MSFT": {
-    "price": 509.485,
-    "rate10y": 5.17,
+    "price": 508.96,
+    "rate10y": 5.24,
     "eps_adj_ttm": 16.7917,
     "g_used": 0.13,
     "guard": false
    },
    "AMZN": {
-    "price": 246.33,
-    "rate10y": 5.17,
+    "price": 246.67,
+    "rate10y": 5.24,
     "eps_adj_ttm": 8.35,
     "g_used": 0.055,
     "guard": false
    },
    "TSM": {
-    "price": 457.371,
-    "rate10y": 5.17,
-    "eps_adj_ttm": 13.45,
+    "price": 456.94,
+    "rate10y": 5.24,
+    "eps_adj_ttm": 13.57,
     "g_used": 0.175,
     "guard": false
    },
    "AVGO": {
-    "price": 357.83,
-    "rate10y": 5.17,
+    "price": 355.1,
+    "rate10y": 5.24,
     "eps_adj_ttm": 6.001,
     "g_used": 0.2,
     "guard": false
    },
    "META": {
-    "price": 718.43,
-    "rate10y": 5.17,
+    "price": 738.79,
+    "rate10y": 5.24,
     "eps_adj_ttm": 27.53,
     "g_used": 0.133,
     "guard": false
    },
    "LLY": {
-    "price": 1174.665,
-    "rate10y": 5.17,
+    "price": 1184.63,
+    "rate10y": 5.24,
     "eps_adj_ttm": 28.0823,
     "g_used": 0.162,
     "guard": false
    },
    "WMT": {
-    "price": 105.82,
-    "rate10y": 5.17,
+    "price": 106.8,
+    "rate10y": 5.24,
     "eps_adj_ttm": 2.5632,
     "g_used": 0.08,
     "guard": false
    },
    "AMD": {
-    "price": 613.205,
-    "rate10y": 5.17,
+    "price": 607.57,
+    "rate10y": 5.24,
     "eps_adj_ttm": 3.0358,
     "g_used": 0.1426,
     "guard": false
@@ -191,6 +191,11 @@
   "cand": {
    "NVDA": {
     "zone": "prove_growth",
+    "days": 1,
+    "since": "2026-09-30"
+   },
+   "GOOG": {
+    "zone": "bond_inferior",
     "days": 1,
     "since": "2026-09-30"
    }

@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-09-30 00:58",
- "generated_at": "2026-09-30T00:58:20.459962+09:00",
+ "generated_label": "2026-09-30 11:22",
+ "generated_at": "2026-09-30T11:22:38.728290+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-09-30",
@@ -95,7 +95,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "수익 성장 제한적이나 마진 확대 신호와 가이던스 상향에 의한 이원성"
+    }
    },
    "conversion": {
     "value": 1.0127,
@@ -108,7 +112,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -126,7 +130,30 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "소비자 프랜차이즈 최강이나 성장 활주로 부재 - 메모리 부족 경고가 근기 시황을 흐림",
+   "_evidence": {
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
+    "risk5": "Apple stock slides nearly 10% as Cook warns of memory shortage impact",
+    "capalloc": "Cramer Says Nvidia's $150 Billion Buyback Only Matters If It Copies One Apple Executive",
+    "owner_earnings": "Analyst seeing margin expansion, 16% upside ahead"
+   }
   },
   "GOOG": {
    "as_of": "2026-09-30",
@@ -319,7 +346,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.45
+    "value": 13.57
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -997,7 +1024,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.87
+    "value": 29.9
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1398,7 +1425,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.78
+    "value": 60.39
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1492,7 +1519,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1009.9
+    "value": 1008.43
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1523,7 +1550,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1251.43
+    "value": 1250.59
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1554,7 +1581,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 516.07
+    "value": 515.43
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1568,7 +1595,12 @@
     "asof": "2026-03-31",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 반도체 수요 사이클에 높은 노출로 인한 이익 변동성 및 밸류에이션 고점 우려"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1578,14 +1610,37 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "debt_discipline": 1,
+    "score": 2,
+    "period": "2024H2"
+   },
+   "notes": "1년간 410% 급등 후 밸류에이션 일시 정체; 테스트 장비 과점 지위는 견고하나 사이클성 진폭이 동종사보다 큼",
+   "_evidence": {
+    "franchise": "테스트 장비 시장에서 과점적 지위; Google Capex 33조엔 초과 투입이 장비 수요 지탱",
+    "risk5": "TSMC 실적 부진 시 동반 낙폭 3% 기록; AI 반도체 수요 사이클에 민감한 수익 변동성",
+    "capalloc": "전환사채 발행으로 장기 성장 자금 조달; 현금 창출 능력 입증된 실적 성장",
+    "owner_earnings": "강한 멀티이어 실적 랠리 후 밸류에이션 점검 단계; 반도체 사이클 후행성 노출"
+   }
   },
   "2308.TW": {
    "as_of": "2026-09-30",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.32
+    "value": 31.52
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1665,5 +1720,5 @@
    ]
   }
  ],
- "scout_label": "2026-09-30 00:59"
+ "scout_label": "2026-09-30 11:24"
 }
