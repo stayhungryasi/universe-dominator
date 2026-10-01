@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-01 01:05",
- "generated_at": "2026-10-01T01:05:36.842001+09:00",
+ "generated_label": "2026-10-01 11:24",
+ "generated_at": "2026-10-01T11:24:43.363501+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-01",
@@ -97,7 +97,7 @@
     "display": "C",
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
-     "display": "B",
+     "display": "A",
      "reason": ""
     }
    },
@@ -143,11 +143,11 @@
     "score": 3,
     "period": "2026H1"
    },
-   "notes": "소비자 프랜차이즈는 강하나 iPhone/Mac 수요 호조에도 불구하고 성장 둔화 신호(메모리 부족 경고)와 프리미엄 밸류에이션으로 상승여력 제한적.",
+   "notes": "소비자 프랜차이즈 최강이나 성장 둔화로 프리미엄 밸류에이션 정당화 약함.",
    "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
-    "capalloc": "Cramer Says Nvidia's $150 Billion Buyback Only Matters If It Copies One Apple Executive",
-    "owner_earnings": "Apple stock slides nearly 10% as Cook warns of memory shortage impact"
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand - consumer ecosystem의 강력한 수요 지속",
+    "capalloc": "Apple (AAPL) Q3 Earnings and Revenues Beat Estimates - 순현금 창출 능력 입증",
+    "owner_earnings": "Q3 실적이 가이던스를 상회했으나 쿡의 메모리 부족 경고로 성장 제약 신호"
    }
   },
   "GOOG": {
@@ -950,11 +950,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "50% 매출 성장과 데이터센터 매출 2배 증가로 실적 견인력 강하나 39배 PER로 가격이 성장을 선반영"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9229,
@@ -967,7 +963,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -985,32 +981,7 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H2"
-   },
-   "notes": "World Labs 인수($8.2B)로 AI 칩 경쟁력 강화 중이나 NVDA 대비 밸류에이션 프리미엄 정당화 근거 약함",
-   "_evidence": {
-    "franchise": "AMD revenue climbs 50% and data center sales doubled; One Market Could Transform AMD's Growth Story",
-    "risk5": "AMD stock outlook: Is it still a buy at 39x 2027 earnings?; Expensive, But Growth Is Still Fast Enough To Keep The Bull Case Alive",
-    "capalloc": "AMD Reports Second Quarter 2026 Earnings; Advanced Micro Devices To Acquire World Labs In AI Push ($8.2 billion)",
-    "owner_earnings": "AMD's revenue climbs 50% and data center sales doubled, but the stock is down; AMD stock outlook: 39x 2027 earnings"
-   }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-10-01",
@@ -1331,7 +1302,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.99
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1421,7 +1392,10 @@
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
    "eps_status": {
-    "state": "no_window"
+    "state": "stale",
+    "period": "2025Q3",
+    "end": "2024-10-31",
+    "age_days": 700
    },
    "roe_tangible": null,
    "roe_basis": {
@@ -1436,16 +1410,17 @@
    "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "산출 불가 — 연속 4분기 없음(조립된 분기: 2027Q1, 2026Q3, 2025Q3, 2025Q2, 2025Q1, 2024Q3, 2024Q2, 2024Q1)",
+   "method": "산출 불가 — XBRL 신선도 미달: 최신 2025Q3",
    "source": "Finnhub financials-reported · 분기 22건",
-   "confidence": null
+   "confidence": null,
+   "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "2454.TW": {
    "as_of": "2026-10-01",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.39
+    "value": 60.52
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1539,7 +1514,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1008.43
+    "value": 1009.7
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1570,7 +1545,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1250.59
+    "value": 1251.21
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1601,7 +1576,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 515.43
+    "value": 517.33
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1632,7 +1607,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.32
+    "value": 31.52
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1693,7 +1668,24 @@
     "2024Q4",
     "2024Q3"
    ]
+  },
+  {
+   "ticker": "CRWD",
+   "period": "2025Q3",
+   "end": "2024-10-31",
+   "age_days": 700,
+   "fallback": false,
+   "assembled": [
+    "2027Q1",
+    "2026Q3",
+    "2025Q3",
+    "2025Q2",
+    "2025Q1",
+    "2024Q4",
+    "2024Q3",
+    "2024Q2"
+   ]
   }
  ],
- "scout_label": "2026-10-01 01:07"
+ "scout_label": "2026-10-01 11:26"
 }
