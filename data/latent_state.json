@@ -1,13 +1,13 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-01",
+ "date": "2026-10-02",
  "members": {
   "ASML": {
    "name": "ASML",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 2,
+   "streak_out": 3,
    "carried_days": 0,
    "rank": 20
   },
@@ -17,7 +17,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 33
+   "rank": 32
   },
   "AMAT": {
    "name": "Applied Materials",
@@ -25,7 +25,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 34
+   "rank": 33
   },
   "DELL": {
    "name": "Dell",
@@ -33,7 +33,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 43
+   "rank": 44
   },
   "ARM": {
    "name": "Arm Holdings",
@@ -49,7 +49,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 48
+   "rank": 50
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -57,7 +57,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 71
+   "rank": 69
   },
   "CRWD": {
    "name": "CrowdStrike",
@@ -73,7 +73,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 65
+   "rank": 66
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -89,7 +89,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 89
+   "rank": 91
   },
   "285A.T": {
    "name": "KIOXIA Holdings Corporation",
@@ -103,9 +103,9 @@
    "name": "Tokyo Electron",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 3,
+   "streak_out": 4,
    "carried_days": 0,
-   "rank": 108
+   "rank": 106
   },
   "2308.TW": {
    "name": "Delta Electronics",
@@ -113,27 +113,27 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 141
+   "rank": 138
   }
  },
  "candidates": {
   "6857.T": {
-   "streak_in": 5,
-   "swap_streak": 1,
+   "streak_in": 6,
+   "swap_streak": 2,
    "name": "Advantest",
-   "rank": 119
+   "rank": 118
   },
   "FTNT": {
-   "streak_in": 5,
+   "streak_in": 6,
    "swap_streak": 0,
    "name": "Fortinet",
-   "rank": 169
+   "rank": 168
   },
   "ASX": {
-   "streak_in": 5,
+   "streak_in": 6,
    "swap_streak": 0,
    "name": "ASE Group",
-   "rank": 191
+   "rank": 193
   }
  },
  "transitions": [],
@@ -143,7 +143,7 @@
     "name": "ASML",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 1,
+    "streak_out": 2,
     "carried_days": 0,
     "rank": 20
    },
@@ -153,7 +153,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 35
+    "rank": 33
    },
    "AMAT": {
     "name": "Applied Materials",
@@ -169,7 +169,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 46
+    "rank": 43
    },
    "ARM": {
     "name": "Arm Holdings",
@@ -185,7 +185,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 50
+    "rank": 48
    },
    "2454.TW": {
     "name": "MediaTek",
@@ -193,7 +193,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 72
+    "rank": 71
    },
    "CRWD": {
     "name": "CrowdStrike",
@@ -201,7 +201,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 59
+    "rank": 57
    },
    "SNDK": {
     "name": "Sandisk",
@@ -209,7 +209,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 68
+    "rank": 65
    },
    "MRVL": {
     "name": "Marvell Technology",
@@ -217,7 +217,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 75
+    "rank": 76
    },
    "STX": {
     "name": "Seagate Technology",
@@ -225,7 +225,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 90
+    "rank": 89
    },
    "285A.T": {
     "name": "KIOXIA Holdings Corporation",
@@ -233,15 +233,15 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 105
+    "rank": 96
    },
    "8035.T": {
     "name": "Tokyo Electron",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 2,
+    "streak_out": 3,
     "carried_days": 0,
-    "rank": 120
+    "rank": 108
    },
    "2308.TW": {
     "name": "Delta Electronics",
@@ -249,31 +249,31 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 144
+    "rank": 141
    }
   },
   "candidates": {
    "6857.T": {
-    "streak_in": 4,
-    "swap_streak": 0,
+    "streak_in": 5,
+    "swap_streak": 1,
     "name": "Advantest",
-    "rank": 138
+    "rank": 119
    },
    "FTNT": {
-    "streak_in": 4,
+    "streak_in": 5,
     "swap_streak": 0,
     "name": "Fortinet",
-    "rank": 171
+    "rank": 169
    },
    "ASX": {
-    "streak_in": 4,
+    "streak_in": 5,
     "swap_streak": 0,
     "name": "ASE Group",
-    "rank": 189
+    "rank": 191
    }
   }
  },
- "generated_at": "2026-10-01T19:16:40.585141+09:00",
+ "generated_at": "2026-10-02T01:24:50.887458+09:00",
  "limits": {
   "in": 3,
   "out": 5,
