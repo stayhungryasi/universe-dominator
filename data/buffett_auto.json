@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-02 01:36",
- "generated_at": "2026-10-02T01:36:07.598498+09:00",
+ "generated_label": "2026-10-02 11:30",
+ "generated_at": "2026-10-02T11:30:28.882661+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-02",
@@ -108,7 +108,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -126,7 +126,29 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026Q3"
+   },
+   "notes": "Consumer franchise unmatched but runway exhausted; valuation at ceiling (28x threshold) without organic growth catalysts beyond AI rhetoric",
+   "_evidence": {
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; consumer preference irreplaceable",
+    "risk5": "Q3 earnings beat estimates with record revenue; management execution proven; patent verdict risk ($5.7B) and supply constraints noted; stock price already reflects premium multiple",
+    "capalloc": "Apple Inc (AAPL) Q3 2026 earnings call highlights record revenue; buyback activity implied in shareholder return focus"
+   }
   },
   "GOOG": {
    "as_of": "2026-10-02",
@@ -319,7 +341,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.46
+    "value": 13.55
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -458,12 +480,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "유가 사이클 의존도 높아 순이익 변동성 크고 예측 불가능"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -473,31 +490,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "가스 사업부 분사(100억 달러 평가) 추진 중이나 핵심 수익은 유가 변동성에 완전 종속",
-   "_evidence": {
-    "franchise": "Global energy need with no substitute for oil/gas in near term",
-    "risk5": "Q4 2025 순이익 20.5% 하락, Q2 2026 이란 전쟁으로 유가 상승 후 이익 증가 — 유가 사이클이 이익을 결정함",
-    "capalloc": "Q2 2026 이익 증가 보도, 프랑스 기업과 37억 달러 계약 체결로 자본 배분 활동",
-    "owner_earnings": "Aramco Q4 2025 net income falls 20.5% vs Q2 2026 earnings beat as Iran war lifts oil prices"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-10-02",
@@ -729,12 +722,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "A",
-     "reason": ""
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -744,26 +732,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "경영진 교체 시점에서 플로트 복리 기반의 기본 가치는 견고하나 주가는 합리적 수준으로 평가됨.",
-   "_evidence": {
-    "franchise": "Most of Berkshire Hathaway's Earnings Don't Come From Its Stock Portfolio.",
-    "capalloc": "Increased Investments and Share Buybacks in Q2; Buybacks And Stock Buying Ramp Up",
-    "owner_earnings": "플로트 기반의 장기 복리 창출 구조가 핵심 가치동인"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-10-02",
@@ -994,7 +963,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -1012,9 +981,7 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ],
-   "notes": "NVDA 동일 논리 적용 시 밸류에이션 정당성 부족, 10년 구조적 우위 증명 필요",
-   "_evidence": {}
+   ]
   },
   "000660.KS": {
    "as_of": "2026-10-02",
@@ -1052,7 +1019,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.81
+    "value": 28.75
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1335,7 +1302,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.98
+    "value": 0.99
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1453,7 +1420,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.52
+    "value": 60.76
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1547,7 +1514,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1009.7
+    "value": 1008.48
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1578,7 +1545,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1251.21
+    "value": 1250.45
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1609,7 +1576,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 517.33
+    "value": 519.02
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1623,7 +1590,12 @@
     "asof": "2026-03-31",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 수요 사이클 진폭이 크고 수익성 변동성이 높은 시클리컬 특성"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1633,7 +1605,31 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "no_dilution": 0,
+    "debt_discipline": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "테스트 장비 과점 지위 유지하나 경기 민감도 높음, 전환사채 발행으로 장기 성장 자금 조달 중",
+   "_evidence": {
+    "franchise": "Advantest Continue Earnings Growth on AI Semiconductors; 테스트 과점이나 AI 테스터 수요 사이클 진폭이 장비 3사보다 큼",
+    "risk5": "Nikkei 225 Plunges as Semiconductor Rout Sends Index; Kioxia Hits Limit Down - 반도체 사이클 악화 시 급락 위험 노출",
+    "capalloc": "Advantest 주가 변동성 큼에도 convertible bond issue for long term growth plans 진행 중",
+    "owner_earnings": "Strong earnings, Stock Price Volatility 병행 - 실적 우수하나 주가 등락 심함"
+   }
   },
   "2308.TW": {
    "as_of": "2026-10-02",
@@ -1720,5 +1716,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-02 01:37"
+ "scout_label": "2026-10-02 11:32"
 }

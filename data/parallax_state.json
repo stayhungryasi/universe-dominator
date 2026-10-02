@@ -12,20 +12,24 @@
   "ARM": "고평가"
  },
  "gaps": {
-  "AAPL": -0.2236,
-  "GOOG": 0.3745,
-  "MSFT": 0.2193,
-  "AMZN": 0.1271,
-  "TSM": -0.3113,
-  "META": 0.2449,
-  "LLY": -0.2095,
-  "WMT": -0.2878,
-  "PANW": -0.7404,
-  "ARM": -0.737
+  "AAPL": -0.2286,
+  "GOOG": 0.3758,
+  "MSFT": 0.2231,
+  "AMZN": 0.124,
+  "TSM": -0.3162,
+  "META": 0.2497,
+  "LLY": -0.2108,
+  "WMT": -0.2854,
+  "PANW": -0.7441,
+  "ARM": -0.7366
  },
  "posted": {
   "2026-10-01": [
    "5c19ee302041"
+  ],
+  "2026-10-02": [
+   "4d194f2e0295",
+   "7dad139b6236"
   ]
  },
  "fp": {
@@ -41,9 +45,9 @@
   "ARM": "forward|35|2026-08 컨센서스 역산"
  },
  "bzones": {
-  "NVDA": "pass",
+  "NVDA": "prove_growth",
   "AAPL": "bond_inferior",
-  "GOOG": "prove_growth",
+  "GOOG": "bond_inferior",
   "MSFT": "prove_growth",
   "AMZN": "bond_inferior",
   "TSM": "prove_growth",
@@ -78,9 +82,9 @@
  },
  "bstate": {
   "zones": {
-   "NVDA": "pass",
+   "NVDA": "prove_growth",
    "AAPL": "bond_inferior",
-   "GOOG": "prove_growth",
+   "GOOG": "bond_inferior",
    "MSFT": "prove_growth",
    "AMZN": "bond_inferior",
    "TSM": "prove_growth",
@@ -115,90 +119,84 @@
   },
   "anchor": {
    "NVDA": {
-    "price": 228.86,
-    "rate10y": 5.17,
+    "price": 230.86,
+    "rate10y": 5.29,
     "eps_adj_ttm": 5.7333,
     "g_used": 0.2,
     "guard": false
    },
    "AAPL": {
-    "price": 328.17,
-    "rate10y": 5.26,
+    "price": 330.32,
+    "rate10y": 5.29,
     "eps_adj_ttm": 8.3,
     "g_used": 0.0913,
     "guard": false
    },
    "GOOG": {
-    "price": 335.25,
-    "rate10y": 5.26,
+    "price": 334.93,
+    "rate10y": 5.29,
     "eps_adj_ttm": 9.7623,
     "g_used": 0.105,
     "guard": false
    },
    "MSFT": {
-    "price": 514.4,
-    "rate10y": 5.26,
+    "price": 512.8,
+    "rate10y": 5.29,
     "eps_adj_ttm": 16.7917,
     "g_used": 0.13,
     "guard": false
    },
    "AMZN": {
-    "price": 247.545,
-    "rate10y": 5.26,
+    "price": 248.23,
+    "rate10y": 5.29,
     "eps_adj_ttm": 8.35,
     "g_used": 0.055,
     "guard": false
    },
    "TSM": {
-    "price": 455.94,
-    "rate10y": 5.26,
-    "eps_adj_ttm": 13.46,
+    "price": 459.2,
+    "rate10y": 5.29,
+    "eps_adj_ttm": 13.55,
     "g_used": 0.175,
     "guard": false
    },
    "AVGO": {
-    "price": 348.18,
-    "rate10y": 5.26,
+    "price": 343.64,
+    "rate10y": 5.29,
     "eps_adj_ttm": 6.001,
     "g_used": 0.2,
     "guard": false
    },
    "META": {
-    "price": 728.73,
-    "rate10y": 5.26,
+    "price": 725.93,
+    "rate10y": 5.29,
     "eps_adj_ttm": 27.53,
     "g_used": 0.133,
     "guard": false
    },
    "LLY": {
-    "price": 1148.026,
-    "rate10y": 5.26,
+    "price": 1149.85,
+    "rate10y": 5.29,
     "eps_adj_ttm": 28.0823,
     "g_used": 0.162,
     "guard": false
    },
    "WMT": {
-    "price": 104.605,
-    "rate10y": 5.26,
+    "price": 104.26,
+    "rate10y": 5.29,
     "eps_adj_ttm": 2.5632,
     "g_used": 0.08,
     "guard": false
    },
    "AMD": {
-    "price": 610.25,
-    "rate10y": 5.26,
+    "price": 615.73,
+    "rate10y": 5.29,
     "eps_adj_ttm": 3.0358,
     "g_used": 0.1426,
     "guard": false
    }
   },
-  "cand": {
-   "NVDA": {
-    "zone": "prove_growth",
-    "days": 3,
-    "since": "2026-09-30"
-   }
-  },
+  "cand": {},
   "date": "2026-10-02",
   "base": {
    "zones": {
@@ -333,6 +331,10 @@
  "dm_sent": {
   "2026-10-01": [
    "1f35280ff517"
+  ],
+  "2026-10-02": [
+   "0b7b05141fa6",
+   "d02abb561872"
   ]
  }
 }
