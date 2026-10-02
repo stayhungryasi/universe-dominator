@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-02 11:30",
- "generated_at": "2026-10-02T11:30:28.882661+09:00",
+ "generated_label": "2026-10-02 19:05",
+ "generated_at": "2026-10-02T19:05:48.635700+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-02",
@@ -95,7 +95,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "A",
+     "reason": "매출·이익 가이던스 상향으로 기저사업 견고함 입증"
+    }
    },
    "conversion": {
     "value": 1.0127,
@@ -143,11 +147,12 @@
     "score": 2,
     "period": "2026Q3"
    },
-   "notes": "Consumer franchise unmatched but runway exhausted; valuation at ceiling (28x threshold) without organic growth catalysts beyond AI rhetoric",
+   "notes": "소비자 프랜차이즈 강력하나 성장 정체 속 밸류에이션 상한 28 근처 도달, AI 베팅이 주요 변수",
    "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; consumer preference irreplaceable",
-    "risk5": "Q3 earnings beat estimates with record revenue; management execution proven; patent verdict risk ($5.7B) and supply constraints noted; stock price already reflects premium multiple",
-    "capalloc": "Apple Inc (AAPL) Q3 2026 earnings call highlights record revenue; buyback activity implied in shareholder return focus"
+    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand",
+    "risk5": "Apple (AAPL) Could Be 20% Overvalued As Earnings And Dividend Land",
+    "capalloc": "Nvidia sets biggest-ever buyback plan as AI chip competition weighs on stock performance",
+    "owner_earnings": "Apple (AAPL) Q3 Earnings and Revenues Beat Estimates"
    }
   },
   "GOOG": {
@@ -722,7 +727,12 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": ""
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -732,7 +742,34 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "○"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "Howard Buffett 회장 취임으로 경영진 전환 진행 중; 플로트 기반 가치 창출 메커니즘 유지.",
+   "_evidence": {
+    "franchise": "Berkshire의 보험 플로트는 대체불가능한 자본 조달 수단으로 기능하며, 다양한 자회사 수익을 통한 분산된 수익 창출 구조 유지",
+    "risk5": "경영진 교체 시점의 불확실성 존재하나 Greg Abel의 적극적 자본배치와 Howard Buffett 회장의 안정적 리더십이 Risk Mitigation",
+    "capalloc": "Q2에서 증가된 투자와 자사주 매입 진행; 현금 잔액 감소 추세이나 채무 규율 유지 중",
+    "owner_earnings": "Most of Berkshire Hathaway's Earnings Don't Come From Its Stock Portfolio 보도는 보험사업, 철도, 유틸리티 등 운영사업의 본질적 수익력을 강조"
+   }
   },
   "LLY": {
    "as_of": "2026-10-02",
@@ -950,7 +987,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "매출 50% 증가, 데이터센터 매출 2배이지만 밸류에이션 39배 PEG로 성장을 가격에 반영됨"
+    }
    },
    "conversion": {
     "value": 0.9229,
@@ -963,7 +1004,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -981,7 +1022,28 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "buyback": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "AI 칩 수요 확실하나 하이퍼스케일러 자체 개발 위협, NVDA 대비 경쟁우위 약화 신호",
+   "_evidence": {
+    "franchise": "AMD's revenue climbs 50% and data center sales doubled",
+    "risk5": "The Hyperscaler CPU Threat to AMD No One Is Talking About; The Big Chip Shift is Shaking The AMD Vs. Nvidia Narrative",
+    "capalloc": "Nvidia's $150B Buyback Beats Apple, Trails AMD [2026]",
+    "owner_earnings": "AMD stock outlook: Is it still a buy at 39x 2027 earnings?"
+   }
   },
   "000660.KS": {
    "as_of": "2026-10-02",
@@ -1302,7 +1364,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.99
+    "value": 0.97
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1593,7 +1655,7 @@
    "owner_earnings": {
     "ai_view": {
      "display": "B",
-     "reason": "AI 수요 사이클 진폭이 크고 수익성 변동성이 높은 시클리컬 특성"
+     "reason": "AI 반도체 테스트 수요 사이클 진폭이 크고 실적 변동성이 높아 연결성 불완전"
     }
    },
    "conversion": null,
@@ -1619,16 +1681,16 @@
     "cash_positive": 1,
     "buyback": 0,
     "no_dilution": 0,
-    "debt_discipline": 1,
-    "score": 2,
+    "debt_discipline": 0,
+    "score": 1,
     "period": "2026H1"
    },
-   "notes": "테스트 장비 과점 지위 유지하나 경기 민감도 높음, 전환사채 발행으로 장기 성장 자금 조달 중",
+   "notes": "시클리컬 산업 내 과점 지위 강하나 수요 사이클 진폭이 장비 3사보다 커 예측 가능성 제한, 전환사채 발행으로 희석 위험 존재",
    "_evidence": {
-    "franchise": "Advantest Continue Earnings Growth on AI Semiconductors; 테스트 과점이나 AI 테스터 수요 사이클 진폭이 장비 3사보다 큼",
-    "risk5": "Nikkei 225 Plunges as Semiconductor Rout Sends Index; Kioxia Hits Limit Down - 반도체 사이클 악화 시 급락 위험 노출",
-    "capalloc": "Advantest 주가 변동성 큼에도 convertible bond issue for long term growth plans 진행 중",
-    "owner_earnings": "Strong earnings, Stock Price Volatility 병행 - 실적 우수하나 주가 등락 심함"
+    "franchise": "Google, Alphabet의 대규모 자본지출 확대가 Advantest 수요로 직결되며 AI 반도체 테스트 과점 지위 시사",
+    "risk5": "실적 발표 전후 주가 변동성이 극심하고 Nikkei 지수 등락의 주요 변수로 작용하는 높은 시스템 리스크 노출",
+    "capalloc": "Convertible Bond 발행으로 장기 성장 계획 추진 중이나 희석 구조 내포",
+    "owner_earnings": "AI 반도체 수요 강세 지속되나 실적 발표 전후 급락장이 반복되며 사이클 영향도 명확함"
    }
   },
   "2308.TW": {
@@ -1636,7 +1698,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.37
+    "value": 31.52
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1716,5 +1778,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-02 11:32"
+ "scout_label": "2026-10-02 19:07"
 }
