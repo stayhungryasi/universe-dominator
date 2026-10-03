@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-03 11:15",
- "generated_at": "2026-10-03T11:15:50.819828+09:00",
+ "generated_label": "2026-10-03 18:26",
+ "generated_at": "2026-10-03T18:26:09.361803+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-03",
@@ -95,11 +95,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "A",
-     "reason": "아이폰·맥 수요 호조로 실적·매출 예상치 상회, 마진 확대 예상"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0127,
@@ -112,7 +108,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -130,24 +126,7 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "최강 소비자 프랜차이즈이나 성장 한계로 인한 프리미엄 평가 위험, AI 스마트홈 베팅이 활주로 재점화 가능성",
-   "_evidence": {
-    "franchise": "Apple Heads Into Earnings This Month With This Analyst Seeing Margin Expansion; Cramer Says Buy Apple Before New Phone Comes Out. Because Apple's Duo Model Is, \"Kind Of Astounding\"",
-    "capalloc": "Nvidia sets biggest-ever buyback plan; Apple revenue guidance tops estimates",
-    "owner_earnings": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; Apple (AAPL) Q3 Earnings and Revenues Beat Estimates"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-03",
@@ -340,7 +319,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.41
+    "value": 13.81
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -434,7 +413,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.1
+    "value": -1.18
    },
    "eps_status": null,
    "roe_tangible": -0.0571,
@@ -962,7 +941,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -980,7 +959,9 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "notes": "AI 칩 수요는 실질적이나 주가는 이미 낙관을 완전히 가격화했고, M&A를 통한 주식 희석이 진행 중",
+   "_evidence": {}
   },
   "000660.KS": {
    "as_of": "2026-10-03",
@@ -1018,7 +999,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 28.75
+    "value": 29.69
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1301,7 +1282,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.99
+    "value": 1.05
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1544,7 +1525,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1202.74
+    "value": 1251.14
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1599,14 +1580,33 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1
+   },
+   "notes": "AI 반도체 테스트 장비 수요 주기에 따른 높은 변동성; 경기민감도 강함",
+   "_evidence": {
+    "franchise": "Kioxia and Advantest Continue Earnings Growth on AI Semiconductors; 테스트 과점이나 AI 테스터 수요 사이클 진폭이 장비 3사보다 큼",
+    "risk5": "Semiconductor Rout Sends Nikkei Plunging Over 3% / Kioxia Hits Limit Down, Plunges Over 60% as China Risk - 시장 리스크에 민감한 변동성",
+    "capalloc": "Kioxia and Advantest Continue Earnings Growth on AI Semiconductors - 수익성 개선 신호"
+   }
   },
   "2308.TW": {
    "as_of": "2026-10-03",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.37
+    "value": 31.29
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1686,5 +1686,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-03 11:17"
+ "scout_label": "2026-10-03 18:27"
 }
