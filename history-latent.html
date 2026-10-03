@@ -543,10 +543,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 00:46 · 출처 frankfurter · 네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 11:04 · 출처 frankfurter · 네이버 실시간 환율 보기">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 00:46 · 출처 FRED API">WTI <span class="ud-mv">$96</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 00:46 · 출처 FRED API">10Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 00:46 · 출처 FRED API">30Y <span class="ud-mv">5.64%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 00:46 · 출처 frankfurter">JPY <span class="ud-mv">157.7</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 11:04 · 출처 FRED API">WTI <span class="ud-mv">$96</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 11:04 · 출처 FRED API">10Y <span class="ud-mv">5.24%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 11:04 · 출처 FRED API">30Y <span class="ud-mv">5.61%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 11:04 · 출처 frankfurter">JPY <span class="ud-mv">157.7</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
     </div>
   </div>
@@ -615,23 +615,22 @@ const DATA = {
           "label": "잠재지배자 주간 변동 (자동 감지)",
           "items": [
             "<strong>Lam Research</strong> 잠재 순위 <span class='em-up'>36위 → 31위 상승</span>",
-            "<strong>Applied Materials</strong> 잠재 순위 <span class='em-up'>37위 → 33위 상승</span>",
-            "<strong>Arm Holdings</strong> 잠재 순위 <span class='em-up'>49위 → 45위 상승</span>",
+            "<strong>Applied Materials</strong> 잠재 순위 <span class='em-up'>37위 → 34위 상승</span>",
             "<strong>Palo Alto Networks</strong> 잠재 순위 <span class='em-up'>52위 → 47위 상승</span>",
             "<strong>CrowdStrike</strong> 잠재 순위 <span class='em-up'>66위 → 56위 상승</span>",
             "<strong>Sandisk</strong> 잠재 순위 <span class='em-down'>64위 → 67위 하락</span>",
             "<strong>MediaTek</strong> 잠재 순위 <span class='em-down'>61위 → 69위 하락</span>",
             "<strong>Marvell Technology</strong> 잠재 순위 <span class='em-up'>76위 → 70위 상승</span>",
             "<strong>KIOXIA Holdings Corporation</strong> 잠재 순위 <span class='em-up'>102위 → 95위 상승</span>",
-            "<strong>Seagate Technology</strong> 잠재 순위 <span class='em-down'>93위 → 104위 하락</span>",
+            "<strong>Seagate Technology</strong> 잠재 순위 <span class='em-down'>93위 → 99위 하락</span>",
             "<strong>Tokyo Electron</strong> 잠재 순위 <span class='em-up'>130위 → 113위 상승</span>",
             "<strong>Delta Electronics</strong> 잠재 순위 <span class='em-up'>143위 → 140위 상승</span>",
-            "<strong>Dell</strong> 1Y 모멘텀 <span class='em-down'>330% → 276%</span>",
-            "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-up'>213% → 229%</span>",
-            "<strong>Tokyo Electron</strong> 1Y 모멘텀 <span class='em-down'>94% → -56%</span>",
-            "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>785% → 321%</span>",
-            "<strong>KIOXIA Holdings Corporation</strong> 1Y 모멘텀 <span class='em-down'>987% → 283%</span>",
-            "<strong>Seagate Technology</strong> 1Y 모멘텀 <span class='em-down'>317% → 216%</span>"
+            "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>785% → 286%</span>",
+            "<strong>Seagate Technology</strong> 1Y 모멘텀 <span class='em-down'>317% → 233%</span>",
+            "<strong>Arm Holdings</strong> 1Y 모멘텀 <span class='em-down'>121% → 102%</span>",
+            "<strong>Dell</strong> 1Y 모멘텀 <span class='em-down'>330% → 282%</span>",
+            "<strong>Tokyo Electron</strong> 1Y 모멘텀 <span class='em-down'>94% → -59%</span>",
+            "<strong>KIOXIA Holdings Corporation</strong> 1Y 모멘텀 <span class='em-down'>987% → 233%</span>"
           ]
         },
         {
@@ -657,7 +656,7 @@ const DATA = {
           "type": "items",
           "label": "관전 포인트",
           "items": [
-            "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+321%</span>"
+            "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+286%</span>"
           ]
         },
         {
@@ -1600,7 +1599,7 @@ const DATA = {
         "value": 1348.28,
         "as_of": "2026-10-02",
         "source": "frankfurter",
-        "measured_at": "2026-10-03T00:46+09:00",
+        "measured_at": "2026-10-03T11:04+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1609,25 +1608,25 @@ const DATA = {
         "value": 157.67,
         "as_of": "2026-10-02",
         "source": "frankfurter",
-        "measured_at": "2026-10-03T00:46+09:00",
+        "measured_at": "2026-10-03T11:04+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust10": {
-        "value": 5.29,
-        "as_of": "2026-09-30",
+        "value": 5.24,
+        "as_of": "2026-10-01",
         "source": "FRED API",
-        "measured_at": "2026-10-03T00:46+09:00",
+        "measured_at": "2026-10-03T11:04+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust30": {
-        "value": 5.64,
-        "as_of": "2026-09-30",
+        "value": 5.61,
+        "as_of": "2026-10-01",
         "source": "FRED API",
-        "measured_at": "2026-10-03T00:46+09:00",
+        "measured_at": "2026-10-03T11:04+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1636,7 +1635,7 @@ const DATA = {
         "value": 96.16,
         "as_of": "2026-09-29",
         "source": "FRED API",
-        "measured_at": "2026-10-03T00:46+09:00",
+        "measured_at": "2026-10-03T11:04+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
