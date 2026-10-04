@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-04 19:03",
- "generated_at": "2026-10-04T19:03:20.139956+09:00",
+ "generated_label": "2026-10-04 23:55",
+ "generated_at": "2026-10-04T23:55:54.174943+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-04",
@@ -95,7 +95,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "기록적 수익 달성도 성장 동력 부족으로 프리미엄 정당화 한계"
+    }
    },
    "conversion": {
     "value": 1.0127,
@@ -108,7 +112,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -126,7 +130,30 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026Q3"
+   },
+   "notes": "소비자 프랜차이즈 최강이나 성숙기 진입으로 28배 상한선 근처에서 밸류에이션 리스크 증대",
+   "_evidence": {
+    "franchise": "Apple Heads Into Earnings With Margin Expansion, iPhone and Mac demand booming",
+    "risk5": "Record Revenue Amid Supply Constraints; Apple Stock Falls Nearly 2% Before Earnings",
+    "capalloc": "Apple Inc (Q3 2026) Earnings Call Highlights: Record Revenue",
+    "owner_earnings": "Apple (AAPL) Could Be 20% Overvalued As Earnings And Dividend Land"
+   }
   },
   "GOOG": {
    "as_of": "2026-10-04",
@@ -458,12 +485,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "유가 사이클 종속성으로 인한 수익 변동성 구조적 문제"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -473,30 +495,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "가스 사업 구조조정 추진 중이나 주력 수익원의 예측 불가능성이 버핏 기준 투자 대상으로 부적합",
-   "_evidence": {
-    "franchise": "Global energy demand ensures need; no functional substitutes for crude oil; but oil prices are commodity-determined and not pricing-power dependent",
-    "risk5": "Aramco Q4 2025 net income falls 20.5% despite Q2 2026 earnings beat driven by Iran war—earnings volatility reflects geopolitical/commodity cycle dependency; CEO warns of catastrophic consequences if shipping crisis continues; Dow mulls exit from $20B chemicals partnership suggesting capital allocation uncertainty",
-    "capalloc": "Q4 2025 sees strong cash flow; Q2 2026 profits jump 25% indicating positive cash generation and buyback capacity",
-    "owner_earnings": "Aramco Q4 2025 net income falls 20.5% to $17.76bn; Q2 2026 earnings beat as Iran war lifts oil prices—earnings driven by external price shocks rather than operational control"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-10-04",
@@ -956,7 +955,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "데이터센터 수익 배가 등 성장성은 입증되나 주가 하락과 '예외적 결과 아님' 평가로 수익 질 불확실"
+    }
    },
    "conversion": {
     "value": 0.9229,
@@ -969,7 +972,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -987,7 +990,29 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "AI 칩 수요 기반 10년 쿠폰 추정 범위 불명확; 하이퍼스케일러 자체 CPU 위협 언급",
+   "_evidence": {
+    "franchise": "AMD's revenue climbs 50% and data center sales doubled",
+    "risk5": "AMD Beat on Revenue, Profit, and Guidance — So Why Did the Stock Drop 7%; 'This was not an exceptional result': Why AMD stock tanked 5% after earnings; The Hyperscaler CPU Threat to AMD No One Is Talking About",
+    "capalloc": "AMD Reports Second Quarter 2026 Earnings; revenue climbs 50%",
+    "owner_earnings": "'This was not an exceptional result': Why AMD stock tanked 5% after earnings"
+   }
   },
   "000660.KS": {
    "as_of": "2026-10-04",
@@ -1693,5 +1718,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-04 19:04"
+ "scout_label": "2026-10-04 23:57"
 }
