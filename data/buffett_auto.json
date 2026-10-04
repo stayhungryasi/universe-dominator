@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-04 11:53",
- "generated_at": "2026-10-04T11:53:11.050709+09:00",
+ "generated_label": "2026-10-04 19:03",
+ "generated_at": "2026-10-04T19:03:20.139956+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-04",
@@ -95,11 +95,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "기록적 수익 달성에도 성장 정체, 프리미엄 밸류에이션 우려"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0127,
@@ -112,7 +108,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -130,30 +126,7 @@
      "period": "2025Q3",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "소비자 프랜차이즈 최강이나 성장 한계로 MAX 28 상한선 적용, AI/스마트홈 신사업이 성장성 재평가 변수",
-   "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand; Consumer franchise dominance established",
-    "risk5": "Record Revenue Amid Supply Constraints; 가전제품 수요 호황으로 사업 안정성 입증",
-    "capalloc": "Nvidia sets biggest-ever buyback plan; Apple의 자본배분 규율 기대",
-    "owner_earnings": "Apple (AAPL) Could Be 20% Overvalued As Earnings And Dividend Land; Earnings growth expected but valuation stretched"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-04",
@@ -485,7 +458,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "유가 사이클 종속성으로 인한 수익 변동성 구조적 문제"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -495,7 +473,30 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "가스 사업 구조조정 추진 중이나 주력 수익원의 예측 불가능성이 버핏 기준 투자 대상으로 부적합",
+   "_evidence": {
+    "franchise": "Global energy demand ensures need; no functional substitutes for crude oil; but oil prices are commodity-determined and not pricing-power dependent",
+    "risk5": "Aramco Q4 2025 net income falls 20.5% despite Q2 2026 earnings beat driven by Iran war—earnings volatility reflects geopolitical/commodity cycle dependency; CEO warns of catastrophic consequences if shipping crisis continues; Dow mulls exit from $20B chemicals partnership suggesting capital allocation uncertainty",
+    "capalloc": "Q4 2025 sees strong cash flow; Q2 2026 profits jump 25% indicating positive cash generation and buyback capacity",
+    "owner_earnings": "Aramco Q4 2025 net income falls 20.5% to $17.76bn; Q2 2026 earnings beat as Iran war lifts oil prices—earnings driven by external price shocks rather than operational control"
+   }
   },
   "META": {
    "as_of": "2026-10-04",
@@ -727,12 +728,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -742,34 +738,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024Q2"
-   },
-   "notes": "Abel 시대 경영 연속성 평가 중, 포트폴리오 재편(AI 시프트)과 현금 축소 추세 감시 필요",
-   "_evidence": {
-    "franchise": "Most of Berkshire Hathaway's Earnings Don't Come From Its Stock Portfolio—보험 플로트 기반 사업 모델의 지속적 우위",
-    "risk5": "The Abel Era Needs More Than Continuity—경영진 교체기 리더십 능력 불명확성; Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2—현금 감소에 따른 가격 변동성",
-    "capalloc": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2—공격적 자본배분 재개; buyback과 투자 가속",
-    "owner_earnings": "Most of Berkshire Hathaway's Earnings Don't Come From Its Stock Portfolio—실제 영업이익 대 주식 포트폴리오 수익의 괴리로 인해 표면 수익성 판단 곤란"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-10-04",
@@ -1339,7 +1308,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.98
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1644,7 +1613,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.52
+    "value": 31.29
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1724,5 +1693,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-04 11:54"
+ "scout_label": "2026-10-04 19:04"
 }
