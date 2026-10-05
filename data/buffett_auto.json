@@ -1,9 +1,9 @@
 {
- "generated_label": "2026-10-05 19:47",
- "generated_at": "2026-10-05T19:47:22.899979+09:00",
+ "generated_label": "2026-10-06 03:33",
+ "generated_at": "2026-10-06T03:33:34.795434+09:00",
  "items": {
   "NVDA": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -66,7 +66,7 @@
    ]
   },
   "AAPL": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -74,7 +74,7 @@
     "state": "stale",
     "period": "2026Q1",
     "end": "2025-12-27",
-    "age_days": 282
+    "age_days": 283
    },
    "roe_tangible": null,
    "roe_basis": {
@@ -95,7 +95,7 @@
    "notes": "XBRL 신선도 미달: 최신 2026Q1"
   },
   "GOOG": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -158,7 +158,7 @@
    ]
   },
   "MSFT": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -218,7 +218,7 @@
    ]
   },
   "AMZN": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -281,7 +281,7 @@
    ]
   },
   "TSM": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -312,7 +312,7 @@
    "confidence": "중"
   },
   "AVGO": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -375,7 +375,7 @@
    ]
   },
   "SPCX": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -406,11 +406,11 @@
    "confidence": "중"
   },
   "2222.SR": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.68
+    "value": 1.69
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -424,7 +424,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "유가 사이클 의존도 높아 예측 가능성 구조적 한계"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -434,10 +439,34 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "지정학적 리스크(호르무즈 해협 통항 차단)가 단기 수익성을 부양하나, 장기 경제성은 유가 변동성에 완전 종속",
+   "_evidence": {
+    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher",
+    "risk5": "Aramco CEO warns of 'catastrophic' consequences if oil crisis continues; Saudis offer oil from near Oman in possible sign of shuttling",
+    "capalloc": "Aramco posts drop in annual profit, announces first buyback; Aramco weighs standalone gas unit with potential $100 bln valuation",
+    "owner_earnings": "Saudi Aramco Q2 2026 earnings beat as Iran war lifts oil prices; Q4 2025 sees slight stock dip despite strong cash flow"
+   }
   },
   "META": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -500,7 +529,7 @@
    ]
   },
   "TSLA": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -560,7 +589,7 @@
    ]
   },
   "005930.KS": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -591,7 +620,7 @@
    "confidence": null
   },
   "MU": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -654,7 +683,7 @@
    ]
   },
   "BRK-B": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -666,7 +695,12 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": ""
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -676,10 +710,36 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "△",
+    "mgmt_fidelity": "○",
+    "tax_inflation": "○"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "Abel 체제 전환기에 현금 감소하면서도 적극적 자본배분 추진 중; 주식 매입과 운영 투자 병행으로 실질 가치 창출 능력 검증 단계",
+   "_evidence": {
+    "franchise": "보증금(float) 기반 무제한 비용 조달 능력, 보험 사업 핵심 사료",
+    "risk5": "경영진 교체(Buffett 퇴장, Abel 체제) 및 현금 감소 추세에서 경영 능력 실증 필요",
+    "capalloc": "Q2 적극적 투자와 매입 가속화, 2026년 100억 달러 이상 자사주매입 예상",
+    "owner_earnings": "공정가치 대비 저평가 평가 반복되나 현금 잔고 감소로 인한 성장성 제약 신호"
+   }
   },
   "LLY": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -742,7 +802,7 @@
    ]
   },
   "JPM": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -802,7 +862,7 @@
    ]
   },
   "WMT": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -865,7 +925,7 @@
    ]
   },
   "AMD": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -928,7 +988,7 @@
    ]
   },
   "000660.KS": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -959,7 +1019,7 @@
    "confidence": null
   },
   "ASML": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -990,7 +1050,7 @@
    "confidence": "중"
   },
   "LRCX": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1053,7 +1113,7 @@
    ]
   },
   "AMAT": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1116,7 +1176,7 @@
    ]
   },
   "DELL": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1179,7 +1239,7 @@
    ]
   },
   "PANW": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1242,7 +1302,7 @@
    ]
   },
   "ARM": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1273,7 +1333,7 @@
    "confidence": "중"
   },
   "SNDK": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -1281,7 +1341,7 @@
     "state": "stale",
     "period": "2012Q4",
     "end": "2012-12-30",
-    "age_days": 5027
+    "age_days": 5028
    },
    "roe_tangible": null,
    "roe_basis": {
@@ -1302,7 +1362,7 @@
    "notes": "XBRL 신선도 미달: 최신 2012Q4"
   },
   "STX": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -1310,7 +1370,7 @@
     "state": "stale",
     "period": "2025Q3",
     "end": "2025-03-28",
-    "age_days": 556
+    "age_days": 557
    },
    "roe_tangible": null,
    "roe_basis": {
@@ -1331,7 +1391,7 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "CRWD": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -1339,7 +1399,7 @@
     "state": "stale",
     "period": "2025Q3",
     "end": "2024-10-31",
-    "age_days": 704
+    "age_days": 705
    },
    "roe_tangible": null,
    "roe_basis": {
@@ -1360,7 +1420,7 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "2454.TW": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1378,7 +1438,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI ASIC 모멘텀 강하나 모바일 사이클 종속성으로 인한 수익 변동성 상존"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1388,10 +1453,32 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "AI 가속기 칩 매출이 급증 중이나 팹리스의 주기적 특성과 Google TPU 수요 예측 불확실성이 핵심 리스크",
+   "_evidence": {
+    "franchise": "MediaTek targets billions in AI accelerator chip revenue by 2027; MediaTek ASIC Revenue Doubles; 모바일 칩셋 수요는 계절성·사이클 영향 받음",
+    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday - AI 수요 예측 불안정성 노출; 유형상 시클리컬 특성으로 경기 민감도 높음",
+    "capalloc": "MediaTek's June Revenue Hits NT$58 Billion, Third-Highest Ever; 강한 현금 흐름 창출 중",
+    "owner_earnings": "Q2 2026 Earnings Call Highlights: AI ASIC Momentum Drives Record; 다만 Google TPU 수요 감소 시 수익성 급락 가능성"
+   }
   },
   "MRVL": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1454,7 +1541,7 @@
    ]
   },
   "285A.T": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1485,7 +1572,7 @@
    "confidence": "중"
   },
   "8035.T": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1516,7 +1603,7 @@
    "confidence": "중"
   },
   "6857.T": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1547,7 +1634,7 @@
    "confidence": "중"
   },
   "2308.TW": {
-   "as_of": "2026-10-05",
+   "as_of": "2026-10-06",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1583,7 +1670,7 @@
    "ticker": "AAPL",
    "period": "2026Q1",
    "end": "2025-12-27",
-   "age_days": 282,
+   "age_days": 283,
    "fallback": false,
    "assembled": [
     "2026Q1",
@@ -1600,7 +1687,7 @@
    "ticker": "SNDK",
    "period": "2012Q4",
    "end": "2012-12-30",
-   "age_days": 5027,
+   "age_days": 5028,
    "fallback": false,
    "assembled": [
     "2026Q3",
@@ -1617,7 +1704,7 @@
    "ticker": "STX",
    "period": "2025Q3",
    "end": "2025-03-28",
-   "age_days": 556,
+   "age_days": 557,
    "fallback": false,
    "assembled": [
     "2026Q3",
@@ -1634,7 +1721,7 @@
    "ticker": "CRWD",
    "period": "2025Q3",
    "end": "2024-10-31",
-   "age_days": 704,
+   "age_days": 705,
    "fallback": false,
    "assembled": [
     "2027Q1",
@@ -1648,5 +1735,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-05 19:49"
+ "scout_label": "2026-10-06 03:35"
 }
