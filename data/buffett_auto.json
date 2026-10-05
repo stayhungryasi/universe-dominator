@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-05 11:14",
- "generated_at": "2026-10-05T11:14:19.607219+09:00",
+ "generated_label": "2026-10-05 19:47",
+ "generated_at": "2026-10-05T19:47:22.899979+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-05",
@@ -67,66 +67,32 @@
   },
   "AAPL": {
    "as_of": "2026-10-05",
-   "period": "2026Q2",
+   "period": null,
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": {
-    "value": 8.3
+   "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "stale",
+    "period": "2026Q1",
+    "end": "2025-12-27",
+    "age_days": 282
    },
-   "eps_status": null,
-   "roe_tangible": 1.151,
+   "roe_tangible": null,
    "roe_basis": {
     "kind": "xbrl",
-    "basis": "SEC XBRL 조정",
-    "status": "ok",
-    "equity": 106491000000.0,
-    "goodwill_intangibles": null,
-    "net_income_ttm": 122575000000.0,
-    "asof": "2026-03-28"
+    "status": "income_missing"
    },
-   "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 122575000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 124137000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+   "owner_earnings": null,
+   "conversion": null,
+   "conversion_status": {
+    "state": "income_missing"
    },
-   "conversion": {
-    "value": 1.0127,
-    "variant": "C",
-    "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"
-   },
-   "conversion_status": null,
-   "g_cagr3y": 0.0913,
+   "g_cagr3y": 0.0736,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
-   "ttm_window": [
-    {
-     "period": "2026Q2",
-     "end": "2026-03-28"
-    },
-    {
-     "period": "2026Q1",
-     "end": "2025-12-27"
-    },
-    {
-     "period": "2025Q4",
-     "end": "2025-09-27"
-    },
-    {
-     "period": "2025Q3",
-     "end": "2025-06-28"
-    }
-   ]
+   "method": "산출 불가 — XBRL 신선도 미달: 최신 2026Q1",
+   "source": "Finnhub financials-reported · 분기 48건",
+   "confidence": null,
+   "notes": "XBRL 신선도 미달: 최신 2026Q1"
   },
   "GOOG": {
    "as_of": "2026-10-05",
@@ -444,7 +410,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.69
+    "value": 1.68
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -700,12 +666,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -715,34 +676,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024H2"
-   },
-   "notes": "Abel 경영진 전환기에 공격적 현금배치로 전환 중이나, 보증금 복리 역학의 지속성과 의사결정 체계 명확성 확인 필요.",
-   "_evidence": {
-    "franchise": "보험 플로트 기반 장기 자본 우위, Google, Apple 등 상류 기업들과의 전략적 투자 관계 유지",
-    "risk5": "Gregory Abel 체제 초기 단계로 버핏 후발 경영 리스크 현존; 공격적 현금 투입으로 인한 가치 판단 기준 변화 평가 필요",
-    "capalloc": "Q2 현금 감소로 투자·자사주 매입 가속화; 부채 규율 유지, 보통주 희석 없음",
-    "owner_earnings": "플로트 복리 특성상 순이익(B형) 기준 평가가 타당하며 P/E 시차 방식으로는 본질적 가치 포착 불가"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-10-05",
@@ -1646,6 +1580,23 @@
  },
  "stale_discarded": [
   {
+   "ticker": "AAPL",
+   "period": "2026Q1",
+   "end": "2025-12-27",
+   "age_days": 282,
+   "fallback": false,
+   "assembled": [
+    "2026Q1",
+    "2025Q4",
+    "2025Q3",
+    "2025Q2",
+    "2025Q1",
+    "2024Q4",
+    "2024Q3",
+    "2024Q2"
+   ]
+  },
+  {
    "ticker": "SNDK",
    "period": "2012Q4",
    "end": "2012-12-30",
@@ -1697,5 +1648,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-05 11:15"
+ "scout_label": "2026-10-05 19:49"
 }
