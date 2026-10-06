@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-06",
+ "date": "2026-10-07",
  "members": {
   "LRCX": {
    "name": "Lam Research",
@@ -9,7 +9,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 31
+   "rank": 34
   },
   "AMAT": {
    "name": "Applied Materials",
@@ -17,7 +17,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 34
+   "rank": 33
   },
   "DELL": {
    "name": "Dell",
@@ -25,7 +25,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 41
+   "rank": 40
   },
   "ARM": {
    "name": "Arm Holdings",
@@ -33,7 +33,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 50
+   "rank": 49
   },
   "PANW": {
    "name": "Palo Alto Networks",
@@ -41,7 +41,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 47
+   "rank": 45
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -49,7 +49,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 70
+   "rank": 69
   },
   "CRWD": {
    "name": "CrowdStrike",
@@ -57,7 +57,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 56
+   "rank": 54
   },
   "SNDK": {
    "name": "Sandisk",
@@ -65,7 +65,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 68
+   "rank": 74
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -73,7 +73,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 72
+   "rank": 66
   },
   "STX": {
    "name": "Seagate Technology",
@@ -81,7 +81,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 94
+   "rank": 104
   },
   "285A.T": {
    "name": "KIOXIA Holdings Corporation",
@@ -89,7 +89,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 101
+   "rank": 99
   },
   "2308.TW": {
    "name": "Delta Electronics",
@@ -97,7 +97,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 123
+   "rank": 122
   },
   "6857.T": {
    "name": "Advantest",
@@ -105,7 +105,7 @@
    "streak_in": 7,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 99
+   "rank": 98
   },
   "FTNT": {
    "name": "Fortinet",
@@ -113,7 +113,7 @@
    "streak_in": 8,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 166
+   "rank": 165
   }
  },
  "candidates": {},
@@ -165,14 +165,6 @@
  ],
  "base": {
   "members": {
-   "ASML": {
-    "name": "ASML",
-    "joined": null,
-    "streak_in": 3,
-    "streak_out": 4,
-    "carried_days": 0,
-    "rank": 20
-   },
    "LRCX": {
     "name": "Lam Research",
     "joined": null,
@@ -203,7 +195,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 49
+    "rank": 50
    },
    "PANW": {
     "name": "Palo Alto Networks",
@@ -219,7 +211,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 66
+    "rank": 70
    },
    "CRWD": {
     "name": "CrowdStrike",
@@ -243,7 +235,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 70
+    "rank": 72
    },
    "STX": {
     "name": "Seagate Technology",
@@ -251,7 +243,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 99
+    "rank": 94
    },
    "285A.T": {
     "name": "KIOXIA Holdings Corporation",
@@ -259,7 +251,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 97
+    "rank": 101
    },
    "2308.TW": {
     "name": "Delta Electronics",
@@ -267,7 +259,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 130
+    "rank": 123
    },
    "6857.T": {
     "name": "Advantest",
@@ -275,19 +267,20 @@
     "streak_in": 7,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 105
-   }
-  },
-  "candidates": {
+    "rank": 99
+   },
    "FTNT": {
-    "streak_in": 7,
-    "swap_streak": 0,
     "name": "Fortinet",
+    "joined": "2026-10-06",
+    "streak_in": 8,
+    "streak_out": 0,
+    "carried_days": 0,
     "rank": 166
    }
-  }
+  },
+  "candidates": {}
  },
- "generated_at": "2026-10-06T19:29:41.397977+09:00",
+ "generated_at": "2026-10-07T00:55:23.952734+09:00",
  "limits": {
   "in": 3,
   "out": 5,
