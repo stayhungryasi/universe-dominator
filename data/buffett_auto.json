@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-06 12:15",
- "generated_at": "2026-10-06T12:15:04.412990+09:00",
+ "generated_label": "2026-10-06 19:37",
+ "generated_at": "2026-10-06T19:37:59.954267+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-06",
@@ -676,7 +676,27 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "△",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "○"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "플로트 복리의 본질은 유지되나 Abel 체제에서 자본배치 적극화와 현금 감소 추세 주목 필요.",
+   "_evidence": {
+    "risk5": "Why Is Berkshire Hathaway (BRK.B) Deploying Cash More Aggressively Under Greg Abel?",
+    "capalloc": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2; Prediction: Berkshire Hathaway's 2026 Buybacks Will Top $10 Billion"
+   }
   },
   "LLY": {
    "as_of": "2026-10-06",
@@ -894,11 +914,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 칩 고성장 확인되나 수익화 경로 확실하지 않음"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9229,
@@ -911,7 +927,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -929,31 +945,7 @@
      "period": "2025Q2",
      "end": "2025-06-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "no_dilution": 0,
-    "score": 1,
-    "period": "2026H2"
-   },
-   "notes": "데이터센터 매출 두 배 성장 확인되었으나 주가는 강세 후 약세 반복, OpenAI·Meta 대량 주식 약속으로 희석 우려",
-   "_evidence": {
-    "franchise": "AMD revenue climbs 50% and data center sales doubled",
-    "risk5": "AMD stock tanked 5% after earnings despite strong results, This was not an exceptional result",
-    "capalloc": "AMD Has Promised OpenAI and Meta Up to 320 Million Shares",
-    "owner_earnings": "AI 칩 10년 쿠폰 추정 범위 초과 논리는 NVDA와 동일하나 주가 반응 불일치"
-   }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-10-06",
@@ -1392,7 +1384,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 63.19
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1486,7 +1478,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 999.75
+    "value": 1009.15
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1517,7 +1509,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1319.63
+    "value": 1250.88
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1548,7 +1540,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 535.51
+    "value": 513.3
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1579,7 +1571,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.37
+    "value": 33.37
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1676,5 +1668,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-06 12:16"
+ "scout_label": "2026-10-06 19:39"
 }

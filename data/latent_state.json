@@ -3,14 +3,6 @@
  "version": 1,
  "date": "2026-10-06",
  "members": {
-  "ASML": {
-   "name": "ASML",
-   "joined": null,
-   "streak_in": 3,
-   "streak_out": 4,
-   "carried_days": 1,
-   "rank": 20
-  },
   "LRCX": {
    "name": "Lam Research",
    "joined": null,
@@ -105,7 +97,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 127
+   "rank": 123
   },
   "6857.T": {
    "name": "Advantest",
@@ -113,17 +105,18 @@
    "streak_in": 7,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 102
-  }
- },
- "candidates": {
+   "rank": 99
+  },
   "FTNT": {
-   "streak_in": 8,
-   "swap_streak": 0,
    "name": "Fortinet",
-   "rank": 165
+   "joined": "2026-10-06",
+   "streak_in": 8,
+   "streak_out": 0,
+   "carried_days": 0,
+   "rank": 166
   }
  },
+ "candidates": {},
  "transitions": [
   {
    "date": "2026-10-05",
@@ -145,6 +138,28 @@
    "momentum_1y": 114,
    "mc": 184.21,
    "streak_in": 7,
+   "limit": 3
+  },
+  {
+   "date": "2026-10-06",
+   "ticker": "ASML",
+   "name": "ASML",
+   "dir": "out",
+   "rank": 20,
+   "momentum_1y": 78,
+   "mc": 714.37,
+   "streak_out": 5,
+   "limit": 5
+  },
+  {
+   "date": "2026-10-06",
+   "ticker": "FTNT",
+   "name": "Fortinet",
+   "dir": "in",
+   "rank": 166,
+   "momentum_1y": 113,
+   "mc": 135.09,
+   "streak_in": 8,
    "limit": 3
   }
  ],
@@ -272,7 +287,7 @@
    }
   }
  },
- "generated_at": "2026-10-06T12:05:58.919895+09:00",
+ "generated_at": "2026-10-06T19:29:41.397977+09:00",
  "limits": {
   "in": 3,
   "out": 5,
