@@ -1,33 +1,33 @@
 {
- "generated_label": "2026-10-07 01:04",
- "generated_at": "2026-10-07T01:04:36.674664+09:00",
+ "generated_label": "2026-10-07 11:37",
+ "generated_at": "2026-10-07T11:37:37.272170+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-07",
-   "period": "2027Q1",
+   "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 5.7333
+    "value": 4.6052
    },
    "eps_status": null,
-   "roe_tangible": 0.8156,
+   "roe_tangible": 1.0118,
    "roe_basis": {
     "kind": "xbrl",
     "basis": "SEC XBRL 조정",
     "status": "ok",
-    "equity": 195474000000.0,
-    "goodwill_intangibles": 24014000000.0,
-    "net_income_ttm": 139840090000.0,
-    "asof": "2026-04-26"
+    "equity": 118897000000.0,
+    "goodwill_intangibles": 7197000000.0,
+    "net_income_ttm": 113021780000.0,
+    "asof": "2025-10-26"
    },
    "owner_earnings": {
     "variants": {
      "A": {
-      "value": 159613000000.0,
+      "value": 120067000000.0,
       "basis": "유지캐펙스 = 감가상각"
      },
      "C": {
-      "value": 156270000000.0,
+      "value": 116868000000.0,
       "basis": "유지캐펙스 = 캐펙스 전액"
      }
     },
@@ -35,22 +35,18 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
-    "value": 1.1175,
+    "value": 1.034,
     "variant": "C",
     "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"
    },
    "conversion_status": null,
-   "g_cagr3y": 1.6188,
+   "g_cagr3y": 1.2831,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중",
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "source": "Finnhub financials-reported · 분기 47건",
+   "confidence": "하",
    "ttm_window": [
-    {
-     "period": "2027Q1",
-     "end": "2026-04-26"
-    },
     {
      "period": "2026Q4",
      "end": "2026-01-25"
@@ -62,8 +58,26 @@
     {
      "period": "2026Q2",
      "end": "2025-07-27"
+    },
+    {
+     "period": "2026Q1",
+     "end": "2025-04-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "✕",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "price": "△"
+   },
+   "notes": "핵심 대형 고객들의 자체칩 전환 예고로 10년 후 수익기반의 지속성 불확실",
+   "_evidence": {
+    "franchise": "대형 세입자 전원이 자체칩으로 이탈 예고",
+    "risk5": "주요 수익원천의 장기 대체 위험으로 인한 사업 불확실성 심화"
+   }
   },
   "AAPL": {
    "as_of": "2026-10-07",
@@ -219,73 +233,39 @@
   },
   "AMZN": {
    "as_of": "2026-10-07",
-   "period": "2026Q1",
+   "period": null,
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": {
-    "value": 8.35
+   "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "stale",
+    "period": "2025Q4",
+    "end": "2025-12-31",
+    "age_days": 280
    },
-   "eps_status": null,
-   "roe_tangible": 0.217,
+   "roe_tangible": null,
    "roe_basis": {
     "kind": "xbrl",
-    "basis": "SEC XBRL 조정",
-    "status": "ok",
-    "equity": 441914000000.0,
-    "goodwill_intangibles": 23449000000.0,
-    "net_income_ttm": 90798000000.0,
-    "asof": "2026-03-31"
+    "status": "income_missing"
    },
-   "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 90798000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 10234000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+   "owner_earnings": null,
+   "conversion": null,
+   "conversion_status": {
+    "state": "income_missing"
    },
-   "conversion": {
-    "value": 0.1127,
-    "variant": "C",
-    "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"
-   },
-   "conversion_status": null,
-   "g_cagr3y": 1.0016,
+   "g_cagr3y": 0.8844,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "중",
-   "ttm_window": [
-    {
-     "period": "2026Q1",
-     "end": "2026-03-31"
-    },
-    {
-     "period": "2025Q4",
-     "end": "2025-12-31"
-    },
-    {
-     "period": "2025Q3",
-     "end": "2025-09-30"
-    },
-    {
-     "period": "2025Q2",
-     "end": "2025-06-30"
-    }
-   ]
+   "method": "산출 불가 — XBRL 신선도 미달: 최신 2025Q4",
+   "source": "Finnhub financials-reported · 분기 41건",
+   "confidence": null,
+   "notes": "XBRL 신선도 미달: 최신 2025Q4"
   },
   "TSM": {
    "as_of": "2026-10-07",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.76
+    "value": 13.66
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -592,30 +572,30 @@
   },
   "MU": {
    "as_of": "2026-10-07",
-   "period": "2026Q3",
+   "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 44.1935
+    "value": 21.15
    },
    "eps_status": null,
-   "roe_tangible": 0.5093,
+   "roe_tangible": 0.3404,
    "roe_basis": {
     "kind": "xbrl",
     "basis": "SEC XBRL 조정",
     "status": "ok",
-    "equity": 100724000000.0,
-    "goodwill_intangibles": 1623000000.0,
-    "net_income_ttm": 50469000000.0,
-    "asof": "2026-05-28"
+    "equity": 72459000000.0,
+    "goodwill_intangibles": 1618000000.0,
+    "net_income_ttm": 24111000000.0,
+    "asof": "2026-02-26"
    },
    "owner_earnings": {
     "variants": {
      "A": {
-      "value": 50469000000.0,
+      "value": 24111000000.0,
       "basis": "유지캐펙스 = 감가상각"
      },
      "C": {
-      "value": 34220000000.0,
+      "value": 12480000000.0,
       "basis": "유지캐펙스 = 캐펙스 전액"
      }
     },
@@ -623,22 +603,18 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
-    "value": 0.678,
+    "value": 0.5176,
     "variant": "C",
     "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"
    },
    "conversion_status": null,
-   "g_cagr3y": null,
+   "g_cagr3y": 1.4644,
    "g_forward": null,
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중",
+   "source": "Finnhub financials-reported · 분기 47건",
+   "confidence": "하",
    "ttm_window": [
-    {
-     "period": "2026Q3",
-     "end": "2026-05-28"
-    },
     {
      "period": "2026Q2",
      "end": "2026-02-26"
@@ -650,8 +626,32 @@
     {
      "period": "2025Q4",
      "end": "2025-08-28"
+    },
+    {
+     "period": "2025Q3",
+     "end": "2025-05-29"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "debt_discipline": 1,
+    "score": 2
+   },
+   "notes": "메모리는 필수 인프라이나 순수 사이클 사업으로 가격 결정력이 제한적이고 지속적 증설 자본이 필요한 구조적 약점 보유.",
+   "_evidence": {
+    "franchise": "메모리는 현대 컴퓨팅의 필수 요소이나 상품화된 제품으로 차별화 불가능",
+    "risk5": "반도체 수급 사이클에 완전히 종속된 매출·이익 변동성으로 사업 확실성 낮음; 메모리 가격 공급 과잉시 급락",
+    "capalloc": "수요 사이클에 대응하는 계획적 증설 투자 필요(반도체 산업 특성)"
+   }
   },
   "BRK-B": {
    "as_of": "2026-10-07",
@@ -676,7 +676,27 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "△",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "○"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "Abel 경영 전환기 리더십 실행력 검증 필요; 현금 감소 중에도 적극적 자사주 매입.",
+   "_evidence": {
+    "risk5": "The Abel Era Needs More Than Continuity",
+    "capalloc": "Berkshire Hathaway's Cash Balances Retreat on Increased Investments and Share Buybacks in Q2; Prediction: Berkshire Hathaway's 2026 Buybacks Will Top $10 Billion"
+   }
   },
   "LLY": {
    "as_of": "2026-10-07",
@@ -803,30 +823,30 @@
   },
   "WMT": {
    "as_of": "2026-10-07",
-   "period": "2027Q1",
+   "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 2.5632
+    "value": 2.5293
    },
    "eps_status": null,
-   "roe_tangible": 0.3098,
+   "roe_tangible": 0.3013,
    "roe_basis": {
     "kind": "xbrl",
     "basis": "SEC XBRL 조정",
     "status": "ok",
-    "equity": 94330000000.0,
-    "goodwill_intangibles": 28152000000.0,
-    "net_income_ttm": 20502670000.0,
-    "asof": "2026-04-30"
+    "equity": 96094000000.0,
+    "goodwill_intangibles": 28722000000.0,
+    "net_income_ttm": 20300360000.0,
+    "asof": "2025-10-31"
    },
    "owner_earnings": {
     "variants": {
      "A": {
-      "value": 22736000000.0,
+      "value": 21893000000.0,
       "basis": "유지캐펙스 = 감가상각"
      },
      "C": {
-      "value": 9051000000.0,
+      "value": 9454000000.0,
       "basis": "유지캐펙스 = 캐펙스 전액"
      }
     },
@@ -834,22 +854,18 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
-    "value": 0.4415,
+    "value": 0.4657,
     "variant": "C",
     "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"
    },
    "conversion_status": null,
-   "g_cagr3y": null,
+   "g_cagr3y": 0.1351,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+   "source": "Finnhub financials-reported · 분기 48건",
+   "confidence": "하",
    "ttm_window": [
-    {
-     "period": "2027Q1",
-     "end": "2026-04-30"
-    },
     {
      "period": "2026Q4",
      "end": "2026-01-31"
@@ -861,8 +877,29 @@
     {
      "period": "2026Q2",
      "end": "2025-07-31"
+    },
+    {
+     "period": "2026Q1",
+     "end": "2025-04-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "△"
+   },
+   "notes": "저마진 리테일 구조로 인한 수익성 제약이 주요 한계점.",
+   "_evidence": {
+    "franchise": "필수재 유통의 네트워크 효과와 규모의 경제로 인한 진입장벽 형성",
+    "risk5": "예측 가능한 소비재 수요와 안정적 경영진 역량 보유"
+   }
   },
   "AMD": {
    "as_of": "2026-10-07",
@@ -963,7 +1000,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 30.81
+    "value": 30.38
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1364,7 +1401,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 63.19
+    "value": 57.69
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1458,7 +1495,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 999.75
+    "value": 988.83
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1489,7 +1526,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1250.88
+    "value": 1254.8
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1520,7 +1557,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 513.3
+    "value": 533.04
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1551,7 +1588,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.37
+    "value": 33.37
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1594,6 +1631,23 @@
     "2024Q4",
     "2024Q3",
     "2024Q2"
+   ]
+  },
+  {
+   "ticker": "AMZN",
+   "period": "2025Q4",
+   "end": "2025-12-31",
+   "age_days": 280,
+   "fallback": false,
+   "assembled": [
+    "2025Q4",
+    "2025Q3",
+    "2025Q2",
+    "2025Q1",
+    "2024Q2",
+    "2024Q1",
+    "2023Q4",
+    "2023Q3"
    ]
   },
   {
@@ -1648,5 +1702,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-07 01:06"
+ "scout_label": "2026-10-07 11:39"
 }
