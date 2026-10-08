@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-08 01:35",
- "generated_at": "2026-10-08T01:35:08.062456+09:00",
+ "generated_label": "2026-10-08 11:54",
+ "generated_at": "2026-10-08T11:54:02.013915+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-08",
@@ -137,7 +137,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · CIK 1652044 조회",
    "source": "Finnhub financials-reported · 분기 33건 · CIK 1652044 조회",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -155,29 +155,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "TPU vertical integration + Search moat provide durable competitive position; antitrust regulatory risk is verification-level concern not speculation; valuation stretched at $429-$500+ consensus vs fundamentals",
-   "_evidence": {
-    "franchise": "Cloud surges 82%; Search moat remains core franchise",
-    "risk5": "Antitrust pressure explicitly cited in headlines; Gemini monetization gap flagged",
-    "capalloc": "Q2 2026 earnings beat suggests strong cash position"
-   }
+   ]
   },
   "MSFT": {
    "as_of": "2026-10-08",
@@ -298,11 +276,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 칩 수요 강세 대비 소프트웨어 부진, 연간 AI 칩 전망 미상향으로 성장성 제한적"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9924,
@@ -315,7 +289,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) / us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -333,30 +307,7 @@
      "period": "2025Q2",
      "end": "2025-05-04"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI 랩과의 강한 수요 신호 대비 주가는 이미 높은 기대를 반영했으며, 소프트웨어 약세와 보수적 가이던스가 밸류에이션 리스크 신호",
-   "_evidence": {
-    "franchise": "AI 인프라 칩에 대한 강한 고객 수요(Google, 기타 AI 랩과의 성장), 커스텀 칩의 대체불가능성",
-    "risk5": "AI 칩 수요 전망 미상향(주가 3.8~14% 하락 트리거), 소프트웨어 부진으로 실적 혼조 신호",
-    "capalloc": "Anthropic과의 $42B 칩 구매 딜(순환 자금 조달 우려), 긍정적 현금 흐름 대비 부채 규율 문제",
-    "owner_earnings": "Q3 실적 및 수익 추정치 초과 달성하나 연간 가이던스 상향 부재"
-   }
+   ]
   },
   "SPCX": {
    "as_of": "2026-10-08",
@@ -595,7 +546,33 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "△",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "○"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "Abel 시대 경영진 능력 검증 필요, 현금 감소 추세 주시 필요",
+   "_evidence": {
+    "franchise": "Insurance float as permanent, non-dilutable capital source characteristic of Berkshire's moat",
+    "risk5": "Berkshire Hathaway's Stock Price Problem Gets Worse suggests valuation concerns; Abel era continuity questioned in 'The Abel Era Needs More Than Continuity'",
+    "capalloc": "Berkshire Hathaway's 2026 Buybacks Will Top $10 Billion; Cash Balances Retreat on Increased Investments and Share Buybacks in Q2; Could Be 21% Undervalued As Buybacks And Stock Buying Ramp Up"
+   }
   },
   "LLY": {
    "as_of": "2026-10-08",
@@ -881,7 +858,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q1",
@@ -899,30 +876,7 @@
      "period": "2025Q2",
      "end": "2025-04-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "반도체 장비 과점 기업으로 높은 기술장벽과 고객 종속성 보유하나 사이클 정점 평가 단계에서 가격 매력도 부족.",
-   "_evidence": {
-    "franchise": "반도체 제조 장비 시장에서 ASML, LRCX와 함께 구성되는 과점 구조로 높은 진입장벽 유지",
-    "risk5": "반도체 설비 투자 사이클에 수익성이 민감하며 거시 경제 및 고객(TSM, Samsung) 자본지출 예측의 불확실성",
-    "capalloc": "반도체 호황기 현금흐름 우위로 자사주 매입 및 배당을 통한 주주반환 정책 시행"
-   }
+   ]
   },
   "DELL": {
    "as_of": "2026-10-08",
@@ -957,7 +911,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "B",
-     "reason": "AI 서버 수요 증가는 매출을 급증시키지만 저마진 OEM 사업 특성상 주주수익으로 전환되지 않음"
+     "reason": "AI 서버 수요 급증으로 매출 폭발하나 저마진 OEM 구조로 주주귀속이익 제약"
     }
    },
    "conversion": {
@@ -993,25 +947,25 @@
    "franchise": {
     "need": "○",
     "no_substitute": "△",
-    "no_price_reg": "△"
+    "no_price_reg": "✕"
    },
    "risk5": {
     "business_certainty": "△",
-    "mgmt_ability": "○",
     "price": "△"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2024H2"
    },
-   "notes": "시클리컬 특성에 AI 호황 변동성이 겹쳐 장기 가시성 제한; 마진 개선이 재평가 핵심",
+   "notes": "AI 데이터센터 백로그 $95B 규모로 성장 모멘텀 강하나, 시클리컬 산업 특성과 경쟁 심화로 마진율 악화 위험",
    "_evidence": {
-    "franchise": "엔터프라이즈 IT 인프라 수요는 견고하나 AI 서버는 경쟁심화로 대체성 높음",
-    "risk5": "AI 사이클 역전 위험 및 경기민감도 높은 시클리컬 사업; 경영진 실행력은 입증됨",
-    "capalloc": "전통적으로 현금 창출 및 자사주 매입 기업",
-    "owner_earnings": "매출 성장과 실제 주주 가용 현금이 괴리되는 저마진 구조"
+    "franchise": "AI server demand 및 $15B Japan data center project 참여로 필수재로서의 수요 확인",
+    "risk5": "AI 서버는 저마진 OEM이며 시클리컬 산업; 경쟁사 HPE와 비교되는 밸류에이션 불안정성",
+    "capalloc": "Dividend 20% 인상(2023년 이후), buyback 실행 중; fiscal 2027 forecast 상향으로 cash flow 긍정적",
+    "owner_earnings": "매출 폭발(EPS upgrade 주목)에도 저마진 구조로 실질 주주귀속이익 증분은 제한적"
    }
   },
   "PANW": {
@@ -1044,11 +998,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "인수 상각으로 GAAP 기준 이익 기반이 얇아 보고 수익과 실제 운영 현금흐름 괴리 존재"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9558,
@@ -1061,7 +1011,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 40건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1079,29 +1029,7 @@
      "period": "2025Q3",
      "end": "2025-04-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "보안 구독 전환비용의 COGS 인식 과정과 플랫폼 통합 전략의 대기업 잔존율 실증이 투자 확신의 결정변수",
-   "_evidence": {
-    "franchise": "기업 보안 위협의 구조적 증가와 규제 환경 강화로 보안 지출의 필요성 지속",
-    "risk5": "선행 EPS는 인수 상각으로 이익 기반이 얇아 P/E가 높게 읽히며, 플랫폼 통합 전략의 고객 잔존율 검증이 진행형",
-    "capalloc": "보안 소프트웨어 업계의 높은 마진 구조와 구독 모델로 현금 생성 능력 우수",
-    "owner_earnings": "GAAP 기준 선행 EPS 외 비현금 비용(인수 상각)을 조정한 실질 운영 수익 기준 검토 필요"
-   }
+   ]
   },
   "ARM": {
    "as_of": "2026-10-08",
@@ -1226,7 +1154,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 63.19
+    "value": 59.51
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1240,7 +1168,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI ASIC 사업 급성장 중이나 모바일 사이클 의존성으로 수익 변동성 높음"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1250,7 +1183,29 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "AI ASIC 모멘텀으로 단기 성장 가파르나 거래정지 반복과 모바일 수요 사이클 리스크 상존",
+   "_evidence": {
+    "franchise": "MediaTek ASIC Revenue Doubles; First AI Accelerator to Enter Mass Production in Q4, Data Center Revenue to Surpass $2 Billion",
+    "risk5": "MediaTek Retreats 4.6% as 20-Minute Matching Crisis Temporarily Eases; SemiAnalysis Cuts Google TPU Shipment Forecast causing 4% intraday plunge - 사업 확실성과 가격 변동성 높음",
+    "capalloc": "MediaTek's June Revenue Hits NT$58 Billion; AI ASIC Revenue Forecast Soars - 강한 현금 창출 시그널",
+    "owner_earnings": "Q2 Guidance Exceeded as AI ASIC Takes the Baton in Second Half but cyclical mobile dependency persists"
+   }
   },
   "MRVL": {
    "as_of": "2026-10-08",
@@ -1295,7 +1250,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 20건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -1313,36 +1268,14 @@
      "period": "2026Q1",
      "end": "2025-05-03"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3
-   },
-   "notes": "커스텀 실리콘 고객 집중 및 주문량 변동성이 현금흐름 안정성을 제약.",
-   "_evidence": {
-    "franchise": "데이터센터·AI 칩셋에 대한 수요 증가로 필요성 상승, 다만 고객 쿠폰 변동 가능성",
-    "risk5": "시클리컬 산업 특성상 경제순환에 민감, 통행료 성향의 커스텀 실리콘은 고객 의존도 높음",
-    "capalloc": "반도체 기업의 일반적 현금 창출 능력 보유"
-   }
+   ]
   },
   "285A.T": {
    "as_of": "2026-10-08",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1009.14
+    "value": 964.17
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1373,7 +1306,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1250.88
+    "value": 1221.09
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1404,7 +1337,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 513.29
+    "value": 506.42
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1435,7 +1368,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.37
+    "value": 30.45
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1668,5 +1601,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-08 01:36"
+ "scout_label": "2026-10-08 11:55"
 }
