@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-08",
+ "date": "2026-10-09",
  "members": {
   "LRCX": {
    "name": "Lam Research",
@@ -9,7 +9,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 35
+   "rank": 36
   },
   "AMAT": {
    "name": "Applied Materials",
@@ -25,15 +25,15 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 40
+   "rank": 39
   },
   "ARM": {
    "name": "Arm Holdings",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 0,
+   "streak_out": 1,
    "carried_days": 0,
-   "rank": 51
+   "rank": 52
   },
   "PANW": {
    "name": "Palo Alto Networks",
@@ -57,7 +57,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 59
+   "rank": 57
   },
   "SNDK": {
    "name": "Sandisk",
@@ -65,7 +65,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 69
+   "rank": 72
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -73,7 +73,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 66
+   "rank": 67
   },
   "STX": {
    "name": "Seagate Technology",
@@ -81,7 +81,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 103
+   "rank": 108
   },
   "285A.T": {
    "name": "KIOXIA Holdings Corporation",
@@ -89,7 +89,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 106
+   "rank": 105
   },
   "2308.TW": {
    "name": "Delta Electronics",
@@ -97,7 +97,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 131
+   "rank": 133
   },
   "6857.T": {
    "name": "Advantest",
@@ -113,13 +113,13 @@
    "streak_in": 8,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 162
+   "rank": 161
   }
  },
  "candidates": {
   "ASML": {
-   "streak_in": 1,
-   "swap_streak": 1,
+   "streak_in": 2,
+   "swap_streak": 2,
    "name": "ASML",
    "rank": 21
   }
@@ -178,7 +178,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 34
+    "rank": 35
    },
    "AMAT": {
     "name": "Applied Materials",
@@ -186,7 +186,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 33
+    "rank": 34
    },
    "DELL": {
     "name": "Dell",
@@ -202,7 +202,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 50
+    "rank": 51
    },
    "PANW": {
     "name": "Palo Alto Networks",
@@ -210,7 +210,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 46
+    "rank": 47
    },
    "2454.TW": {
     "name": "MediaTek",
@@ -218,7 +218,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 74
+    "rank": 75
    },
    "CRWD": {
     "name": "CrowdStrike",
@@ -226,7 +226,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 56
+    "rank": 59
    },
    "SNDK": {
     "name": "Sandisk",
@@ -234,7 +234,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 71
+    "rank": 69
    },
    "MRVL": {
     "name": "Marvell Technology",
@@ -250,7 +250,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 104
+    "rank": 103
    },
    "285A.T": {
     "name": "KIOXIA Holdings Corporation",
@@ -258,7 +258,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 105
+    "rank": 106
    },
    "2308.TW": {
     "name": "Delta Electronics",
@@ -266,7 +266,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 133
+    "rank": 131
    },
    "6857.T": {
     "name": "Advantest",
@@ -274,7 +274,7 @@
     "streak_in": 7,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 100
+    "rank": 98
    },
    "FTNT": {
     "name": "Fortinet",
@@ -282,12 +282,19 @@
     "streak_in": 8,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 163
+    "rank": 162
    }
   },
-  "candidates": {}
+  "candidates": {
+   "ASML": {
+    "streak_in": 1,
+    "swap_streak": 1,
+    "name": "ASML",
+    "rank": 21
+   }
+  }
  },
- "generated_at": "2026-10-08T19:43:44.499931+09:00",
+ "generated_at": "2026-10-09T01:26:50.322276+09:00",
  "limits": {
   "in": 3,
   "out": 5,
