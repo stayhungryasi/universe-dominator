@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-09 12:09",
- "generated_at": "2026-10-09T12:09:41.014870+09:00",
+ "generated_label": "2026-10-09 19:53",
+ "generated_at": "2026-10-09T19:53:26.442099+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-09",
@@ -461,7 +461,7 @@
    "owner_earnings": {
     "ai_view": {
      "display": "B",
-     "reason": "유가 사이클에 종속된 수익성으로 인한 예측 가능성의 구조적 한계"
+     "reason": "유가 사이클 의존으로 인한 수익 예측 불가능성이 평가를 제약함"
     }
    },
    "conversion": null,
@@ -479,18 +479,25 @@
     "no_substitute": "○",
     "no_price_reg": "✕"
    },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "○",
+    "price": "✕",
+    "tax_inflation": "△"
+   },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
+    "debt_discipline": 1,
     "score": 3,
     "period": "2026H1"
    },
-   "notes": "Q2 2026 이란전쟁 유도 유가 상승으로 수익 25% 증가하나, 장기 정상화는 2027년 이후로 예상되며 호르무즈 해협 운송 중단 시 재앙적 결과 경고",
+   "notes": "유가 변동성과 지정학적 리스크(호르무즈 해협)가 본질적 수익성을 가림; 가스 사업부 분리 고려 중",
    "_evidence": {
-    "franchise": "필수불가결한 에너지 자원 공급자로서 전 지구적 대체 불가능성",
-    "capalloc": "Aramco announces first buyback; 가스 부문 독립 계획 검토 중 $100B 가치평가; Q2 2026 강한 현금흐름",
-    "owner_earnings": "Oil market may not normalize until 2027, Saudi Aramco CEO warns; Aramco's Record Profits Hide a Growing Cash Flow Crisis"
+    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher; 글로벌 에너지 수요의 필수 공급자",
+    "risk5": "Oil market may not normalize until 2027, Saudi Aramco CEO warns; Aramco's Record Profits Hide a Growing Cash Flow Crisis; Aramco sees 'catastrophic consequences' for oil if shipping doesn't resume in Strait of Hormuz",
+    "capalloc": "Q4 2025 sees slight stock dip despite strong cash flow; Q2 2026 earnings beat as Iran war lifts oil prices",
+    "owner_earnings": "Aramco's Record Profits Hide a Growing Cash Flow Crisis"
    }
   },
   "META": {
@@ -677,11 +684,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "87% 초고마진은 사이클 정점 신호; 향후 정상화 가능성 내재"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.678,
@@ -694,7 +697,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -712,30 +715,7 @@
      "period": "2025Q4",
      "end": "2025-08-28"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "메모리 수요 진짜 사이클인가 AI 슈퍼사이클인가의 판단 불가; 매 사이클마다 설비투자 강제되는 구조적 한계",
-   "_evidence": {
-    "franchise": "Data center revenue 11-fold jump, AI 수요 진정한 구조적 필요",
-    "risk5": "Beware Attempting to Time the Peak / Party Is Coming To An End — 피크 타이밍 불확실성; 87% 마진의 지속성 미확정",
-    "capalloc": "Huge Buyback Could Be Coming; cash positive 기조 지속 중",
-    "owner_earnings": "87% Gross Margins yet trades at 6x earnings — 초고마진이 현재가를 정당화하나 지속불명"
-   }
+   ]
   },
   "BRK-B": {
    "as_of": "2026-10-09",
@@ -750,12 +730,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -765,26 +740,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "플로트 복리 모델의 우수성 지속 중이나 주가 평가의 불일치 논쟁 심화",
-   "_evidence": {
-    "franchise": "Leading The Diversified Financial Services Pack; 보험 플로트를 통한 무비용 자본 구조",
-    "capalloc": "Prediction: Berkshire Hathaway's 2026 Buybacks Will Top $10 Billion; Increased Investments and Share Buybacks in Q2",
-    "owner_earnings": "Cash Balances Retreat on Increased Investments and Share Buybacks in Q2로 현금 활용 시점이나 수익력 가시성 제약"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-10-09",
@@ -829,7 +785,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -847,22 +803,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "notes": "특허절벽이 임박한 시점에서 파이프라인 성공 여부가 기업 가치의 핵심 변수",
-   "_evidence": {
-    "franchise": "의약품 포트폴리오(GLP-1, 항암제)의 광범위한 치료 필요성과 대체재 부재로 강한 경제적 해자 보유",
-    "risk5": "주요 수익원에 대한 특허 만기 도래가 사업 연속성의 불확실성을 야기하며, 경영진의 R&D 파이프라인 실행 능력이 향후 성장을 좌우"
-   }
+   ]
   },
   "JPM": {
    "as_of": "2026-10-09",
@@ -890,7 +831,11 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "사이클 구조의 은행 비즈니스로 정상화된 순이자수익(NII)이 정확한 멀티플 산출의 핵심"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -932,20 +877,22 @@
     "business_certainty": "△",
     "mgmt_ability": "○",
     "mgmt_fidelity": "○",
-    "price": "✕",
+    "price": "△",
     "tax_inflation": "△"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
     "debt_discipline": 1,
-    "score": 3
+    "score": 3,
+    "period": "2026H1"
    },
-   "notes": "금융 사이클 기업으로서 레버리지 구조와 경기 민감성으로 인한 본질적 가치 산정의 어려움.",
+   "notes": "기록적 분기 실적과 강한 투자은행 모멘텀(주식거래 86% 증가)이 보고되었으나 금리 사이클 민감도와 규제 환경(스테이블코인 준비금 규칙 근접)이 사이클 할인을 정당화",
    "_evidence": {
-    "franchise": "글로벌 투자은행·자산관리·소매금융에서 규모와 네트워크의 대체 불가능성",
-    "risk5": "금리·신용사이클·규제 리스크로 인한 수익성 변동성; 경영진 능력은 검증됨",
-    "capalloc": "지속적 배당 및 자사주 매입 실행; 자본 규제 하에서의 의율 있는 부채 관리"
+    "franchise": "JPMorgan notches record quarter as CEO Jamie Dimon calls the banking environment 'close to as good as it gets'",
+    "risk5": "JPMorgan's Equities Business Surged 86% Last Quarter — What Comes Next on Oct. 13?",
+    "capalloc": "JPMorgan Chase &amp; Co. (JPM) Up 5.3% Since Last Earnings Report: Can It Continue?",
+    "owner_earnings": "JPMorgan (JPM) Q2 2026 Earnings Preview: $5.59 EPS Consensus, $103B NII Guidance, and the $338.45 Trigger"
    }
   },
   "WMT": {
@@ -981,7 +928,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "B",
-     "reason": ""
+     "reason": "예측 가능성 최상급이나 저마진 구조로 인한 실질 수익성 제약"
     }
    },
    "conversion": {
@@ -1017,20 +964,24 @@
    "franchise": {
     "need": "○",
     "no_substitute": "○",
-    "no_price_reg": "○"
+    "no_price_reg": "△"
    },
    "risk5": {
     "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
+    "mgmt_ability": "△",
+    "price": "✕"
    },
-   "notes": "저마진 리테일 구조상 코스토코 멤버십형(만점 35)보다 프랜차이즈 품질 낮음.",
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "notes": "광고사업(Walmart Connect) 고마진화 및 토큰화 시도로 수익다각화 시도 중이나, 근시일 내 실적 부진과 주가 약세로 현재 평가 매력도 저하",
    "_evidence": {
-    "franchise": "예측 가능성 최상급의 통행료형 경계(toll-like) 비즈니스 모델.",
-    "risk5": "대규모 유통 네트워크와 스케일 우위로 경기변동 회복력 우수하나, 저마진 구조로 가격·인플레이션 압박에 민감.",
-    "owner_earnings": "현재 헤드라인 부재로 최근 자본배분 방향 판단 불가."
+    "franchise": "예측 가능성 최상급, 저마진 리테일의 구조적 한계",
+    "risk5": "Q2 실적 부진, 경영진 가이던스 악화(고유가·소비자 압박), Oppenheimer 하향 조정",
+    "capalloc": "Walmart Beats Q2 Earnings and Revenue Estimates 이후에도 주가 하락 지속",
+    "owner_earnings": "광고사업 성장(shopper data leverage) 통해 마진 개선 시도 중"
    }
   },
   "AMD": {
@@ -1063,7 +1014,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": ""
+    }
    },
    "conversion": {
     "value": 0.8595,
@@ -1076,7 +1031,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1094,7 +1049,29 @@
      "period": "2025Q3",
      "end": "2025-09-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "AI 칩 초과 수요 사이클 평가 불가능, NVDA 논리 적용 한계.",
+   "_evidence": {
+    "franchise": "AI 가속기 칩의 대체불가 기술적 위치(CUDA 에코시스템 유사 구축 미완)",
+    "risk5": "고객 집중도(주요 클라우드 3社), 경쟁 심화(Intel 재진입, ASIC 위협) 불확실성 높음; 가격 상승 한계(고객 협상력)",
+    "capalloc": "분기별 현금 창출 확인, 자사주 매입 및 배당 병행 기록",
+    "owner_earnings": "표본 기간 부족으로 10년 쿠폰 추정 불가"
+   }
   },
   "000660.KS": {
    "as_of": "2026-10-09",
@@ -1201,7 +1178,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -1219,7 +1196,29 @@
      "period": "2026Q1",
      "end": "2025-09-28"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3
+   },
+   "notes": "반도체 장비 과점 기업으로 기술 우위는 확실하나 웨이퍼팹 캐펙스 사이클 의존도로 인한 수익 변동성이 핵심 리스크.",
+   "_evidence": {
+    "franchise": "반도체 수급 장비 영역의 소수 공급자로 고객 종속도 높음.",
+    "risk5": "웨이퍼팹 투자 사이클 변동에 매출 및 이익이 민감하게 반응.",
+    "capalloc": "역사적 현금 창출 우수 기업으로 주주 환원 정책 일관성 있음."
+   }
   },
   "AMAT": {
    "as_of": "2026-10-09",
@@ -1264,7 +1263,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -1282,7 +1281,28 @@
      "period": "2025Q4",
      "end": "2025-10-26"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3
+   },
+   "notes": "반도체 장비 과점 플레이어로서 프리미엄은 정당하나 현 밸류에이션에서 사이클 상단 위치로 판단됨.",
+   "_evidence": {
+    "franchise": "반도체 제조 장비의 핵심 공급자로서 고객 기술 로드맵에 종속된 필수 지위",
+    "risk5": "반도체 수요 사이클에 노출된 시클리컬 비즈니스 특성; 경영진 자본배분 규율은 우수",
+    "capalloc": "전통적 현금 창출 기업으로서 주주환원 기조 유지"
+   }
   },
   "DELL": {
    "as_of": "2026-10-09",
@@ -1601,7 +1621,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 58.74
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1695,7 +1715,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1009.15
+    "value": 833.5
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1726,7 +1746,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1219.85
+    "value": 270.91
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1757,7 +1777,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 508.84
+    "value": 630.4
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1834,5 +1854,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-09 12:11"
+ "scout_label": "2026-10-09 19:55"
 }
