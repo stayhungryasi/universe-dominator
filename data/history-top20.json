@@ -3,6 +3,39 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.10.10",
+      "period": "10.3 → 10.10 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>Visa</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $720B</span>)",
+            "<strong>ASML</strong> TOP 20 이탈",
+            "[일본] <strong>Japan Tobacco</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $81B</span>)",
+            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 이탈",
+            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $176B</span>)",
+            "[유럽] <strong>Schneider Electric</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,341 (10/10 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.34"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.10.03",
       "period": "9.26 → 10.3 (주간)",
       "auto": true,
