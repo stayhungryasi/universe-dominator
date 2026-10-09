@@ -12,7 +12,7 @@
    "ever_seen": true
   },
   "Anthropic": {
-   "zero_streak": 53,
+   "zero_streak": 54,
    "alerted": true,
    "ever_seen": true
   },
@@ -115,14 +115,19 @@
   ],
   "2026-10-08": [
    "sentinel:feed-zero:research:285A.T:2026-10-08"
+  ],
+  "2026-10-09": [
+   "sentinel:feed:signals:Hacker News 300+:2026-10-09"
   ]
  },
  "last_verdict": {
-  "at": "2026-10-09 01:39",
-  "ok": true,
-  "alerts": []
+  "at": "2026-10-09 12:13",
+  "ok": false,
+  "alerts": [
+   "신호 Hacker News 300+: HTTP 502 2회 연속"
+  ]
  },
- "last_run": "2026-10-09 01:39",
+ "last_run": "2026-10-09 12:13",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -130,49 +135,49 @@
  "feeds": {
   "companion:alphabet:Alphabet 실적·자본배분": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "companion:alphabet:Gemini·TPU 로드맵": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "companion:alphabet:Google 반독점·규제": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "companion:anthropic:Anthropic 공식": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "companion:anthropic:Anthropic 보도": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "companion:spacex:SpaceX 발사·로드맵": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "companion:spacex:SpaceX 자본·기업가치": {
    "err_streak": 0,
-   "zero_streak": 22,
+   "zero_streak": 23,
    "err_alerted": false,
    "zero_alerted": true
   },
   "signals:Anthropic": {
    "err_streak": 0,
-   "zero_streak": 38,
+   "zero_streak": 39,
    "err_alerted": false,
    "zero_alerted": false
   },
@@ -183,9 +188,9 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "signals:OpenAI": {
@@ -562,7 +567,7 @@
   },
   "research:285A.T": {
    "err_streak": 0,
-   "zero_streak": 5,
+   "zero_streak": 6,
    "err_alerted": false,
    "zero_alerted": true
   },
@@ -747,139 +752,139 @@
    "zero_alerted": false
   },
   "scout:scout:000660.KS": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:005930.KS": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:2222.SR": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:2308.TW": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:2454.TW": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:285A.T": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:6857.T": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:8035.T": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AAPL": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AMAT": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AMD": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:ARM": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:ASML": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:BRK-B": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:DELL": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:JPM": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:LRCX": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:MRVL": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:PANW": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:SPCX": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:TSLA": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:TSM": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:WMT": {
-   "err_streak": 65,
+   "err_streak": 66,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
@@ -897,7 +902,7 @@
    "zero_alerted": false
   },
   "scout:scout:GOOG": {
-   "err_streak": 39,
+   "err_streak": 40,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
