@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-10 01:46",
- "generated_at": "2026-10-10T01:46:38.118498+09:00",
+ "generated_label": "2026-10-10 11:33",
+ "generated_at": "2026-10-10T11:33:17.523845+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-10",
@@ -319,7 +319,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.76
+    "value": 13.62
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -458,12 +458,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "유가 사이클 의존성으로 인한 수익 예측 불가능성과 '현금흐름 위기' 신호"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -473,31 +468,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "필수재 특성과 강한 자본배분 규율에도 불구하고, 유가 변동성(Q4 2025 순이익 20.5% 하락, Q2 2026 25% 상승)과 구조적 현금흐름 문제가 버핏식 평가를 제약",
-   "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher / Aramco posts drop in annual profit",
-    "risk5": "Oil market may not normalize until 2027, Saudi Aramco CEO warns / Aramco's Record Profits Hide a Growing Cash Flow Crisis",
-    "capalloc": "announces first buyback / strong cash flow",
-    "owner_earnings": "Aramco Q4 2025 net income falls 20.5% to $17.76bn vs Aramco Q2 2026 earnings beat as Iran war lifts oil prices"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-10-10",
@@ -1026,7 +997,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 30.81
+    "value": 30.99
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1208,7 +1179,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 서버 매출 폭발이 마진 압박으로 이어지는 시클리컬 특성, 주주가치 창출과 괴리"
+    }
    },
    "conversion": {
     "value": 0.9516,
@@ -1247,19 +1222,22 @@
    },
    "risk5": {
     "business_certainty": "△",
+    "mgmt_ability": "○",
     "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
     "period": "2026H1"
    },
-   "notes": "시클리컬 OEM 사업의 수익성 악화 리스크 상존; 인프라 수요 폭발과 실제 주주 월세는 별개의 문제",
+   "notes": "AI 인프라 수요 확실하나 저마진 OEM 사업 구조로 인한 이익 창출 제약이 핵심 위험",
    "_evidence": {
-    "franchise": "AI 서버 수요 증대로 필요성 높으나 다중 경쟁사 존재로 대체가능성 있음",
-    "risk5": "저마진 OEM 구조의 수익성 확실성 부족; 가격 경쟁 압력 지속",
-    "capalloc": "최근 공시된 현금흐름 및 자본배분 정책 부재로 구체적 근거 불명"
+    "franchise": "AI server strength에 따른 매출 의존성, 고객 집중도 위험",
+    "risk5": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength — 수요 변동성 내재; Michael Dell CEO 역량 입증되나 시클리컬 산업의 불확실성",
+    "capalloc": "Dell Technologies (DELL) Buyback Puts Valuation Back In Focus — 자사주 매입 활발, 현금 창출 체질",
+    "owner_earnings": "AI 서버는 저마진 OEM — 매출 폭발과 주주 월세는 별개"
    }
   },
   "PANW": {
@@ -1292,11 +1270,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "인수 상각으로 GAAP 기준 이익이 얇아 조정 기준 검토 필수"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 2.3518,
@@ -1309,7 +1283,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -1327,35 +1301,14 @@
      "period": "2026Q1",
      "end": "2025-10-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2
-   },
-   "notes": "보안 구독의 높은 전환비용은 씨즈 특성을 지원하나 플랫폼 통합 전략의 검증이 진행형 단계",
-   "_evidence": {
-    "franchise": "보안 구독 모델의 높은 전환비용과 플랫폼 통합을 통한 고객 락인",
-    "risk5": "플랫폼 통합 전략의 쿠폰 효과 검증 미완료로 사업 확실성 중도",
-    "capalloc": "보안 기업으로서 구독 모델 기반 현금 창출 특성",
-    "owner_earnings": "인수 상각 비용으로 인한 GAAP 기준 이익 왜곡"
-   }
+   ]
   },
   "ARM": {
    "as_of": "2026-10-10",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.94
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1411,7 +1364,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "사이클 저점 진단 불명확, AI 데이터센터 모멘텀 vs 수요 둔화 상충"
+    }
    },
    "conversion": {
     "value": 1.0565,
@@ -1450,12 +1407,22 @@
    },
    "risk5": {
     "business_certainty": "✕",
-    "price": "✕"
+    "mgmt_ability": "○",
+    "price": "△"
    },
-   "notes": "낸드 플래시 메모리는 수급 사이클이 극도로 예측 불가능하며 가격 규제 불가능한 상품화 산업",
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2025H2"
+   },
+   "notes": "NAND 메모리 순환주기 중 바닥권 진단과 골드만삭스 강기 상충, 실적 연속 상회에도 불구 예측가능성 최악 자산군",
    "_evidence": {
-    "franchise": "메모리는 필수 상품이나 다수 대체재 존재 및 과점 구조 약함",
-    "risk5": "순수 사이클 산업으로 수급 변동성 극대, 수익성 예측 불가능"
+    "franchise": "AI Data Center Momentum 주목하나, 메모리칩 대체불가 수요 면 약함",
+    "risk5": "cyclical peak or valuation shift 판단 중; 패닉 셀링 vs Goldman Sachs 강기 엇갈림",
+    "capalloc": "SanDisk Can Now Buy Back $15.5 Billion of Its Own Stock. That's 8.6% of the Company; Massive Buybacks After Stock Surge",
+    "owner_earnings": "SanDisk's Forecast And Its Chart Now Say The Same Thing 신호 모호; Earnings Expected to Grow vs AI Slowdown Fears 병렬"
    }
   },
   "STX": {
@@ -1501,7 +1468,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -1519,29 +1486,7 @@
      "period": "2026Q1",
      "end": "2025-10-03"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3
-   },
-   "notes": "HDD 수요 사이클 종속성으로 인한 수익성 변동성이 높으며, 현재 AI/클라우드 데이터센터 수요 복구 단계 평가 필요.",
-   "_evidence": {
-    "franchise": "HDD는 대용량 데이터 저장의 핵심 인프라이며 완전한 대체재 부재; 다만 SSD/NAND 가격 하락으로 가격 규제 압력 존재",
-    "risk5": "사이클형 산업으로 경기 민감도 높음; 경영진 수익 배분 규율은 확인되나 수요 불확실성 상존",
-    "capalloc": "역사적으로 현금 생성 및 배당·자사주 병행 실행 기록 있음"
-   }
+   ]
   },
   "CRWD": {
    "as_of": "2026-10-10",
@@ -1646,7 +1591,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 22건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1664,22 +1609,7 @@
      "period": "2026Q3",
      "end": "2025-11-01"
     }
-   ],
-   "franchise": {
-    "need": "△",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "notes": "커스텀 실리콘 고객 집중으로 인한 수주 변동성이 장기 이익 예측을 어렵게 함",
-   "_evidence": {
-    "franchise": "커스텀 실리콘 수주는 통행료 성향이나 고객 집중 리스크로 쿠폰 변동 큼",
-    "risk5": "시클리컬 유형의 반도체 기업으로 경기 민감도 높음"
-   }
+   ]
   },
   "285A.T": {
    "as_of": "2026-10-10",
@@ -1717,7 +1647,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 270.91
+    "value": 276.58
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1748,7 +1678,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 630.4
+    "value": 640.88
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1825,5 +1755,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-10 01:48"
+ "scout_label": "2026-10-10 11:34"
 }
