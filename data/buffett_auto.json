@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-10 11:33",
- "generated_at": "2026-10-10T11:33:17.523845+09:00",
+ "generated_label": "2026-10-10 19:07",
+ "generated_at": "2026-10-10T19:07:34.867466+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-10",
@@ -319,7 +319,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.62
+    "value": 13.76
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -458,7 +458,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "유가 사이클 의존으로 순이익 변동성 높음(Q4 2025 -20.5% vs Q2 2026 +25%)"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -468,7 +473,32 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "○",
+    "price": "✕",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "지정학적 변수(호르무즈 해협, 이란 분쟁)와 유가 연동으로 예측 가능성 구조적 제약; 가스 사업부 분리 계획($100B 평가)은 자본배분 유연성 신호",
+   "_evidence": {
+    "franchise": "필수재(에너지) 글로벌 공급자, 대체 불가능한 유전 자산",
+    "risk5": "Aramco Q4 2025 net income falls 20.5% to $17.76bn vs Iran war lifts oil prices 25% profit jump - 유가 변동성 노출 극심",
+    "capalloc": "strong cash flow, Aramco weighs standalone gas unit with potential $100 bln valuation - 현금 생성 및 구조적 재편 진행",
+    "owner_earnings": "Q4 2025 profit falls 20.5% despite strong cash flow, Q2 2026 earnings beat as Iran war lifts prices"
+   }
   },
   "META": {
    "as_of": "2026-10-10",
@@ -997,7 +1027,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 30.99
+    "value": 30.81
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1179,11 +1209,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 서버 매출 폭발이 마진 압박으로 이어지는 시클리컬 특성, 주주가치 창출과 괴리"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9516,
@@ -1196,7 +1222,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1214,31 +1240,7 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "AI 인프라 수요 확실하나 저마진 OEM 사업 구조로 인한 이익 창출 제약이 핵심 위험",
-   "_evidence": {
-    "franchise": "AI server strength에 따른 매출 의존성, 고객 집중도 위험",
-    "risk5": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength — 수요 변동성 내재; Michael Dell CEO 역량 입증되나 시클리컬 산업의 불확실성",
-    "capalloc": "Dell Technologies (DELL) Buyback Puts Valuation Back In Focus — 자사주 매입 활발, 현금 창출 체질",
-    "owner_earnings": "AI 서버는 저마진 OEM — 매출 폭발과 주주 월세는 별개"
-   }
+   ]
   },
   "PANW": {
    "as_of": "2026-10-10",
@@ -1308,7 +1310,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.94
+    "value": 0.97
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1364,11 +1366,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "사이클 저점 진단 불명확, AI 데이터센터 모멘텀 vs 수요 둔화 상충"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0565,
@@ -1381,7 +1379,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 12건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -1399,31 +1397,7 @@
      "period": "2026Q1",
      "end": "2025-10-03"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2025H2"
-   },
-   "notes": "NAND 메모리 순환주기 중 바닥권 진단과 골드만삭스 강기 상충, 실적 연속 상회에도 불구 예측가능성 최악 자산군",
-   "_evidence": {
-    "franchise": "AI Data Center Momentum 주목하나, 메모리칩 대체불가 수요 면 약함",
-    "risk5": "cyclical peak or valuation shift 판단 중; 패닉 셀링 vs Goldman Sachs 강기 엇갈림",
-    "capalloc": "SanDisk Can Now Buy Back $15.5 Billion of Its Own Stock. That's 8.6% of the Company; Massive Buybacks After Stock Surge",
-    "owner_earnings": "SanDisk's Forecast And Its Chart Now Say The Same Thing 신호 모호; Earnings Expected to Grow vs AI Slowdown Fears 병렬"
-   }
+   ]
   },
   "STX": {
    "as_of": "2026-10-10",
@@ -1647,7 +1621,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 276.58
+    "value": 270.9
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1678,7 +1652,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 640.88
+    "value": 630.39
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1755,5 +1729,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-10 11:34"
+ "scout_label": "2026-10-10 19:09"
 }
