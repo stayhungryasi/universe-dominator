@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-11",
+ "date": "2026-10-12",
  "members": {
   "LRCX": {
    "name": "Lam Research",
@@ -25,15 +25,15 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 41
+   "rank": 39
   },
   "ARM": {
    "name": "Arm Holdings",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 1,
+   "streak_out": 2,
    "carried_days": 0,
-   "rank": 55
+   "rank": 56
   },
   "PANW": {
    "name": "Palo Alto Networks",
@@ -41,7 +41,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 48
+   "rank": 45
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -49,7 +49,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 74
+   "rank": 75
   },
   "CRWD": {
    "name": "CrowdStrike",
@@ -57,7 +57,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 58
+   "rank": 57
   },
   "SNDK": {
    "name": "Sandisk",
@@ -65,7 +65,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 76
+   "rank": 78
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -73,7 +73,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 69
+   "rank": 70
   },
   "STX": {
    "name": "Seagate Technology",
@@ -81,7 +81,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 109
+   "rank": 105
   },
   "285A.T": {
    "name": "KIOXIA Holdings Corporation",
@@ -89,7 +89,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 108
+   "rank": 107
   },
   "2308.TW": {
    "name": "Delta Electronics",
@@ -105,7 +105,7 @@
    "streak_in": 7,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 98
+   "rank": 97
   },
   "FTNT": {
    "name": "Fortinet",
@@ -113,10 +113,23 @@
    "streak_in": 8,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 161
+   "rank": 159
   }
  },
- "candidates": {},
+ "candidates": {
+  "ASML": {
+   "streak_in": 1,
+   "swap_streak": 1,
+   "name": "ASML",
+   "rank": 22
+  },
+  "ADI": {
+   "streak_in": 1,
+   "swap_streak": 1,
+   "name": "Analog Devices",
+   "rank": 94
+  }
+ },
  "transitions": [
   {
    "date": "2026-10-05",
@@ -280,7 +293,7 @@
   },
   "candidates": {}
  },
- "generated_at": "2026-10-11T19:08:26.617975+09:00",
+ "generated_at": "2026-10-12T00:37:50.178971+09:00",
  "limits": {
   "in": 3,
   "out": 5,
