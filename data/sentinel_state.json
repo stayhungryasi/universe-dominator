@@ -12,7 +12,7 @@
    "ever_seen": true
   },
   "Anthropic": {
-   "zero_streak": 59,
+   "zero_streak": 60,
    "alerted": true,
    "ever_seen": true
   },
@@ -110,64 +110,85 @@
   "2026-10-09": [
    "sentinel:feed-recover:signals:Hacker News 300+:2026-10-09",
    "sentinel:feed:signals:Hacker News 300+:2026-10-09"
+  ],
+  "2026-10-11": [
+   "sentinel:feed:scout:scout:AMZN:2026-10-11",
+   "sentinel:feed:scout:scout:AVGO:2026-10-11",
+   "sentinel:feed:scout:scout:LLY:2026-10-11",
+   "sentinel:feed:scout:scout:META:2026-10-11",
+   "sentinel:feed:scout:scout:MSFT:2026-10-11",
+   "sentinel:feed:scout:scout:MU:2026-10-11",
+   "sentinel:feed:scout:scout:NVDA:2026-10-11",
+   "sentinel:feed:scout:scout:SNDK:2026-10-11",
+   "sentinel:feed:scout:scout:STX:2026-10-11"
   ]
  },
  "last_verdict": {
-  "at": "2026-10-11 12:30",
-  "ok": true,
-  "alerts": []
+  "at": "2026-10-11 19:20",
+  "ok": false,
+  "alerts": [
+   "취재 scout:AMZN: HTTP 503 2회 연속",
+   "취재 scout:AVGO: HTTP 503 2회 연속",
+   "취재 scout:LLY: HTTP 503 2회 연속",
+   "취재 scout:META: HTTP 503 2회 연속",
+   "취재 scout:MSFT: HTTP 503 2회 연속",
+   "취재 scout:MU: HTTP 503 2회 연속",
+   "취재 scout:NVDA: HTTP 503 2회 연속",
+   "취재 scout:SNDK: HTTP 503 2회 연속",
+   "취재 scout:STX: HTTP 503 2회 연속"
+  ]
  },
- "last_run": "2026-10-11 12:30",
+ "last_run": "2026-10-11 19:20",
  "materials": {
   "streak": 0,
   "alerted": false
  },
  "feeds": {
   "companion:alphabet:Alphabet 실적·자본배분": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "companion:alphabet:Gemini·TPU 로드맵": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "companion:alphabet:Google 반독점·규제": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "companion:anthropic:Anthropic 공식": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "companion:anthropic:Anthropic 보도": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "companion:spacex:SpaceX 발사·로드맵": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "companion:spacex:SpaceX 자본·기업가치": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "signals:Anthropic": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
@@ -322,151 +343,151 @@
    "zero_alerted": false
   },
   "scout:GOOG": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:TSM": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:AAPL": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:AMZN": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:MSFT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:NVDA": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:2222.SR": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:AVGO": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:META": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:SPCX": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:TSLA": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:005930.KS": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:MU": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:BRK-B": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:JPM": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:WMT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:000660.KS": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:AMD": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:ASML": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:AMAT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:LRCX": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:ARM": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:LLY": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:SNDK": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:285A.T": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
@@ -478,91 +499,91 @@
    "zero_alerted": false
   },
   "scout:2454.TW": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:DELL": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:PANW": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:STX": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:2308.TW": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:6857.T": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:8035.T": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:MRVL": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:000660.KS": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:005930.KS": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:2222.SR": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:2308.TW": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:2454.TW": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:285A.T": {
-   "err_streak": 1,
-   "zero_streak": 0,
+   "err_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:6857.T": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
@@ -574,31 +595,31 @@
    "zero_alerted": false
   },
   "research:AAPL": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:AMAT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:AMD": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:AMZN": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:ARM": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
@@ -610,271 +631,271 @@
    "zero_alerted": false
   },
   "research:AVGO": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:BRK-B": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:CRWD": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:DELL": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:GOOG": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:JPM": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:LLY": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:LRCX": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:META": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:MRVL": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:MSFT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:MU": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:NVDA": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:SNDK": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:SPCX": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:STX": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:TSLA": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:TSM": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:V": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:WMT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:FTNT": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "research:PANW": {
-   "err_streak": 1,
+   "err_streak": 0,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
   },
   "scout:scout:000660.KS": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:005930.KS": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:2222.SR": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:2308.TW": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:2454.TW": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:285A.T": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:6857.T": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:8035.T": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AAPL": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AMAT": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AMD": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:ARM": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:ASML": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:BRK-B": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:DELL": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:JPM": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:LRCX": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:MRVL": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:PANW": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:SPCX": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:TSLA": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:TSM": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:WMT": {
-   "err_streak": 72,
+   "err_streak": 73,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
@@ -892,7 +913,7 @@
    "zero_alerted": false
   },
   "scout:scout:GOOG": {
-   "err_streak": 46,
+   "err_streak": 47,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false
@@ -934,57 +955,57 @@
    "zero_alerted": false
   },
   "scout:scout:AMZN": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:AVGO": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:LLY": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:META": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:MSFT": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:MU": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:NVDA": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:SNDK": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   },
   "scout:scout:STX": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
+   "err_alerted": true,
    "zero_alerted": false
   }
  }
