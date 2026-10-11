@@ -5,8 +5,8 @@
    "source": "Hacker News 300+",
    "outcome": "ok",
    "code": 200,
-   "items": 6,
-   "ts": "2026-10-11 00:25"
+   "items": 4,
+   "ts": "2026-10-11 11:37"
   },
   "signals:OpenAI": {
    "kind": "signals",
@@ -14,15 +14,15 @@
    "outcome": "ok",
    "code": 200,
    "items": 5,
-   "ts": "2026-10-11 00:25"
+   "ts": "2026-10-11 11:37"
   },
   "signals:Anthropic": {
    "kind": "signals",
    "source": "Anthropic",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:25"
+   "ts": "2026-10-11 11:38"
   },
   "signals:Google DeepMind": {
    "kind": "signals",
@@ -30,63 +30,63 @@
    "outcome": "ok",
    "code": 200,
    "items": 5,
-   "ts": "2026-10-11 00:25"
+   "ts": "2026-10-11 11:38"
   },
   "companion:spacex:SpaceX 발사·로드맵": {
    "kind": "companion",
    "source": "spacex:SpaceX 발사·로드맵",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:23"
   },
   "companion:spacex:SpaceX 자본·기업가치": {
    "kind": "companion",
    "source": "spacex:SpaceX 자본·기업가치",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:24"
   },
   "companion:alphabet:Alphabet 실적·자본배분": {
    "kind": "companion",
    "source": "alphabet:Alphabet 실적·자본배분",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:25"
   },
   "companion:alphabet:Google 반독점·규제": {
    "kind": "companion",
    "source": "alphabet:Google 반독점·규제",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:26"
   },
   "companion:alphabet:Gemini·TPU 로드맵": {
    "kind": "companion",
    "source": "alphabet:Gemini·TPU 로드맵",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:28"
   },
   "companion:anthropic:Anthropic 공식": {
    "kind": "companion",
    "source": "anthropic:Anthropic 공식",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:29"
   },
   "companion:anthropic:Anthropic 보도": {
    "kind": "companion",
    "source": "anthropic:Anthropic 보도",
-   "outcome": "zero",
-   "code": 200,
+   "outcome": "http_error",
+   "code": 503,
    "items": 0,
-   "ts": "2026-10-11 00:33"
+   "ts": "2026-10-11 12:30"
   },
   "finnhub_xbrl:NVDA": {
    "kind": "finnhub_xbrl",
@@ -94,7 +94,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 49,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:45"
   },
   "finnhub_xbrl:AAPL": {
    "kind": "finnhub_xbrl",
@@ -102,7 +102,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 50,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:45"
   },
   "finnhub_xbrl:GOOG": {
    "kind": "finnhub_xbrl",
@@ -110,7 +110,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 4,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:45"
   },
   "finnhub_xbrl:MSFT": {
    "kind": "finnhub_xbrl",
@@ -118,7 +118,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 46,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:45"
   },
   "finnhub_xbrl:AMZN": {
    "kind": "finnhub_xbrl",
@@ -126,7 +126,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 43,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:45"
   },
   "finnhub_xbrl:AVGO": {
    "kind": "finnhub_xbrl",
@@ -134,7 +134,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 36,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:META": {
    "kind": "finnhub_xbrl",
@@ -142,7 +142,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 41,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:TSLA": {
    "kind": "finnhub_xbrl",
@@ -150,7 +150,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 44,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:MU": {
    "kind": "finnhub_xbrl",
@@ -158,7 +158,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 48,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:BRK-B": {
    "kind": "finnhub_xbrl",
@@ -174,7 +174,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 50,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:JPM": {
    "kind": "finnhub_xbrl",
@@ -182,7 +182,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 44,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:WMT": {
    "kind": "finnhub_xbrl",
@@ -190,7 +190,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 50,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:AMD": {
    "kind": "finnhub_xbrl",
@@ -198,7 +198,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 48,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:LRCX": {
    "kind": "finnhub_xbrl",
@@ -206,7 +206,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 48,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:AMAT": {
    "kind": "finnhub_xbrl",
@@ -214,7 +214,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 50,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:DELL": {
    "kind": "finnhub_xbrl",
@@ -222,7 +222,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 34,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:PANW": {
    "kind": "finnhub_xbrl",
@@ -230,7 +230,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 41,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:SNDK": {
    "kind": "finnhub_xbrl",
@@ -238,7 +238,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 12,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:STX": {
    "kind": "finnhub_xbrl",
@@ -246,7 +246,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 48,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:CRWD": {
    "kind": "finnhub_xbrl",
@@ -254,7 +254,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 23,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:46"
   },
   "finnhub_xbrl:MRVL": {
    "kind": "finnhub_xbrl",
@@ -262,199 +262,199 @@
    "outcome": "ok",
    "code": 200,
    "items": 22,
-   "ts": "2026-10-11 00:31"
+   "ts": "2026-10-11 11:47"
   },
   "scout:GOOG": {
    "kind": "scout",
    "source": "GOOG",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:50"
   },
   "scout:TSM": {
    "kind": "scout",
    "source": "TSM",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:53"
   },
   "scout:NVDA": {
    "kind": "scout",
    "source": "NVDA",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:31"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:48"
   },
   "scout:AAPL": {
    "kind": "scout",
    "source": "AAPL",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:31"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:49"
   },
   "scout:MSFT": {
    "kind": "scout",
    "source": "MSFT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:51"
   },
   "scout:AMZN": {
    "kind": "scout",
    "source": "AMZN",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:52"
   },
   "scout:AVGO": {
    "kind": "scout",
    "source": "AVGO",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:54"
   },
   "scout:SPCX": {
    "kind": "scout",
    "source": "SPCX",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:55"
   },
   "scout:2222.SR": {
    "kind": "scout",
    "source": "2222.SR",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:56"
   },
   "scout:META": {
    "kind": "scout",
    "source": "META",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:57"
   },
   "scout:TSLA": {
    "kind": "scout",
    "source": "TSLA",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:58"
   },
   "scout:005930.KS": {
    "kind": "scout",
    "source": "005930.KS",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:59"
   },
   "scout:MU": {
    "kind": "scout",
    "source": "MU",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-10 19:09"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:00"
   },
   "scout:BRK-B": {
    "kind": "scout",
    "source": "BRK-B",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:01"
   },
   "scout:JPM": {
    "kind": "scout",
    "source": "JPM",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:04"
   },
   "scout:WMT": {
    "kind": "scout",
    "source": "WMT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:05"
   },
   "scout:AMD": {
    "kind": "scout",
    "source": "AMD",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:06"
   },
   "scout:000660.KS": {
    "kind": "scout",
    "source": "000660.KS",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:07"
   },
   "scout:ASML": {
    "kind": "scout",
    "source": "ASML",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:08"
   },
   "scout:LRCX": {
    "kind": "scout",
    "source": "LRCX",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:09"
   },
   "scout:AMAT": {
    "kind": "scout",
    "source": "AMAT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:10"
   },
   "scout:LLY": {
    "kind": "scout",
    "source": "LLY",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:03"
   },
   "scout:ARM": {
    "kind": "scout",
    "source": "ARM",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:13"
   },
   "scout:SNDK": {
    "kind": "scout",
    "source": "SNDK",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:14"
   },
   "scout:CRWD": {
    "kind": "scout",
@@ -467,234 +467,234 @@
   "scout:285A.T": {
    "kind": "scout",
    "source": "285A.T",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:19"
   },
   "scout:DELL": {
    "kind": "scout",
    "source": "DELL",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:11"
   },
   "scout:PANW": {
    "kind": "scout",
    "source": "PANW",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:32"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:12"
   },
   "scout:STX": {
    "kind": "scout",
    "source": "STX",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:15"
   },
   "scout:2454.TW": {
    "kind": "scout",
    "source": "2454.TW",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:16"
   },
   "scout:8035.T": {
    "kind": "scout",
    "source": "8035.T",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:20"
   },
   "scout:6857.T": {
    "kind": "scout",
    "source": "6857.T",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:21"
   },
   "scout:2308.TW": {
    "kind": "scout",
    "source": "2308.TW",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:22"
   },
   "scout:MRVL": {
    "kind": "scout",
    "source": "MRVL",
-   "outcome": "ok",
-   "code": 200,
-   "items": 24,
-   "ts": "2026-10-11 00:33"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:18"
   },
   "research:NVDA": {
    "kind": "research",
    "source": "NVDA",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:22"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:01"
   },
   "research:AAPL": {
    "kind": "research",
    "source": "AAPL",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:22"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:02"
   },
   "research:GOOG": {
    "kind": "research",
    "source": "GOOG",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:22"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:03"
   },
   "research:MSFT": {
    "kind": "research",
    "source": "MSFT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:22"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:04"
   },
   "research:AMZN": {
    "kind": "research",
    "source": "AMZN",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:22"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:05"
   },
   "research:TSM": {
    "kind": "research",
    "source": "TSM",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:22"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:06"
   },
   "research:SPCX": {
    "kind": "research",
    "source": "SPCX",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:07"
   },
   "research:AVGO": {
    "kind": "research",
    "source": "AVGO",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:09"
   },
   "research:2222.SR": {
    "kind": "research",
    "source": "2222.SR",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:11"
   },
   "research:META": {
    "kind": "research",
    "source": "META",
-   "outcome": "ok",
-   "code": 200,
-   "items": 2,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:08"
   },
   "research:TSLA": {
    "kind": "research",
    "source": "TSLA",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:12"
   },
   "research:005930.KS": {
    "kind": "research",
    "source": "005930.KS",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:13"
   },
   "research:BRK-B": {
    "kind": "research",
    "source": "BRK-B",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:15"
   },
   "research:MU": {
    "kind": "research",
    "source": "MU",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:14"
   },
   "research:LLY": {
    "kind": "research",
    "source": "LLY",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:16"
   },
   "research:JPM": {
    "kind": "research",
    "source": "JPM",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:19"
   },
   "research:WMT": {
    "kind": "research",
    "source": "WMT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:20"
   },
   "research:000660.KS": {
    "kind": "research",
    "source": "000660.KS",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:18"
   },
   "research:AMD": {
    "kind": "research",
    "source": "AMD",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:17"
   },
   "research:V": {
    "kind": "research",
    "source": "V",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:21"
   },
   "research:ASML": {
    "kind": "research",
@@ -707,82 +707,82 @@
   "research:LRCX": {
    "kind": "research",
    "source": "LRCX",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:23"
   },
   "research:AMAT": {
    "kind": "research",
    "source": "AMAT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:22"
   },
   "research:DELL": {
    "kind": "research",
    "source": "DELL",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:25"
   },
   "research:ARM": {
    "kind": "research",
    "source": "ARM",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:27"
   },
   "research:SNDK": {
    "kind": "research",
    "source": "SNDK",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:31"
   },
   "research:CRWD": {
    "kind": "research",
    "source": "CRWD",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:28"
   },
   "research:2454.TW": {
    "kind": "research",
    "source": "2454.TW",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:30"
   },
   "research:285A.T": {
    "kind": "research",
    "source": "285A.T",
-   "outcome": "ok",
-   "code": 200,
-   "items": 1,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:33"
   },
   "research:MRVL": {
    "kind": "research",
    "source": "MRVL",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:29"
   },
   "research:STX": {
    "kind": "research",
    "source": "STX",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:34"
   },
   "research:8035.T": {
    "kind": "research",
@@ -795,34 +795,34 @@
   "research:6857.T": {
    "kind": "research",
    "source": "6857.T",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:32"
   },
   "research:2308.TW": {
    "kind": "research",
    "source": "2308.TW",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:35"
   },
   "research:FTNT": {
    "kind": "research",
    "source": "FTNT",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:24"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:37"
   },
   "research:PANW": {
    "kind": "research",
    "source": "PANW",
-   "outcome": "ok",
-   "code": 200,
-   "items": 4,
-   "ts": "2026-10-11 00:23"
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:26"
   },
   "scout:scout:AAPL": {
    "kind": "scout",
@@ -830,7 +830,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:32"
+   "ts": "2026-10-11 11:49"
   },
   "scout:scout:TSM": {
    "kind": "scout",
@@ -838,7 +838,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:34"
+   "ts": "2026-10-11 11:53"
   },
   "scout:scout:SPCX": {
    "kind": "scout",
@@ -846,7 +846,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:35"
+   "ts": "2026-10-11 11:55"
   },
   "scout:scout:2222.SR": {
    "kind": "scout",
@@ -854,7 +854,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:36"
+   "ts": "2026-10-11 11:56"
   },
   "scout:scout:TSLA": {
    "kind": "scout",
@@ -862,7 +862,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:37"
+   "ts": "2026-10-11 11:58"
   },
   "scout:scout:005930.KS": {
    "kind": "scout",
@@ -870,7 +870,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:38"
+   "ts": "2026-10-11 11:59"
   },
   "scout:scout:BRK-B": {
    "kind": "scout",
@@ -878,7 +878,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:39"
+   "ts": "2026-10-11 12:01"
   },
   "scout:scout:JPM": {
    "kind": "scout",
@@ -886,7 +886,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:40"
+   "ts": "2026-10-11 12:04"
   },
   "scout:scout:WMT": {
    "kind": "scout",
@@ -894,7 +894,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:41"
+   "ts": "2026-10-11 12:05"
   },
   "scout:scout:AMD": {
    "kind": "scout",
@@ -902,7 +902,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:42"
+   "ts": "2026-10-11 12:06"
   },
   "scout:scout:000660.KS": {
    "kind": "scout",
@@ -910,7 +910,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:43"
+   "ts": "2026-10-11 12:07"
   },
   "scout:scout:ASML": {
    "kind": "scout",
@@ -918,7 +918,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:44"
+   "ts": "2026-10-11 12:08"
   },
   "scout:scout:LRCX": {
    "kind": "scout",
@@ -926,7 +926,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:46"
+   "ts": "2026-10-11 12:09"
   },
   "scout:scout:AMAT": {
    "kind": "scout",
@@ -934,7 +934,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:47"
+   "ts": "2026-10-11 12:10"
   },
   "scout:scout:DELL": {
    "kind": "scout",
@@ -942,7 +942,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:48"
+   "ts": "2026-10-11 12:11"
   },
   "scout:scout:PANW": {
    "kind": "scout",
@@ -950,7 +950,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:49"
+   "ts": "2026-10-11 12:12"
   },
   "scout:scout:ARM": {
    "kind": "scout",
@@ -958,7 +958,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:50"
+   "ts": "2026-10-11 12:13"
   },
   "scout:scout:2454.TW": {
    "kind": "scout",
@@ -966,7 +966,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:51"
+   "ts": "2026-10-11 12:16"
   },
   "scout:scout:MRVL": {
    "kind": "scout",
@@ -974,7 +974,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:52"
+   "ts": "2026-10-11 12:18"
   },
   "scout:scout:285A.T": {
    "kind": "scout",
@@ -982,7 +982,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:53"
+   "ts": "2026-10-11 12:19"
   },
   "scout:scout:8035.T": {
    "kind": "scout",
@@ -990,7 +990,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:54"
+   "ts": "2026-10-11 12:20"
   },
   "scout:scout:6857.T": {
    "kind": "scout",
@@ -998,7 +998,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:55"
+   "ts": "2026-10-11 12:21"
   },
   "scout:scout:2308.TW": {
    "kind": "scout",
@@ -1006,15 +1006,15 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:56"
+   "ts": "2026-10-11 12:22"
   },
   "latent:잠재지배자 선정": {
    "kind": "latent",
    "source": "잠재지배자 선정",
    "outcome": "ok",
    "code": null,
-   "items": 14,
-   "ts": "2026-10-11 00:22"
+   "items": 15,
+   "ts": "2026-10-11 11:00"
   },
   "finnhub_xbrl:GOOG@GOOGL": {
    "kind": "finnhub_xbrl",
@@ -1022,7 +1022,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 33,
-   "ts": "2026-10-11 00:30"
+   "ts": "2026-10-11 11:45"
   },
   "scout:scout:GOOG": {
    "kind": "scout",
@@ -1030,7 +1030,7 @@
    "outcome": "http_error",
    "code": 503,
    "items": 0,
-   "ts": "2026-10-01 19:33"
+   "ts": "2026-10-11 11:50"
   },
   "macro:usd_krw": {
    "kind": "macro",
@@ -1038,7 +1038,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 1,
-   "ts": "2026-10-11 00:21"
+   "ts": "2026-10-11 10:58"
   },
   "macro:usd_jpy": {
    "kind": "macro",
@@ -1046,7 +1046,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 1,
-   "ts": "2026-10-11 00:21"
+   "ts": "2026-10-11 10:58"
   },
   "macro:ust10": {
    "kind": "macro",
@@ -1054,7 +1054,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 1,
-   "ts": "2026-10-11 00:21"
+   "ts": "2026-10-11 10:58"
   },
   "macro:ust30": {
    "kind": "macro",
@@ -1062,7 +1062,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 1,
-   "ts": "2026-10-11 00:21"
+   "ts": "2026-10-11 10:58"
   },
   "macro:wti": {
    "kind": "macro",
@@ -1070,7 +1070,7 @@
    "outcome": "ok",
    "code": 200,
    "items": 1,
-   "ts": "2026-10-11 00:21"
+   "ts": "2026-10-11 10:58"
   },
   "finnhub_xbrl:GOOG@CIK 1652044": {
    "kind": "finnhub_xbrl",
@@ -1079,7 +1079,79 @@
    "code": 200,
    "items": 33,
    "ts": "2026-10-08 19:52"
+  },
+  "scout:scout:NVDA": {
+   "kind": "scout",
+   "source": "scout:NVDA",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:48"
+  },
+  "scout:scout:MSFT": {
+   "kind": "scout",
+   "source": "scout:MSFT",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:51"
+  },
+  "scout:scout:AMZN": {
+   "kind": "scout",
+   "source": "scout:AMZN",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:52"
+  },
+  "scout:scout:AVGO": {
+   "kind": "scout",
+   "source": "scout:AVGO",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:54"
+  },
+  "scout:scout:META": {
+   "kind": "scout",
+   "source": "scout:META",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 11:57"
+  },
+  "scout:scout:MU": {
+   "kind": "scout",
+   "source": "scout:MU",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:00"
+  },
+  "scout:scout:LLY": {
+   "kind": "scout",
+   "source": "scout:LLY",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:03"
+  },
+  "scout:scout:SNDK": {
+   "kind": "scout",
+   "source": "scout:SNDK",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:14"
+  },
+  "scout:scout:STX": {
+   "kind": "scout",
+   "source": "scout:STX",
+   "outcome": "http_error",
+   "code": 503,
+   "items": 0,
+   "ts": "2026-10-11 12:15"
   }
  },
- "generated_label": "2026.10.11 00:33"
+ "generated_label": "2026.10.11 12:30"
 }
