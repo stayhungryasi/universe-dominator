@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-12 11:38",
- "generated_at": "2026-10-12T11:38:33.032124+09:00",
+ "generated_label": "2026-10-12 20:14",
+ "generated_at": "2026-10-12T20:14:04.940952+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-12",
@@ -375,11 +375,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 칩 수요 불확실성과 소프트웨어 사업 약화로 단기 가시성 제한"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9838,
@@ -392,7 +388,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) / us-gaap_ProfitLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -410,31 +406,7 @@
      "period": "2025Q4",
      "end": "2025-11-02"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024Q4"
-   },
-   "notes": "AI 칩 의존도 심화로 10년 전망 불확실성 높음; 현재 밸류에이션 과도",
-   "_evidence": {
-    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; Broadcom (AVGO) Eyes Huge AI Revenue Growth",
-    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; AI demand fears cited; China audit risks on state-backed data centers",
-    "capalloc": "Broadcom (AVGO) Is Up 7.4% After Massive Buybacks And AI Chip Deals With Hyperscalers",
-    "owner_earnings": "Broadcom (AVGO) Stock May Be 24% Undervalued Following Fresh AI Demand Fears; multiple contradictory analyst signals on valuation"
-   }
+   ]
   },
   "SPCX": {
    "as_of": "2026-10-12",
@@ -1508,12 +1480,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 성장이 주도하나 모바일 사이클 종속성으로 인한 변동성 존재"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1523,29 +1490,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI ASIC 매출 급증(2배 성장)이 성장 동력이나, 팹리스 산업 특성상 대고객 집중도 및 기술 주기 리스크 상존",
-   "_evidence": {
-    "franchise": "MediaTek ASIC Revenue Doubles, Igniting Two-Day Limit-Up Surge; 모바일 시장에서 팹리스 우량 지위 유지",
-    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday - 주요 고객 수요 변동에 민감; MediaTek Raises AI Market Share Target to 20% - 경영진 확정성 부족",
-    "capalloc": "MediaTek Q1 Profit Hits NT$24.38 Billion, Up 5.6% QoQ - 연속적 이익 창출",
-    "owner_earnings": "Q2 Revenue Hits NT$152.1 Billion, Smashing High-End Guidance; AI ASIC Revenue Doubles - 단기 성장성 강하나 사이클성 속성"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-10-12",
@@ -1754,5 +1699,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-12 11:40"
+ "scout_label": "2026-10-12 20:15"
 }
