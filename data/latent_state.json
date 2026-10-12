@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-12",
+ "date": "2026-10-13",
  "members": {
   "LRCX": {
    "name": "Lam Research",
@@ -25,15 +25,15 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 40
+   "rank": 41
   },
   "ARM": {
    "name": "Arm Holdings",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 2,
+   "streak_out": 3,
    "carried_days": 0,
-   "rank": 56
+   "rank": 58
   },
   "PANW": {
    "name": "Palo Alto Networks",
@@ -41,7 +41,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 46
+   "rank": 48
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -57,15 +57,15 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 57
+   "rank": 59
   },
   "SNDK": {
    "name": "Sandisk",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 1,
+   "streak_out": 0,
    "carried_days": 0,
-   "rank": 78
+   "rank": 86
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -73,7 +73,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 70
+   "rank": 73
   },
   "STX": {
    "name": "Seagate Technology",
@@ -81,7 +81,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 106
+   "rank": 116
   },
   "285A.T": {
    "name": "KIOXIA Holdings Corporation",
@@ -95,9 +95,9 @@
    "name": "Delta Electronics",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 1,
+   "streak_out": 2,
    "carried_days": 0,
-   "rank": 139
+   "rank": 141
   },
   "6857.T": {
    "name": "Advantest",
@@ -105,7 +105,7 @@
    "streak_in": 7,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 97
+   "rank": 99
   },
   "FTNT": {
    "name": "Fortinet",
@@ -113,17 +113,10 @@
    "streak_in": 8,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 159
+   "rank": 160
   }
  },
- "candidates": {
-  "ASML": {
-   "streak_in": 1,
-   "swap_streak": 1,
-   "name": "ASML",
-   "rank": 22
-  }
- },
+ "candidates": {},
  "transitions": [
   {
    "date": "2026-10-05",
@@ -194,15 +187,15 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 41
+    "rank": 40
    },
    "ARM": {
     "name": "Arm Holdings",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 1,
+    "streak_out": 2,
     "carried_days": 0,
-    "rank": 55
+    "rank": 56
    },
    "PANW": {
     "name": "Palo Alto Networks",
@@ -210,7 +203,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 48
+    "rank": 46
    },
    "2454.TW": {
     "name": "MediaTek",
@@ -218,7 +211,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 74
+    "rank": 76
    },
    "CRWD": {
     "name": "CrowdStrike",
@@ -226,15 +219,15 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 58
+    "rank": 57
    },
    "SNDK": {
     "name": "Sandisk",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 0,
+    "streak_out": 1,
     "carried_days": 0,
-    "rank": 76
+    "rank": 78
    },
    "MRVL": {
     "name": "Marvell Technology",
@@ -242,7 +235,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 69
+    "rank": 70
    },
    "STX": {
     "name": "Seagate Technology",
@@ -250,7 +243,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 109
+    "rank": 106
    },
    "285A.T": {
     "name": "KIOXIA Holdings Corporation",
@@ -264,9 +257,9 @@
     "name": "Delta Electronics",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 0,
+    "streak_out": 1,
     "carried_days": 0,
-    "rank": 134
+    "rank": 139
    },
    "6857.T": {
     "name": "Advantest",
@@ -274,7 +267,7 @@
     "streak_in": 7,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 98
+    "rank": 97
    },
    "FTNT": {
     "name": "Fortinet",
@@ -282,12 +275,19 @@
     "streak_in": 8,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 161
+    "rank": 159
    }
   },
-  "candidates": {}
+  "candidates": {
+   "ASML": {
+    "streak_in": 1,
+    "swap_streak": 1,
+    "name": "ASML",
+    "rank": 22
+   }
+  }
  },
- "generated_at": "2026-10-12T20:03:01.603150+09:00",
+ "generated_at": "2026-10-13T03:59:52.785802+09:00",
  "limits": {
   "in": 3,
   "out": 5,
