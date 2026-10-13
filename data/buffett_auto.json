@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-13 04:09",
- "generated_at": "2026-10-13T04:09:15.717911+09:00",
+ "generated_label": "2026-10-13 12:49",
+ "generated_at": "2026-10-13T12:49:06.160554+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-13",
@@ -472,66 +472,28 @@
   },
   "META": {
    "as_of": "2026-10-13",
-   "period": "2026Q2",
+   "period": null,
    "cyclical_peak_guard": false,
-   "eps_adj_ttm": {
-    "value": 26.4337
+   "eps_adj_ttm": null,
+   "eps_status": {
+    "state": "api_fail"
    },
-   "eps_status": null,
    "roe_tangible": null,
    "roe_basis": {
     "kind": "xbrl",
-    "basis": "SEC XBRL 조정",
-    "status": "equity_missing",
-    "equity": null,
-    "goodwill_intangibles": null,
-    "net_income_ttm": 67802540000.0,
-    "asof": "2026-06-30"
+    "status": "api_fail"
    },
-   "owner_earnings": {
-    "variants": {
-     "A": {
-      "value": 68098000000.0,
-      "basis": "유지캐펙스 = 감가상각"
-     },
-     "C": {
-      "value": 1502000000.0,
-      "basis": "유지캐펙스 = 캐펙스 전액"
-     }
-    },
-    "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+   "owner_earnings": null,
+   "conversion": null,
+   "conversion_status": {
+    "state": "api_fail"
    },
-   "conversion": {
-    "value": 0.0222,
-    "variant": "C",
-    "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"
-   },
-   "conversion_status": null,
-   "g_cagr3y": 0.4357,
+   "g_cagr3y": null,
    "g_forward": null,
    "g_forward_source": null,
-   "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-   "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "중",
-   "ttm_window": [
-    {
-     "period": "2026Q2",
-     "end": "2026-06-30"
-    },
-    {
-     "period": "2026Q1",
-     "end": "2026-03-31"
-    },
-    {
-     "period": "2025Q4",
-     "end": "2025-12-31"
-    },
-    {
-     "period": "2025Q3",
-     "end": "2025-09-30"
-    }
-   ]
+   "method": null,
+   "source": null,
+   "confidence": null
   },
   "TSLA": {
    "as_of": "2026-10-13",
@@ -815,7 +777,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -833,7 +795,30 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "JPMorgan은 금융 시스템의 필수 기반시설이나 높은 레버리지와 이자율 민감도로 인한 수익 사이클 할인이 필요하며, Q3 어닝발표 예정으로 단기 변동성 주의",
+   "_evidence": {
+    "franchise": "JPMorgan and Goldman Sachs tread carefully in $5B Volta AI loan offering, JPMorgan is Building A Reserve Hub For Future US Stablecoins - 금융 인프라의 중추적 역할",
+    "risk5": "JPMorgan Chase's Next Earnings Report Tomorrow Could Send the Stock Plunging - 수익 사이클에 따른 높은 불확실성",
+    "capalloc": "JPMorgan Chase Could Swing $28 Billion After Earnings - 규제자본 구조 하에서의 자본배분 능력"
+   }
   },
   "WMT": {
    "as_of": "2026-10-13",
@@ -928,11 +913,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "매출 성장률 대비 주가 약세, 마진 개선 잠재력 미인정"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.8595,
@@ -945,7 +926,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -963,11 +944,7 @@
      "period": "2025Q3",
      "end": "2025-09-27"
     }
-   ],
-   "notes": "NVDA와 동일 로직으로 AI 칩 사이클 과다 평가 우려; 고객 수요 리셋 리스크 현재화",
-   "_evidence": {
-    "owner_earnings": "AMD's Recent Plus $600 Prices Look Like a Stepping Stone, Not a Barrier; 'This was not an exceptional result': Why AMD stock tanked 5% after earnings"
-   }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-10-13",
@@ -1488,12 +1465,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 사이클 의존성으로 인한 수익 가시성 제한"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1503,29 +1475,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI ASIC 모멘텀 주도로 단기 강세지만, 모바일 사이클 종속성과 Google TPU 수요 불확실성이 장기 수익성을 위협",
-   "_evidence": {
-    "franchise": "MediaTek Raises AI Market Share Target to 20%; First AI Accelerator to Enter Mass Production in Q4, Data Center Revenue to Surpass $2 Billion",
-    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday / 팹리스 우량이나 모바일 사이클 종속",
-    "capalloc": "MediaTek Q2 Revenue Hits NT$152.1 Billion, Smashing High-End Guidance; Q1 Profit Hits NT$24.38 Billion",
-    "owner_earnings": "MediaTek ASIC Revenue Doubles / AI ASIC Momentum Drives Record earnings but cyclical dependency persists"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-10-13",
@@ -1734,5 +1684,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-13 04:11"
+ "scout_label": "2026-10-13 12:54"
 }
