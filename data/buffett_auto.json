@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-14 11:08",
- "generated_at": "2026-10-14T11:08:49.145588+09:00",
+ "generated_label": "2026-10-14 18:00",
+ "generated_at": "2026-10-14T18:00:52.615736+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-14",
@@ -815,7 +815,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -833,28 +833,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "score": 1,
-    "period": "2026Q3"
-   },
-   "notes": "Jamie Dimon의 '표면 아래 경제력 변화' 경고는 사이클 구조 할인 필요성을 암시",
-   "_evidence": {
-    "franchise": "Goldman Sachs는 광폭 상승 vs JPMorgan 실적 부진으로 시장 수요·제약력의 차별화 확인",
-    "risk5": "Q3 dealmaking·bond trading momentum 상실 + Jamie Dimon의 거시경제 우려 발언",
-    "capalloc": "Dimon's buyback cut이 핵심 이슈로 보도됨 - 경영진의 자본배치 보수화"
-   }
+   ]
   },
   "WMT": {
    "as_of": "2026-10-14",
@@ -1315,7 +1294,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "기록적 수익 달성 및 AI 성장 모멘텀은 확실하나 로열티 소송(Qualcomm) 및 주가 변동성이 현금흐름 가시성을 제약"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1333,7 +1317,7 @@
    },
    "risk5": {
     "business_certainty": "△",
-    "mgmt_ability": "△",
+    "mgmt_ability": "○",
     "price": "✕"
    },
    "capalloc": {
@@ -1342,11 +1326,12 @@
     "score": 2,
     "period": "2027Q1"
    },
-   "notes": "칩 설계 로열티의 구조적 해자는 명확하나, AI 수요 주도 성장 신뢰도와 법적 분쟁(로열티 소송)이 불확실 요인",
+   "notes": "칩 설계 로열티의 최상급 프랜차이즈 품질은 확인되나, 반복되는 법적 분쟁과 시장 가격 프리미엄이 가치 투자 기준 진입점 제약",
    "_evidence": {
-    "franchise": "Arm delivers record first-quarter for total revenue; 칩 설계의 로열티 통행료 모델은 고질적 해자",
-    "risk5": "Arm Holdings (ARM) Heads To Trial Over Billions In Royalty Payments; Arm shares dive after hours despite forecasts above estimates; Arm Holdings Has Fallen 28% in the Past Month",
-    "capalloc": "Arm Holdings Stock Fell 8% in a Day. Here's What SoftBank's $25 Billion Loan Means for the Stock; record-breaking quarter results"
+    "franchise": "Arm delivers record first-quarter for total revenue; record-breaking quarter and full-year results",
+    "risk5": "Arm Holdings faces Qualcomm verdict; Arm Holdings (ARM) Heads To Trial Over Billions In Royalty Payments",
+    "capalloc": "SoftBank's $25 Billion Loan; Arm Announces Earnings Release Date for Second Quarter Fiscal Year Ending 2027",
+    "owner_earnings": "Arm delivers record first-quarter for total revenue with AI Growth Narrative; stock pre-market and after-hours volatility despite earnings beats"
    }
   },
   "SNDK": {
@@ -1509,7 +1494,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 59.25
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1603,7 +1588,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 722.8
+    "value": 833.5
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1634,7 +1619,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 251.53
+    "value": 270.91
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1665,7 +1650,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 612.06
+    "value": 630.4
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1696,7 +1681,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.31
+    "value": 31.37
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1742,5 +1727,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-14 11:10"
+ "scout_label": "2026-10-14 18:02"
 }
