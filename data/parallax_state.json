@@ -12,18 +12,22 @@
   "ARM": "고평가"
  },
  "gaps": {
-  "AAPL": -0.263,
-  "GOOG": 0.3149,
-  "MSFT": 0.1653,
-  "AMZN": 0.0873,
-  "TSM": -0.2807,
-  "META": 0.2147,
-  "LLY": -0.2463,
-  "WMT": -0.347,
-  "PANW": -0.733,
-  "ARM": -0.6838
+  "AAPL": -0.2571,
+  "GOOG": 0.3409,
+  "MSFT": 0.1752,
+  "AMZN": 0.0981,
+  "TSM": -0.2698,
+  "META": 0.23,
+  "LLY": -0.2492,
+  "WMT": -0.3586,
+  "PANW": -0.7296,
+  "ARM": -0.6765
  },
- "posted": {},
+ "posted": {
+  "2026-10-15": [
+   "48f146e6f1e8"
+  ]
+ },
  "fp": {
   "AAPL": "forward|28|2026-08 컨센서스 역산",
   "GOOG": "forward|32|2026-08 실측 역산",
@@ -42,7 +46,7 @@
   "GOOG": "prove_growth",
   "MSFT": "prove_growth",
   "AMZN": "bond_inferior",
-  "TSM": "prove_growth",
+  "TSM": "pass",
   "AVGO": "prove_growth",
   "SPCX": "untested",
   "2222.SR": "untested",
@@ -79,7 +83,7 @@
    "GOOG": "prove_growth",
    "MSFT": "prove_growth",
    "AMZN": "bond_inferior",
-   "TSM": "prove_growth",
+   "TSM": "pass",
    "AVGO": "prove_growth",
    "SPCX": "untested",
    "2222.SR": "untested",
@@ -111,29 +115,29 @@
   },
   "anchor": {
    "NVDA": {
-    "price": 223.68,
-    "rate10y": 5.24,
+    "price": 221.3,
+    "rate10y": 5.21,
     "eps_adj_ttm": 6.9334,
     "g_used": 0.2,
     "guard": false
    },
    "AAPL": {
-    "price": 345.705,
-    "rate10y": 5.24,
+    "price": 342.96,
+    "rate10y": 5.21,
     "eps_adj_ttm": 8.7408,
     "g_used": 0.092,
     "guard": false
    },
    "GOOG": {
-    "price": 350.441,
-    "rate10y": 5.24,
+    "price": 343.65,
+    "rate10y": 5.21,
     "eps_adj_ttm": 10.3058,
     "g_used": 0.105,
     "guard": false
    },
    "MSFT": {
-    "price": 538.22,
-    "rate10y": 5.24,
+    "price": 533.69,
+    "rate10y": 5.21,
     "eps_adj_ttm": 17.936,
     "g_used": 0.13,
     "guard": false
@@ -146,56 +150,50 @@
     "guard": false
    },
    "TSM": {
-    "price": 444.35,
-    "rate10y": 5.22,
+    "price": 430.0,
+    "rate10y": 5.21,
     "eps_adj_ttm": 13.76,
     "g_used": 0.175,
     "guard": false
    },
    "AVGO": {
-    "price": 351.22,
-    "rate10y": 5.24,
+    "price": 346.25,
+    "rate10y": 5.21,
     "eps_adj_ttm": 7.8339,
     "g_used": 0.2,
     "guard": false
    },
    "META": {
-    "price": 746.86,
-    "rate10y": 5.24,
+    "price": 737.54,
+    "rate10y": 5.21,
     "eps_adj_ttm": 26.4337,
     "g_used": 0.133,
     "guard": false
    },
    "LLY": {
-    "price": 1204.01,
-    "rate10y": 5.24,
+    "price": 1208.74,
+    "rate10y": 5.21,
     "eps_adj_ttm": 29.8204,
     "g_used": 0.162,
     "guard": false
    },
    "WMT": {
-    "price": 114.085,
-    "rate10y": 5.24,
+    "price": 116.16,
+    "rate10y": 5.21,
     "eps_adj_ttm": 2.8619,
     "g_used": 0.08,
     "guard": false
    },
    "AMD": {
-    "price": 585.16,
-    "rate10y": 5.24,
+    "price": 570.82,
+    "rate10y": 5.21,
     "eps_adj_ttm": 3.8876,
     "g_used": 0.2,
     "guard": false
    }
   },
-  "cand": {
-   "TSM": {
-    "zone": "pass",
-    "days": 1,
-    "since": "2026-10-14"
-   }
-  },
-  "date": "2026-10-14",
+  "cand": {},
+  "date": "2026-10-15",
   "base": {
    "zones": {
     "NVDA": "pass",
@@ -235,29 +233,29 @@
    },
    "anchor": {
     "NVDA": {
-     "price": 226.32,
-     "rate10y": 5.22,
+     "price": 223.68,
+     "rate10y": 5.24,
      "eps_adj_ttm": 6.9334,
      "g_used": 0.2,
      "guard": false
     },
     "AAPL": {
-     "price": 340.97,
-     "rate10y": 5.22,
+     "price": 345.705,
+     "rate10y": 5.24,
      "eps_adj_ttm": 8.7408,
      "g_used": 0.092,
      "guard": false
     },
     "GOOG": {
-     "price": 348.97,
-     "rate10y": 5.22,
+     "price": 350.441,
+     "rate10y": 5.24,
      "eps_adj_ttm": 10.3058,
      "g_used": 0.105,
      "guard": false
     },
     "MSFT": {
-     "price": 541.15,
-     "rate10y": 5.22,
+     "price": 538.22,
+     "rate10y": 5.24,
      "eps_adj_ttm": 17.936,
      "g_used": 0.13,
      "guard": false
@@ -277,43 +275,53 @@
      "guard": false
     },
     "AVGO": {
-     "price": 354.73,
-     "rate10y": 5.22,
+     "price": 351.22,
+     "rate10y": 5.24,
      "eps_adj_ttm": 7.8339,
      "g_used": 0.2,
      "guard": false
     },
     "META": {
-     "price": 742.96,
-     "rate10y": 5.22,
+     "price": 746.86,
+     "rate10y": 5.24,
      "eps_adj_ttm": 26.4337,
      "g_used": 0.133,
      "guard": false
     },
     "LLY": {
-     "price": 1182.62,
-     "rate10y": 5.22,
+     "price": 1204.01,
+     "rate10y": 5.24,
      "eps_adj_ttm": 29.8204,
      "g_used": 0.162,
      "guard": false
     },
     "WMT": {
-     "price": 113.08,
-     "rate10y": 5.22,
+     "price": 114.085,
+     "rate10y": 5.24,
      "eps_adj_ttm": 2.8619,
      "g_used": 0.08,
      "guard": false
     },
     "AMD": {
-     "price": 594.24,
-     "rate10y": 5.22,
+     "price": 585.16,
+     "rate10y": 5.24,
      "eps_adj_ttm": 3.8876,
      "g_used": 0.2,
      "guard": false
     }
    },
-   "cand": {}
+   "cand": {
+    "TSM": {
+     "zone": "pass",
+     "days": 1,
+     "since": "2026-10-14"
+    }
+   }
   }
  },
- "dm_sent": {}
+ "dm_sent": {
+  "2026-10-15": [
+   "575e03846585"
+  ]
+ }
 }
