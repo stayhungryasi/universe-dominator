@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-16 17:28",
- "generated_at": "2026-10-16T17:28:10.400542+09:00",
+ "generated_label": "2026-10-16 23:06",
+ "generated_at": "2026-10-16T23:06:19.403837+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-16",
@@ -444,7 +444,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.7
+    "value": 1.69
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -1490,7 +1490,28 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "AI ASIC 모멘텀 강하나 사이클리컬 특성상 밸류에이션 과열 우려",
+   "_evidence": {
+    "franchise": "MediaTek ASIC Revenue Doubles, Igniting Two-Day Limit-Up Surge; Foreign Brokers Call NT$5,000 Target as Market Cap Tops NT$5 Trillion",
+    "risk5": "MediaTek Retreats 4.6%, Dodging Second-Stage Disposition as 20-Minute Matching Crisis Temporarily Eases; SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday",
+    "capalloc": "MediaTek Q2 Revenue Hits NT$152.1 Billion, Smashing High-End Guidance; AI ASIC to Take Center Stage"
+   }
   },
   "MRVL": {
    "as_of": "2026-10-16",
@@ -1560,7 +1581,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 730.8
+    "value": 833.49
    },
    "eps_status": null,
    "roe_tangible": 0.5589,
@@ -1636,12 +1657,7 @@
     "asof": "2026-03-31",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 테스터 수요 사이클 진폭이 크고 실적 발표 전후 변동성이 극심함"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1651,27 +1667,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1
-   },
-   "notes": "반도체 테스트 장비 과점 기업이나 시클리컬 변동성과 공급망 불확실성 심화",
-   "_evidence": {
-    "franchise": "Nikkei 225 전체 지수 등락에서 Advantest 단독으로 인덱스를 움직이는 수준의 영향력; Google News 헤드라인에서 'Nvidia supplier' 지위 반복 언급",
-    "risk5": "TSMC 실적 발표 전후 3,000포인트 이상 낙폭(business_certainty △); China risk와 중동 지정학적 리스크 명시(price ✕)",
-    "capalloc": "Micron 실적 기반 강세 사이클과 실적 발표 후 지속적 매수(cash_positive 1)",
-    "owner_earnings": "Kioxia 60% 급락, TSMC 실적 충격, 개별주 변동성 vs 지수 기여도 불일치로 수익성 가시성 저하"
-   }
+   "confidence": "중"
   },
   "2308.TW": {
    "as_of": "2026-10-16",
@@ -1724,5 +1720,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-16 17:29"
+ "scout_label": "2026-10-16 23:08"
 }
