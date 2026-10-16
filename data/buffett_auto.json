@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-16 10:37",
- "generated_at": "2026-10-16T10:37:36.270592+09:00",
+ "generated_label": "2026-10-16 17:28",
+ "generated_at": "2026-10-16T17:28:10.400542+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-16",
@@ -158,11 +158,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 투자 대규모 확대로 단기 현금흐름 압박 중이나 검색 해자 기반 수익성 유지"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0834,
@@ -175,7 +171,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 33건 · GOOGL 조회",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -193,31 +189,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 0,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "AI 자본지출 가속($125B+ 목표)과 $25B 채무 발행이 자본규율 약화를 시사하며, 반독점 리스크가 검증되지 않은 위협으로 남음",
-   "_evidence": {
-    "franchise": "검색 기반 광고 수익의 대체불가능성, Q2 2026 실적 상향 달성",
-    "risk5": "AI 자본지출 급증이 미래 현금흐름 불확실성 증대; 반독점 우려는 헤드라인 반복이나 구체적 규제 실행 증거 부재",
-    "capalloc": "Alphabet reportedly targets up to $25B debt offering - Total AI funding set to top $125B; record buyback 진행 중이나 부채 발행으로 규율 약화",
-    "owner_earnings": "Q2 2026 earnings top estimates 보도되나, AI 투자 급증으로 배분가능 현금의 가시성 저하"
-   }
+   ]
   },
   "MSFT": {
    "as_of": "2026-10-16",
@@ -347,7 +319,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 13.05
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -361,12 +333,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "6연속 기록 수익 달성했으나 거대 캐펙스 순환으로 주주 현금 흐름 잠식"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -376,33 +343,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "지구 최중요 기업이 곧 최고 주주 수익을 보장하지 않음; 텍사스 확장·테라팹 협상은 추가 자본 소모 신호",
-   "_evidence": {
-    "franchise": "TSMC posts record profit for a sixth straight quarter, beating estimates on AI boom; 반도체 대체 불가능 지위",
-    "risk5": "TSMC 'prudent' going into 2027 after posting sixth straight quarter of record profit; 경영진 신중한 기조 유지 중",
-    "capalloc": "TSMC Weighs Texas Expansion, Holds Talks on Musk's Terafab; 초대형 증축으로 인한 지속적 자본 투입 요구",
-    "owner_earnings": "월세 올리려면 매번 초대형 증축(캐펙스) 필요—수익 성장이 주주 현금 배분으로 전환되지 않는 구조"
-   }
+   "confidence": "중"
   },
   "AVGO": {
    "as_of": "2026-10-16",
@@ -503,7 +444,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.69
+    "value": 1.7
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -1056,7 +997,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 29.59
+    "value": 40.64
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1339,7 +1280,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.9
+    "value": 0.97
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1525,7 +1466,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 56.36
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1539,12 +1480,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 수익 급증으로 성장 모멘텀 뚜렷하나 사이클성 종속 위험 상존"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1554,29 +1490,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI ASIC 사업이 신성장 엔진으로 부상하며 2H 수익 주도권 이양, 다만 모바일 사이클 하강 위험과 공급망 집중도(Google 의존성) 노출",
-   "_evidence": {
-    "franchise": "MediaTek ASIC Revenue Doubles; AI Accelerator 2026년 Q4 양산 진입 예정, Google 대규모 인프라 구축에 따른 수요 증가",
-    "risk5": "SemiAnalysis가 Google TPU 출하 예측 하향으로 주가 4% 급락, 단일 고객 의존성 위험 노출; 모바일 사이클 하강국면 진입 가능성",
-    "capalloc": "Q2 2026 매출 NT$152.1B로 가이던스 상단 초과 달성, 강건한 현금 창출 입증",
-    "owner_earnings": "AI ASIC 수익이 2H 중심 수익 견인, Q2 가이던스 초과 달성으로 사업 모멘텀 확인되나 Google 의존성과 모바일 사이클 하강이 장기 수익성 제약"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-10-16",
@@ -1677,7 +1591,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 249.82
+    "value": 270.91
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1708,7 +1622,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 536.08
+    "value": 630.38
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1722,7 +1636,12 @@
     "asof": "2026-03-31",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 테스터 수요 사이클 진폭이 크고 실적 발표 전후 변동성이 극심함"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1733,13 +1652,25 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
    "risk5": {
     "business_certainty": "△",
     "price": "✕"
    },
-   "notes": "시클리컬 특성상 개별 헤드라인 변동성이 극심하며, Nikkei 지수 기여도가 600~800포인트 변동할 정도로 시장 영향력 대(大)인 반면, 수요 사이클 확실성이 낮음",
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1
+   },
+   "notes": "반도체 테스트 장비 과점 기업이나 시클리컬 변동성과 공급망 불확실성 심화",
    "_evidence": {
-    "risk5": "Nikkei 225 플런지 -2,900포인트(TSMC 실적 후), Kioxia 60% 낙폭, Advantest 5% 급등 등 극단적 변동성 기록"
+    "franchise": "Nikkei 225 전체 지수 등락에서 Advantest 단독으로 인덱스를 움직이는 수준의 영향력; Google News 헤드라인에서 'Nvidia supplier' 지위 반복 언급",
+    "risk5": "TSMC 실적 발표 전후 3,000포인트 이상 낙폭(business_certainty △); China risk와 중동 지정학적 리스크 명시(price ✕)",
+    "capalloc": "Micron 실적 기반 강세 사이클과 실적 발표 후 지속적 매수(cash_positive 1)",
+    "owner_earnings": "Kioxia 60% 급락, TSMC 실적 충격, 개별주 변동성 vs 지수 기여도 불일치로 수익성 가시성 저하"
    }
   },
   "2308.TW": {
@@ -1793,5 +1724,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-16 10:39"
+ "scout_label": "2026-10-16 17:29"
 }
