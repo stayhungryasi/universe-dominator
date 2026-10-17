@@ -3,6 +3,49 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.10.17",
+      "period": "10.10 → 10.17 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>Exxon Mobil</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $736B</span>)",
+            "<strong>SK하이닉스</strong> TOP 20 이탈",
+            "<strong>Walmart</strong> <span class='em-up'>19위 → 16위 상승</span> ($943B)",
+            "<strong>삼성전자</strong> 시총 <span class='em-down'>-18%</span> ($1.28T → $1.05T)",
+            "[미국] <strong>AbbVie</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $504B</span>)",
+            "[미국] <strong>Intel</strong> TOP 20 이탈",
+            "[한국] <strong>NAVER</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $20B</span>)",
+            "[한국] <strong>SK</strong> TOP 20 이탈",
+            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $81B</span>)",
+            "[일본] <strong>KIOXIA Holdings Corporation</strong> TOP 20 이탈",
+            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $177B</span>)",
+            "[유럽] <strong>Novo Nordisk</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $171B</span>)",
+            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
+            "[유럽] <strong>ABB</strong> TOP 20 이탈",
+            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $115B</span>)",
+            "[중국] <strong>BYD</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,332 (10/17 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.33"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.10.10",
       "period": "10.3 → 10.10 (주간)",
       "auto": true,

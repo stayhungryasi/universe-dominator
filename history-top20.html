@@ -543,10 +543,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 22:56 · 출처 frankfurter · 네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 10:21 · 출처 frankfurter · 네이버 실시간 환율 보기">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 22:56 · 출처 FRED API">WTI <span class="ud-mv">$102</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 22:56 · 출처 FRED API">10Y <span class="ud-mv">5.19%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 22:56 · 출처 FRED API">30Y <span class="ud-mv">5.52%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 22:56 · 출처 frankfurter">JPY <span class="ud-mv">158.0</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 10:21 · 출처 FRED API">WTI <span class="ud-mv">$102</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 10:21 · 출처 FRED API">10Y <span class="ud-mv">5.10%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 10:21 · 출처 FRED API">30Y <span class="ud-mv">5.43%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 10:21 · 출처 frankfurter">JPY <span class="ud-mv">158.0</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
     </div>
   </div>
@@ -605,6 +605,49 @@ const DATA = {
   "page_title": "우주지배자 변동 이력",
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
+    {
+      "date": "2026.10.17",
+      "period": "10.10 → 10.17 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "주간 변동 사항 (자동 감지)",
+          "items": [
+            "<strong>Exxon Mobil</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $736B</span>)",
+            "<strong>SK하이닉스</strong> TOP 20 이탈",
+            "<strong>Walmart</strong> <span class='em-up'>19위 → 16위 상승</span> ($943B)",
+            "<strong>삼성전자</strong> 시총 <span class='em-down'>-18%</span> ($1.28T → $1.05T)",
+            "[미국] <strong>AbbVie</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $504B</span>)",
+            "[미국] <strong>Intel</strong> TOP 20 이탈",
+            "[한국] <strong>NAVER</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $20B</span>)",
+            "[한국] <strong>SK</strong> TOP 20 이탈",
+            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $81B</span>)",
+            "[일본] <strong>KIOXIA Holdings Corporation</strong> TOP 20 이탈",
+            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $177B</span>)",
+            "[유럽] <strong>Novo Nordisk</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $171B</span>)",
+            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
+            "[유럽] <strong>ABB</strong> TOP 20 이탈",
+            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $115B</span>)",
+            "[중국] <strong>BYD</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,332 (10/17 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.33"
+            }
+          ]
+        }
+      ]
+    },
     {
       "date": "2026.10.10",
       "period": "10.3 → 10.10 (주간)",
@@ -1190,41 +1233,41 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_date": "2026-10-16",
-    "usd_krw": 1345.9,
+    "fetched_date": "2026-10-17",
+    "usd_krw": 1332.1,
     "macro": {
       "usd_krw": {
-        "value": 1345.9,
-        "as_of": "2026-10-15",
+        "value": 1332.1,
+        "as_of": "2026-10-16",
         "source": "frankfurter",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "usd_jpy": {
-        "value": 157.98,
-        "as_of": "2026-10-15",
+        "value": 158.02,
+        "as_of": "2026-10-16",
         "source": "frankfurter",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust10": {
-        "value": 5.19,
-        "as_of": "2026-10-14",
+        "value": 5.1,
+        "as_of": "2026-10-15",
         "source": "FRED API",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust30": {
-        "value": 5.52,
-        "as_of": "2026-10-14",
+        "value": 5.43,
+        "as_of": "2026-10-15",
         "source": "FRED API",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1233,7 +1276,7 @@ const DATA = {
         "value": 101.91,
         "as_of": "2026-10-14",
         "source": "FRED API",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null

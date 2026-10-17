@@ -438,10 +438,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 22:56 · 출처 frankfurter · 네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 10:21 · 출처 frankfurter · 네이버 실시간 환율 보기">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 22:56 · 출처 FRED API">WTI <span class="ud-mv">$102</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 22:56 · 출처 FRED API">10Y <span class="ud-mv">5.19%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 22:56 · 출처 FRED API">30Y <span class="ud-mv">5.52%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 22:56 · 출처 frankfurter">JPY <span class="ud-mv">158.0</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 10:21 · 출처 FRED API">WTI <span class="ud-mv">$102</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 10:21 · 출처 FRED API">10Y <span class="ud-mv">5.10%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 10:21 · 출처 FRED API">30Y <span class="ud-mv">5.43%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 10:21 · 출처 frankfurter">JPY <span class="ud-mv">158.0</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -507,56 +507,56 @@ const DATA = {
           "name": "NVIDIA",
           "ticker": "NVDA",
           "flag": "🇺🇸",
-          "mc": 5219.0,
+          "mc": 5170.0,
           "desc": "AI 가속기 패권자"
         },
         {
           "name": "Apple",
           "ticker": "AAPL",
           "flag": "🇺🇸",
-          "mc": 5029.0,
+          "mc": 5012.0,
           "desc": "프리미엄 디바이스·서비스"
         },
         {
           "name": "Alphabet (Google)",
           "ticker": "GOOG",
           "flag": "🇺🇸",
-          "mc": 4179.0,
+          "mc": 4120.0,
           "desc": "검색·광고 + Gemini AI"
         },
         {
           "name": "Microsoft",
           "ticker": "MSFT",
           "flag": "🇺🇸",
-          "mc": 3997.0,
+          "mc": 3928.0,
           "desc": "엔터프라이즈 + Azure 클라우드"
         },
         {
           "name": "Amazon",
           "ticker": "AMZN",
           "flag": "🇺🇸",
-          "mc": 2738.0,
+          "mc": 2696.0,
           "desc": "전자상거래 + AWS 클라우드"
         },
         {
           "name": "TSMC",
           "ticker": "TSM",
           "flag": "🇹🇼",
-          "mc": 2157.0,
+          "mc": 2139.0,
           "desc": "세계 1위 파운드리"
         },
         {
           "name": "SpaceX",
           "ticker": "SPCX",
           "flag": "🇺🇸",
-          "mc": 1912.0,
+          "mc": 1923.0,
           "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"
         },
         {
           "name": "Meta Platforms (Facebook)",
           "ticker": "META",
           "flag": "🇺🇸",
-          "mc": 1867.0,
+          "mc": 1807.0,
           "desc": "글로벌 SNS·광고 1위"
         },
         {
@@ -570,77 +570,77 @@ const DATA = {
           "name": "Broadcom",
           "ticker": "AVGO",
           "flag": "🇺🇸",
-          "mc": 1613.0,
+          "mc": 1569.0,
           "desc": "통신·AI 반도체 거인"
         },
         {
           "name": "Tesla",
           "ticker": "TSLA",
           "flag": "🇺🇸",
-          "mc": 1443.0,
+          "mc": 1400.0,
           "desc": "EV·자율주행·로봇"
         },
         {
           "name": "Berkshire Hathaway",
           "ticker": "BRK-B",
           "flag": "🇺🇸",
-          "mc": 1139.0,
+          "mc": 1138.0,
           "desc": "워런 버핏의 투자 제국"
         },
         {
           "name": "Eli Lilly",
           "ticker": "LLY",
           "flag": "🇺🇸",
-          "mc": 1124.0,
+          "mc": 1120.0,
           "desc": "GLP-1 비만약 美 선두"
         },
         {
           "name": "삼성전자",
           "ticker": "005930.KS",
           "flag": "🇰🇷",
-          "mc": 1055.0,
+          "mc": 1051.0,
           "desc": "메모리·스마트폰 글로벌 1위"
         },
         {
           "name": "Micron Technology",
           "ticker": "MU",
           "flag": "🇺🇸",
-          "mc": 1012.0,
+          "mc": 994.34,
           "desc": "美 최대 메모리 반도체"
         },
         {
           "name": "Walmart",
           "ticker": "WMT",
           "flag": "🇺🇸",
-          "mc": 945.98,
+          "mc": 942.6,
           "desc": "美 1위 소매유통"
         },
         {
           "name": "JPMorgan Chase",
           "ticker": "JPM",
           "flag": "🇺🇸",
-          "mc": 908.53,
+          "mc": 902.16,
           "desc": "美 최대 은행"
         },
         {
           "name": "AMD",
           "ticker": "AMD",
           "flag": "🇺🇸",
-          "mc": 886.27,
+          "mc": 863.17,
           "desc": "CPU·GPU 추격자"
         },
         {
           "name": "Visa",
           "ticker": "V",
           "flag": "🇺🇸",
-          "mc": 758.32,
+          "mc": 755.84,
           "desc": "글로벌 결제 네트워크 1위"
         },
         {
           "name": "Exxon Mobil",
           "ticker": "XOM",
           "flag": "🇺🇸",
-          "mc": 722.68,
+          "mc": 735.95,
           "desc": "美 최대 석유 메이저"
         }
       ]
@@ -653,140 +653,140 @@ const DATA = {
           "name": "NVIDIA",
           "ticker": "NVDA",
           "flag": "🇺🇸",
-          "mc": 5219.0,
+          "mc": 5170.0,
           "desc": "AI 가속기 패권자"
         },
         {
           "name": "Apple",
           "ticker": "AAPL",
           "flag": "🇺🇸",
-          "mc": 5029.0,
+          "mc": 5012.0,
           "desc": "프리미엄 디바이스·서비스"
         },
         {
           "name": "Alphabet (Google)",
           "ticker": "GOOG",
           "flag": "🇺🇸",
-          "mc": 4179.0,
+          "mc": 4120.0,
           "desc": "검색·광고 + Gemini AI"
         },
         {
           "name": "Microsoft",
           "ticker": "MSFT",
           "flag": "🇺🇸",
-          "mc": 3997.0,
+          "mc": 3928.0,
           "desc": "엔터프라이즈 + Azure 클라우드"
         },
         {
           "name": "Amazon",
           "ticker": "AMZN",
           "flag": "🇺🇸",
-          "mc": 2738.0,
+          "mc": 2696.0,
           "desc": "전자상거래 + AWS 클라우드"
         },
         {
           "name": "SpaceX",
           "ticker": "SPCX",
           "flag": "🇺🇸",
-          "mc": 1912.0,
+          "mc": 1923.0,
           "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"
         },
         {
           "name": "Meta Platforms (Facebook)",
           "ticker": "META",
           "flag": "🇺🇸",
-          "mc": 1867.0,
+          "mc": 1807.0,
           "desc": "글로벌 SNS·광고 1위"
         },
         {
           "name": "Broadcom",
           "ticker": "AVGO",
           "flag": "🇺🇸",
-          "mc": 1613.0,
+          "mc": 1569.0,
           "desc": "통신·AI 반도체 거인"
         },
         {
           "name": "Tesla",
           "ticker": "TSLA",
           "flag": "🇺🇸",
-          "mc": 1443.0,
+          "mc": 1400.0,
           "desc": "EV·자율주행·로봇"
         },
         {
           "name": "Berkshire Hathaway",
           "ticker": "BRK-B",
           "flag": "🇺🇸",
-          "mc": 1139.0,
+          "mc": 1138.0,
           "desc": "워런 버핏의 투자 제국"
         },
         {
           "name": "Eli Lilly",
           "ticker": "LLY",
           "flag": "🇺🇸",
-          "mc": 1124.0,
+          "mc": 1120.0,
           "desc": "GLP-1 비만약 美 선두"
         },
         {
           "name": "Micron Technology",
           "ticker": "MU",
           "flag": "🇺🇸",
-          "mc": 1012.0,
+          "mc": 994.34,
           "desc": "美 최대 메모리 반도체"
         },
         {
           "name": "Walmart",
           "ticker": "WMT",
           "flag": "🇺🇸",
-          "mc": 945.98,
+          "mc": 942.6,
           "desc": "美 1위 소매유통"
         },
         {
           "name": "JPMorgan Chase",
           "ticker": "JPM",
           "flag": "🇺🇸",
-          "mc": 908.53,
+          "mc": 902.16,
           "desc": "美 최대 은행"
         },
         {
           "name": "AMD",
           "ticker": "AMD",
           "flag": "🇺🇸",
-          "mc": 886.27,
+          "mc": 863.17,
           "desc": "CPU·GPU 추격자"
         },
         {
           "name": "Visa",
           "ticker": "V",
           "flag": "🇺🇸",
-          "mc": 758.32,
+          "mc": 755.84,
           "desc": "글로벌 결제 네트워크 1위"
         },
         {
           "name": "Exxon Mobil",
           "ticker": "XOM",
           "flag": "🇺🇸",
-          "mc": 722.68,
+          "mc": 735.95,
           "desc": "美 최대 석유 메이저"
         },
         {
           "name": "Johnson & Johnson",
           "ticker": "JNJ",
           "flag": "🇺🇸",
-          "mc": 617.51,
+          "mc": 615.87,
           "desc": "글로벌 헬스케어 거인"
         },
         {
           "name": "Mastercard",
           "ticker": "MA",
           "flag": "🇺🇸",
-          "mc": 544.41,
+          "mc": 540.86,
           "desc": "글로벌 결제 네트워크 2위"
         },
         {
           "name": "AbbVie",
           "ticker": "ABBV",
           "flag": "🇺🇸",
-          "mc": 501.87,
+          "mc": 504.37,
           "desc": "글로벌 제약 빅5"
         }
       ]
@@ -799,140 +799,140 @@ const DATA = {
           "name": "삼성전자",
           "ticker": "005930.KS",
           "flag": "🇰🇷",
-          "mc": 1055.0,
+          "mc": 1051.0,
           "desc": "메모리·스마트폰 글로벌 1위"
         },
         {
           "name": "SK하이닉스",
           "ticker": "000660.KS",
           "flag": "🇰🇷",
-          "mc": 697.34,
+          "mc": 694.66,
           "desc": "HBM·D램 강자"
         },
         {
           "name": "SK스퀘어",
           "ticker": "402340.KS",
           "flag": "🇰🇷",
-          "mc": 77.7,
+          "mc": 77.4,
           "desc": "SK ICT 지주회사"
         },
         {
           "name": "LG에너지솔루션",
           "ticker": "373220.KS",
           "flag": "🇰🇷",
-          "mc": 70.93,
+          "mc": 70.65,
           "desc": "K배터리 1위"
         },
         {
           "name": "현대차",
           "ticker": "005380.KS",
           "flag": "🇰🇷",
-          "mc": 61.44,
+          "mc": 61.2,
           "desc": "글로벌 완성차 빅5"
         },
         {
           "name": "삼성바이오로직스",
           "ticker": "207940.KS",
           "flag": "🇰🇷",
-          "mc": 45.45,
+          "mc": 45.27,
           "desc": "글로벌 CDMO 1위"
         },
         {
           "name": "KB금융",
           "ticker": "KB",
           "flag": "🇰🇷",
-          "mc": 42.31,
+          "mc": 41.71,
           "desc": "국내 1위 금융지주"
         },
         {
           "name": "삼성물산",
           "ticker": "028260.KS",
           "flag": "🇰🇷",
-          "mc": 35.26,
+          "mc": 35.12,
           "desc": "삼성그룹 지주격"
         },
         {
           "name": "한화에어로스페이스",
           "ticker": "012450.KS",
           "flag": "🇰🇷",
-          "mc": 34.36,
+          "mc": 34.23,
           "desc": "K방산 대표주"
-        },
-        {
-          "name": "신한지주",
-          "ticker": "SHG",
-          "flag": "🇰🇷",
-          "mc": 33.57,
-          "desc": "국내 2위 금융지주"
         },
         {
           "name": "셀트리온",
           "ticker": "068270.KS",
           "flag": "🇰🇷",
-          "mc": 33.27,
+          "mc": 33.14,
           "desc": "K바이오시밀러 선두"
+        },
+        {
+          "name": "신한지주",
+          "ticker": "SHG",
+          "flag": "🇰🇷",
+          "mc": 33.1,
+          "desc": "국내 2위 금융지주"
         },
         {
           "name": "기아",
           "ticker": "000270.KS",
           "flag": "🇰🇷",
-          "mc": 32.21,
+          "mc": 32.09,
           "desc": "글로벌 완성차 빅5"
         },
         {
           "name": "삼성생명",
           "ticker": "032830.KS",
           "flag": "🇰🇷",
-          "mc": 32.21,
+          "mc": 32.09,
           "desc": "국내 1위 생명보험"
         },
         {
           "name": "두산에너빌리티",
           "ticker": "034020.KS",
           "flag": "🇰🇷",
-          "mc": 31.05,
+          "mc": 30.93,
           "desc": "원전·풍력 발전"
         },
         {
           "name": "HD현대중공업",
           "ticker": "329180.KS",
           "flag": "🇰🇷",
-          "mc": 27.74,
+          "mc": 27.63,
           "desc": "세계 1위 조선"
         },
         {
           "name": "하나금융지주",
           "ticker": "086790.KS",
           "flag": "🇰🇷",
-          "mc": 24.61,
+          "mc": 24.51,
           "desc": "국내 3위 금융지주"
         },
         {
           "name": "현대모비스",
           "ticker": "012330.KS",
           "flag": "🇰🇷",
-          "mc": 23.45,
+          "mc": 23.36,
           "desc": "현대차 핵심 부품사"
         },
         {
           "name": "삼성전기",
           "ticker": "009155.KS",
           "flag": "🇰🇷",
-          "mc": 23.24,
+          "mc": 23.15,
           "desc": "MLCC 글로벌 빅3"
         },
         {
           "name": "LG전자",
           "ticker": "066570.KS",
           "flag": "🇰🇷",
-          "mc": 22.89,
+          "mc": 22.81,
           "desc": "가전·전장 글로벌"
         },
         {
           "name": "NAVER",
           "ticker": "035420.KS",
           "flag": "🇰🇷",
-          "mc": 20.28,
+          "mc": 20.2,
           "desc": "국내 1위 검색 포털"
         }
       ]
@@ -945,21 +945,21 @@ const DATA = {
           "name": "Mitsubishi UFJ Financial",
           "ticker": "MUFG",
           "flag": "🇯🇵",
-          "mc": 249.65,
+          "mc": 246.27,
           "desc": "일본 최대 금융그룹"
         },
         {
           "name": "Toyota",
           "ticker": "TM",
           "flag": "🇯🇵",
-          "mc": 231.0,
+          "mc": 229.21,
           "desc": "세계 판매 1위 완성차"
         },
         {
           "name": "SoftBank Group Corp.",
           "ticker": "9984.T",
           "flag": "🇯🇵",
-          "mc": 178.42,
+          "mc": 178.25,
           "desc": "글로벌 AI 투자 큰손"
         },
         {
@@ -973,70 +973,70 @@ const DATA = {
           "name": "Hitachi",
           "ticker": "6501.T",
           "flag": "🇯🇵",
-          "mc": 162.85,
+          "mc": 162.69,
           "desc": "DX·산업장비 (Hitachi)"
         },
         {
           "name": "Recruit",
           "ticker": "6098.T",
           "flag": "🇯🇵",
-          "mc": 162.0,
+          "mc": 161.84,
           "desc": "인재·HR 테크 (Indeed 보유)"
         },
         {
           "name": "Advantest",
           "ticker": "6857.T",
           "flag": "🇯🇵",
-          "mc": 157.86,
+          "mc": 157.71,
           "desc": "반도체 테스터 1위"
         },
         {
           "name": "Sumitomo Mitsui Financial Group",
           "ticker": "SMFG",
           "flag": "🇯🇵",
-          "mc": 157.43,
+          "mc": 155.23,
           "desc": "일본 3대 메가뱅크"
         },
         {
           "name": "Fast Retailing",
           "ticker": "9983.T",
           "flag": "🇯🇵",
-          "mc": 146.86,
+          "mc": 146.72,
           "desc": "유니클로 모회사"
         },
         {
           "name": "Sony",
           "ticker": "SONY",
           "flag": "🇯🇵",
-          "mc": 146.39,
+          "mc": 145.26,
           "desc": "게임·이미지센서·엔터"
-        },
-        {
-          "name": "Mizuho Financial Group",
-          "ticker": "MFG",
-          "flag": "🇯🇵",
-          "mc": 124.64,
-          "desc": "일본 3대 메가뱅크"
         },
         {
           "name": "Keyence",
           "ticker": "6861.T",
           "flag": "🇯🇵",
-          "mc": 124.02,
+          "mc": 123.91,
           "desc": "산업 센서 글로벌"
+        },
+        {
+          "name": "Mizuho Financial Group",
+          "ticker": "MFG",
+          "flag": "🇯🇵",
+          "mc": 122.77,
+          "desc": "일본 3대 메가뱅크"
         },
         {
           "name": "Mitsubishi Corporation",
           "ticker": "8058.T",
           "flag": "🇯🇵",
-          "mc": 109.61,
+          "mc": 109.5,
           "desc": "일본 최대 종합상사"
         },
         {
           "name": "Itōchū Shōji",
           "ticker": "8001.T",
           "flag": "🇯🇵",
-          "mc": 101.09,
+          "mc": 101.0,
           "desc": "종합상사 빅5 (Itochu)"
         },
         {
@@ -1050,35 +1050,35 @@ const DATA = {
           "name": "Mitsui Bussan",
           "ticker": "8031.T",
           "flag": "🇯🇵",
-          "mc": 89.79,
+          "mc": 89.71,
           "desc": "일본 2위 상사 (Mitsui)"
         },
         {
           "name": "NTT (Nippon Telegraph & Telephone)",
           "ticker": "9432.T",
           "flag": "🇯🇵",
-          "mc": 89.43,
+          "mc": 89.34,
           "desc": "일본 최대 통신사 (NTT)"
         },
         {
           "name": "Japan Tobacco",
           "ticker": "2914.T",
           "flag": "🇯🇵",
-          "mc": 84.13,
+          "mc": 84.05,
           "desc": ""
         },
         {
           "name": "Mitsubishi Heavy Industries",
           "ticker": "7011.T",
           "flag": "🇯🇵",
-          "mc": 80.77,
+          "mc": 80.69,
           "desc": "방산·중공업 (MHI)"
         },
         {
           "name": "Murata Manufacturing (Murata Seisakusho)",
           "ticker": "6981.T",
           "flag": "🇯🇵",
-          "mc": 79.08,
+          "mc": 79.0,
           "desc": "적층세라믹콘덴서(MLCC) 세계 1위"
         }
       ]
@@ -1091,140 +1091,140 @@ const DATA = {
           "name": "ASML",
           "ticker": "ASML",
           "flag": "🇳🇱",
-          "mc": 643.61,
+          "mc": 630.5,
           "desc": "노광장비 글로벌 독점"
         },
         {
           "name": "Roche",
           "ticker": "RO.SW",
           "flag": "🇨🇭",
-          "mc": 372.7,
+          "mc": 371.73,
           "desc": "글로벌 제약·진단 거인"
         },
         {
           "name": "HSBC",
           "ticker": "HSBC",
           "flag": "🇬🇧",
-          "mc": 327.56,
+          "mc": 323.42,
           "desc": "글로벌 빅뱅크"
         },
         {
           "name": "Shell",
           "ticker": "SHEL",
           "flag": "🇬🇧",
-          "mc": 300.11,
+          "mc": 303.38,
           "desc": "유럽 석유 메이저 (Shell)"
         },
         {
           "name": "Novartis",
           "ticker": "NVS",
           "flag": "🇨🇭",
-          "mc": 287.2,
+          "mc": 286.28,
           "desc": "스위스 제약 빅3"
         },
         {
           "name": "SAP",
           "ticker": "SAP",
           "flag": "🇩🇪",
-          "mc": 263.73,
+          "mc": 258.87,
           "desc": ""
-        },
-        {
-          "name": "AstraZeneca",
-          "ticker": "AZN",
-          "flag": "🇬🇧",
-          "mc": 258.81,
-          "desc": "영국 제약 빅3"
         },
         {
           "name": "Nestlé",
           "ticker": "NESN.SW",
           "flag": "🇨🇭",
-          "mc": 257.41,
+          "mc": 257.21,
           "desc": "세계 최대 식품 (Nestlé)"
         },
         {
-          "name": "Arm Holdings",
-          "ticker": "ARM",
+          "name": "AstraZeneca",
+          "ticker": "AZN",
           "flag": "🇬🇧",
-          "mc": 252.34,
-          "desc": "AI 칩 CPU IP"
+          "mc": 256.53,
+          "desc": "영국 제약 빅3"
         },
         {
           "name": "L'Oréal",
           "ticker": "OR.PA",
           "flag": "🇫🇷",
-          "mc": 243.2,
+          "mc": 243.62,
           "desc": "세계 최대 화장품 (L'Oréal)"
+        },
+        {
+          "name": "Arm Holdings",
+          "ticker": "ARM",
+          "flag": "🇬🇧",
+          "mc": 243.29,
+          "desc": "AI 칩 CPU IP"
         },
         {
           "name": "Siemens",
           "ticker": "SIE.DE",
           "flag": "🇩🇪",
-          "mc": 232.97,
+          "mc": 232.69,
           "desc": "산업 자동화 거인 (Siemens)"
         },
         {
           "name": "Linde",
           "ticker": "LIN",
           "flag": "🇺🇸",
-          "mc": 230.59,
+          "mc": 229.76,
           "desc": "글로벌 1위 산업가스"
         },
         {
           "name": "LVMH",
           "ticker": "MC.PA",
           "flag": "🇫🇷",
-          "mc": 220.79,
+          "mc": 219.82,
           "desc": "명품 콘글로머릿 1위 (LVMH)"
         },
         {
           "name": "TotalEnergies",
           "ticker": "TTE",
           "flag": "🇺🇸",
-          "mc": 198.63,
+          "mc": 201.38,
           "desc": "프랑스 에너지 메이저"
-        },
-        {
-          "name": "Santander",
-          "ticker": "SAN",
-          "flag": "🇺🇸",
-          "mc": 195.53,
-          "desc": "스페인 1위 은행 (Santander)"
         },
         {
           "name": "Inditex",
           "ticker": "ITX.MC",
           "flag": "🇪🇸",
-          "mc": 195.43,
+          "mc": 195.44,
           "desc": "Zara 모회사 (Inditex)"
+        },
+        {
+          "name": "Santander",
+          "ticker": "SAN",
+          "flag": "🇺🇸",
+          "mc": 192.28,
+          "desc": "스페인 1위 은행 (Santander)"
         },
         {
           "name": "Allianz SE",
           "ticker": "ALV.DE",
           "flag": "🇩🇪",
-          "mc": 185.05,
+          "mc": 184.85,
           "desc": "유럽 최대 보험그룹"
-        },
-        {
-          "name": "Prosus",
-          "ticker": "PRX.AS",
-          "flag": "🇳🇱",
-          "mc": 178.27,
-          "desc": "Naspers 자회사 (Prosus)"
         },
         {
           "name": "Airbus",
           "ticker": "AIR.PA",
           "flag": "🇫🇷",
-          "mc": 178.22,
+          "mc": 176.75,
           "desc": "세계 1위 민항기 제조"
+        },
+        {
+          "name": "Prosus",
+          "ticker": "PRX.AS",
+          "flag": "🇳🇱",
+          "mc": 176.48,
+          "desc": "Naspers 자회사 (Prosus)"
         },
         {
           "name": "Novo Nordisk",
           "ticker": "NVO",
           "flag": "🇩🇰",
-          "mc": 173.37,
+          "mc": 171.36,
           "desc": "GLP-1 비만약 글로벌 1위"
         }
       ]
@@ -1237,84 +1237,84 @@ const DATA = {
           "name": "TSMC",
           "ticker": "TSM",
           "flag": "🇹🇼",
-          "mc": 2152.0,
+          "mc": 2139.0,
           "desc": "세계 1위 파운드리"
         },
         {
           "name": "MediaTek",
           "ticker": "2454.TW",
           "flag": "🇹🇼",
-          "mc": 209.76,
+          "mc": 209.38,
           "desc": "모바일 AP 출하 1위 — 엣지 AI로 확장"
         },
         {
           "name": "Delta Electronics",
           "ticker": "2308.TW",
           "flag": "🇹🇼",
-          "mc": 131.24,
+          "mc": 131.0,
           "desc": "AI 서버 전원·냉각의 숨은 지배자"
         },
         {
           "name": "Foxconn (Hon Hai Precision Industry)",
           "ticker": "2317.TW",
           "flag": "🇹🇼",
-          "mc": 106.12,
+          "mc": 105.92,
           "desc": "폭스콘 — 세계의 조립공장, AI 서버로 변신"
         },
         {
           "name": "ASE Group",
           "ticker": "ASX",
           "flag": "🇹🇼",
-          "mc": 89.31,
+          "mc": 86.91,
           "desc": "반도체 후공정(OSAT) 세계 1위"
         },
         {
           "name": "Nan Ya Plastics",
           "ticker": "1303.TW",
           "flag": "🇹🇼",
-          "mc": 75.24,
+          "mc": 75.1,
           "desc": "포모사 그룹 화학·전자소재 핵심"
         },
         {
           "name": "Fubon Financial",
           "ticker": "2881.TW",
           "flag": "🇹🇼",
-          "mc": 68.2,
+          "mc": 68.07,
           "desc": "대만 금융지주 양대산맥 푸본"
         },
         {
           "name": "Unimicron",
           "ticker": "3037.TW",
           "flag": "🇹🇼",
-          "mc": 55.25,
+          "mc": 55.15,
           "desc": "AI 칩 기판(ABF) 세계 1위"
         },
         {
           "name": "Cathay Financial Holding",
           "ticker": "2882.TW",
           "flag": "🇹🇼",
-          "mc": 52.58,
+          "mc": 52.48,
           "desc": "대만 최대 보험·금융그룹 캐세이"
         },
         {
           "name": "United Microelectronics",
           "ticker": "UMC",
           "flag": "🇹🇼",
-          "mc": 51.08,
+          "mc": 49.7,
           "desc": "성숙공정 파운드리 강자"
         },
         {
           "name": "Nanya Technology",
           "ticker": "2408.TW",
           "flag": "🇹🇼",
-          "mc": 47.71,
+          "mc": 47.62,
           "desc": "대만 대표 D램 메이커"
         },
         {
           "name": "CTBC Financial Holding",
           "ticker": "2891.TW",
           "flag": "🇹🇼",
-          "mc": 44.75,
+          "mc": 44.66,
           "desc": "대만 금융지주 CTBC"
         },
         {
@@ -1328,42 +1328,42 @@ const DATA = {
           "name": "Chunghwa Telecom",
           "ticker": "CHT",
           "flag": "🇹🇼",
-          "mc": 37.03,
+          "mc": 36.95,
           "desc": "대만 통신 1위 중화텔레콤"
         },
         {
           "name": "Yageo",
           "ticker": "2327.TW",
           "flag": "🇹🇼",
-          "mc": 36.06,
+          "mc": 36.0,
           "desc": "MLCC 수동부품 글로벌 강자"
         },
         {
           "name": "Formosa Petrochemical",
           "ticker": "6505.TW",
           "flag": "🇹🇼",
-          "mc": 36.06,
+          "mc": 35.99,
           "desc": ""
         },
         {
           "name": "Accton Technology",
           "ticker": "2345.TW",
           "flag": "🇹🇼",
-          "mc": 34.19,
+          "mc": 34.13,
           "desc": "AI 데이터센터 네트워크 스위치 강자"
         },
         {
           "name": "Taishin Financial Holdings",
           "ticker": "2887.TW",
           "flag": "🇹🇼",
-          "mc": 32.94,
+          "mc": 32.88,
           "desc": "대만 중견 금융지주 타이신"
         },
         {
           "name": "Wiwynn",
           "ticker": "6669.TW",
           "flag": "🇹🇼",
-          "mc": 31.68,
+          "mc": 31.63,
           "desc": "하이퍼스케일러 전용 AI 서버 제조사"
         },
         {
@@ -1380,31 +1380,31 @@ const DATA = {
       "subtitle": "Mainland (SH·SZ)",
       "stocks": [
         {
-          "name": "Tencent",
-          "ticker": "TCEHY",
-          "flag": "🇨🇳",
-          "mc": 483.71,
-          "desc": "위챗 + 게임 제국"
-        },
-        {
           "name": "CXMT",
           "ticker": "688825.SS",
           "flag": "🇨🇳",
-          "mc": 477.57,
+          "mc": 477.54,
           "desc": ""
+        },
+        {
+          "name": "Tencent",
+          "ticker": "TCEHY",
+          "flag": "🇨🇳",
+          "mc": 476.49,
+          "desc": "위챗 + 게임 제국"
         },
         {
           "name": "China Construction Bank",
           "ticker": "601939.SS",
           "flag": "🇨🇳",
-          "mc": 448.69,
+          "mc": 448.67,
           "desc": "중국 4대 국유은행 (CCB)"
         },
         {
           "name": "Agricultural Bank of China",
           "ticker": "601288.SS",
           "flag": "🇨🇳",
-          "mc": 379.57,
+          "mc": 379.55,
           "desc": "중국 4대 국유은행 (ABC)"
         },
         {
@@ -1418,21 +1418,21 @@ const DATA = {
           "name": "Bank of China",
           "ticker": "601988.SS",
           "flag": "🇨🇳",
-          "mc": 334.0,
+          "mc": 333.98,
           "desc": "중국 4대 국유은행 (BOC)"
         },
         {
           "name": "Alibaba",
           "ticker": "BABA",
           "flag": "🇨🇳",
-          "mc": 276.48,
+          "mc": 271.43,
           "desc": "전자상거래 + 클라우드"
         },
         {
           "name": "Kweichow Moutai",
           "ticker": "600519.SS",
           "flag": "🇨🇳",
-          "mc": 248.87,
+          "mc": 248.85,
           "desc": "중국 명품 백주 (마오타이)"
         },
         {
@@ -1453,7 +1453,7 @@ const DATA = {
           "name": "CATL",
           "ticker": "300750.SZ",
           "flag": "🇨🇳",
-          "mc": 192.0,
+          "mc": 191.99,
           "desc": "세계 1위 배터리 (CATL)"
         },
         {
@@ -1467,7 +1467,7 @@ const DATA = {
           "name": "China Shenhua Energy",
           "ticker": "601088.SS",
           "flag": "🇨🇳",
-          "mc": 165.63,
+          "mc": 165.62,
           "desc": "중국 최대 석탄"
         },
         {
@@ -1488,14 +1488,14 @@ const DATA = {
           "name": "Foxconn Industrial Internet",
           "ticker": "601138.SS",
           "flag": "🇨🇳",
-          "mc": 142.03,
+          "mc": 142.02,
           "desc": "폭스콘 中 자회사"
         },
         {
           "name": "Ping An Insurance",
           "ticker": "601318.SS",
           "flag": "🇨🇳",
-          "mc": 140.72,
+          "mc": 140.71,
           "desc": "중국 1위 종합금융 (Ping An)"
         },
         {
@@ -1509,14 +1509,14 @@ const DATA = {
           "name": "Zhongji Innolight",
           "ticker": "300308.SZ",
           "flag": "🇨🇳",
-          "mc": 118.22,
+          "mc": 118.21,
           "desc": "광 통신 모듈"
         },
         {
           "name": "PDD Holdings (Pinduoduo)",
           "ticker": "PDD",
           "flag": "🇨🇳",
-          "mc": 116.66,
+          "mc": 115.25,
           "desc": "초저가 커머스 (핀둬둬·Temu)"
         }
       ]
@@ -1796,8 +1796,8 @@ const DATA = {
     },
     {
       "rank": 26,
-      "ticker": "INTC",
-      "name": "Intel"
+      "ticker": "688825.SS",
+      "name": "CXMT"
     },
     {
       "rank": 27,
@@ -1806,28 +1806,28 @@ const DATA = {
     },
     {
       "rank": 28,
-      "ticker": "688825.SS",
-      "name": "CXMT"
+      "ticker": "INTC",
+      "name": "Intel"
     },
     {
       "rank": 29,
-      "ticker": "PLTR",
-      "name": "Palantir"
-    },
-    {
-      "rank": 30,
       "ticker": "601939.SS",
       "name": "China Construction Bank"
     },
     {
+      "rank": 30,
+      "ticker": "PLTR",
+      "name": "Palantir"
+    },
+    {
       "rank": 31,
-      "ticker": "COST",
-      "name": "Costco"
+      "ticker": "CVX",
+      "name": "Chevron"
     },
     {
       "rank": 32,
-      "ticker": "CVX",
-      "name": "Chevron"
+      "ticker": "COST",
+      "name": "Costco"
     },
     {
       "rank": 33,
@@ -1861,8 +1861,8 @@ const DATA = {
     },
     {
       "rank": 39,
-      "ticker": "BAC",
-      "name": "Bank of America"
+      "ticker": "UNH",
+      "name": "UnitedHealth"
     },
     {
       "rank": 40,
@@ -1871,8 +1871,8 @@ const DATA = {
     },
     {
       "rank": 41,
-      "ticker": "UNH",
-      "name": "UnitedHealth"
+      "ticker": "BAC",
+      "name": "Bank of America"
     },
     {
       "rank": 42,
@@ -1881,28 +1881,28 @@ const DATA = {
     },
     {
       "rank": 43,
-      "ticker": "LRCX",
-      "name": "Lam Research"
-    },
-    {
-      "rank": 44,
       "ticker": "CAT",
       "name": "Caterpillar"
     },
     {
-      "rank": 45,
-      "ticker": "AMAT",
-      "name": "Applied Materials"
-    },
-    {
-      "rank": 46,
+      "rank": 44,
       "ticker": "601988.SS",
       "name": "Bank of China"
     },
     {
-      "rank": 47,
+      "rank": 45,
+      "ticker": "LRCX",
+      "name": "Lam Research"
+    },
+    {
+      "rank": 46,
       "ticker": "GE",
       "name": "General Electric"
+    },
+    {
+      "rank": 47,
+      "ticker": "AMAT",
+      "name": "Applied Materials"
     },
     {
       "rank": 48,
@@ -1931,13 +1931,13 @@ const DATA = {
     },
     {
       "rank": 53,
-      "ticker": "PANW",
-      "name": "Palo Alto Networks"
+      "ticker": "DELL",
+      "name": "Dell"
     },
     {
       "rank": 54,
-      "ticker": "DELL",
-      "name": "Dell"
+      "ticker": "NVS",
+      "name": "Novartis"
     },
     {
       "rank": 55,
@@ -1946,23 +1946,23 @@ const DATA = {
     },
     {
       "rank": 56,
-      "ticker": "NVS",
-      "name": "Novartis"
+      "ticker": "PANW",
+      "name": "Palo Alto Networks"
     },
     {
       "rank": 57,
-      "ticker": "BABA",
-      "name": "Alibaba"
-    },
-    {
-      "rank": 58,
       "ticker": "RY",
       "name": "Royal Bank Of Canada"
     },
     {
+      "rank": 58,
+      "ticker": "BABA",
+      "name": "Alibaba"
+    },
+    {
       "rank": 59,
-      "ticker": "GS",
-      "name": "Goldman Sachs"
+      "ticker": "RTX",
+      "name": "RTX"
     },
     {
       "rank": 60,
@@ -1971,18 +1971,18 @@ const DATA = {
     },
     {
       "rank": 61,
-      "ticker": "AZN",
-      "name": "AstraZeneca"
+      "ticker": "NESN.SW",
+      "name": "Nestlé"
     },
     {
       "rank": 62,
-      "ticker": "RTX",
-      "name": "RTX"
+      "ticker": "GS",
+      "name": "Goldman Sachs"
     },
     {
       "rank": 63,
-      "ticker": "NESN.SW",
-      "name": "Nestlé"
+      "ticker": "AZN",
+      "name": "AstraZeneca"
     },
     {
       "rank": 64,
@@ -2001,43 +2001,43 @@ const DATA = {
     },
     {
       "rank": 67,
-      "ticker": "ARM",
-      "name": "Arm Holdings"
-    },
-    {
-      "rank": 68,
-      "ticker": "GEV",
-      "name": "GE Vernova"
-    },
-    {
-      "rank": 69,
-      "ticker": "MUFG",
-      "name": "Mitsubishi UFJ Financial"
-    },
-    {
-      "rank": 70,
       "ticker": "600519.SS",
       "name": "Kweichow Moutai"
     },
     {
-      "rank": 71,
+      "rank": 68,
+      "ticker": "MUFG",
+      "name": "Mitsubishi UFJ Financial"
+    },
+    {
+      "rank": 69,
+      "ticker": "GEV",
+      "name": "GE Vernova"
+    },
+    {
+      "rank": 70,
       "ticker": "OR.PA",
       "name": "L'Oréal"
     },
     {
-      "rank": 72,
-      "ticker": "CRWD",
-      "name": "CrowdStrike"
+      "rank": 71,
+      "ticker": "ARM",
+      "name": "Arm Holdings"
     },
     {
-      "rank": 73,
+      "rank": 72,
       "ticker": "AMGN",
       "name": "Amgen"
     },
     {
-      "rank": 74,
+      "rank": 73,
       "ticker": "0857.HK",
       "name": "PetroChina"
+    },
+    {
+      "rank": 74,
+      "ticker": "CRWD",
+      "name": "CrowdStrike"
     },
     {
       "rank": 75,
@@ -2046,8 +2046,8 @@ const DATA = {
     },
     {
       "rank": 76,
-      "ticker": "SHOP",
-      "name": "Shopify"
+      "ticker": "LIN",
+      "name": "Linde"
     },
     {
       "rank": 77,
@@ -2056,8 +2056,8 @@ const DATA = {
     },
     {
       "rank": 78,
-      "ticker": "LIN",
-      "name": "Linde"
+      "ticker": "0941.HK",
+      "name": "China Mobile"
     },
     {
       "rank": 79,
@@ -2066,23 +2066,23 @@ const DATA = {
     },
     {
       "rank": 80,
-      "ticker": "0941.HK",
-      "name": "China Mobile"
+      "ticker": "MC.PA",
+      "name": "LVMH"
     },
     {
       "rank": 81,
-      "ticker": "KLAC",
-      "name": "KLA"
-    },
-    {
-      "rank": 82,
       "ticker": "IBM",
       "name": "IBM"
     },
     {
+      "rank": 82,
+      "ticker": "SHOP",
+      "name": "Shopify"
+    },
+    {
       "rank": 83,
-      "ticker": "MC.PA",
-      "name": "LVMH"
+      "ticker": "KLAC",
+      "name": "KLA"
     },
     {
       "rank": 84,
@@ -2096,18 +2096,18 @@ const DATA = {
     },
     {
       "rank": 86,
-      "ticker": "C",
-      "name": "Citigroup"
-    },
-    {
-      "rank": 87,
       "ticker": "IHC.AE",
       "name": "International Holding Company"
     },
     {
-      "rank": 88,
+      "rank": 87,
       "ticker": "2454.TW",
       "name": "MediaTek"
+    },
+    {
+      "rank": 88,
+      "ticker": "C",
+      "name": "Citigroup"
     },
     {
       "rank": 89,
@@ -2116,13 +2116,13 @@ const DATA = {
     },
     {
       "rank": 90,
-      "ticker": "CRM",
-      "name": "Salesforce"
+      "ticker": "TTE",
+      "name": "TotalEnergies"
     },
     {
       "rank": 91,
-      "ticker": "TTE",
-      "name": "TotalEnergies"
+      "ticker": "CRM",
+      "name": "Salesforce"
     },
     {
       "rank": 92,
@@ -2136,79 +2136,79 @@ const DATA = {
     },
     {
       "rank": 94,
-      "ticker": "ADI",
-      "name": "Analog Devices"
-    },
-    {
-      "rank": 95,
-      "ticker": "SAN",
-      "name": "Santander"
-    },
-    {
-      "rank": 96,
       "ticker": "ITX.MC",
       "name": "Inditex"
     },
     {
-      "rank": 97,
+      "rank": 95,
       "ticker": "GILD",
       "name": "Gilead Sciences"
     },
     {
+      "rank": 96,
+      "ticker": "SAN",
+      "name": "Santander"
+    },
+    {
+      "rank": 97,
+      "ticker": "300750.SZ",
+      "name": "CATL"
+    },
+    {
       "rank": 98,
+      "ticker": "ADI",
+      "name": "Analog Devices"
+    },
+    {
+      "rank": 99,
       "ticker": "DIS",
       "name": "Walt Disney"
     },
     {
-      "rank": 99,
+      "rank": 100,
       "ticker": "SNDK",
       "name": "Sandisk"
-    },
-    {
-      "rank": 100,
-      "ticker": "300750.SZ",
-      "name": "CATL"
     }
   ],
   "meta": {
-    "fetched_at": "2026-10-16T22:56:03.886309+09:00",
-    "fetched_date": "2026-10-16",
-    "usd_krw": 1345.9,
+    "fetched_at": "2026-10-17T10:21:16.919120+09:00",
+    "fetched_date": "2026-10-17",
+    "usd_krw": 1332.1,
     "errors": [],
     "warnings": [],
     "macro": {
       "usd_krw": {
-        "value": 1345.9,
-        "as_of": "2026-10-15",
+        "value": 1332.1,
+        "as_of": "2026-10-16",
         "source": "frankfurter",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "usd_jpy": {
-        "value": 157.98,
-        "as_of": "2026-10-15",
+        "value": 158.02,
+        "as_of": "2026-10-16",
         "source": "frankfurter",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust10": {
-        "value": 5.19,
-        "as_of": "2026-10-14",
+        "value": 5.1,
+        "as_of": "2026-10-15",
         "source": "FRED API",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust30": {
-        "value": 5.52,
-        "as_of": "2026-10-14",
+        "value": 5.43,
+        "as_of": "2026-10-15",
         "source": "FRED API",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -2217,7 +2217,7 @@ const DATA = {
         "value": 101.91,
         "as_of": "2026-10-14",
         "source": "FRED API",
-        "measured_at": "2026-10-16T22:56+09:00",
+        "measured_at": "2026-10-17T10:21+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -2226,17 +2226,17 @@ const DATA = {
   },
   "latent": [
     {
-      "rank": 44,
+      "rank": 45,
       "ticker": "LRCX",
       "name": "Lam Research",
       "country": "🇺🇸",
-      "mc": 337.78,
-      "momentum_1y": 86,
-      "momentum_1m": 0,
-      "momentum_3m": -12,
-      "momentum_6m": 1,
+      "mc": 330.3,
+      "momentum_1y": 85,
+      "momentum_1m": 3,
+      "momentum_3m": -11,
+      "momentum_6m": 6,
       "theme": "AI 반도체",
-      "story": "AI 반도체 · 글로벌 44위 · 1년 +86% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 반도체 · 글로벌 45위 · 1년 +85% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2246,17 +2246,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 46,
+      "rank": 47,
       "ticker": "AMAT",
       "name": "Applied Materials",
       "country": "🇺🇸",
-      "mc": 333.31,
-      "momentum_1y": 85,
-      "momentum_1m": 1,
-      "momentum_3m": -20,
-      "momentum_6m": 6,
+      "mc": 324.81,
+      "momentum_1y": 80,
+      "momentum_1m": 4,
+      "momentum_3m": -19,
+      "momentum_6m": 10,
       "theme": "AI 반도체",
-      "story": "AI 반도체 · 글로벌 46위 · 1년 +85% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 반도체 · 글로벌 47위 · 1년 +80% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2270,11 +2270,11 @@ const DATA = {
       "ticker": "DELL",
       "name": "Dell",
       "country": "🇺🇸",
-      "mc": 289.46,
-      "momentum_1y": 196,
-      "momentum_1m": -22,
-      "momentum_3m": 20,
-      "momentum_6m": 132,
+      "mc": 287.2,
+      "momentum_1y": 199,
+      "momentum_1m": -16,
+      "momentum_3m": 19,
+      "momentum_6m": 145,
       "theme": "AI 서버 OEM",
       "story": "★ 신규 — NVIDIA Blackwell 서버 공급망 핵심. 1일 +33% 폭등.",
       "auto": true,
@@ -2286,17 +2286,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 54,
+      "rank": 56,
       "ticker": "PANW",
       "name": "Palo Alto Networks",
       "country": "🇺🇸",
-      "mc": 289.07,
-      "momentum_1y": 71,
-      "momentum_1m": -6,
-      "momentum_3m": 1,
-      "momentum_6m": 111,
+      "mc": 279.75,
+      "momentum_1y": 66,
+      "momentum_1m": -1,
+      "momentum_3m": 3,
+      "momentum_6m": 122,
       "theme": "AI 소프트웨어",
-      "story": "AI 소프트웨어 · 글로벌 54위 · 1년 +71% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 소프트웨어 · 글로벌 56위 · 1년 +66% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "watch",
       "streak_out": 3,
@@ -2306,17 +2306,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 72,
+      "rank": 74,
       "ticker": "CRWD",
       "name": "CrowdStrike",
       "country": "🇺🇸",
-      "mc": 239.22,
-      "momentum_1y": 91,
-      "momentum_1m": -5,
-      "momentum_3m": 18,
-      "momentum_6m": 121,
+      "mc": 232.83,
+      "momentum_1y": 89,
+      "momentum_1m": 1,
+      "momentum_3m": 20,
+      "momentum_6m": 134,
       "theme": "AI 소프트웨어",
-      "story": "AI 소프트웨어 · 글로벌 72위 · 1년 +91% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 소프트웨어 · 글로벌 74위 · 1년 +89% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2326,17 +2326,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 88,
+      "rank": 87,
       "ticker": "2454.TW",
       "name": "MediaTek",
       "country": "🇹🇼",
-      "mc": 209.76,
-      "momentum_1y": 206,
+      "mc": 209.38,
+      "momentum_1y": 202,
       "momentum_1m": -7,
       "momentum_3m": 15,
       "momentum_6m": 137,
       "theme": "AI 반도체",
-      "story": "AI 반도체 · 글로벌 88위 · 1년 +206% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 반도체 · 글로벌 87위 · 1년 +202% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2350,11 +2350,11 @@ const DATA = {
       "ticker": "MRVL",
       "name": "Marvell Technology",
       "country": "🇺🇸",
-      "mc": 207.51,
-      "momentum_1y": 160,
-      "momentum_1m": -4,
-      "momentum_3m": 19,
-      "momentum_6m": 66,
+      "mc": 204.75,
+      "momentum_1y": 158,
+      "momentum_1m": 5,
+      "momentum_3m": 28,
+      "momentum_6m": 81,
       "theme": "AI 광 인터커넥트",
       "story": "★ 신규 — NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (6/2 Computex). NVIDIA $2B 직접 투자, 1일 +42% 폭등.",
       "auto": true,
@@ -2370,13 +2370,13 @@ const DATA = {
       "ticker": "SNDK",
       "name": "Sandisk",
       "country": "🇺🇸",
-      "mc": 191.72,
-      "momentum_1y": 819,
-      "momentum_1m": -17,
-      "momentum_3m": -4,
-      "momentum_6m": 45,
+      "mc": 187.78,
+      "momentum_1y": 801,
+      "momentum_1m": -8,
+      "momentum_3m": 3,
+      "momentum_6m": 52,
       "theme": "AI 테크",
-      "story": "AI 테크 · 글로벌 100위 · 1년 +819% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 테크 · 글로벌 100위 · 1년 +801% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2386,17 +2386,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 138,
+      "rank": 137,
       "ticker": "6857.T",
       "name": "Advantest",
       "country": "🇯🇵",
-      "mc": 157.86,
-      "momentum_1y": 90,
+      "mc": 157.71,
+      "momentum_1y": 88,
       "momentum_1m": 9,
       "momentum_3m": 20,
       "momentum_6m": 39,
       "theme": "AI 반도체",
-      "story": "AI 반도체 · 글로벌 138위 · 1년 +90% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 반도체 · 글로벌 137위 · 1년 +88% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2406,17 +2406,17 @@ const DATA = {
       "joined": "2026-10-05"
     },
     {
-      "rank": 144,
+      "rank": 150,
       "ticker": "STX",
       "name": "Seagate Technology",
       "country": "🇺🇸",
-      "mc": 149.61,
-      "momentum_1y": 200,
-      "momentum_1m": -18,
-      "momentum_3m": -18,
-      "momentum_6m": 20,
+      "mc": 145.3,
+      "momentum_1y": 183,
+      "momentum_1m": -12,
+      "momentum_3m": -12,
+      "momentum_6m": 30,
       "theme": "AI 테크",
-      "story": "AI 테크 · 글로벌 144위 · 1년 +200% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 테크 · 글로벌 150위 · 1년 +183% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
@@ -2426,17 +2426,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 172,
+      "rank": 182,
       "ticker": "FTNT",
       "name": "Fortinet",
       "country": "🇺🇸",
-      "mc": 127.55,
-      "momentum_1y": 108,
-      "momentum_1m": 0,
-      "momentum_3m": 8,
-      "momentum_6m": 111,
+      "mc": 124.09,
+      "momentum_1y": 103,
+      "momentum_1m": 6,
+      "momentum_3m": 13,
+      "momentum_6m": 121,
       "theme": "AI 소프트웨어",
-      "story": "AI 소프트웨어 · 글로벌 172위 · 1년 +108% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "story": "AI 소프트웨어 · 글로벌 182위 · 1년 +103% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
       "auto": true,
       "status": "member",
       "streak_out": 0,
