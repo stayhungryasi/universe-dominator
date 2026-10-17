@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-17 17:03",
- "generated_at": "2026-10-17T17:03:54.809775+09:00",
+ "generated_label": "2026-10-17 22:06",
+ "generated_at": "2026-10-17T22:06:14.826096+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-17",
@@ -158,7 +158,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "A",
+     "reason": "Q2 2026 실제 실적이 예상을 상회했으며 AI 수익화가 지속 강세"
+    }
    },
    "conversion": {
     "value": 1.0834,
@@ -171,7 +175,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 33건 · GOOGL 조회",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -189,7 +193,30 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "검색 해자는 검증되나 반독점 리스크(Blue Wave 우려)와 AI 경쟁 심화가 가격 고평가 우려를 상쇄",
+   "_evidence": {
+    "franchise": "Search moat with no substitute; TPU 풀스택 통행료 구조 형성 중",
+    "risk5": "Q2 earnings top estimates 확인되나 Blue Wave 정치 리스크와 AI 경쟁 심화로 사업 확실성 △",
+    "capalloc": "Q2 2026 earnings call에서 record revenue growth 달성, buyback 지속 시사",
+    "owner_earnings": "Alphabet Stock Is Going to Soar 평가와 AI Monetization Continues to Spearhead Results로 실적 모멘텀 확인"
+   }
   },
   "MSFT": {
    "as_of": "2026-10-17",
@@ -1699,5 +1726,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-17 17:05"
+ "scout_label": "2026-10-17 22:07"
 }
