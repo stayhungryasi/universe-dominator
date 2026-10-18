@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-18 10:20",
- "generated_at": "2026-10-18T10:20:06.164284+09:00",
+ "generated_label": "2026-10-18 17:17",
+ "generated_at": "2026-10-18T17:17:39.513111+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-18",
@@ -1192,7 +1192,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1210,7 +1210,27 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "notes": "271% 랠리 후 밸류에이션 과열, 저마진 OEM 비즈니스 구조상 수익성 제약이 주가 반영 불충분",
+   "_evidence": {
+    "franchise": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength",
+    "risk5": "Barclays downgrades Dell stock after sharp rally; Growth priced in already; Dell CEO Expects Memory Shortage to Worsen in 2027",
+    "capalloc": "Dell stock price tumbles 6.8% after epic 271% run; lifting fiscal 2027 forecast"
+   }
   },
   "PANW": {
    "as_of": "2026-10-18",
@@ -1646,26 +1666,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1
-   },
-   "notes": "시클리컬 장비사로서 AI 수요 사이클에 극도로 민감하며 단기 밸류에이션 변동성 심각",
-   "_evidence": {
-    "franchise": "Google News와 Yahoo Finance의 'AI Test Showcase' 및 'Nvidia supplier' 관련 헤드라인들로부터 AI 테스트 장비의 필수불가결성",
-    "risk5": "410% 1년 상승 후 밸류에이션 재평가 질문 발생 및 Nikkei의 3,200포인트 급락~반등의 극단적 변동성이 비즈니스 확실성과 가격 리스크를 모두 제시",
-    "capalloc": "강한 어닝 성장으로 추정되는 현금 생성 능력(Kioxia와 함께 AI 반도체 어닝 성장 지속)"
-   }
+   "confidence": "중"
   },
   "2308.TW": {
    "as_of": "2026-10-18",
@@ -1718,5 +1719,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-18 10:21"
+ "scout_label": "2026-10-18 17:19"
 }
