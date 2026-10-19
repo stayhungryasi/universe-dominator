@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-19 10:32",
- "generated_at": "2026-10-19T10:32:33.227776+09:00",
+ "generated_label": "2026-10-19 18:14",
+ "generated_at": "2026-10-19T18:14:03.391135+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-19",
@@ -95,11 +95,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "Services 성장은 견실하나 iPhone 수요 회복 불확실성과 성장 정체의 구조적 한계"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0237,
@@ -112,7 +108,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -130,30 +126,7 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "소비자 프랜차이즈 최강이나 활주로 최저 상태 지속 — AI 부양 시나리오는 미검증, 현재 밸류에이션은 성장 없는 프리미엄 과정",
-   "_evidence": {
-    "franchise": "Apple revenue guidance tops estimates on booming iPhone, Mac demand | Tim Cook's Final Apple Earnings Call Showed the Company Made More Quarterly Revenue Than It Booked in All of Fiscal 2011",
-    "risk5": "Apple's Earnings Divide Wall Street, But Retail Sees A Buying Opportunity | Does Apple (AAPL) Have A New AI Reason To Revive iPhone Upgrades? | Apple and Samsung Are Nearly Tied as Global Phone Shipments Collapse",
-    "capalloc": "Apple (AAPL) Q3 Earnings and Revenues Beat Estimates",
-    "owner_earnings": "Services Growth and iPhone Mix Set the Next Earnings Bar | Apple Could Be 20% Overvalued As Earnings And Dividend Land"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-19",
@@ -471,7 +444,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.69
+    "value": 1.66
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -1219,7 +1192,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1237,7 +1210,27 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1
+   },
+   "notes": "271% 랠리 후 시장 과열 우려로 다운그레이드 연쇄; 성장이 이미 주가에 반영됨",
+   "_evidence": {
+    "franchise": "AI 인프라 수요로 핵심 역할 확보, 하지만 경쟁 OEM과 교체 가능",
+    "risk5": "Barclays 다운그레이드는 AI 성장 둔화 우려; 경기순환 시클리컬 특성으로 수요 불확실성",
+    "capalloc": "AI 서버 강세로 매출 전망치 상향(fiscal 2027), 현금 창출 증대"
+   }
   },
   "PANW": {
    "as_of": "2026-10-19",
@@ -1507,12 +1500,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 성장이 명확하나 모바일 사이클 의존도 높고 주가 과열 신호 다수"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1522,29 +1510,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI 인프라 수혜로 실적 강세(Q2 NT$152.1B 초과 달성)이나 주가 급등(NT$3,670 사상고점, 연일 상한가)으로 밸류에이션 과도; Nvidia 투자(35억달러 전환사채)는 전략적 신뢰 신호이나 모바일 수요 둔화 리스크 상존",
-   "_evidence": {
-    "franchise": "MediaTek ASIC Revenue Doubles, Igniting Two-Day Limit-Up Surge; Foreign Brokers Call NT$5,000 Target / MediaTek Raises AI Market Share Target to 20%; First AI Accelerator to Enter Mass Production in Q4",
-    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday / 유형 시클리컬·모바일 사이클 종속 / Taiwan Stocks Plunge Over 600 Points Before Rebounding as TSMC Earnings Jitters Trigger Sell-Off",
-    "capalloc": "MediaTek Inc (TPE:2454) (Q2 2026) Earnings Call Highlights",
-    "owner_earnings": "MediaTek Surges by Daily Limit for Third Straight Day, Nearing NT$3,470; Could Face Trading Restrictions / Goldman Sees MediaTek at NT$5,000, Daiwa Cuts to Hold: The AI-Mobile Divide"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-10-19",
@@ -1690,7 +1656,12 @@
     "asof": "2026-03-31",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 테스트 수요 사이클 진폭이 크고 밸류에이션 검토 단계로 어닝 가시성 제한"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1700,7 +1671,27 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1
+   },
+   "notes": "410% 1년 상승 후 밸류에이션 재점검 국면, 시클리컬 사이클 진폭 큼",
+   "_evidence": {
+    "franchise": "Nvidia 공급업체로 AI 반도체 테스트 독점력, AI Test Showcase 주목도 높음",
+    "risk5": "Valuation Question Returns, Stock Price Volatility 명시, Pre-Earnings Jitters로 수요 사이클 변동성 확대",
+    "capalloc": "Strong Earnings, Semiconductor Earnings Growth 지속 중",
+    "owner_earnings": "Is It Too Late After 410% One-Year Surge 질문 제기로 현가치 추정 어려움"
+   }
   },
   "2308.TW": {
    "as_of": "2026-10-19",
@@ -1753,5 +1744,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-19 10:34"
+ "scout_label": "2026-10-19 18:15"
 }
