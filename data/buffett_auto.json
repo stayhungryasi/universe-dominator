@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-21 17:53",
- "generated_at": "2026-10-21T17:53:02.592030+09:00",
+ "generated_label": "2026-10-21 23:40",
+ "generated_at": "2026-10-21T23:40:34.770109+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-21",
@@ -32,7 +32,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "매출 성장은 가파르나 대형 고객의 자체칩 이탈로 사업 지속성 불확실"
+    }
    },
    "conversion": {
     "value": 1.1213,
@@ -45,7 +49,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -63,7 +67,31 @@
      "period": "2026Q3",
      "end": "2025-10-26"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "✕",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "AI 칩 수요 압도적이나 Google·Meta·Amazon 등 주요 세입자의 자체칩 전환 진행 중—장기 수익성 위협",
+   "_evidence": {
+    "franchise": "대형 세입자 전원이 자체칩으로 이탈 예고",
+    "risk5": "Evolving Competitive Risks; 자체칩 개발로 인한 고객 이탈 리스크",
+    "capalloc": "NVIDIA Announces a $150 Billion Share Repurchase Authorization Increase",
+    "owner_earnings": "Nvidia Stock Price Lags Massive Earnings Growth—but 10년 뒤 월세를 적을 수 없는 구조적 한계"
+   }
   },
   "AAPL": {
    "as_of": "2026-10-21",
@@ -444,7 +472,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.71
+    "value": 1.69
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -460,8 +488,8 @@
    },
    "owner_earnings": {
     "ai_view": {
-     "display": "C",
-     "reason": "유가 사이클 의존성으로 인한 이익의 예측 불가능성"
+     "display": "B",
+     "reason": "유가 사이클 의존성으로 인한 수익 예측 불가능성이 실질 보유자 수익의 신뢰도를 저해"
     }
    },
    "conversion": null,
@@ -483,20 +511,21 @@
     "business_certainty": "✕",
     "mgmt_ability": "○",
     "price": "✕",
-    "tax_inflation": "△"
+    "tax_inflation": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
     "debt_discipline": 1,
-    "score": 3
+    "score": 3,
+    "period": "2026H1"
    },
-   "notes": "구조적으로 유가 변동성에 지배되는 사이클리컬 기업으로서 장기 현금흐름 예측성 약화",
+   "notes": "지정학적 리스크(이란 전쟁, 본부 공격)와 유가 변동성이 구조적 한계; 기록적 이익 대비 현금흐름 위기 신호 모순.",
    "_evidence": {
-    "franchise": "Need와 No Substitute는 글로벌 에너지 수요의 본질적 특성 반영; Price Regulation은 OPEC+ 생산 조절과 지정학적 개입으로 인한 가격 통제 가능성",
-    "risk5": "Oil market may not normalize until 2027 경고문 - 구조적 불확실성; Aramco's Record Profits Hide a Growing Cash Flow Crisis - 이익과 현금흐름의 괴리; 경영진 능력은 다우 존스 편입 및 글로벌 거대 자본 운영 입증",
-    "capalloc": "Record Profits와 25% 이익 증가로 현금 창출 확인; 전통적 에너지 기업의 배당금 및 자사주 매입 관행",
-    "owner_earnings": "유가 사이클이 쿠폰을 결정한다는 구조적 한계로 정상화된 순이익 추정 곤란"
+    "franchise": "전 지구적 에너지 수급에서 대체 불가능한 저원가 공급자",
+    "risk5": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계; Oil market may not normalize until 2027; 이란 전쟁으로 가격 상승 모멘텀 일시적",
+    "capalloc": "Q4 2025 강한 현금흐름; 스탠드얼론 가스사업 $100B 밸류에이션 검토 중(재배분 신호); 프랑스 기업과 $3.7B 계약(성장투자)",
+    "owner_earnings": "Aramco's Record Profits Hide a Growing Cash Flow Crisis — 회계이익과 현금창출 괴리"
    }
   },
   "META": {
@@ -1509,12 +1538,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 성장 모멘텀이 뚜렷하나 모바일 사이클 종속성으로 인한 수익 변동성 상존"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1524,29 +1548,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "AI 인프라 투자 수혜로 구조적 전환 중이나, 구글·엔비디아 고객 집중도 위험과 모바일 침체 리스크 병존",
-   "_evidence": {
-    "franchise": "MediaTek ASIC Revenue Doubles, AI 시장점유율 20% 목표, Q2 매출 기록 경신 (NT$152.1B) - 모바일에서 데이터센터로의 포트폴리오 다각화",
-    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast로 인한 4% 하락 - 주요 고객 의존도 민감성; 골드만삭스 NT$5,000 vs 다이와 하향 평가의 엇갈림",
-    "capalloc": "Q2 2026 매출 가이던스 상향 달성, 엔비디아 $3.5B 컨버터블본드 투자 유입으로 현금 유동성 강화",
-    "owner_earnings": "AI ASIC 매출 2배 성장 및 Q4 양산 시작, 데이터센터 매출 $2B 이상 예상이나 모바일 수익의 사이클적 변동성"
-   }
+   "confidence": "중"
   },
   "MRVL": {
    "as_of": "2026-10-21",
@@ -1755,5 +1757,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-21 17:54"
+ "scout_label": "2026-10-21 23:42"
 }
