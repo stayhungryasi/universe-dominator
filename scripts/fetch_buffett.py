@@ -256,6 +256,21 @@ def pass_price(eps_ttm, g, rate_pct):
     return round(eps * ((1.0 + gg) ** 10) / (3.0 * (r / 100.0)), 2)
 
 
+def required_growth(eps_ttm, price, rate_pct, mult=3.0):
+    """가격이 요구하는 10년 성장률 — 쿠폰이 국채×mult 와 같아지는 g (F6).
+
+        (eps/price)×(1+g)^10 = mult×r   →   g = (mult×r×price/eps)^(1/10) − 1
+
+    판정을 바꾸는 값이 아니다: 가정 g 가 상한(20%)에 걸린 종목이 '통과'로 보일 때
+    **그 가격이 실제로 요구하는 성장**을 나란히 적기 위한 측정값이다.
+    eps·price·금리 중 하나라도 없거나 0 이하면 None(적자에서의 요구 성장률은 숫자가 아니다).
+    """
+    eps, p, r = _num(eps_ttm), _num(price), _num(rate_pct)
+    if eps is None or p is None or r is None or eps <= 0 or p <= 0 or r <= 0:
+        return None
+    return round((mult * (r / 100.0) * p / eps) ** 0.1 - 1.0, 6)
+
+
 def _dlog(a, b):
     """log(b/a) — 둘 다 양수일 때만. 아니면 None(0 으로 치지 않는다)."""
     a, b = _num(a), _num(b)
@@ -523,6 +538,9 @@ def measure_bench(c, price, rates, prev_bench=None):
         "roe_minus_2x10y": (None if (roe is None or rate is None)
                             else round(roe - 2.0 * rate / 100.0, 6)),
         "coupon10y": None, "zone_buffett": None, "cause": None, "note": "",
+        # 가격이 요구하는 성장률(통과선·1.5배선) — 상한 의존 표식의 재료(F6)
+        "required_g": required_growth(eps_ttm, price, rate, 3.0),
+        "required_g_prove": required_growth(eps_ttm, price, rate, 1.5),
         # 이익 결측 사유(상태에서 생성) · 사람 취재 EPS 사용 여부
         "eps_note": "" if eps_ttm is not None else eps_note(b.get("eps_status"), c.get("type")),
         "eps_from_human": eps_human,

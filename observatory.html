@@ -238,6 +238,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .lg-watch b { color: var(--gold); font-weight: 800; }
 /* 존 요약 스트립 — 시차 관측의 .px-zone 을 그대로 쓰고 클릭만 얹는다 */
 .px-zone.lg-pick { cursor: pointer; }
+.px-zone .z-sub { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 2px; }
 .px-zone.lg-pick:hover { border-color: var(--gold); }
 .px-zone.lg-on { border-color: var(--gold); }
 .px-zone.lg-on .z-n { color: var(--gold); }
@@ -1754,6 +1755,17 @@ const LG_GLOSSARY =
 /* "자동" 라벨 — 그 칸을 기계가 채웠을 때만. 사람 값에는 아무 표식도 붙이지 않는다
    (표식이 없는 것이 사람이 적었다는 뜻이다). 자동값에 사람의 권위를 씌우지 않는 것이
    이 라벨의 존재 이유다 — 공시 추출·AI 판정은 틀릴 수 있고, 화면이 그 사실을 말해야 한다. */
+/* 사업 확실성 ✕ — 판단층 유형이 '추정불가'이거나 risk5 사업 확실성이 ✕ 인 종목.
+   존(측정층)은 그대로 두고 **표시만** 가른다: 산술상 통과일 뿐 버핏 기준으론 추정 불가다(F6). */
+function lgUncertain(x, j){
+  return ((x.type || '').indexOf('추정불가') >= 0) || ((j || {}).cert === '✕');
+}
+const LG_ARITH_TIP = '사업 확실성 ✕ — 산술상 통과일 뿐, 버핏 기준으로는 추정 불가(2000 서한)';
+/* 상한 의존 — 가정 g 가 상한에 걸려 있다. 문구는 측정값(상한·요구 성장)에서 만든다 */
+function lgCapTip(b){
+  return '가정 성장률이 상한 ' + lgPct(b.g_used, 0) + '에 걸려 있습니다' +
+    (b.required_g != null ? ' — 가격이 요구하는 성장 ' + lgPct(b.required_g) : '');
+}
 const LG_WEAK_TIP = '전망치만으로 세운 가정입니다 — 과거 실적 성장률로 교차 검증되지 ' +
   '않았습니다. 숫자는 나왔지만 그 숫자를 받쳐주는 실적 이력이 없다는 뜻입니다.';
 const LG_AUTO_TIP = '기계가 채운 값 — 공시(SEC XBRL) 추출 또는 AI 취재입니다. ' +
@@ -1985,6 +1997,12 @@ function lgRow(x, lg){
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다
       (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">가정 약함</span>' : '') +
+      // 사업 확실성 ✕ 인데 산술상 통과 — 존은 측정층 그대로, 표식만(F6)
+      ((b.zone_buffett === 'pass' && lgUncertain(x, j))
+        ? '<span class="lg-auto" title="' + esc(LG_ARITH_TIP) + '">산술</span>' : '') +
+      // 가정 g 가 상한에 걸린 판정 — 가격이 요구하는 성장을 툴팁에(F6)
+      ((b.g_capped_from != null && b.coupon10y != null && !(j.guard || b.guard) && !b.hold)
+        ? '<span class="lg-auto" title="' + esc(lgCapTip(b)) + '">상한 의존</span>' : '') +
       lgEdge(b) +
       (function(){ const n = lgNote(b, j);
         return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
@@ -2042,16 +2060,21 @@ function renderLegend(){
   // 숨기는 장치가 아니라 **소음을 접는** 장치다: 합계는 언제나 전 종목이다.
   const tally = {};
   LG_ORDER.forEach(k => { tally[k] = 0; });
+  let passUncertain = 0;      // 통과 중 사업 확실성 ✕ — 헤드라인에서 분리해 말한다(F6)
   items.forEach(x => {
     const z = ((x.bench || {}).zone_buffett) || 'untested';
     tally[z] = (tally[z] || 0) + 1;
+    if (z === 'pass' && lgUncertain(x, lg[x.ticker])) passUncertain++;
   });
   html += '<div class="px-strip">' + LG_ORDER.map(k =>
     '<div class="px-zone lg-pick' + (lgFilter === k ? ' lg-on' : '') +
     '" onclick="lgSetFilter(\'' + k + '\')" role="button" tabindex="0">' +
     '<div class="z-name">' + LG_ZONE_KO[k] + '</div>' +
     '<div class="z-n">' + tally[k] + '<span style="font-size:12px;font-weight:700">종</span>' +
-    '</div></div>').join('') + '</div>' +
+    '</div>' + ((k === 'pass' && passUncertain)
+      ? '<div class="z-sub" title="' + esc(LG_ARITH_TIP) + '">그중 사업확실성 ✕ ' +
+        passUncertain + '</div>' : '') +
+    '</div>').join('') + '</div>' +
     '<div class="px-stripnote">합계 ' + items.length + '종' +
     (lgFilter ? ' · <b>' + LG_ZONE_KO[lgFilter] + '</b>만 보는 중 — ' +
        '<a href="#legend" onclick="lgSetFilter(null);return false;">전체 보기</a>' : '') +

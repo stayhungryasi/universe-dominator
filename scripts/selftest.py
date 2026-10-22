@@ -1067,6 +1067,55 @@ console.log(JSON.stringify(cases.map(c => {
               ("3배·1.5배 경계는 버핏의 숫자가 아니라" in _t5, "경계값 3배·1.5배는 자작" in _t5),
               (True, True))
 
+    # ── '통과' 집계의 산술 통과 분리 + 상한 의존 (2026-10-22 원천 대조 F6) ────────
+    # 막으려는 것 한 문장: **사업확실성 ✕ 종목의 산술 통과와 상한에 기댄 통과가 아무 표식 없이
+    # '통과' 헤드라인에 섞이는 것.** NVDA: 판단층 유형 추정불가인데 zone=pass, 그 통과는
+    # g 20% 상한의 산물(가격이 요구하는 성장 17.3%). 측정층 zone 은 그대로 둔다.
+    _rg = _fb.required_growth(6.9334, 221.97, 5.12)
+    check("F6 요구 성장: NVDA 17.3% (= (3r·P/E)^(1/10) − 1)", round(_rg, 3), 0.173)
+    check("F6 요구 성장: 1.5배선은 더 낮다",
+          round(_fb.required_growth(6.9334, 221.97, 5.12, 1.5), 3), round((1.5 * 0.0512 * 221.97 / 6.9334) ** 0.1 - 1, 3))
+    check("F6 요구 성장: 적자·가격 없음·금리 없음은 None",
+          (_fb.required_growth(-1.0, 100.0, 5.0), _fb.required_growth(1.0, None, 5.0),
+           _fb.required_growth(1.0, 100.0, None)), (None, None, None))
+    _nv6 = _fb.measure_bench({"ticker": "NVDA", "type": "추정불가",
+                              "buffett": {"eps_adj_ttm": 6.9334, "g_cagr3y": 2.0,
+                                          "g_forward": 0.237}}, 221.97, {"UST10": 5.12})
+    check("F6 측정층: zone 은 그대로 pass(표시만 가른다)", _nv6["zone_buffett"], "pass")
+    check("F6 측정층: required_g·required_g_prove 기록",
+          (_nv6.get("required_g") is not None, _nv6.get("required_g_prove") is not None), (True, True))
+    # 표시층을 node 로 그대로 렌더한다 — 헤드라인·표식은 상태에서 만들어져야 한다
+    import json as _j6, re as _re6, shutil as _sh6, subprocess as _sp6
+    _tpl6 = (Path(__file__).parent / "observatory-template.html").read_text(encoding="utf-8")
+    _sec6 = _re6.search(r"/\* ── 레전드벤치마크 \(표시층\).*?(?=/\* 🛰 무인 탐사선)", _tpl6, _re6.S)
+    check("F6 표시층: 레전드 구간을 찾는다", _sec6 is not None, True)
+    if _sec6 is not None and _sh6.which("node") is None:
+        check("F6 표시층: node 필요(렌더 실측)", None, "node")
+    elif _sec6 is not None:
+        _ts6 = _fb.measure_bench({"ticker": "TSM", "type": "플라이트세이프티형",
+                                  "buffett": {"eps_adj_ttm": 15.43, "g_cagr3y": 0.2,
+                                              "g_forward": 0.175}}, 431.89, {"UST10": 5.12})
+        _data6 = {"buffett": {"items": [
+            {"ticker": "NVDA", "name": "NVIDIA", "type": "추정불가", "bench": _nv6, "currency": "USD"},
+            {"ticker": "TSM", "name": "TSMC", "type": "플라이트세이프티형", "bench": _ts6,
+             "currency": "USD"}], "rates": {"UST10": 5.12}, "generated_label": "x"},
+            "legend": {"NVDA": {"origin": {}}, "TSM": {"origin": {}}}, "legend_meta": {}}
+        _js6 = ("const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;')"
+                ".replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');"
+                "const host = {innerHTML: ''}; const document = {getElementById: () => host};"
+                "const DATA = " + _j6.dumps(_data6, ensure_ascii=False) + ";"
+                + _sec6.group(0) + ";renderLegend(); console.log(host.innerHTML);")
+        _p6 = _sp6.run(["node"], input=_js6, capture_output=True, text=True, encoding="utf-8")
+        _h6 = _p6.stdout
+        if _p6.returncode != 0:
+            print(f"  [F6] node 실패: {_p6.stderr[:400]}", file=sys.stderr)
+        check("F6 헤드라인: 통과 2 · 그중 사업확실성 ✕ 1", "그중 사업확실성 ✕ 1" in _h6, True)
+        check("F6 행: 사업확실성 ✕ 의 통과에만 '산술' 표식(1건)", _h6.count(">산술<"), 1)
+        check("F6 행: 상한에 걸린 g 는 '상한 의존' + 가격이 요구하는 성장",
+              ("상한 의존" in _h6, "가정 성장률이 상한 20%에 걸려 있습니다 — 가격이 요구하는 성장 17.3%" in _h6),
+              (True, True))
+        check("F6 행: 상한에 안 걸린 통과(TSM)엔 상한 의존 없음", _h6.count("상한 의존"), 1)
+
     # ── 레전드 측정층은 34종 전원 시세를 부른다 (2026-09-05) ─────────────────
     # 막으려던 것: **시차 관측의 원칙 바구니가 레전드 판정까지 막는 것.**
     # '추정불가 = 시세 미호출' 은 괴리(정당 MAX)를 안 매기겠다는 시차 쪽 규칙인데,
