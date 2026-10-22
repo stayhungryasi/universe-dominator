@@ -679,14 +679,240 @@ def xbrl_roe(flat, window):
     되돌려 만들었는데, 주식수 태그가 없는 회사(AVGO·GOOG — EPS 역산 경로)는 0 이 되어
     비고도 없이 빠졌다. 같은 창에서 이미 잰 합계를 쓰면 되돌릴 일이 없다.
     """
-    eq, _ = pick(flat, EQUITY_TAGS)
-    gw, _ = pick(flat, GOODWILL_TAGS)
-    intan, _ = pick(flat, INTANGIBLE_TAGS)
-    gi = None if gw is None and intan is None else (gw or 0.0) + (intan or 0.0)
+    eq, _src = equity_of(flat)
+    gi = goodwill_intangibles(flat)
     ni = sum(x[2]["adj"] for x in window) if window else None
     roe, status = roe_state(eq, gi, ni)
     return roe, {"kind": "xbrl", "basis": "SEC XBRL 조정", "status": status,
                  "equity": eq, "goodwill_intangibles": gi, "net_income_ttm": ni}
+
+
+# ── 자기자본 찾기 (2026-10-22 원천 대조 F3) ─────────────────────────────────────
+# 2026-10-07 19:36 회차부터 미국 22종 유형 ROE 가 전멸했다(equity_missing). 로그에는
+# '자본 None · 영업권+무형 None' — 최신 보고(reports[0])의 대차대조표에 자본도 영업권도
+# 없었다. 같은 보고의 손익(희석주식수)은 멀쩡했고, 같은 날 분기 창이 일괄 한 칸 점프했다
+# (원천이 두 달 묵은 공시를 한꺼번에 들인 날). 원인 확증은 원천 응답을 봐야 하지만,
+# 어느 쪽이든 **최신 한 건에 고정한 것**이 축 하나를 통째로 죽였다. 그래서:
+#   ① 최신부터 최대 4건(분기·연간 합쳐 종료일순)을 훑어 자본이 있는 첫 보고를 쓴다
+#   ② 자본 태그가 없으면 '부채와자본총계 − 부채총계' 로 파생한다
+#   ③ 그래도 없으면 SEC 공식 API(companyconcept)에서 직접 읽는다
+# 이익 창보다 오래된 자본을 쓰면 그 간격(분기)을 남긴다 — 숨긴 지연은 지연이 아니라 오류다.
+EQUITY_SCAN = 4
+SEC_MAX_LAG_Q = 2           # SEC 폴백 자본이 이익 창보다 이 분기 수를 넘게 낡으면 쓰지 않는다
+TOTAL_LSE_TAGS = ["LiabilitiesAndStockholdersEquity"]
+LIABILITIES_TAGS = ["Liabilities"]
+SEC_INTANGIBLE_CONCEPTS = ["IntangibleAssetsNetExcludingGoodwill", "FiniteLivedIntangibleAssetsNet"]
+
+
+def equity_of(flat):
+    """한 보고의 자기자본 → (값, 출처 'reported'|'derived') | (None, None)."""
+    eq, _ = pick(flat, EQUITY_TAGS)
+    if eq is not None:
+        return eq, "reported"
+    lse, _ = pick(flat, TOTAL_LSE_TAGS)
+    li, _ = pick(flat, LIABILITIES_TAGS)
+    if lse is not None and li is not None:
+        return lse - li, "derived"
+    return None, None
+
+
+def goodwill_intangibles(flat):
+    gw, _ = pick(flat, GOODWILL_TAGS)
+    intan, _ = pick(flat, INTANGIBLE_TAGS)
+    return None if gw is None and intan is None else (gw or 0.0) + (intan or 0.0)
+
+
+def recent_reports(reports, annual=(), n=EQUITY_SCAN):
+    """분기·연간 보고를 **종료일 최신순**으로 합쳐 앞 n 건. 종료일 없는 보고는 뒤(원래 순서)."""
+    seq = list(reports or []) + list(annual or [])
+    dated = [r for r in seq if end_of(r)]
+    undated = [r for r in seq if not end_of(r)]
+    dated.sort(key=lambda r: end_of(r), reverse=True)
+    return (dated + undated)[:n]
+
+
+def lag_quarters(window_end, equity_end):
+    """이익 창 최신 분기말 대비 자본 기준일의 지연(분기). 잴 수 없거나 앞서면 0."""
+    try:
+        d = (datetime.strptime(window_end, "%Y-%m-%d")
+             - datetime.strptime(equity_end, "%Y-%m-%d")).days
+    except (TypeError, ValueError):
+        return 0
+    return max(0, round(d / 91.3))
+
+
+def equity_scan(reports, annual=()):
+    """최신 4건에서 자본이 있는 첫 보고 → 찾은 것 묶음 | None. **순수 함수**."""
+    for i, r in enumerate(recent_reports(reports, annual)):
+        flat = flatten((r or {}).get("report"))
+        eq, src = equity_of(flat)
+        if eq is None:
+            continue
+        return {"equity": eq, "goodwill_intangibles": goodwill_intangibles(flat),
+                "source": src, "end": end_of(r), "rank": i,
+                "label": f"{(r or {}).get('year')}Q{(r or {}).get('quarter')} "
+                         f"{(r or {}).get('form') or ''}".strip()}
+    return None
+
+
+def bs_diag(reports, annual=()):
+    """진단 한 줄 묶음 — 최신 보고들의 기간·양식·대차대조표 줄 수·자본 관련 항목.
+
+    '없다'만 찍으면 다음에도 헤맨다(침묵은 통과가 아니다). 원천 스키마가 바뀐 것인지
+    (bs 구역 자체가 비었나 / 이름이 바뀌었나) 다음 회차 로그에서 가를 수 있게 남긴다.
+    """
+    out = []
+    for r in recent_reports(reports, annual):
+        rep = (r or {}).get("report") or {}
+        bs = rep.get("bs") if isinstance(rep.get("bs"), list) else []
+        eqc = sorted({str((x or {}).get("concept")) for x in bs
+                      if "equity" in str((x or {}).get("concept")).lower()})[:4]
+        out.append(f"{(r or {}).get('year')}Q{(r or {}).get('quarter')}/{(r or {}).get('form')}"
+                   f"/{str((r or {}).get('startDate'))[:10]}~{end_of(r)}"
+                   f"/filed {str((r or {}).get('filedDate'))[:10]}"
+                   f"/bs {len(bs)}줄/자본항목 {','.join(eqc) or '없음'}")
+    return out
+
+
+def sec_latest(doc, end=None):
+    """SEC companyconcept 응답 → (값, 종료일) | (None, None). **순수 함수**.
+
+    10-Q·10-K 의 시점값만 본다. end 를 주면 그 날짜의 값만(영업권을 자본과 같은 날로 맞춘다).
+    """
+    best = None
+    for unit in ((doc or {}).get("units") or {}).values():
+        for f in unit or []:
+            if str(f.get("form", "")) not in ("10-Q", "10-K", "10-Q/A", "10-K/A"):
+                continue
+            v, e = to_num(f.get("val")), str(f.get("end") or "")[:10]
+            if v is None or len(e) != 10 or (end and e != end):
+                continue
+            if best is None or e > best[1] or (e == best[1] and str(f.get("filed", "")) > best[2]):
+                best = (v, e, str(f.get("filed", "")))
+    return (best[0], best[1]) if best else (None, None)
+
+
+_SEC_TICKERS = {}
+
+
+def cik_for(ticker, reports):
+    """CIK — 대체 조회 사슬(XBRL_ALIASES)의 CIK → 원천 응답의 cik → SEC 티커 목록."""
+    for kind, val in XBRL_ALIASES.get(ticker, []):
+        if kind == "cik":
+            return str(val)
+    for r in reports or []:
+        c = str((r or {}).get("cik") or "").strip()
+        if c.isdigit():
+            return c
+    return _SEC_TICKERS.get(ticker.upper().replace("-", "."))
+
+
+def _sec_get(url, ua):
+    """SEC GET → (json|None, 상태). 초당 10회 한도 — 호출마다 0.15초 쉰다."""
+    try:
+        r = requests.get(url, headers={"User-Agent": ua}, timeout=25)
+        time.sleep(0.15)
+        if r.status_code == 404:
+            return None, "zero"
+        if r.status_code != 200:
+            return None, f"http_{r.status_code}"
+        return r.json(), "ok"
+    except Exception as e:
+        print(f"[자동취재] SEC 조회 실패 ({type(e).__name__})", file=sys.stderr)
+        return None, "timeout"
+
+
+def load_sec_tickers(ua):
+    """SEC 티커→CIK 목록(1회). 실패해도 계속한다 — 원천 응답의 cik 가 1순위다."""
+    if _SEC_TICKERS or not ua:
+        return
+    doc, st = _sec_get("https://www.sec.gov/files/company_tickers.json", ua)
+    for row in (doc or {}).values() if isinstance(doc, dict) else []:
+        t, c = str(row.get("ticker", "")).upper(), row.get("cik_str")
+        if t and c:
+            _SEC_TICKERS[t] = str(c)
+    if st != "ok":
+        print(f"[자동취재] SEC 티커 목록 미확보({st}) — 원천 응답의 cik 만 쓴다", file=sys.stderr)
+
+
+def sec_equity(cik, ua):
+    """SEC 공식 API 로 자기자본·영업권·무형 → (찾은 것 묶음|None, 상태)."""
+    base = "https://data.sec.gov/api/xbrl/companyconcept/CIK{:0>10}/us-gaap/{}.json"
+    # 자본 개념은 **둘 다** 읽고 가장 최신 것을 쓴다. 첫 응답에서 멈추면 회사가 개념을
+    # 갈아탄 경우 옛 값이 조용히 쓰인다(실측: AVGO 의 StockholdersEquity 는 2019-11 에서
+    # 멈췄고, 그 뒤는 비지배지분 포함 개념으로만 공시한다).
+    eq, end, sts = None, None, []
+    for concept in EQUITY_TAGS:
+        doc, st = _sec_get(base.format(cik, concept), ua)
+        sts.append(st)
+        v, e = sec_latest(doc)
+        if v is not None and (end is None or e > end):
+            eq, end = v, e
+    if eq is None:
+        bad = [x for x in sts if x not in ("ok", "zero")]
+        return None, (bad[0] if bad else "zero")
+    gw, _ = sec_latest(_sec_get(base.format(cik, "Goodwill"), ua)[0], end)
+    intan = None
+    for concept in SEC_INTANGIBLE_CONCEPTS:
+        intan, _ = sec_latest(_sec_get(base.format(cik, concept), ua)[0], end)
+        if intan is not None:
+            break
+    gi = None if gw is None and intan is None else (gw or 0.0) + (intan or 0.0)
+    return {"equity": eq, "goodwill_intangibles": gi, "source": "sec", "end": end,
+            "rank": None, "label": f"SEC companyconcept {end}"}, "ok"
+
+
+def us_roe(ticker, reports, window, sec_ua=None, sec_fetch=None):
+    """미국 공시 경로 유형 ROE — 최신 4건 훑기 → 파생 → SEC 폴백 → (값|None, 근거 묶음).
+
+    sec_fetch 는 시험용 주입구(cik, ua) → (묶음|None, 상태). 기본은 sec_equity.
+    """
+    annual = getattr(reports, "annual", ())
+    ni = sum(x[2]["adj"] for x in window) if window else None
+    found = equity_scan(reports, annual)
+    sec_status = None
+    if found is None:
+        for line in bs_diag(reports, annual):
+            print(f"[자동취재] {ticker}: 자본 진단 — {line}", file=sys.stderr)
+        if not sec_ua:
+            sec_status = "no_user_agent"
+            print(f"[자동취재] {ticker}: SEC_USER_AGENT 없음 — SEC 자본 폴백 생략", file=sys.stderr)
+        else:
+            if sec_fetch is None:
+                load_sec_tickers(sec_ua)
+            cik = cik_for(ticker, reports)
+            if not cik:
+                sec_status = "no_cik"
+            else:
+                found, sec_status = (sec_fetch or sec_equity)(cik, sec_ua)
+            print(f"[자동취재] {ticker}: SEC 자본 폴백 — {sec_status}"
+                  + (f" (기준 {found['end']})" if found else ""), file=sys.stderr)
+        if found and lag_quarters(window[0][4] if window and len(window[0]) > 4 else None,
+                                  found.get("end")) > SEC_MAX_LAG_Q:
+            # 공식 원천이라도 낡은 자본은 쓰지 않는다 — 신선도 가드(STALE_TTM_DAYS)와 같은 뿌리
+            print(f"[자동취재] {ticker}: SEC 자본 기준 {found['end']} — 이익 창보다 "
+                  f"{SEC_MAX_LAG_Q}분기 넘게 낡아 폐기", file=sys.stderr)
+            found, sec_status = None, "stale"
+    elif found["rank"]:
+        print(f"[자동취재] {ticker}: 최신 보고에 자본 없음 → {found['rank'] + 1}번째 "
+              f"({found['label']}, 종료 {found['end']})에서 채택", file=sys.stderr)
+        for line in bs_diag(reports, annual)[:found["rank"]]:
+            print(f"[자동취재] {ticker}: 자본 진단 — {line}", file=sys.stderr)
+    eq = (found or {}).get("equity")
+    gi = (found or {}).get("goodwill_intangibles")
+    roe, status = roe_state(eq, gi, ni)
+    rb = {"kind": "xbrl", "basis": "SEC XBRL 조정", "status": status,
+          "equity": eq, "goodwill_intangibles": gi, "net_income_ttm": ni,
+          "asof": (found or {}).get("end")}
+    if found:
+        rb["equity_source"] = found["source"]
+        lag = lag_quarters(window[0][4] if window and len(window[0]) > 4 else None,
+                           found.get("end"))
+        if lag:
+            rb["equity_lag_q"] = lag
+    if sec_status:
+        rb["sec_status"] = sec_status
+    return roe, rb
 
 
 # yfinance 대차대조표 행 이름 — 버전·시장마다 영업권 행이 따로 오기도, 합계만 오기도 한다
@@ -1078,6 +1304,13 @@ def build_block(c, key, now):
               f"(종료 {stale['end']}, {stale['age_days']}일 경과 > {STALE_TTM_DAYS})"
               f" → eps_adj_ttm 폐기{fb} · 조립된 분기: {', '.join(got) or '없음'}",
               file=sys.stderr)
+        # 원천 라벨 그대로(연·분기·양식·기간) — 회계연도 매핑 문제인지 원천 정지인지 가르는 재료
+        #   (F7 CRWD: 1월 결산 회사의 '연도' 라벨이 회계연도인지 달력연도인지)
+        raw = [f"{(r or {}).get('year')}Q{(r or {}).get('quarter')}/{(r or {}).get('form')}"
+               f"/{str((r or {}).get('startDate'))[:10]}~{end_of(r)}"
+               for r in recent_reports(reports, (), n=10)]
+        print(f"[자동취재] {ticker}: 원천 분기 라벨(최신 10건) — {' · '.join(raw) or '없음'}",
+              file=sys.stderr)
         STALE_DISCARDED.append({"ticker": ticker, "period": stale["period"],
                                 "end": stale["end"], "age_days": stale["age_days"],
                                 "fallback": stale["fallback"], "assembled": got})
@@ -1137,8 +1370,8 @@ def build_block(c, key, now):
                 # 원인을 로그에 남긴다 — 태그 미매핑이면 다음 회차에 맞출 단서가 된다
                 print(f"[자동취재] {ticker}: 전환율 미산출 — {cst['state']} "
                       f"{cst.get('missing') or ''}".rstrip(), file=sys.stderr)
-        roe, rb = xbrl_roe(flatten(latest.get("report")), win)
-        rb["asof"] = end_of(latest)
+        roe, rb = us_roe(ticker, reports, win,
+                         sec_ua=os.environ.get("SEC_USER_AGENT", "").strip())
         block["roe_tangible"], block["roe_basis"] = roe, rb
         if roe is None:
             # 원인별 문구는 측정층(fetch_buffett.roe_note)이 상태에서 만든다 — 여기는 로그만

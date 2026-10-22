@@ -273,6 +273,29 @@ def judge_buffett(buf, state, today, cfg):
     return out, cur
 
 
+def judge_coverage(buf, state, today):
+    """레전드 축 커버리지 — 미국 판정 대상 유형 ROE 측정 수가 **직전 회차의 절반 이하**로
+    떨어지면 경보 1건(2026-10-22 F3).
+
+    이 수치가 0 이면 무엇이 잘못된 것인가(규칙 ①): '세상이 조용하다'가 아니다 — 대차대조표는
+    매 분기 반드시 있다. 0 은 **원천 스키마나 수집 경로가 끊긴 것**이다. 그래서 활동 지표가 아니라
+    장애 지표로 다룬다. 비교 기준은 직전 회차(날짜가 아니라) — 하루 안에서도 꺼질 수 있다.
+    직전 값을 갱신하므로 같은 붕괴로 두 번 울지 않는다(정확히 1건).
+    """
+    cov = (buf or {}).get("coverage") if isinstance(buf, dict) else None
+    cur = (cov or {}).get("roe_us") if isinstance(cov, dict) else None
+    if not (isinstance(cur, list) and len(cur) == 2 and all(isinstance(v, int) for v in cur)):
+        return [], None
+    out = []
+    prev = (state.get("coverage") or {}).get("roe_us")
+    if isinstance(prev, list) and len(prev) == 2 and isinstance(prev[0], int)             and prev[0] > 0 and cur[0] <= prev[0] / 2:
+        out.append(alert("coverage-roe-us",
+                         f"레전드: 미국 유형 ROE 측정 {prev[0]}/{prev[1]} → {cur[0]}/{cur[1]}"
+                         f" — 직전 회차의 절반 이하(원천 응답 구조 변화 의심)", today))
+    state["coverage"] = {"roe_us": cur, "at": today}
+    return out, cur
+
+
 def judge_snapshot(snap_dir, today):
     """③ 오늘 날짜 스냅샷 부재 → 경보 (시총 수집이 통째로 실패한 신호)."""
     if (Path(snap_dir) / f"{today}.json").exists():
@@ -575,7 +598,9 @@ def run():
     # 신호 판정은 fetch 원장이 먼저 필요하다 (판정 근거가 결과물 → 요청 결과로 바뀜)
     feed_status = read_json(DATA_DIR / "fetch_status.json", {}) or {}
     sig_alerts, sig_obs = judge_signals(feed_status, names, state, today, cfg)
-    buf_alerts, buf_cur = judge_buffett(read_json(DATA_DIR / "buffett.json", {}), state, today, cfg)
+    buf_doc = read_json(DATA_DIR / "buffett.json", {})
+    buf_alerts, buf_cur = judge_buffett(buf_doc, state, today, cfg)
+    cov_alerts, cov_cur = judge_coverage(buf_doc, state, today)
     snap_alerts = judge_snapshot(DATA_DIR / "snapshots", today)
     stale_alerts, stale_notes = judge_staleness(DATA_DIR, cfg, today, now)
     steps = parse_step_outcomes(os.environ.get("SENTINEL_STEPS"))
@@ -584,7 +609,7 @@ def run():
     mat_alerts = judge_materials(state, comp_state, today, cfg)
     feed_alerts, feed_seen = judge_feeds(feed_status, state, today, cfg)
 
-    alerts = (sig_alerts + buf_alerts + snap_alerts + stale_alerts
+    alerts = (sig_alerts + buf_alerts + cov_alerts + snap_alerts + stale_alerts
               + bot_alerts + mat_alerts + feed_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
@@ -596,6 +621,8 @@ def run():
                  for n in names if sig_obs.get(n, {}).get("outcome") == "미기록"]
     buf_part = (f" | buffett 측정 {buf_cur['measured']}·선행 {buf_cur['forward']}"
                 if buf_cur else " | buffett 없음")
+    if cov_cur:
+        buf_part += f" · 미국 ROE {cov_cur[0]}/{cov_cur[1]}"
     step_part = f" | 스텝 {steps}" if steps else ""
     pend = comp_state.get("materials_pending", 0)
     comp_part = f" | 동행 소재 잔존 {pend}" if pend else ""

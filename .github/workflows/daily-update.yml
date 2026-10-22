@@ -159,6 +159,9 @@ jobs:
         run: python scripts/fetch_buffett_auto.py || echo "::warning::fetch_buffett_auto 실패 — 자동 판단층은 기존 값 유지"
         env:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          # 자기자본 SEC 공식 폴백(companyconcept) — SEC 는 연락 가능한 User-Agent 필수.
+          # fetch_gurus.py 가 이미 쓰는 것과 같은 식별자다. 비우면 SEC 경로는 생략(로그·상태 남김).
+          SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
         continue-on-error: true
 
       # 레전드벤치마크 AI 취재 — 정성 칸(franchise·risk5·capalloc). 평시엔 침묵하고

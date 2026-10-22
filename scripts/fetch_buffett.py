@@ -613,6 +613,22 @@ def measure_gap(c, price, trailing_pe):
     return round(pe, 2), round(gap, 4), basis, (basis == "forward" and not cyclical), ""
 
 
+def coverage_of(items):
+    """미국 판정 대상의 축별 측정 커버리지 → {"roe_us": [측정, 대상], "eps_us": [측정, 대상]}.
+
+    판정 대상 = 미국 금리로 재는 종목 중 플로트형(사람 취재 전용 — 기계가 재지 않는다) 제외.
+    정비 관제탑이 이 숫자의 **급감**을 본다(2026-10-22 F3: 유형 ROE 가 2주간 22종 전멸했는데
+    경보가 0건이었다 — 축 하나가 통째로 죽어도 아무도 세지 않았다).
+    """
+    tgt = [x for x in items or []
+           if ((x.get("bench") or {}).get("market") == "UST10")
+           and "플로트형" not in (x.get("type") or "")]
+    n = len(tgt)
+    roe = sum(1 for x in tgt if (x.get("bench") or {}).get("roe_tangible") is not None)
+    eps = sum(1 for x in tgt if (x.get("bench") or {}).get("eps_adj_ttm") is not None)
+    return {"roe_us": [roe, n], "eps_us": [eps, n]}
+
+
 def load_prev():
     """이전 회차 산출물 — 금리 전일값 폴백과 cause 비교의 근거."""
     if not OUT_PATH.exists():
@@ -843,11 +859,16 @@ def main():
         "rates": rates,
         "items": out_items,
         "history": history,
+        # 축별 측정 커버리지 — 정비 관제탑(judge_coverage)이 회차 간 급감을 본다
+        "coverage": coverage_of(out_items),
     }
     OUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
 
     if used_key_box:
         print(f"[시차] Finnhub 후행 P/E 채택 키: {used_key_box[0]}")
+    cov = payload["coverage"]
+    print(f"[시차] 미국 판정 대상 커버리지 — 유형 ROE {cov['roe_us'][0]}/{cov['roe_us'][1]}"
+          f" · 조정 EPS {cov['eps_us'][0]}/{cov['eps_us'][1]}")
     print(f"[시차] 측정 {n_measured}종 / 원칙·미취재 제외 {n_skipped}종 / "
           f"시세실패 {n_unpriced}종 (전체 {len(items_cfg)}종)")
     zone_tally = {}

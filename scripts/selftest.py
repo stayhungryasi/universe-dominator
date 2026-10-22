@@ -927,6 +927,86 @@ def main():
     check("C 표시: 해외 자동 ROE 는 'GAAP 미조정' 표식 상태를 싣는다",
           _gb2.get("roe_unadjusted"), True)
 
+    # ── 유형 ROE 축 전멸 (2026-10-22 원천 대조 F3) ─────────────────────────────
+    # 막으려는 것 한 문장: **최신 보고 한 건에 대차대조표가 없다는 이유로 축 전체가 비는 것.**
+    # 2026-10-07 19:36 회차부터 미국 22종 유형 ROE 가 equity_missing — 로그엔 '자본 None ·
+    # 영업권+무형 None'. 최신 보고(reports[0])의 손익은 멀쩡했고 대차대조표만 없었다.
+    def _brep(y, q, bs=None, ic=None, form="10-Q", days=91, cik="1018724"):
+        end = _dt.date(y, 3 * q, 28)
+        r = {"year": y, "quarter": q, "form": form, "cik": cik,
+             "startDate": str(end - _dt.timedelta(days=days)), "endDate": str(end),
+             "report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": 1.0}]}}
+        if bs is not None:
+            r["report"]["bs"] = [{"concept": "us-gaap_" + k, "value": v} for k, v in bs]
+        return r
+    _r_new = _brep(2026, 2)                                           # 대차대조표 없는 최신 보고
+    _r_old = _brep(2026, 1, bs=[("StockholdersEquity", 500.0), ("Goodwill", 20.0)])
+    _ws = [(2026, 2, {"adj": 25.0}, "w", "2026-06-28")] +           [(y, q, {"adj": 25.0}, "w", None) for y, q in ((2026, 1), (2025, 4), (2025, 3))]
+    _roe0, _rb0 = _fa.us_roe("X", [_r_new, _r_old], _ws, sec_ua="")
+    check("F3 재현: 최신 보고에 자본이 없어도 4건 안에서 찾는다",
+          (_roe0, _rb0["status"]), (round(100.0 / 480.0, 4), "ok"))
+    check("F3 지연: 이익 창보다 오래된 자본은 분기 차를 남긴다", _rb0.get("equity_lag_q"), 1)
+    check("F3 출처: 보고된 자본", _rb0.get("equity_source"), "reported")
+    _r_der = _brep(2026, 2, bs=[("LiabilitiesAndStockholdersEquity", 900.0),
+                                ("Liabilities", 400.0)])
+    _roeD, _rbD = _fa.us_roe("X", [_r_der], _ws, sec_ua="")
+    check("F3 파생: 자본 태그가 없으면 부채와자본총계 − 부채총계",
+          (_rbD["equity"], _rbD.get("equity_source")), (500.0, "derived"))
+    check("F3 순서: 분기·연간을 종료일 최신순으로 합쳐 훑는다",
+          [_fa.end_of(r) for r in _fa.recent_reports(
+              [_brep(2026, 1), _brep(2025, 3)], [_brep(2025, 4, form="10-K", days=365)])],
+          ["2026-03-28", "2025-12-28", "2025-09-28"])
+    check("F3 훑기 한도: 5번째 보고의 자본은 쓰지 않는다(1년 넘게 낡음)",
+          _fa.equity_scan([_brep(2026, 2), _brep(2026, 1), _brep(2025, 4), _brep(2025, 3),
+                           _brep(2025, 2, bs=[("StockholdersEquity", 1.0)])]), None)
+    # SEC 공식 폴백 — 주입구로 원천을 흉내 낸다(네트워크 없음)
+    _sec_ok = lambda cik, ua: ({"equity": 600.0, "goodwill_intangibles": 100.0, "source": "sec",
+                                "end": "2026-06-30", "rank": None, "label": "SEC"}, "ok")
+    _roeS, _rbS = _fa.us_roe("X", [_r_new], _ws, sec_ua="UA test", sec_fetch=_sec_ok)
+    check("F3 SEC: 원천 응답에 자본이 없으면 SEC 공식 API 로",
+          (_roeS, _rbS.get("equity_source"), _rbS.get("sec_status")),
+          (0.2, "sec", "ok"))
+    _roeN, _rbN = _fa.us_roe("X", [_r_new], _ws, sec_ua="", sec_fetch=_sec_ok)
+    check("F3 SEC: User-Agent 가 없으면 생략하되 상태로 남긴다(조용히 넘기지 않는다)",
+          (_roeN, _rbN["status"], _rbN.get("sec_status")),
+          (None, "equity_missing", "no_user_agent"))
+    _sec_old = lambda cik, ua: ({"equity": 25.0, "goodwill_intangibles": 0.0, "source": "sec",
+                                 "end": "2019-11-03", "rank": None, "label": "SEC"}, "ok")
+    check("F3 SEC: 이익 창보다 2분기 넘게 낡은 자본은 폐기(AVGO 2019 개념 갈아타기 실측)",
+          _fa.us_roe("X", [_r_new], _ws, sec_ua="UA", sec_fetch=_sec_old)[1].get("sec_status"),
+          "stale")
+    _sec_403 = lambda cik, ua: (None, "http_403")
+    check("F3 SEC: 실패 코드도 상태로 남긴다",
+          _fa.us_roe("X", [_r_new], _ws, sec_ua="UA", sec_fetch=_sec_403)[1].get("sec_status"),
+          "http_403")
+    _doc = {"units": {"USD": [
+        {"end": "2026-03-31", "val": 10.0, "form": "10-Q", "filed": "2026-04-30"},
+        {"end": "2026-06-30", "val": 12.0, "form": "10-Q", "filed": "2026-07-31"},
+        {"end": "2026-06-30", "val": 99.0, "form": "8-K", "filed": "2026-08-01"},
+        {"end": "2025-12-31", "val": 11.0, "form": "10-K", "filed": "2026-02-01"}]}}
+    check("F3 SEC 파서: 10-Q·10-K 의 최신 시점값", _fa.sec_latest(_doc), (12.0, "2026-06-30"))
+    check("F3 SEC 파서: 날짜를 맞춘 값(영업권을 자본과 같은 날로)",
+          _fa.sec_latest(_doc, "2025-12-31"), (11.0, "2025-12-31"))
+    check("F3 CIK: 대체 조회 사슬의 CIK 를 재사용(GOOG)", _fa.cik_for("GOOG", []), "1652044")
+    check("F3 CIK: 원천 응답의 cik", _fa.cik_for("AMZN", [_r_new]), "1018724")
+    check("F3 비고: 자본 결측 문구는 그대로(기계 상태명 노출 없음)",
+          _fb.roe_note(_rbN), "자기자본 항목 미매핑 — ROE 산출 불가")
+    # (d) 재발 감시 — 커버리지를 산출물에 싣고, 관제탑이 회차 간 급감을 본다
+    _cov_items = [{"type": "씨즈형", "bench": {"market": "UST10", "roe_tangible": 0.3,
+                                               "eps_adj_ttm": 5.0}},
+                  {"type": "씨즈형", "bench": {"market": "UST10", "roe_tangible": None,
+                                               "eps_adj_ttm": 5.0}},
+                  {"type": "플로트형", "bench": {"market": "UST10", "roe_tangible": None}},
+                  {"type": "씨즈형", "bench": {"market": "TW10", "roe_tangible": 0.3}}]
+    check("F3 커버리지: 미국 판정 대상(플로트형 제외)만 센다",
+          _fb.coverage_of(_cov_items), {"roe_us": [1, 2], "eps_us": [2, 2]})
+    import pipeline_sentinel as _ps3
+    _cst = {"coverage": {"roe_us": [17, 22]}}
+    _ca, _ = _ps3.judge_coverage({"coverage": {"roe_us": [0, 22]}}, _cst, "2026-10-07")
+    check("F3 관제: 미국 ROE 축 붕괴는 경보 정확히 1건", len(_ca), 1)
+    check("F3 관제: 같은 붕괴로 다음 회차에 다시 울지 않는다",
+          _ps3.judge_coverage({"coverage": {"roe_us": [0, 22]}}, _cst, "2026-10-07")[0], [])
+
     # ── 레전드 측정층은 34종 전원 시세를 부른다 (2026-09-05) ─────────────────
     # 막으려던 것: **시차 관측의 원칙 바구니가 레전드 판정까지 막는 것.**
     # '추정불가 = 시세 미호출' 은 괴리(정당 MAX)를 안 매기겠다는 시차 쪽 규칙인데,

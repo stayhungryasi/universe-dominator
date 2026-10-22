@@ -584,6 +584,88 @@ class RunWiringTest(unittest.TestCase):
         self.assertIn("판정 보류", log, "판정 못 한 사실이 어디에도 안 남으면 침묵 실패다")
 
 
+def cov_doc(roe, n=21):
+    """buffett.json 픽스처 — 커버리지 칸만."""
+    return {"items": [], "coverage": {"roe_us": [roe, n], "eps_us": [n, n]}}
+
+
+class CoverageJudgeTest(unittest.TestCase):
+    """레전드 축 커버리지(2026-10-22 F3) — 유형 ROE 22종이 2주간 전멸했는데 경보 0건이었다."""
+
+    def setUp(self):
+        self.state = fresh_state()
+
+    def test_collapse_rings_exactly_once(self):
+        ps.judge_coverage(cov_doc(17), self.state, TODAY)              # 기준선
+        out, cur = ps.judge_coverage(cov_doc(0), self.state, TODAY)
+        self.assertEqual(len(out), 1, "축 붕괴는 정확히 1건")
+        self.assertIn("17/21 → 0/21", out[0]["text"])
+        out2, _ = ps.judge_coverage(cov_doc(0), self.state, TODAY)    # 다음 회차 — 같은 붕괴
+        self.assertEqual(out2, [], "같은 붕괴로 두 번 울지 않는다")
+
+    def test_half_is_the_line(self):
+        ps.judge_coverage(cov_doc(10), self.state, TODAY)
+        self.assertEqual(len(ps.judge_coverage(cov_doc(5), self.state, TODAY)[0]), 1)
+        ps.judge_coverage(cov_doc(10), self.state, TODAY)
+        self.assertEqual(ps.judge_coverage(cov_doc(6), self.state, TODAY)[0], [],
+                         "절반 초과 감소는 침묵(1~2종 결측은 일상)")
+
+    def test_first_run_is_baseline_only(self):
+        out, cur = ps.judge_coverage(cov_doc(0), self.state, TODAY)
+        self.assertEqual(out, [], "직전 회차가 없으면 기준선만 잡는다")
+        self.assertEqual(self.state["coverage"]["roe_us"], [0, 21])
+
+    def test_zero_to_zero_and_recovery_are_silent(self):
+        ps.judge_coverage(cov_doc(0), self.state, TODAY)
+        self.assertEqual(ps.judge_coverage(cov_doc(0), self.state, TODAY)[0], [])
+        self.assertEqual(ps.judge_coverage(cov_doc(18), self.state, TODAY)[0], [])
+
+    def test_missing_coverage_is_held(self):
+        out, cur = ps.judge_coverage({"items": []}, self.state, TODAY)
+        self.assertEqual((out, cur), ([], None))
+        self.assertNotIn("coverage", self.state, "판정 못 한 회차는 기준선을 덮지 않는다")
+
+
+class CoverageWiringTest(unittest.TestCase):
+    """run() 배선 — buffett.json 의 커버리지가 판정·발송까지 실제로 흐르는가.
+
+    판정부 테스트가 전부 통과해도 run() 이 judge_coverage 를 부르지 않으면 실전만 틀린다
+    (2026-08-30 교훈). 그래서 run() 을 실제로 돌리고 **DM 1통·경보 1건**을 센다.
+    """
+
+    def _run(self, buf, state):
+        reads = {"fetch_status.json": {}, "buffett.json": buf}
+
+        def fake_read(path, default=None):
+            return reads.get(Path(path).name, default)
+
+        with mock.patch.object(ps, "read_json", side_effect=fake_read),                 mock.patch.object(ps, "source_names", return_value=[]),                 mock.patch.object(ps, "load_state", return_value=state),                 mock.patch.object(ps, "save_state"),                 mock.patch.object(ps, "judge_snapshot", return_value=[]),                 mock.patch.object(ps, "judge_staleness", return_value=([], [])),                 mock.patch.object(ps, "judge_bots", return_value=([], [])),                 mock.patch.object(ps, "judge_materials", return_value=[]),                 mock.patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "tok",
+                                             "TELEGRAM_ALERT_CHAT_ID": "12345",
+                                             "TELEGRAM_CHAT_ID": "@public"}),                 mock.patch.object(ps, "send_telegram") as send:
+            buf_io = io.StringIO()
+            with contextlib.redirect_stdout(buf_io), contextlib.redirect_stderr(buf_io):
+                rc = ps.run()
+        return rc, buf_io.getvalue(), send
+
+    def test_collapse_reaches_dm_exactly_once(self):
+        state = fresh_state()
+        state["coverage"] = {"roe_us": [17, 21], "at": "2026-08-20"}
+        rc, log, send = self._run(cov_doc(0), state)
+        self.assertEqual(rc, 0)
+        self.assertEqual(send.call_count, 1, "DM 정확히 1통")
+        self.assertEqual(send.call_args[0][1], "12345", "소장 DM 전용 — 공개 채널 금지")
+        self.assertEqual(state["last_verdict"]["alerts"],
+                         ["레전드: 미국 유형 ROE 측정 17/21 → 0/21 — 직전 회차의 절반 이하"
+                          "(원천 응답 구조 변화 의심)"], "경보는 정확히 1건")
+        self.assertIn("미국 ROE 0/21", log, "판정 근거가 로그에 남는다")
+
+    def test_stable_coverage_is_silent(self):
+        state = fresh_state()
+        state["coverage"] = {"roe_us": [17, 21], "at": "2026-08-20"}
+        _, _, send = self._run(cov_doc(16), state)
+        self.assertEqual(send.call_count, 0)
+
+
 class ResilienceTest(unittest.TestCase):
     """관측자는 죽어도 파이프라인을 죽이지 않는다 — 단 조용히 죽지도 않는다."""
 
