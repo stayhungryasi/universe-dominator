@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-22 10:48",
- "generated_at": "2026-10-22T10:48:47.202210+09:00",
+ "generated_label": "2026-10-22 17:54",
+ "generated_at": "2026-10-22T17:54:58.142553+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-22",
@@ -95,11 +95,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "매출 16% 성장과 실적 상향 달성했으나 마진 압박과 성장 둔화 우려로 평가 상승 제한"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0237,
@@ -112,7 +108,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -130,31 +126,7 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "프리미엄 밸류에이션 근처 고점에서 제한된 상승여력, 하드웨어-소프트웨어 통합 AI 우위 인정되나 성장 천장 낮음",
-   "_evidence": {
-    "franchise": "Deep Hardware-Software Integration Drives Apple's Underappreciated AI Advantage / Apple sales surge 16% on 'staggering' iPhone demand",
-    "risk5": "Apple Faces 'Slightly Challenging' Earnings Setup Near Record Highs, Morgan Stanley Says — Sees Limited Upside Potential / Apple faces gross margin pressure as UBS flags slowing iPhone growth ahead of earnings",
-    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership / Apple (AAPL) Q3 Earnings and Revenues Beat Estimates",
-    "owner_earnings": "Apple sales surge 16% on 'staggering' iPhone demand / Apple faces gross margin pressure as UBS flags slowing iPhone growth"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-22",
@@ -347,7 +319,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.68
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -472,7 +444,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.69
+    "value": 1.68
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -587,11 +559,7 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
-    "ai_view": {
-     "display": "B",
-     "reason": "실적 비트 달성하나 자동차 수익 감소, AI·로봇 사업화 불확실성 내재"
-    }
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
    },
    "conversion": null,
    "conversion_status": {
@@ -605,7 +573,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -623,32 +591,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "△",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "△",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2026Q3"
-   },
-   "notes": "Q3 실적 양호하나 자동차 핵심사업 부진, Optimus 타임라인 완화, 자본배분 단기지향적",
-   "_evidence": {
-    "franchise": "Tesla Third-Quarter Earnings Top Views as Automotive, Energy Generation Sales Decline",
-    "risk5": "Musk Tempers Optimus Timeline, Tesla Cuts Full-Year Capex Guidance To $20B",
-    "capalloc": "Tesla reports Q3 earnings beat, positive free cash flow, and better-than-expected capex, Tesla Cuts Full-Year Capex Guidance To $20B",
-    "owner_earnings": "Tesla Third-Quarter Earnings Top Views as Automotive, Energy Generation Sales Decline"
-   }
+   ]
   },
   "005930.KS": {
    "as_of": "2026-10-22",
@@ -1054,7 +997,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 41.78
+    "value": 40.64
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1337,7 +1280,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.99
+    "value": 0.97
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1523,7 +1466,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.42
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1537,7 +1480,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI ASIC 사이클 초기 모멘텀이 강하나 모바일 시클리컬 종속성이 상충"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1547,7 +1495,29 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "Nvidia 35억 달러 투자와 AI ASIC 대량생산 진입(Q4)이 구조적 변곡점 신호이나, 밸류에이션 과열(NT$5,000+ 타겟)과 Google TPU 경쟁 위험 병존",
+   "_evidence": {
+    "franchise": "MediaTek ASIC Revenue Doubles, Igniting Two-Day Limit-Up Surge; 모바일 이외 신규 수요원 창출 입증",
+    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday; Daiwa Cuts to Hold: The AI-Mobile Divide 등 경쟁 및 사이클 불확실성",
+    "capalloc": "MediaTek Q2 Revenue Hits NT$152.1 Billion, Smashing High-End Guidance; June Revenue Hits NT$58 Billion 현금 창출력 확인",
+    "owner_earnings": "Nvidia Invests $3.5 Billion in MediaTek 등 외부 자본 유입으로 인한 희석 위험과 AI ASIC 초기 사이클 수익성 미확인"
+   }
   },
   "MRVL": {
    "as_of": "2026-10-22",
@@ -1648,7 +1618,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 272.92
+    "value": 270.91
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1679,7 +1649,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 641.0
+    "value": 630.39
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1756,5 +1726,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-22 10:50"
+ "scout_label": "2026-10-22 17:56"
 }
