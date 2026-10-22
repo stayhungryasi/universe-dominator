@@ -1534,6 +1534,8 @@ function lgBasisNote(b, j){
 
 function lgNote(b, j){
   if (j.guard || b.guard) return lgGuardNote(b, j);
+  // 비영업 손익 왜곡 보류 — 측정층이 상태(비율)에서 만든 문장을 비춘다(F2)
+  if (b.hold) return b.note || '';
   if (b.coupon10y != null) return '';             // 산출된 종목의 기준 줄은 비고 줄로
   // 이익 결측 사유는 측정층이 상태에서 만든 문장(eps_note)을 비춘다 — 플로트형·낡은 원장·
   // 수집 실패가 전부 '취재 대기' 한 줄로 뭉개지지 않게(legend-audit E)
@@ -1624,7 +1626,7 @@ function lgDissect(x, j){
   const guarded = j.guard || b.guard;
   if (guarded) h += '<div class="lg-sub">' + esc(lgGuardNote(b, j)) +
     (j.guard_reason ? ' — 가드 근거: ' + esc(j.guard_reason) : '') + '</div>';
-  if (calc && guarded) h += '<div class="lg-calc">참고 · ' + esc(calc) + ' (판정에 쓰지 않음)</div>';
+  if (calc && (guarded || b.hold)) h += '<div class="lg-calc">참고 · ' + esc(calc) + ' (판정에 쓰지 않음)</div>';
   else if (calc) h += '<div class="lg-calc">' + esc(calc) + '</div>';
   // 계산이 안 서면 **왜 안 서는지**를 그 자리에서 말한다. 측정층이 상태에서 만든
   // 문구(bench.note)를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 되고,
@@ -1664,6 +1666,10 @@ function lgRow(x, lg){
       '<span class="lg-badge" title="' + esc(LG_TIP.peak) + '">⚠ 정점 주의</span>';
   } else if (b.coupon10y == null) {
     coupon = '<span class="lg-neg">—</span>';
+  } else if (b.hold) {
+    // 판정 보류(비영업 손익 왜곡 의심) — 쿠폰은 참고값. 판정에 쓰지 않는다는 표식을 붙인다
+    coupon = '<span class="lg-neg">' + lgPct(b.coupon10y) + ' 참고</span>' + lgAuto(j, 'eps_adj_ttm') +
+      '<div class="lg-sub">g ' + lgPct(b.g_used) + '</div>';
   } else {
     // g 표기 — 캡을 씌웠으면 **원값을 함께 적는다**(감춘 조정은 조정이 아니다)
     const gTxt = (b.g_capped_from != null)

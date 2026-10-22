@@ -1096,6 +1096,86 @@ def main():
                               [_cfrep(2026, 4, 4.0, 9.0, 365)])
     check("F1 Q4 복원: 영업현금도 FY−Q1~Q3 로 복원", _q4[0][2].get("ocf"), 3.0)
 
+    # ── 비영업 평가익 미차감 (2026-10-22 원천 대조 F2) ─────────────────────────
+    # 막으려는 것 한 문장: **투자손익 태그 밖(일반 비영업 줄)에 실린 평가익이 조정이익에 남는 것.**
+    # AMZN 실측: Anthropic 평가익을 기타 비영업 줄로 공시 → '무조정' → 조정 EPS 12.42(실제 ~6.5).
+    def _nrep(y, q, rows, days=91):
+        end = _dt.date(y, 3 * q, 28)
+        rows = list(rows) + [("WeightedAverageNumberOfDilutedSharesOutstanding", 10.9e9)]
+        return {"year": y, "quarter": q, "startDate": str(end - _dt.timedelta(days=days)),
+                "endDate": str(end),
+                "report": {"ic": [{"concept": "us-gaap_" + k, "value": v} for k, v in rows]}}
+    _B = 1e9 / 4                               # 원천 TTM(B) → 분기값
+    _amzn_rows = [("NetIncomeLoss", 135.28 * _B), ("OperatingIncomeLoss", 93.71 * _B),
+                  ("InvestmentIncomeInterest", 4.66 * _B),
+                  ("InterestExpenseNonoperating", 3.33 * _B),
+                  ("OtherNonoperatingIncomeExpense", 80.42 * _B),
+                  ("NonoperatingIncomeExpense", 81.75 * _B)]
+    _aq = [_nrep(y, q, _amzn_rows) for y, q in ((2026, 2), (2026, 1), (2025, 4), (2025, 3))]
+    _ae, _am, _ = _fa.eps_adj_ttm_from(_aq)
+    check("F2 AMZN: 비영업 평가익 세후 차감 → 조정 EPS 5.8~7.2",
+          _ae is not None and 5.8 <= _ae <= 7.2, True)
+    check("F2 AMZN: 근거에 비영업 폴백을 적는다", "비영업" in (_am or ""), True)
+    _f = lambda rows: _fa.flatten({"ic": [{"concept": "us-gaap_" + k, "value": v} for k, v in rows]})
+    check("F2 합계 경로: 합계 − 이자수익 + 이자비용 을 차감(이자는 남긴다)",
+          round(_fa.adjusted_income(_f([("NetIncomeLoss", 100.0), ("NonoperatingIncomeExpense", 30.0),
+                                        ("InvestmentIncomeInterest", 5.0),
+                                        ("InterestExpense", 3.0)]))[0], 4),
+          round(100.0 - 28.0 * 0.79, 4))
+    check("F2 현금 부자: 비영업이 전부 이자수익이면 지우지 않는다",
+          _fa.adjusted_income(_f([("NetIncomeLoss", 100.0), ("NonoperatingIncomeExpense", 10.0),
+                                  ("InvestmentIncomeInterest", 10.0)]))[0], 100.0)
+    check("F2 우선순위: 투자손익 태그가 있으면 비영업 폴백을 쓰지 않는다(GOOG 모양)",
+          round(_fa.adjusted_income(_f([("NetIncomeLoss", 100.0),
+                                        ("EquitySecuritiesFvNiGainLoss", 20.0),
+                                        ("OtherNonoperatingIncomeExpense", 25.0)]))[0], 4),
+          round(100.0 - 20.0 * 0.79, 4))
+    check("F2 태그 없음: 투자손익·비영업 모두 없으면 무조정",
+          _fa.adjusted_income(_f([("NetIncomeLoss", 100.0)]))[0], 100.0)
+    # (b) 핵심이익 교차검증 — 영업이익 × 0.79 대조
+    _dw = lambda adj, oi: [(2026, q, {"adj": adj, "oi": oi}, "w", None) for q in (4, 3, 2, 1)]
+    check("F2 교차검증: AMZN 수리 후는 범위 안(ok)",
+          _fa.divergence_of(_fa.quarter_incomes(_aq))["state"], "ok")
+    _d1 = _fa.divergence_of(_dw(135.28 / 4, 93.71 / 4))         # 무조정 AMZN
+    check("F2 교차검증: 무조정 AMZN 은 왜곡(1.83배)",
+          (_d1["state"], round(_d1["ratio"], 2)), ("nonop_distortion", 1.83))
+    check("F2 교차검증: 영업이익 줄이 없으면(은행) 생략",
+          _fa.divergence_of(_dw(10.0, None)), {"state": "no_operating_income"})
+    check("F2 교차검증: 경계 안쪽(+25%)은 정상",
+          _fa.divergence_of(_dw(0.79 * 1.25, 1.0))["state"], "ok")
+    _mb = lambda div, origin=None: _fb.measure_bench(
+        {"ticker": "X", "type": "씨즈형", "buffett_origin": {"eps_adj_ttm": origin or "auto"},
+         "buffett": {"eps_adj_ttm": {"value": 5.0}, "g_cagr3y": 0.15, "g_forward": 0.15,
+                     "eps_divergence": div}}, 50.0, {"UST10": 4.0})
+    _hb = _mb({"state": "nonop_distortion", "ratio": 1.83})
+    check("F2 보류: 존 판정 보류(미검정) + 보류 상태",
+          (_hb["zone_buffett"], _hb["hold"]), ("untested", "nonop_distortion"))
+    check("F2 보류: EPS 와 쿠폰(참고)은 그대로 낸다",
+          (_hb["eps_adj_ttm"], _hb["coupon10y"] is not None), (5.0, True))
+    check("F2 보류: 통과가격은 내지 않는다(판정의 파생)", _hb.get("pass_price"), None)
+    check("F2 보류: 비고는 상태(비율)에서 — 방향·크기를 숫자로",
+          _hb["note"], "비영업 손익 왜곡 의심 — 조정이익이 영업이익 기준보다 83% 높음 · 존 판정 보류")
+    check("F2 보류: 비고에 기계 필드명 없음",
+          any(k in _hb["note"] for k in ("nonop", "eps_", "ratio", "divergence")), False)
+    check("F2 보류: 정상 비율이면 판정한다",
+          _mb({"state": "ok", "ratio": 1.05})["zone_buffett"] != "untested", True)
+    check("F2 보류: 사람이 취재한 EPS 엔 기계 대조가 닿지 않는다",
+          _mb({"state": "nonop_distortion", "ratio": 1.83}, origin="human")["hold"], None)
+    check("F2 비고: 부호 반대는 그렇게 부른다",
+          _fb.divergence_note({"state": "nonop_distortion", "ratio": -0.4}),
+          "비영업 손익 왜곡 의심 — 조정이익이 영업이익 기준과 부호가 반대")
+    check("F2 비고: 모르는 상태는 빈 문자열(보류 안 함)",
+          _fb.divergence_note({"state": "zzz", "ratio": 3.0}), "")
+    check("F2 원인: 보류가 켜지고 꺼진 전이는 눈금 변경(scale)",
+          _fb.classify_cause({"hold": None, "price": 1.0}, {"hold": "nonop_distortion",
+                                                           "price": 1.0}), "scale")
+    check("F2 병합: eps_divergence 병합 스키마 등재", "eps_divergence" in _bl.FIELDS, True)
+    _q4oi = _fa.quarter_incomes(
+        [_nrep(2026, q, [("NetIncomeLoss", 1.0 * q), ("OperatingIncomeLoss", 2.0 * q)], 91 * q)
+         for q in (3, 2, 1)],
+        [_nrep(2026, 4, [("NetIncomeLoss", 4.0), ("OperatingIncomeLoss", 9.0)], 365)])
+    check("F2 Q4 복원: 영업이익도 FY−Q1~Q3 로 복원", _q4oi[0][2].get("oi"), 3.0)
+
     # ── 전환율 회귀 (2026-09-29) — 자동 기본이 A안이라 전 종목이 ~100% 로 보였다 ──
     # A안 = 조정순이익 + 감가상각 − 감가상각 = **조정순이익 그 자체**다 → A ÷ 조정순이익 은
     # 항등식 1.0 — 클램프처럼 보였지만 클램프는 없었다.

@@ -41,6 +41,8 @@ FIELDS = [
     "roe_tangible_human", "roe_basis",
     # 조정 EPS 사람 취재 경로(같은 규약) · eps_status 는 자동층이 남기는 결측 상태(legend-audit E)
     "eps_adj_ttm_human", "eps_status",
+    # 핵심이익 교차검증(F2) — 자동층 전용. nonop_distortion 이면 측정층이 존 판정을 보류
+    "eps_divergence",
     "g_cagr3y", "cagr3y_human", "g_forward", "g_forward_source",
     # conversion_status 는 자동층이 남기는 전환율 결측 원인(C안 재료 미확보 등) — 화면 비고의 재료
     # conversion_check 는 자동 C 와 현금흐름표 FCF 의 부호 대조 결과(어긋날 때만 상태)

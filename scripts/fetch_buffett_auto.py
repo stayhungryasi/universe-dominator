@@ -64,6 +64,25 @@ INVEST_TAGS = ["GainLossOnInvestments",
                "GainLossOnInvestmentsExcludingOtherThanTemporaryImpairments",
                "MarketableSecuritiesRealizedGainLoss",
                "DebtAndEquitySecuritiesGainLoss"]
+# 비영업 손익 폴백(F2) — 투자손익 태그가 **하나도 없을 때만** 쓴다.
+#   아마존은 Anthropic 평가익을 투자손익 태그가 아니라 일반 비영업 줄로 공시한다
+#   (2Q26 순이익 62.6B 중 세전 비영업 53.4B). 투자손익 태그만 찾으면 '무조정'이 되어
+#   조정 EPS 가 거의 2배로 나갔다(12.42 → 실제 6.3~6.7).
+#   ① '기타 비영업'(Other) 줄이 있으면 그 줄 — 손익계산서에서 이자수익·이자비용과
+#      **따로 놓인** 줄이라 진짜 이자를 건드리지 않는다.
+#   ② 없으면 비영업 합계(Total)에서 이자수익을 빼고 이자비용을 되돌린다.
+#      합계 = 이자수익 − 이자비용 + 기타 이므로, 그래야 ①과 같은 '기타'가 남는다.
+#      (이자수익만 빼면 이자비용이 차감 대상에 남아 **진짜 이자비용이 이익으로 되돌아온다** —
+#       차입이 큰 회사일수록 부풀어진다. 원천 대조: AMZN 합계 81.75 − 이자수익 4.66
+#       + 이자비용 3.33 = 기타 80.42 로 ①과 정확히 맞는다.)
+NONOP_OTHER_TAGS = ["OtherNonoperatingIncomeExpense"]
+NONOP_TOTAL_TAGS = ["NonoperatingIncomeExpense"]
+INTEREST_INCOME_TAGS = ["InvestmentIncomeInterest", "InterestIncomeOther",
+                        "InvestmentIncomeInterestAndDividend"]
+INTEREST_EXPENSE_TAGS = ["InterestExpenseNonoperating", "InterestExpense"]
+# 핵심이익 교차검증(F2-b) — 영업이익 × (1 − 21%) 와 조정순이익을 대조한다
+OPERATING_INCOME_TAGS = ["OperatingIncomeLoss"]
+DIVERGENCE_LIMIT = 0.25
 DILUTED_TAGS = ["WeightedAverageNumberOfDilutedSharesOutstanding",
                 "WeightedAverageNumberOfDilutedSharesOutstandingBasicAndDiluted"]
 # 오너어닝 = 순이익 + 감가상각 − 유지캐펙스 (1986 주주서한)
@@ -220,15 +239,61 @@ def invest_gain(flat):
     return (total, used) if used else (None, [])
 
 
+def nonop_gain(flat):
+    """비영업 손익 폴백 → (세전 차감 대상, 근거) | (None, None). 이자는 남긴다(위 주석 ①②)."""
+    other, o_tag = pick(flat, NONOP_OTHER_TAGS)
+    if other is not None:
+        return other, o_tag
+    total, t_tag = pick(flat, NONOP_TOTAL_TAGS)
+    if total is None:
+        return None, None
+    ii, ii_tag = pick(flat, INTEREST_INCOME_TAGS)
+    ie, ie_tag = pick(flat, INTEREST_EXPENSE_TAGS)
+    desc = t_tag + (f"−{ii_tag}" if ii is not None else "") + (f"+{ie_tag}" if ie is not None else "")
+    return total - (ii or 0.0) + (ie or 0.0), desc
+
+
 def adjusted_income(flat):
-    """한 분기 조정순이익 → (값, 근거설명). 순이익이 없으면 (None, 사유)."""
+    """한 분기 조정순이익 → (값, 근거설명). 순이익이 없으면 (None, 사유).
+
+    투자손익 태그가 있으면 그것만 뺀다(종전). **하나도 없을 때만** 비영업 손익 폴백(F2).
+    종목 이름으로 가르지 않는다 — 태그의 존재로만 가른다.
+    """
     ni, ni_tag = pick(flat, NET_INCOME_TAGS)
     if ni is None:
         return None, "순이익 태그 없음"
+    k = 1.0 - TAX_RATE
     gain, used = invest_gain(flat)
     if gain is None:
-        return ni, f"{ni_tag} (투자손익 태그 없음 — 무조정)"
-    return ni - gain * (1.0 - TAX_RATE), f"{ni_tag} − ({'+'.join(used)})×{1 - TAX_RATE:.2f}"
+        nonop, desc = nonop_gain(flat)
+        if nonop is None:
+            return ni, f"{ni_tag} (투자손익·비영업 태그 없음 — 무조정)"
+        return ni - nonop * k, f"{ni_tag} − 비영업({desc})×{k:.2f}"
+    return ni - gain * k, f"{ni_tag} − ({'+'.join(used)})×{k:.2f}"
+
+
+def divergence_of(window):
+    """핵심이익 교차검증(F2-b) → 상태 묶음. **순수 함수**.
+
+    막으려는 것 한 문장: **태그 조정이 놓친 비영업 손익이 조정이익을 지배한 채 존 판정에
+    쓰이는 것.** 대조 자 = Σ영업이익 × (1 − 21%). 조정순이익이 그 자에서 25% 넘게 벗어나면
+    nonop_distortion — EPS 는 그대로 싣되 측정층이 존 판정을 보류한다.
+    영업이익 줄이 없는 업종(은행 등)은 대조할 자가 없으므로 생략한다(no_operating_income).
+    한계: 실효세율이 21% 와 크게 다르면(인수 비용·일회성 세금) 비영업이 아니어도 벗어난다 —
+    그래서 화면은 '의심'이라 부르고 벗어난 방향·크기를 숫자로 함께 적는다.
+    """
+    if not window:
+        return None
+    ois = [x[2].get("oi") for x in window]
+    if any(v is None for v in ois):
+        return {"state": "no_operating_income"}
+    core = sum(ois) * (1.0 - TAX_RATE)
+    if core == 0:
+        return {"state": "no_operating_income"}
+    adj = sum(x[2]["adj"] for x in window)
+    ratio = adj / core
+    return {"state": ("nonop_distortion" if abs(ratio - 1.0) > DIVERGENCE_LIMIT else "ok"),
+            "ratio": round(ratio, 4), "core_ni": round(core, 2), "adj_ni": round(adj, 2)}
 
 
 def period_days(rep):
@@ -326,7 +391,8 @@ def period_values(rep, flat, adj):
             "ni": pick(flat, NET_INCOME_TAGS)[0],
             "dna": cf_dna((rep or {}).get("report"))[0],
             "capex": pick(flat, CAPEX_TAGS)[0],
-            "ocf": pick(flat, OCF_TAGS)[0]}
+            "ocf": pick(flat, OCF_TAGS)[0],
+            "oi": pick(flat, OPERATING_INCOME_TAGS)[0]}
 
 
 def quarter_incomes(reports, annual=None):
@@ -916,6 +982,8 @@ def build_block(c, key, now):
         "conversion_status": {"state": "unmeasured"},
         # C 와 현금흐름표 FCF 의 부호 대조(cash_check) — 어긋나면 화면 비고의 재료
         "conversion_check": None,
+        # 핵심이익 교차검증(영업이익×0.79 대조) — nonop_distortion 이면 측정층이 존 판정 보류
+        "eps_divergence": None,
         "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
     }
@@ -1056,6 +1124,15 @@ def build_block(c, key, now):
                           f"{oe['variants']['C']['value']:.0f} vs FCF {chk['fcf_ttm']:.0f}",
                           file=sys.stderr)
             block["conversion_status"] = cst
+            div = divergence_of(win)
+            block["eps_divergence"] = div
+            if (div or {}).get("state") == "no_operating_income":
+                print(f"[자동취재] {ticker}: 영업이익 줄 없음 — 핵심이익 교차검증 생략",
+                      file=sys.stderr)
+            elif (div or {}).get("state") == "nonop_distortion":
+                print(f"[자동취재] {ticker}: 조정이익이 영업이익×0.79 의 {div['ratio']:.2f}배 "
+                      f"(±{DIVERGENCE_LIMIT:.0%} 초과) — 비영업 손익 왜곡 의심, 존 판정 보류 대상",
+                      file=sys.stderr)
             if cst:
                 # 원인을 로그에 남긴다 — 태그 미매핑이면 다음 회차에 맞출 단서가 된다
                 print(f"[자동취재] {ticker}: 전환율 미산출 — {cst['state']} "

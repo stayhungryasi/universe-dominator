@@ -301,6 +301,8 @@ def classify_cause(prev, now):
         return None
     if bool(prev.get("guard")) != bool(now.get("guard")):
         return "scale"
+    if bool(prev.get("hold")) != bool(now.get("hold")):
+        return "scale"                 # 판정 보류가 켜지고 꺼진 것 — 시장 사건이 아니다
     parts = cause_parts(prev, now)
     if parts is None:
         return "scale"                 # 자가 끊겼다(한쪽 결측·적자 전환) — 크기 비교 불가
@@ -444,6 +446,25 @@ def conv_note(status):
     return "전환율 미산출"
 
 
+def divergence_note(div):
+    """핵심이익 교차검증이 어긋났을 때의 비고 — **상태(비율)에서 만든다**(F2-b).
+
+    '비영업 손익 왜곡'은 의심이지 확정이 아니다(실효세율 차이로도 벗어난다). 그래서
+    벗어난 방향과 크기를 숫자로 함께 적어, 읽는 사람이 되짚을 수 있게 한다.
+    모르는 상태·비율 없음은 빈 문자열 — 보류하지 않는다.
+    """
+    if not isinstance(div, dict) or div.get("state") != "nonop_distortion":
+        return ""
+    r = _num(div.get("ratio"))
+    if r is None:
+        return ""
+    if r < 0:
+        how = "영업이익 기준과 부호가 반대"
+    else:
+        how = f"영업이익 기준보다 {abs(r - 1.0) * 100:.0f}% {'높음' if r > 1 else '낮음'}"
+    return f"비영업 손익 왜곡 의심 — 조정이익이 {how}"
+
+
 def conv_check_note(check, human=False):
     """전환율 값이 있는데 현금흐름표와 부호가 어긋날 때의 비고 — **상태에서 만든다**(F1).
 
@@ -492,6 +513,9 @@ def measure_bench(c, price, rates, prev_bench=None):
 
     out = {
         "market": market, "rate10y": rate, "guard": guard,
+        # 판정 보류 사유(상태) — 현재는 nonop_distortion 하나. 가드와 달리 판단층이 아니라
+        # 자동층의 교차검증이 켠다.
+        "hold": None,
         "eps_adj_ttm": eps_ttm, "roe_tangible": roe, "g_used": g, "price": _num(price),
         "g_capped_from": g_capped_from, "g_weak": g_weak,
         "ey": None if ey is None else round(ey, 6),
@@ -533,6 +557,19 @@ def measure_bench(c, price, rates, prev_bench=None):
                        else "시클리컬 정점 가드 — 존 판정 보류 · "
                        + untested_note(_num(price), eps_ttm, g, rate, market, coupon,
                                        out["eps_note"]))
+        return out
+
+    # 비영업 손익 왜곡 보류(F2-b) — 자동층이 잰 조정이익이 영업이익 기준에서 크게 벗어났다.
+    # 정점 가드와 같은 모양으로 **판정만** 보류한다: EPS·쿠폰은 재되(참고) 존·통과가격·경계는
+    # 내지 않는다. 사람이 조정 EPS 를 취재해 덮어쓰면 기계의 대조는 그 값에 닿지 않는다.
+    hold_note = divergence_note(b.get("eps_divergence"))
+    eps_auto = (eps_ttm is not None and not eps_human
+                and (c.get("buffett_origin") or {}).get("eps_adj_ttm") != "human")
+    if hold_note and eps_auto:
+        out["hold"] = "nonop_distortion"
+        out["zone_buffett"] = ZONE_UNTESTED
+        out["borderline"] = False
+        out["note"] = hold_note + " · 존 판정 보류"
         return out
 
     out["zone_buffett"] = zone_of_buffett(coupon, rate)
