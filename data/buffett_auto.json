@@ -1,9 +1,9 @@
 {
- "generated_label": "2026-10-21 23:40",
- "generated_at": "2026-10-21T23:40:34.770109+09:00",
+ "generated_label": "2026-10-22 10:48",
+ "generated_at": "2026-10-22T10:48:47.202210+09:00",
  "items": {
   "NVDA": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -32,11 +32,7 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "매출 성장은 가파르나 대형 고객의 자체칩 이탈로 사업 지속성 불확실"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.1213,
@@ -49,7 +45,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -67,34 +63,10 @@
      "period": "2026Q3",
      "end": "2025-10-26"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "✕",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "AI 칩 수요 압도적이나 Google·Meta·Amazon 등 주요 세입자의 자체칩 전환 진행 중—장기 수익성 위협",
-   "_evidence": {
-    "franchise": "대형 세입자 전원이 자체칩으로 이탈 예고",
-    "risk5": "Evolving Competitive Risks; 자체칩 개발로 인한 고객 이탈 리스크",
-    "capalloc": "NVIDIA Announces a $150 Billion Share Repurchase Authorization Increase",
-    "owner_earnings": "Nvidia Stock Price Lags Massive Earnings Growth—but 10년 뒤 월세를 적을 수 없는 구조적 한계"
-   }
+   ]
   },
   "AAPL": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -123,7 +95,11 @@
      }
     },
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "매출 16% 성장과 실적 상향 달성했으나 마진 압박과 성장 둔화 우려로 평가 상승 제한"
+    }
    },
    "conversion": {
     "value": 1.0237,
@@ -136,7 +112,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -154,10 +130,34 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "프리미엄 밸류에이션 근처 고점에서 제한된 상승여력, 하드웨어-소프트웨어 통합 AI 우위 인정되나 성장 천장 낮음",
+   "_evidence": {
+    "franchise": "Deep Hardware-Software Integration Drives Apple's Underappreciated AI Advantage / Apple sales surge 16% on 'staggering' iPhone demand",
+    "risk5": "Apple Faces 'Slightly Challenging' Earnings Setup Near Record Highs, Morgan Stanley Says — Sees Limited Upside Potential / Apple faces gross margin pressure as UBS flags slowing iPhone growth ahead of earnings",
+    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership / Apple (AAPL) Q3 Earnings and Revenues Beat Estimates",
+    "owner_earnings": "Apple sales surge 16% on 'staggering' iPhone demand / Apple faces gross margin pressure as UBS flags slowing iPhone growth"
+   }
   },
   "GOOG": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -220,7 +220,7 @@
    ]
   },
   "MSFT": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -280,7 +280,7 @@
    ]
   },
   "AMZN": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -343,11 +343,11 @@
    ]
   },
   "TSM": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 15.68
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -374,7 +374,7 @@
    "confidence": "중"
   },
   "AVGO": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -437,7 +437,7 @@
    ]
   },
   "SPCX": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -468,7 +468,7 @@
    "confidence": "중"
   },
   "2222.SR": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -486,12 +486,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "유가 사이클 의존성으로 인한 수익 예측 불가능성이 실질 보유자 수익의 신뢰도를 저해"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -501,35 +496,10 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕",
-    "tax_inflation": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "지정학적 리스크(이란 전쟁, 본부 공격)와 유가 변동성이 구조적 한계; 기록적 이익 대비 현금흐름 위기 신호 모순.",
-   "_evidence": {
-    "franchise": "전 지구적 에너지 수급에서 대체 불가능한 저원가 공급자",
-    "risk5": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계; Oil market may not normalize until 2027; 이란 전쟁으로 가격 상승 모멘텀 일시적",
-    "capalloc": "Q4 2025 강한 현금흐름; 스탠드얼론 가스사업 $100B 밸류에이션 검토 중(재배분 신호); 프랑스 기업과 $3.7B 계약(성장투자)",
-    "owner_earnings": "Aramco's Record Profits Hide a Growing Cash Flow Crisis — 회계이익과 현금창출 괴리"
-   }
+   "confidence": "중"
   },
   "META": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -592,7 +562,7 @@
    ]
   },
   "TSLA": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -617,7 +587,11 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "실적 비트 달성하나 자동차 수익 감소, AI·로봇 사업화 불확실성 내재"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -631,7 +605,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -649,10 +623,35 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "△",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "mgmt_fidelity": "△",
+    "price": "✕",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "debt_discipline": 1,
+    "score": 2,
+    "period": "2026Q3"
+   },
+   "notes": "Q3 실적 양호하나 자동차 핵심사업 부진, Optimus 타임라인 완화, 자본배분 단기지향적",
+   "_evidence": {
+    "franchise": "Tesla Third-Quarter Earnings Top Views as Automotive, Energy Generation Sales Decline",
+    "risk5": "Musk Tempers Optimus Timeline, Tesla Cuts Full-Year Capex Guidance To $20B",
+    "capalloc": "Tesla reports Q3 earnings beat, positive free cash flow, and better-than-expected capex, Tesla Cuts Full-Year Capex Guidance To $20B",
+    "owner_earnings": "Tesla Third-Quarter Earnings Top Views as Automotive, Energy Generation Sales Decline"
+   }
   },
   "005930.KS": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -683,7 +682,7 @@
    "confidence": null
   },
   "MU": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q4",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -746,7 +745,7 @@
    ]
   },
   "BRK-B": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -771,7 +770,7 @@
    "confidence": null
   },
   "LLY": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -834,7 +833,7 @@
    ]
   },
   "JPM": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -894,7 +893,7 @@
    ]
   },
   "WMT": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -957,7 +956,7 @@
    ]
   },
   "AMD": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1020,7 +1019,7 @@
    ]
   },
   "000660.KS": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -1051,11 +1050,11 @@
    "confidence": null
   },
   "ASML": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 40.64
+    "value": 41.78
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1082,7 +1081,7 @@
    "confidence": "중"
   },
   "LRCX": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q4",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1145,7 +1144,7 @@
    ]
   },
   "AMAT": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1208,7 +1207,7 @@
    ]
   },
   "DELL": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2027Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1271,7 +1270,7 @@
    ]
   },
   "PANW": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1334,11 +1333,11 @@
    ]
   },
   "ARM": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.99
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1365,7 +1364,7 @@
    "confidence": "중"
   },
   "SNDK": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q4",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1428,7 +1427,7 @@
    ]
   },
   "STX": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2026Q4",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1491,7 +1490,7 @@
    ]
   },
   "CRWD": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -1499,7 +1498,7 @@
     "state": "stale",
     "period": "2025Q3",
     "end": "2024-10-31",
-    "age_days": 720
+    "age_days": 721
    },
    "roe_tangible": null,
    "roe_basis": {
@@ -1520,11 +1519,11 @@
    "notes": "XBRL 신선도 미달: 최신 2025Q3"
   },
   "2454.TW": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.56
+    "value": 60.42
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1551,7 +1550,7 @@
    "confidence": "중"
   },
   "MRVL": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": "2027Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1614,7 +1613,7 @@
    ]
   },
   "285A.T": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1645,11 +1644,11 @@
    "confidence": "중"
   },
   "8035.T": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 270.9
+    "value": 272.92
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1676,11 +1675,11 @@
    "confidence": "중"
   },
   "6857.T": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 630.39
+    "value": 641.0
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1707,11 +1706,11 @@
    "confidence": "중"
   },
   "2308.TW": {
-   "as_of": "2026-10-21",
+   "as_of": "2026-10-22",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.37
+    "value": 31.76
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1743,7 +1742,7 @@
    "ticker": "CRWD",
    "period": "2025Q3",
    "end": "2024-10-31",
-   "age_days": 720,
+   "age_days": 721,
    "fallback": false,
    "assembled": [
     "2027Q2",
@@ -1757,5 +1756,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-21 23:42"
+ "scout_label": "2026-10-22 10:50"
 }
