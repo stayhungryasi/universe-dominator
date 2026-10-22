@@ -444,6 +444,18 @@ def conv_note(status):
     return "전환율 미산출"
 
 
+def conv_check_note(check, human=False):
+    """전환율 값이 있는데 현금흐름표와 부호가 어긋날 때의 비고 — **상태에서 만든다**(F1).
+
+    사람이 지정한 전환율에는 붙이지 않는다: 기계의 대조는 기계가 조립한 C 에 대한 것이다.
+    모르는 상태는 빈 문자열 — 내부 문자열이 화면으로 샐 길이 없다.
+    """
+    st = check.get("state") if isinstance(check, dict) else None
+    if human or st != "cash_mismatch":
+        return ""
+    return "현금흐름표와 부호 불일치 — 확인 필요"
+
+
 def measure_bench(c, price, rates, prev_bench=None):
     """레전드벤치마크 한 종목 — **순수 함수**(네트워크·시각 의존 없음).
 
@@ -496,6 +508,11 @@ def measure_bench(c, price, rates, prev_bench=None):
         # 전환율 결측 사유(상태에서 생성) — 값이 있으면(자동·사람 무관) 비고 없음
         "conv_note": ("" if _num(b.get("conversion")) is not None
                       else conv_note(b.get("conversion_status"))),
+        # 값은 있는데 현금흐름표와 부호가 어긋나는 경우 — 자동값일 때만(사람 값엔 기계 대조가
+        # 닿지 않는다). 문구는 상태에서 만든다.
+        "conv_check_note": conv_check_note(
+            b.get("conversion_check"),
+            (c.get("buffett_origin") or {}).get("conversion") == "human"),
         "roe_unadjusted": bool(roe is not None and not roe_human
                                and (c.get("buffett_origin") or {}).get("roe_tangible") != "human"
                                and rbasis.get("basis") == "GAAP 미조정"),

@@ -67,8 +67,9 @@ INVEST_TAGS = ["GainLossOnInvestments",
 DILUTED_TAGS = ["WeightedAverageNumberOfDilutedSharesOutstanding",
                 "WeightedAverageNumberOfDilutedSharesOutstandingBasicAndDiluted"]
 # 오너어닝 = 순이익 + 감가상각 − 유지캐펙스 (1986 주주서한)
-#   A안: 유지캐펙스 = 감가상각      → 오너어닝 = 순이익 (가장 관대한 가정)
+#   A안: 유지캐펙스 = 감가상각      → 오너어닝 = 조정순이익 (가장 관대한 가정)
 #   C안: 유지캐펙스 = 캐펙스 전액    → 성장투자까지 유지비로 본다 (가장 보수적)
+#   출발점은 **조정순이익**이다(GAAP 순이익이면 투자평가익이 현금으로 둔갑 — 2026-10-22 F1).
 #   B안은 '성장 이전 런레이트' 추정이라 사람 취재 영역이다 — 기계가 만들지 않는다.
 # 자동 표시·전환율은 **C안 단독**이다(2026-09-29 선장님 확정). C 를 못 재면 빈칸 —
 # A 로 폴백하지 않는다. A 는 순이익과 같아서 전환율이 항등식으로 100% 가 된다.
@@ -86,6 +87,9 @@ DNA_CF_LINES = DNA_TAGS + ["Depreciation",
 CAPEX_TAGS = ["PaymentsToAcquirePropertyPlantAndEquipment",
               "PaymentsToAcquireProductiveAssets",
               "PaymentsToAcquireOtherPropertyPlantAndEquipment"]
+# 영업활동 현금흐름 — 오너어닝(C)의 부호를 현금흐름표로 대조하는 참고값(fcf_ttm)의 재료
+OCF_TAGS = ["NetCashProvidedByUsedInOperatingActivities",
+            "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"]
 EQUITY_TAGS = ["StockholdersEquity",
                "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"]
 GOODWILL_TAGS = ["Goodwill"]
@@ -312,6 +316,19 @@ def implausible(eps_ttm, fwd_eps):
     return eps_ttm > fwd_eps * 4.0
 
 
+def period_values(rep, flat, adj):
+    """한 보고(누적일 수 있음)에서 창 합산에 쓰는 지표 묶음. 없는 지표는 None(0 치환 금지).
+
+    분기·연간 경로가 **같은 함수**로 지표를 뽑는다 — 두 곳에 따로 적으면 한쪽에만
+    새 지표가 붙어 Q4 복원에서 조용히 None 이 된다.
+    """
+    return {"adj": adj,
+            "ni": pick(flat, NET_INCOME_TAGS)[0],
+            "dna": cf_dna((rep or {}).get("report"))[0],
+            "capex": pick(flat, CAPEX_TAGS)[0],
+            "ocf": pick(flat, OCF_TAGS)[0]}
+
+
 def quarter_incomes(reports, annual=None):
     """진짜 분기 조정순이익 목록 → [(연, 분기, 값, 근거)] 최신순.
 
@@ -339,11 +356,7 @@ def quarter_incomes(reports, annual=None):
         inc, why = adjusted_income(flat)
         if inc is None:
             continue
-        raw[(y, q)] = ({"adj": inc,
-                        "ni": pick(flat, NET_INCOME_TAGS)[0],
-                        "dna": cf_dna((r or {}).get("report"))[0],
-                        "capex": pick(flat, CAPEX_TAGS)[0]}, why, period_days(r),
-                       end_of(r))
+        raw[(y, q)] = (period_values(r, flat, inc), why, period_days(r), end_of(r))
 
     # ① 진짜 분기값 — 누적(100일 초과)이면 같은 해 직전 분기를 뺀다
     def diff(cur, prev):
@@ -380,8 +393,7 @@ def quarter_incomes(reports, annual=None):
         inc, why = adjusted_income(flat)
         if inc is None:
             continue
-        fy = {"adj": inc, "ni": pick(flat, NET_INCOME_TAGS)[0],
-              "dna": cf_dna((r or {}).get("report"))[0], "capex": pick(flat, CAPEX_TAGS)[0]}
+        fy = period_values(r, flat, inc)
         q4 = {}
         for k, v in fy.items():
             parts = [t[0].get(k) for t in three]
@@ -503,21 +515,32 @@ def owner_earnings_from(window):
     기본값이 되는 것을 막는다). 값은 깎지 않는다: 1.0 을 넘으면 넘는 그대로.
     사람이 판단층에서 display·전환율을 지정하면 병합(buffett_layers)에서 사람이 이긴다.
     A 변형은 참고로 남긴다(표시·전환율에는 쓰지 않는다).
+
+    **출발점은 조정순이익이다 — GAAP 순이익이 아니다**(2026-10-22 원천 대조 F1).
+    예전엔 C = ΣGAAP순이익 + 감가상각 − 캐펙스 를 ΣGAAP 가 아닌 Σ조정순이익으로 나눴다.
+    분자와 분모가 다른 자로 잰 이익이라, 투자평가익(현금이 아니다)이 분자에만 남아
+    '현금'으로 계상됐다. GOOG: GAAP 244.2B · 조정 126.5B → 평가익 117.7B 가 C 에 얹혀
+    전환율 108% 가 화면에 나갔다(올바른 값 15%). 자릿수와 부호가 그럴듯해서 아무도
+    되묻지 않았다 — 2026-09-02 누적 보고 사고와 같은 얼굴이다.
     """
-    adj = sum(x[2]["adj"] for x in window)
-    ni = [x[2].get("ni") for x in window]
+    adj_v = [x[2].get("adj") for x in window]
     dna = [x[2].get("dna") for x in window]
     capex = [x[2].get("capex") for x in window]
-    if any(v is None for v in ni):
+    ocf = [x[2].get("ocf") for x in window]
+    if any(v is None for v in adj_v):
         return None, None, {"state": "income_missing"}
-    ni_t = sum(ni)
-    variants = {"A": {"value": round(ni_t, 2), "basis": "유지캐펙스 = 감가상각"}}
+    adj = sum(adj_v)
+    # A 참고값 = 조정순이익 그 자체(감가상각을 더했다 그대로 뺀다). 정의상 분모와 같다.
+    variants = {"A": {"value": round(adj, 2), "basis": "조정순이익(참고 — 표시·전환율 미사용)"}}
     missing = [k for k, vs in (("dna", dna), ("capex", capex))
                if any(v is None for v in vs)]
     if not missing:
-        variants["C"] = {"value": round(ni_t + sum(dna) - sum(capex), 2),
+        variants["C"] = {"value": round(adj + sum(dna) - sum(capex), 2),
                          "basis": "유지캐펙스 = 캐펙스 전액"}
     oe = {"variants": variants}
+    # 현금흐름표 대조용 참고값 — 표시·전환율에 쓰지 않는다(cash_check 가 부호만 본다)
+    if not any(v is None for v in ocf) and not any(v is None for v in capex):
+        oe["fcf_ttm"] = round(sum(ocf) - sum(capex), 2)
     if missing:
         oe.update(display=None, display_reason="자동 — 캐펙스 전액 기준 산출 불가")
         return oe, None, {"state": "c_missing", "missing": missing}
@@ -527,6 +550,22 @@ def owner_earnings_from(window):
     conv = {"value": round(variants["C"]["value"] / adj, 4), "variant": "C",
             "basis": "C(캐펙스 전액 기준) ÷ 조정순이익"}
     return oe, conv, None
+
+
+def cash_check(oe):
+    """오너어닝 C 와 현금흐름표 FCF(영업현금 − 캐펙스)의 **부호** 대조 → 상태 | None.
+
+    막으려는 것 한 문장: **손익에서 조립한 C 가 현금흐름표와 반대 방향을 말하는데
+    화면이 그 숫자를 결론처럼 싣는 것.** 크기는 정의가 달라 맞지 않는 게 정상이다
+    (운전자본·주식보상 등) — 그래서 부호만 본다. 한쪽이 0 이거나 없으면 판정하지 않는다.
+    """
+    c = ((oe or {}).get("variants") or {}).get("C", {}).get("value")
+    fcf = (oe or {}).get("fcf_ttm")
+    if c is None or fcf is None or c == 0 or fcf == 0:
+        return None
+    if (c > 0) != (fcf > 0):
+        return {"state": "cash_mismatch", "fcf_ttm": fcf}
+    return None
 
 
 def tangible_equity(flat):
@@ -875,6 +914,8 @@ def build_block(c, key, now):
         "owner_earnings": None, "conversion": None,
         # 전환율이 왜 없는가 — 화면 비고의 재료(측정층 conv_note 가 문장으로 만든다)
         "conversion_status": {"state": "unmeasured"},
+        # C 와 현금흐름표 FCF 의 부호 대조(cash_check) — 어긋나면 화면 비고의 재료
+        "conversion_check": None,
         "g_cagr3y": None, "g_forward": None, "g_forward_source": None,
         "method": None, "source": None, "confidence": None,
     }
@@ -1008,6 +1049,12 @@ def build_block(c, key, now):
                 block["owner_earnings"] = oe
             if conv:
                 block["conversion"] = conv
+                chk = cash_check(oe)
+                block["conversion_check"] = chk
+                if chk:
+                    print(f"[자동취재] {ticker}: 전환율 부호가 현금흐름표와 다름 — C "
+                          f"{oe['variants']['C']['value']:.0f} vs FCF {chk['fcf_ttm']:.0f}",
+                          file=sys.stderr)
             block["conversion_status"] = cst
             if cst:
                 # 원인을 로그에 남긴다 — 태그 미매핑이면 다음 회차에 맞출 단서가 된다

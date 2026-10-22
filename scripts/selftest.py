@@ -1029,35 +1029,87 @@ def main():
     # ── 오너어닝·전환율 (2026-09-02) — 빈칸의 원인은 '숫자가 없어서' 였다 ──────
     # 스카우트는 display 만 주고 A/B/C 의 **수치를 주지 않는다**(줄 수도 없다).
     # 그래서 전환율에 넣을 값 자체가 없었다 → 기계가 A안을 계산한다.
-    def _w(adj, ni, dna, capex):
-        return [(2026, q, {"adj": adj, "ni": ni, "dna": dna, "capex": capex}, "w")
+    def _w(adj, ni, dna, capex, ocf=None):
+        return [(2026, q, {"adj": adj, "ni": ni, "dna": dna, "capex": capex, "ocf": ocf}, "w")
                 for q in (4, 3, 2, 1)]
+    # 2026-10-22(F1) 이후 A·C 의 출발점은 **조정순이익**이다(GAAP 순이익 8.0 이 아니라 8.75).
     _oe, _cv, _cs = _fa.owner_earnings_from(_w(8.75, 8.0, 1.75, 11.225))
-    check("오너어닝: A안 = 순이익(유지캐펙스 = 감가상각)", _oe["variants"]["A"]["value"], 32.0)
-    check("오너어닝: C안 = 순이익 + 감가상각 − 캐펙스 전액",
-          _oe["variants"]["C"]["value"], -5.9)
-    check("전환율: C ÷ 조정순이익", _cv["value"], round(-5.9 / 35.0, 4))
+    check("오너어닝: A안 = 조정순이익(유지캐펙스 = 감가상각, 참고값)",
+          _oe["variants"]["A"]["value"], 35.0)
+    check("오너어닝: C안 = 조정순이익 + 감가상각 − 캐펙스 전액",
+          _oe["variants"]["C"]["value"], -2.9)
+    check("전환율: C ÷ 조정순이익", _cv["value"], round(-2.9 / 35.0, 4))
     check("전환율: 근거를 남긴다", "캐펙스 전액" in _cv["basis"], True)
-    check("오너어닝: 순이익이 없으면 아예 없음",
-          _fa.owner_earnings_from(_w(8.75, None, 1.0, 1.0))[:2], (None, None))
+    check("오너어닝: 조정순이익이 없으면 아예 없음",
+          _fa.owner_earnings_from(_w(None, 8.0, 1.0, 1.0))[:2], (None, None))
     _oe3, _cv3, _cs3 = _fa.owner_earnings_from(_w(-1.0, 8.0, 1.0, 1.0))
     check("전환율: 조정순이익이 0 이하면 비율은 없음(의미 상실)",
           (_cv3, (_cs3 or {}).get("state")), (None, "adj_nonpositive"))
 
+    # ── 평가익이 현금으로 둔갑 (2026-10-22 원천 대조 F1) ─────────────────────────
+    # 막으려는 것 한 문장: **현금이 아닌 투자평가익이 오너어닝(C)의 분자에 남는 것.**
+    # 예전 C = ΣGAAP순이익 + 감가상각 − 캐펙스 를 Σ조정순이익으로 나눴다(분자·분모가 다른 자).
+    # GOOG 실측(원천 대조): GAAP 244.205B · 조정 126.486B · 옛 C 137.04B → 화면 108%.
+    #   올바른 C = 137.04 − (244.205 − 126.486) = 19.32B → 0.153.
+    _goog = [(y, q, {"adj": 126.486 / 4, "ni": 244.205 / 4, "dna": 50.0 / 4,
+                     "capex": 157.165 / 4, "ocf": 185.68 / 4}, "w")
+             for y, q in ((2026, 2), (2026, 1), (2025, 4), (2025, 3))]
+    _oeG, _cvG, _ = _fa.owner_earnings_from(_goog)
+    check("F1 GOOG: 전환율 0.153±0.01 (평가익 117.7B 가 현금으로 계상되지 않는다)",
+          abs(_cvG["value"] - 0.153) <= 0.01, True)
+    check("F1 GOOG: A 참고값은 정의상 조정순이익과 같다",
+          _oeG["variants"]["A"]["value"], round(126.486, 2))
+    check("F1 GOOG: A 근거가 '표시·전환율 미사용' 참고값임을 밝힌다",
+          "미사용" in _oeG["variants"]["A"]["basis"], True)
+    check("F1 FCF: 영업현금 − 캐펙스를 참고로 싣는다",
+          _oeG.get("fcf_ttm"), round(185.68 - 157.165, 2))
+    check("F1 대조: C·FCF 부호가 같으면 상태 없음", _fa.cash_check(_oeG), None)
+    # AMZN 모양: C 음수인데 현금흐름표 FCF 는 양수 → 부호 불일치
+    _mis = _fa.owner_earnings_from(_w(18.0, 34.0, 5.0, 30.0, ocf=40.0))[0]   # C −28 · FCF +40
+    check("F1 대조: 부호가 다르면 cash_mismatch + FCF 값",
+          _fa.cash_check(_mis), {"state": "cash_mismatch", "fcf_ttm": 40.0})
+    check("F1 대조: 영업현금이 없으면 판정하지 않는다(FCF 없음)",
+          (_fa.owner_earnings_from(_w(18.0, 34.0, 15.0, 24.0))[0].get("fcf_ttm"),
+           _fa.cash_check(_fa.owner_earnings_from(_w(18.0, 34.0, 15.0, 24.0))[0])),
+          (None, None))
+    check("F1 비고: 부호 불일치는 상태에서 만든 문구",
+          _fb.conv_check_note({"state": "cash_mismatch", "fcf_ttm": 1.0}),
+          "현금흐름표와 부호 불일치 — 확인 필요")
+    check("F1 비고: 사람이 지정한 전환율엔 기계 대조 문구를 붙이지 않는다",
+          _fb.conv_check_note({"state": "cash_mismatch"}, human=True), "")
+    check("F1 비고: 모르는 상태는 빈 문자열", _fb.conv_check_note({"state": "zzz"}), "")
+    check("F1 병합: conversion_check 병합 스키마 등재", "conversion_check" in _bl.FIELDS, True)
+    _cb = _fb.measure_bench({"ticker": "X", "buffett_origin": {"conversion": "auto"},
+                             "buffett": {"conversion": {"value": -0.3},
+                                         "conversion_check": {"state": "cash_mismatch"}}},
+                            100.0, {"UST10": 4.0})
+    check("F1 배선: 측정층이 대조 비고를 싣는다", _cb.get("conv_check_note"),
+          "현금흐름표와 부호 불일치 — 확인 필요")
+    # 분기·연간 경로가 같은 지표 묶음을 쓴다 — Q4 복원에서도 영업현금이 살아 있어야 한다
+    _cfrep = lambda y, q, ni, ocf, days: {
+        "year": y, "quarter": q, "startDate": str(_dt.date(y, 3 * q, 28) - _dt.timedelta(days=days)),
+        "endDate": str(_dt.date(y, 3 * q, 28)),
+        "report": {"ic": [{"concept": "us-gaap_NetIncomeLoss", "value": ni}],
+                   "cf": [{"concept": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+                           "value": ocf}]}}
+    _q4 = _fa.quarter_incomes([_cfrep(2026, q, 1.0 * q, 2.0 * q, 91 * q) for q in (3, 2, 1)],
+                              [_cfrep(2026, 4, 4.0, 9.0, 365)])
+    check("F1 Q4 복원: 영업현금도 FY−Q1~Q3 로 복원", _q4[0][2].get("ocf"), 3.0)
+
     # ── 전환율 회귀 (2026-09-29) — 자동 기본이 A안이라 전 종목이 ~100% 로 보였다 ──
-    # A안 = 순이익 + 감가상각 − 감가상각 = **순이익 그 자체**다. 투자손익 조정이 없는
-    # 회사는 A ÷ 조정순이익 이 항등식으로 1.0 — 클램프처럼 보였지만 클램프는 없었다.
+    # A안 = 조정순이익 + 감가상각 − 감가상각 = **조정순이익 그 자체**다 → A ÷ 조정순이익 은
+    # 항등식 1.0 — 클램프처럼 보였지만 클램프는 없었다.
     # 막으려는 것 한 문장: **캐펙스를 무시한 가장 관대한 가정이 조용히 기본값이 되는 것.**
-    # AMZN 모양: A 90.8B · C 10.2B · 조정순이익 89B → 표시 전환율 ≈ 0.11 (100% 아님)
+    # AMZN 모양: 조정순이익 89B · 감가상각 60B · 캐펙스 140.6B → C 8.4B → 전환율 ≈ 0.09
     _amzn = _w(89.0 / 4, 90.8 / 4, 60.0 / 4, 140.6 / 4)
     _oeA, _cvA, _csA = _fa.owner_earnings_from(_amzn)
     check("회귀 AMZN: 기본 표시는 C안", _oeA["display"], "C")
-    check("회귀 AMZN: 전환율 ≈ 0.11 (C ÷ 조정순이익)", round(_cvA["value"], 2), 0.11)
+    check("회귀 AMZN: 전환율 ≈ 0.09 (C ÷ 조정순이익)", round(_cvA["value"], 2), 0.09)
     check("회귀 AMZN: 전환율 근거가 C안", _cvA.get("variant"), "C")
-    # NVDA 모양: C 가 조정순이익보다 크면 1.0 을 넘는 그대로 — 클램프 없음
-    _nvda = _w(139.84 / 4, 159.61 / 4, 20.0 / 4, 20.19 / 4)
-    check("회귀 NVDA: 1.0 초과는 깎지 않는다(1.14 그대로)",
-          round(_fa.owner_earnings_from(_nvda)[1]["value"], 2), 1.14)
+    # 감가상각 > 캐펙스면 C 가 조정순이익보다 크다 — 1.0 을 넘는 그대로, 클램프 없음
+    _over = _w(100.0 / 4, 100.0 / 4, 30.0 / 4, 10.0 / 4)
+    check("회귀: 1.0 초과는 깎지 않는다(1.2 그대로)",
+          round(_fa.owner_earnings_from(_over)[1]["value"], 2), 1.2)
     # C 불가(감가상각 미매핑) → A 로 폴백하지 않고 **빈칸 + 원인 상태**
     _oe2, _cv2, _cs2 = _fa.owner_earnings_from(_w(8.75, 8.0, None, 11.0))
     check("회귀 C불가: 전환율 빈칸(A 폴백 금지)", _cv2, None)

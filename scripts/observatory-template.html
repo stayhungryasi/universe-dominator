@@ -1693,6 +1693,7 @@ function lgRow(x, lg){
   const roeN = lgRoeNote(b);
   if (roeN) notes.push('ROE: ' + roeN);
   if (j.conv == null && b.conv_note) notes.push('전환율: ' + b.conv_note);
+  if (j.conv != null && b.conv_check_note) notes.push('전환율: ' + b.conv_check_note);
   const basis = lgBasisNote(b, j);
   if (basis) notes.push(basis);
   const noteRow = notes.length
