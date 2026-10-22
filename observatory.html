@@ -1671,13 +1671,58 @@ const LG_TIP = {
 function lgPct(v, digits){ return v == null ? '—' : (v * 100).toFixed(digits == null ? 1 : digits) + '%'; }
 function lgPp(v){ return v == null ? '—' : (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + 'p'; }
 
-/* 버크셔 13F 마감까지 남은 날 — 11/14 가 지났으면 내년치를 센다 */
-function lgDDay(){
-  const now = new Date();
-  let due = new Date(now.getFullYear(), 10, 14);       // 10 = 11월
-  if (due < now) due = new Date(now.getFullYear() + 1, 10, 14);
-  return Math.ceil((due - now) / 86400000);
+/* lg13f-begin — 버크셔 13F 다음 마감(순수 함수: 오늘 → {분기, 마감일, 남은 날}).
+   13F 는 분기말 + 45일: 2/14(4분기분)·5/15(1분기분)·8/14(2분기분)·11/14(3분기분).
+   마감일이 주말이면 월요일로, 연방 공휴일이면 다음 영업일로 민다(해당 월 공휴일만 최소 반영).
+   2026-10-22 원천 대조 F4: 11/14 고정이었는데 2026-11-14 는 토요일 — 실제 마감은 11/16(월). */
+function lg13F(today){
+  const DUE = [[1, 14, 4], [4, 15, 1], [7, 14, 2], [10, 14, 3]];   // [월(0부터), 일, 대상 분기]
+  const t0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const nth = (y, m, wd, n) => {           // m월의 n번째 wd요일
+    const off = (wd - new Date(y, m, 1).getDay() + 7) % 7;
+    return new Date(y, m, 1 + off + 7 * (n - 1));
+  };
+  const lastWd = (y, m, wd) => {           // m월의 마지막 wd요일
+    const e = new Date(y, m + 1, 0);
+    return new Date(y, m, e.getDate() - ((e.getDay() - wd + 7) % 7));
+  };
+  const holiday = d => {
+    const y = d.getFullYear(), m = d.getMonth();
+    const same = x => x.getMonth() === m && x.getDate() === d.getDate();
+    if (m === 1) return same(nth(y, 1, 1, 3));                  // 대통령의 날: 2월 셋째 월요일
+    if (m === 4) return same(lastWd(y, 4, 1));                  // 메모리얼 데이: 5월 마지막 월요일
+    if (m === 10) {                                             // 재향군인의 날(대체 휴일)·추수감사절
+      const v = new Date(y, 10, 11), w = v.getDay();
+      const obs = w === 6 ? new Date(y, 10, 10) : w === 0 ? new Date(y, 10, 12) : v;
+      return same(obs) || same(nth(y, 10, 4, 4));
+    }
+    return false;
+  };
+  const roll = d => {
+    while (d.getDay() === 0 || d.getDay() === 6 || holiday(d)) {
+      d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+    }
+    return d;
+  };
+  for (let y = t0.getFullYear(); y <= t0.getFullYear() + 1; y++) {
+    for (const [m, dd, q] of DUE) {
+      const due = roll(new Date(y, m, dd));
+      if (due >= t0) return { q: q, due: due, days: Math.round((due - t0) / 86400000) };
+    }
+  }
+  return null;
 }
+
+/* 관찰 카드 한 줄 — 분기명·날짜·요일·D-day 를 전부 상태(lg13F)에서 만든다 */
+function lg13FLine(today){
+  const f = lg13F(today || new Date());
+  if (!f) return '';
+  const WD = ['일', '월', '화', '수', '목', '금', '토'];
+  const md = (f.due.getMonth() + 1) + '/' + f.due.getDate() + '(' + WD[f.due.getDay()] + ')';
+  return '버크셔 ' + f.q + '분기 13F · <b>' + md + '</b> 마감 · ' +
+    (f.days === 0 ? 'D-day' : 'D-' + f.days) + ' (통상 마감일 장 마감 후 공개)';
+}
+/* lg13f-end */
 
 const LG_GLOSSARY =
   '<details class="px-gloss" open><summary>용어집 — 이 표의 눈금 읽는 법</summary><dl>' +
@@ -2007,9 +2052,9 @@ function renderLegend(){
        '<a href="#legend" onclick="lgSetFilter(null);return false;">전체 보기</a>' : '') +
     '</div>';
 
-  // 버크셔 관찰 카드 — 스트립 바로 아래. 고정 3줄이고 D-day 만 오늘 기준으로 센다.
+  // 버크셔 관찰 카드 — 스트립 바로 아래. 고정 3줄이고 13F 줄은 오늘 기준으로 계산한다.
   html += '<div class="lg-watch"><div class="lg-watch-title">🔭 버크셔 관찰</div><ul>' +
-    '<li>버크셔 Q3 13F: <b>11/14</b> (D-' + lgDDay() + ')</li>' +
+    '<li>' + lg13FLine() + '</li>' +
     '<li>캐펙스/OCF &gt; <b>1.15</b> = 약세 신호</li>' +
     '<li>클라우드 성장 &lt; <b>60%</b> = 의심 신호</li>' +
     '</ul></div>';

@@ -1007,6 +1007,49 @@ def main():
     check("F3 관제: 같은 붕괴로 다음 회차에 다시 울지 않는다",
           _ps3.judge_coverage({"coverage": {"roe_us": [0, 22]}}, _cst, "2026-10-07")[0], [])
 
+    # ── 버크셔 13F D-day (2026-10-22 원천 대조 F4) ──────────────────────────────
+    # 막으려는 것 한 문장: **실제 마감일이 아닌 날짜(고정 11/14)로 D-day 를 세는 것.**
+    # 2026-11-14 는 토요일 → 마감은 11/16(월). 화면 D-23 → 실제 D-25.
+    # 표시층 함수를 그대로 node 로 돌린다(같은 로직을 파이썬으로 두 벌 두지 않는다).
+    import re as _re4, shutil as _sh4, subprocess as _sp4
+    _tpl4 = (Path(__file__).parent / "observatory-template.html").read_text(encoding="utf-8")
+    _m4 = _re4.search(r"/\* lg13f-begin.*?/\* lg13f-end \*/", _tpl4, _re4.S)
+    check("F4 13F: 표시층에서 순수 함수 구간을 찾는다", _m4 is not None, True)
+    check("F4 13F: 고정 날짜(11/14) 하드코딩 제거",
+          "13F: <b>11/14</b>" in _tpl4 or "lgDDay" in _tpl4, False)
+    if _m4 is not None and _sh4.which("node") is None:
+        check("F4 13F: node 필요(표시층 날짜 계산 실측)", None, "node")
+    elif _m4 is not None:
+        _js4 = _m4.group(0) + """
+const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' +
+  String(d.getDate()).padStart(2, '0');
+const cases = [[2026, 9, 22], [2026, 10, 17], [2027, 3, 1], [2026, 10, 16], [2026, 7, 14]];
+console.log(JSON.stringify(cases.map(c => {
+  const t = new Date(c[0], c[1], c[2]); const f = lg13F(t);
+  return [iso(f.due), f.days, f.q, lg13FLine(t)];
+})));
+"""
+        _p4 = _sp4.run(["node"], input=_js4, capture_output=True, text=True, encoding="utf-8")
+        try:
+            import json as _j4
+            _r4 = _j4.loads(_p4.stdout.strip().splitlines()[-1])
+        except Exception:
+            _r4 = None
+            print(f"  [F4] node 출력 해석 실패: {_p4.stdout!r} {_p4.stderr!r}", file=sys.stderr)
+        check("F4 13F: 2026-10-22 → 2026-11-16(월) · D-25 · 3분기",
+              _r4 and _r4[0][:3], ["2026-11-16", 25, 3])
+        check("F4 13F: 표기 — 분기·요일·D-day·공개 시점",
+              _r4 and _r4[0][3],
+              "버크셔 3분기 13F · <b>11/16(월)</b> 마감 · D-25 (통상 마감일 장 마감 후 공개)")
+        check("F4 13F: 2026-11-17 → 2/14(일) → 2/15 대통령의 날 → 2027-02-16(화) · 4분기",
+              _r4 and _r4[1][:3], ["2027-02-16", 91, 4])
+        check("F4 13F: 2027-04-01 → 5/15(토) → 2027-05-17(월) · 1분기",
+              _r4 and _r4[2][:3], ["2027-05-17", 46, 1])
+        check("F4 13F: 마감 당일은 D-day(지난 마감으로 넘어가지 않는다)",
+              _r4 and (_r4[3][:2], "D-day" in _r4[3][3]), (["2026-11-16", 0], True))
+        check("F4 13F: 평일 마감(2026-08-14 금)은 그대로",
+              _r4 and _r4[4][:3], ["2026-08-14", 0, 2])
+
     # ── 레전드 측정층은 34종 전원 시세를 부른다 (2026-09-05) ─────────────────
     # 막으려던 것: **시차 관측의 원칙 바구니가 레전드 판정까지 막는 것.**
     # '추정불가 = 시세 미호출' 은 괴리(정당 MAX)를 안 매기겠다는 시차 쪽 규칙인데,
