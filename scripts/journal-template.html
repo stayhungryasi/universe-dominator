@@ -443,6 +443,8 @@ function renderCompany(slug){
   // 전문을 다 펼쳐 두면 '언제 무슨 판정이 났는가'라는 시간의 축이 보이지 않는다.
   // 기본은 최신 1편만 펼침. 독립 토글이라 여러 편을 동시에 열어 비교할 수 있다.
   const list = (CE.essays || []).filter(e => e.company === slug && e.status !== 'withdrawn');
+  // 숫자 규율 재검사(2026-10-23)에서 출처를 못 읽은 기록 — 철회하지 않고 표식만 단다(상태에서 생성)
+  const unverifiable = e => ((e.number_check || {}).status === 'unverifiable');
   // 정정 — 철회한 기록은 조용히 사라지지 않는다. 무엇을 왜 거뒀는지 한 줄을 남긴다.
   const fixes = (CE.corrections || []).filter(c => c.company === slug);
   const fixHtml = fixes.map(c => '<div class="ce-correction">정정 · ' + esc(c.date || '') +
@@ -456,6 +458,7 @@ function renderCompany(slug){
           '<span>' + esc(e.date) + '</span>' +
           '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
           (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
+          (unverifiable(e) ? '<span class="ce-origin">원문 대조 불가</span>' : '') +
         '</span>' +
         '<span class="ud-acc-title">' + esc(e.title) + '</span>' +
         '<span class="ud-acc-caret" aria-hidden="true">▸</span>' +
@@ -465,6 +468,7 @@ function renderCompany(slug){
           '<button data-copy="' + esc(e.slug) + '">🔗 링크 복사</button>' +
           '<button data-copytext="' + i + '">📄 본문 복사</button>' +
         '</div>' +
+        (unverifiable(e) ? '<div class="ce-correction">숫자 규율 도입 이전 기록 — 원문 대조 불가 · 출처를 지금 다시 열 수 없어 본문 숫자를 원문과 대조하지 못했습니다(' + esc((e.number_check || {}).checked_at || '') + ' 재검사).</div>' : '') +
         '<div class="ce-essay-body">' + (e.html || '') + '</div>' +
       '</div>' +
     '</div>';
