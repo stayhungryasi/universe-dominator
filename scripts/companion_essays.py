@@ -281,6 +281,120 @@ def check_quotes(html, source_text, n_sources):
     return bad
 
 
+# ────────────────────────────────────────────────────────────────
+# 숫자 규율 — 원문에 없는 숫자 방지선 (2026-10-23 ⑱)
+# ────────────────────────────────────────────────────────────────
+# 막으려는 것 한 문장: **수집한 원문에 없는 숫자가 에세이·차트에 실리는 것.**
+# 그래서 검사도 그 정의로 한다 — 본문·차트의 숫자 하나하나를 수집 원문 텍스트의 숫자와
+# 대조한다(인용 규율과 같은 원문 대조 방식). 표면 특징(숫자 개수·길이)으로 재지 않는다.
+#   · 단위 환산: 조·억·만·천 / trillion·billion·million·thousand / T·B·M·K 를 절대값으로
+#   · 허용 오차: 표기 자릿수의 반올림 폭(예: 146억 → ±0.5억) 또는 0.5% 중 큰 쪽
+#   · 원문 표는 흔히 백만·천 단위로 적힌다 → 단위 없는 원문 숫자는 ×1e6·×1e3 도 후보
+#   · 면제: 연도·날짜·분기 표기(3Q26·3분기·Q3), 10 이하 맨 정수(2편·3가지 같은 세기)
+_UNIT = {"조": 1e12, "억": 1e8, "만": 1e4, "천": 1e3,
+         "trillion": 1e12, "billion": 1e9, "bn": 1e9, "million": 1e6, "mn": 1e6,
+         "thousand": 1e3, "t": 1e12, "b": 1e9, "m": 1e6, "k": 1e3}
+_NUM_RE = re.compile(
+    r"(?<![\w.])(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?\s*"
+    r"(조|억|만|천|trillion|billion|bn|million|mn|thousand|T|B|M|K)?(?![A-Za-z])", re.I)
+# 한국어 복합 단위 — '1조 4,575억'·'2억 8천만'·'1,360만' 을 하나의 값으로(2026-10-23 오탐 실측:
+# '2억 8천만'(= 280 million)을 '2억'과 '8천'으로 쪼개 원문과 못 맞췄다)
+_KO_PART = r"(\d[\d,]*(?:\.\d+)?)\s*(조|억|천만|백만|만)"
+_COMPOUND = re.compile(_KO_PART + r"(?:\s*" + _KO_PART + r")*")
+_KO_MULT = {"조": 1e12, "억": 1e8, "천만": 1e7, "백만": 1e6, "만": 1e4}
+_EXEMPT = re.compile(
+    r"(?<!\d)(?:19|20)\d{2}\s*년|(?<![\d,.])(?:19|20)\d{2}(?![\d,.]|\s*(?:억|만|조|천|명|건|달러))"
+    r"|\d{4}-\d{1,2}-\d{1,2}|\d{1,2}/\d{1,2}(?!\d)|\d{1,2}\s*월\s*\d{1,2}\s*일|\d{1,2}\s*월"
+    r"|\d{1,2}\s*일(?!\s*(?:만|억))|(?<![A-Za-z])[1-4]Q\d{0,2}|Q[1-4]|[1-4]\s*분기|[1-4]H\d{2}"
+    r"|[①-⑳]|(?<![A-Za-z])V\d\b")
+
+
+def _num_tokens(text):
+    """텍스트 → [(값, 허용오차, 원문표기)] — 면제 표기는 빼고, 복합 단위(1조 4,575억)는 합친다."""
+    t = _EXEMPT.sub(" ", text or "")
+    out = []
+
+    def comp(m):
+        parts = re.findall(_KO_PART, m.group(0))
+        total = sum(float(n.replace(",", "")) * _KO_MULT[u] for n, u in parts)
+        n_last, u_last = parts[-1]
+        dec = len(n_last.split(".")[1]) if "." in n_last else 0
+        out.append((total, 0.5 * 10 ** (-dec) * _KO_MULT[u_last], m.group(0)))
+        return " "
+    t = _COMPOUND.sub(comp, t)
+    for m in _NUM_RE.finditer(t):
+        whole, frac, unit = m.group(1), m.group(2), m.group(3)
+        v = float(whole.replace(",", "") + ("." + frac if frac else ""))
+        mult = _UNIT.get((unit or "").lower(), 1.0) if unit else 1.0
+        dec = len(frac) if frac else 0
+        out.append((v * mult, 0.5 * 10 ** (-dec) * mult, m.group(0).strip()))
+    return out
+
+
+def _source_values(src):
+    vals = []
+    for v, _, _ in _num_tokens(src):
+        vals.append(v)
+        if v < 1e6:                     # 단위 없는 원문 숫자(표의 백만·천 단위) 후보
+            vals += [v * 1e6, v * 1e3]
+    return vals
+
+
+def _matches(v, tol, pool):
+    for s in pool:
+        if abs(abs(v) - abs(s)) <= max(tol, 0.005 * abs(s)):
+            return True
+    return False
+
+
+def check_numbers(html, charts, source_text):
+    """숫자 규율 — 위반 목록(빈 목록 = 통과). 원문 대조만으로 판정한다."""
+    body = _norm(re.sub(r"<[^>]+>", " ", html or ""))
+    pool = _source_values(_norm(source_text))
+    bad = []
+    for v, tol, raw in _num_tokens(body):
+        if tol == 0.5 and v <= 10 and float(v).is_integer():
+            continue                    # 10 이하 맨 정수 — 세기·순서(2편·3가지)
+        if not _matches(v, tol, pool):
+            bad.append(raw)
+    for ch in charts or []:
+        unit = str((ch or {}).get("unit") or "")
+        mult = _UNIT.get(unit.strip().lower(), 1.0)
+        for row in (ch or {}).get("series") or []:
+            try:
+                val = float(row.get("value"))
+            except (TypeError, ValueError, AttributeError):
+                continue
+            dec = len(str(row.get("value")).split(".")[1]) if "." in str(row.get("value")) else 0
+            if not _matches(val * mult, 0.5 * 10 ** (-dec) * mult, pool):
+                bad.append(f"차트 {row.get('label', '')} {row.get('value')}{unit}")
+    seen, uniq = set(), []
+    for b in bad:
+        if b not in seen:
+            seen.add(b)
+            uniq.append(b)
+    return uniq
+
+
+def has_numbers(html, charts):
+    """원문 대조 대상 숫자가 하나라도 있는가(면제 표기 제외)."""
+    body = _norm(re.sub(r"<[^>]+>", " ", html or ""))
+    toks = [t for t in _num_tokens(body)
+            if not (t[1] == 0.5 and t[0] <= 10 and float(t[0]).is_integer())]
+    return bool(toks) or any((c or {}).get("series") for c in charts or [])
+
+
+_HARD_EVENT = re.compile(r"실적|분기\s*결과|earnings|results|계약|contract|agreement|8-K", re.I)
+
+
+def is_hard_event(res, items):
+    """실적·계약 사건인가 — 숫자가 핵심인 사건은 전문 없이 쓰지 않는다."""
+    if str((res or {}).get("event_type", "")).strip() in ("실적", "계약"):
+        return True
+    text = " ".join([str((res or {}).get("title", ""))] + [str(x.get("title", "")) for x in items or []])
+    return bool(_HARD_EVENT.search(text))
+
+
 def _bulk_lift(body, src, window=BULK_WINDOW):
     """본문에 원문이 window 자 이상 연속으로 그대로 박혀 있으면 그 구간을 돌려준다."""
     if len(body) < window or not src:
@@ -395,13 +509,35 @@ def widen_query(url, days):
     return url
 
 
-def fetch_article_text(url, limit=6000):
-    """원문 본문 대강 추출 — 실패해도 빈 문자열로 우아하게 (signal_column 과 같은 문법)"""
-    if re.search(r"\.pdf(\?|$)", url or "", re.I):
-        return ""              # PDF 를 텍스트로 긁으면 바이너리 쓰레기 — 제목만으로 진행
+def pdf_text(data, limit):
+    """PDF 바이트 → 텍스트(pypdf). 실패하면 빈 문자열 — 호출자가 SEC HTML 로 대체한다."""
     try:
-        r = requests.get(url, headers=UA, timeout=25)
+        import io
+        from pypdf import PdfReader
+        reader = PdfReader(io.BytesIO(data))
+        out = []
+        for page in reader.pages:
+            out.append(page.extract_text() or "")
+            if sum(len(x) for x in out) >= limit:
+                break
+        return re.sub(r"\s+", " ", " ".join(out)).strip()[:limit]
+    except Exception as e:
+        print(f"[동행] PDF 추출 실패({e}) — SEC HTML 원문으로 대체 필요", file=sys.stderr)
+        return ""
+
+
+def fetch_article_text(url, limit=6000, headers=None):
+    """원문 본문 대강 추출 — 실패해도 빈 문자열로 우아하게 (signal_column 과 같은 문법)
+
+    2026-10-23 ⑱: 예전엔 PDF 를 빈 문자열로 넘겼다(바이너리 쓰레기 방지). 그 결과 IR 실적
+    PDF 를 못 읽은 채 제목만으로 에세이를 쓰고 차트 숫자까지 지어냈다. 이제 pypdf 로 읽는다.
+    """
+    try:
+        r = requests.get(url, headers=headers or UA, timeout=30)
         r.raise_for_status()
+        ctype = (r.headers.get("content-type") or "").lower()
+        if "pdf" in ctype or re.search(r"\.pdf(\?|$)", url or "", re.I):
+            return pdf_text(r.content, limit)
         html = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>", " ", r.text, flags=re.I)
         text = re.sub(r"<[^>]+>", " ", html)
         text = re.sub(r"&[a-z#0-9]+;", " ", text)
@@ -482,7 +618,7 @@ def mark_consumed(token, doc_name, note):
 # ────────────────────────────────────────────────────────────────
 
 def ask_claude(api_key, constitution, company, thesis, items, recent_titles, memo="",
-               feedback=""):
+               feedback="", full_any=True):
     """헌법 프롬프트 + 논제 원장 + 후보를 주고 판정·집필을 함께 시킨다.
 
     5축에 닿지 않으면 모델이 {"publish": false} 로 침묵을 택한다 — 그것이 정답이다.
@@ -493,8 +629,15 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
         "최근에세이제목": recent_titles[:8],
         "소장메모": memo,
         "직전_원고_반려사유": feedback,
+        "숫자_규율": ("본문·차트의 숫자는 후보 발췌에 그대로 있는 것만 쓴다. 직접 계산하거나 "
+                    "기억으로 채운 숫자는 쓰지 않는다(엔진이 원문과 대조해 걸러낸다)."
+                    if full_any else
+                    "전문을 읽은 원천이 없다 — 숫자와 차트를 쓰지 마라. 실적·계약 사건이면 "
+                    "publish=false 로 답하라."),
         "후보": [{"제목": x.get("title", ""), "URL": x.get("url", ""),
-                  "발행": x.get("pub", ""), "발췌": (x.get("article") or "")[:2500]}
+                  "발행": x.get("pub", ""),
+                  "원천등급": "SEC 공시 원문(1순위)" if x.get("primary") else "보도·기타",
+                  "발췌": (x.get("article") or "")[:(20000 if x.get("primary") else 2500)]}
                  for x in items],
     }
     prompt = (constitution + "\n\n" + f"""
@@ -511,6 +654,9 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
  "body": "<h3>·<p>·<ul>·<li> 만 쓴 HTML. 헌법의 6단 구조를 지키되 6번 출처·면책은 넣지 마라(엔진이 붙인다)",
  "sources": ["실제로 근거로 삼은 URL", "..."],
  "watch": ["다음 관측 포인트", "..."],
+ "event_type": "실적|계약|발사|규제|기타 중 하나",
+ "event_date": "다루는 사건이 일어난 날 YYYY-MM-DD",
+ "event_key": ["사건 핵심어 2~3개(예: 3Q26 실적, Flight 14)"],
  "charts": [{{"title": "차트 제목", "subtitle": "부제·단위 설명", "unit": "단위(%·B·건 등, 없으면 빈 문자열)", "series": [{{"label": "항목", "value": 숫자}}]}}]}}""")
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
@@ -682,9 +828,11 @@ def split_tail(html):
     return html or "", ""
 
 
-def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=None):
+def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=None,
+                numbers_verified=False, event=None):
     verdict = verdict if verdict in VERDICTS else "판단 보류"
-    charts_html = render_charts(charts)
+    # 차트의 '자료: 원문 기사에서 추출' 각인은 숫자 대조를 통과했을 때만 붙는다
+    charts_html = render_charts(charts) if numbers_verified else ""
     if charts_html:
         print(f"[동행] {slug}: 원문 수치 차트 {charts_html.count('<svg')}개 동봉")
     recs = normalize_sources(sources)
@@ -697,6 +845,10 @@ def build_entry(slug, title, verdict, body_html, sources, origin, today, charts=
         "sources": recs,
         "origin": origin,
         "slug": make_slug(slug, title, today),
+        "event_type": (event or {}).get("event_type", ""),
+        "event_date": (event or {}).get("event_date", ""),
+        "event_key": list((event or {}).get("event_key") or [])[:4],
+        "numbers_verified": bool(numbers_verified),
     }
 
 
@@ -770,26 +922,88 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
     두 번째도 걸리면 그때는 보류한다 — 방지선은 끝내 지켜야 하니까.
     """
     src = collected_text(items)
+    full_any = any((x.get("article") or "").strip() for x in items or [])
     feedback = ""
     for attempt in (1, 2):
         res = ask_claude(api_key, constitution, comp, thesis, items, recent,
-                         memo=memo, feedback=feedback)
+                         memo=memo, feedback=feedback, full_any=full_any)
         if not res.get("publish"):
             return res, None
-        bad = check_quotes(res.get("body", ""), src, len(res.get("sources") or [1]))
+        body, charts = res.get("body", ""), res.get("charts") or []
+        bad = check_quotes(body, src, len(res.get("sources") or [1]))
+        num_bad = []
+        if not full_any:
+            # 전문이 하나도 없다 — 숫자가 핵심인 사건이면 쓰지 않고, 아니면 숫자·차트 금지
+            if is_hard_event(res, items):
+                return res, "전문 원천 없음 — 실적·계약 사건은 원문 없이 게시하지 않는다(보류)"
+            if has_numbers(body, charts):
+                num_bad = ["전문 원천 없음 — 숫자·차트 금지"]
+        else:
+            nb = check_numbers(body, charts, src)
+            if nb:
+                num_bad = ["원문에 없는 숫자: " + ", ".join(nb[:8])]
+        bad += num_bad
         if not bad:
+            res["numbers_verified"] = True
             return res, None
         reason = " / ".join(bad)
         if attempt == 1:
-            print(f"[동행] {comp['ko']}: 인용 규율 위반 — 사유를 주고 1회 재생성 ({reason})",
+            print(f"[동행] {comp['ko']}: 규율 위반 — 사유를 주고 1회 재생성 ({reason})",
                   file=sys.stderr)
-            feedback = ("직전 원고가 인용 규율에 걸렸다. 아래를 고쳐 다시 써라: "
-                        + reason +
-                        " — 원문을 옮기지 말고 해석을 써라. 강조가 필요하면 따옴표 대신 "
-                        "네 문장으로 설명하라.")
+            feedback = ("직전 원고가 규율에 걸렸다. 아래를 고쳐 다시 써라: " + reason +
+                        " — 원문을 옮기지 말고 해석을 써라. 숫자는 후보의 발췌에 **그대로 있는 것만**"
+                        " 쓰고, 직접 계산·추정한 숫자와 차트는 빼라. 강조는 따옴표 대신 네 문장으로.")
             continue
         return res, reason
-    return res, "재생성 후에도 인용 규율 위반"
+    return res, "재생성 후에도 규율 위반"
+
+
+_STRONG = re.compile(r"(?<![A-Za-z])[1-4]Q\d{2}|[1-4]\s*분기|Q[1-4]\s*20\d{2}|"
+                     r"Flight\s*\d+|플라이트\s*\d+|\d+\s*차\s*비행|비행\s*\d+", re.I)
+_STOP = {"spacex", "그리고", "에세이", "관측", "논제", "the", "and", "of", "for"}
+
+
+def _event_tokens(e):
+    txt = " ".join([str(e.get("title", ""))] + [str(k) for k in (e.get("event_key") or [])])
+    strong = {re.sub(r"\s+", "", m.group(0)).lower().replace("분기", "q")
+              for m in _STRONG.finditer(txt)}
+    strong = {re.sub(r"^([1-4])q$", r"\1q", x) for x in strong}
+    words = {w.lower() for w in re.findall(r"[A-Za-z]{3,}|[가-힣]{2,}", txt)} - _STOP
+    return strong, words
+
+
+def _norm_strong(tokens):
+    """'3q26'·'3q' 를 같은 분기로 — 연도 꼬리를 떼어 비교한다."""
+    return {re.sub(r"^([1-4]q)\d{2}$", r"\1", t) for t in tokens}
+
+
+def same_event(a, b, days=3):
+    """같은 회사 · 사건일 ±days · (분기·비행 번호 같은 강한 핵심어 공유 또는 핵심어 절반 이상 겹침)."""
+    if a.get("company") != b.get("company"):
+        return False
+    da = a.get("event_date") or a.get("date") or ""
+    db = b.get("event_date") or b.get("date") or ""
+    try:
+        gap = abs((datetime.strptime(da[:10], "%Y-%m-%d") - datetime.strptime(db[:10], "%Y-%m-%d")).days)
+    except ValueError:
+        return False
+    if gap > days:
+        return False
+    sa, wa = _event_tokens(a)
+    sb, wb = _event_tokens(b)
+    if _norm_strong(sa) & _norm_strong(sb):
+        return True
+    if wa and wb and len(wa & wb) / max(1, min(len(wa), len(wb))) >= 0.5:
+        return True
+    return False
+
+
+def duplicate_of(entry, essays):
+    """공개 에세이 중 같은 사건을 이미 다룬 것 → 그 에세이(없으면 None)."""
+    for e in essays or []:
+        if is_public(e) and e is not entry and same_event(entry, e):
+            return e
+    return None
 
 
 def run_material(mat, companies, api_key, constitution, essays, today):
@@ -830,7 +1044,81 @@ def run_material(mat, companies, api_key, constitution, essays, today):
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
                        res.get("body", ""),
                        source_registry([item], res.get("sources")), "소재", today,
-                       charts=res.get("charts")), "소재 에세이화"
+                       charts=res.get("charts"), numbers_verified=res.get("numbers_verified", False),
+                       event=res), "소재 에세이화"
+
+
+SEC_ARCHIVE = "https://www.sec.gov/Archives/edgar/data/"
+
+
+def pick_ex99(index_html):
+    """공시 색인 페이지 → EX-99.x 문서 경로(없으면 None). 파일명이 아니라 '문서 유형' 열로 고른다.
+
+    SpaceX 의 실적 보도자료(Ex.99.1)는 'spaceexplorationtechnologi.htm' 같은 이름이라
+    'ex99' 파일명 규칙으로는 못 찾는다(2026-10-23 실측).
+    """
+    for row in re.findall(r"<tr[^>]*>(.*?)</tr>", index_html or "", re.S):
+        cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)]
+        if any(re.fullmatch(r"EX-99(\.\d+)?", c) for c in cells):
+            href = re.findall(r'href="([^"]+\.html?)"', row)
+            if href:
+                return href[0].replace("/ix?doc=", "")
+    return None
+
+
+def sec_exhibit_url(event, headers):
+    """8-K 사건 → Ex.99.1(보도자료 HTML) 주소. 못 찾으면 8-K 본문 주소."""
+    url = event.get("url") or ""
+    accn = (event.get("accn") or "").strip()
+    m = re.search(r"/data/(\d+)/(\d{18})/", url)
+    if not m or not accn:
+        return url
+    idx = f"{SEC_ARCHIVE}{m.group(1)}/{m.group(2)}/{accn}-index.html"
+    try:
+        r = requests.get(idx, headers=headers, timeout=25)
+        r.raise_for_status()
+        path = pick_ex99(r.text)
+        if path:
+            return "https://www.sec.gov" + path if path.startswith("/") else path
+    except Exception as e:
+        print(f"[동행] SEC 공시 색인 실패({e}) — 8-K 본문으로", file=sys.stderr)
+    return url
+
+
+def sec_primary_items(comp, days, today=None):
+    """실적·계약 사건의 1순위 원천 — 측정층(spacex_watch.json)이 잡은 SEC 8-K 원문.
+
+    2026-10-23 ⑱: IR 실적 PDF 를 못 읽고 제목만으로 쓴 에세이가 숫자를 지어냈다.
+    실적·계약은 숫자가 핵심이므로 SEC 공시 원문(Ex.99.1 HTML)을 후보 맨 앞에 넣는다.
+    SEC_USER_AGENT 가 없으면 SEC 가 거절하므로 로그만 남기고 빈 목록.
+    """
+    if comp.get("slug") != "spacex":
+        return []
+    ua = os.environ.get("SEC_USER_AGENT", "").strip()
+    if not ua:
+        print("[동행] SEC_USER_AGENT 없음 — SEC 1순위 원천 생략", file=sys.stderr)
+        return []
+    watch = load_json(DATA_DIR / "spacex_watch.json", {}) or {}
+    today = today or datetime.now(KST).strftime("%Y-%m-%d")
+    cut = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=int(days))).strftime("%Y-%m-%d")
+    hdr = {"User-Agent": ua}
+    out = []
+    for e in watch.get("events") or []:
+        if e.get("source") != "SEC EDGAR" or e.get("kind") not in ("earnings", "contract"):
+            continue
+        if (e.get("date") or "") < cut:
+            continue
+        ex = sec_exhibit_url(e, hdr)
+        text = fetch_article_text(ex, limit=40000, headers=hdr)
+        out.append({"title": f"SEC 8-K {e.get('date')} — {e.get('title')} (원문)", "url": ex,
+                    "pub": e.get("date", ""), "article": text, "article_attempted": True,
+                    "primary": True, "event_kind": e.get("kind")})
+        if len(out) >= 2:
+            break
+    if out:
+        print(f"[동행] {comp['ko']}: SEC 1순위 원천 {len(out)}건 — "
+              + ", ".join(f"{x['pub']} {len(x['article'])}자" for x in out))
+    return out
 
 
 def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=None,
@@ -853,11 +1141,15 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
     seen_urls = {r["url"] for e in essays if e.get("company") == comp["slug"] and is_public(e)
                  for r in normalize_sources(e.get("sources"))}
     seen_urls |= set(exclude or ())
+    primary = sec_primary_items(comp, widen_days or 7)        # 실적·계약은 SEC 원문이 1순위
+    cands = primary + [c for c in cands if c.get("url") not in {x["url"] for x in primary}]
     cands = [c for c in cands if c.get("url") not in seen_urls]
     if not cands:
         print(f"[동행] {comp['ko']}: 후보 0 · 발행 0 — 침묵")
         return None
     for c in cands[:3]:
+        if c.get("primary"):
+            continue                          # 이미 SEC 원문 전문을 담았다
         c["article_attempted"] = True        # 유료벽 라벨은 '시도했는데 실패'일 때만
         c["article"] = fetch_article_text(c["url"])
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"] and is_public(e)][:8]
@@ -876,11 +1168,17 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
         print(f"[동행] {comp['ko']}: 인용 규율 위반(재생성 후에도) — 발행 보류 :: {violation}",
               file=sys.stderr)
         return None
+    entry = build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
+                        res.get("body", ""),
+                        source_registry(cands[:5], res.get("sources")), "auto", today,
+                        charts=res.get("charts"),
+                        numbers_verified=res.get("numbers_verified", False), event=res)
+    dup = duplicate_of(entry, essays)
+    if dup:
+        print(f"[동행] {comp['ko']}: 같은 사건 중복 — 「{dup.get('title','')}」 이미 있음, 발행 안 함")
+        return None
     print(f"[동행] {comp['ko']}: 후보 {len(cands)} · 발행 1 — 축 {res.get('axis','')}")
-    return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
-                       res.get("body", ""),
-                       source_registry(cands[:5], res.get("sources")), "auto", today,
-                       charts=res.get("charts"))
+    return entry
 
 
 BACKFILL_SLUG = "spacex"     # 회수 대상 — 사건층 정지 기간에 가장 많이 놓친 항로
@@ -926,6 +1224,9 @@ def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None
         entry = run_auto(comp, api_key, constitution, essays + out, today,
                          widen_days=days, exclude=set(used), memo=memo)
         if not entry:
+            break
+        if duplicate_of(entry, essays + out):
+            print(f"[동행] 회수 {k + 1}: 같은 사건 중복 — 발행 안 함")
             break
         entry["backfill"] = True
         out.append(entry)

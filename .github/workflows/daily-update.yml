@@ -237,6 +237,8 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           # 놓친 사건 회수(S4) — 예약 실행에서는 비어 있어 0(끔)이 된다
           COMPANION_BACKFILL_DAYS: ${{ inputs.companion_backfill_days || 0 }}
+          # 실적·계약 사건의 1순위 원천 = SEC 8-K 원문(⑱) — SEC 는 연락 가능한 User-Agent 필수
+          SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
         continue-on-error: true
 
       - name: Build all site pages

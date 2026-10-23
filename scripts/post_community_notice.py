@@ -116,9 +116,16 @@ def detect_events():
     ess_path = DATA_DIR / "essays.json"
     if ess_path.exists():
         try:
-            ess = json.loads(ess_path.read_text(encoding="utf-8")).get("essays", [])
+            ess_doc = json.loads(ess_path.read_text(encoding="utf-8"))
+            ess = ess_doc.get("essays", [])
         except Exception:
-            ess = []
+            ess_doc, ess = {}, []
+        # 🧾 정정 — 철회한 에세이는 공지했던 같은 채널에 정정을 남긴다(2026-10-23).
+        # 공지는 한 번 나가면 회수할 수 없다 — 대신 같은 자리에 같은 무게로 바로잡는다.
+        known_fix = set(load_state().get("corrections", []))
+        for c in ess_doc.get("corrections", []) or []:
+            if isinstance(c, dict) and c.get("text") and c["text"] not in known_fix:
+                events.append(("correction", f"🧾 정정 — {c['text']}"))
         kst_today = datetime.now(KST).strftime("%Y-%m-%d")
         seen_co = set()
         for e in ess:
@@ -246,6 +253,13 @@ def main():
 
     posted_today.update(sig(k, msg, today) for k, msg in fresh)
     state.setdefault("posted", {})[today] = sorted(posted_today)
+    # 정정 발행 이력 — 7일 청소 대상(posted)이 아니라 영구 목록으로 기억한다(재공지 방지)
+    if any(k == "correction" for k, _ in fresh):
+        try:
+            ed = json.loads((DATA_DIR / "essays.json").read_text(encoding="utf-8"))
+            state["corrections"] = [c.get("text") for c in ed.get("corrections", []) if c.get("text")]
+        except Exception:
+            pass
     # 관측일지 발행 이력 갱신
     cols_path = DATA_DIR / "columns.json"
     if cols_path.exists():

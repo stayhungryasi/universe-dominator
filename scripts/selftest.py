@@ -2711,7 +2711,16 @@ console.log(JSON.stringify(cases.map(c => {
                            "http_error") if k in _agh], [])
     except Exception as _de:
         check("표시층: 탐사선 렌더", f"{type(_de).__name__}: {str(_de)[:80]}", "ok")
-    for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer"):
+    # ⑱ 숫자 규율 — 원문에 없는 숫자는 실리지 않는다(핵심만 직접 등재, 전 케이스는 묶음)
+    import companion_essays as _cex
+    check("⑱ 숫자 규율: 원문에 없는 숫자 차단 · 원문 숫자 통과",
+          (_cex.check_numbers("<p>166억</p>", [], "revenue $14,575 million"),
+           _cex.check_numbers("<p>146억</p>", [], "revenue $14,575 million")), (["166억"], []))
+    check("⑱ 원천: PDF 는 pypdf 로 읽는다(빈 문자열로 넘기지 않는다)",
+          "pdf_text(r.content" in __import__("inspect").getsource(_cex.fetch_article_text), True)
+    check("⑱ 의존성: pypdf 정확 고정", "pypdf==" in _req, True)
+    for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
+                 "test_number_discipline"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)

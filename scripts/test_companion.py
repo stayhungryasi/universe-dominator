@@ -206,7 +206,7 @@ class RegenerateTest(unittest.TestCase):
         entry, ask = self._auto([bad_res, GOOD])
         self.assertEqual(ask.call_count, 2, "위반 1회는 재생성 기회를 준다")
         self.assertIsNotNone(entry, "재생성이 통과하면 발행된다")
-        self.assertIn("인용 규율에 걸렸다", str(ask.call_args.kwargs.get("feedback", "")),
+        self.assertIn("규율에 걸렸다", str(ask.call_args.kwargs.get("feedback", "")),
                       "재생성 요청에 반려 사유가 실려야 한다")
 
     def test_second_violation_holds(self):
