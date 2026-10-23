@@ -68,6 +68,7 @@ FORBIDDEN_TEXT = re.compile(
     r"관망|목표\s*주?가|매수\s*(의견|추천|권|판단)|매도\s*(의견|추천|권|판단)|"
     r"보유\s*(의견|권|판단)|비중\s*(확대|축소|유지)|(포트폴리오|최대|목표|투자)\s*비중|"
     r"진입\s*(가격|가|시점|구간|트리거)")
+NEGATED = re.compile(r"(투자\s*권유|권유|목표\s*주?가|권고)\s*(?:가|이|는)?\s*(?:아님|아닙니다|아니다)")
 # ⚠️ '비중 42%'(매출 구성비)·'저가 경쟁 진입'(경쟁 분석)은 권고가 아니다 — 포지션 비중 형태만
 #    잡는다(2026-08-22 오차단 지뢰: 표면 낱말로 자르면 분석이 막힌다. 테스트가 정상 문장으로 오탐을 잰다)
 
@@ -327,7 +328,10 @@ def reco_text_hits(text):
     hits = []
     for ln in (text or "").splitlines():
         s = ln.strip()
-        if s and (is_reco(s) or FORBIDDEN_TEXT.search(s)):
+        # 부정형 고지('투자 권유 아님 · 목표가 아님')는 권고의 반대다 — 부정 구절만 지우고 다시 본다.
+        # 같은 줄에 다른 권고 표현이 남아 있으면 그대로 걸린다(고지문을 방패로 쓸 수 없다).
+        t = NEGATED.sub(" ", s)
+        if t.strip() and (is_reco(t) or FORBIDDEN_TEXT.search(t)):
             hits.append(s[:100])
     return hits
 

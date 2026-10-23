@@ -330,9 +330,12 @@ def check_quotes(html, source_text, n_sources):
 _UNIT = {"조": 1e12, "억": 1e8, "만": 1e4, "천": 1e3,
          "trillion": 1e12, "billion": 1e9, "bn": 1e9, "million": 1e6, "mn": 1e6,
          "thousand": 1e3, "t": 1e12, "b": 1e9, "m": 1e6, "k": 1e3}
+# 숫자 경계(2026-10-23 오탐·구멍 수리): ① '800MHz' 를 '80' 으로 잘라 읽던 것 — 단위는 '뒤에 다른
+# 글자가 붙지 않을 때만' 취하는 선택 묶음으로 둔다(MHz 같은 남의 단위면 맨 숫자 800 으로 읽는다).
+# ② 한국어에 바로 붙은 숫자('매출145억')를 건너뛰던 것 — 앞 경계에서 한글은 막지 않는다.
 _NUM_RE = re.compile(
-    r"(?<![\w.])(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?\s*"
-    r"(조|억|만|천|trillion|billion|bn|million|mn|thousand|T|B|M|K)?(?![A-Za-z])", re.I)
+    r"(?<![\d.,A-Za-z])(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?"
+    r"(?:\s*(조|억|만|천|trillion|billion|bn|million|mn|thousand|T|B|M|K)(?![A-Za-z]))?", re.I)
 # 한국어 복합 단위 — '1조 4,575억'·'2억 8천만'·'1,360만' 을 하나의 값으로(2026-10-23 오탐 실측:
 # '2억 8천만'(= 280 million)을 '2억'과 '8천'으로 쪼개 원문과 못 맞췄다)
 _KO_PART = r"(\d[\d,]*(?:\.\d+)?)\s*(조|억|천만|백만|만)"
@@ -341,7 +344,7 @@ _KO_MULT = {"조": 1e12, "억": 1e8, "천만": 1e7, "백만": 1e6, "만": 1e4}
 _EXEMPT = re.compile(
     r"(?<!\d)(?:19|20)\d{2}\s*년|(?<![\d,.])(?:19|20)\d{2}(?![\d,.]|\s*(?:억|만|조|천|명|건|달러))"
     r"|\d{4}-\d{1,2}-\d{1,2}|\d{1,2}/\d{1,2}(?!\d)|\d{1,2}\s*월\s*\d{1,2}\s*일|\d{1,2}\s*월"
-    r"|\d{1,2}\s*일(?!\s*(?:만|억))|(?<![A-Za-z])[1-4]Q\d{0,2}|Q[1-4]|[1-4]\s*분기|[1-4]H\d{2}"
+    r"|\d{1,2}\s*일(?!\s*(?:만|억))|(?<![A-Za-z])[1-4]Q\s*'?\d{0,2}|Q[1-4](?:\s*'?\d{2})?|[1-4]\s*분기|[1-4]H\d{2}"
     r"|[①-⑳]|(?<![A-Za-z])V\d\b")
 
 
@@ -368,17 +371,24 @@ def _num_tokens(text):
 
 
 def _source_values(src):
+    """원문 숫자 → [(값, 그 표기의 반올림 폭)]. 단위 없는 숫자는 표의 백만·천 단위 후보도 넣는다."""
     vals = []
-    for v, _, _ in _num_tokens(src):
-        vals.append(v)
+    for v, tol, _ in _num_tokens(src):
+        vals.append((v, tol))
         if v < 1e6:                     # 단위 없는 원문 숫자(표의 백만·천 단위) 후보
-            vals += [v * 1e6, v * 1e3]
+            vals += [(v * 1e6, tol * 1e6), (v * 1e3, tol * 1e3)]
     return vals
 
 
 def _matches(v, tol, pool):
-    for s in pool:
-        if abs(abs(v) - abs(s)) <= max(tol, 0.005 * abs(s)):
+    """허용 오차 = 에세이 표기와 원문 표기의 반올림 폭 중 큰 쪽.
+
+    2026-10-23: 처음엔 여기에 '0.5% 상대 오차'를 더 얹었다가, 원문에 없는 'Google $920M'이
+    감가상각 922 와 우연히 맞아 통과했다. 반올림 폭이면 단위 환산(146억 ↔ 14,575M)과
+    원문 쪽 반올림($14.6 billion ↔ 14,575M) 양쪽이 다 설명된다 — 그 이상은 우연을 허용할 뿐이다.
+    """
+    for s, stol in pool:
+        if abs(abs(v) - abs(s)) <= max(tol, stol):
             return True
     return False
 
