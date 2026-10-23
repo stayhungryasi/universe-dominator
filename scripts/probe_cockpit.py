@@ -624,14 +624,18 @@ def gauge_svg(d):
     if isinstance(b.get("mid"), (int, float)):
         o.append(f'<line x1="{x(b["mid"]):.1f}" y1="28" x2="{x(b["mid"]):.1f}" y2="52" class="pc-g-mid"/>')
         o.append(f'<text x="{x(b["mid"]):.1f}" y="24" class="pc-g-lbl pc-g-strong" text-anchor="middle">${b["mid"]:g}</text>')
-    for s in d["scen"]:
-        if isinstance(s.get("vps"), (int, float)):
-            o.append(f'<line x1="{x(s["vps"]):.1f}" y1="52" x2="{x(s["vps"]):.1f}" y2="58" class="pc-g-tick"/>')
-            o.append(f'<text x="{x(s["vps"]):.1f}" y="69" class="pc-g-sm" text-anchor="middle">{esc(s["ko"])} ${s["vps"]:g}</text>')
+    last_x, row = None, 0
+    for s in sorted([s for s in d["scen"] if isinstance(s.get("vps"), (int, float))], key=lambda s: s["vps"]):
+        xv = x(s["vps"])
+        # 가까운 눈금은 줄을 엇갈린다 — 모바일에서 '약세 $3.2'·'기본 $24' 가 겹쳤다
+        row = (row + 1) % 2 if last_x is not None and xv - last_x < 70 else 0
+        last_x = xv
+        o.append(f'<line x1="{xv:.1f}" y1="52" x2="{xv:.1f}" y2="{58 + row * 11}" class="pc-g-tick"/>')
+        o.append(f'<text x="{xv:.1f}" y="{69 + row * 11}" class="pc-g-sm" text-anchor="middle">{esc(s["ko"])} ${s["vps"]:g}</text>')
     if isinstance(p, (int, float)):
         o.append(f'<circle cx="{x(p):.1f}" cy="40" r="7" class="pc-g-price"/>')
         o.append(f'<text x="{min(x(p), X1 - 30):.1f}" y="86" class="pc-g-lbl pc-g-strong" text-anchor="middle">주가 ${p:g}</text>')
-    o.append(f'<text x="{X0}" y="86" class="pc-g-sm">$0</text>')
+    o.append(f'<text x="{X0}" y="50" class="pc-g-sm" text-anchor="start" dy="-12">$0</text>')
     o.append(f'<text x="{X1}" y="60" class="pc-g-sm" text-anchor="end">${top}</text>')
     o.append(f'<text x="{X1}" y="10" class="pc-mark" text-anchor="end">{MARK}</text>')
     o.append("</svg>")
