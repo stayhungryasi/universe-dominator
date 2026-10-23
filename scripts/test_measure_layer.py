@@ -65,6 +65,22 @@ class KpiTest(unittest.TestCase):
         self.assertEqual(round(v / 1e6), 19593)
         self.assertIn("누적", how)
 
+    def test_quarter_flow_front_difference(self):
+        """1분기 = 상반기 누적 − 2분기(3개월). 9월 보고서 공시 표의 1Q26 4,694 와 같아야 한다."""
+        facts = [_f("2026-01-01", "2026-06-30", 12508e6, "2026-08-04", fp="Q2"),
+                 _f("2026-04-01", "2026-06-30", 7814e6, "2026-08-04", fp="Q2")]
+        v, f, how = sw.quarter_flow(facts, "2026-03-31")
+        self.assertEqual(round(v / 1e6), 4694)
+        self.assertIn("기간", how)
+
+    def test_eight_quarters_with_reasoned_gaps(self):
+        cf = {"facts": {"us-gaap": {"RevenueFromContractWithCustomerExcludingAssessedTax": {"units": {"USD": [
+            _f("2026-07-01", "2026-09-30", 14575e6)]}}}}}
+        rows = sw.build_quarters(cf)
+        self.assertEqual([r["quarter"] for r in rows],
+                         ["3Q26", "2Q26", "1Q26", "4Q25", "3Q25", "2Q25", "1Q25", "4Q24"])
+        self.assertIn("S-1", rows[3]["src"]["revenue_usd_m"]["note"])     # 4분기 빈칸에 사유
+
     def test_quarter_flow_missing_prior_is_none(self):
         """1분기 누적이 없으면 2분기 Capex 는 만들지 않는다(추정으로 채우지 않는다)."""
         facts = [_f("2026-01-01", "2026-06-30", 28476e6, "2026-08-04", fp="Q2")]

@@ -221,3 +221,49 @@ def md_to_html(md, base_level=3):
         i += 1
     close_ul()
     return "\n".join(html)
+
+
+# ────────────────────────────────────────────────────────────────
+# 이정표 진척 — progress.parts 숫자화(2026-10-23 관제실 v2)
+# ────────────────────────────────────────────────────────────────
+
+def part_pct(part):
+    """조건 하나의 진척(0~1) — 숫자가 없으면 None(0 으로 채우지 않는다).
+
+    op '>=' : 현재/목표 (목표 ≤ 0 이면 달성 여부만)
+    op '<=' : 역방향 — 현재가 목표 이하면 1, 넘으면 목표/현재
+    op '>'  : 문턱 넘었는가(1/0) · op '==' : 같은가(1/0)
+    """
+    if not isinstance(part, dict):
+        return None
+    cur, tgt, op = part.get("current_num"), part.get("target_num"), part.get("op", ">=")
+    if not isinstance(cur, (int, float)) or not isinstance(tgt, (int, float)) or isinstance(cur, bool):
+        return None
+    if op == "<=":
+        if cur <= tgt:
+            return 1.0
+        return max(0.0, min(1.0, tgt / cur)) if cur > 0 and tgt > 0 else 0.0
+    if op == ">":
+        return 1.0 if cur > tgt else 0.0
+    if op == "==":
+        return 1.0 if cur == tgt else 0.0
+    if tgt <= 0:
+        return 1.0 if cur >= tgt else 0.0
+    return max(0.0, min(1.0, cur / tgt))
+
+
+def milestone_parts(m):
+    """이정표의 조건 목록 — progress.parts 또는(진척 null 이정표) progress_parts."""
+    pg = (m or {}).get("progress")
+    if isinstance(pg, dict) and isinstance(pg.get("parts"), list):
+        return pg["parts"]
+    return (m or {}).get("progress_parts") or []
+
+
+def milestone_pct(m):
+    """복합(AND) 진척 = 조건별 진척의 최솟값. 하나라도 None 이면 전체 None."""
+    ps = [part_pct(p) for p in milestone_parts(m)]
+    if not ps or any(v is None for v in ps):
+        return None
+    return min(ps)
+

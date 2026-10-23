@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "ticker": "SPCX",
   "company": "Space Exploration Technologies Corp.",
   "run": {
@@ -269,8 +269,38 @@
         "target": "2,000만 / $60",
         "unit": "명·$/월",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "소비자 가입자",
+            "current_num": 1360,
+            "target_num": 2000,
+            "unit": "만 명",
+            "op": ">="
+          },
+          {
+            "label": "ARPU",
+            "current_num": 69,
+            "target_num": 60,
+            "unit": "달러/월",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "A-2028-1",
@@ -284,8 +314,39 @@
         "target": "3,000만 / $30억",
         "unit": "명·$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "소비자 가입자",
+            "current_num": 1360,
+            "target_num": 3000,
+            "unit": "만 명",
+            "op": ">="
+          },
+          {
+            "label": "D2C 매출(별도 공시)",
+            "current_num": null,
+            "target_num": 30,
+            "unit": "억 달러",
+            "op": ">=",
+            "reason": "D2C 매출 별도 공시 없음(월간 이용자 2,200만은 콜 발언)"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "A-2029-1",
@@ -299,8 +360,38 @@
         "target": "$500억 / 40%",
         "unit": "$·%",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm",
+        "parts": [
+          {
+            "label": "Connectivity 연매출(연환산)",
+            "current_num": 210,
+            "target_num": 500,
+            "unit": "억 달러",
+            "op": ">="
+          },
+          {
+            "label": "영업이익률",
+            "current_num": 45.1,
+            "target_num": 40,
+            "unit": "%",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "A-2030-1",
@@ -314,8 +405,39 @@
         "target": "5,000만 / 10개",
         "unit": "명·개",
         "asof": "2026-09-30",
-        "source": "https://www.fool.com/earnings/call-transcripts/2026/10/20/spacex-spcx-q3-2026-earnings-call-transcript/"
-      }
+        "source": "https://www.fool.com/earnings/call-transcripts/2026/10/20/spacex-spcx-q3-2026-earnings-call-transcript/",
+        "parts": [
+          {
+            "label": "소비자 가입자",
+            "current_num": 1360,
+            "target_num": 5000,
+            "unit": "만 명",
+            "op": ">="
+          },
+          {
+            "label": "상위 10개 해외시장 인허가",
+            "current_num": null,
+            "target_num": 10,
+            "unit": "개",
+            "op": ">=",
+            "reason": "174개 시장 운영(콜 발언) — 상위 10개 판정은 미실시"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "A-2032-1",
@@ -325,7 +447,31 @@
       "status": "미판정",
       "source": "DoD/우주군 계약 공시",
       "progress": null,
-      "progress_reason": "정부·군 매출이 별도 공시되지 않음 — 기업·정부 합산 $21.27억/분기(연환산 $85억)만 공시. 대리 지표로 쓰지 않고 10-K 공시를 기다림"
+      "progress_reason": "정부·군 매출이 별도 공시되지 않음 — 기업·정부 합산 $21.27억/분기(연환산 $85억)만 공시. 대리 지표로 쓰지 않고 10-K 공시를 기다림",
+      "progress_parts": [
+        {
+          "label": "정부·군 매출",
+          "current_num": null,
+          "target_num": 200,
+          "unit": "억 달러",
+          "op": ">=",
+          "reason": "정부·군 매출 별도 공시 없음(기업·정부 합산만 공시)"
+        }
+      ],
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "미판정"
+        }
+      ]
     },
     {
       "id": "A-2036-1",
@@ -339,8 +485,31 @@
         "target": "$1,200억",
         "unit": "$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm",
+        "parts": [
+          {
+            "label": "Connectivity 연매출(연환산)",
+            "current_num": 210,
+            "target_num": 1200,
+            "unit": "억 달러",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "B-2027-1",
@@ -354,8 +523,38 @@
         "target": "둘 다 1회 이상",
         "unit": "회",
         "asof": "2026-09-28",
-        "source": "https://en.wikipedia.org/wiki/Starship_flight_14"
-      }
+        "source": "https://en.wikipedia.org/wiki/Starship_flight_14",
+        "parts": [
+          {
+            "label": "궤도 투입",
+            "current_num": 1,
+            "target_num": 1,
+            "unit": "회",
+            "op": ">="
+          },
+          {
+            "label": "Ship 회수",
+            "current_num": 0,
+            "target_num": 1,
+            "unit": "회",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "B-2027-2",
@@ -369,8 +568,31 @@
         "target": 12,
         "unit": "회/년",
         "asof": "2026-10-23",
-        "source": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/"
-      }
+        "source": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
+        "parts": [
+          {
+            "label": "연간 Starship 비행(2026 참고)",
+            "current_num": 3,
+            "target_num": 12,
+            "unit": "회/년",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "B-2028-1",
@@ -384,8 +606,31 @@
         "target": 3,
         "unit": "회",
         "asof": "2026-10-23",
-        "source": "https://en.wikipedia.org/wiki/Starship_flight_14"
-      }
+        "source": "https://en.wikipedia.org/wiki/Starship_flight_14",
+        "parts": [
+          {
+            "label": "동일 Ship 재비행",
+            "current_num": 0,
+            "target_num": 3,
+            "unit": "회",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "B-2029-1",
@@ -399,8 +644,31 @@
         "target": "$1억/회",
         "unit": "$/회",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm",
+        "parts": [
+          {
+            "label": "Space R&D ÷ 비행",
+            "current_num": 10.8,
+            "target_num": 1,
+            "unit": "억 달러/회",
+            "op": "<="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "B-2030-1",
@@ -414,8 +682,38 @@
         "target": "100회 / 흑자",
         "unit": "회·$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm",
+        "parts": [
+          {
+            "label": "연간 비행(2026 누계)",
+            "current_num": 3,
+            "target_num": 100,
+            "unit": "회",
+            "op": ">="
+          },
+          {
+            "label": "Space 분기 영업손익",
+            "current_num": -7,
+            "target_num": 0,
+            "unit": "백만 달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "B-2033-1",
@@ -425,7 +723,31 @@
       "status": "미판정",
       "source": "NASA 계약·실적",
       "progress": null,
-      "progress_reason": "수익 인식 없음. 3Q26 에 Starship 달 표면 화물 계약 수주만 공시(금액 미공시)"
+      "progress_reason": "수익 인식 없음. 3Q26 에 Starship 달 표면 화물 계약 수주만 공시(금액 미공시)",
+      "progress_parts": [
+        {
+          "label": "달 유인 착륙 상업 계약 수익",
+          "current_num": null,
+          "target_num": 0,
+          "unit": "달러",
+          "op": ">",
+          "reason": "수익 인식 없음 — 3Q26 달 화물 계약 수주만 공시(금액 미공시)"
+        }
+      ],
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "미판정"
+        }
+      ]
     },
     {
       "id": "C-2027-1",
@@ -439,8 +761,38 @@
         "target": "8GW / $400억",
         "unit": "GW·$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "명판 컴퓨트",
+            "current_num": 1.7,
+            "target_num": 8,
+            "unit": "GW",
+            "op": ">="
+          },
+          {
+            "label": "AI 연매출(연환산)",
+            "current_num": 302,
+            "target_num": 400,
+            "unit": "억 달러",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "C-2027-2",
@@ -454,8 +806,31 @@
         "target": "$150억",
         "unit": "$/GW/년",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "GW당 연매출(Cursor 제외)",
+            "current_num": 150.9,
+            "target_num": 150,
+            "unit": "억 달러/GW",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "C-2028-1",
@@ -469,8 +844,31 @@
         "target": "연간 흑자",
         "unit": "$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm",
+        "parts": [
+          {
+            "label": "AI 부문 분기 영업이익",
+            "current_num": 431,
+            "target_num": 0,
+            "unit": "백만 달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "C-2029-1",
@@ -484,8 +882,31 @@
         "target": "50% 이하",
         "unit": "%",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm",
+        "parts": [
+          {
+            "label": "상위 2개 고객 매출 비중",
+            "current_num": 51.1,
+            "target_num": 50,
+            "unit": "%",
+            "op": "<="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "C-2030-1",
@@ -500,8 +921,31 @@
         "target": "> 0",
         "unit": "$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "궤도 데이터센터 매출",
+            "current_num": 0,
+            "target_num": 0,
+            "unit": "달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "C-2032-1",
@@ -515,8 +959,38 @@
         "target": "$1,500억 / 20%",
         "unit": "$·%",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R27.htm",
+        "parts": [
+          {
+            "label": "AI 연매출(연환산)",
+            "current_num": 302,
+            "target_num": 1500,
+            "unit": "억 달러",
+            "op": ">="
+          },
+          {
+            "label": "AI 영업이익률",
+            "current_num": 5.7,
+            "target_num": 20,
+            "unit": "%",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "D-2027-1",
@@ -526,7 +1000,39 @@
       "status": "미판정",
       "source": "8-K, S-3",
       "progress": null,
-      "progress_reason": "판정 연도(2027) 미도래. 2026 참고: 9M 부채 조달 $518억·상환 $398억(10-Q R18), $400억 부채 조달 추진 보도(8-K 미공시 — 2026-10-23 재확인: 최신 공시 10/22 S-8·10-Q, 10-Q R65 부채 주석에 9/30 이후 신규 조달 언급 없음), Cursor 는 주식 인수이지 현금 증자 아님"
+      "progress_reason": "판정 연도(2027) 미도래. 2026 참고: 9M 부채 조달 $518억·상환 $398억(10-Q R18), $400억 부채 조달 추진 보도(8-K 미공시 — 2026-10-23 재확인: 최신 공시 10/22 S-8·10-Q, 10-Q R65 부채 주석에 9/30 이후 신규 조달 언급 없음), Cursor 는 주식 인수이지 현금 증자 아님",
+      "progress_parts": [
+        {
+          "label": "추가 조달 규모",
+          "current_num": null,
+          "target_num": 500,
+          "unit": "억 달러",
+          "op": "<=",
+          "reason": "판정 연도(2027) 미도래 — 2026 조달은 참고만"
+        },
+        {
+          "label": "증자",
+          "current_num": null,
+          "target_num": 0,
+          "unit": "건",
+          "op": "==",
+          "reason": "판정 연도(2027) 미도래"
+        }
+      ],
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "미판정"
+        }
+      ]
     },
     {
       "id": "D-2028-1",
@@ -540,8 +1046,32 @@
         "target": "3.0배 이하",
         "unit": "배",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "순부채/조정EBITDA",
+            "current_num": null,
+            "target_num": 3.0,
+            "unit": "배",
+            "op": "<=",
+            "reason": "순현금 $510억 — 비율이 음수라 원천에 수치가 적혀 있지 않음(계산값 미기록)"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "D-2029-1",
@@ -555,8 +1085,31 @@
         "target": "연간 흑자",
         "unit": "$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "GAAP 순이익(9M 누계)",
+            "current_num": -413,
+            "target_num": 0,
+            "unit": "백만 달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "D-2030-1",
@@ -570,8 +1123,31 @@
         "target": "> 0",
         "unit": "$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "FCF(9M 누계)",
+            "current_num": -34972,
+            "target_num": 0,
+            "unit": "백만 달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "D-2031-1",
@@ -585,8 +1161,31 @@
         "target": "연간 기준 감소",
         "unit": "$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+        "parts": [
+          {
+            "label": "누적결손금 감소(6/30→9/30)",
+            "current_num": 4404,
+            "target_num": 0,
+            "unit": "백만 달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "D-2036-1",
@@ -600,8 +1199,39 @@
         "target": "2배 이하 / 매입 개시",
         "unit": "배·$",
         "asof": "2026-09-30",
-        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R21.htm"
-      }
+        "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R21.htm",
+        "parts": [
+          {
+            "label": "순부채/EBITDA",
+            "current_num": null,
+            "target_num": 2.0,
+            "unit": "배",
+            "op": "<=",
+            "reason": "순현금 — 비율 수치 미기록"
+          },
+          {
+            "label": "자사주 매입(3Q26)",
+            "current_num": 0,
+            "target_num": 0,
+            "unit": "백만 달러",
+            "op": ">"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "E-2027-1",
@@ -615,8 +1245,31 @@
         "target": 50,
         "unit": "회/년",
         "asof": "2026-01-30",
-        "source": "https://www.nasaspaceflight.com/2026/01/faa-advances-approval-44-starship-launches-39a/"
-      }
+        "source": "https://www.nasaspaceflight.com/2026/01/faa-advances-approval-44-starship-launches-39a/",
+        "parts": [
+          {
+            "label": "FAA 연간 허가(환경 승인 기준)",
+            "current_num": 69,
+            "target_num": 50,
+            "unit": "회/년",
+            "op": ">="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "E-2028-1",
@@ -626,7 +1279,31 @@
       "status": "미판정",
       "source": "각국 규제기관",
       "progress": null,
-      "progress_reason": "인도 최종 인가 여부 보도 상충(2026-06 Bloomberg vs 회사 부인), 나머지 4개국 본 회차 미확인"
+      "progress_reason": "인도 최종 인가 여부 보도 상충(2026-06 Bloomberg vs 회사 부인), 나머지 4개국 본 회차 미확인",
+      "progress_parts": [
+        {
+          "label": "주요 5개 해외시장 인허가 유지",
+          "current_num": null,
+          "target_num": 5,
+          "unit": "개",
+          "op": ">=",
+          "reason": "인도 최종 인가 보도 상충, 나머지 4개국 본 회차 미확인"
+        }
+      ],
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "미판정"
+        }
+      ]
     },
     {
       "id": "E-2027-2",
@@ -640,8 +1317,39 @@
         "target": "50만회 / 2%",
         "unit": "회·%",
         "asof": "2026-05-31",
-        "source": "https://space.com/space-exploration/satellites/every-spacex-starlink-satellite-has-to-dodge-a-collision-almost-weekly-and-experts-fear-the-worst"
-      }
+        "source": "https://space.com/space-exploration/satellites/every-spacex-starlink-satellite-has-to-dodge-a-collision-almost-weekly-and-experts-fear-the-worst",
+        "parts": [
+          {
+            "label": "충돌회피 기동(연)",
+            "current_num": 355848,
+            "target_num": 500000,
+            "unit": "회",
+            "op": "<="
+          },
+          {
+            "label": "궤도 상실률",
+            "current_num": null,
+            "target_num": 2,
+            "unit": "%",
+            "op": "<=",
+            "reason": "상실률 미공시"
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "E-2027-3",
@@ -655,8 +1363,31 @@
         "target": 0,
         "unit": "건",
         "asof": "2026-10-23",
-        "source": "본 회차 웹 검색 — 2026-09-02~10-23 해당 사건 미발견"
-      }
+        "source": "본 회차 웹 검색 — 2026-09-02~10-23 해당 사건 미발견",
+        "parts": [
+          {
+            "label": "분쟁 개입 재발",
+            "current_num": 0,
+            "target_num": 0,
+            "unit": "건",
+            "op": "=="
+          }
+        ]
+      },
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "진행"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "진행"
+        }
+      ]
     },
     {
       "id": "E-2027-4",
@@ -666,7 +1397,31 @@
       "status": "미판정",
       "source": "USAspending·DoD 공시",
       "progress": null,
-      "progress_reason": "3Q26 NSSL 18회·ISS 승무원 3회·NASA Roman 발사 수주는 확인(8-K Ex.99.1), 금액·전년 비교 데이터(USAspending) 미집계"
+      "progress_reason": "3Q26 NSSL 18회·ISS 승무원 3회·NASA Roman 발사 수주는 확인(8-K Ex.99.1), 금액·전년 비교 데이터(USAspending) 미집계",
+      "progress_parts": [
+        {
+          "label": "미 연방계약 신규 수주(전년 대비)",
+          "current_num": null,
+          "target_num": 100,
+          "unit": "%",
+          "op": ">=",
+          "reason": "금액·전년 비교 데이터(USAspending) 미집계"
+        }
+      ],
+      "status_history": [
+        {
+          "run_id": "2026-09",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10",
+          "status": "미판정"
+        },
+        {
+          "run_id": "2026-10-23-event",
+          "status": "미판정"
+        }
+      ]
     }
   ],
   "scorecard": {
@@ -873,5 +1628,99 @@
     "특수관계자 부채 $133억의 상대방 → Valor Equity Partners SI 장비 리스 3건(10-Q R26). 금리·만기 개별 조건은 여전히 미공시",
     "EchoStar 거래 회계 위치 → 선급 $856M 을 기타자산에 계상, 최종 종결 시 무형자산으로 이전(10-Q R58). 종결 전",
     "3Q26 실적일 → 2026-10-20 확정 / 고객 집중도 → 10-Q 에 처음 공시(B 34.5%·A 16.6%)"
+  ],
+  "run_history": [
+    {
+      "run_id": "2026-09",
+      "run_date": "2026-09-02",
+      "price": 142.23,
+      "price_date": "2026-09-02",
+      "probs": {
+        "bull": 0.2,
+        "base": 0.5,
+        "bear": 0.3
+      },
+      "band": [
+        30,
+        80
+      ],
+      "mid": 55,
+      "pw_value": 29
+    },
+    {
+      "run_id": "2026-10",
+      "run_date": "2026-10-23",
+      "price": 144.75,
+      "price_date": "2026-10-22",
+      "probs": {
+        "bull": 0.25,
+        "base": 0.5,
+        "bear": 0.25
+      },
+      "band": [
+        32,
+        121
+      ],
+      "mid": 66,
+      "pw_value": 32
+    },
+    {
+      "run_id": "2026-10-23-event",
+      "run_date": "2026-10-23",
+      "price": 144.75,
+      "price_date": "2026-10-22",
+      "probs": {
+        "bull": 0.25,
+        "base": 0.5,
+        "bear": 0.25
+      },
+      "band": [
+        32,
+        121
+      ],
+      "mid": 66,
+      "pw_value": 32
+    }
+  ],
+  "kpi_history": [
+    {
+      "quarter": "3Q26",
+      "period_end": "2026-09-30",
+      "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+      "published": "2026-10-20",
+      "subscribers_m": 13.6,
+      "arpu_usd": 69,
+      "ai_nameplate_gw": 1.7,
+      "launches": 35,
+      "rev_connectivity_usd_m": 5248,
+      "rev_si_usd_m": 7560,
+      "rev_space_usd_m": 1767
+    },
+    {
+      "quarter": "2Q26",
+      "period_end": "2026-06-30",
+      "source": "https://s21.q4cdn.com/184289198/files/doc_financials/2026/q2/SpaceX-Reports-Second-Quarter-2026-Results.pdf",
+      "published": "2026-08-04",
+      "subscribers_m": 12.0,
+      "arpu_usd": 66,
+      "ai_nameplate_gw": 1.4,
+      "launches": 38,
+      "rev_connectivity_usd_m": 4291,
+      "rev_si_usd_m": 2561,
+      "rev_space_usd_m": 962
+    },
+    {
+      "quarter": "3Q25",
+      "period_end": "2025-09-30",
+      "source": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+      "published": "2026-10-20",
+      "subscribers_m": 7.2,
+      "arpu_usd": 83,
+      "ai_nameplate_gw": 0.6,
+      "launches": 44,
+      "rev_connectivity_usd_m": 3097,
+      "rev_si_usd_m": 813,
+      "rev_space_usd_m": 1666
+    }
   ]
 }

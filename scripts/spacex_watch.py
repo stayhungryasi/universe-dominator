@@ -90,6 +90,7 @@ KPI_CONCEPTS = [
     ("operating_income_usd_m", ["OperatingIncomeLoss"], "flow"),
     ("net_income_usd_m", ["NetIncomeLoss"], "flow"),
     ("capex_usd_m", ["PaymentsToAcquirePropertyPlantAndEquipment"], "flow"),
+    ("ocf_usd_m", ["NetCashProvidedByUsedInOperatingActivities"], "flow"),
     ("cash_usd_m", ["CashAndCashEquivalentsAtCarryingValue"], "instant"),
     ("marketable_securities_usd_m", ["MarketableSecuritiesCurrent", "AvailableForSaleSecuritiesDebtSecuritiesCurrent"], "instant"),
     ("debt_and_leases_usd_m", ["LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities", "DebtAndCapitalLeaseObligations"], "instant"),
@@ -196,26 +197,43 @@ def _latest_by_period(facts):
     return best
 
 
+def _d(s):
+    return datetime.strptime(s, "%Y-%m-%d").date()
+
+
+def _quarter_bounds(end):
+    """분기 끝 날짜 → (분기 시작, 끝). 달력 분기 기준(3·6·9·12월 말)."""
+    e = _d(end)
+    m0 = e.month - 2
+    return datetime(e.year, m0, 1).date(), e
+
+
 def quarter_flow(facts, end):
-    """end 로 끝나는 분기(≈3개월) 값 → (값, 근거 fact, 산식). 없으면 YTD 차분으로 만든다."""
+    """end 로 끝나는 분기 값 → (값, 근거 fact, 산식). 세 길로 만든다(먼저 되는 것):
+
+    ① 분기 보고값(≈3개월 기간)
+    ② 누적 차분: 같은 시작의 누적(~end) − 누적(~분기 시작 전날)   예) 9M − 6M = 3Q
+    ③ 앞쪽 차분: 누적(분기 시작~E) − 기간(분기 끝 다음날~E)        예) 상반기 − 2Q = 1Q
+    어느 길로도 안 되면 None — 추정으로 채우지 않는다.
+    """
     best = _latest_by_period(facts)
+    qs, qe = _quarter_bounds(end)
     for (s, e), f in best.items():
         d = _dur_days(f)
         if e == end and d is not None and 80 <= d <= 100:
             return f["val"], f, "분기 보고값"
-    # YTD 차분 — 같은 회계연도 시작(start)의 직전 YTD 를 뺀다
-    ytd = [(f, _dur_days(f)) for (s, e), f in best.items() if e == end and f.get("start")]
-    for f, d in sorted(ytd, key=lambda x: -(x[1] or 0)):
-        if d is None or d < 150:
-            continue
-        prev = [g for (s, e), g in best.items()
-                if g.get("start") == f["start"] and e < end and (_dur_days(g) or 0) >= 80]
-        if not prev:
-            continue
-        p = max(prev, key=lambda g: g["end"])
-        gap = (datetime.strptime(end, "%Y-%m-%d") - datetime.strptime(p["end"], "%Y-%m-%d")).days
-        if 80 <= gap <= 100:
-            return f["val"] - p["val"], f, f"누적 {f['start']}~{end} − 누적 {p['start']}~{p['end']}"
+    prev_end = (qs - timedelta(days=1)).isoformat()
+    for (s, e), f in best.items():
+        if e == end and s and _d(s) < qs:
+            p = best.get((s, prev_end))
+            if p:
+                return f["val"] - p["val"], f, f"누적 {s}~{end} − 누적 {s}~{prev_end}"
+    nxt = (qe + timedelta(days=1)).isoformat()
+    for (s, e), f in best.items():
+        if s == qs.isoformat() and _d(e) > qe:
+            p = best.get((nxt, e))
+            if p:
+                return f["val"] - p["val"], f, f"누적 {s}~{e} − 기간 {nxt}~{e}"
     return None, None, None
 
 
@@ -228,8 +246,31 @@ def instant_at(facts, end):
     return (best["val"], best) if best else (None, None)
 
 
-def build_quarters(cf, max_q=6):
-    """companyfacts → 분기 행 목록(최신 먼저). 값은 백만 달러, 근거(개념·filed·end) 보존."""
+def recent_quarter_ends(latest_end, n=8):
+    """최신 분기 끝부터 거슬러 n 개 달력 분기 끝."""
+    e = _d(latest_end)
+    out, y, m = [], e.year, e.month
+    for _ in range(n):
+        last = (datetime(y + (m == 12), 1 if m == 12 else m + 1, 1) - timedelta(days=1)).date()
+        out.append(last.isoformat())
+        m -= 3
+        if m <= 0:
+            m += 12
+            y -= 1
+    return out
+
+
+def quarter_label(end):
+    e = _d(end)
+    return f"{(e.month - 1) // 3 + 1}Q{str(e.year)[2:]}"
+
+
+def build_quarters(cf, max_q=8):
+    """companyfacts → 최근 max_q 개 분기 행(최신 먼저). 값은 백만 달러, 근거(개념·filed·산식) 보존.
+
+    회사가 XBRL 로 낸 공시(10-Q·10-K)만 기계가 읽는다. 상장 전 연간(FY) 수치는 S-1 본문에만
+    있어 4분기는 '누적 연간 − 9개월'을 만들 수 없다 → 빈칸 + 사유(추정 금지).
+    """
     gaap = ((cf or {}).get("facts") or {}).get("us-gaap") or {}
 
     def facts_of(names):
@@ -240,16 +281,12 @@ def build_quarters(cf, max_q=6):
         return None, []
 
     _, rev = facts_of(KPI_CONCEPTS[0][1])
-    ends = sorted({f["end"] for f in rev if f.get("form", "").startswith(("10-Q", "10-K"))
-                   and 80 <= (_dur_days(f) or 0) <= 100}, reverse=True)
-    # 분기 보고값이 없는 분기(10-K 의 4분기 등)도 다른 공시 기간 끝에서 잡는다
-    ends = sorted(set(ends) | {f["end"] for f in rev
-                               if (_dur_days(f) or 0) >= 150
-                               and f.get("form", "").startswith(("10-Q", "10-K"))},
-                  reverse=True)[:max_q]
+    ends = [f["end"] for f in rev if f.get("form", "").startswith(("10-Q", "10-K"))]
+    if not ends:
+        return []
     rows = []
-    for end in ends:
-        row = {"end": end, "src": {}}
+    for end in recent_quarter_ends(max(ends), max_q):
+        row = {"end": end, "quarter": quarter_label(end), "src": {}}
         filed = []
         for field, names, typ in KPI_CONCEPTS:
             concept, arr = facts_of(names)
@@ -260,8 +297,9 @@ def build_quarters(cf, max_q=6):
                 how = "기말 잔액"
             if v is None:
                 row[field] = None
-                row["src"][field] = {"note": "공시 원천에 해당 기간 값 없음" if concept
-                                     else "개념 미보고"}
+                row["src"][field] = {"note": ("상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+                                              if _d(end).month == 12 and typ == "flow"
+                                              else "공시 원천에 해당 기간 값 없음") if concept else "개념 미보고"}
                 continue
             row[field] = round(v / 1e6)
             row["src"][field] = {"concept": concept, "filed": f.get("filed"), "end": f.get("end"),
@@ -269,6 +307,12 @@ def build_quarters(cf, max_q=6):
             filed.append(f.get("filed", ""))
             row.setdefault("fp", f.get("fp"))
             row.setdefault("fy", f.get("fy"))
+        if row.get("ocf_usd_m") is not None and row.get("capex_usd_m") is not None:
+            row["fcf_usd_m"] = row["ocf_usd_m"] - row["capex_usd_m"]
+            row["src"]["fcf_usd_m"] = {"how": "영업현금흐름 − 유형자산 취득(같은 분기 도출값)"}
+        else:
+            row["fcf_usd_m"] = None
+            row["src"]["fcf_usd_m"] = {"note": "영업현금흐름 또는 Capex 분기 값 없음"}
         row["filed"] = max(filed) if filed else None
         rows.append(row)
     return rows

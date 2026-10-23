@@ -17,3 +17,10 @@
    · reports/changelog.md(이번 회차 델타만) · agent-research/state/verify_list.json(핵심 숫자 상위 20개 {claim, value, source_url, source_date, where_in_report}).
 6. 금지: 매매 행위를 지시·권유·암시하는 문장(우회 표현 포함), 목표가 표현, 매수·매도·보유·비중·진입·관망 판단 — 공개 파일 어디에도. 공개 state 에 recommendation·포지션·진입가 계열 키 생성 금지.
    확인 못 한 숫자를 확정처럼 쓰기 금지. 지난 숫자 무근거 복사 금지(같으면 '변화 없음(원천·날짜)' 재확인 표기).
+7. 관제실 데이터(2026-10-23 추가 — 화면이 숫자로 그려지도록):
+   · 이정표 progress 에 parts = [{label, current_num, target_num, unit, op: ">="|"<="|">"|"=="}] 를 함께 적는다. 복합(AND) 조건은 조건별로 한 줄씩.
+     숫자로 옮길 수 없는 조건은 current_num=null + reason(추정 금지). progress 가 null 인 이정표는 progress_parts 에 조건별 사유를 남긴다. 문자열 progress 는 표시용으로 유지.
+   · 이정표마다 status_history 에 {run_id, status} 1줄 append.
+   · state.run_history 에 {run_id, run_date, price, price_date, probs{bull,base,bear}, band[lo,hi], mid, pw_value} 1줄 append(지난 줄 수정 금지).
+   · state.kpi_history 에 분기별 운영 KPI(공시 재무 태그가 아닌 것: 가입자·ARPU·명판 GW·발사 수·부문 매출)를 {quarter, period_end, source, published, …} 로 적는다(같은 분기는 갱신).
+
