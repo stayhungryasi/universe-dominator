@@ -141,59 +141,19 @@
    "sentinel:feed:scout:scout:TSLA:2026-10-23",
    "sentinel:feed:scout:scout:TSM:2026-10-23",
    "sentinel:feed:scout:scout:WMT:2026-10-23",
+   "sentinel:probe-stale-recover:2026-10-23",
    "sentinel:probe-stale:2026-10-23",
    "sentinel:signals-recover:Anthropic:2026-10-23"
   ]
  },
  "last_verdict": {
-  "at": "2026-10-23 10:01",
+  "at": "2026-10-23 11:02",
   "ok": false,
   "alerts": [
-   "fetch_signals: Anthropic 회복 — 응답 5건 ✅",
-   "동행 alphabet:Alphabet 실적·자본배분: 수집 회복 — 4건 ✅",
-   "동행 alphabet:Gemini·TPU 로드맵: 수집 회복 — 4건 ✅",
-   "동행 alphabet:Google 반독점·규제: 수집 회복 — 4건 ✅",
-   "동행 anthropic:Anthropic 공식: 수집 회복 — 4건 ✅",
-   "동행 anthropic:Anthropic 보도: 수집 회복 — 4건 ✅",
-   "동행 spacex:SpaceX 발사·로드맵: 수집 회복 — 8건 ✅",
-   "동행 spacex:SpaceX 자본·기업가치: 수집 회복 — 8건 ✅",
-   "취재 scout:000660.KS: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:005930.KS: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:2222.SR: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:2308.TW: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:2454.TW: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:285A.T: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:6857.T: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:8035.T: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:AAPL: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:AMAT: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:AMD: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:AMZN: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:ARM: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:ASML: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:AVGO: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:BRK-B: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:DELL: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:GOOG: HTTP 503 82회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:JPM: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:LLY: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:LRCX: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:META: HTTP 404 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:MRVL: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:MSFT: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:MU: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:NVDA: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:PANW: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:SNDK: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:SPCX: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:STX: HTTP 503 37회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:TSLA: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:TSM: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "취재 scout:WMT: HTTP 503 108회 연속 — 미해결, 첫 경보 일자 미상(상태 이관)",
-   "SpaceX 탐사선: 마지막 관측 2026-09-02 — 51일 경과(허용 35일). 월간 엔진 점검 필요"
+   "SpaceX 탐사선: 관측 재개(2026-10-23) ✅"
   ]
  },
- "last_run": "2026-10-23 10:01",
+ "last_run": "2026-10-23 11:02",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -1159,6 +1119,7 @@
   "at": "2026-10-23"
  },
  "probe": {
-  "stale": true
+  "stale": false,
+  "fail_alerted": false
  }
 }
