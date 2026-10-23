@@ -27,6 +27,20 @@ KST = timezone(timedelta(hours=9))
 
 STATUSES = ("달성", "달성(조기)", "진행", "미달", "미판정")
 STATUS_CLS = {"달성": "done", "달성(조기)": "early", "진행": "prog", "미달": "miss", "미판정": "wait"}
+# 화면 상태 — 판정 상태(STATUSES)에서 생성한다. '진행'인데 진척 100% · 판정 연도 전이면 '현재 충족'으로 따로 보인다
+MET = "현재 충족(판정 연도 전)"
+SHOWN = ("달성", "달성(조기)", MET, "진행", "미달", "미판정")
+
+
+def shown_status(status, pct, year, today):
+    """판정 상태 + 진척 + 판정 연도 → 화면 상태. 번역 매핑이 아니라 상태에서 만든다(CLAUDE.md 규칙 8)."""
+    try:
+        before = int(year) > today.year
+    except (TypeError, ValueError):
+        before = False
+    if status == "진행" and pct is not None and pct >= 1.0 and before:
+        return MET
+    return status
 RUN_KO = {"success": "정상", "failure": "실패", "cancelled": "취소", "timed_out": "시간 초과"}
 SRC_STATE_KO = {"ok": "정상", "zero": "새 글 없음", "decode_fail": "디코딩 실패",
                 "http_error": "요청 실패", "timeout": "응답 지연"}
@@ -159,7 +173,7 @@ def attach_meaning(m, meanings):
     return max(cands, key=lambda r: len(t & _tok(r["text"])))
 
 
-def milestone_rows(st, ar, meanings):
+def milestone_rows(st, ar, meanings, today=None):
     axes = st.get("axes") or {}
     out = []
     for m in st.get("milestones") or []:
@@ -172,6 +186,7 @@ def milestone_rows(st, ar, meanings):
                           "tgt": p.get("target_num"), "unit": p.get("unit", ""), "op": p.get("op", ">="),
                           "pct": None if pp is None else round(pp, 3), "reason": p.get("reason", "")})
         pct = ar.milestone_pct(m)
+        shown = shown_status(m.get("status", "미판정"), pct, m.get("year"), today or kst_today())
         pg = m.get("progress") if isinstance(m.get("progress"), dict) else {}
         mean = attach_meaning(m, meanings) or {}
         out.append({
@@ -179,7 +194,7 @@ def milestone_rows(st, ar, meanings):
             "id": m.get("id", ""), "axis": (m.get("axis") or "?")[:1].upper(),
             "axisKo": short_axis(axes, m.get("axis", "")),
             "year": m.get("year"), "text": m.get("statement", ""), "status": m.get("status", "미판정"),
-            "cls": STATUS_CLS.get(m.get("status"), "wait"),
+            "shown": shown, "cls": "met" if shown == MET else STATUS_CLS.get(m.get("status"), "wait"),
             "pct": None if pct is None else round(pct, 3), "parts": parts,
             "cur": pg.get("current"), "tgt": pg.get("target"), "unit": pg.get("unit", ""),
             "asof": pg.get("asof", ""), "source": pg.get("source") or m.get("source", ""),
@@ -200,9 +215,13 @@ def axis_rows(st, ms):
         k = full[:1].upper()
         mine = [m for m in ms if m["axis"] == k]
         nums = [m["pct"] for m in mine if m["pct"] is not None]
-        counts = {s: sum(1 for m in mine if m["status"] == s) for s in STATUSES}
+        counts = {s: sum(1 for m in mine if m["shown"] == s) for s in SHOWN}
+        measured = [m for m in mine if m["pct"] is not None]
+        # 축 전체가 '현재 충족' — 측정된 이정표가 전부 판정 연도 전 100% 일 때만(진행과 구분)
+        all_met = bool(measured) and all(m["shown"] == MET for m in measured)
         out.append({"key": k, "ko": short_axis(axes, full), "n": len(mine), "measured": len(nums),
-                    "avg": round(sum(nums) / len(nums), 3) if nums else None, "counts": counts})
+                    "avg": round(sum(nums) / len(nums), 3) if nums else None, "counts": counts,
+                    "met": all_met})
     return out
 
 
@@ -242,10 +261,20 @@ def kpi_series(kpi_doc, st):
             q = by_q.get(c) or {}
             v = q.get(key)
             src = (q.get("src") or {}).get(key) or {}
-            cells.append({"v": v, "t": fmt_kind(v, kind),
+            h = hist.get(c) or {}
+            if v is None and h.get(key) is not None and str(h.get("fin_source", "")).startswith("http"):
+                # 기계가 못 만든 분기 — 탐사 엔진이 S-1 원문에서 기입하고 검증관이 대조한 값(관문 check_kpi_fin)
+                v = h[key]
+                cells.append({"v": v, "t": fmt_kind(v, kind), "mk": "S-1",
+                              "src": {"origin": "S-1 원문(탐사 기입)", "url": h["fin_source"],
+                                      "filed": h.get("published"),
+                                      "how": (h.get("fin_note") or "S-1 원문 표") + " · 검증관 대조 대상"}})
+                continue
+            how = src.get("how") or src.get("note")
+            derived = bool(v is not None and (src.get("derived") or str(how or "").startswith("누적")))
+            cells.append({"v": v, "t": fmt_kind(v, kind), "mk": "계산" if derived else "",
                           "src": {"origin": "공시 자동", "form": src.get("form"), "filed": src.get("filed"),
-                                  "concept": src.get("concept"), "how": src.get("how") or src.get("note"),
-                                  "url": None}})
+                                  "concept": src.get("concept"), "how": how, "url": None}})
         rows.append({"id": rid, "label": label, "origin": "공시 자동", "cells": cells})
     for rid, label, key, kind in OPS:
         cells = []
@@ -257,7 +286,8 @@ def kpi_series(kpi_doc, st):
                                   "how": "탐사 엔진이 공시 KPI 표에서 옮김" if v is not None else
                                   ("이 분기 기록 없음" if h else "탐사 기록 없음")}})
         rows.append({"id": rid, "label": label, "origin": "탐사 취재", "cells": cells})
-    # 병합 규칙 — 공시 재무가 비면 탐사 값(latest_reported_quarter)으로 채우지 않는다: 원천이 다르면 따로 보인다
+    # 병합 규칙 — 공시 재무가 비면 S-1 기입값(출처 URL·검증관 대조 필수)만 채우고 칸마다 'S-1' 표식을 단다.
+    # 누적 공시의 차분으로 만든 분기 값은 '계산' 표식. 둘 다 없으면 '—'.
     return {"cols": cols, "rows": rows}
 
 
@@ -319,6 +349,47 @@ def run_info(st, watch, vres, today):
             "engineOk": eng.get("conclusion") == "success", "engineDate": (eng.get("created_at") or "")[:10],
             "verify": [ok, checked], "next": sch.get("next", ""), "overdue": sch.get("overdue_days", 0),
             "stale": sch.get("stale", False), "age": sch.get("age_days")}
+
+
+def _plain(md):
+    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"", md or "")
+    return re.sub(r"[*_`>#]+", "", s).strip()
+
+
+def changelog_summary(ar, run_id, n=3, width=110):
+    """변화 이력의 그 회차 절 → 앞 문단 n 개(굵은 머리말 포함, width 자로 자름). 요약이 기록 안 된 회차용."""
+    body, _ = ar.sanitize(ar.read_changelog())
+    for title, md in split_sections(body):
+        if title.split(" ")[0] != run_id:
+            continue
+        paras = [_plain(p) for p in re.split(r"\n\s*\n", md) if _plain(p)]
+        return [p if len(p) <= width else p[:width - 1].rstrip() + "…" for p in paras[:n]]
+    return []
+
+
+def delta_blocks(st, ar, n=3):
+    """② 이번 회차에 바뀐 것 — 최신이 사건 회차면 [사건 회차] + [직전 월간 회차] 두 블록, 월간이면 하나.
+
+    요약은 기록된 것만 쓴다: 현재 회차는 state.run.summary, 지난 회차는 run_history 줄의 summary,
+    그것도 없으면 변화 이력(changelog)의 그 회차 절 앞 문단. 새로 지어내지 않는다.
+    """
+    run = st.get("run") or {}
+    hist = {h.get("run_id"): h for h in st.get("run_history") or [] if isinstance(h, dict)}
+
+    def summ(rid, own=None):
+        s = [x for x in (own or (hist.get(rid) or {}).get("summary") or []) if isinstance(x, str)]
+        return (s or changelog_summary(ar, rid, n))[:n]
+    blocks = [{"id": run.get("run_id", ""), "kind": "사건 회차" if run.get("mode") == "event" else "월간 회차",
+               "lines": summ(run.get("run_id"), run.get("summary"))}]
+    if run.get("mode") == "event":
+        prev = run.get("previous_monthly_run_id") or ""
+        if not prev:      # 기록이 없으면 run_history 에서 사건 회차가 아닌 마지막 줄
+            months = [h.get("run_id") for h in st.get("run_history") or []
+                      if isinstance(h, dict) and re.fullmatch(r"\d{4}-\d{2}", str(h.get("run_id")))]
+            prev = months[-1] if months else ""
+        if prev:
+            blocks.append({"id": prev, "kind": "직전 월간 회차", "lines": summ(prev)})
+    return blocks
 
 
 def trigger_rows(st, today):
@@ -563,7 +634,7 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
     axes = st.get("axes") or {}
     files = ar.report_files()
     meanings = meanings_from_reports(sorted(files, key=lambda f: f.stem), [k[:1].upper() for k in axes.keys()])
-    ms = milestone_rows(st, ar, meanings)
+    ms = milestone_rows(st, ar, meanings, today)
     triggers = trigger_rows(st, today)
     events = event_rows(watch, essays, today, triggers)
     fin = kpi_series(kpi, st)
@@ -581,6 +652,7 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
     data = {
         "v": 2, "today": today.isoformat(),
         "run": run_info(st, watch, vres, today),
+        "delta": delta_blocks(st, ar),
         "price": {"v": mkt.get("price_usd"), "date": mkt.get("price_asof", ""), "src": mkt.get("price_source", "")},
         "band": {"lo": (val.get("fair_value_band_usd") or [None, None])[0],
                  "hi": (val.get("fair_value_band_usd") or [None, None])[-1],
@@ -602,6 +674,12 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
 # ────────────────────────────────────────────────────────────────
 
 DISCLAIMER = "기계 생성 가정 · 투자 권유 아님 · 목표가 아님"
+SCEN_GAP = 110       # 게이지 눈금 글자를 한 줄로 묶는 간격(viewBox 단위 — 모바일 글자 14 기준 라벨 폭 ≈ 80~100)
+
+
+def label_w(s, em=14):
+    """게이지 글자 폭 어림(viewBox 단위) — 가장 큰 글자(모바일 14) 기준. 한글 1em, 그 밖 0.6em."""
+    return sum(em if ord(c) > 0x3000 else em * 0.6 for c in s)
 
 
 def gauge_svg(d):
@@ -624,16 +702,29 @@ def gauge_svg(d):
     if isinstance(b.get("mid"), (int, float)):
         o.append(f'<line x1="{x(b["mid"]):.1f}" y1="28" x2="{x(b["mid"]):.1f}" y2="52" class="pc-g-mid"/>')
         o.append(f'<text x="{x(b["mid"]):.1f}" y="24" class="pc-g-lbl pc-g-strong" text-anchor="middle">${b["mid"]:g}</text>')
-    last_x, row = None, 0
+    # 가까운 시나리오 눈금은 눈금은 따로, 글자는 한 줄로 묶는다(2026-10-23 F2). 줄 엇갈림은 모바일에서
+    # 글자 크기(14)가 줄 간격(11)보다 커 '약세 $3.2'·'기본 $24' 가 여전히 겹쳤다(390px 실측).
+    groups = []
     for s in sorted([s for s in d["scen"] if isinstance(s.get("vps"), (int, float))], key=lambda s: s["vps"]):
         xv = x(s["vps"])
-        # 가까운 눈금은 줄을 엇갈린다 — 모바일에서 '약세 $3.2'·'기본 $24' 가 겹쳤다
-        row = (row + 1) % 2 if last_x is not None and xv - last_x < 70 else 0
-        last_x = xv
-        o.append(f'<line x1="{xv:.1f}" y1="52" x2="{xv:.1f}" y2="{58 + row * 11}" class="pc-g-tick"/>')
-        anchor = "start" if xv < 48 else "middle"          # 왼쪽 끝 눈금은 잘리지 않게 왼쪽 정렬
-        o.append(f'<text x="{max(xv - 4, X0) if anchor == "start" else xv:.1f}" y="{69 + row * 11}" class="pc-g-sm" '
-                 f'text-anchor="{anchor}">{esc(s["ko"])} ${s["vps"]:g}</text>')
+        if groups and xv - groups[-1][0][0] < SCEN_GAP:
+            groups[-1].append((xv, s))
+        else:
+            groups.append([(xv, s)])
+    right = [X0 - 10, X0 - 10]          # 줄(0·1)마다 이미 쓴 글자의 오른쪽 끝
+    for g in groups:
+        x0 = g[0][0]
+        label = " · ".join(f'{s["ko"]} ${s["vps"]:g}' for _, s in g)
+        w = label_w(label)
+        start = x0 < 48 or len(g) > 1                         # 왼쪽 끝·묶음은 첫 눈금에서 왼쪽 정렬
+        lx = max(x0 - 4, X0) if start else x0
+        left = lx if start else lx - w / 2
+        row = 0 if left > right[0] + 6 else 1                 # 앞 글자와 닿으면 둘째 줄로
+        right[row] = left + w
+        for xv, _ in g:
+            o.append(f'<line x1="{xv:.1f}" y1="52" x2="{xv:.1f}" y2="{58 + row * 14}" class="pc-g-tick"/>')
+        o.append(f'<text x="{lx:.1f}" y="{70 + row * 14}" class="pc-g-sm" '
+                 f'text-anchor="{"start" if start else "middle"}">{esc(label)}</text>')
     if isinstance(p, (int, float)):
         o.append(f'<circle cx="{x(p):.1f}" cy="40" r="7" class="pc-g-price"/>')
         o.append(f'<text x="{min(x(p), X1 - 30):.1f}" y="86" class="pc-g-lbl pc-g-strong" text-anchor="middle">주가 ${p:g}</text>')
@@ -713,16 +804,24 @@ def cockpit_html(d):
     h.append('<section class="pc-card pc-c1" aria-labelledby="pcH1"><h3 id="pcH1">① 가격 vs 가정 가치</h3>'
              + gauge_svg(d) + f'<div class="pc-sub">{esc(band_txt)} · 주가 ${price.get("v")} ({mmdd(price.get("date"))})</div>'
              + prob_bar(d) + '</section>')
-    items = "".join(f'<li>{esc(s)}</li>' for s in r["summary"][:3]) or "<li>요약 없음</li>"
-    h.append(f'<section class="pc-card pc-c2" aria-labelledby="pcH2"><h3 id="pcH2">② 이번 회차에 바뀐 것'
-             f'<span class="pc-tag">{esc(r["id"])}</span></h3><ul class="pc-delta">{items}</ul>'
-             f'<button class="pc-more" type="button" data-pc-go="changelog">전체 델타 →</button></section>')
+    blocks = []
+    for bl in d.get("delta") or [{"id": r["id"], "kind": "", "lines": r["summary"]}]:
+        items = "".join(f'<li>{esc(s)}</li>' for s in bl["lines"][:3]) or "<li>요약 없음</li>"
+        blocks.append(f'<div class="pc-dblk"><div class="pc-dlbl"><b>{esc(bl["id"])}</b> {esc(bl["kind"])}</div>'
+                      f'<ul class="pc-delta">{items}</ul></div>')
+    h.append(f'<section class="pc-card pc-c2{" pc-c2-two" if len(blocks) > 1 else ""}" aria-labelledby="pcH2">'
+             f'<h3 id="pcH2">② 이번 회차에 바뀐 것'
+             f'<button class="pc-more pc-more-h" type="button" data-pc-go="changelog">전체 델타 →</button></h3>'
+             f'{"".join(blocks)}</section>')
     # ③ ④
     rows = []
     for a in d["axes"]:
         pct = a["avg"]
         c = a["counts"]
-        cnt = " · ".join(f"{k} {c[k]}" for k in STATUSES if c.get(k))
+        cnt = " · ".join(f"{'현재 충족' if k == MET else k} {c[k]}" for k in SHOWN
+                         if c.get(k) and not (a.get("met") and k == MET))
+        if a.get("met"):
+            cnt = MET + (" · " + cnt if cnt else "")
         rows.append(f'<button class="pc-axis" type="button" data-pc-go="milestones" data-pc-axis="{esc(a["key"])}">'
                     f'<span class="pc-axis-n">{esc(a["ko"])}</span>'
                     f'<span class="pc-bar"><i style="width:{0 if pct is None else round(pct * 100)}%"></i></span>'

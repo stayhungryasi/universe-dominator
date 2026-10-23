@@ -134,5 +134,61 @@ class SectionSplitTest(unittest.TestCase):
         self.assertEqual(pc.toc_label(secs[1][0]), "0 지난 회차 대비 무엇이 바뀌었는가")
 
 
+class DecisionsTest(unittest.TestCase):
+    """대표님 결정(2026-10-23 12:30) — F1 화면 상태 생성 · ② 두 블록 · KPI 계산/S-1 표식."""
+
+    T = date(2026, 10, 23)
+
+    def test_met_before_judgment_year_is_generated_from_state(self):
+        self.assertEqual(pc.shown_status("진행", 1.0, 2027, self.T), pc.MET)
+        self.assertEqual(pc.shown_status("진행", 0.99, 2027, self.T), "진행")     # 100% 미만은 진행
+        self.assertEqual(pc.shown_status("진행", 1.0, 2026, self.T), "진행")      # 판정 연도면 진행
+        self.assertEqual(pc.shown_status("달성", 1.0, 2027, self.T), "달성")      # 판정이 난 것은 그대로
+        self.assertEqual(pc.shown_status("진행", None, 2027, self.T), "진행")     # 측정 불가는 충족 아님
+
+    def test_axis_met_only_when_every_measured_milestone_met(self):
+        ms = [{"axis": "E", "pct": 1.0, "status": "진행", "shown": pc.MET},
+              {"axis": "E", "pct": None, "status": "미판정", "shown": "미판정"}]
+        a = pc.axis_rows({"axes": {"E_external": "축 E — 외부"}}, ms)[0]
+        self.assertTrue(a["met"])
+        ms.append({"axis": "E", "pct": 0.5, "status": "진행", "shown": "진행"})
+        self.assertFalse(pc.axis_rows({"axes": {"E_external": "축 E — 외부"}}, ms)[0]["met"])
+
+    def test_real_state_marks_met_milestones(self):
+        _, data, _ = pc.render(ar, today=self.T)
+        for m in data["milestones"]:
+            exp = m["pct"] is not None and m["pct"] >= 1 and m["status"] == "진행" and int(m["year"]) > 2026
+            self.assertEqual(m["shown"] == pc.MET, exp, m["id"])
+            self.assertEqual(m["cls"] == "met", exp, m["id"])
+
+    def test_delta_two_blocks_for_event_run(self):
+        st = {"run": {"run_id": "2026-10-23-event", "mode": "event", "summary": ["a", "b", "c", "d"],
+                      "previous_monthly_run_id": "2026-10"},
+              "run_history": [{"run_id": "2026-10", "summary": ["m1", "m2"]}]}
+        bl = pc.delta_blocks(st, ar)
+        self.assertEqual([(b["id"], b["kind"]) for b in bl], [("2026-10-23-event", "사건 회차"), ("2026-10", "직전 월간 회차")])
+        self.assertEqual(bl[0]["lines"], ["a", "b", "c"])            # 최대 3줄
+        self.assertEqual(bl[1]["lines"], ["m1", "m2"])
+        st["run"]["mode"] = "monthly"
+        self.assertEqual(len(pc.delta_blocks(st, ar)), 1)            # 월간 회차면 하나
+
+    def test_kpi_marks_derived_and_s1(self):
+        kpi = {"auto": {"quarters": [
+            {"quarter": "1Q26", "end": "2026-03-31", "revenue_usd_m": 4694,
+             "src": {"revenue_usd_m": {"how": "누적 2026-01-01~2026-06-30 − 기간 2026-04-01~2026-06-30", "derived": True}}},
+            {"quarter": "4Q25", "end": "2025-12-31", "revenue_usd_m": None, "src": {"revenue_usd_m": {"note": "없음"}}},
+            {"quarter": "2Q26", "end": "2026-06-30", "revenue_usd_m": 7814, "src": {"revenue_usd_m": {"how": "분기 보고값"}}}]}}
+        st = {"kpi_history": [{"quarter": "4Q25", "period_end": "2025-12-31", "revenue_usd_m": 4100,
+                               "fin_source": "https://www.sec.gov/s1", "fin_note": "FY2025 − 9M2025"}]}
+        rev = {r["id"]: r for r in pc.kpi_series(kpi, st)["rows"]}["revenue"]
+        cells = dict(zip(pc.kpi_series(kpi, st)["cols"], rev["cells"]))
+        self.assertEqual((cells["1Q26"]["mk"], cells["2Q26"]["mk"]), ("계산", ""))
+        self.assertEqual((cells["4Q25"]["v"], cells["4Q25"]["mk"]), (4100, "S-1"))
+        self.assertEqual(cells["4Q25"]["src"]["url"], "https://www.sec.gov/s1")
+        st["kpi_history"][0].pop("fin_source")                     # 출처 없는 기입값은 쓰지 않는다
+        rev = {r["id"]: r for r in pc.kpi_series(kpi, st)["rows"]}["revenue"]
+        self.assertIsNone(dict(zip(pc.kpi_series(kpi, st)["cols"], rev["cells"]))["4Q25"]["v"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

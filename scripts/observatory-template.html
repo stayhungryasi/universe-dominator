@@ -353,8 +353,9 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 /* ── 🛰 SpaceX 관제실 v2 (2026-10-23) — 접두 pc- · 기존 토큰 + 증감 토큰(낮/밤) ── */
 :root, [data-theme="light"] { --pc-up: #1E8E5A; --pc-down: #C8473A; --pc-warn: #B7791F; }
 [data-theme="dark"] { --pc-up: #4FD69C; --pc-down: #FF7B6E; --pc-warn: #E6B450; }
-body.pc-on .obs-hero { display: none; }
-body.pc-on .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
+/* 데이터 탭(관측일지·시차 관측·레전드벤치마크·무인 탐사선)은 히어로를 접는다 — 태양계·우주지도만 히어로를 둔다 */
+body.obs-data .obs-hero { display: none; }
+body.obs-data .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
 .pc { position: relative; }
 .pc-note { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.02em; margin: -2px 0 6px; }
 .pc-status { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 8px 6px 12px; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px; }
@@ -398,6 +399,13 @@ body.pc-on .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
 .pc-pb i, .pc-tile i { font-style: normal; margin-left: 3px; }
 .pc-up { color: var(--pc-up); } .pc-down { color: var(--pc-down); } .pc-flat { color: var(--text-muted); }
 .pc-delta { margin: 0; padding-left: 16px; font-size: 12.5px; line-height: 1.45; color: var(--text-secondary); }
+.pc-mk { font-size: 9px; font-weight: 800; color: var(--text-muted); margin-left: 2px; vertical-align: super; line-height: 0; }
+.pc-dblk + .pc-dblk { margin-top: 4px; padding-top: 4px; border-top: 1px dashed var(--line); }
+.pc-dlbl { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 1px; }
+.pc-dlbl b { color: var(--text); font-weight: 800; margin-right: 4px; }
+.pc-c2-two .pc-delta { font-size: 12px; line-height: 1.4; }
+.pc-c2-two .pc-delta li { -webkit-line-clamp: 1; margin-bottom: 2px; }
+.pc-more-h { margin-left: auto; font-size: 11px; padding: 0; }
 .pc-delta li { margin: 0 0 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .pc-more { border: 0; background: none; color: var(--gold); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; padding: 2px 0; }
 .pc-axis { display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 8px; width: 100%; border: 0; background: none; padding: 4px 0; font: inherit; color: var(--text); cursor: pointer; text-align: left; }
@@ -439,6 +447,7 @@ body.pc-on .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
 .pc-st-done { border-color: var(--pc-up); color: var(--pc-up); }
 .pc-st-early { border-color: var(--pc-up); border-style: dashed; color: var(--pc-up); }
 .pc-st-prog { border-color: var(--gold); }
+.pc-st-met { border-color: var(--gold); color: var(--pc-up); box-shadow: inset 0 0 0 1px var(--pc-up); }
 .pc-st-miss { border-color: var(--pc-down); color: var(--pc-down); text-decoration: line-through; }
 .pc-st-wait { border-style: dashed; color: var(--text-muted); }
 .pc-legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; color: var(--text-muted); margin: 8px 0 0; }
@@ -506,9 +515,10 @@ body.pc-on .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
   .pc-status { font-size: 12px; }
 }
 @media (max-width: 760px) {
-  body.pc-on .obs-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-  body.pc-on .obs-tabs::-webkit-scrollbar { display: none; }
-  body.pc-on .obs-tab { flex: none; white-space: nowrap; padding: 8px 14px; }
+  /* 천문대 탭 바는 모바일에서 어느 탭이든 가로 스크롤 한 줄 — 탭에 따라 모양이 바뀌지 않게 */
+  .obs-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .obs-tabs::-webkit-scrollbar { display: none; }
+  .obs-tab { flex: none; white-space: nowrap; padding: 8px 14px; }
   .pc-g-lbl { font-size: 17px; } .pc-g-sm { font-size: 14px; } .pc-mark { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .pc-drawer { transition: none; } }
@@ -614,11 +624,19 @@ const DATA = {{OBS_DATA}};
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let solarRAF = null;
 
+const OBS_DATA_TABS = ['columns', 'parallax', 'legend', 'agent'];
 function setObsTab(t, btn){
   document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  // 관제실은 첫 화면에 판단을 다 담아야 한다 — 탐사선 탭에선 히어로를 접고 탭 바를 위로 붙인다
+  // 데이터 탭은 첫 화면에 내용을 담아야 한다 — 히어로를 접고 탭 바를 위로 붙인다(태양계·우주지도 제외)
+  document.body.classList.toggle('obs-data', OBS_DATA_TABS.indexOf(t) >= 0);
   document.body.classList.toggle('pc-on', t === 'agent');
+  // 한 줄 스크롤 탭 바(모바일)에서 고른 탭이 화면 밖에 있으면 보이게 — 세로 스크롤은 건드리지 않는다
+  const bar = btn.parentNode;
+  if (bar && bar.scrollWidth > bar.clientWidth) {
+    const l = btn.offsetLeft - bar.offsetLeft, r = l + btn.offsetWidth;
+    if (l < bar.scrollLeft || r > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = Math.max(0, l - 16);
+  }
   cleanupSolar();
   if (t === 'solar') renderSolar();
   else if (t === 'map') renderMap();
@@ -2139,7 +2157,7 @@ const PC = (function(){
     const axes = D.axes || [];
     const fBtn = (k, v, t) => '<button type="button" class="pc-f' + (mf[k] === v ? ' on' : '') + '" data-pc-mf="' + k + '" data-v="' + H(v) + '">' + H(t) + '</button>';
     let h = '<div class="pc-filters">' + fBtn('axis', '', '전체 축') + axes.map(a => fBtn('axis', a.key, a.ko)).join('') + '</div>';
-    h += '<div class="pc-filters">' + fBtn('status', '', '전체 상태') + ['달성','달성(조기)','진행','미달','미판정'].map(s => fBtn('status', s, s)).join('') +
+    h += '<div class="pc-filters">' + fBtn('status', '', '전체 상태') + ['달성','달성(조기)','현재 충족(판정 연도 전)','진행','미달','미판정'].map(s => fBtn('status', s, s)).join('') +
          fBtn('year', '', '전체 연도') + years.map(y => fBtn('year', String(y), String(y))).join('') + '</div>';
     const showY = mf.year ? [Number(mf.year)] : years;
     const showA = mf.axis ? axes.filter(a => a.key === mf.axis) : axes;
@@ -2147,13 +2165,13 @@ const PC = (function(){
     showA.forEach(a => {
       h += '<tr><td>' + H(a.ko) + '</td>';
       showY.forEach(y => {
-        const cell = ms.filter(m => m.axis === a.key && m.year === y && (!mf.status || m.status === mf.status));
+        const cell = ms.filter(m => m.axis === a.key && m.year === y && (!mf.status || (m.shown || m.status) === mf.status));
         h += '<td>' + cell.map(m => '<button type="button" class="pc-chip pc-st-' + m.cls + '" style="--p:' + (m.pct == null ? 0 : Math.round(m.pct * 100)) + '%" data-pc-open="milestones" data-pc-id="' + H(m.id) + '" title="' + H(m.text) + '">' +
-          H(m.id) + ' <span style="font-weight:600">' + (m.pct == null ? '—' : pct(m.pct)) + '</span></button>').join('') + '</td>';
+          H(m.id) + ' <span style="font-weight:600">' + (m.cls === 'met' ? '충족' : m.pct == null ? '—' : pct(m.pct)) + '</span></button>').join('') + '</td>';
       });
       h += '</tr>';
     });
-    h += '</tbody></table></div><div class="pc-legend"><span>칸 채움·숫자 = 진척 %(— = 측정 불가)</span><span class="pc-st-done">초록 실선 = 달성</span><span class="pc-st-early">초록 점선 = 달성(조기)</span><span>강조 실선 = 진행</span><span class="pc-st-miss">빨강 취소선 = 미달</span><span>회색 점선 = 미판정</span></div>';
+    h += '</tbody></table></div><div class="pc-legend"><span>칸 채움·숫자 = 진척 %(— = 측정 불가)</span><span class="pc-st-done">초록 실선 = 달성</span><span class="pc-st-early">초록 점선 = 달성(조기)</span><span class="pc-st-met">충족 = 현재 충족(판정 연도 전) — 판정 연도에 다시 본다</span><span>강조 실선 = 진행</span><span class="pc-st-miss">빨강 취소선 = 미달</span><span>회색 점선 = 미판정</span></div>';
     return h;
   }
 
@@ -2189,10 +2207,10 @@ const PC = (function(){
     let h = '<div class="pc-wrap"><table class="pc-fin"><thead><tr><th>항목</th>' + f.cols.map(c => '<th>' + H(c) + '</th>').join('') + '<th>추세</th></tr></thead><tbody>';
     f.rows.forEach(r => {
       h += '<tr id="pc-fin-' + H(r.id) + '"' + (rowSel === r.id ? ' class="on"' : '') + '><td>' + H(r.label) + '<span class="pc-o">' + (r.origin === '공시 자동' ? '공시' : '취재') + '</span></td>' +
-        r.cells.map((c, i) => '<td><button type="button" class="pc-cell" data-pc-open="fin" data-pc-id="' + H(r.id + '|' + i) + '">' + H(c.t) + '</button></td>').join('') +
+        r.cells.map((c, i) => '<td><button type="button" class="pc-cell" data-pc-open="fin" data-pc-id="' + H(r.id + '|' + i) + '">' + H(c.t) + (c.mk ? '<sup class="pc-mk">' + H(c.mk) + '</sup>' : '') + '</button></td>').join('') +
         '<td>' + sparkSvg(r.cells.map(c => c.v)) + '</td></tr>';
     });
-    return h + '</tbody></table></div><div class="pc-legend"><span><b class="pc-o">공시</b> 공시 자동(SEC XBRL)</span><span><b class="pc-o">취재</b> 탐사 취재(공시 KPI 표)</span><span>— = 원천 값 없음(0 으로 채우지 않음)</span><span>univertrix.com</span></div>';
+    return h + '</tbody></table></div><div class="pc-legend"><span><b class="pc-o">공시</b> 공시 자동(SEC XBRL)</span><span><b class="pc-o">취재</b> 탐사 취재(공시 KPI 표)</span><span><sup class="pc-mk">계산</sup> 누적 공시의 차분(상반기−2분기·연간−9개월)</span><span><sup class="pc-mk">S-1</sup> 탐사 엔진이 S-1 원문에서 기입·검증관 대조</span><span>— = 원천 값 없음(0 으로 채우지 않음)</span><span>univertrix.com</span></div>';
   }
   function histSvg(hist){
     if (!hist.length) return '';
@@ -2251,7 +2269,7 @@ const PC = (function(){
 
   /* ── 서랍 ── */
   function itemsOf(kind){
-    if (kind === 'milestones') return (D.milestones || []).filter(m => (!mf.axis || m.axis === mf.axis) && (!mf.status || m.status === mf.status) && (!mf.year || String(m.year) === mf.year));
+    if (kind === 'milestones') return (D.milestones || []).filter(m => (!mf.axis || m.axis === mf.axis) && (!mf.status || (m.shown || m.status) === mf.status) && (!mf.year || String(m.year) === mf.year));
     if (kind === 'events') return (D.events || []).filter(e => !evKind || e.kindKo === evKind);
     if (kind === 'sources') return D.sources || [];
     if (kind === 'triggers') return D.triggers || [];
@@ -2261,7 +2279,7 @@ const PC = (function(){
   function dMilestone(m){
     const parts = (m.parts || []).map(p => '<div class="pc-pp"><span>' + H(p.label) + ' <span class="pc-sub">(' + H(p.op) + ' ' + fmtN(p.tgt, p.unit) + ')</span></span><b>' +
       (p.cur == null ? '—' : fmtN(p.cur, p.unit)) + ' · ' + pct(p.pct) + '</b>' + bar(p.pct) + (p.reason ? '<span class="pc-sub" style="grid-column:1/-1">' + H(p.reason) + '</span>' : '') + '</div>').join('');
-    return '<p><b style="color:var(--text)">' + H(m.text) + '</b></p><p><span class="pc-chip pc-st-' + m.cls + '" style="display:inline-block;width:auto">' + H(m.status) + '</span> · ' + H(m.axisKo) + ' · ' + H(m.year) + '년 판정 · 종합 진척 ' + pct(m.pct) + '</p>' +
+    return '<p><b style="color:var(--text)">' + H(m.text) + '</b></p><p><span class="pc-chip pc-st-' + m.cls + '" style="display:inline-block;width:auto">' + H(m.shown || m.status) + '</span> · ' + H(m.axisKo) + ' · ' + H(m.year) + '년 판정 · 종합 진척 ' + pct(m.pct) + '</p>' +
       '<h4>현재 / 목표</h4><p>' + H(m.cur == null ? '—' : m.cur) + ' → ' + H(m.tgt == null ? '—' : m.tgt) + ' ' + H(m.unit) + (m.asof ? ' (' + H(m.asof) + ')' : '') + (m.reason ? '<br>' + H(m.reason) : '') + '</p>' +
       '<h4>조건별 진척</h4>' + (parts || '<p>—</p>') +
       '<h4>달성 시 의미</h4><p>' + H(m.hit || '—') + '</p><h4>미달 시 의미</h4><p>' + H(m.miss || '—') + '</p>' + (m.method ? '<h4>확인 방법</h4><p>' + H(m.method) + '</p>' : '') +
