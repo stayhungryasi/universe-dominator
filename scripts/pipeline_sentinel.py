@@ -581,6 +581,23 @@ def judge_probe(st_doc, watch_doc, state, today):
     return out
 
 
+def judge_withdrawals(essays_doc, today):
+    """⑨ 철회 배포 미확인 — pending_deploy 표식이 하루 넘게 남아 있으면 1건(날짜별 서명).
+
+    철회는 '데이터 수정 → quick 배포 → 라이브 0회 확인'까지가 한 동작이다. 표식이 남았다는 것은
+    라이브에서 사라졌는지 아무도 확인하지 않았다는 뜻이다(2026-10-23).
+    """
+    out = []
+    for p in (essays_doc or {}).get("pending_deploy", []) or []:
+        since = str(p.get("since", ""))[:10]
+        age = _days(since, today) if since else None
+        if age is not None and age >= 1:
+            out.append(alert("withdraw-pending:" + ",".join(p.get("slugs", [])),
+                             f"철회 에세이 라이브 확인 미완료({since}~, {age}일): "
+                             f"{', '.join(p.get('slugs', []))} — scripts/withdraw_essay.py --verify", today))
+    return out
+
+
 def judge_materials(state, comp_state, today, cfg):
     """⑥ 소장이 던진 소재가 침묵 속에 썩는 것 방지.
 
@@ -736,8 +753,10 @@ def run():
     probe_alerts = judge_probe(read_json(HERE / "agent-research" / "state" / "spacex_state.json", {}),
                                read_json(DATA_DIR / "spacex_watch.json", {}), state, today)
 
+    wd_alerts = judge_withdrawals(read_json(DATA_DIR / "essays.json", {}), today)
+
     alerts = (sig_alerts + buf_alerts + cov_alerts + snap_alerts + stale_alerts
-              + bot_alerts + mat_alerts + feed_alerts + probe_alerts)
+              + bot_alerts + mat_alerts + feed_alerts + probe_alerts + wd_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(

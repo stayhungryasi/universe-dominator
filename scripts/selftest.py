@@ -2711,6 +2711,13 @@ console.log(JSON.stringify(cases.map(c => {
                            "http_error") if k in _agh], [])
     except Exception as _de:
         check("표시층: 탐사선 렌더", f"{type(_de).__name__}: {str(_de)[:80]}", "ok")
+    # 철회 = 라이브에서 사라질 때까지(2026-10-23) — 철회 제목이 루트 HTML 에 남아 있으면 실패.
+    # 데이터만 고치고 재빌드·배포를 건너뛰면 여기서 파이프라인이 멈춘다: scripts/withdraw_essay.py 로.
+    import companion_essays as _cew
+    _root_html = [(f.name, f.read_text(encoding="utf-8", errors="replace"))
+                  for f in sorted((Path(__file__).parent.parent).glob("*.html"))]
+    check("철회: 철회 에세이 제목이 루트 HTML 에 0회(남았으면 withdraw_essay.py 로 재빌드·배포)",
+          _cew.html_leaks(_cew.load_essays(), _root_html), [])
     # ⑱ 숫자 규율 — 원문에 없는 숫자는 실리지 않는다(핵심만 직접 등재, 전 케이스는 묶음)
     import companion_essays as _cex
     check("⑱ 숫자 규율: 원문에 없는 숫자 차단 · 원문 숫자 통과",

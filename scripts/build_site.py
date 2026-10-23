@@ -346,7 +346,8 @@ def probe_schedule(run_date, triggers, today=None):
     from datetime import date
     today = today or _kst_today()
     nxt = next_probe_date(run_date or "")
-    out = {"next": nxt, "overdue_days": 0, "age_days": None, "stale": False, "trigger": None}
+    out = {"next": nxt, "overdue_days": 0, "age_days": None, "stale": False, "trigger": None,
+           "today": today}
     try:
         nd = date.fromisoformat(nxt)
         if today > nd:
@@ -370,9 +371,33 @@ def probe_schedule(run_date, triggers, today=None):
         if d and (best is None or d < best[0]):
             best = (d, t)
     if best:
+        exp = best[1].get("expected_date", "")
         out["trigger"] = {"id": best[1].get("id", ""), "name": best[1].get("name", ""),
-                          "dday": (best[0] - today).days, "expected": best[1].get("expected_date", "")}
+                          "dday": (best[0] - today).days, "expected": exp,
+                          "window_end": _window_end(exp)}
     return out
+
+
+def _window_end(expected):
+    """'2026-4Q'·'2026-2H ~ 2027-1H' 같은 구간 예상일의 끝 날짜(구간이 아니면 None).
+
+    분기·반기 예상은 시작일 하루로 읽으면 구간 첫날부터 '경과'로 보인다(2026-10-23 실측:
+    '2026-4Q' 가 10/23 에 '예상일 경과 22일'로 표시됐다).
+    """
+    import re as _re
+    from datetime import date
+    m = list(_re.finditer(r"(\d{4})-([1-4])Q|(\d{4})-([12])H", expected or ""))
+    if not m:
+        return None
+    g = m[-1]
+    if g.group(1):
+        y, q = int(g.group(1)), int(g.group(2))
+        nxt = date(y + (q == 4), 1 if q == 4 else q * 3 + 1, 1)
+    else:
+        y, h = int(g.group(3)), int(g.group(4))
+        nxt = date(y + (h == 2), 1 if h == 2 else 7, 1)
+    from datetime import timedelta
+    return nxt - timedelta(days=1)
 
 
 def schedule_html(sch, run, esc):
@@ -382,7 +407,11 @@ def schedule_html(sch, run, esc):
     tr = sch.get("trigger")
     if tr:
         dd = tr["dday"]
-        when = (f"D-{dd}" if dd > 0 else "D-day" if dd == 0 else f"예상일 경과 {-dd}일")
+        we = tr.get("window_end")
+        if dd < 0 and we is not None and (sch.get("today") or _kst_today()) <= we:
+            when = f"예상 구간 중(~{we.isoformat()})"
+        else:
+            when = (f"D-{dd}" if dd > 0 else "D-day" if dd == 0 else f"예상일 경과 {-dd}일")
         tr_txt = " · 다음 트리거 " + esc(tr["id"]) + " " + esc(tr["name"]) + " " + when
     else:
         tr_txt = ""
@@ -413,7 +442,7 @@ def progress_cell(m, esc):
     if not isinstance(pg, dict):
         return '<span class="ag-np">' + esc(m.get("progress_reason") or "측정 불가") + '</span>', ""
     cur, tgt, unit = pg.get("current"), pg.get("target"), pg.get("unit") or ""
-    txt = esc(_fmt_num(cur)) + ' / ' + esc(_fmt_num(tgt)) + ' ' + esc(unit)
+    txt = esc(_fmt_num(cur)) + ' → 목표 ' + esc(_fmt_num(tgt)) + ' ' + esc(unit)
     meta = (' <span class="ag-np">(' + esc(pg.get("asof") or "") + ')</span>'
             if pg.get("asof") else "")
     bar = ""

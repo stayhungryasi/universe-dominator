@@ -49,6 +49,13 @@ class ScheduleTest(unittest.TestCase):
         self.assertIn("다음 트리거 T1 3Q26 실적의 AI 단위경제 D-7", html)
         self.assertNotIn("ag-delay", html)
 
+    def test_quarter_window_not_overdue(self):
+        t = [{"id": "T3", "name": "Flight 15", "expected_date": "2026-4Q(추정)", "status": "대기"}]
+        s = bs.probe_schedule("2026-10-23", t, date(2026, 10, 23))
+        html = bs.schedule_html(s, {"run_id": "2026-10", "run_date": "2026-10-23"}, ar.esc)
+        self.assertIn("예상 구간 중(~2026-12-31)", html)
+        self.assertNotIn("예상일 경과", html)
+
     def test_trigger_past(self):
         s = bs.probe_schedule("2026-11-01", TRIG[:1], date(2026, 11, 3))
         html = bs.schedule_html(s, {"run_id": "2026-11", "run_date": "2026-11-01"}, ar.esc)
@@ -62,7 +69,7 @@ class MilestoneTest(unittest.TestCase):
                                                     "progress_reason": "회수 시도 전"}, ar.esc)[0])
         txt, bar = bs.progress_cell({"progress": {"current": 13.6, "target": 20, "unit": "백만 명",
                                                   "asof": "2026-09-30", "source": "x"}}, ar.esc)
-        self.assertIn("13.6 / 20 백만 명", txt)
+        self.assertIn("13.6 → 목표 20 백만 명", txt)
         self.assertIn("width:68%", bar)
         _, bar2 = bs.progress_cell({"progress": {"current": 4.0, "target": 3.0, "unit": "배",
                                                  "direction": "down", "asof": "", "source": ""}}, ar.esc)
@@ -101,12 +108,21 @@ class TimelineEngineTest(unittest.TestCase):
 class RenderRealTest(unittest.TestCase):
     """실제 판단층 파일로 렌더 — 기계 키 0 · 금지 키 0 · 지연 배너(10월 회차 전)."""
 
-    def test_render(self):
+    def test_render_invariants_on_real_state(self):
+        """실제 판단층은 매월 바뀐다 — 실제 state 로는 '항상 참'인 것만 본다(2026-10-23:
+        지연 배너를 실제 state 로 검사했다가 10월 회차가 게시되자 selftest 가 파이프라인을 세웠다)."""
         h = bs.render_agent_probe(ar, today=date(2026, 10, 23), watch=TimelineEngineTest.WATCH,
                                   status={}, vres={})
         self.assertEqual(AXIS_KEY.findall(h), [])
         for k in ("recommendation", "max_position", "entry_trigger", "decode_fail"):
             self.assertNotIn(k, h)
+
+    def test_delay_banner_on_fixed_state(self):
+        from unittest import mock
+        st = dict(ar.read_state() or {})
+        st["run"] = {"run_id": "2026-09", "run_date": "2026-09-02"}
+        with mock.patch.object(ar, "read_state", return_value=st):
+            h = bs.render_agent_probe(ar, today=date(2026, 10, 23), watch={}, status={}, vres={})
         self.assertIn("엔진 점검 중", h)
 
 

@@ -366,5 +366,48 @@ class WithdrawTest(unittest.TestCase):
         self.assertEqual(data["corrections"][0]["text"], "정정")
 
 
+class WithdrawDeployTest(unittest.TestCase):
+    """철회는 라이브 0회 확인까지가 한 동작 — 표식·누출 검사·관문·관제탑."""
+
+    DOC = {"essays": [{"slug": "anthropic-x", "company": "anthropic", "date": "2026-10-23",
+                       "title": "증명이 무기가 된다 — \"형식검증\"", "sources": []}]}
+
+    def setUp(self):
+        import companion_essays as ce
+        import copy
+        self.ce = ce
+        self.doc = copy.deepcopy(self.DOC)
+
+    def test_withdraw_sets_pending_marker(self):
+        self.ce.withdraw(self.doc, {"anthropic-x"}, "r", "2026-10-23 11:00 KST")
+        self.assertEqual(self.doc["pending_deploy"][0]["slugs"], ["anthropic-x"])
+        self.assertEqual(self.ce.clear_pending(self.doc, {"anthropic-x"}), 0)
+
+    def test_leak_detected_in_raw_and_json_forms(self):
+        import json
+        self.ce.withdraw(self.doc, {"anthropic-x"}, "r", "t")
+        title = self.doc["essays"][0]["title"]
+        stale = [("journal.html", "const CE = " + json.dumps({"essays": [{"title": title}]},
+                                                             ensure_ascii=False))]
+        self.assertEqual(self.ce.html_leaks(self.doc, stale), [("journal.html", "anthropic-x")])
+        self.assertEqual(self.ce.html_leaks(self.doc, [("journal.html", "<p>정정 한 줄</p>")]), [])
+
+    def test_verify_pages_gate_blocks_leak(self):
+        import json
+        import tempfile
+        import verify_pages as vp
+        self.ce.withdraw(self.doc, {"anthropic-x"}, "r", "t")
+        d = Path(tempfile.mkdtemp()) / "essays.json"
+        d.write_text(json.dumps(self.doc, ensure_ascii=False), encoding="utf-8")
+        page = ("journal.html", json.dumps(self.doc["essays"][0]["title"], ensure_ascii=False))
+        self.assertEqual(vp.withdrawn_leaks([page], d), {"journal.html": ["anthropic-x"]})
+        self.assertEqual(vp.withdrawn_leaks([("journal.html", "깨끗")], d), {})
+
+    def test_sentinel_alerts_on_old_marker(self):
+        doc = {"pending_deploy": [{"slugs": ["anthropic-x"], "since": "2026-10-23 11:00 KST"}]}
+        self.assertEqual(ps.judge_withdrawals(doc, "2026-10-23"), [])
+        self.assertEqual(len(ps.judge_withdrawals(doc, "2026-10-24")), 1)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -68,6 +68,29 @@ def check(pages):
     return bad
 
 
+def withdrawn_leaks(pages, essays_path=None):
+    """철회된 에세이 제목이 페이지에 남았는가 → {파일명: [slug]} (2026-10-23).
+
+    데이터에서만 철회하고 빌드가 안 돌면 라이브에 본문이 남는다. build_site 를 import
+    하지 않고 원장(data/essays.json)을 직접 읽는다 — 관문은 다른 다리로 선다.
+    """
+    import json
+    path = Path(essays_path) if essays_path else ROOT / "data" / "essays.json"
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    titles = [(e.get("slug", ""), e.get("title", "")) for e in doc.get("essays", [])
+              if isinstance(e, dict) and e.get("status") == "withdrawn" and e.get("title")]
+    bad = {}
+    for slug, title in titles:
+        forms = {title, json.dumps(title, ensure_ascii=False)[1:-1]}
+        for name, raw in pages:
+            if any(f in raw for f in forms):
+                bad.setdefault(name, []).append(slug)
+    return bad
+
+
 def notify(text):
     """관문 실패는 **소장 DM 전용**. 수신처가 없으면 로그로만 남긴다(공개 폴백 없음)."""
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
@@ -102,6 +125,11 @@ def main():
             print(f"    · {name}: {', '.join(missing)}", file=sys.stderr)
         head = ", ".join(f"{n}({len(m)}종)" for n, m in sorted(bad.items())[:5])
         notify(f"🚨 UNIVERTRIX 관문: 주입 누락 {len(bad)}개 페이지 — 커밋 중단\n{head}")
+        return 1
+    leaks = withdrawn_leaks(pages)
+    if leaks:
+        print(f"[관문] ❌ 철회된 에세이가 페이지에 남았다 — 커밋하지 않는다: {leaks}", file=sys.stderr)
+        notify(f"🚨 UNIVERTRIX 관문: 철회 에세이가 빌드에 남음 — 커밋 중단 {leaks}")
         return 1
     tail = f" · 스텁 제외 {len(stubs)}개" if stubs else ""
     print(f"[관문] ✅ {len(pages)}개 페이지 · 주입 {len(MARKERS)}종 전부 확인{tail}")

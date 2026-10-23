@@ -187,7 +187,43 @@ def withdraw(doc, slugs, reason, when, correction=None):
         cs = doc.setdefault("corrections", [])
         if not any(c.get("text") == correction.get("text") for c in cs):
             cs.insert(0, correction)
+    if done:
+        # 배포 필요 표식 — 데이터만 고치면 루트 HTML(라이브)은 옛 빌드 그대로다(2026-10-23:
+        # Anthropic 에세이가 데이터에서만 철회되고 본문이 라이브에 남았다). 표식은 라이브에서
+        # 제목 0회를 확인한 뒤에만 지운다(scripts/withdraw_essay.py).
+        titles = [e.get("title", "") for e in doc.get("essays", []) if e.get("slug") in done]
+        doc.setdefault("pending_deploy", []).append({"slugs": done, "titles": titles, "since": when})
     return done
+
+
+def withdrawn_titles(doc):
+    """철회된 에세이의 (slug, 제목) — 루트 HTML 에 남아 있으면 안 되는 문자열들."""
+    return [(e.get("slug", ""), e.get("title", "")) for e in (doc or {}).get("essays", [])
+            if isinstance(e, dict) and e.get("status") == "withdrawn" and e.get("title")]
+
+
+def html_leaks(doc, pages):
+    """루트 HTML 에 남은 철회 제목 → [(파일명, slug)]. JSON 이스케이프 형태도 본다."""
+    import json as _json
+    out = []
+    for slug, title in withdrawn_titles(doc):
+        forms = {title, _json.dumps(title, ensure_ascii=False)[1:-1],
+                 title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")}
+        for name, raw in pages:
+            if any(f and f in raw for f in forms):
+                out.append((name, slug))
+    return out
+
+
+def clear_pending(doc, slugs):
+    """라이브 확인을 마친 슬러그를 배포 필요 표식에서 지운다 → 남은 표식 수."""
+    keep = []
+    for p in doc.get("pending_deploy", []) or []:
+        rest = [s for s in p.get("slugs", []) if s not in slugs]
+        if rest:
+            keep.append(dict(p, slugs=rest))
+    doc["pending_deploy"] = keep
+    return len(keep)
 
 
 def published_today(essays, slug, today):
