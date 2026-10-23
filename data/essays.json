@@ -1,5 +1,5 @@
 {
- "generated_label": "2026.10.23 11:45",
+ "generated_label": "2026.10.23 12:03",
  "essays": [
   {
    "company": "spacex",
@@ -29,7 +29,10 @@
     "SI 부문 손실 반전"
    ],
    "numbers_verified": true,
-   "backfill": true
+   "backfill": true,
+   "status": "withdrawn",
+   "withdrawn_at": "2026-10-23 12:03 KST",
+   "withdrawn_reason": "원문으로 확인되지 않은 숫자 — 본문의 'Google 20M 월간 거래'가 수집 원문(SEC 8-K EX-99.1·IR 실적 PDF 전문) 어디에도 없음. 숫자 규율의 0.5% 상대 오차 때문에 감가상각 922 와 우연 일치로 통과했다(허용 오차 수리 b534ce5). 나머지 숫자는 원문과 일치"
   },
   {
    "company": "anthropic",
@@ -1035,6 +1038,14 @@
  "corrections": [
   {
    "date": "2026-10-23",
+   "company": "spacex",
+   "text": "2026-10-23 회수 재작성 에세이 1편 철회 — 원문으로 확인되지 않은 숫자 1건",
+   "slugs": [
+    "spacex-b283ea6a"
+   ]
+  },
+  {
+   "date": "2026-10-23",
    "company": "anthropic",
    "text": "2026-10-23 자동 에세이 1편 철회 — 원문으로 확인되지 않은 숫자",
    "slugs": [
@@ -1051,5 +1062,15 @@
    ]
   }
  ],
- "pending_deploy": []
+ "pending_deploy": [
+  {
+   "slugs": [
+    "spacex-b283ea6a"
+   ],
+   "titles": [
+    "궤도 플랫폼의 매출 삼각형 — Q3 26에서 보이는 구조의 역전"
+   ],
+   "since": "2026-10-23 12:03 KST"
+  }
+ ]
 }
