@@ -3,6 +3,7 @@
   "quarters": [
    {
     "end": "2026-09-30",
+    "quarter": "3Q26",
     "src": {
      "revenue_usd_m": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -36,6 +37,14 @@
       "accn": "0001628280-26-066880",
       "how": "누적 2026-01-01~2026-09-30 − 누적 2026-01-01~2026-06-30"
      },
+     "ocf_usd_m": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "filed": "2026-10-22",
+      "end": "2026-09-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-066880",
+      "how": "누적 2026-01-01~2026-09-30 − 누적 2026-01-01~2026-06-30"
+     },
      "cash_usd_m": {
       "concept": "CashAndCashEquivalentsAtCarryingValue",
       "filed": "2026-10-22",
@@ -59,6 +68,9 @@
       "form": "10-Q",
       "accn": "0001628280-26-066880",
       "how": "기말 잔액"
+     },
+     "fcf_usd_m": {
+      "how": "영업현금흐름 − 유형자산 취득(같은 분기 도출값)"
      }
     },
     "revenue_usd_m": 14575,
@@ -67,9 +79,11 @@
     "operating_income_usd_m": 2791,
     "net_income_usd_m": 4404,
     "capex_usd_m": 19593,
+    "ocf_usd_m": 9631,
     "cash_usd_m": 51294,
     "marketable_securities_usd_m": 38561,
     "debt_and_leases_usd_m": 38844,
+    "fcf_usd_m": -9962,
     "filed": "2026-10-22",
     "shares_outstanding_m": 13581,
     "shares_asof": "2026-10-15",
@@ -82,6 +96,7 @@
    },
    {
     "end": "2026-06-30",
+    "quarter": "2Q26",
     "src": {
      "revenue_usd_m": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -110,6 +125,9 @@
      "capex_usd_m": {
       "note": "공시 원천에 해당 기간 값 없음"
      },
+     "ocf_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
      "cash_usd_m": {
       "concept": "CashAndCashEquivalentsAtCarryingValue",
       "filed": "2026-08-04",
@@ -133,6 +151,9 @@
       "form": "10-Q",
       "accn": "0001628280-26-052535",
       "how": "기말 잔액"
+     },
+     "fcf_usd_m": {
+      "note": "영업현금흐름 또는 Capex 분기 값 없음"
      }
     },
     "revenue_usd_m": 7814,
@@ -141,13 +162,136 @@
     "operating_income_usd_m": -143,
     "net_income_usd_m": -541,
     "capex_usd_m": null,
+    "ocf_usd_m": null,
     "cash_usd_m": 93522,
     "marketable_securities_usd_m": 6487,
     "debt_and_leases_usd_m": 39364,
+    "fcf_usd_m": null,
     "filed": "2026-08-04"
    },
    {
+    "end": "2026-03-31",
+    "quarter": "1Q26",
+    "src": {
+     "revenue_usd_m": {
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "filed": "2026-08-04",
+      "end": "2026-06-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-052535",
+      "how": "누적 2026-01-01~2026-06-30 − 기간 2026-04-01~2026-06-30"
+     },
+     "operating_income_usd_m": {
+      "concept": "OperatingIncomeLoss",
+      "filed": "2026-08-04",
+      "end": "2026-06-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-052535",
+      "how": "누적 2026-01-01~2026-06-30 − 기간 2026-04-01~2026-06-30"
+     },
+     "net_income_usd_m": {
+      "concept": "NetIncomeLoss",
+      "filed": "2026-08-04",
+      "end": "2026-06-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-052535",
+      "how": "누적 2026-01-01~2026-06-30 − 기간 2026-04-01~2026-06-30"
+     },
+     "capex_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "ocf_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "cash_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "marketable_securities_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "debt_and_leases_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "fcf_usd_m": {
+      "note": "영업현금흐름 또는 Capex 분기 값 없음"
+     }
+    },
+    "revenue_usd_m": 4694,
+    "fp": "Q2",
+    "fy": 2026,
+    "operating_income_usd_m": -1943,
+    "net_income_usd_m": -4276,
+    "capex_usd_m": null,
+    "ocf_usd_m": null,
+    "cash_usd_m": null,
+    "marketable_securities_usd_m": null,
+    "debt_and_leases_usd_m": null,
+    "fcf_usd_m": null,
+    "filed": "2026-08-04"
+   },
+   {
+    "end": "2025-12-31",
+    "quarter": "4Q25",
+    "src": {
+     "revenue_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "operating_income_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "net_income_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "capex_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "ocf_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "cash_usd_m": {
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "filed": "2026-10-22",
+      "end": "2025-12-31",
+      "form": "10-Q",
+      "accn": "0001628280-26-066880",
+      "how": "기말 잔액"
+     },
+     "marketable_securities_usd_m": {
+      "concept": "MarketableSecuritiesCurrent",
+      "filed": "2026-10-22",
+      "end": "2025-12-31",
+      "form": "10-Q",
+      "accn": "0001628280-26-066880",
+      "how": "기말 잔액"
+     },
+     "debt_and_leases_usd_m": {
+      "concept": "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+      "filed": "2026-10-22",
+      "end": "2025-12-31",
+      "form": "10-Q",
+      "accn": "0001628280-26-066880",
+      "how": "기말 잔액"
+     },
+     "fcf_usd_m": {
+      "note": "영업현금흐름 또는 Capex 분기 값 없음"
+     }
+    },
+    "revenue_usd_m": null,
+    "operating_income_usd_m": null,
+    "net_income_usd_m": null,
+    "capex_usd_m": null,
+    "ocf_usd_m": null,
+    "cash_usd_m": 24747,
+    "fp": "Q3",
+    "fy": 2026,
+    "marketable_securities_usd_m": 0,
+    "debt_and_leases_usd_m": 22896,
+    "fcf_usd_m": null,
+    "filed": "2026-10-22"
+   },
+   {
     "end": "2025-09-30",
+    "quarter": "3Q25",
     "src": {
      "revenue_usd_m": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -181,6 +325,14 @@
       "accn": "0001628280-26-066880",
       "how": "누적 2025-01-01~2025-09-30 − 누적 2025-01-01~2025-06-30"
      },
+     "ocf_usd_m": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "filed": "2026-10-22",
+      "end": "2025-09-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-066880",
+      "how": "누적 2025-01-01~2025-09-30 − 누적 2025-01-01~2025-06-30"
+     },
      "cash_usd_m": {
       "note": "공시 원천에 해당 기간 값 없음"
      },
@@ -189,6 +341,9 @@
      },
      "debt_and_leases_usd_m": {
       "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "fcf_usd_m": {
+      "how": "영업현금흐름 − 유형자산 취득(같은 분기 도출값)"
      }
     },
     "revenue_usd_m": 5576,
@@ -197,13 +352,16 @@
     "operating_income_usd_m": -273,
     "net_income_usd_m": -1054,
     "capex_usd_m": 6881,
+    "ocf_usd_m": 3769,
     "cash_usd_m": null,
     "marketable_securities_usd_m": null,
     "debt_and_leases_usd_m": null,
+    "fcf_usd_m": -3112,
     "filed": "2026-10-22"
    },
    {
     "end": "2025-06-30",
+    "quarter": "2Q25",
     "src": {
      "revenue_usd_m": {
       "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -232,6 +390,9 @@
      "capex_usd_m": {
       "note": "공시 원천에 해당 기간 값 없음"
      },
+     "ocf_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
      "cash_usd_m": {
       "note": "공시 원천에 해당 기간 값 없음"
      },
@@ -240,6 +401,9 @@
      },
      "debt_and_leases_usd_m": {
       "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "fcf_usd_m": {
+      "note": "영업현금흐름 또는 Capex 분기 값 없음"
      }
     },
     "revenue_usd_m": 4071,
@@ -248,14 +412,119 @@
     "operating_income_usd_m": -970,
     "net_income_usd_m": -1008,
     "capex_usd_m": null,
+    "ocf_usd_m": null,
     "cash_usd_m": null,
     "marketable_securities_usd_m": null,
     "debt_and_leases_usd_m": null,
+    "fcf_usd_m": null,
     "filed": "2026-08-04"
+   },
+   {
+    "end": "2025-03-31",
+    "quarter": "1Q25",
+    "src": {
+     "revenue_usd_m": {
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "filed": "2026-08-04",
+      "end": "2025-06-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-052535",
+      "how": "누적 2025-01-01~2025-06-30 − 기간 2025-04-01~2025-06-30"
+     },
+     "operating_income_usd_m": {
+      "concept": "OperatingIncomeLoss",
+      "filed": "2026-08-04",
+      "end": "2025-06-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-052535",
+      "how": "누적 2025-01-01~2025-06-30 − 기간 2025-04-01~2025-06-30"
+     },
+     "net_income_usd_m": {
+      "concept": "NetIncomeLoss",
+      "filed": "2026-08-04",
+      "end": "2025-06-30",
+      "form": "10-Q",
+      "accn": "0001628280-26-052535",
+      "how": "누적 2025-01-01~2025-06-30 − 기간 2025-04-01~2025-06-30"
+     },
+     "capex_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "ocf_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "cash_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "marketable_securities_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "debt_and_leases_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "fcf_usd_m": {
+      "note": "영업현금흐름 또는 Capex 분기 값 없음"
+     }
+    },
+    "revenue_usd_m": 4067,
+    "fp": "Q2",
+    "fy": 2026,
+    "operating_income_usd_m": 27,
+    "net_income_usd_m": -528,
+    "capex_usd_m": null,
+    "ocf_usd_m": null,
+    "cash_usd_m": null,
+    "marketable_securities_usd_m": null,
+    "debt_and_leases_usd_m": null,
+    "fcf_usd_m": null,
+    "filed": "2026-08-04"
+   },
+   {
+    "end": "2024-12-31",
+    "quarter": "4Q24",
+    "src": {
+     "revenue_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "operating_income_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "net_income_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "capex_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "ocf_usd_m": {
+      "note": "상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+     },
+     "cash_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "marketable_securities_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "debt_and_leases_usd_m": {
+      "note": "공시 원천에 해당 기간 값 없음"
+     },
+     "fcf_usd_m": {
+      "note": "영업현금흐름 또는 Capex 분기 값 없음"
+     }
+    },
+    "revenue_usd_m": null,
+    "operating_income_usd_m": null,
+    "net_income_usd_m": null,
+    "capex_usd_m": null,
+    "ocf_usd_m": null,
+    "cash_usd_m": null,
+    "marketable_securities_usd_m": null,
+    "debt_and_leases_usd_m": null,
+    "fcf_usd_m": null,
+    "filed": null
    }
   ],
   "source": "SEC companyfacts (CIK 0001181412)",
-  "measured_at": "2026-10-23T10:58+09:00",
+  "measured_at": "2026-10-23T11:42+09:00",
   "shares_outstanding_m": 13581,
   "shares_asof": "2026-10-15",
   "shares_accn": "0001628280-26-066880",

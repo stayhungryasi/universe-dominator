@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-23 10:55",
- "generated_at": "2026-10-23T10:55:13.972009+09:00",
+ "generated_label": "2026-10-23 11:39",
+ "generated_at": "2026-10-23T11:39:00.498087+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-23",
@@ -1113,12 +1113,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "HBM4 양산 진입으로 수익성 급증했으나 시클리컬 업종이며 주가는 이미 상당히 반영됨"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1130,31 +1125,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 0,
-    "score": 2,
-    "period": "2026H2"
-   },
-   "notes": "AI 수요 호황과 메모리 슈퍼사이클 속에서 영업마진 76%를 기록했으나, 280억 달러 규모 증축캐펙스(20조 원대) 없이는 가격 인상 지속 불가능한 구조적 제약이 있음",
-   "_evidence": {
-    "franchise": "HBM4 진입 양산으로 경쟁 기술 진입장벽 형성; 나스닥 상장 후 초과수요(7배 이상) 반영",
-    "risk5": "메모리 슈퍼사이클 냉각 신호 포착(메모리주 베어마켓 진입) 및 주가 급락 후 반등 변동성 고조; 경영진 신뢰도는 회장 직접 매수로 확인됨",
-    "capalloc": "280억 달러 규모 증축 캐펙스 필요성 명시; $26.5B 공모 후 $28.6B 자사주 매입 계획으로 현금 배분 적극적이나 나스닥 상장으로 희석 발생",
-    "owner_earnings": "Q2 2026 분기 수익 257% YoY 증가, 79.3조 원, 영업마진 76% 달성하였으나 시클리컬 업종 특성상 지속성 불확실"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-10-23",
@@ -1486,7 +1457,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.9
+    "value": 0.97
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1901,7 +1872,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.76
+    "value": 31.37
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1949,5 +1920,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-23 10:56"
+ "scout_label": "2026-10-23 11:40"
 }
