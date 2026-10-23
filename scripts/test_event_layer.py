@@ -403,6 +403,16 @@ class WithdrawDeployTest(unittest.TestCase):
         self.assertEqual(vp.withdrawn_leaks([page], d), {"journal.html": ["anthropic-x"]})
         self.assertEqual(vp.withdrawn_leaks([("journal.html", "깨끗")], d), {})
 
+    def test_verify_pages_main_wired(self):
+        """관문 main() 이 철회 누출에서 실제로 1을 돌려준다(배선) — DM 은 막는다."""
+        import verify_pages as vp
+        pages = [(n, "".join(vp.MARKERS) + "".join(f'data-mk="{k}"' for k in vp.MACRO_BADGE_KEYS)
+                  + "</hea" + "d>")for n in ("journal.html",)]
+        with mock.patch.object(vp, "targets", return_value=(pages, [])),                 mock.patch.object(vp, "notify"),                 mock.patch.object(vp, "withdrawn_leaks", return_value={"journal.html": ["x"]}):
+            self.assertEqual(vp.main(), 1)
+        with mock.patch.object(vp, "targets", return_value=(pages, [])),                 mock.patch.object(vp, "withdrawn_leaks", return_value={}):
+            self.assertEqual(vp.main(), 0)
+
     def test_sentinel_alerts_on_old_marker(self):
         doc = {"pending_deploy": [{"slugs": ["anthropic-x"], "since": "2026-10-23 11:00 KST"}]}
         self.assertEqual(ps.judge_withdrawals(doc, "2026-10-23"), [])
