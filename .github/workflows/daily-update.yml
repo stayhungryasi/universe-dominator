@@ -29,7 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write
+      contents: write   # 자동 커밋 + repository_dispatch(탐사 엔진 사건 모드 발사)
+      actions: read     # 월간 탐사 엔진(spacex-probe.yml) 마지막 실행 결론 조회
     
     env:
       FULL_RUN: ${{ github.event_name == 'schedule' || inputs.mode == 'full' }}
@@ -209,6 +210,21 @@ jobs:
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
         continue-on-error: true
 
+      # 🛰 SpaceX 측정층 — SEC 공시·재무팩트·발사 기록·IR 을 매일 기계가 잰다.
+      # agent-research/ 에는 쓰지 않는다(판단층 불가침). 트리거 due 는 소장 DM +
+      # 발사 대기열에 올리고, 실제 사건 모드 발사는 커밋 **뒤** 단계가 한다.
+      - name: SpaceX watch (measurement layer)
+        id: spacex_watch
+        if: env.FULL_RUN == 'true'
+        run: python scripts/spacex_watch.py
+        env:
+          SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 트리거 DM 도 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
+
       # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진
       # build_site 앞에 둔다: essays.json 이 journal.html 에 주입되기 때문.
       # 논제 원장이 플레이스홀더인 회사는 수집조차 하지 않고 "관찰 대기" 로그만 남긴다.
@@ -261,7 +277,7 @@ jobs:
           # 소장 DM 전용이고, 변수가 여기 있으면 언젠가 다시 폴백 경로가 생긴다.
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           SENTINEL_STEPS: >-
-            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }}
+            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }},spacex_watch=${{ steps.spacex_watch.outcome }}
         continue-on-error: true
 
       # 커밋 직전 관문 — 주입이 빠진 페이지가 하나라도 있으면 여기서 멈춘다.
@@ -295,6 +311,18 @@ jobs:
               sleep $((i * 3))
             done
           fi
+
+      # 🛰 탐사 엔진 사건 모드 발사 — **커밋 뒤에** 쏜다(엔진이 이번 회차 측정을 읽게).
+      # GITHUB_TOKEN 의 repository_dispatch 는 새 실행을 만든다(GitHub 문서의 예외 규정).
+      # 대기열이 비면 침묵. 실패하면 exit 1 + 소장 DM(실패를 실패로 보고).
+      - name: Dispatch SpaceX probe (event mode)
+        if: ${{ !cancelled() && env.FULL_RUN == 'true' }}
+        run: python scripts/spacex_watch.py --dispatch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
 
       # ── 경성 실패 경보 — sentinel조차 못 도는 대참사용 ──
       # sentinel과 완전 독립(파이썬·스크립트 무관, curl 한 줄). 워크플로 자체가

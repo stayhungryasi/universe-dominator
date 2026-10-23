@@ -64,7 +64,7 @@ DEFAULTS = {
     "stale_hours": {"calendar.json": 48, "gurus.json": 48, "columns.json": 72},
     # 실행 흔적을 감시할 봇 (SENTINEL_STEPS 키 → 사람이 읽을 이름)
     "bots": {"parallax_journal": "관측노트 봇", "community_notice": "관제탑 공지",
-             "companion_essays": "동행 관측 엔진"},
+             "companion_essays": "동행 관측 엔진", "spacex_watch": "SpaceX 측정층"},
     # 소장이 던진 소재가 몇 회차 연속 잔존하면 경보할지 (full 기준)
     "materials_streak_limit": 2,
     # 피드 요청 실패(http_error/timeout)가 몇 회 연속이면 경보할지.

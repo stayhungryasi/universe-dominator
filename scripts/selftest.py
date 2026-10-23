@@ -2670,7 +2670,16 @@ console.log(JSON.stringify(cases.map(c => {
     # 전 케이스(재현·변이 확인 완료)는 단위 테스트 묶음 — 관문에 직결한다
     import unittest as _ut
     import io as _io
-    for _mod in ("test_event_layer",):
+    # 측정층(M) — agent-research 는 읽기만: 쓰기 경로가 생기면 판단층 불가침이 깨진다
+    _sxw = (Path(__file__).parent / "spacex_watch.py").read_text(encoding="utf-8")
+    check("측정층: spacex_watch 는 판단층(agent-research)에 쓰지 않는다",
+          [w for w in ("write_json(STATE_PATH", "STATE_PATH.write", "STATE_PATH.open(\"w")
+           if w in _sxw], [])
+    _dly = (Path(__file__).parent.parent / ".github" / "workflows" / "daily-update.yml").read_text(encoding="utf-8")
+    check("측정층: daily 가 측정 스텝을 돌리고 결과를 관제탑에 넘긴다",
+          ("scripts/spacex_watch.py" in _dly, "spacex_watch=${{ steps.spacex_watch.outcome }}" in _dly,
+           "spacex_watch.py --dispatch" in _dly), (True, True, True))
+    for _mod in ("test_event_layer", "test_measure_layer"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)
