@@ -528,7 +528,7 @@ class FeedJudgeTest(unittest.TestCase):
     def test_missing_ledger_is_silent(self):
         """원장이 아직 없어도(첫 도입 회차) 조용히 넘어간다."""
         a, seen = ps.judge_feeds({}, self.state, TODAY, self.cfg)
-        self.assertEqual((a, seen), ([], {"error": 0, "zero": 0, "ok": 0}))
+        self.assertEqual((a, seen), ([], {"error": 0, "zero": 0, "ok": 0, "stale": 0}))
 
 
 class RunWiringTest(unittest.TestCase):

@@ -271,7 +271,9 @@ class BackfillTest(unittest.TestCase):
         self.assertEqual(len(out), 2)                  # 상한 2편
         self.assertEqual(again, [])                    # 1회 한정
         self.assertEqual(calls[0]["widen_days"], 30)
-        self.assertEqual(calls[1]["exclude"], {"https://u/1"})   # 같은 사건 재집필 금지
+        self.assertEqual(calls[1]["exclude"], {"https://u/1"})   # 같은 기사 재사용 금지
+        self.assertNotIn("이미 쓴 에세이", calls[0]["memo"])
+        self.assertIn("「e1」", calls[1]["memo"])                 # 같은 사건 재집필 금지(제목으로)
         self.assertTrue(all(e.get("backfill") for e in out))
         self.assertEqual(state["backfill"]["spacex"]["published"], 2)
 
@@ -286,6 +288,40 @@ class BackfillTest(unittest.TestCase):
         self.assertTrue(self.ce.within_days("Tue, 20 Oct 2026 00:00:00 -0400", 14, now))
         self.assertFalse(self.ce.within_days("Tue, 04 Aug 2026 16:05:00 -0400", 14, now))
         self.assertTrue(self.ce.within_days("알 수 없음", 14, now))     # 못 읽으면 버리지 않는다
+
+
+class StaleRowTest(unittest.TestCase):
+    """유령 행 — 키가 바뀐 뒤 남은 낡은 실패 행을 매 회차 새 실패로 세지 않는다."""
+
+    def test_stale_error_row_never_alerts(self):
+        state = {"sources": {}, "feeds": {}}
+        st = {"sources": {"scout:scout:AAPL": {"kind": "scout", "source": "scout:AAPL",
+                                               "outcome": "http_error", "code": 503, "items": 0,
+                                               "ts": "2026-10-11 11:49"}}}
+        hits = []
+        for i in range(21):
+            today = (datetime(2026, 10, 23) + timedelta(days=i)).strftime("%Y-%m-%d")
+            a, seen = ps.judge_feeds(st, state, today, CFG)
+            hits += a
+        self.assertEqual(hits, [])
+        self.assertEqual(seen["stale"], 1)
+
+    def test_fresh_row_still_counts(self):
+        state = {"sources": {}, "feeds": {}}
+        hits = []
+        for i in range(2):
+            today = (datetime(2026, 10, 23) + timedelta(days=i)).strftime("%Y-%m-%d")
+            st = {"sources": {"scout:AAPL": {"kind": "scout", "source": "AAPL", "outcome": "http_error",
+                                             "code": 503, "items": 0, "ts": today + " 09:00"}}}
+            hits += ps.judge_feeds(st, state, today, CFG)[0]
+        self.assertEqual(len(hits), 1)
+
+    def test_stale_signal_row_is_unrecorded(self):
+        state = {"sources": {"Anthropic": {"zero_streak": 0, "alerted": False, "ever_seen": True}}}
+        st = {"sources": {"signals:Anthropic": {"kind": "signals", "source": "Anthropic",
+                                                "outcome": "zero", "items": 0, "ts": "2026-10-01 09:00"}}}
+        a, obs = ps.judge_signals(st, ["Anthropic"], state, "2026-10-23", CFG)
+        self.assertEqual((a, obs["Anthropic"]["outcome"]), ([], "미기록"))
 
 
 if __name__ == "__main__":

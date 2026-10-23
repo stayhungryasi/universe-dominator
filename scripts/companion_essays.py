@@ -892,8 +892,13 @@ def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None
         return []
     out, used = [], set()
     for k in range(BACKFILL_MAX):
+        # 2026-10-23 첫 회수에서 2편이 모두 3Q 실적이었다 — URL 만 빼서는 같은 사건의 다른
+        # 기사가 다시 후보가 된다. 이미 쓴 사건을 제목으로 못 박고, 같은 사건이면 침묵시킨다.
+        memo = BACKFILL_MEMO + "".join(
+            f" 이번 회차에 이미 쓴 에세이: 「{e['title']}」 — 같은 사건(같은 실적 발표·같은 비행)을"
+            " 다른 기사로 다시 쓰지 마라. 남은 후보에 다른 사건이 없으면 publish=false." for e in out)
         entry = run_auto(comp, api_key, constitution, essays + out, today,
-                         widen_days=days, exclude=set(used), memo=BACKFILL_MEMO)
+                         widen_days=days, exclude=set(used), memo=memo)
         if not entry:
             break
         entry["backfill"] = True

@@ -203,6 +203,23 @@ def clear(rec, flag):
 
 
 ERROR_OUTCOMES = ("http_error", "timeout", "decode_fail")
+STALE_ROW_DAYS = 2      # 원장 행이 이보다 오래 갱신되지 않았으면 '이번 회차 결과'가 아니다
+
+
+def row_is_fresh(row, today, days=STALE_ROW_DAYS):
+    """원장 행이 이번 회차 근처에 기록됐는가 (2026-10-23 유령 행 사고).
+
+    레전드 취재의 원장 키가 'scout:scout:AAPL' → 'scout:AAPL' 로 바뀐 뒤, 옛 키의
+    503 행(마지막 기록 10/11)이 원장에 남았다. 관제탑은 낡은 행을 매 회차 **새 실패로**
+    세어 108회 연속까지 올렸고, 7일 재알림이 들어온 첫 회차에 33건의 오경보가 나갔다.
+    같은 사실을 매 회차 다시 세는 것은 관측이 아니다 — 낡은 행은 판정하지 않고 로그에만 남긴다.
+    ts 를 못 읽으면 판정한다(옛 원장 호환 — 모르는 것을 버리지 않는다).
+    """
+    ts = (row or {}).get("ts") if isinstance(row, dict) else None
+    if not ts:
+        return True
+    gap = _days(str(ts)[:10], today)
+    return gap is None or gap < days
 
 
 # ────────────────────────────────────────────────────────────────
@@ -248,6 +265,8 @@ def judge_signals(status, names, state, today, cfg):
     for n in names:
         rec = srcs.setdefault(n, {"zero_streak": 0, "alerted": False, "ever_seen": False})
         row = led.get(f"signals:{n}")
+        if isinstance(row, dict) and not row_is_fresh(row, today):
+            row = None                    # 낡은 행 = 이번 회차 기록 없음 → '미기록'으로 보류
         outcome = row.get("outcome", "") if isinstance(row, dict) else ""
         try:
             items = int((row or {}).get("items") or 0)
@@ -460,10 +479,13 @@ def judge_feeds(status, state, today, cfg):
     zero_limit = int(cfg.get("zero_streak_limit", 4))
     srcs = (status or {}).get("sources") or {}
     recs = state.setdefault("feeds", {})
-    out, seen = [], {"error": 0, "zero": 0, "ok": 0}
+    out, seen = [], {"error": 0, "zero": 0, "ok": 0, "stale": 0}
 
     for key, s in sorted(srcs.items()):
         if not isinstance(s, dict):
+            continue
+        if not row_is_fresh(s, today):
+            seen["stale"] += 1            # 카운터를 건드리지 않는다 — 같은 사실을 다시 세지 않게
             continue
         kind = s.get("kind", "")
         label = s.get("source", key)
@@ -732,6 +754,7 @@ def run():
     pend = comp_state.get("materials_pending", 0)
     comp_part = f" | 동행 소재 잔존 {pend}" if pend else ""
     feed_part = (f" | 피드 ok {feed_seen['ok']}·0건 {feed_seen['zero']}·실패 {feed_seen['error']}"
+                 + (f"·낡은 행 {feed_seen['stale']}(판정 제외)" if feed_seen.get("stale") else "")
                  if any(feed_seen.values()) else "")
     print(f"[정비] 판정 {today} {now.strftime('%H:%M')} — "
           f"신호 {sig_part}{buf_part}{step_part}{comp_part}{feed_part}")
