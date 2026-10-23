@@ -1805,10 +1805,16 @@ console.log(JSON.stringify(cases.map(c => {
                                          "agent-research" / "reports").exists() else []
     _public = [f for f in _reports if not f.stem.endswith("_private")
                and f.stem != "changelog"]
+    # 2026-10-23: 낱말 검사('분할' 0건)가 사건 회차 보고서의 "대출·채권 분할"(조달 구조 분석)을
+    # 권고로 오판해 파이프라인을 세웠다 — 탐사 관문은 같은 글을 통과시켰다. 같은 준법을 두 검사기가
+    # 다르게 판정하면 안 된다: 관문과 **같은 판정 함수**(정의 기반) 하나만 쓴다.
+    import probe_gate as _pgs
     for _f in _public:
-        _t = _f.read_text(encoding="utf-8")
-        for _w in ("권고", "분할", "포지션 규모", "진입 방식", "비중 2%"):
-            check("분리: 본 보고서 " + _f.stem + " 에 '" + _w + "' 0건", _t.count(_w), 0)
+        check("분리: 본 보고서 " + _f.stem + " 에 권고 형태 문장 0건(관문과 같은 판정)",
+              _pgs.reco_text_hits(_f.read_text(encoding="utf-8")), [])
+    check("분리: 분석의 '분할'은 권고가 아니다 · 매수와 붙은 분할은 권고",
+          (_pgs.reco_text_hits("은행대출 $100억 + IG 채권 $300억 분할"),
+           bool(_pgs.reco_text_hits("$80 이하 분할 매수"))), ([], True))
     check("분리: 공개 보고서가 실제로 있다", len(_public) > 0, True)
     # 별지는 저장소에 들어오면 안 된다 — .gitignore 가 아니라 '없음'으로 확인한다
     _ignored = (Path(__file__).parent.parent / ".gitignore")

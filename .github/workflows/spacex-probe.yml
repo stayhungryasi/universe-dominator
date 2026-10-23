@@ -127,11 +127,20 @@ jobs:
           fi
         continue-on-error: true
 
+      # 탐사 산출물로 저장소 selftest 를 돌린다 — 게시한 글이 다음 daily 회차의 selftest 를
+      # 세우는 일이 없게(2026-10-23: 사건 회차 보고서의 '분할'이 낱말 검사에 걸려 파이프라인 정지).
+      - name: Repository selftest against probe output
+        id: selfcheck
+        if: ${{ !cancelled() }}
+        run: python scripts/selftest.py
+        continue-on-error: true
+
       - name: Publish (main if gate passed, else probe/ branch + PR)
         if: ${{ !cancelled() }}
         run: python scripts/probe_gate.py publish
         env:
           GH_TOKEN: ${{ github.token }}
+          SELFTEST_OUTCOME: ${{ steps.selfcheck.outcome }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           # 탐사 결과 DM 도 소장 전용 — 공개 채널 변수는 넘기지 않는다
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}

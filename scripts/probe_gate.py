@@ -378,6 +378,29 @@ def check_private(root=AR, ci=None):
     return [f"CI 가 별지를 만들었다: {found}"] if found else []
 
 
+def soft_checks(st):
+    """경고(실패 아님) — 관제실 화면을 먹여 살리는 데이터가 빠졌는가(2026-10-23 v2).
+
+    progress.parts(숫자 진척)·run_history(이번 회차 1줄)·kpi_history(운영 KPI) 누락은
+    게시를 막지 않는다. 대신 관문 결과에 경고로 남겨 다음 회차가 채우게 한다.
+    """
+    warn = []
+    if not isinstance(st, dict):
+        return warn
+    miss = [m.get("id") for m in st.get("milestones") or []
+            if isinstance(m, dict) and not (
+                (isinstance(m.get("progress"), dict) and isinstance(m["progress"].get("parts"), list))
+                or isinstance(m.get("progress_parts"), list))]
+    if miss:
+        warn.append(f"progress.parts 누락 {len(miss)}개: {miss[:6]}")
+    rid = (st.get("run") or {}).get("run_id")
+    if rid and not any(isinstance(r, dict) and r.get("run_id") == rid for r in st.get("run_history") or []):
+        warn.append(f"run_history 에 이번 회차({rid}) 줄 없음")
+    if not st.get("kpi_history"):
+        warn.append("kpi_history 없음(운영 KPI 분기 기록)")
+    return warn
+
+
 def run_checks(stage="final", st=None, prev=None, md=None, vlist=None, vres=None,
                files=None, root=AR, ci=None):
     st = read_json(STATE) if st is None else st
@@ -403,6 +426,7 @@ def run_checks(stage="final", st=None, prev=None, md=None, vlist=None, vres=None
     fails += check_compliance(public_files(root) if files is None else files)
     fails += check_private(root, ci)
     return {"ok": not fails, "stage": stage, "failures": fails, "stats": stats,
+            "warnings": soft_checks(st),
             "checked_at": now_kst().isoformat(timespec="minutes")}
 
 
@@ -556,6 +580,10 @@ def cmd_publish():
     vtxt = (f"검증 일치 {vres.get('match', 0)}+반올림 {vres.get('rounding', 0)}"
             f" / {vres.get('checked', 0)} · 불일치 {len(vres.get('mismatch') or [])}"
             f" · 확인 불가 {len(vres.get('unverifiable') or [])}") if vres else "검증 결과 없음"
+    if os.environ.get("SELFTEST_OUTCOME") == "failure":
+        # 저장소 selftest 를 세울 산출물은 main 에 넣지 않는다 — 다음 daily 회차가 멈춘다
+        gate = {"ok": False, "failures": (gate.get("failures") or [])
+                + ["저장소 selftest 실패 — 이 산출물을 main 에 넣으면 daily 파이프라인이 멈춘다"]}
     if check_private(AR, ci=True) and os.environ.get("CI") == "true":
         gate = {"ok": False, "failures": (gate.get("failures") or []) + check_private(AR, ci=True)}
     _git("config", "user.name", "github-actions[bot]")
@@ -632,6 +660,8 @@ def main():
                 gate["failures"].append(f"검증 단계에서 작성자 산출물이 바뀌었다: {changed}")
                 gate["ok"] = False
         write_json(WORK / f"gate_{a.stage}.json", gate)
+        for w in gate.get("warnings") or []:
+            print(f"[관문] 경고(게시는 막지 않음): {w}")
         print(f"[관문] {a.stage} {'통과' if gate['ok'] else '실패'} — " +
               ("; ".join(gate["failures"]) if gate["failures"] else
                f"숫자 줄 {gate['stats'].get('numeric_lines')} · 출처 누락 {gate['stats'].get('unsourced')}"))
