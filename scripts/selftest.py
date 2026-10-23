@@ -2687,7 +2687,18 @@ console.log(JSON.stringify(cases.map(c => {
         check("엔진: monthly_run 이 마스터 기준선보다 우선함을 명시",
               "이 문서 > prompts/spacex_master.md" in (_arp / "monthly_run.md").read_text(encoding="utf-8"),
               True)
-    for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer"):
+    # 표시층(D2) — 렌더 HTML 에 축 기계 키([A-E]_[a-z]+) 0회
+    try:
+        import agent_report as _agd
+        import build_site as _bsd
+        _agh = _bsd.render_agent_probe(_agd)
+        check("표시층: 탐사선 렌더에 축 기계 키 0회", __import__("re").findall(r"[A-E]_[a-z]+", _agh), [])
+        check("표시층: 탐사선 렌더에 금지 키·원장 키 0회",
+              [k for k in ("recommendation", "max_position", "entry_trigger", "decode_fail",
+                           "http_error") if k in _agh], [])
+    except Exception as _de:
+        check("표시층: 탐사선 렌더", f"{type(_de).__name__}: {str(_de)[:80]}", "ok")
+    for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)

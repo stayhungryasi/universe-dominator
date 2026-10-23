@@ -44,10 +44,11 @@ def read_state():
 
 
 def report_files():
-    """reports/YYYY-MM.md 를 최신순으로. changelog 는 따로 다룬다."""
+    """reports/YYYY-MM.md(+ -r2 재실행 · YYYY-MM-DD-event 사건 회차)를 최신순으로.
+    changelog·_private 별지는 여기 오지 않는다(정규식이 막는다)."""
     try:
         return sorted((p for p in (ROOT / "reports").glob("*.md")
-                       if re.fullmatch(r"\d{4}-\d{2}", p.stem)),
+                       if re.fullmatch(r"\d{4}-\d{2}(?:-r\d+|-\d{2}-event(?:-r\d+)?)?", p.stem)),
                       key=lambda p: p.stem, reverse=True)
     except Exception:
         return []

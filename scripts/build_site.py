@@ -303,7 +303,186 @@ AGENT_DISCLAIMER = ("무인 리서치 실험의 산출물이며 투자 권유가
                     "확률·가치 추정은 기계 생성 가정입니다.")
 
 
-def render_agent_probe(ar):
+# 축 한글 이름 — state.axes 가 1순위, 없으면 이 고정 사전(축 머리글자 기준).
+# 화면에 'A_starlink' 같은 기계 키를 내보내지 않는다(작업 규칙 8).
+AXIS_KO = {"A": "Starlink", "B": "Starship", "C": "AI 컴퓨트", "D": "재무", "E": "외부 변수"}
+_AXIS_KEY = re.compile(r"\b([A-E])_[a-z]+\b")
+STATUS_CHIP = {"달성": "done", "달성(조기)": "done", "진행": "prog", "미달": "miss", "미판정": "wait"}
+RUN_RESULT_KO = {"success": "성공", "failure": "실패", "cancelled": "취소", "skipped": "건너뜀",
+                 "timed_out": "시간 초과"}
+SOURCE_STATE_KO = {"ok": "정상", "zero": "새 글 없음", "decode_fail": "디코딩 실패",
+                   "http_error": "요청 실패", "timeout": "응답 지연"}
+
+
+def axis_name(key, axes):
+    """축 키 → 한글 이름. state.axes(dict 또는 list) → 고정 사전 → '기타'."""
+    if isinstance(axes, dict):
+        v = axes.get(key)
+        if isinstance(v, dict):
+            v = v.get("ko") or v.get("name")
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+    elif isinstance(axes, list):
+        for a in axes:
+            if isinstance(a, dict) and key in (a.get("id"), a.get("key"), a.get("axis")):
+                v = a.get("ko") or a.get("name")
+                if v:
+                    return str(v)
+    return AXIS_KO.get((key or "?")[:1].upper(), "기타")
+
+
+def ko_axes(text, axes):
+    """본문 속 축 키(A_starlink 등)를 한글 이름으로 — 보고서·변화 기록 공용."""
+    return _AXIS_KEY.sub(lambda m: axis_name(m.group(0), axes), text or "")
+
+
+def _kst_today():
+    from datetime import datetime, timedelta, timezone
+    return datetime.now(timezone(timedelta(hours=9))).date()
+
+
+def probe_schedule(run_date, triggers, today=None):
+    """관측 일정 상태 — 화면 문구는 이 상태에서 생성한다(D1·E6)."""
+    from datetime import date
+    today = today or _kst_today()
+    nxt = next_probe_date(run_date or "")
+    out = {"next": nxt, "overdue_days": 0, "age_days": None, "stale": False, "trigger": None}
+    try:
+        nd = date.fromisoformat(nxt)
+        if today > nd:
+            out["overdue_days"] = (today - nd).days
+    except ValueError:
+        pass
+    try:
+        out["age_days"] = (today - date.fromisoformat((run_date or "")[:10])).days
+        out["stale"] = out["age_days"] > 35
+    except ValueError:
+        pass
+    try:
+        from spacex_watch import parse_trigger_date
+    except Exception:
+        parse_trigger_date = None
+    best = None
+    for t in triggers or []:
+        if not isinstance(t, dict) or (t.get("status") or "대기") != "대기" or not parse_trigger_date:
+            continue
+        d = parse_trigger_date(t.get("expected_date"))
+        if d and (best is None or d < best[0]):
+            best = (d, t)
+    if best:
+        out["trigger"] = {"id": best[1].get("id", ""), "name": best[1].get("name", ""),
+                          "dday": (best[0] - today).days, "expected": best[1].get("expected_date", "")}
+    return out
+
+
+def schedule_html(sch, run, esc):
+    """D1 — 정상이면 다음 예정일 + 다음 트리거 D-day, 경과면 경과 일수(상태에서 생성)."""
+    rid = esc(run.get("run_id") or "—")
+    rdate = esc(run.get("run_date") or "—")
+    tr = sch.get("trigger")
+    if tr:
+        dd = tr["dday"]
+        when = (f"D-{dd}" if dd > 0 else "D-day" if dd == 0 else f"예상일 경과 {-dd}일")
+        tr_txt = " · 다음 트리거 " + esc(tr["id"]) + " " + esc(tr["name"]) + " " + when
+    else:
+        tr_txt = ""
+    if sch["overdue_days"] > 0 or sch["stale"]:
+        age = sch.get("age_days")
+        msg = (f"예정일 경과 {sch['overdue_days']}일 — 엔진 점검 중"
+               if sch["overdue_days"] > 0 else "관측 공백이 길어지고 있습니다 — 엔진 점검 중")
+        return ('<div class="ag-delay"><b>' + esc(msg) + '</b><br>마지막 관측 ' + rdate +
+                ('' if age is None else f'({age}일 전)') + ' · ' + rid + ' 회차 · 예정일 ' +
+                esc(sch["next"]) + tr_txt + '</div>')
+    return ('<div class="ag-meta">' + rid + ' 회차 · 관측일 ' + rdate + ' · 다음 관측 예정 ' +
+            esc(sch["next"]) + ' (매월 1일)' + tr_txt + '</div>')
+
+
+def _fmt_num(v):
+    if isinstance(v, bool) or v is None:
+        return "—"
+    if isinstance(v, (int, float)):
+        return f"{v:,.0f}" if abs(v) >= 100 else f"{v:,.2f}".rstrip("0").rstrip(".")
+    return str(v)
+
+
+def progress_cell(m, esc):
+    """D3 — 현재값/목표 + 진척 막대. progress 가 null 이면 사유, 키가 없으면 미기록."""
+    if "progress" not in m:
+        return '<span class="ag-np">진척 미기록 — 다음 회차부터 측정</span>', ""
+    pg = m.get("progress")
+    if not isinstance(pg, dict):
+        return '<span class="ag-np">' + esc(m.get("progress_reason") or "측정 불가") + '</span>', ""
+    cur, tgt, unit = pg.get("current"), pg.get("target"), pg.get("unit") or ""
+    txt = esc(_fmt_num(cur)) + ' / ' + esc(_fmt_num(tgt)) + ' ' + esc(unit)
+    meta = (' <span class="ag-np">(' + esc(pg.get("asof") or "") + ')</span>'
+            if pg.get("asof") else "")
+    bar = ""
+    if isinstance(cur, (int, float)) and isinstance(tgt, (int, float)) and tgt > 0 and cur >= 0:
+        ratio = (tgt / cur if pg.get("direction") == "down" and cur > 0 else cur / tgt)
+        pct = max(0, min(100, round(ratio * 100)))
+        bar = ('<div class="ag-bar" title="' + str(pct) + '%"><i style="width:' + str(pct) +
+               '%"></i></div><span class="ag-np">' + str(pct) + '%</span>')
+    return txt + meta, bar
+
+
+def status_chip(st, esc):
+    cls = STATUS_CHIP.get(st or "", "wait")
+    return '<span class="ag-chip ag-chip-' + cls + '">' + esc(st or "미판정") + '</span>'
+
+
+def timeline_html(watch, esc, n=10):
+    """D4 — 최근 사건 10건(공시·발사·Starship·실적·보도자료). 측정층 원장에서."""
+    evs = [e for e in (watch or {}).get("events") or [] if isinstance(e, dict)][:n]
+    if not evs:
+        return ""
+    rows = []
+    for e in evs:
+        title = esc(e.get("title") or "")
+        if e.get("url"):
+            title = ('<a href="' + esc(e["url"]) + '" target="_blank" rel="noopener">' +
+                     title + '</a>')
+        rows.append('<li><span class="ag-tl-d">' + esc(e.get("date") or "") + '</span>'
+                    '<span class="ag-tl-s">' + esc(e.get("source") or "") + ' · ' +
+                    esc(e.get("form") or "") + '</span>' + title + '</li>')
+    return ('<div class="ag-h">최근 사건 — 측정층 자동 기록</div><ul class="ag-tl">' +
+            "".join(rows) + '</ul>')
+
+
+def engine_html(watch, vres, status, esc):
+    """D5 — 월간 엔진 마지막 실행·결과·검증 일치 n/m, 사건층 소스 상태."""
+    eng = ((watch or {}).get("engine") or {})
+    last = eng.get("last_run") or {}
+    if last:
+        res = RUN_RESULT_KO.get(last.get("conclusion") or "", "결과 미상")
+        e_txt = ("월간 엔진 마지막 실행 " + esc((last.get("created_at") or "")[:10]) +
+                 " · " + esc(res))
+    elif eng:
+        e_txt = "월간 엔진 실행 기록 없음(첫 실행 전)"
+    else:
+        e_txt = "월간 엔진 상태 미확인"
+    if isinstance(vres, dict) and vres.get("checked"):
+        ok = int(vres.get("match") or 0) + int(vres.get("rounding") or 0)
+        v_txt = f" · 검증 일치 {ok}/{int(vres['checked'])}"
+    else:
+        v_txt = " · 검증 기록 없음"
+    srcs = []
+    for k, r in sorted(((status or {}).get("sources") or {}).items()):
+        if (isinstance(r, dict) and r.get("kind") == "companion"
+                and str(r.get("source", "")).startswith("spacex:")):
+            name = str(r["source"]).split(":", 1)[1]
+            srcs.append(esc(name) + " " + esc(SOURCE_STATE_KO.get(r.get("outcome"), "미기록")))
+    s_txt = ("<br>사건층 소스: " + " · ".join(srcs)) if srcs else ""
+    return '<div class="ag-engine">' + e_txt + v_txt + s_txt + '</div>'
+
+
+def _read_data_json(name):
+    try:
+        return json.loads((DATA_DIR / name).read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def render_agent_probe(ar, today=None, watch=None, status=None, vres=None):
     """agent-research/ → 탭 HTML(문자열). 판단층은 읽기만 한다."""
     st = ar.read_state()
     files = ar.report_files()
@@ -314,10 +493,21 @@ def render_agent_probe(ar):
     sc = st.get("scenarios") or {}
     val = st.get("valuation") or {}
     board = st.get("scorecard") or {}
+    axes = st.get("axes")
+    watch = _read_data_json("spacex_watch.json") if watch is None else watch
+    status = _read_data_json("fetch_status.json") if status is None else status
+    if vres is None:
+        try:
+            vres = json.loads((HERE / "agent-research" / "state" / "verify_result.json")
+                              .read_text(encoding="utf-8"))
+        except Exception:
+            vres = {}
 
     h = ['<div class="ag-notice"><b>' + esc(AGENT_DISCLAIMER) + '</b></div>']
+    sch = probe_schedule(run.get("run_date"), st.get("triggers_next_12m"), today)
+    h.append(schedule_html(sch, run, esc))
 
-    # 상단 카드 — 시나리오 확률 3개 · 적정가치 밴드 · 다음 관측 예정일
+    # 상단 카드 — 시나리오 확률 3개 · 적정가치 밴드
     #   valuation.recommendation·max_position 계열은 **싣지 않는다**(준법 필터 ③)
     cards = []
     for key, ko in (("bull", "강세"), ("base", "기본"), ("bear", "약세")):
@@ -336,32 +526,34 @@ def render_agent_probe(ar):
                  ('—' if val.get("fair_value_midpoint_usd") is None
                   else '$' + str(val["fair_value_midpoint_usd"])) + '</div></div>')
     h.append('<div class="ag-cards">' + "".join(cards) + '</div>')
+    h.append(engine_html(watch, vres, status, esc))
 
-    nxt = next_probe_date(run.get("run_date") or "")
-    h.append('<div class="ag-meta">' + esc(run.get("run_id") or "—") + ' 회차 · 관측일 ' +
-             esc(run.get("run_date") or "—") + ' · 다음 관측 예정 ' + esc(nxt) +
-             ' (매월 1일)</div>')
-
-    # 이정표 채점표
+    # 이정표 채점표 — 현재값/목표 · 진척 막대 · 판정 칩
     ms = st.get("milestones") or []
     if ms:
         h.append('<div class="ag-h">이정표 채점표 — 달성 ' +
                  str(board.get("achieved", 0)) + ' · 미달 ' + str(board.get("missed", 0)) +
                  ' · 판정 대기 ' + str(board.get("pending", len(ms))) + '</div>')
-        rows = "".join(
-            '<tr><td>' + esc(m.get("year", "")) + '</td><td>' + esc(m.get("axis", "")) +
-            '</td><td>' + esc(m.get("statement", "")) + '</td><td>' +
-            esc(m.get("status", "")) + '</td></tr>' for m in ms)
+        rows = []
+        for m in ms:
+            val_txt, bar = progress_cell(m, esc)
+            rows.append('<tr><td>' + esc(m.get("year", "")) + '</td><td>' +
+                        esc(axis_name(m.get("axis", ""), axes)) + '</td><td>' +
+                        esc(ko_axes(m.get("statement", ""), axes)) + '</td><td>' + val_txt +
+                        '</td><td>' + bar + '</td><td>' + status_chip(m.get("status"), esc) +
+                        '</td></tr>')
         h.append("<div class='ag-tw'><table class='ag-table'><thead><tr>"
-                 "<th>연도</th><th>축</th><th>이정표</th><th>판정</th></tr></thead><tbody>"
-                 + rows + "</tbody></table></div>")
+                 "<th>연도</th><th>축</th><th>이정표</th><th>현재 / 목표</th><th>진척</th>"
+                 "<th>판정</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table></div>")
+
+    h.append(timeline_html(watch, esc))
 
     # 지난달 대비 변화
     ch = ar.read_changelog()
     if ch.strip():
         body, _ = ar.sanitize(ch)
         h.append('<div class="ag-h">지난달 대비 변화</div>')
-        h.append('<div class="ag-body">' + ar.md_to_html(body) + '</div>')
+        h.append('<div class="ag-body">' + ar.md_to_html(ko_axes(body, axes)) + '</div>')
 
     # 최신 보고서 + 과거 회차 목차(해부실 폼 공용 클래스)
     cut = {"phase4": False, "blocks": 0}
@@ -380,10 +572,10 @@ def render_agent_probe(ar):
             open_attr = " open" if idx == 0 else ""
             h.append('<details class="ag-run" id="agent-' + f.stem + '"' + open_attr +
                      '><summary>' + esc(f.stem) + ' — ' + esc(report_title(f)) +
-                     '</summary><div class="ag-body">' + ar.md_to_html(body) +
+                     '</summary><div class="ag-body">' + ar.md_to_html(ko_axes(body, axes)) +
                      '</div></details>')
     print(f"[OK] 무인 탐사선: 보고서 {len(files)}건 · PHASE4 제외 {cut['phase4']} · "
-          f"권고 블록 제외 {cut['blocks']}")
+          f"권고 블록 제외 {cut['blocks']} · 일정 경과 {sch['overdue_days']}일")
 
     h.append('<div class="ag-link">사건 단위 기록은 '
              '<a href="journal.html#companion">관측노트 동행 관측 🚀SpaceX</a> 에서.</div>')
