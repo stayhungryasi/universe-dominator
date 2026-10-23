@@ -631,7 +631,9 @@ def gauge_svg(d):
         row = (row + 1) % 2 if last_x is not None and xv - last_x < 70 else 0
         last_x = xv
         o.append(f'<line x1="{xv:.1f}" y1="52" x2="{xv:.1f}" y2="{58 + row * 11}" class="pc-g-tick"/>')
-        o.append(f'<text x="{xv:.1f}" y="{69 + row * 11}" class="pc-g-sm" text-anchor="middle">{esc(s["ko"])} ${s["vps"]:g}</text>')
+        anchor = "start" if xv < 48 else "middle"          # 왼쪽 끝 눈금은 잘리지 않게 왼쪽 정렬
+        o.append(f'<text x="{max(xv - 4, X0) if anchor == "start" else xv:.1f}" y="{69 + row * 11}" class="pc-g-sm" '
+                 f'text-anchor="{anchor}">{esc(s["ko"])} ${s["vps"]:g}</text>')
     if isinstance(p, (int, float)):
         o.append(f'<circle cx="{x(p):.1f}" cy="40" r="7" class="pc-g-price"/>')
         o.append(f'<text x="{min(x(p), X1 - 30):.1f}" y="86" class="pc-g-lbl pc-g-strong" text-anchor="middle">주가 ${p:g}</text>')
