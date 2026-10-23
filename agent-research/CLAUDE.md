@@ -5,9 +5,18 @@ prompts/spacex_master.md 의 지시에 따라 SpaceX(SPCX) 분석 문서를 만�
 
 ## 파일 구조
 - prompts/spacex_master.md : 마스터 프롬프트 (수정 금지)
-- state/spacex_state.json : 시나리오 확률, 이정표 판정, 적정가치. 매 실행 후 갱신
-- reports/YYYY-MM.md : 그 달의 전체 보고서
+- prompts/monthly_run.md : 2회차부터의 실행 규약(마스터의 '기준 시점' 블록보다 우선) — 2026-10-23
+- prompts/verify_run.md : 독립 검증관 규약(숫자만 본다) — 2026-10-23
+- state/spacex_state.json : 시나리오 확률, 이정표 판정·진척, 적정가치. 매 실행 후 갱신 (공개)
+- state/spacex_state_private.json : 포지션 판단 계열 값 — .gitignore, 로컬 전용
+- state/verify_list.json · state/verify_result.json : 검증 대상 숫자 / 검증관 판정
+- reports/YYYY-MM.md : 그 달의 전체 보고서 · reports/YYYY-MM-DD-event.md : 사건 회차 증분 보고서
 - reports/changelog.md : 지난달 대비 바뀐 것만 누적
+
+## 실행 장치 (2026-10-23)
+- `.github/workflows/spacex-probe.yml` — 매월 1일 09:13 KST · 사건 연동(측정층 트리거) · 수동
+- 로컬 Claude Code 수동 실행은 언제든 가능하고 우선한다 — 같은 monthly_run.md 를 따른다
+- 게시 관문 `scripts/probe_gate.py check` — 스키마·확률 합·판정 상태·회차 사슬·출처·검증관 불일치·준법
 
 ## 규칙
 - 모든 숫자는 웹 검색으로 확인하고 (출처, 날짜)를 붙인다. 확인 못 한 숫자는 "추정"으로 표기

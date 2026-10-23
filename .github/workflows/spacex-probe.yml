@@ -1,0 +1,145 @@
+name: SpaceX Probe (monthly + event)
+
+# 무인 탐사선 무정지 엔진 (2026-10-23) — '로컬 수동 실행'에만 기대다 10월 회차가 통째로
+# 빠졌다(9/2 이후 51일 정지). 수동 단계는 결함이다.
+#   · 매월 1일 09:13 KST 정기 회차 · 사건 연동(spacex_watch 의 repository_dispatch) · 수동 실행
+#   · 쓰는 것은 탐사 에이전트 본인뿐 — daily-update.yml 은 여전히 agent-research/ 에 쓰지 않는다
+#   · 로컬 Claude Code 수동 실행은 언제든 가능하고 우선한다(같은 monthly_run.md 규약)
+on:
+  schedule:
+    - cron: '13 0 1 * *'          # 매월 1일 00:13 UTC = 09:13 KST
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'monthly: PHASE 1~5 전체 / event: 사건이 건드린 축·이정표만 증분'
+        type: choice
+        default: monthly
+        options: [monthly, event]
+      reason:
+        description: '실행 사유(지시문에 주입됨)'
+        type: string
+        default: ''
+  repository_dispatch:
+    types: [spacex-event]
+
+# daily-update 와 별도 그룹. 진행 중인 회차는 끊지 않고 다음 회차가 기다린다.
+concurrency:
+  group: spacex-probe
+  cancel-in-progress: false
+
+permissions:
+  contents: write          # main 커밋 또는 probe/ 브랜치 푸시
+  pull-requests: write     # 관문 실패 시 PR (저장소 설정 'Actions 의 PR 생성 허용'이 켜져 있어야 함)
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      MODE: ${{ inputs.mode || (github.event_name == 'repository_dispatch' && 'event') || 'monthly' }}
+      REASON: ${{ inputs.reason || github.event.client_payload.reason || '월간 정기 회차' }}
+      # 기본 = best(Fable 사용 가능하면 Fable, 아니면 Opus). 저장소 변수로 덮어쓴다.
+      PROBE_MODEL: ${{ vars.PROBE_MODEL || 'best' }}
+      PROBE_PUBLISH: ${{ vars.PROBE_PUBLISH || 'auto' }}
+      AUTHOR_BUDGET: ${{ vars.PROBE_BUDGET_USD || '40' }}
+      VERIFY_BUDGET: ${{ vars.PROBE_VERIFY_BUDGET_USD || '15' }}
+      # 작성자 도구 — Bash 는 관문 스크립트로만(그 밖의 셸 명령은 -p 모드에서 거부된다)
+      AUTHOR_TOOLS: 'WebSearch,WebFetch,Read,Write,Edit,Grep,Glob,Bash'
+      AUTHOR_ALLOW: 'WebSearch,WebFetch,Read,Write,Edit,Grep,Glob,Bash(python scripts/probe_gate.py *)'
+      # 검증관 — 편집·셸 없음. 결과 파일 하나만 쓴다
+      VERIFY_TOOLS: 'WebSearch,WebFetch,Read,Write,Grep,Glob'
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Install dependencies + Claude Code
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          npm install -g @anthropic-ai/claude-code
+          claude --version
+
+      # 관문 자체가 망가진 채 돌지 않게 — 탐사 관련 단위 테스트만 빠르게
+      - name: Gate selftest
+        run: python scripts/test_engine_layer.py
+
+      - name: Prepare run
+        run: python scripts/probe_gate.py prepare --mode "$MODE" --reason "$REASON"
+
+      - name: Author (Claude Code headless)
+        id: author
+        run: |
+          claude -p "$(cat _probe/author_prompt.md)" \
+            --model "$PROBE_MODEL" --max-turns 200 --max-budget-usd "$AUTHOR_BUDGET" \
+            --tools "$AUTHOR_TOOLS" --allowedTools "$AUTHOR_ALLOW" \
+            --output-format json > _probe/author.json
+          python -c "import json;d=json.load(open('_probe/author.json'));print('작성자 종료:',d.get('subtype'),'· 비용',d.get('total_cost_usd'),'· 턴',d.get('num_turns'))"
+        continue-on-error: true
+
+      - name: Gate (author stage — before verify)
+        id: gate_author
+        run: python scripts/probe_gate.py check --stage author
+        continue-on-error: true
+
+      - name: Verifier (independent — no author context)
+        id: verify
+        run: |
+          claude -p "$(cat _probe/verify_prompt.md)" \
+            --model "$PROBE_MODEL" --max-turns 80 --max-budget-usd "$VERIFY_BUDGET" \
+            --tools "$VERIFY_TOOLS" --allowedTools "$VERIFY_TOOLS" \
+            --output-format json > _probe/verify.json
+        continue-on-error: true
+
+      - name: Gate (final)
+        id: gate1
+        run: python scripts/probe_gate.py check --stage final
+        continue-on-error: true
+
+      # 불일치만 남았을 때 한 번 — 작성자 수정 → 재검증 → 재관문
+      - name: Author fix once + re-verify
+        id: fix
+        if: steps.gate1.outcome == 'failure'
+        run: |
+          if python -c "import json,sys;sys.path.insert(0,'scripts');import probe_gate as g;sys.exit(0 if g.only_verify_failures(json.load(open('_probe/gate_final.json'))) else 1)"; then
+            python scripts/probe_gate.py fix-prompt
+            claude -p "$(cat _probe/fix_prompt.md)" \
+              --model "$PROBE_MODEL" --max-turns 60 --max-budget-usd "$VERIFY_BUDGET" \
+              --tools "$AUTHOR_TOOLS" --allowedTools "$AUTHOR_ALLOW" --output-format json > _probe/fix.json
+            python scripts/probe_gate.py check --stage author || true
+            claude -p "$(cat _probe/verify_prompt.md)" \
+              --model "$PROBE_MODEL" --max-turns 80 --max-budget-usd "$VERIFY_BUDGET" \
+              --tools "$VERIFY_TOOLS" --allowedTools "$VERIFY_TOOLS" --output-format json > _probe/verify2.json
+            python scripts/probe_gate.py check --stage final2
+          else
+            echo "::warning::불일치 외의 관문 실패 — 수정 회차 없이 PR 경로로"
+            exit 1
+          fi
+        continue-on-error: true
+
+      - name: Publish (main if gate passed, else probe/ branch + PR)
+        if: ${{ !cancelled() }}
+        run: python scripts/probe_gate.py publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 탐사 결과 DM 도 소장 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+
+      - name: Keep run artifacts (prompts · gate · cost)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: probe-run-${{ github.run_id }}
+          path: _probe/
+          retention-days: 30

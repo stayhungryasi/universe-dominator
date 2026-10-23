@@ -99,9 +99,15 @@
 - ~~**신호 소스별 fetch 상태 기록 → 정비 관제탑 2단계**~~ (등재 2026-08-21) → **2026-08-22 해결**: `scripts/feed_client.py` 공용 클라이언트가 소스별 결과를 `data/fetch_status.json`에 남긴다(`ok`/`zero`/`http_error`/`timeout` + 코드 + 건수). sentinel의 `judge_feeds`가 이를 읽어 **요청 실패는 2회 연속에 경보**하고 **0건은 관대한 임계(4회) 유지** — "조용한 날"과 "죽은 소스"가 갈렸다. 동행 7개 소스도 같은 원장에 실려 사각지대가 닫혔다.
   - 0건 임계를 4로 남긴 것은 선장님 결정이다(2026-08-21). 구분 수단이 생겼다고 자동으로 낮추지 않는다 — 낮출지는 운영 데이터를 보고 판단한다.
 
-## 무인 탐사선 영역 — `agent-research/` (2026-09-03 이식, 파이프라인 불가침)
-- `agent-research/`(prompts·reports·state)는 **로컬 Claude Code 수동 실행으로만** 갱신되는 판단층이다
-- **daily-update.yml 의 어떤 스텝도 이 폴더에 쓰지 않는다.** 자동 커밋이 사람 판단을 덮는 순간 그 판단은 판단이 아니게 된다
+## 무인 탐사선 영역 — `agent-research/` (2026-09-03 이식, 파이프라인 불가침 · 2026-10-23 개정)
+- `agent-research/`(prompts·reports·state)는 **탐사 에이전트 본인만** 쓰는 판단층이다
+- **daily-update.yml 의 어떤 스텝도 이 폴더에 쓰지 않는다.** 자동 커밋이 사람 판단을 덮는 순간 그 판단은 판단이 아니게 된다 — 측정층(`spacex_watch.py`)도 state 를 **읽기만** 한다
+- **발사 장치 개정(2026-10-23)**: '로컬 수동 실행' → **`spacex-probe.yml`(매월 1일 09:13 KST + 사건 연동) + 로컬 수동(언제든, 우선)**. 이유: 수동 단계는 결함이다 — 10월 회차가 실제로 빠졌다(9/2 이후 51일 정지, 그사이 Starship 첫 궤도 비행·3Q26 실적을 기록하지 못함)
+  - 규약은 하나다: `prompts/monthly_run.md`(작성자) · `prompts/verify_run.md`(독립 검증관). CI 와 로컬이 같은 문서를 따른다
+  - 게시는 `scripts/probe_gate.py` 관문 통과 시에만 main — 실패하면 `probe/` 브랜치 + PR(저장소 변수 `PROBE_PUBLISH=pr` 이면 항상 PR)
+  - CI 실행은 `_private` 파일을 만들지 않는다 — 포지션 판단은 대표님 로컬 실행 전용
+  - CI 에서 Claude 의 Bash 는 `python scripts/probe_gate.py *` 로만 허용된다(웹·읽기·쓰기 도구 외)
+  - 감시견: 관측 공백 35일 초과 → 매일 소장 DM + 화면 지연 배너 / 엔진 실행 실패 → DM(7일 재알림)
 - 사이트는 **읽기만** 한다: `build_site.py` 가 빌드 시점에 정적 렌더(클라이언트 fetch 금지)
 - 공개 렌더에는 **준법 필터**가 걸린다 — PHASE 4 절 전체와 권고·진입·비중·분할 문단은 제외. selftest 가 산출물을 매 실행 grep 한다
 - 폴더 자체 규칙은 `agent-research/CLAUDE.md`(마스터 프롬프트 수정 금지 등)

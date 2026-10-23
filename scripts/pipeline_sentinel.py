@@ -520,6 +520,45 @@ def judge_feeds(status, state, today, cfg):
     return out, seen
 
 
+PROBE_STALE_DAYS = 35     # 월간 탐사 허용 공백(일) — 매월 1일 + 실패 재시도 여유
+
+
+def judge_probe(st_doc, watch_doc, state, today):
+    """⑧ 무인 탐사선 감시견 (2026-10-23 E6).
+
+    9/2 이후 51일 동안 탐사선이 멈춰 있었는데 아무 소리도 없었다 — 판단층의 정지는
+    지금까지 **감시 대상 자체가 아니었다.** 두 가지를 본다:
+      · 마지막 관측일(state.run.run_date) 경과 > 35일 → 매일 1건(서명이 날짜별)
+      · 월간 엔진(spacex-probe.yml) 마지막 실행 결론이 failure → 1건, 미해결이면 7일마다
+    관찰자 원칙: 판단층(state)은 읽기만, 엔진 결론은 측정층(spacex_watch)이 남긴 것을 읽는다.
+    """
+    out = []
+    rec = state.setdefault("probe", {})
+    run_date = ((st_doc or {}).get("run") or {}).get("run_date")
+    age = _days(run_date, today) if run_date else None
+    if age is not None and age > PROBE_STALE_DAYS:
+        rec["stale"] = True
+        out.append(alert("probe-stale",
+                         f"SpaceX 탐사선: 마지막 관측 {run_date} — {age}일 경과"
+                         f"(허용 {PROBE_STALE_DAYS}일). 월간 엔진 점검 필요", today))
+    elif age is not None and rec.get("stale"):
+        rec["stale"] = False
+        out.append(alert("probe-stale-recover", f"SpaceX 탐사선: 관측 재개({run_date}) ✅",
+                         today, kind="recover"))
+    eng = ((watch_doc or {}).get("engine") or {}).get("last_run") or {}
+    if eng.get("conclusion") == "failure":
+        tail = escalate(rec, "fail_alerted", today)
+        if tail is not None:
+            out.append(alert("probe-fail",
+                             f"SpaceX 월간 엔진: 마지막 실행 실패"
+                             f"({(eng.get('created_at') or '')[:10]}){tail} — {eng.get('url', '')}",
+                             today))
+    elif eng.get("conclusion") == "success" and clear(rec, "fail_alerted"):
+        out.append(alert("probe-fail-recover", "SpaceX 월간 엔진: 실행 성공 ✅", today,
+                         kind="recover"))
+    return out
+
+
 def judge_materials(state, comp_state, today, cfg):
     """⑥ 소장이 던진 소재가 침묵 속에 썩는 것 방지.
 
@@ -672,9 +711,11 @@ def run():
     comp_state = read_json(DATA_DIR / "companion_state.json", {}) or {}
     mat_alerts = judge_materials(state, comp_state, today, cfg)
     feed_alerts, feed_seen = judge_feeds(feed_status, state, today, cfg)
+    probe_alerts = judge_probe(read_json(HERE / "agent-research" / "state" / "spacex_state.json", {}),
+                               read_json(DATA_DIR / "spacex_watch.json", {}), state, today)
 
     alerts = (sig_alerts + buf_alerts + cov_alerts + snap_alerts + stale_alerts
-              + bot_alerts + mat_alerts + feed_alerts)
+              + bot_alerts + mat_alerts + feed_alerts + probe_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(

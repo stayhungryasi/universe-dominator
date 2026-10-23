@@ -2679,7 +2679,15 @@ console.log(JSON.stringify(cases.map(c => {
     check("측정층: daily 가 측정 스텝을 돌리고 결과를 관제탑에 넘긴다",
           ("scripts/spacex_watch.py" in _dly, "spacex_watch=${{ steps.spacex_watch.outcome }}" in _dly,
            "spacex_watch.py --dispatch" in _dly), (True, True, True))
-    for _mod in ("test_event_layer", "test_measure_layer"):
+    # 엔진(E) — 규약 원문이 제자리에 있고, 마스터 프롬프트는 그대로다
+    _arp = Path(__file__).parent.parent / "agent-research" / "prompts"
+    check("엔진: 월간·검증관 규약 존재",
+          ((_arp / "monthly_run.md").exists(), (_arp / "verify_run.md").exists()), (True, True))
+    if (_arp / "monthly_run.md").exists():
+        check("엔진: monthly_run 이 마스터 기준선보다 우선함을 명시",
+              "이 문서 > prompts/spacex_master.md" in (_arp / "monthly_run.md").read_text(encoding="utf-8"),
+              True)
+    for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)
