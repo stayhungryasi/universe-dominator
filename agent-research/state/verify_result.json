@@ -1,20 +1,55 @@
 {
-  "run_id": "2026-10",
-  "report_path": "reports/2026-10.md",
-  "list_path": "state/verify_list.json",
-  "checked": 28,
-  "match": 28,
+  "run_id": "2026-10-23-event",
+  "report_path": "reports/2026-10-23-event.md",
+  "verified_at": "2026-10-23T13:10+09:00",
+  "checked": 21,
+  "match": 21,
   "rounding": 0,
   "mismatch": [],
   "unverifiable": [],
-  "report_text_mismatch": [],
-  "notes": [
-    "SEC 원천 10건(8-K Ex.99.1 1건 + 10-Q R12·R17·R25·R26·R27·R29·표지)은 전부 직접 열렸고 값이 verify_list 와 자리수까지 일치.",
-    "R25(비취소 약정)·R27(부문) 표는 단위 라벨이 본문에 없으나, 같은 수치가 8-K Ex.99.1(단위 $백만)에서 확인돼 일치로 판정.",
-    "Class A 발행주식 8,246,541,218주는 서두에 '82.47억'으로 반올림 표기 — 원문과 verify_list 값은 정확히 일치하므로 match 로 집계(1-6 절에도 같은 반올림).",
-    "수주잔고 62,959 는 서두 정정 2('$629.59억')와 PHASE 1 부록 표('$62,959M') 두 곳 모두 일치.",
-    "stockanalysis: 10/22 종가 144.75, 10/21 159.31, 10/20 147.79, 9/2 종가 140.71 — 보고서 0-1 사건 표와 정정 1 의 주가 흐름도 일치.",
-    "FRED DGS10 2026-10-21 = 5.13 (최신 관측치)."
+  "resolved_from_previous_pass": [
+    {
+      "claim": "FCC Amazon Leo 전체 배치 위성 수(2029-07-30 기한의 모수)",
+      "previous_report_value": 3236,
+      "current_report_value": 3232,
+      "source_value": 3232,
+      "source_url": "https://docs.fcc.gov/public/attachments/DA-26-553A1.txt",
+      "note": "12:40 회차 불일치 1건이 보고서 2절 표·부록·verify_list claim 모두 3,232 로 수정된 것을 재확인. DA 26-553 ¶3 'reducing the total number of authorized space stations from 3,236 to 3,232 satellites' · 'deploy 3,232 satellites by July 30, 2029' 와 일치."
+    }
   ],
-  "verified_at": "2026-10-23T11:52+09:00"
+  "items": [
+    {"claim": "SpaceX 8-K 최신 제출일(10/23 기준 — $400억 조달 8-K 없음)", "value": "2026-10-20", "result": "match", "source_value": "2026-10-20 (items 2.02·9.01). 목록 9건 중 최신이며 그 뒤 8-K 없음", "report_consistent": true, "where_checked": "1절 표 '8-K 제출 여부' · 부록 'SpaceX 최신 공시'"},
+    {"claim": "SpaceX 회사채 가중평균 금리(%)", "value": 5.855, "result": "match", "source_value": 5.855, "report_consistent": true, "where_checked": "1절 표 '10-Q 후속사건' · 1절 비교 기준 문단 · 부록"},
+    {"claim": "SpaceX 회사채 실효 금리(%)", "value": 6.072, "result": "match", "source_value": 6.072, "report_consistent": true, "where_checked": "1절 표 · 부록"},
+    {"claim": "SpaceX 회사채 표면금리 최저~최고(%)", "value": "5.35~6.65", "result": "match", "source_value": "5.35 / 6.65 (SpaceX Notes 5개 트랜치, 원금 합계 $25,000M)", "report_consistent": true, "where_checked": "1절 표 · 부록"},
+    {"claim": "리볼버 한도($백만) / 9/30 차입", "value": "5000 / 0", "result": "match", "source_value": "Maximum borrowing capacity 5,000 / Amounts borrowed 0", "report_consistent": true, "where_checked": "1절 표 '$50억 미사용' · 부록", "note": "R65 에는 5,000 외에 1,500 한도 항목도 한 줄 더 있으며 차입은 둘 다 0. 보고서가 적은 $5,000M 은 원문에 있는 값이다."},
+    {"claim": "실패한 세일앤리스백 의무 유동/비유동($백만)", "value": "2181 / 10716", "result": "match", "source_value": "2,181 / 10,716 (2026-09-30)", "report_consistent": true, "where_checked": "부록"},
+    {"claim": "특수관계자 부채 잔액($백만, 실패한 세일앤리스백 3건 합계)", "value": 12897, "result": "match", "source_value": "2,181 + 10,716 = 12,897 (R26 Valor 장비 리스 유동·비유동 합산)", "report_consistent": true, "where_checked": "1절 표 '10-Q 후속사건'", "note": "R26 은 12,897 을 합계 행으로 적지 않는다 — 두 행의 합으로만 성립. claim 의 '3건' 건수는 R26 에 없다('various equipment lease agreements' 로만 서술, 숫자 대조 대상 아님)."},
+    {"claim": "$400억 조달 최하위 트랜치 보도 금리(%)", "value": 8.3, "result": "match", "source_value": "about 8.3%", "report_consistent": true, "where_checked": "1절 표 '금리(보도)' · 부록"},
+    {"claim": "$400억 조달 칩 담보 트랜치 보도 금리(%)", "value": 7.75, "result": "match", "source_value": "around 7.75% (기존 채권 유통 대비 1%p 초과 상회, '다음 주' 가격 결정)", "report_consistent": true, "where_checked": "1절 표 · 부록"},
+    {"claim": "$400억 조달 총액($십억)", "value": 40, "result": "match", "source_value": 40, "report_consistent": true, "where_checked": "1절 표 '규모·주선'", "note": "주선 Apollo·Goldman Sachs 양사 논평 거부 — 보고서와 동일. CDS 수치는 원문에 없음(보고서의 '수치 없음' 서술과 일치)."},
+    {"claim": "Amazon Leo 발사 위성 수(생산분 누계)", "value": 396, "result": "match", "source_value": 396, "report_consistent": true, "where_checked": "2절 표 '위성' · 부록"},
+    {"claim": "Amazon Leo 생산분 발사 횟수", "value": 14, "result": "match", "source_value": 14, "report_consistent": true, "where_checked": "2절 표 · 부록", "note": "Wikipedia 발사 목록도 생산분 14회·396기로 일치(프로토플라이트 2기 포함 시 15회·398기)."},
+    {"claim": "Amazon Leo 폐기 위성 수", "value": 4, "result": "match", "source_value": "only four that have been deorbited", "report_consistent": true, "where_checked": "2절 표 · 부록", "note": "보고서 산식 396 − 4 = 392 확인."},
+    {"claim": "Amazon Leo 다음 발사(Vulcan LV-01) 목표일", "value": "2026-10-29", "result": "match", "source_value": "2026-10-29 (LV-01, Vulcan Centaur VC6L)", "report_consistent": true, "where_checked": "2절 표 '다음 발사' · 3절 · 부록", "note": "Wikipedia 페이지 최종 편집 2026-10-18 — 목표일은 이후 변동 가능."},
+    {"claim": "Amazon Leo Vulcan LV-01 탑재 위성 수", "value": 40, "result": "match", "source_value": 40, "report_consistent": true, "where_checked": "2절 표 · 5절 · 부록"},
+    {"claim": "Amazon Leo 마지막 발사일(LA-08, Atlas V)", "value": "2026-07-02", "result": "match", "source_value": "2026-07-02 04:30 UTC (LA-08, Atlas V 551, 29기, 성공)", "report_consistent": true, "where_checked": "2절 표 '위성' ('7/2 Atlas V 마지막 임무')"},
+    {"claim": "Amazon Leo 생산 누계(번째 위성 완성)", "value": 1000, "result": "match", "source_value": "1,000th satellite completed (2026-10-08, Badyal)", "report_consistent": true, "where_checked": "2절 표 '생산' · 부록", "note": "'첫 27기에 6개월 → 주 27기' 도 원문과 일치."},
+    {"claim": "FCC Amazon Leo 50% 이정표 면제 명령일", "value": "2026-06-05", "result": "match", "source_value": "Adopted/Released 2026-06-05, DA 26-553", "report_consistent": true, "where_checked": "2절 표 'FCC 50% 이정표' · 부록", "note": "source_url 의 PDF 는 본문 추출 불가 → 같은 문서 .txt 사본으로 확인. 50% 이정표는 1,616기·2026-07-30 (¶3). 우선권 상실은 2028-03-30 또는 50% 운용 도달 중 빠른 쪽까지, 2027-10-30 조기 종료 인증 조항 있음(¶15) — 보고서 5절 미결 2건 모두 .txt 로 답이 나온다."},
+    {"claim": "FCC Amazon Leo 전체 배치(3,232기) 최종 기한", "value": "2029-07-30", "result": "match", "source_value": "deploy 3,232 satellites by July 30, 2029 (¶3) · 100% by July 30, 2029 불변 (¶12)", "report_consistent": true, "where_checked": "2절 표 · 부록", "note": "직전 검증 회차의 불일치(3,236)는 보고서·목록 모두 3,232 로 수정됨 — resolved_from_previous_pass 참조."},
+    {"claim": "기준 주가(10/22 종가, $)", "value": 144.75, "result": "match", "source_value": 144.75, "report_consistent": true, "where_checked": "머리 '기준 주가' · 부록", "note": "10/23 행 없음 재확인(페이지 최종 갱신 10/22)."},
+    {"claim": "10/22 거래량(주)", "value": 196827082, "result": "match", "source_value": 196827082, "report_consistent": true, "where_checked": "부록 '기준 주가'", "note": "verify_list 값은 원문과 정확히 일치. 부록 표기 '1.97억주' 는 0.1% 이내 반올림 표기."},
+    {"claim": "미국 10년물(%)", "value": 5.13, "result": "match", "source_value": "5.13 (2026-10-21, 최신 관측치)", "report_consistent": true, "where_checked": "4절 '적정가치' · 부록"}
+  ],
+  "arithmetic_in_report": [
+    {"expr": "7.75 − 5.855", "report": 1.895, "check": "ok"},
+    {"expr": "8.3 − 5.855", "report": 2.445, "check": "ok"},
+    {"expr": "396 − 4", "report": 392, "check": "ok"},
+    {"expr": "2,181 + 10,716", "report": 12897, "check": "ok"}
+  ],
+  "source_access": {
+    "opened": 10,
+    "failed_primary": ["https://docs.fcc.gov/public/attachments/DA-26-553A1.pdf (PDF 본문 추출 불가 → 동일 문서 .txt 로 대체)"],
+    "fallback_used": ["https://docs.fcc.gov/public/attachments/DA-26-553A1.txt"]
+  }
 }
