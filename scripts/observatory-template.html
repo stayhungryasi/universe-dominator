@@ -350,6 +350,168 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ag-tl-s { display: inline-block; min-width: 150px; color: var(--text-muted); font-size: 11.5px;
   font-weight: 700; margin-right: 6px; }
 @media (max-width: 480px) { .ag-tl-s { display: block; min-width: 0; } }
+/* ── 🛰 SpaceX 관제실 v2 (2026-10-23) — 접두 pc- · 기존 토큰 + 증감 토큰(낮/밤) ── */
+:root, [data-theme="light"] { --pc-up: #1E8E5A; --pc-down: #C8473A; --pc-warn: #B7791F; }
+[data-theme="dark"] { --pc-up: #4FD69C; --pc-down: #FF7B6E; --pc-warn: #E6B450; }
+body.pc-on .obs-hero { display: none; }
+body.pc-on .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
+.pc { position: relative; }
+.pc-note { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.02em; margin: -2px 0 6px; }
+.pc-status { display: flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 8px 6px 12px; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px; }
+.pc-status-t { flex: 1; min-width: 0; line-height: 1.5; }
+.pc-status b { color: var(--text); font-weight: 800; }
+.pc-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--pc-up); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc-up) 22%, transparent); }
+.pc-dot-warn { background: var(--pc-warn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc-warn) 22%, transparent); }
+.pc-search-btn { flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--text-secondary); border-radius: 8px; padding: 4px 8px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.pc kbd { font-family: inherit; font-size: 10.5px; font-weight: 800; border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 4px; color: var(--text-muted); }
+.pc-search { position: relative; margin: -4px 0 10px; }
+.pc-search input { width: 100%; box-sizing: border-box; border: 1px solid var(--line-strong); background: var(--bg-card); color: var(--text); border-radius: 10px; padding: 9px 12px; font: inherit; font-size: 14px; }
+.pc-results { position: absolute; left: 0; right: 0; top: 100%; z-index: 30; background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 10px; margin-top: 4px; max-height: 360px; overflow: auto; box-shadow: 0 12px 30px rgba(0,0,0,.18); }
+.pc-results:empty { display: none; }
+.pc-res { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--text); padding: 8px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.pc-res:last-child { border-bottom: 0; }
+.pc-res:hover, .pc-res.on { background: var(--gold-bg); }
+.pc-res small { display: block; color: var(--text-muted); font-size: 11.5px; margin-top: 2px; }
+.pc-res mark { background: color-mix(in srgb, var(--gold) 30%, transparent); color: inherit; border-radius: 2px; }
+.pc-kind { display: inline-block; font-size: 10.5px; font-weight: 800; color: var(--gold); margin-right: 6px; }
+.pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pc-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 9px 14px 8px; min-width: 0; }
+.pc-card h3 { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--text); margin: 0 0 6px; }
+.pc-tag { margin-left: auto; font-size: 10.5px; font-weight: 700; color: var(--text-muted); }
+.pc-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+.pc-c5 { grid-column: 1 / -1; }
+.pc-gauge { display: block; width: 100%; height: auto; }
+.pc-g-axis { stroke: var(--line-strong); stroke-width: 2; }
+.pc-g-band { fill: color-mix(in srgb, var(--gold) 22%, transparent); stroke: var(--gold); stroke-width: 1; }
+.pc-g-mid { stroke: var(--gold); stroke-width: 2.5; }
+.pc-g-tick { stroke: var(--text-muted); stroke-width: 1.5; }
+.pc-g-price { fill: var(--text); stroke: var(--bg-card); stroke-width: 2; }
+.pc-g-lbl { font-size: 11px; font-weight: 700; fill: var(--text-secondary); }
+.pc-g-strong { fill: var(--text); font-weight: 800; }
+.pc-g-sm { font-size: 9.5px; font-weight: 600; fill: var(--text-muted); }
+.pc-mark { font-size: 8px; font-weight: 700; fill: var(--text-muted); opacity: .7; letter-spacing: .04em; }
+.pc-mark-row { text-align: right; font-size: 8px; font-weight: 700; color: var(--text-muted); opacity: .7; letter-spacing: .04em; margin-top: 2px; }
+.pc-probs { display: flex; gap: 3px; margin-top: 6px; border-radius: 8px; overflow: hidden; }
+.pc-pb { min-width: 64px; text-align: center; font-size: 11.5px; font-weight: 800; padding: 4px 4px; color: var(--text); background: var(--gold-bg); white-space: nowrap; }
+.pc-pb-bull { background: color-mix(in srgb, var(--pc-up) 22%, var(--bg-card)); }
+.pc-pb-bear { background: color-mix(in srgb, var(--pc-down) 20%, var(--bg-card)); }
+.pc-pb i, .pc-tile i { font-style: normal; margin-left: 3px; }
+.pc-up { color: var(--pc-up); } .pc-down { color: var(--pc-down); } .pc-flat { color: var(--text-muted); }
+.pc-delta { margin: 0; padding-left: 16px; font-size: 12.5px; line-height: 1.45; color: var(--text-secondary); }
+.pc-delta li { margin: 0 0 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pc-more { border: 0; background: none; color: var(--gold); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; padding: 2px 0; }
+.pc-axis { display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 8px; width: 100%; border: 0; background: none; padding: 4px 0; font: inherit; color: var(--text); cursor: pointer; text-align: left; }
+.pc-axis:hover .pc-axis-n { color: var(--gold); }
+.pc-axis-n { font-size: 12.5px; font-weight: 800; }
+.pc-axis-c { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+.pc-bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.pc-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), color-mix(in srgb, var(--gold) 60%, var(--pc-up))); }
+.pc-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.pc-tile { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 0; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 5px 8px 3px; font: inherit; color: var(--text); cursor: pointer; text-align: left; min-width: 0; }
+.pc-tile:hover { border-color: var(--gold); }
+.pc-tile-l { font-size: 11px; font-weight: 700; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.pc-tile-l em { font-style: normal; font-weight: 600; opacity: .8; }
+.pc-tile-v { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pc-tile-o { position: absolute; right: 6px; top: 5px; font-size: 9.5px; font-weight: 800; color: var(--gold); }
+.pc-spark { width: 100%; height: 13px; display: block; }
+.pc-spark path { fill: none; stroke: var(--gold); stroke-width: 1.6; }
+.pc-trigs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pc-trig { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 7px 10px; font: inherit; color: var(--text); text-align: left; cursor: pointer; min-width: 0; }
+.pc-trig:hover { border-color: var(--gold); }
+.pc-trig-d { font-size: 11px; font-weight: 800; color: var(--bg-card); background: var(--gold); border-radius: 999px; padding: 1px 8px; }
+.pc-trig-n { font-size: 12.5px; font-weight: 700; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pc-trig-e { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.pc-segs { display: flex; gap: 4px; margin: 14px 0 10px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); }
+.pc-segs::-webkit-scrollbar { display: none; }
+.pc-seg { flex: none; display: inline-flex; align-items: center; gap: 5px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--text-muted); font: inherit; font-size: 13px; font-weight: 700; padding: 8px 10px; cursor: pointer; white-space: nowrap; }
+.pc-seg[aria-selected="true"] { color: var(--text); border-bottom-color: var(--gold); }
+.pc-panel { min-height: 120px; }
+.pc-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.pc-f { border: 1px solid var(--line); background: var(--bg-card); color: var(--text-secondary); border-radius: 999px; padding: 3px 10px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.pc-f.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+.pc-mx { width: 100%; border-collapse: collapse; font-size: 12px; }
+.pc-mx th { font-size: 11px; font-weight: 800; color: var(--text-muted); padding: 6px 4px; border-bottom: 1px solid var(--line-strong); text-align: left; }
+.pc-mx td { border-bottom: 1px solid var(--line); padding: 6px 4px; vertical-align: top; }
+.pc-mx th:first-child, .pc-mx td:first-child { width: 78px; font-weight: 800; color: var(--text); }
+.pc-wrap { overflow-x: auto; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 4px 10px; }
+.pc-chip { --p: 0%; display: block; width: 100%; margin: 0 0 4px; border: 1px solid var(--line-strong); border-radius: 8px; padding: 3px 6px; font: inherit; font-size: 11px; font-weight: 800; color: var(--text); cursor: pointer; text-align: left; background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 26%, transparent) var(--p), transparent var(--p)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pc-chip:hover { border-color: var(--gold); }
+.pc-st-done { border-color: var(--pc-up); color: var(--pc-up); }
+.pc-st-early { border-color: var(--pc-up); border-style: dashed; color: var(--pc-up); }
+.pc-st-prog { border-color: var(--gold); }
+.pc-st-miss { border-color: var(--pc-down); color: var(--pc-down); text-decoration: line-through; }
+.pc-st-wait { border-style: dashed; color: var(--text-muted); }
+.pc-legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; color: var(--text-muted); margin: 8px 0 0; }
+.pc-list { list-style: none; margin: 0; padding: 0; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; }
+.pc-list li { border-bottom: 1px solid var(--line); }
+.pc-list li:last-child { border-bottom: 0; }
+.pc-row { display: grid; grid-template-columns: 82px 96px 1fr; gap: 8px; width: 100%; border: 0; background: none; color: var(--text); text-align: left; padding: 8px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.pc-row:hover, .pc-row.on { background: var(--gold-bg); }
+.pc-row span:first-child, .pc-row span:nth-child(2) { color: var(--text-muted); font-size: 12px; font-weight: 700; }
+.pc-tl { display: block; width: 100%; height: auto; margin-bottom: 10px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; }
+.pc-tl-axis { stroke: var(--line-strong); }
+.pc-tl-dot { cursor: pointer; stroke: var(--bg-card); stroke-width: 1.5; fill: var(--text-muted); }
+.pc-k-earnings { fill: var(--gold); background: var(--gold); } .pc-k-starship { fill: var(--pc-up); background: var(--pc-up); }
+.pc-k-withdraw { fill: var(--pc-down); background: var(--pc-down); } .pc-k-essay { fill: var(--pc-warn); background: var(--pc-warn); }
+.pc-k-ir { fill: var(--text-secondary); background: var(--text-secondary); } .pc-k-report, .pc-k-filing, .pc-k-contract, .pc-k-financing { fill: var(--text-muted); background: var(--text-muted); }
+.pc-kd { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
+.pc-hist { max-width: 1000px; }
+.pc-tl-t { font-size: 10px; fill: var(--text-muted); }
+.pc-fin { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.pc-fin th, .pc-fin td { padding: 6px 6px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.pc-fin th { font-size: 11px; color: var(--text-muted); font-weight: 800; }
+.pc-fin th:first-child, .pc-fin td:first-child { text-align: left; font-weight: 700; color: var(--text); }
+.pc-fin tr.on td { background: var(--gold-bg); }
+.pc-cell { border: 0; background: none; color: var(--text); font: inherit; cursor: pointer; padding: 0; }
+.pc-cell:hover { color: var(--gold); text-decoration: underline; }
+.pc-o { display: inline-block; font-size: 9.5px; font-weight: 800; color: var(--gold); margin-left: 4px; }
+.pc-cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.pc-sc { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: var(--text-secondary); }
+.pc-sc b { color: var(--text); }
+.pc-sc-v { font-size: 20px; font-weight: 800; color: var(--text); }
+.pc-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; background: var(--bg-card); }
+.pc-tbl th, .pc-tbl td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; vertical-align: top; }
+.pc-tbl th { font-size: 11px; color: var(--text-muted); font-weight: 800; }
+.pc-h4 { font-size: 13px; font-weight: 800; color: var(--text); margin: 14px 0 6px; }
+.pc-rep { display: grid; grid-template-columns: 230px 1fr; gap: 12px; align-items: start; }
+.pc-toc { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 6px; position: sticky; top: 64px; }
+.pc-toc button { display: block; width: 100%; text-align: left; border: 0; background: none; color: var(--text-secondary); font: inherit; font-size: 12.5px; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+.pc-toc button.on, .pc-toc button:hover { background: var(--gold-bg); color: var(--text); }
+.pc-runs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.pc-body { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 4px 18px 12px; min-width: 0; }
+.pc-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100vw); z-index: 60; background: var(--bg-card); border-left: 1px solid var(--line-strong); box-shadow: -16px 0 40px rgba(0,0,0,.18); transform: translateX(105%); transition: transform .22s ease; display: flex; flex-direction: column; }
+.pc-drawer.open { transform: none; }
+.pc-scrim { position: fixed; inset: 0; z-index: 55; background: rgba(0,0,0,.25); }
+.pc-drawer-h { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.pc-drawer-t { flex: 1; font-size: 13px; font-weight: 800; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pc-nav, .pc-x { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 8px; width: 30px; height: 28px; font: inherit; cursor: pointer; }
+.pc-drawer-b { padding: 12px 16px 24px; overflow: auto; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+.pc-drawer-b h4 { font-size: 12px; font-weight: 800; color: var(--text); margin: 14px 0 4px; }
+.pc-drawer-b a { color: var(--gold); word-break: break-all; }
+.pc-pp { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin: 6px 0; }
+.pc-pp .pc-bar { grid-column: 1 / -1; }
+.pc-src-badge { display: inline-block; font-size: 10.5px; font-weight: 800; color: var(--gold); border: 1px solid var(--gold); border-radius: 999px; padding: 0 7px; margin-right: 6px; }
+@media (max-width: 760px) {
+  .pc-grid { grid-template-columns: 1fr; }
+  .pc-trigs { grid-template-columns: 1fr; gap: 6px; }
+  .pc-trig { flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .pc-trig-e { display: none; }
+  .pc-tiles { grid-template-columns: repeat(3, 1fr); }
+  .pc-tile-v { font-size: 13.5px; }
+  .pc-rep { grid-template-columns: 1fr; }
+  .pc-toc { position: static; }
+  .pc-cards3 { grid-template-columns: 1fr; }
+  .pc-row { grid-template-columns: 70px 1fr; }
+  .pc-row span:nth-child(2) { display: none; }
+  .pc-status { font-size: 12px; }
+}
+@media (max-width: 760px) {
+  body.pc-on .obs-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  body.pc-on .obs-tabs::-webkit-scrollbar { display: none; }
+  body.pc-on .obs-tab { flex: none; white-space: nowrap; padding: 8px 14px; }
+  .pc-g-lbl { font-size: 17px; } .pc-g-sm { font-size: 14px; } .pc-mark { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .pc-drawer { transition: none; } }
 @media (max-width: 480px) {
   .ag-card { flex: 1 1 45%; }
   .ag-run { padding: 4px 15px 6px; }
@@ -455,6 +617,8 @@ let solarRAF = null;
 function setObsTab(t, btn){
   document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  // 관제실은 첫 화면에 판단을 다 담아야 한다 — 탐사선 탭에선 히어로를 접고 탭 바를 위로 붙인다
+  document.body.classList.toggle('pc-on', t === 'agent');
   cleanupSolar();
   if (t === 'solar') renderSolar();
   else if (t === 'map') renderMap();
@@ -1946,6 +2110,302 @@ function lgToggleBlank(){
   renderLegend();
 }
 
+/* 🛰 SpaceX 관제실 v2 (2026-10-23) — IIFE 하나. 다른 천문대 탭과 전역 이름을 나누지 않는다.
+   첫 화면(관제판)은 빌드가 정적 HTML 로 그렸다. 여기서는 패널 7종·서랍·검색·딥링크만 맡는다.
+   데이터는 빌드 시점에 심은 DATA.probe / DATA.probe_reports — 판단층 파일을 fetch 하지 않는다. */
+const PC = (function(){
+  let D = null, R = [], root = null, cur = '', mf = { axis: '', status: '', year: '' }, evKind = '', evMore = false;
+  let dList = [], dIdx = -1, dKind = '', repSel = { run: '', sec: '' }, lastFocus = null;
+  const LS = 'ud-probe-panel';
+  const H = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const reEsc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const reduce = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const fmtN = (v, unit) => (v == null || v === '') ? '—' : (typeof v === 'number' ? v.toLocaleString('ko-KR') : String(v)) + (unit ? ' ' + unit : '');
+  const pct = p => p == null ? '—' : Math.round(p * 100) + '%';
+  /* 십억 달러 → 한국어 단위('$7,050억' · '$1.2조' · '−$50억'), 결측 '—' */
+  const bnKo = v => { if (typeof v !== 'number') return '—'; const a = Math.abs(v) * 10, sg = v < 0 ? '−' : '';
+    return a >= 10000 ? sg + '$' + (a / 10000).toFixed(1) + '조' : sg + '$' + Math.round(a).toLocaleString('ko-KR') + '억'; };
+  const bar = p => '<span class="pc-bar"><i style="width:' + (p == null ? 0 : Math.round(p * 100)) + '%"></i></span>';
+  const link = (u, t) => u && /^https?:/.test(u) ? '<a href="' + H(u) + '" target="_blank" rel="noopener">' + H(t || u) + '</a>' : (u ? H(u) : '—');
+  const safeGet = () => { try { return localStorage.getItem(LS) || ''; } catch (e) { return ''; } };
+  const safeSet = v => { try { localStorage.setItem(LS, v); } catch (e) {} };
+  const panelIds = () => (D.panels || []).map(p => p.id);
+
+  /* ── 패널 ── */
+  function pMilestones(){
+    const ms = D.milestones || [];
+    const years = [...new Set(ms.map(m => m.year))].sort();
+    const axes = D.axes || [];
+    const fBtn = (k, v, t) => '<button type="button" class="pc-f' + (mf[k] === v ? ' on' : '') + '" data-pc-mf="' + k + '" data-v="' + H(v) + '">' + H(t) + '</button>';
+    let h = '<div class="pc-filters">' + fBtn('axis', '', '전체 축') + axes.map(a => fBtn('axis', a.key, a.ko)).join('') + '</div>';
+    h += '<div class="pc-filters">' + fBtn('status', '', '전체 상태') + ['달성','달성(조기)','진행','미달','미판정'].map(s => fBtn('status', s, s)).join('') +
+         fBtn('year', '', '전체 연도') + years.map(y => fBtn('year', String(y), String(y))).join('') + '</div>';
+    const showY = mf.year ? [Number(mf.year)] : years;
+    const showA = mf.axis ? axes.filter(a => a.key === mf.axis) : axes;
+    h += '<div class="pc-wrap"><table class="pc-mx"><thead><tr><th>축</th>' + showY.map(y => '<th>' + y + '</th>').join('') + '</tr></thead><tbody>';
+    showA.forEach(a => {
+      h += '<tr><td>' + H(a.ko) + '</td>';
+      showY.forEach(y => {
+        const cell = ms.filter(m => m.axis === a.key && m.year === y && (!mf.status || m.status === mf.status));
+        h += '<td>' + cell.map(m => '<button type="button" class="pc-chip pc-st-' + m.cls + '" style="--p:' + (m.pct == null ? 0 : Math.round(m.pct * 100)) + '%" data-pc-open="milestones" data-pc-id="' + H(m.id) + '" title="' + H(m.text) + '">' +
+          H(m.id) + ' <span style="font-weight:600">' + (m.pct == null ? '—' : pct(m.pct)) + '</span></button>').join('') + '</td>';
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table></div><div class="pc-legend"><span>칸 채움·숫자 = 진척 %(— = 측정 불가)</span><span class="pc-st-done">초록 실선 = 달성</span><span class="pc-st-early">초록 점선 = 달성(조기)</span><span>강조 실선 = 진행</span><span class="pc-st-miss">빨강 취소선 = 미달</span><span>회색 점선 = 미판정</span></div>';
+    return h;
+  }
+
+  function tlSvg(evs){
+    const W = 1000, Hh = 74, today = new Date(D.today + 'T00:00:00'), d0 = new Date(today.getTime() - 90 * 864e5);
+    const x = d => 20 + (W - 40) * Math.max(0, Math.min(1, (new Date(d + 'T00:00:00') - d0) / (today - d0)));
+    let s = '<svg class="pc-tl" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="최근 90일 사건 타임라인"><line class="pc-tl-axis" x1="20" y1="40" x2="' + (W - 20) + '" y2="40"/>';
+    for (let k = 0; k <= 3; k++) { const dt = new Date(d0.getTime() + k * 30 * 864e5); s += '<text class="pc-tl-t" x="' + (20 + (W - 40) * k / 3) + '" y="64" text-anchor="middle">' + (dt.getMonth() + 1) + '/' + dt.getDate() + '</text>'; }
+    evs.forEach((e, i) => { s += '<circle class="pc-tl-dot pc-k-' + H(e.kind) + '" cx="' + x(e.date).toFixed(1) + '" cy="' + (36 - (i % 3) * 10) + '" r="6" data-pc-open="events" data-pc-id="' + H(e.id) + '"><title>' + H(e.date + ' ' + e.kindKo + ' · ' + e.title) + '</title></circle>'; });
+    return s + '<text class="pc-mark" x="' + (W - 22) + '" y="72" text-anchor="end">univertrix.com</text></svg>';
+  }
+  function pEvents(){
+    const all = D.events || [], kinds = [...new Set(all.map(e => e.kindKo))];
+    const evs = all.filter(e => !evKind || e.kindKo === evKind);
+    const kOf = ko => (all.find(e => e.kindKo === ko) || {}).kind || '';
+    let h = '<div class="pc-filters"><button type="button" class="pc-f' + (!evKind ? ' on' : '') + '" data-pc-ek="">전체</button>' +
+      kinds.map(k => '<button type="button" class="pc-f' + (evKind === k ? ' on' : '') + '" data-pc-ek="' + H(k) + '"><i class="pc-kd pc-k-' + H(kOf(k)) + '"></i>' + H(k) + '</button>').join('') + '</div>';
+    h += tlSvg(evs);
+    const shown = evMore ? evs : evs.slice(0, 10);
+    h += '<ul class="pc-list">' + shown.map(e => '<li><button type="button" class="pc-row" id="pc-' + H(e.id) + '" data-pc-open="events" data-pc-id="' + H(e.id) + '"><span>' + H(e.date) + '</span><span>' + H(e.kindKo) + '</span><span>' + H(e.title) + '</span></button></li>').join('') + '</ul>';
+    if (evs.length > 10 && !evMore) h += '<button type="button" class="pc-more" data-pc-evmore="1">더 보기 (' + (evs.length - 10) + ')</button>';
+    return h;
+  }
+  function sparkSvg(vals){
+    const pts = vals.map((v, i) => [i, v]).filter(p => typeof p[1] === 'number');
+    if (pts.length < 2) return '';
+    const lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])), n = Math.max(1, vals.length - 1);
+    const d = pts.map((p, k) => (k ? 'L' : 'M') + (p[0] / n * 76 + 2).toFixed(1) + ',' + (19 - (hi === lo ? 0 : (p[1] - lo) / (hi - lo)) * 16).toFixed(1)).join(' ');
+    return '<svg class="pc-spark" style="width:80px" viewBox="0 0 80 22" aria-hidden="true"><path d="' + d + '"/></svg>';
+  }
+  function pFin(rowSel){
+    const f = D.fin || { cols: [], rows: [] };
+    let h = '<div class="pc-wrap"><table class="pc-fin"><thead><tr><th>항목</th>' + f.cols.map(c => '<th>' + H(c) + '</th>').join('') + '<th>추세</th></tr></thead><tbody>';
+    f.rows.forEach(r => {
+      h += '<tr id="pc-fin-' + H(r.id) + '"' + (rowSel === r.id ? ' class="on"' : '') + '><td>' + H(r.label) + '<span class="pc-o">' + (r.origin === '공시 자동' ? '공시' : '취재') + '</span></td>' +
+        r.cells.map((c, i) => '<td><button type="button" class="pc-cell" data-pc-open="fin" data-pc-id="' + H(r.id + '|' + i) + '">' + H(c.t) + '</button></td>').join('') +
+        '<td>' + sparkSvg(r.cells.map(c => c.v)) + '</td></tr>';
+    });
+    return h + '</tbody></table></div><div class="pc-legend"><span><b class="pc-o">공시</b> 공시 자동(SEC XBRL)</span><span><b class="pc-o">취재</b> 탐사 취재(공시 KPI 표)</span><span>— = 원천 값 없음(0 으로 채우지 않음)</span><span>univertrix.com</span></div>';
+  }
+  function histSvg(hist){
+    if (!hist.length) return '';
+    const vals = hist.flatMap(r => [r.price, ...(r.band || [])]).filter(v => typeof v === 'number');
+    const top = Math.ceil(Math.max(...vals, 100) * 1.1 / 50) * 50, W = 1000, Hh = 170, cw = (W - 60) / hist.length;
+    const y = v => 130 - (v / top) * 110;
+    let s = '<svg class="pc-tl pc-hist" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="회차별 가정 가치 밴드와 주가">';
+    hist.forEach((r, i) => {
+      const cx = 50 + cw * i + cw / 2, b = r.band || [];
+      if (b.length === 2) s += '<rect x="' + (cx - 14) + '" y="' + y(b[1]).toFixed(1) + '" width="28" height="' + (y(b[0]) - y(b[1])).toFixed(1) + '" rx="4" class="pc-g-band"/>';
+      if (typeof r.mid === 'number') s += '<line x1="' + (cx - 16) + '" x2="' + (cx + 16) + '" y1="' + y(r.mid).toFixed(1) + '" y2="' + y(r.mid).toFixed(1) + '" class="pc-g-mid"/>';
+      if (typeof r.price === 'number') s += '<circle cx="' + cx + '" cy="' + y(r.price).toFixed(1) + '" r="5" class="pc-g-price"/>';
+      const p = r.probs || {};
+      s += '<text class="pc-tl-t" x="' + cx + '" y="146" text-anchor="middle">' + H(r.run_id) + '</text><text class="pc-tl-t" x="' + cx + '" y="157" text-anchor="middle">강 ' + Math.round((p.bull || 0) * 100) + ' · 기 ' + Math.round((p.base || 0) * 100) + ' · 약 ' + Math.round((p.bear || 0) * 100) + '</text>';
+    });
+    return s + '<text class="pc-tl-t" x="6" y="' + (y(top) + 10).toFixed(1) + '">$' + top + '</text><text class="pc-tl-t" x="6" y="128">$0</text><text class="pc-tl-t" x="' + (W - 6) + '" y="24" text-anchor="end">● 주가 · 막대 = 가정 가치 밴드 · 가로선 = 중앙</text><text class="pc-mark" x="' + (W - 6) + '" y="12" text-anchor="end">univertrix.com</text></svg>';
+  }
+  function pScen(){
+    const b = D.band || {};
+    let h = '<div class="pc-cards3">' + (D.scen || []).map(s => '<div class="pc-sc"><b>' + H(s.ko) + ' · ' + (s.prob == null ? '—' : Math.round(s.prob * 100) + '%') + '</b>' +
+      '<div class="pc-sc-v">주당 가정 가치 $' + H(s.vps) + '</div>2036 매출 ' + bnKo(s.rev) + ' · 영업이익 ' + bnKo(s.op) + ' · FCF ' + bnKo(s.fcf) + ' · 순부채 ' + bnKo(s.netDebt) + ' · 멀티플 ' + H(s.multiple == null ? '—' : s.multiple + '배') +
+      '<div class="pc-sub">' + H(s.rationale) + '</div></div>').join('') + '</div>';
+    h += '<div class="pc-sub">가정 가치 밴드 $' + H(b.lo) + '–$' + H(b.hi) + ' · 중앙 $' + H(b.mid) + ' · 확률가중 $' + H(b.pw) + ' · 할인율 ' + (b.rate == null ? '—' : (b.rate * 100).toFixed(1) + '%') + ' (' + H(b.rateBasis) + ')</div>';
+    h += '<div class="pc-h4">회차별 밴드·주가·확률</div>' + histSvg(D.history || []);
+    h += '<div class="pc-h4">확률 조정 규칙</div><div class="pc-wrap"><table class="pc-tbl"><thead><tr><th>규칙</th><th>조건</th><th>조정</th><th>상태</th></tr></thead><tbody>' +
+      (D.rules || []).map(r => '<tr><td>' + H(r.id) + '</td><td>' + H(r.cond) + '</td><td>' + H(r.delta) + '</td><td>' + H(r.status) + '</td></tr>').join('') + '</tbody></table></div>';
+    if ((D.proposals || []).length) h += '<div class="pc-h4">적용하지 않은 규칙 제안</div><ul class="pc-list">' + D.proposals.map(p => '<li style="padding:8px 12px;font-size:12.5px">' + H(p.cond) + '<div class="pc-sub">' + H(p.reason) + ' · ' + H(p.on) + '</div></li>').join('') + '</ul>';
+    return h;
+  }
+  function pReport(){
+    if (!R.length) return '<div class="pc-sub">보고서가 아직 없습니다.</div>';
+    if (!repSel.run) repSel.run = R[0].id;
+    const rep = R.find(r => r.id === repSel.run) || R[0];
+    let h = '<div class="pc-runs">' + R.map(r => '<button type="button" class="pc-f' + (r.id === rep.id ? ' on' : '') + '" data-pc-run="' + H(r.id) + '">' + H(r.id) + '</button>').join('') + '</div>';
+    const sec = rep.sections.find(s => s.id === repSel.sec);
+    h += '<div class="pc-rep"><nav class="pc-toc" aria-label="보고서 목차">' + rep.sections.map(s => '<button type="button" data-pc-sec="' + H(s.id) + '"' + (sec && sec.id === s.id ? ' class="on"' : '') + '>' + H(s.toc) + '</button>').join('') + '</nav>';
+    h += '<div class="pc-body ag-body" id="pcRepBody">' + (sec ? '<h3>' + H(sec.title) + '</h3>' + sec.html : '<p class="pc-sub">왼쪽 목차에서 절을 고르면 그 절만 펼칩니다. · ' + H(rep.title) + '</p>') + '</div></div>';
+    return h;
+  }
+  function pChangelog(openId){
+    return (D.changelog || []).map((c, i) => '<details class="ag-run" id="pc-cl-' + H(c.id) + '"' + ((openId ? openId === c.id : i === 0) ? ' open' : '') + '><summary>' + H(c.title) + '</summary><div class="ag-body">' + c.html + '</div></details>').join('') || '<div class="pc-sub">변화 이력 없음</div>';
+  }
+  function pSources(){
+    return '<div class="pc-wrap"><table class="pc-tbl"><thead><tr><th>도메인</th><th>문서</th><th>날짜</th><th>주장 수</th></tr></thead><tbody>' +
+      (D.sources || []).map(s => '<tr><td>' + H(s.domain) + '</td><td><button type="button" class="pc-cell" data-pc-open="sources" data-pc-id="' + H(s.id) + '">' + H(s.name || s.url.slice(0, 60)) + '</button></td><td>' + H(s.date || '—') + '</td><td>' + s.n + '</td></tr>').join('') + '</tbody></table></div>';
+  }
+  const RENDER = { milestones: pMilestones, events: pEvents, fin: pFin, scen: pScen, report: pReport, changelog: pChangelog, sources: pSources };
+
+  function showPanel(id, opt){
+    if (!RENDER[id]) id = 'milestones';
+    cur = id; safeSet(id);
+    root.querySelectorAll('.pc-seg').forEach(b => b.setAttribute('aria-selected', String(b.dataset.pcPanel === id)));
+    $('pcPanel').innerHTML = RENDER[id](opt || '');
+    $('pcPanel').setAttribute('aria-label', (D.panels.find(p => p.id === id) || {}).ko || id);
+  }
+
+  /* ── 서랍 ── */
+  function itemsOf(kind){
+    if (kind === 'milestones') return (D.milestones || []).filter(m => (!mf.axis || m.axis === mf.axis) && (!mf.status || m.status === mf.status) && (!mf.year || String(m.year) === mf.year));
+    if (kind === 'events') return (D.events || []).filter(e => !evKind || e.kindKo === evKind);
+    if (kind === 'sources') return D.sources || [];
+    if (kind === 'triggers') return D.triggers || [];
+    if (kind === 'fin') { const out = []; (D.fin.rows || []).forEach(r => r.cells.forEach((c, i) => out.push({ id: r.id + '|' + i }))); return out; }
+    return [];
+  }
+  function dMilestone(m){
+    const parts = (m.parts || []).map(p => '<div class="pc-pp"><span>' + H(p.label) + ' <span class="pc-sub">(' + H(p.op) + ' ' + fmtN(p.tgt, p.unit) + ')</span></span><b>' +
+      (p.cur == null ? '—' : fmtN(p.cur, p.unit)) + ' · ' + pct(p.pct) + '</b>' + bar(p.pct) + (p.reason ? '<span class="pc-sub" style="grid-column:1/-1">' + H(p.reason) + '</span>' : '') + '</div>').join('');
+    return '<p><b style="color:var(--text)">' + H(m.text) + '</b></p><p><span class="pc-chip pc-st-' + m.cls + '" style="display:inline-block;width:auto">' + H(m.status) + '</span> · ' + H(m.axisKo) + ' · ' + H(m.year) + '년 판정 · 종합 진척 ' + pct(m.pct) + '</p>' +
+      '<h4>현재 / 목표</h4><p>' + H(m.cur == null ? '—' : m.cur) + ' → ' + H(m.tgt == null ? '—' : m.tgt) + ' ' + H(m.unit) + (m.asof ? ' (' + H(m.asof) + ')' : '') + (m.reason ? '<br>' + H(m.reason) : '') + '</p>' +
+      '<h4>조건별 진척</h4>' + (parts || '<p>—</p>') +
+      '<h4>달성 시 의미</h4><p>' + H(m.hit || '—') + '</p><h4>미달 시 의미</h4><p>' + H(m.miss || '—') + '</p>' + (m.method ? '<h4>확인 방법</h4><p>' + H(m.method) + '</p>' : '') +
+      '<h4>출처</h4><p class="pc-src">' + link(m.source) + (m.meaningSrc ? '<br><span class="pc-sub">의미·확인 방법: ' + H(m.meaningSrc) + ' 보고서 PHASE 2 표</span>' : '') + '</p>' +
+      '<h4>판정 이력</h4><p>' + ((m.history || []).map(x => H(x.run) + ' ' + H(x.status)).join(' → ') || '—') + '</p>';
+  }
+  function dEvent(e){
+    const ax = (e.axes || []).map(k => ((D.axes || []).find(a => a.key === k) || {}).ko).filter(Boolean);
+    return '<p><b style="color:var(--text)">' + H(e.title) + '</b></p><p>' + H(e.date) + ' · ' + H(e.kindKo) + ' · ' + H(e.source) + (e.form ? ' · ' + H(e.form) : '') + '</p>' +
+      (e.note ? '<h4>사유</h4><p>' + H(e.note) + '</p>' : '') +
+      '<h4>원문</h4><p class="pc-src">' + link(e.url) + '</p><h4>관련 축</h4><p>' + (H(ax.join(' · ')) || '—') + '</p>' +
+      '<h4>관련 트리거</h4><p>' + ((e.triggers || []).map(t => '<button type="button" class="pc-f" data-pc-open="triggers" data-pc-id="' + H(t) + '">' + H(t) + '</button>').join(' ') || '—') + '</p>';
+  }
+  function dTrigger(t){
+    return '<p><b style="color:var(--text)">' + H(t.id) + ' ' + H(t.name) + '</b></p><p>' + H(t.when) + ' · ' + H(t.status) + '</p><h4>예상일 근거</h4><p>' + H(t.expected) + '</p>' +
+      (t.check ? '<h4>확인 방법</h4><p>' + H(t.check) + '</p>' : '') + (t.note ? '<h4>점검 기록</h4><p>' + H(t.note) + '</p>' : '') + (t.prev ? '<h4>지난 예상 vs 실제</h4><p>' + H(t.prev) + '</p>' : '');
+  }
+  function dFin(key){
+    const [rid, ci] = key.split('|'), r = (D.fin.rows || []).find(x => x.id === rid);
+    if (!r) return '—';
+    const c = r.cells[Number(ci)], s = c.src || {};
+    return '<p><b style="color:var(--text)">' + H(r.label) + ' · ' + H(D.fin.cols[Number(ci)]) + '</b></p><p style="font-size:20px;font-weight:800;color:var(--text)">' + H(c.t) + '</p>' +
+      '<p><span class="pc-src-badge">' + H(s.origin) + '</span></p>' +
+      (s.form ? '<h4>공시</h4><p>' + H(s.form) + (s.filed ? ' · 제출 ' + H(s.filed) : '') + '</p>' : (s.filed ? '<h4>발표일</h4><p>' + H(s.filed) + '</p>' : '')) +
+      (s.concept ? '<h4>공시 개념(XBRL)</h4><p>' + H(s.concept) + '</p>' : '') + (s.how ? '<h4>산식·비고</h4><p>' + H(s.how) + '</p>' : '') +
+      '<h4>출처</h4><p class="pc-src">' + (s.url ? link(s.url) : (s.origin === '공시 자동' ? link('https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412', 'SEC EDGAR — SpaceX 공시 목록') : '—')) + '</p>';
+  }
+  function dSource(s){
+    return '<p><b style="color:var(--text)">' + H(s.name || s.domain) + '</b></p><p class="pc-src">' + link(s.url) + '</p><p>' + H(s.domain) + (s.date ? ' · ' + H(s.date) : '') + ' · 주장 ' + s.n + '건</p>' +
+      '<h4>이 출처를 쓴 주장</h4><ul style="padding-left:16px;margin:0">' + (s.claims || []).map(c => '<li><span class="pc-sub">' + H(c.where) + '</span><br>' + H(c.text) + '</li>').join('') + '</ul>';
+  }
+  function openDrawer(kind, id, fromHash){
+    const list = itemsOf(kind);
+    let idx = list.findIndex(x => x.id === id);
+    let item = list[idx];
+    if (!item && kind !== 'fin') { const all = kind === 'milestones' ? D.milestones : kind === 'events' ? D.events : kind === 'sources' ? D.sources : D.triggers; item = (all || []).find(x => x.id === id); }
+    if (!item && kind !== 'fin') return false;
+    dKind = kind; dList = list; dIdx = idx;
+    const t = kind === 'milestones' ? item.id + ' · 이정표' : kind === 'events' ? '사건 · ' + item.date : kind === 'sources' ? '출처' : kind === 'triggers' ? item.id + ' · 트리거' : '재무·KPI';
+    $('pcDrawerT').textContent = t;
+    $('pcDrawerB').innerHTML = kind === 'milestones' ? dMilestone(item) : kind === 'events' ? dEvent(item) : kind === 'sources' ? dSource(item) : kind === 'triggers' ? dTrigger(item) : dFin(id);
+    lastFocus = lastFocus || document.activeElement;
+    $('pcDrawer').classList.add('open'); $('pcDrawer').setAttribute('aria-hidden', 'false'); $('pcScrim').hidden = false;
+    $('pcDrawer').focus({ preventScroll: true });
+    if (!fromHash) { const hsh = '#probe/' + kind + '/' + id; if (location.hash !== hsh) history.replaceState(null, '', hsh); }
+    return true;
+  }
+  function closeDrawer(){
+    $('pcDrawer').classList.remove('open'); $('pcDrawer').setAttribute('aria-hidden', 'true'); $('pcScrim').hidden = true;
+    dKind = ''; if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); lastFocus = null;
+    if (location.hash.indexOf('#probe/') === 0) history.replaceState(null, '', '#probe/' + cur);
+  }
+  function step(n){ if (!dKind || !dList.length) return; const i = (dIdx + n + dList.length) % dList.length; openDrawer(dKind, dList[i].id); }
+
+  /* ── 검색 ── */
+  function search(q){
+    const toks = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const box = $('pcResults');
+    if (!toks.length) { box.innerHTML = ''; return []; }
+    const hits = (D.search || []).filter(it => { const hay = (it.title + ' ' + it.text + ' ' + (it.full || '')).toLowerCase(); return toks.every(t => hay.indexOf(t) >= 0); }).slice(0, 20);
+    const re = new RegExp('(' + toks.map(reEsc).join('|') + ')', 'gi');
+    const hl = s => H(s).replace(re, '<mark>$1</mark>');
+    box.innerHTML = hits.map((it, i) => '<button type="button" class="pc-res' + (i === 0 ? ' on' : '') + '" role="option" data-pc-anchor="' + H(it.anchor) + '"><span class="pc-kind">' + H(it.kind) + '</span>' + hl(it.title) + '<small>' + hl(it.text.slice(0, 140)) + '</small></button>').join('') ||
+      '<div class="pc-res">결과 없음</div>';
+    return hits;
+  }
+  function toggleSearch(on){
+    const s = $('pcSearch');
+    s.hidden = on === undefined ? !s.hidden : !on;
+    if (!s.hidden) { $('pcQ').focus(); $('pcQ').select(); }
+  }
+  function go(anchor){
+    toggleSearch(false);
+    location.hash = '#probe/' + anchor;
+  }
+
+  /* ── 딥링크 ── */
+  function route(){
+    const m = location.hash.match(/^#probe\/([^/]+)(?:\/(.+))?$/);
+    if (!m) return false;
+    let [, panel, id] = m; id = id ? decodeURIComponent(id) : '';
+    if (panel === 'triggers') { if (cur === '') showPanel(safeGet() || 'milestones'); openDrawer('triggers', id, true); return true; }
+    if (panel === 'report' && id) { const [r, s] = id.split(':'); repSel = { run: r, sec: s || '' }; showPanel('report'); scrollPanel(); return true; }
+    if (panel === 'changelog') { showPanel('changelog', id); scrollPanel(); return true; }
+    if (panel === 'fin') { showPanel('fin', id); if (id) { const row = $('pc-fin-' + id.split('|')[0]); if (row) row.scrollIntoView({ block: 'center' }); if (id.indexOf('|') > 0) openDrawer('fin', id, true); } else scrollPanel(); return true; }
+    showPanel(panel);
+    if (id && ['milestones', 'events', 'sources'].includes(panel)) {
+      if (panel === 'events') { const el = $('pc-' + id); if (el) { el.classList.add('on'); el.scrollIntoView({ block: 'center' }); } }
+      openDrawer(panel, id, true);
+    } else scrollPanel();
+    return true;
+  }
+  function scrollPanel(){ const el = root.querySelector('.pc-segs'); if (el) el.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' }); }
+
+  /* ── 이벤트 ── */
+  function onClick(ev){
+    const t = ev.target.closest('[data-pc-go],[data-pc-open],[data-pc-panel],[data-pc-mf],[data-pc-ek],[data-pc-evmore],[data-pc-run],[data-pc-sec],[data-pc-anchor],[data-pc-step]');
+    if (!t || !root.contains(t)) { if (ev.target.id === 'pcScrim') closeDrawer(); return; }
+    const ds = t.dataset;
+    if (ds.pcGo) { if (ds.pcAxis !== undefined) mf = { axis: ds.pcAxis, status: '', year: '' }; showPanel(ds.pcGo, ds.pcRow || ''); if (ds.pcRow) { const r = $('pc-fin-' + ds.pcRow); if (r) r.scrollIntoView({ block: 'center' }); } else scrollPanel(); return; }
+    if (ds.pcOpen) { openDrawer(ds.pcOpen, ds.pcId); return; }
+    if (ds.pcPanel) { showPanel(ds.pcPanel); history.replaceState(null, '', '#probe/' + ds.pcPanel); return; }
+    if (ds.pcMf) { mf[ds.pcMf] = ds.v; showPanel('milestones'); return; }
+    if (ds.pcEk !== undefined) { evKind = ds.pcEk; evMore = false; showPanel('events'); return; }
+    if (ds.pcEvmore) { evMore = true; showPanel('events'); return; }
+    if (ds.pcRun) { repSel = { run: ds.pcRun, sec: '' }; showPanel('report'); return; }
+    if (ds.pcSec) { repSel.sec = ds.pcSec; showPanel('report'); history.replaceState(null, '', '#probe/report/' + repSel.run + ':' + ds.pcSec); const b = $('pcRepBody'); if (b) b.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' }); return; }
+    if (ds.pcAnchor) { go(ds.pcAnchor); return; }
+    if (ds.pcStep) step(Number(ds.pcStep));
+  }
+  function active(){ return root && document.body.contains(root) && root.offsetParent !== null; }
+  function onKey(ev){
+    if (!active()) return;
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test((ev.target.tagName || '')) || ev.target.isContentEditable;
+    if (ev.key === 'Escape') { if (dKind) { closeDrawer(); ev.preventDefault(); } else if (!$('pcSearch').hidden) toggleSearch(false); return; }
+    if (typing) {
+      if (ev.target.id === 'pcQ' && ev.key === 'Enter') { const f = $('pcResults').querySelector('.pc-res.on[data-pc-anchor]'); if (f) go(f.dataset.pcAnchor); ev.preventDefault(); }
+      return;
+    }
+    if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (ev.key === '/') { toggleSearch(true); ev.preventDefault(); return; }
+    if (dKind && (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft')) { step(ev.key === 'ArrowRight' ? 1 : -1); ev.preventDefault(); return; }
+    const n = Number(ev.key);
+    if (n >= 1 && n <= panelIds().length) { const id = panelIds()[n - 1]; showPanel(id); history.replaceState(null, '', '#probe/' + id); }
+  }
+  let bound = false;
+  function init(){
+    D = (typeof DATA !== 'undefined' && DATA.probe) || null;
+    R = (typeof DATA !== 'undefined' && DATA.probe_reports) || [];
+    root = $('pcRoot');
+    if (!D || !root) return;
+    root.addEventListener('click', onClick);
+    $('pcScrim').addEventListener('click', closeDrawer);
+    $('pcDrawerX').addEventListener('click', closeDrawer);
+    $('pcSearchBtn').addEventListener('click', () => toggleSearch());
+    let tm = null;
+    $('pcQ').addEventListener('input', e => { clearTimeout(tm); const v = e.target.value; tm = setTimeout(() => search(v), 80); });
+    if (!bound) { document.addEventListener('keydown', onKey); window.addEventListener('hashchange', () => { if (active()) route(); }); bound = true; }
+    cur = '';
+    if (!route()) showPanel(safeGet() || 'milestones');
+  }
+  return { init, search, reEsc, route };
+})();
+
 /* 🛰 무인 탐사선 — 본문은 **빌드 시점에 이미 필터를 통과한 정적 HTML** 이다.
    여기서 판단층 파일을 fetch 하지 않는다: 클라이언트가 원문을 긁을 수 있으면
    준법 필터가 있으나 마나다. 이 함수는 만들어진 것을 꽂기만 한다. */
@@ -1954,11 +2414,12 @@ function renderAgent(){
   const html = DATA.agent || '';
   host.innerHTML = html ||
     '<div class="obs-note">무인 탐사선 준비 중 — 첫 보고서가 들어오면 여기 실립니다.</div>';
+  // 옛 공유 링크(#agent-2026-09)는 관제실 보고서 패널로 옮겨 연다
   const h = location.hash.replace('#', '');
-  if (h.indexOf('agent-') === 0) {
-    const el = document.getElementById(h);
-    if (el) { el.open = true; setTimeout(() => el.scrollIntoView({behavior:'smooth', block:'start'}), 80); }
-  }
+  if (h.indexOf('agent-') === 0) history.replaceState(null, '', '#probe/report/' + h.slice(6) + ':s0');
+  if (html) PC.init();
+  const tb = document.querySelector('.obs-tabs');
+  if (tb && html && location.hash.indexOf('#probe/') !== 0) tb.scrollIntoView({block: 'start'});
 }
 
 function renderColumns(){
@@ -2071,7 +2532,7 @@ function toggleCol(i){
   if (el) setColOpen(el, !el.classList.contains('open'));
 }
 
-if (location.hash === '#agent' || location.hash.indexOf('#agent-') === 0) {
+if (location.hash === '#agent' || location.hash.indexOf('#agent-') === 0 || location.hash.indexOf('#probe') === 0) {
   const btn = document.querySelector('.obs-tab[data-t="agent"]');
   if (btn) setObsTab('agent', btn); else renderAgent();
 } else if (location.hash === '#legend') {
