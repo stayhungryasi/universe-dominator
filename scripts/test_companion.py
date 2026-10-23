@@ -19,6 +19,24 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).parent))
 import companion_essays as ce   # noqa: E402
 
+
+# 사실 규율(⑲)의 검증관 호출·발사 기록 수집은 네트워크를 탄다. 이 묶음은 인용·숫자·흐름을 검사하므로
+# 검증관은 '전부 지지'로, 발사 기록은 '없음'으로 고정한다. 검증관 자체의 배선·차단·독립성은
+# test_fact_discipline.py 가 실물 함수로 검사한다.
+_PATCHES = []
+
+
+def setUpModule():
+    _PATCHES[:] = [mock.patch.object(ce, "verify_facts", return_value=([], 1)),
+                   mock.patch.object(ce, "spacex_launch_items", return_value=[])]
+    for p in _PATCHES:
+        p.start()
+
+
+def tearDownModule():
+    for p in _PATCHES:
+        p.stop()
+
 TODAY = "2026-08-22"
 COMP = {"slug": "spacex", "ko": "SpaceX", "emoji": "🚀", "sources": []}
 COMPANIES = {"spacex": COMP}

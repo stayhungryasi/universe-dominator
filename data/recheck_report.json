@@ -1,0 +1,885 @@
+{
+ "generated_at": "2026-10-23T20:16",
+ "total": 43,
+ "counts": {
+  "일치": 5,
+  "명백한 불일치": 15,
+  "대조 불가": 23
+ },
+ "withdraw_ratio": 0.349,
+ "stop": true,
+ "rules": {
+  "원문_진위": "다시 읽은 텍스트에 URL 슬러그의 제목 고유명사 2개 이상(고유명사가 모자라면 슬러그 핵심어 60%·최소 2개) — 아니면 '기사 아님' → 대조 불가",
+  "숫자_분류": [
+   "순번·명칭(제외)",
+   "파생 일치",
+   "허용 오차 일치",
+   "진짜 불일치"
+  ],
+  "확정": "모든 출처가 기사로 확인되고 진짜 불일치가 1개 이상"
+ },
+ "confirmed": [
+  {
+   "slug": "anthropic-eb8d3a96",
+   "title": "신뢰가 자본화된다 — Anthropic의 Accenture 내장평가 계약과 통행료의 구조화",
+   "date": "2026-09-19",
+   "원문": [
+    "https://www.anthropic.com/news/accenture-embedded-evaluation?="
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "64B",
+     "문장": "hropic의 차별성은 빠르게 상쇄될 수 있다. 더욱이 5년 10억 달러는 Accenture의 연간 매출($64B, 2025 추정)에서 1.5% 규모로, 순수 Anthropic 신뢰 구",
+     "가장_가까운_원문_숫자": {
+      "숫자": "1 billion",
+      "문맥": "pic and Accenture each expect to invest at least $1 billion in building capacity in this area over ",
+      "url": "https://www.anthropic.com/news/accenture-embedded-evaluation?=",
+      "차이": "98.4%"
+     }
+    },
+    {
+     "숫자": "1.5",
+     "문장": " 상쇄될 수 있다. 더욱이 5년 10억 달러는 Accenture의 연간 매출($64B, 2025 추정)에서 1.5% 규모로, 순수 Anthropic 신뢰 구축보다는 전체 AI 컨설팅 포",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15",
+      "문맥": "y Funding See more... Related articles Policy Oct 15, 2026 An update on independent evaluato",
+      "url": "https://www.anthropic.com/news/accenture-embedded-evaluation?=",
+      "차이": "900.0%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [
+    {
+     "숫자": "500",
+     "분류": "순번·명칭(제외)",
+     "근거": "이름 속 번호"
+    }
+   ],
+   "논제_원장에_있는_숫자": [
+    "1.5"
+   ]
+  },
+  {
+   "slug": "alphabet-c0b02437",
+   "title": "두 가지 구제안, 하나의 응답 — Alphabet이 법정과 로봇에서 동시에 증명하는 것",
+   "date": "2026-09-18",
+   "원문": [
+    "https://www.adexchanger.com/platforms/the-court-just-unsealed-judge-brinkemas-remedies-decision-in-the-google-ad-tech-antitrust-case-heres-your-tldr/",
+    "https://www.scientificamerican.com/article/google-deepmind-wants-gemini-to-power-many-different-robots/"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "17",
+     "문장": "의 재확인: Ad tech 구제안이 '검색 광고 사망'을 촉발하지 않는다는 것은 이미 관측했다(검색 광고 +17%). 그러나 구제안의 구체 내용(Prebid 강제 연결, 입찰 데이터 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "16",
+      "문맥": "Your TL;DR By Allison Schiff Wednesday, September 16th, 2026 – 7:24 pm SHARE: Jason Mraz onc",
+      "url": "https://www.adexchanger.com/platforms/the-court-just-unsealed-judge-brinkemas-remedies-decision-in-the-google-ad-tech-antitrust-case-heres-your-tldr/",
+      "차이": "5.9%"
+     }
+    },
+    {
+     "숫자": "17",
+     "문장": " 심화할 수 있다는 우려가 정당하다. 다음 관측 포인트 3Q 실적 발표(10월 말): 검색 광고 성장률이 +17% 수준을 유지하는가, 또는 구제안 준수 과정에서 단가 압박이 나타나는가",
+     "가장_가까운_원문_숫자": {
+      "숫자": "16",
+      "문맥": "Your TL;DR By Allison Schiff Wednesday, September 16th, 2026 – 7:24 pm SHARE: Jason Mraz onc",
+      "url": "https://www.adexchanger.com/platforms/the-court-just-unsealed-judge-brinkemas-remedies-decision-in-the-google-ad-tech-antitrust-case-heres-your-tldr/",
+      "차이": "5.9%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "17"
+   ]
+  },
+  {
+   "slug": "alphabet-a2f55aa0",
+   "title": "해자는 법정에서도 팔리지 않았다 — 반독점 구제안이 증명한 것",
+   "date": "2026-09-13",
+   "원문": [
+    "https://www.courthousenews.com/google-dodges-antitrust-breakup-of-ad-tech-business"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "17",
+     "문장": " 조건은 '검색 광고 성장률 둔화 + Gemini 대체 효과'였다. 그런데 2026년 2분기 검색 광고는 +17% 성장했고, 쇼핑 광고 관련성도 +20% 상승했다. 이번 판결은 그 숫",
+     "가장_가까운_원문_숫자": {
+      "숫자": "14",
+      "문맥": "this court. The memorandum will remain sealed for 14 days. And within 30 days, attorneys for",
+      "url": "https://www.courthousenews.com/google-dodges-antitrust-breakup-of-ad-tech-business",
+      "차이": "17.6%"
+     }
+    },
+    {
+     "숫자": "20",
+     "문장": "emini 대체 효과'였다. 그런데 2026년 2분기 검색 광고는 +17% 성장했고, 쇼핑 광고 관련성도 +20% 상승했다. 이번 판결은 그 숫자를 법적 신뢰로 치환한다. 만약 해자가",
+     "가장_가까운_원문_숫자": {
+      "숫자": "23",
+      "문맥": "ews Service Log in to CasePortal Wednesday, April 23, 2025 Free Litigation Reports Find Judi",
+      "url": "https://www.courthousenews.com/google-dodges-antitrust-breakup-of-ad-tech-business",
+      "차이": "15.0%"
+     }
+    },
+    {
+     "숫자": "15",
+     "문장": "아니면 수용하는가가 '공포 사이클 종료'를 확정한다. 3Q 실적 발표 (10월 말): 검색 광고 성장률이 +15% 이상 유지하는지 확인. 판결이 실적 모멘텀에 긍정 신호를 줄 가능성.",
+     "가장_가까운_원문_숫자": {
+      "숫자": "14",
+      "문맥": "this court. The memorandum will remain sealed for 14 days. And within 30 days, attorneys for",
+      "url": "https://www.courthousenews.com/google-dodges-antitrust-breakup-of-ad-tech-business",
+      "차이": "6.7%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "17",
+    "20"
+   ]
+  },
+  {
+   "slug": "anthropic-dec501a0",
+   "title": "신뢰가 적대를 탐지할 때 — Anthropic의 위협 정보 공개와 엔터프라이즈 통행료의 실증",
+   "date": "2026-09-13",
+   "원문": [
+    "https://www.anthropic.com/threat-intelligence",
+    "https://www.pbs.org/newshour/nation/anthropic-says-it-blocked-misuse-of-its-ai-that-could-have-supported-biological-weapons"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "65B",
+     "문장": " 즉, 신뢰의 프리미엄이 규제 비용으로 상쇄될 수 있다는 시나리오. 다음 관측 포인트 3Q ARR 궤적 ($65B 이후 성장 기울기) — 위협 탐지 공개 이후 엔터프라이즈 거래 속도 변",
+     "가장_가까운_원문_숫자": {
+      "숫자": "2026",
+      "문맥": "rus more harmful Between December 2025 and August 2026, researchers at Anthropic found misuse ",
+      "url": "https://www.pbs.org/newshour/nation/anthropic-says-it-blocked-misuse-of-its-ai-that-could-have-supported-biological-weapons",
+      "차이": "100.0%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "65B"
+   ]
+  },
+  {
+   "slug": "spacex-69cc7a03",
+   "title": "Starship의 페이로드 첫 비행 — 위성 운송 체계 전환의 시작",
+   "date": "2026-09-12",
+   "원문": [
+    "https://spacenews.com/spacex-confirms-plans-to-launch-starlink-satellites-on-next-starship-mission/",
+    "https://spaceflightnow.com/2026/09/05/live-coverage-spacex-to-launch-80th-starlink-mission-of-2026/"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "50",
+     "문장": "춘 것처럼, Starship은 Falcon의 비용을 다시 10분의 1로 낮출 수 있는 설계(재사용성·화물량 50배)를 가지고 있다. Starlink의 11,000기 위성 운영과 모바일",
+     "가장_가까운_원문_숫자": {
+      "숫자": "46",
+      "문맥": "n Sept. 6, 2026. Image: SpaceX Update Sept. 5, 11:46 a.m. EDT (1546 UTC): SpaceX deployed it",
+      "url": "https://spaceflightnow.com/2026/09/05/live-coverage-spacex-to-launch-80th-starlink-mission-of-2026/",
+      "차이": "8.0%"
+     }
+    },
+    {
+     "숫자": "11,000",
+     "문장": " 비용을 다시 10분의 1로 낮출 수 있는 설계(재사용성·화물량 50배)를 가지고 있다. Starlink의 11,000기 위성 운영과 모바일 스펙트럼 V2 위성 대량 배포는 이 비용 절감이 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "6,300",
+      "문맥": "preview: NASA, SpaceX to launch new solar arrays, 6,300 pounds of cargo to the space station Fa",
+      "url": "https://spaceflightnow.com/2026/09/05/live-coverage-spacex-to-launch-80th-starlink-mission-of-2026/",
+      "차이": "42.7%"
+     }
+    },
+    {
+     "숫자": "4.3B",
+     "문장": "럼 V2 위성 대량 배포는 이 비용 절감이 현실화되어야만 경제학이 맞춰진다. 현재 Starlink는 매출 $4.3B(전체 55%), 영업이익 $1.66B으로 회사 현금흐름의 기둥이지만, ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "6,300",
+      "문맥": "preview: NASA, SpaceX to launch new solar arrays, 6,300 pounds of cargo to the space station Fa",
+      "url": "https://spaceflightnow.com/2026/09/05/live-coverage-spacex-to-launch-80th-starlink-mission-of-2026/",
+      "차이": "100.0%"
+     }
+    },
+    {
+     "숫자": "55",
+     "문장": "대량 배포는 이 비용 절감이 현실화되어야만 경제학이 맞춰진다. 현재 Starlink는 매출 $4.3B(전체 55%), 영업이익 $1.66B으로 회사 현금흐름의 기둥이지만, 위성 추가 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "60",
+      "문맥": "and kicks off IRIS² LEO contracts Next LatConnect 60 Expands India Market Presence for SWIRS",
+      "url": "https://spacenews.com/spacex-confirms-plans-to-launch-starlink-satellites-on-next-starship-mission/",
+      "차이": "9.1%"
+     }
+    },
+    {
+     "숫자": "1.66B",
+     "문장": "절감이 현실화되어야만 경제학이 맞춰진다. 현재 Starlink는 매출 $4.3B(전체 55%), 영업이익 $1.66B으로 회사 현금흐름의 기둥이지만, 위성 추가 배포 속도는 여전히 Falc",
+     "가장_가까운_원문_숫자": {
+      "숫자": "6,300",
+      "문맥": "preview: NASA, SpaceX to launch new solar arrays, 6,300 pounds of cargo to the space station Fa",
+      "url": "https://spaceflightnow.com/2026/09/05/live-coverage-spacex-to-launch-80th-starlink-mission-of-2026/",
+      "차이": "100.0%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "11,000",
+    "4.3B",
+    "55",
+    "1.66B"
+   ]
+  },
+  {
+   "slug": "alphabet-081ac5d1",
+   "title": "Discovery Loop의 출발 — Gemini 전략이 인재 유출 시험대에 서다",
+   "date": "2026-09-10",
+   "원문": [
+    "https://yellow.com/news/google-deepmind-leadership-exodus",
+    "https://app.dealroom.co/news/note/google-deepmind-brings-lyria-3-5-to-gemini-products",
+    "https://fortune.com/2026/09/03/google-shipped-four-gemini-flash-models-in-106-days-but-its-flagship-frontier-model-is-still-nowhere-to-be-seen/"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "175",
+     "문장": " 한다. DeepMind는 Gemini 풀스택(사전학습→Fine-tuning→다중모달)의 기술 엔진이자, $175~185B 캐펙스 배분의 정당성을 뒷받침하는 조직이다. 창립 시대의 4명",
+     "가장_가까운_원문_숫자": {
+      "숫자": "200 billion",
+      "문맥": "ares closed down 4.4% on Thursday, erasing about $200 billion in market value, after reports that Goo",
+      "url": "https://yellow.com/news/google-deepmind-leadership-exodus",
+      "차이": "14.3%"
+     }
+    },
+    {
+     "숫자": "185B",
+     "문장": " DeepMind는 Gemini 풀스택(사전학습→Fine-tuning→다중모달)의 기술 엔진이자, $175~185B 캐펙스 배분의 정당성을 뒷받침하는 조직이다. 창립 시대의 4명은 Alp",
+     "가장_가까운_원문_숫자": {
+      "숫자": "200 billion",
+      "문맥": "ares closed down 4.4% on Thursday, erasing about $200 billion in market value, after reports that Goo",
+      "url": "https://yellow.com/news/google-deepmind-leadership-exodus",
+      "차이": "8.1%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "185B"
+   ]
+  },
+  {
+   "slug": "anthropic-39caec92",
+   "title": "안전이 통제할 수 없었을 때 — Anthropic의 사이버 평가 사건과 엔터프라이즈 신뢰의 균열",
+   "date": "2026-09-10",
+   "원문": [
+    "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "481만",
+     "문장": "된 사건은 2026년 1월이며, Anthropic은 141,000개 트랜스크립트에서 초기 3건을 발견한 후 481만 개 트랜스크립트를 재검사하여 4번째 사건을 확인했다. 모든 사건은 동일",
+     "가장_가까운_원문_숫자": {
+      "숫자": "9.2 million",
+      "문맥": "nd a second-stage scan using Claude to review the 9.2 million transcripts the first stage flagged for",
+      "url": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+      "차이": "91.3%"
+     }
+    },
+    {
+     "숫자": "481만",
+     "문장": "거 중 하나는 \"안전성이 검증되었다\"는 신호인데, 이제 그 검증 과정 자체가 누락된 사건을 포함한다. 특히 481만 개 트랜스크립트 재검사까지 필요했다는 점은, 최초 스캔의 한계를 암시한",
+     "가장_가까운_원문_숫자": {
+      "숫자": "9.2 million",
+      "문맥": "nd a second-stage scan using Claude to review the 9.2 million transcripts the first stage flagged for",
+      "url": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+      "차이": "91.3%"
+     }
+    },
+    {
+     "숫자": "1M",
+     "문장": "적 신뢰성에 있다. 현재 논제 원장의 1번 가설('엔터프라이즈 통행료는 실재한다')은 포춘10 중 8곳, $1M+ 고객 1,000곳의 채택을 증거로 든다. 그러나 이번 사건은 그 신뢰",
+     "가장_가까운_원문_숫자": {
+      "숫자": "141,000",
+      "문맥": " 30 ; we identified these after a scan of roughly 141,000 transcripts in which we believed Claude",
+      "url": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+      "차이": "85.9%"
+     }
+    },
+    {
+     "숫자": "1,000",
+     "문장": "있다. 현재 논제 원장의 1번 가설('엔터프라이즈 통행료는 실재한다')은 포춘10 중 8곳, $1M+ 고객 1,000곳의 채택을 증거로 든다. 그러나 이번 사건은 그 신뢰의 기반을 흔드는 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "764",
+      "문맥": "del began engaging its target’s neighbors (action 764); and where Claude Opus 4.7 first disco",
+      "url": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+      "차이": "23.6%"
+     }
+    },
+    {
+     "숫자": "1M",
+     "문장": "점과 내용 — \"평가 인프라 실패\"인지 \"설계 결함\"인지 판정의 기준 2026년 4분기 ARR 성장률 및 $1M+ 고객 이탈률 — 엔터프라이즈 신뢰도가 실질 구매 결정에 반영되는지 확",
+     "가장_가까운_원문_숫자": {
+      "숫자": "141,000",
+      "문맥": " 30 ; we identified these after a scan of roughly 141,000 transcripts in which we believed Claude",
+      "url": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents",
+      "차이": "85.9%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "1M",
+    "1,000"
+   ]
+  },
+  {
+   "slug": "anthropic-09529f10",
+   "title": "증명의 자동화가 해자를 매우 깊게 판다 — Fermat 정리와 엔터프라이즈 신뢰의 기술적 근거",
+   "date": "2026-09-07",
+   "원문": [
+    "https://www.anthropic.com/news/formalizing-fermats-last-theorem"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "13만",
+     "문장": "일즈가 129페이지의 증명을 제시한 후 30년간 형식화 시도가 지속되어 왔으나, 이번 Claude의 작업은 13만 줄의 Lean 코드를 생성하며 29,500개의 중간 정리를 증명했다. ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "100,000",
+      "문맥": " FLT, marvelous or otherwise. In 1908, a prize of 100,000 German gold marks (the equivalent of 1–",
+      "url": "https://www.anthropic.com/news/formalizing-fermats-last-theorem",
+      "차이": "23.1%"
+     }
+    },
+    {
+     "숫자": "30",
+     "문장": "작성했다. 1637년 페르마가 제시한 이 난제는 1995년 앤드루 와일즈가 129페이지의 증명을 제시한 후 30년간 형식화 시도가 지속되어 왔으나, 이번 Claude의 작업은 13만 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "20",
+      "문맥": "settled for “99% certain” (Hales eventually led a 20-person project, Flyspeck , that formali",
+      "url": "https://www.anthropic.com/news/formalizing-fermats-last-theorem",
+      "차이": "33.3%"
+     }
+    },
+    {
+     "숫자": "54",
+     "문장": "식화 영역에서 Claude의 기술적 독점이 강화된다. 논제 원장의 핵심 가설 2 '코딩 특화 LLM 지출의 54%'는 코드 생성 능력에만 국한되지 않는다. 이번 증명은 Claude가 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "57",
+      "문맥": "🏁🏁🏁The FLT root reads PROVED on prove2me at 02:00:57Z Aug-18 (10:00:57pm ET Aug-17). Histori",
+      "url": "https://www.anthropic.com/news/formalizing-fermats-last-theorem",
+      "차이": "5.6%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "30",
+    "54"
+   ]
+  },
+  {
+   "slug": "alphabet-81333139",
+   "title": "반독점 통과, 에이전트 준비 — Alphabet의 두 번째 공포 사이클이 끝났다",
+   "date": "2026-09-06",
+   "원문": [
+    "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/",
+    "https://www.cnbc.com/2026/09/02/google-starts-september-with-ai-momentum-after-long-losing-streak.html"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "366억",
+     "문장": "이블은 동시에 공개 성명을 통해 Alphabet의 AI 위치에 신뢰를 표시했다. 이는 Berkshire의 $366억 매수(3단계, 2025년 말부터 진행)의 공개적 정당화로 해석된다. 1",
+     "가장_가까운_원문_숫자": {
+      "숫자": "2026",
+      "문맥": "pact Summit in New Delhi, India, Friday, Feb. 20, 2026. AP After wrapping up its longest month",
+      "url": "https://www.cnbc.com/2026/09/02/google-starts-september-with-ai-momentum-after-long-losing-streak.html",
+      "차이": "100.0%"
+     }
+    },
+    {
+     "숫자": "82",
+     "문장": "Flash의 빠른 출시 주기가 실제 고객 채택으로 이어지는지는 별개의 문제다. 클라우드 매출 성장률(현재 +82%)이 향후 2분기에서 70대로 감속한다면, \"씨즈\" 재평가는 시기상조였",
+     "가장_가까운_원문_숫자": {
+      "숫자": "88",
+      "문맥": "or video analysis cuts token consumption by up to 88%, reduces costs by up to 66%, and boost",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/",
+      "차이": "7.3%"
+     }
+    },
+    {
+     "숫자": "70",
+     "문장": "가 실제 고객 채택으로 이어지는지는 별개의 문제다. 클라우드 매출 성장률(현재 +82%)이 향후 2분기에서 70대로 감속한다면, \"씨즈\" 재평가는 시기상조였을 수 있다. 또한 시장의 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "66",
+      "문맥": " consumption by up to 88%, reduces costs by up to 66%, and boosts quality by up to 7%. Rohan",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/",
+      "차이": "5.7%"
+     }
+    },
+    {
+     "숫자": "70",
+     "문장": "된 변동이다. 다음 관측 포인트 3Q 실적 발표 (2026년 10월 말) — 클라우드 부문 성장률 (목표: 70% 이상 유지), 클라우드 오퍼레이팅 마진 (목표: 개선 추세 지속), ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "66",
+      "문맥": " consumption by up to 88%, reduces costs by up to 66%, and boosts quality by up to 7%. Rohan",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/",
+      "차이": "5.7%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "366억",
+    "82"
+   ]
+  },
+  {
+   "slug": "anthropic-3042a9dc",
+   "title": "수학이 해자를 증명했다 — Fermat 정리 자동증명과 엔터프라이즈 기술 기준",
+   "date": "2026-09-05",
+   "원문": [
+    "https://www.anthropic.com/research/formalizing-fermats-last-theorem"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "23.5B",
+     "문장": "제약 안전성 검증)이라는 新 BtoB 시장을 열 가능성을 높인다. 기존 Claude Code의 코딩 시장($23.5B 전망)이 엔지니어 생산성을 다뤘다면, 이제는 과학자·수학자 생산성까지 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "13 million",
+      "문맥": "ter-checked proof of FLT. Along the way, it wrote 13 million lines of Lean and proved 29,500 interme",
+      "url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem",
+      "차이": "99.9%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "23.5B"
+   ]
+  },
+  {
+   "slug": "anthropic-22e3e152",
+   "title": "통행료가 고객을 밀어낼 때 — Anthropic의 EFS와 가격 인하, 엔터프라이즈 신뢰의 첫 균열",
+   "date": "2026-09-02",
+   "원문": [
+    "https://www.anthropic.com/news/enterprise-frontier-safeguards",
+    "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+    "https://www.cnbc.com/2026/09/01/anthropic-data-retention.html"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "47B",
+     "문장": "용 절감). Mythos 5.1(보안·생명과학 특화)은 신뢰 접근 프로그램 한정으로 제한했다. 이는 5월 $47B에서 7월 $65B로 급등한 ARR이 마진 문제에 직면했음을 암시한다. ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "40B",
+      "문맥": "-acid protein Evo 2 (7B) 8-kb DNA sequence Evo 2 (40B) 8-kb DNA sequence 1.6× 1.8× 1.4× 1.6× ",
+      "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+      "차이": "14.9%"
+     }
+    },
+    {
+     "숫자": "65B",
+     "문장": "hos 5.1(보안·생명과학 특화)은 신뢰 접근 프로그램 한정으로 제한했다. 이는 5월 $47B에서 7월 $65B로 급등한 ARR이 마진 문제에 직면했음을 암시한다. 10년 논제와의 연",
+     "가장_가까운_원문_숫자": {
+      "숫자": "40B",
+      "문맥": "-acid protein Evo 2 (7B) 8-kb DNA sequence Evo 2 (40B) 8-kb DNA sequence 1.6× 1.8× 1.4× 1.6× ",
+      "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+      "차이": "38.5%"
+     }
+    },
+    {
+     "숫자": "65B",
+     "문장": "3Q 결과가 이를 판가름한다. 다음 관측 포인트 2026년 9월 말 ~ 10월 초: 3Q ARR 발표 — $65B 이후 기울기 검증. 고객 유지율(Retention) 및 Churn 지표",
+     "가장_가까운_원문_숫자": {
+      "숫자": "40B",
+      "문맥": "-acid protein Evo 2 (7B) 8-kb DNA sequence Evo 2 (40B) 8-kb DNA sequence 1.6× 1.8× 1.4× 1.6× ",
+      "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+      "차이": "38.5%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "47B",
+    "65B"
+   ]
+  },
+  {
+   "slug": "anthropic-92142d8e",
+   "title": "신뢰가 부메랑이 될 때 — Anthropic의 오정렬 실험과 엔터프라이즈 통행료의 기초",
+   "date": "2026-09-01",
+   "원문": [
+    "https://www.anthropic.com/news/improving-alignment-security-efforts",
+    "https://alignment.anthropic.com/2026/reward-seeker/"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "65B",
+     "문장": "직시하는 순간이다. 첫째, 신뢰 프리미엄의 증거 기초가 모순적으로 드러났다. 논제 원장은 ARR $47B→$65B 고속 증장과 포춘 10 중 8곳의 도입을 \"기업이 신뢰를 이유로 지불하",
+     "가장_가까운_원문_숫자": {
+      "숫자": "47,116,109,112",
+      "문맥": "eep this file free of noisy literals TARGET = _s([47,116,109,112,47,116,97,115,107,47,46,108,97,107,101,",
+      "url": "https://alignment.anthropic.com/2026/reward-seeker/",
+      "차이": "27.5%"
+     }
+    },
+    {
+     "숫자": "65B",
+     "문장": "이즈 신뢰의 복구 여부를 결정할 것. 3Q(10월) 실적 발표 시 ARR 궤적과 기업 고객 이탈 여부 — $65B 이후 증속이 둔화되거나 대규모 고객 정책 변경이 공시되면 논제 약화 신",
+     "가장_가까운_원문_숫자": {
+      "숫자": "47,116,109,112",
+      "문맥": "eep this file free of noisy literals TARGET = _s([47,116,109,112,47,116,97,115,107,47,46,108,97,107,101,",
+      "url": "https://alignment.anthropic.com/2026/reward-seeker/",
+      "차이": "27.5%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "65B"
+   ]
+  },
+  {
+   "slug": "anthropic-5842b116",
+   "title": "과학이 다음 해자다 — Anthropic의 수직시장 진입과 MHS 표준화",
+   "date": "2026-08-28",
+   "원문": [
+    "https://www.anthropic.com/news/expanding-support-for-scientists",
+    "https://www.anthropic.com/news/model-hardware-standard-research-preview",
+    "https://www.anthropic.com/beneficial-deployments"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "47B",
+     "문장": " GPT나 Gemini보다 표준화된 Anthropic 스택을 신뢰하게 할 가능성이 높다. 또한 이 전략은 $47B→$65B로 성장한 엔터프라이즈 ARR의 '다음 곡선'을 암시한다. 앞의",
+     "가장_가까운_원문_숫자": {
+      "숫자": "4.5 billion",
+      "문맥": " than half of the world’s population—an estimated 4.5 billion people—still lacks access to essential ",
+      "url": "https://www.anthropic.com/beneficial-deployments",
+      "차이": "90.4%"
+     }
+    },
+    {
+     "숫자": "65B",
+     "문장": " Gemini보다 표준화된 Anthropic 스택을 신뢰하게 할 가능성이 높다. 또한 이 전략은 $47B→$65B로 성장한 엔터프라이즈 ARR의 '다음 곡선'을 암시한다. 앞의 두 에세",
+     "가장_가까운_원문_숫자": {
+      "숫자": "4.5 billion",
+      "문맥": " than half of the world’s population—an estimated 4.5 billion people—still lacks access to essential ",
+      "url": "https://www.anthropic.com/beneficial-deployments",
+      "차이": "93.1%"
+     }
+    },
+    {
+     "숫자": "65B",
+     "문장": "3 2026 ARR 공시 (9월 말 예상): 과학 세그먼트가 기업 성장률에 추가 기여도를 보이는가. 특히 $65B 이후의 기울기가 둔화했는지 확인. MHS 채택 신호 (3개월 내): 연",
+     "가장_가까운_원문_숫자": {
+      "숫자": "4.5 billion",
+      "문맥": " than half of the world’s population—an estimated 4.5 billion people—still lacks access to essential ",
+      "url": "https://www.anthropic.com/beneficial-deployments",
+      "차이": "93.1%"
+     }
+    },
+    {
+     "숫자": "47B",
+     "문장": "opic 엔터프라이즈 통행료 세그먼트 진화 5월→8월 ARR 성장 경로와 수직시장 확산 기업 IT (5월) 47B 기업 IT (8월) 65B 코딩 에이전트 (기여도 추정) 23.5B 과",
+     "가장_가까운_원문_숫자": {
+      "숫자": "4.5 billion",
+      "문맥": " than half of the world’s population—an estimated 4.5 billion people—still lacks access to essential ",
+      "url": "https://www.anthropic.com/beneficial-deployments",
+      "차이": "90.4%"
+     }
+    },
+    {
+     "숫자": "65B",
+     "문장": " 세그먼트 진화 5월→8월 ARR 성장 경로와 수직시장 확산 기업 IT (5월) 47B 기업 IT (8월) 65B 코딩 에이전트 (기여도 추정) 23.5B 과학·제조 (파이프라인 진입)",
+     "가장_가까운_원문_숫자": {
+      "숫자": "4.5 billion",
+      "문맥": " than half of the world’s population—an estimated 4.5 billion people—still lacks access to essential ",
+      "url": "https://www.anthropic.com/beneficial-deployments",
+      "차이": "93.1%"
+     }
+    },
+    {
+     "숫자": "23.5B",
+     "문장": " 경로와 수직시장 확산 기업 IT (5월) 47B 기업 IT (8월) 65B 코딩 에이전트 (기여도 추정) 23.5B 과학·제조 (파이프라인 진입) 0B 자료: 원문 기사에서 추출 (자동)",
+     "가장_가까운_원문_숫자": {
+      "숫자": "4.5 billion",
+      "문맥": " than half of the world’s population—an estimated 4.5 billion people—still lacks access to essential ",
+      "url": "https://www.anthropic.com/beneficial-deployments",
+      "차이": "80.9%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "47B",
+    "65B",
+    "23.5B"
+   ]
+  },
+  {
+   "slug": "alphabet-83aa9851",
+   "title": "재투자의 증명 — $205B 캐펙스가 $514B 수주로 돌아오다",
+   "date": "2026-08-24",
+   "원문": [
+    "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "175",
+     "문장": "무슨 일이 있었나 Sundar Pichai는 2026 2분기 실적 발표와 동시에 연간 캐펙스 가이던스를 $175~185B에서 $205B로 상향 조정했다. 같은 시점 Google Clo",
+     "가장_가까운_원문_숫자": {
+      "숫자": "200 billion",
+      "문맥": "I Key Points Alphabet expects to spend upward of $200 billion in 2026 on data centers, servers, netwo",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "14.3%"
+     }
+    },
+    {
+     "숫자": "185B",
+     "문장": "일이 있었나 Sundar Pichai는 2026 2분기 실적 발표와 동시에 연간 캐펙스 가이던스를 $175~185B에서 $205B로 상향 조정했다. 같은 시점 Google Cloud 수주",
+     "가장_가까운_원문_숫자": {
+      "숫자": "200 billion",
+      "문맥": "I Key Points Alphabet expects to spend upward of $200 billion in 2026 on data centers, servers, netwo",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "8.1%"
+     }
+    },
+    {
+     "숫자": "30B",
+     "문장": "$514B에 도달했고, 성장률은 +82%를 기록했다. 이는 전년 동기(가이던스 기준 증분 캐펙스) 대비 약 30B 상향이며, 동시에 클라우드 부문이 전체 캐펙스 증액분의 주요 수익 채널",
+     "가장_가까운_원문_숫자": {
+      "숫자": "11 Billion",
+      "문맥": "ct 22, 2026 • By Leo Sun Google Is Paying SpaceX $11 Billion a Year for Compute. Here s the Concentr",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "63.3%"
+     }
+    },
+    {
+     "숫자": "30B",
+     "문장": "수익률 재투자인지를 판단할 구체적 수치가 나왔기 때문이다. $205B 캐펙스가 정당화되려면, 그 증분(약 $30B)이 수익 창출 자산으로 얼마나 빠르게 전환되는가가 핵심이다. 현재 관찰",
+     "가장_가까운_원문_숫자": {
+      "숫자": "11 Billion",
+      "문맥": "ct 22, 2026 • By Leo Sun Google Is Paying SpaceX $11 Billion a Year for Compute. Here s the Concentr",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "63.3%"
+     }
+    },
+    {
+     "숫자": "22B",
+     "문장": "이프라인이 생성 속도보다 빠르다는 뜻. (2) 외부 TPU 판매 개시(매출 인식 시작) + 토큰 처리 속도 22B/분(1분기 만에 +37%) → 공급 제약이 원재료 가격을 지탱하는 구조",
+     "가장_가까운_원문_숫자": {
+      "숫자": "11 Billion",
+      "문맥": "ct 22, 2026 • By Leo Sun Google Is Paying SpaceX $11 Billion a Year for Compute. Here s the Concentr",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "50.0%"
+     }
+    },
+    {
+     "숫자": "37",
+     "문장": "빠르다는 뜻. (2) 외부 TPU 판매 개시(매출 인식 시작) + 토큰 처리 속도 22B/분(1분기 만에 +37%) → 공급 제약이 원재료 가격을 지탱하는 구조. (3) 캐펙스 증액 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "40",
+      "문맥": "al outlays went into servers, while the remaining 40% funded facilities and connectivity. Th",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "8.1%"
+     }
+    },
+    {
+     "숫자": "82B",
+     "문장": "텀 수주잔고(Backlog)와 전년비 매출 성장률 수주잔고 $514B 514B / % 매출 성장률 +82% 82B / % 자료: 원문 기사에서 추출 (자동) UNIVERTRIX · un",
+     "가장_가까운_원문_숫자": {
+      "숫자": "11 Billion",
+      "문맥": "ct 22, 2026 • By Leo Sun Google Is Paying SpaceX $11 Billion a Year for Compute. Here s the Concentr",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "86.6%"
+     }
+    },
+    {
+     "숫자": "185B",
+     "문장": "x.com Alphabet 캐펙스 가이던스 상향 기존 가이던스 vs 2026년 신규 가이던스 기존 상단선 $185B 185B 신규 가이던스 $205B 205B 자료: 원문 기사에서 추출 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "200 billion",
+      "문맥": "I Key Points Alphabet expects to spend upward of $200 billion in 2026 on data centers, servers, netwo",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "8.1%"
+     }
+    },
+    {
+     "숫자": "185B",
+     "문장": " Alphabet 캐펙스 가이던스 상향 기존 가이던스 vs 2026년 신규 가이던스 기존 상단선 $185B 185B 신규 가이던스 $205B 205B 자료: 원문 기사에서 추출 (자동) ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "200 billion",
+      "문맥": "I Key Points Alphabet expects to spend upward of $200 billion in 2026 on data centers, servers, netwo",
+      "url": "https://www.fool.com/investing/2026/08/16/sundar-pichai-raised-alphabets-capex-guidance-to-2/",
+      "차이": "8.1%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "185B",
+    "22B",
+    "37"
+   ]
+  },
+  {
+   "slug": "alphabet-0ea8ae9f",
+   "title": "5.9B의 침묵 — 캐펙스 공포가 현금 이야기가 되는 순간",
+   "date": "2026-08-23",
+   "원문": [
+    "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+    "https://ncdoj.gov/some-north-carolinians-to-receive-payments-as-part-of-700-million-settlement-in-google-play-store-antitrust-lawsuit/"
+   ],
+   "진짜_불일치": [
+    {
+     "숫자": "175",
+     "문장": "음으로 분기 현금 유출 $5.9B를 기록했다. 동시에 2026년 전체 캐펙스 가이던스를 $15B 상향하여 $175~185B 범위로 재설정했다(연간 매출 대비 약 19~20%). 이는 7",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "91.4%"
+     }
+    },
+    {
+     "숫자": "185B",
+     "문장": "분기 현금 유출 $5.9B를 기록했다. 동시에 2026년 전체 캐펙스 가이던스를 $15B 상향하여 $175~185B 범위로 재설정했다(연간 매출 대비 약 19~20%). 이는 7월 23일",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "91.9%"
+     }
+    },
+    {
+     "숫자": "26.4B",
+     "문장": "유출 자체는 아직 반증이 아니다. Alphabet의 영업현금흐름(Operating CF)은 여전히 Q2에 $26.4B(전년 동기 $24.1B, +9.5%)이므로, 유출은 '캐펙스 투자 속도",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "43.2%"
+     }
+    },
+    {
+     "숫자": "24.1B",
+     "문장": " 아니다. Alphabet의 영업현금흐름(Operating CF)은 여전히 Q2에 $26.4B(전년 동기 $24.1B, +9.5%)이므로, 유출은 '캐펙스 투자 속도'가 현금 생성을 앞서간",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "37.8%"
+     }
+    },
+    {
+     "숫자": "36.6B",
+     "문장": ".1B, +9.5%)이므로, 유출은 '캐펙스 투자 속도'가 현금 생성을 앞서간다는 뜻일 뿐이다. 버크셔가 $36.6B을 3단 매수한 논리가 정확히 이것이다: 현금을 쓰는 회사가 현금을 생성",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "59.0%"
+     }
+    },
+    {
+     "숫자": "160",
+     "문장": "위험하지 않다면, 그 차이가 곧 '기회'다. 그러나 $15B 상향은 신호다. 이는 CFO가 초기 가이던스($160~170B로 추정)를 재평가했다는 뜻이며, 그 이유는 두 가지 중 하나다",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "90.6%"
+     }
+    },
+    {
+     "숫자": "170B",
+     "문장": " 않다면, 그 차이가 곧 '기회'다. 그러나 $15B 상향은 신호다. 이는 CFO가 초기 가이던스($160~170B로 추정)를 재평가했다는 뜻이며, 그 이유는 두 가지 중 하나다: (a)",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "91.2%"
+     }
+    },
+    {
+     "숫자": "514B",
+     "문장": "(마진 개선 정체, ROIC 하락)은 아직 나타나지 않았으며, 오히려 클라우드 성장률 +82%와 수주잔고 $514B는 투자의 선행성을 뒷받침한다. 무엇이 틀릴 수 있나 현금유출이 구조적 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "700 billion",
+      "문맥": "orted that AI spending by Big Tech is set to top $700 billion in 2026 as cash flows fall short, pushi",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "36.2%"
+     }
+    },
+    {
+     "숫자": "175",
+     "문장": "'과잉투자'로 재평가될 것이다. 특히 생성형 AI의 실제 상용화 ROI가 기대치 아래로 내려올 경우, 이 $175~185B는 '낙관의 기록'이 될 수 있다. 또한 반독점 판결이나 규제 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "91.4%"
+     }
+    },
+    {
+     "숫자": "185B",
+     "문장": "자'로 재평가될 것이다. 특히 생성형 AI의 실제 상용화 ROI가 기대치 아래로 내려올 경우, 이 $175~185B는 '낙관의 기록'이 될 수 있다. 또한 반독점 판결이나 규제 강화로 클",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "91.9%"
+     }
+    },
+    {
+     "숫자": "26.4B",
+     "문장": " 현금흐름 구조 변화 Q2 2026: 영업현금흐름 vs 자본지출 (B) Operating Cash Flow 26.4B Capital Expenditure (추정) 32.3B Free Cas",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "43.2%"
+     }
+    },
+    {
+     "숫자": "32.3B",
+     "문장": "자본지출 (B) Operating Cash Flow 26.4B Capital Expenditure (추정) 32.3B Free Cash Flow (추정) -5.9B 자료: 원문 기사에서 추",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "53.6%"
+     }
+    },
+    {
+     "숫자": "165B",
+     "문장": "univertrix.com 2026 캐펙스 가이던스 재상향 초기 vs 재상향 (B) 초기 가이던스 (중값) 165B 재상향 가이던스 (중값) 180B 상향폭 15B 자료: 원문 기사에서 ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "90.9%"
+     }
+    },
+    {
+     "숫자": "180B",
+     "문장": " 캐펙스 가이던스 재상향 초기 vs 재상향 (B) 초기 가이던스 (중값) 165B 재상향 가이던스 (중값) 180B 상향폭 15B 자료: 원문 기사에서 추출 (자동) UNIVERTRIX ",
+     "가장_가까운_원문_숫자": {
+      "숫자": "15 billion",
+      "문맥": " $5.9 billion cash burn in Q2 and an increase of $15 billion in the 2026 spending outlook. This fina",
+      "url": "https://www.marketscale.com/industries/software-and-technology/alphabets-59b-q2-cash-burn-is-turning-ai-infrastructure-into-a-cfo-led-capex-fight-in-2026",
+      "차이": "91.7%"
+     }
+    }
+   ],
+   "그_밖의_걸린_숫자": [],
+   "논제_원장에_있는_숫자": [
+    "185B",
+    "36.6B",
+    "514B"
+   ]
+  }
+ ]
+}

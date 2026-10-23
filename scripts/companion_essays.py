@@ -343,7 +343,7 @@ _KO_CHEON = r"천(?![천히문체국재하])"
 _NUM_RE = re.compile(
     r"(?<![\d.,A-Za-z])(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?"
     r"(?:\s*(" + _KO_JO + "|" + _KO_EOK + "|" + _KO_MAN + "|" + _KO_CHEON +
-    r"|trillion|billion|bn|million|mn|thousand|T|B|M|K)(?![A-Za-z]))?", re.I)
+    r"|trillion|billion|bn|million|mn|thousand|T|B|M|K)(?![A-Za-z0-9]))?", re.I)
 # 한국어 복합 단위 — '1조 4,575억'·'2억 8천만'·'1,360만' 을 하나의 값으로(2026-10-23 오탐 실측:
 # '2억 8천만'(= 280 million)을 '2억'과 '8천'으로 쪼개 원문과 못 맞췄다)
 _KO_PART = r"(\d[\d,]*(?:\.\d+)?)\s*(" + _KO_JO + "|" + _KO_EOK + "|천만|백만|" + _KO_MAN + ")"
@@ -377,14 +377,25 @@ def _num_spans(text):
         out.append((total, 0.5 * 10 ** (-dec) * _KO_MULT[u_last], m.group(0), m.start(), m.end()))
         return " " * len(m.group(0))
     t = _COMPOUND.sub(comp, t)
+    plain = []
     for m in _NUM_RE.finditer(t):
         whole, frac, unit = m.group(1), m.group(2), m.group(3)
         v = float(whole.replace(",", "") + ("." + frac if frac else ""))
         mult = _UNIT.get((unit or "").lower(), 1.0) if unit else 1.0
         dec = len(frac) if frac else 0
         raw = m.group(0).strip()
-        out.append((v * mult, 0.5 * 10 ** (-dec) * mult, raw, m.start(), m.start() + len(raw)))
+        plain.append([v, dec, mult, raw, m.start(), m.start() + len(raw)])
+    # 범위 표기('$175~185B' · '$175 to $185 billion')의 앞 숫자는 뒤 숫자의 단위를 물려받는다 —
+    # 과거 에세이 재검사(2026-10-23)에서 '175' 를 맨 숫자로 읽어 원문 '$175 billion' 과 못 맞추던 오탐
+    for a, b in zip(plain, plain[1:]):
+        if a[2] == 1.0 and b[2] != 1.0 and _RANGE_GAP.match(t[a[5]:b[4]]):
+            a[2] = b[2]
+    for v, dec, mult, raw, s, e in plain:
+        out.append((v * mult, 0.5 * 10 ** (-dec) * mult, raw, s, e))
     return out
+
+
+_RANGE_GAP = re.compile(r"^\s*(?:[~∼〜–—-]|to)\s*\$?\s*$", re.I)
 
 
 def _num_tokens(text):
@@ -441,13 +452,51 @@ def number_context(body, toks, width=50):
     return out
 
 
+# 표의 단위 선언 — '$, in millions' · '(# in millions)' · '(단위: 백만원)' 같은 머리말. 그 아래 표 칸만
+# 단위 환산 후보가 된다(2026-10-23 구멍 수리: 단위 없는 정수를 무조건 백만·천으로도 읽었더니
+# 원문의 'Flight 14' 가 에세이의 '13.6백만' 을 통과시켰다 — 반올림 폭 ±0.5백만이 그대로 따라갔다).
+_SCALE_HDR = re.compile(
+    r"in\s+(millions|thousands|billions)|\((millions|thousands)\b|"
+    r"단위\s*[:：]?\s*(?:US\$|\$|USD\s*)?(백만|천|억)", re.I)
+_SCALE_MULT = {"millions": 1e6, "thousands": 1e3, "billions": 1e9, "백만": 1e6, "천": 1e3, "억": 1e8}
+SCALE_WIN = 8000        # 단위 선언이 미치는 거리(글자) — 표 하나 길이
+# 표 칸 = 이웃 숫자와 사이에 기호·공백만 있는 숫자('5,248 4,291 3,097' · '$(143) $(273)').
+# 문장 속 숫자('Flight 14, our first')는 표 칸이 아니다 — 머리말 아래에 있어도 환산하지 않는다.
+_CELL_GAP = re.compile(r"^[\s$()%\-–—]*$")
+
+
+def _scale_at(src, pos, hdrs):
+    """pos 위쪽 SCALE_WIN 안의 가장 가까운 단위 선언의 배수(없으면 None)."""
+    best = None
+    for s, mult in hdrs:
+        if s < pos and pos - s <= SCALE_WIN:
+            best = mult
+    return best
+
+
 def _source_values(src):
-    """원문 숫자 → [(값, 그 표기의 반올림 폭)]. 단위 없는 숫자는 표의 백만·천 단위 후보도 넣는다."""
+    """원문 숫자 → [(값, 그 표기의 반올림 폭)].
+
+    단위 없는 숫자는 **단위 선언 아래의 표 칸일 때만** 그 단위로 환산한 후보를 더한다.
+    단위 문맥이 없는 맨 정수(비행 번호·모델 번호·문장 속 개수)는 적힌 값 그대로만 대조한다.
+    """
+    hdrs = []
+    for m in _SCALE_HDR.finditer(src or ""):
+        word = next(g for g in m.groups() if g).lower()
+        hdrs.append((m.start(), _SCALE_MULT[word]))
+    spans = _num_spans(src)
     vals = []
-    for v, tol, _ in _num_tokens(src):
+    for i, (v, tol, raw, s, e) in enumerate(spans):
         vals.append((v, tol))
-        if v < 1e6:                     # 단위 없는 원문 숫자(표의 백만·천 단위) 후보
-            vals += [(v * 1e6, tol * 1e6), (v * 1e3, tol * 1e3)]
+        if v >= 1e6 or not hdrs:
+            continue
+        mult = _scale_at(src, s, hdrs)
+        if not mult:
+            continue
+        prev_gap = src[spans[i - 1][4]:s] if i > 0 else None
+        next_gap = src[e:spans[i + 1][3]] if i + 1 < len(spans) else None
+        if any(g is not None and _CELL_GAP.match(g) for g in (prev_gap, next_gap)):
+            vals.append((v * mult, tol * mult))
     return vals
 
 
@@ -803,7 +852,7 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
         "사용_가능한_숫자": (numbers or []) if full_any else [],
         "후보": [{"제목": x.get("title", ""), "URL": x.get("url", ""),
                   "발행": x.get("pub", ""),
-                  "원천등급": "SEC 공시 원문(1순위)" if x.get("primary") else "보도·기타",
+                  "원천등급": x.get("grade") or ("SEC 공시 원문(1순위)" if x.get("primary") else "보도·기타"),
                   "발췌": (x.get("article") or "")[:(20000 if x.get("primary") else 2500)]}
                  for x in items],
     }
@@ -1093,18 +1142,150 @@ def source_registry(items, cited=None):
     return (hit or reg)[:6]
 
 
-def write_with_discipline(api_key, constitution, comp, thesis, items, recent, memo=""):
-    """집필 → 인용 규율 검사 → (위반이면) 사유를 주고 **1회 재생성** → 재검사.
+# ────────────────────────────────────────────────────────────────
+# 사실 규율 (2026-10-23 ⑲) — 숫자 밖의 거짓을 막는다
+# ────────────────────────────────────────────────────────────────
+# 사고: Flight 14 회수 에세이가 숫자 규율은 통과했다(숫자가 '14' 하나뿐). 그런데 "부스터가 궤도에 진입"
+# (실제: 분리 후 멕시코만 연착수) · "여섯 번의 실패" · "재사용 가능성을 갖춘 채 도달"(선체는 태평양 착수 후 폭발)
+# 을 썼다. 원천은 발사 **전** 예고 기사와 유료벽 제목뿐이었다. 막아야 할 것은 '원문이 말하지 않은 사실'이다 —
+# 검사도 그 정의 그대로: 본문의 사실 주장을 뽑아 수집 원문과 대조한다(지뢰 '방지선은 정의로 검사하라').
+EVENT_TYPES = ("실적", "계약", "발사", "규제")       # '기타'(추세·논평)는 사건 에세이가 아니다
+PRIMARY_HOSTS = ("sec.gov", "ir.spacex.com", "spacex.com", "ll.thespacedevs.com", "anthropic.com",
+                 "abc.xyz", "blog.google", "deepmind.google", "googleblog.com")
+PRIMARY_MIN = 400        # 공식 도메인 원천을 '읽었다'고 칠 최소 글자(동의 화면·목록 페이지 배제)
+PRIMARY_EXCERPT_MIN = 80  # 엔진이 직접 넣은 1차 원천(SEC 발췌·발사 기록)의 최소 글자
+FACT_SRC_PRIMARY = 20000
+FACT_SRC_OTHER = 6000
+FACT_PROMPT = """너는 독립 사실 검증관이다. 원고를 쓴 사람의 의도·논제·지시는 모른다. 아래 '원고'에서 사실 주장
+(누가·무엇을·언제·결과, 수량, 사건의 성패, 인용·출처 귀속)을 문장 단위로 모두 뽑아, '자료'의 텍스트만으로 판정하라.
+네 기억·상식·외부 지식으로 채우지 마라.
+판정: 지지 = 자료 텍스트가 그 주장을 직접 말한다 / 불지지 = 자료에 근거가 없다 / 반박 = 자료가 반대 사실을 말한다.
+규칙:
+- 사건일 이전 자료의 예정·계획·기대 문장(expected, targeting, will, aims, 예정)은 사건 결과를 지지하지 않는다.
+  발사 기록의 '임무 설명'도 발사 전에 쓴 계획 문구다 — 결과는 '결과'·'착륙'·'선체'·'진행 기록' 줄에서만 확인한다.
+- 제목만 있는 자료(전문_여부 false)는 제목에 적힌 사실까지만 지지한다.
+- 주장의 일부라도 자료를 넘어서면(예: '모두'·'처음'·'회수'·'재사용'처럼 범위·순서·결과를 넓히면) 불지지다.
+- 해석·전망·의견·가정('~를 의미한다', '~일 수 있다', 다음 관측 포인트)과 논제 원장·가설·판정에 대한 서술은 뽑지 않는다.
+  단 그 문장 안에 세계에 대한 사실(사건 결과·날짜·인물 행위·과거 사례)이 섞여 있으면 그 사실만 뽑는다.
+- 다른 회사·다른 기체의 과거 사례도 사실 주장이다 — 자료에 없으면 불지지.
+반드시 아래 JSON 하나만 응답하라 (코드펜스·설명 금지):
+{"claims": [{"주장": "원고 문장 요지(원고 표현에 가깝게)", "판정": "지지|불지지|반박", "자료": 번호 또는 null,
+ "근거": "자료 속 근거 구절(20단어 이내) 또는 빈 문자열", "사유": "불지지·반박이면 무엇이 자료와 다른가"}]}
+"""
+
+
+def _host(url):
+    from urllib.parse import urlparse
+    try:
+        h = urlparse(str(url or "")).netloc.lower()
+    except Exception:
+        return ""
+    return h[4:] if h.startswith("www.") else h
+
+
+def is_primary_source(x):
+    """1차 원천인가 — 엔진이 넣은 원천(SEC·발사 기록) 또는 회사·규제기관 공식 도메인."""
+    if (x or {}).get("primary"):
+        return True
+    h = _host((x or {}).get("url"))
+    return bool(h) and (any(h == d or h.endswith("." + d) for d in PRIMARY_HOSTS) or h.endswith(".gov"))
+
+
+def primary_after_event(items, event_date):
+    """사건 이후의 1차 원천 중 실제로 읽은 것. 사건 전 예고·유료벽 제목은 여기 들지 못한다."""
+    try:
+        ev = datetime.strptime(str(event_date or "")[:10], "%Y-%m-%d").date()
+    except ValueError:
+        ev = None
+    out = []
+    for x in items or []:
+        if not is_primary_source(x):
+            continue
+        need = PRIMARY_EXCERPT_MIN if x.get("primary") else PRIMARY_MIN
+        if len((x.get("article") or "").strip()) < need:
+            continue
+        d = pub_date(x.get("pub"))
+        if ev is not None and (d is None or d < ev):
+            continue
+        out.append(x)
+    return out
+
+
+def is_event_essay(res, required=False):
+    return bool(required) or str((res or {}).get("event_type", "")).strip() in EVENT_TYPES
+
+
+def fact_sources(items):
+    """검증관에게 주는 자료 — 수집 원문만(논제 원장·헌법·메모는 넣지 않는다)."""
+    out = []
+    for i, x in enumerate(items or []):
+        art = (x.get("article") or "").strip()
+        lim = FACT_SRC_PRIMARY if x.get("primary") else FACT_SRC_OTHER
+        out.append({"번호": i + 1, "URL": x.get("url", ""), "발행": x.get("pub", ""),
+                    "원천등급": x.get("grade") or ("1차 원천" if is_primary_source(x) else "보도·기타"),
+                    "전문_여부": bool(art), "제목": x.get("title", ""),
+                    "텍스트": (art or str(x.get("raw_desc") or ""))[:lim]})
+    return out
+
+
+def verify_facts(api_key, body_html, items, event_date="", model=None):
+    """독립 검증 호출 — 원고 글자와 수집 원문만 준다(작성 맥락 미전달: 헌법·논제 원장·소장 메모·
+    반려 사유·사용 가능한 숫자 전부 빠진다). → (원문이 지지하지 않는 주장 목록, 뽑은 주장 수).
+
+    검증 자체가 실패하면 예외 — 호출자는 미게시로 처리한다(침묵은 통과가 아니다).
+    판정이 '지지'가 아닌 것(불지지·반박·알 수 없는 값)은 전부 위반으로 센다.
+    """
+    plain = _norm(re.sub(r"<[^>]+>", " ", body_html or ""))
+    payload = {"사건일": event_date or "", "원고": plain, "자료": fact_sources(items)}
+    body = {"model": model or models()[1], "max_tokens": 16000, "output_config": {"effort": "medium"},
+            "messages": [{"role": "user", "content": FACT_PROMPT + "\n" + json.dumps(payload, ensure_ascii=False)}]}
+    r = requests.post("https://api.anthropic.com/v1/messages",
+                      headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
+                               "content-type": "application/json"},
+                      json=body, timeout=300)
+    r.raise_for_status()
+    data = r.json()
+    use = data.get("usage") or {}
+    print(f"[동행] 사실 검증관 {body['model']} · 입력 {use.get('input_tokens')} · 출력 {use.get('output_tokens')} 토큰")
+    text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
+    text = re.sub(r"```(?:json)?", "", text).strip()
+    out = json.loads(text[text.find("{"):text.rfind("}") + 1])
+    claims = out.get("claims")
+    if not isinstance(claims, list):
+        raise ValueError("검증관 응답에 claims 목록이 없다")
+    return _unsupported(claims), len(claims)
+
+
+def _unsupported(claims):
+    """'지지'가 아닌 판정은 전부 위반 — 불지지·반박·빈 값·알 수 없는 값(검증관이 형식을 어기면 통과시키지 않는다)."""
+    return [c for c in claims or [] if str((c or {}).get("판정", "")).strip() != "지지"]
+
+
+def _fact_feedback(bad):
+    return ("독립 검증관이 원문과 대조해 아래 주장을 지지하지 않았다: " +
+            " / ".join(f"'{c.get('주장', '')}' ({c.get('판정', '')}: {c.get('사유', '')})" for c in bad[:8]) +
+            " — 이 주장들을 빼거나 자료가 말하는 그대로 고쳐라. 결과·범위·순서를 자료보다 넓히지 마라. "
+            "사건의 결과는 사건 이후 자료(1차 원천)에서만 가져오고, 예고 기사의 계획 문장을 결과로 쓰지 마라.")
+
+
+def write_with_discipline(api_key, constitution, comp, thesis, items, recent, memo="",
+                          event_required=False, focus_date=""):
+    """집필 → 인용·숫자·사실 규율 검사 → (위반이면) 사유를 주고 **1회 재생성** → 재검사.
 
     한 번 걸렸다고 바로 보류하면, 모델이 규율을 몰라서 걸린 경우까지 버리게 된다.
     반려 사유를 알려주고 다시 쓰게 하는 것이 사람 편집자가 하는 일이다.
     두 번째도 걸리면 그때는 보류한다 — 방지선은 끝내 지켜야 하니까.
+    사건 에세이(실적·계약·발사·규제, 또는 초점 회수)는 사건 이후의 1차 원천이 없으면 쓰지 않는다 —
+    재생성으로 원천을 만들 수는 없으므로 이 조건은 바로 보류다.
     """
     src = collected_text(items)
     full_any = any((x.get("article") or "").strip() for x in items or [])
     numbers = number_inventory(items) if full_any else []
     model = pick_model(items)
     print(f"[동행] {comp['ko']}: 집필 모델 {model} · 사용 가능한 숫자 {len(numbers)}개")
+    if event_required and not primary_after_event(items, focus_date):
+        return {"publish": True}, ("사건 이후의 1차 원천 없음 — 예고 기사·유료벽 제목만으로 사건 에세이를"
+                                   " 쓰지 않는다(보류)")
     feedback = ""
     for attempt in (1, 2):
         res = ask_claude(api_key, constitution, comp, thesis, items, recent,
@@ -1112,6 +1293,10 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
                          numbers=numbers, model=model)
         if not res.get("publish"):
             return res, None
+        ev_date = res.get("event_date") or focus_date
+        if is_event_essay(res, event_required) and not primary_after_event(items, ev_date):
+            return res, (f"사건 이후의 1차 원천 없음(사건일 {ev_date or '미상'}) — 예고 기사·유료벽 제목만으로"
+                         " 사건 에세이를 쓰지 않는다(보류)")
         body, charts = res.get("body", ""), res.get("charts") or []
         bad = check_quotes(body, src, len(res.get("sources") or [1]))
         num_bad, num_ctx = [], []
@@ -1130,9 +1315,23 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
                 for tok, ctx in num_ctx:
                     print(f"[동행] 숫자 규율 근거 — '{tok}' :: …{ctx}…", file=sys.stderr)
         bad += num_bad
+        fact_bad = []
         if not bad:
-            res["numbers_verified"] = True
-            return res, None
+            # 인용·숫자를 통과한 원고만 검증관에게 보낸다(비용) — 검증관은 작성 맥락을 모른다
+            try:
+                fact_bad, n_claims = verify_facts(api_key, body, items, event_date=ev_date)
+            except Exception as e:
+                return res, f"사실 검증 실행 실패 — 미게시 ({type(e).__name__}: {str(e)[:120]})"
+            print(f"[동행] {comp['ko']}: 사실 검증 — 주장 {n_claims}건 · 원문 미지지 {len(fact_bad)}건")
+            for c in fact_bad[:8]:
+                print(f"[동행] 사실 규율 근거 — '{c.get('주장', '')}' :: {c.get('판정', '')} · "
+                      f"{c.get('사유', '')}", file=sys.stderr)
+            if not fact_bad:
+                res["numbers_verified"] = True
+                res["facts_verified"] = True
+                res["fact_claims"] = n_claims
+                return res, None
+            bad = ["원문이 지지하지 않는 주장: " + " / ".join(str(c.get("주장", ""))[:80] for c in fact_bad[:6])]
         reason = " / ".join(bad)
         if attempt == 1:
             print(f"[동행] {comp['ko']}: 규율 위반 — 사유를 주고 1회 재생성 ({reason})",
@@ -1145,6 +1344,8 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
                 feedback += (" 걸린 숫자와 원고 속 자리: " +
                              " / ".join(f"'{tok}' ← …{ctx}…" for tok, ctx in num_ctx) +
                              " — 이 숫자들은 '사용_가능한_숫자' 목록 밖이다. 목록의 숫자로 바꾸거나 숫자 없이 써라.")
+            if fact_bad:
+                feedback = "직전 원고가 사실 규율에 걸렸다. " + _fact_feedback(fact_bad)
             continue
         return res, reason
     return res, "재생성 후에도 규율 위반"
@@ -1232,7 +1433,7 @@ def run_material(mat, companies, api_key, constitution, essays, today):
     if not res.get("publish"):
         return None, f"소재 판정 침묵 — {res.get('reason','')[:60]}"
     if violation:
-        return None, "인용 규율 위반(재생성 후에도) — 발행 보류 :: " + violation
+        return None, "규율 위반(재생성 후에도) — 발행 보류 :: " + violation
     return build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),
                        res.get("body", ""),
                        source_registry([item], res.get("sources")), "소재", today,
@@ -1313,6 +1514,104 @@ def sec_primary_items(comp, days, today=None):
     return out
 
 
+def ll2_text(d):
+    """Launch Library 2 발사 기록(JSON) → 대조용 텍스트. 계획(임무 설명)과 결과(착륙·선체·진행 기록)를 줄로 가른다."""
+    d = d or {}
+    st = d.get("status") or {}
+    lines = [f"Launch Library 2 발사 기록 — 마지막 갱신 {d.get('last_updated', '')}",
+             f"이름: {d.get('name', '')} · 발사 시각(UTC): {d.get('net', '')}",
+             f"결과: {st.get('name', '')} — {st.get('description', '')}"]
+    if d.get("failreason"):
+        lines.append(f"결과(실패 사유): {d['failreason']}")
+    rk = d.get("rocket") or {}
+    for s in rk.get("launcher_stage") or []:
+        ln = s.get("launcher") or {}
+        land = s.get("landing") or {}
+        loc = (land.get("landing_location") or {}).get("name", "")
+        lines.append(f"착륙(부스터 {ln.get('serial_number', '')}): 시도 {land.get('attempt')} · 성공 {land.get('success')}"
+                     f" · {loc} — {land.get('description', '')}")
+        if ln.get("details"):
+            lines.append(f"부스터 기록: {ln['details']} (상태: {(ln.get('status') or {}).get('name', '')})")
+    for s in rk.get("spacecraft_stage") or []:
+        sc = s.get("spacecraft") or {}
+        land = s.get("landing") or {}
+        lines.append(f"선체({sc.get('name', '')}): 상태 {(sc.get('status') or {}).get('name', '')} · 우주 체류"
+                     f" {sc.get('time_in_space', '')} · {sc.get('description', '')}")
+        if land:
+            loc = (land.get("landing_location") or {}).get("name", "")
+            lines.append(f"착륙(선체): 시도 {land.get('attempt')} · 성공 {land.get('success')} · {loc} — "
+                         f"{land.get('description', '')}")
+    ups = sorted(d.get("updates") or [], key=lambda u: u.get("created_on") or "")
+    for u in ups:
+        lines.append(f"진행 기록 {u.get('created_on', '')}: {u.get('comment', '')}")
+    m = d.get("mission") or {}
+    if m.get("description"):
+        lines.append(f"임무 설명(발사 전에 쓴 계획 문구 — 결과가 아니다): {m['description']}")
+    return "\n".join(lines)
+
+
+def spacex_launch_items(comp, days, today=None, focus=None):
+    """SpaceX 발사 사건의 1차 원천 — 측정층(spacex_watch.json)이 잡은 Launch Library 2 기록을 자료에 넣는다.
+
+    2026-10-23 ⑲: Flight 14 에세이가 발사 전 예고 기사와 유료벽 제목만으로 결과를 지어냈다.
+    측정층은 같은 날 '발사 성공' 기록을 이미 갖고 있었다 — 도구가 있어도 배선하지 않으면 없는 것과 같다.
+    """
+    if comp.get("slug") != "spacex":
+        return []
+    watch = load_json(DATA_DIR / "spacex_watch.json", {}) or {}
+    today = today or datetime.now(KST).strftime("%Y-%m-%d")
+    cut = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=int(days))).strftime("%Y-%m-%d")
+    out = []
+    for e in watch.get("events") or []:
+        if e.get("source") != "Launch Library 2" or not e.get("url"):
+            continue
+        if focus:
+            if not in_focus({"pub": e.get("date")}, focus["date"]):
+                continue
+        elif (e.get("date") or "") < cut:
+            continue
+        try:
+            r = requests.get(e["url"], params={"mode": "detailed"}, timeout=25,
+                             headers={"User-Agent": "UNIVERTRIX univertrix.com"})
+            r.raise_for_status()
+            d = r.json()
+        except Exception as ex:
+            print(f"[동행] 발사 기록 수집 실패({e.get('title', '')}: {ex}) — 생략", file=sys.stderr)
+            continue
+        out.append({"title": f"발사 기록(Launch Library 2) — {d.get('name') or e.get('title', '')}",
+                    "url": e["url"], "pub": (d.get("last_updated") or e.get("date") or "")[:10],
+                    "article": ll2_text(d), "article_attempted": True, "primary": True,
+                    "event_kind": "launch", "grade": "발사 기록(Launch Library 2, 사건 후 갱신)",
+                    "focus_ok": bool(focus)})      # 초점 판정은 사건일로 이미 했다(갱신일이 아니라)
+        if len(out) >= 2:
+            break
+    if out:
+        print(f"[동행] {comp['ko']}: 발사 기록 {len(out)}건 — " + ", ".join(x["pub"] for x in out))
+    return out
+
+
+def focus_excerpt(item, focus):
+    """초점 창 밖의 1차 원천 → 초점 사건의 강한 핵심어(Flight 14·3Q26)가 든 문장만 발췌. 없으면 None.
+
+    10/20 실적 8-K 에는 "Completed Starship Flight 14, our first orbital Starship flight…" 가 있다 —
+    날짜 창만으로 거르면 이 문장이 9/28 사건의 자료에서 빠진다(2026-10-23 실측).
+    """
+    pats = [re.escape(re.sub(r"\s+", " ", m.group(0))).replace(r"\ ", r"\s*")
+            for m in _STRONG.finditer(str((focus or {}).get("label", "")))]
+    if not pats:
+        return None
+    rx = re.compile("|".join(pats), re.I)
+    sents = re.split(r"(?<=[.!?])\s+|\s*•\s*|\n+", item.get("article") or "")
+    hit = [s.strip() for s in sents if rx.search(s)]
+    if not hit:
+        return None
+    d = dict(item)
+    d["article"] = " … ".join(hit[:6])
+    d["title"] = f"{item.get('title', '')} — '{focus['label']}' 언급 문장 발췌"
+    d["grade"] = "SEC 공시 원문 발췌(사건 후)" if "sec.gov" in str(item.get("url")) else "1차 원천 발췌(사건 후)"
+    return d
+
+
 def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=None,
              memo="", focus=None):
     """자동 수집분 처리 → 에세이 항목 또는 None.
@@ -1333,13 +1632,28 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
     seen_urls = {r["url"] for e in essays if e.get("company") == comp["slug"] and is_public(e)
                  for r in normalize_sources(e.get("sources"))}
     seen_urls |= set(exclude or ())
-    primary = sec_primary_items(comp, widen_days or 7)        # 실적·계약은 SEC 원문이 1순위
-    cands = primary + [c for c in cands if c.get("url") not in {x["url"] for x in primary}]
-    cands = [c for c in cands if c.get("url") not in seen_urls]
+    # 1차 원천이 맨 앞 — 실적·계약은 SEC 원문, 발사는 측정층의 발사 기록(⑲)
+    primary = (sec_primary_items(comp, widen_days or 7) +
+               spacex_launch_items(comp, widen_days or 7, today=today, focus=focus))
+    p_urls = {x["url"] for x in primary}
+    others = [c for c in cands if c.get("url") not in p_urls and c.get("url") not in seen_urls]
     if focus:
-        # 회수 초점(사건일·이름) — 그 사건 근처 자료만 근거로 삼는다
-        cands = [c for c in cands if in_focus(c, focus["date"])]
-        print(f"[동행] {comp['ko']}: 회수 초점 {focus['date']} {focus['label']} — 후보 {len(cands)}")
+        # 회수 초점(사건일·이름) — 그 사건 근처 자료만 근거로 삼는다. 창 밖의 1차 원천은
+        # 그 사건을 언급한 문장만 발췌해 넣는다(다른 사건 에세이가 이미 쓴 원천이어도 — 문장이 다르다)
+        prim = []
+        for c in primary:
+            if c.get("focus_ok") or in_focus(c, focus["date"]):
+                if c.get("url") not in seen_urls:
+                    prim.append(c)
+            else:
+                ex = focus_excerpt(c, focus)
+                if ex:
+                    prim.append(ex)
+        cands = prim + [c for c in others if in_focus(c, focus["date"])]
+        print(f"[동행] {comp['ko']}: 회수 초점 {focus['date']} {focus['label']} — 후보 {len(cands)}"
+              f" (1차 원천 {len(prim)})")
+    else:
+        cands = [c for c in primary if c.get("url") not in seen_urls] + others
     if not cands:
         print(f"[동행] {comp['ko']}: 후보 0 · 발행 0 — 침묵")
         return None
@@ -1351,7 +1665,9 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"] and is_public(e)][:8]
     try:
         res, violation = write_with_discipline(api_key, constitution, comp, thesis,
-                                               cands[:5], recent, memo=memo)
+                                               cands[:5], recent, memo=memo,
+                                               event_required=bool(focus),
+                                               focus_date=(focus or {}).get("date", ""))
     except Exception as e:
         print(f"[동행] {comp['ko']} 집필 실패: {e} — 다음 회차 재시도", file=sys.stderr)
         return None
@@ -1361,7 +1677,7 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
         return None
     if violation:
         # 사유 전문을 남긴다 — 잘라 쓰면 왜 막혔는지 영영 모른다
-        print(f"[동행] {comp['ko']}: 인용 규율 위반(재생성 후에도) — 발행 보류 :: {violation}",
+        print(f"[동행] {comp['ko']}: 규율 위반(인용·숫자·사실·원천) — 발행 보류 :: {violation}",
               file=sys.stderr)
         return None
     entry = build_entry(comp["slug"], res.get("title", "무제"), res.get("verdict", ""),

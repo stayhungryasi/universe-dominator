@@ -18,6 +18,24 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import companion_essays as ce   # noqa: E402
 
+
+# 사실 규율(⑲)의 검증관 호출·발사 기록 수집은 네트워크를 탄다. 이 묶음은 인용·숫자·흐름을 검사하므로
+# 검증관은 '전부 지지'로, 발사 기록은 '없음'으로 고정한다. 검증관 자체의 배선·차단·독립성은
+# test_fact_discipline.py 가 실물 함수로 검사한다.
+_PATCHES = []
+
+
+def setUpModule():
+    _PATCHES[:] = [mock.patch.object(ce, "verify_facts", return_value=([], 1)),
+                   mock.patch.object(ce, "spacex_launch_items", return_value=[])]
+    for p in _PATCHES:
+        p.start()
+
+
+def tearDownModule():
+    for p in _PATCHES:
+        p.stop()
+
 SEC = ("Third Quarter 2026 Highlights. Revenue was $14,575 million. Operating income $2,791 million. "
        "Net income $4,404 million. Connectivity operating income $2,367 million. Space Infrastructure "
        "operating income $431 million. Subscribers 13.6 million, ARPU $69 across 174 markets. "
@@ -104,15 +122,21 @@ class DisciplineFlowTest(unittest.TestCase):
     def test_pdf_only_source_forbids_numbers(self):
         items = [{"title": "SpaceX Launches Starship Flight 14", "url": "https://ir/x.pdf",
                   "article": "", "article_attempted": True}]
-        withnum = {"publish": True, "title": "궤도 비행", "event_type": "발사",
+        # 숫자 금지 경로는 사건 에세이가 아닌 글('기타')로 잰다 — 사건 에세이는 아래처럼 원천 조건에서 먼저 막힌다
+        withnum = {"publish": True, "title": "궤도 비행", "event_type": "기타",
                    "body": "<p>엔진 33기</p>", "sources": []}
         res, viol, _ = self._run(items, [withnum, withnum])
         self.assertIn("전문 원천 없음 — 숫자·차트 금지", viol)
-        nonum = {"publish": True, "title": "궤도 비행", "event_type": "발사",
+        nonum = {"publish": True, "title": "궤도 비행", "event_type": "기타",
                  "body": "<p>첫 궤도 비행이 남긴 질문</p>", "sources": []}
         res, viol, ask = self._run(items, [nonum])
         self.assertIsNone(viol)
         self.assertFalse(ask.call_args.kwargs["full_any"])
+        # ⑲ 같은 원천으로 '발사' 사건 에세이를 쓰면 — 사건 이후 1차 원천이 없으니 숫자가 없어도 보류
+        ev = dict(nonum, event_type="발사", event_date="2026-09-28")
+        res, viol, ask = self._run(items, [ev])
+        self.assertIn("사건 이후의 1차 원천 없음", viol)
+        self.assertEqual(ask.call_count, 1)
 
     def test_pdf_only_earnings_is_held(self):
         items = [{"title": "SpaceX Reports Third Quarter 2026 Results", "url": "https://ir/q3.pdf",
@@ -272,9 +296,75 @@ class RecheckFalsePositiveTest(unittest.TestCase):
         self.assertEqual(ce._num_tokens("1조 4,575억원")[0][0], 1.4575e12)
         self.assertEqual(ce._num_tokens("2억 8천만")[0][0], 2.8e8)
 
+    def test_unit_letter_followed_by_digit_is_not_unit(self):
+        # 원문 '16 B2B industries' 를 160억으로 읽던 오독(재검사 보고서에서 실측)
+        self.assertEqual(ce._num_tokens("shaping 16 B2B industries")[0][0], 16)
+        self.assertEqual(ce._num_tokens("$14.6B in revenue")[0][0], 14.6e9)
+
+    def test_range_inherits_unit(self):
+        self.assertEqual([x[0] for x in ce._num_tokens("가이던스 $175~185B")], [175e9, 185e9])
+        self.assertEqual(ce.check_numbers("<p>$175~185B</p>", [], "between $175 to $185 billion"), [])
+        self.assertEqual(ce.check_numbers("<p>$175~185B</p>", [], "$175 billion and $185 billion"), [])
+        self.assertEqual([x[0] for x in ce._num_tokens("5~8회 비행")], [5, 8])        # 단위 없는 범위는 그대로
+        self.assertEqual(ce.check_numbers("<p>$175~185B</p>", [], "$205 billion"), ["175", "185B"])
+
     def test_context_points_at_the_flagged_token(self):
         ctx = dict(ce.number_context("<p>2026년 8월에 26개 조직이 표적이 됐다</p>", ["26"]))
         self.assertIn("26개", ctx["26"])
+
+
+class ScaleContextTest(unittest.TestCase):
+    """단위 환산 후보는 단위 문맥이 붙은 원문 숫자만(2026-10-23 구멍 수리).
+
+    재현: 원문에 'Flight 14' 만 있는데 '가입자 13.6백만 명' 이 통과했다 — 단위 없는 정수 14 를
+    무조건 1,400만으로도 읽고 반올림 폭 ±50만을 그대로 줬기 때문이다.
+    """
+    # 실제 8-K 모양: 단위 선언 표 머리 아래에 문장(비행 번호)과 표 칸이 함께 있다
+    TABLE = ("Space Segment Operating and Financial Data $, in millions (except where noted) "
+             "Completed Starship Flight 14, our first orbital Starship flight. "
+             "Revenue Space $1,767 $962 $1,666 Connectivity 5,248 4,291 3,097 "
+             "Starlink consumer subscribers (# in millions, as of period end) 13.6 12.0 7.2")
+
+    def test_repro_unitless_integer_is_not_millions(self):
+        self.assertEqual(ce.check_numbers("<p>가입자 13.6백만 명</p>", [], "Flight 14"), ["13.6백만"])
+
+    def test_sentence_number_under_header_is_not_a_cell(self):
+        src = self.TABLE.replace("13.6", "")
+        self.assertEqual(ce.check_numbers("<p>가입자 13.6백만 명</p>", [], src), ["13.6백만"])
+
+    def test_table_cells_under_header_still_convert(self):
+        body = "<p>Space 1,767백만 달러, Connectivity 5,248백만 달러, 가입자 13.6백만 명, 12.0백만 명</p>"
+        self.assertEqual(ce.check_numbers(body, [], self.TABLE), [])
+
+    def test_korean_unit_header(self):
+        src = "(단위: 억원) 매출 1,234 1,100 영업이익 210 180"
+        self.assertEqual(ce.check_numbers("<p>매출 1,234억 원</p>", [], src), [])
+        self.assertEqual(ce.check_numbers("<p>매출 1,234억 원</p>", [], "매출 1,234 건"), ["1,234억"])
+
+    def test_explicit_units_unchanged(self):
+        self.assertEqual(ce.check_numbers("<p>가입자 1,360만 명</p>", [], "13.6 million subscribers"), [])
+
+
+class ScaleContextMutationTest(unittest.TestCase):
+    """변이 — 수리를 되돌리면 위 재현 테스트가 **반드시** 실패한다(실패할 수 없는 테스트는 감시자가 아니다)."""
+
+    @staticmethod
+    def _old_values(src):                       # 수리 전: 단위 없는 숫자는 무조건 백만·천 후보
+        vals = []
+        for v, tol, _ in ce._num_tokens(src):
+            vals.append((v, tol))
+            if v < 1e6:
+                vals += [(v * 1e6, tol * 1e6), (v * 1e3, tol * 1e3)]
+        return vals
+
+    def test_mutant_old_scaling_lets_repro_through(self):
+        with mock.patch.object(ce, "_source_values", self._old_values):
+            self.assertEqual(ce.check_numbers("<p>가입자 13.6백만 명</p>", [], "Flight 14"), [])
+
+    def test_mutant_header_only_lets_sentence_number_through(self):
+        with mock.patch.object(ce, "_CELL_GAP", ce.re.compile(r"")):   # 표 칸 조건 제거
+            src = ScaleContextTest.TABLE.replace("13.6", "")
+            self.assertEqual(ce.check_numbers("<p>가입자 13.6백만 명</p>", [], src), [])
 
 
 if __name__ == "__main__":
