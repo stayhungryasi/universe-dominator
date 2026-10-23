@@ -2687,6 +2687,19 @@ console.log(JSON.stringify(cases.map(c => {
         check("엔진: monthly_run 이 마스터 기준선보다 우선함을 명시",
               "이 문서 > prompts/spacex_master.md" in (_arp / "monthly_run.md").read_text(encoding="utf-8"),
               True)
+    # 준법(C3) — 렌더 HTML 만이 아니라 **공개 원본**(reports·state·changelog)까지 검사한다.
+    # 렌더 필터는 두 번째 겹이다. 원본에 남은 권고는 렌더 경로가 하나 늘어나는 날 샌다.
+    import probe_gate as _pgc
+    check("준법: agent-research 공개 원본 금지 키·문장 0",
+          _pgc.check_compliance(_pgc.public_files()), [])
+    _pubst = (Path(__file__).parent.parent / "agent-research" / "state" / "spacex_state.json")
+    if _pubst.exists():
+        _pst = __import__("json").loads(_pubst.read_text(encoding="utf-8"))
+        check("준법: 공개 state 에 recommendation·max_position_weight·entry_trigger_price_usd 없음",
+              [k for k in ("recommendation", "max_position_weight", "entry_trigger_price_usd")
+               if k in (_pst.get("valuation") or {})], [])
+    _gi2 = (Path(__file__).parent.parent / ".gitignore").read_text(encoding="utf-8")
+    check("준법: state 별지(_private.json) 는 .gitignore", "agent-research/state/*_private.json" in _gi2, True)
     # 표시층(D2) — 렌더 HTML 에 축 기계 키([A-E]_[a-z]+) 0회
     try:
         import agent_report as _agd
