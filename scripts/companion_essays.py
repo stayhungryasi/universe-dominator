@@ -978,6 +978,12 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
             nb = check_numbers(body, charts, src)
             if nb:
                 num_bad = ["원문에 없는 숫자: " + ", ".join(nb[:8])]
+                # 보류 판단의 근거를 남긴다 — 걸린 숫자의 앞뒤 문맥(오탐인지 진짜 위반인지 가릴 수 있게)
+                plain = _norm(re.sub(r"<[^>]+>", " ", body))
+                for tok in nb[:8]:
+                    i = plain.find(tok)
+                    ctx = plain[max(0, i - 50):i + len(tok) + 30] if i >= 0 else "(차트)"
+                    print(f"[동행] 숫자 규율 근거 — '{tok}' :: …{ctx}…", file=sys.stderr)
         bad += num_bad
         if not bad:
             res["numbers_verified"] = True
