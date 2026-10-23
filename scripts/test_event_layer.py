@@ -277,6 +277,36 @@ class BackfillTest(unittest.TestCase):
         self.assertTrue(all(e.get("backfill") for e in out))
         self.assertEqual(state["backfill"]["spacex"]["published"], 2)
 
+    def test_focused_backfill_one_per_event_and_lock_per_focus(self):
+        """E3(2026-10-23) — 초점 회수: 사건마다 1편, 초점이 다르면 새 회수, 같은 초점은 잠금."""
+        calls = []
+
+        def fake_run_auto(comp, *a, **kw):
+            calls.append(kw)
+            return {"company": "spacex", "title": f"f{len(calls)}", "event_type": "기타",
+                    "event_date": kw["focus"]["date"], "event_key": [kw["focus"]["label"]],
+                    "sources": [{"url": f"https://f/{len(calls)}"}]}
+        state = {"published": {}, "backfill": {"spacex": {"date": "2026-10-23", "days": 30, "published": 1}}}
+        comps = {"spacex": {"slug": "spacex", "ko": "SpaceX"}}
+        focus = [{"date": "2026-09-28", "label": "Flight 14"}, {"date": "2026-10-20", "label": "3Q26 실적"}]
+        with mock.patch.object(self.ce, "run_auto", side_effect=fake_run_auto):
+            self.assertEqual(self.ce.run_backfill(comps, "k", "c", [], "d", state, days=30, focus=[]), [])  # 옛 잠금
+            out = self.ce.run_backfill(comps, "k", "c", [], "2026-10-24", state, days=30, focus=focus)
+            again = self.ce.run_backfill(comps, "k", "c", [], "2026-10-24", state, days=30, focus=focus)
+        self.assertEqual([c["focus"]["label"] for c in calls], ["Flight 14", "3Q26 실적"])
+        self.assertIn("'Flight 14' 하나만", calls[0]["memo"])
+        self.assertEqual(len(out), 2)
+        self.assertEqual(again, [])                                   # 같은 초점은 1회
+        self.assertEqual(state["backfill"]["spacex"]["key"], "2026-09-28|Flight 14;2026-10-20|3Q26 실적")
+
+    def test_focus_parse_and_window(self):
+        with mock.patch.dict(self.ce.os.environ, {"COMPANION_BACKFILL_FOCUS": "2026-09-28|Flight 14;bad|x;2026-10-20|3Q"}):
+            self.assertEqual([f["date"] for f in self.ce.backfill_focus()], ["2026-09-28", "2026-10-20"])
+        self.assertTrue(self.ce.in_focus({"pub": "Mon, 28 Sep 2026 23:10:00 GMT"}, "2026-09-28"))
+        self.assertTrue(self.ce.in_focus({"pub": "2026-10-03"}, "2026-09-28"))
+        self.assertFalse(self.ce.in_focus({"pub": "2026-10-20"}, "2026-09-28"))
+        self.assertFalse(self.ce.in_focus({"pub": ""}, "2026-09-28"))
+
     def test_zero_days_is_noop(self):
         with mock.patch.object(self.ce, "run_auto") as ra:
             self.assertEqual(self.ce.run_backfill({"spacex": {}}, "k", "c", [], "d",

@@ -181,5 +181,101 @@ class SameEventTest(unittest.TestCase):
         self.assertIsNotNone(ce.duplicate_of(self.A, [self.B]))
 
 
+class NumberListTest(unittest.TestCase):
+    """E2(2026-10-23) — 집필 전에 '사용 가능한 숫자' 목록을 프롬프트에 넣고, 위반은 숫자+문맥을 사유로 돌려준다."""
+
+    ITEMS = [{"title": "SEC 8-K", "url": "https://sec/x", "article": SEC, "primary": True,
+              "event_kind": "earnings"}]
+
+    def test_list_values_pass_and_outside_values_fail(self):
+        inv = ce.number_inventory(self.ITEMS)
+        raws = [x["숫자"] for x in inv]
+        self.assertIn("14,575 million", raws)
+        self.assertIn("13.6 million", raws)
+        self.assertTrue(all("[" + x["숫자"] + "]" in x["문맥"] for x in inv))
+        src = ce.collected_text(self.ITEMS)
+        for r in raws:                       # 목록의 숫자는 규율을 통과한다(목록 ⊂ 허용)
+            self.assertEqual(ce.check_numbers(f"<p>{r}</p>", [], src), [], r)
+        self.assertNotIn("920M", " ".join(raws))
+        self.assertEqual(ce.check_numbers("<p>Google $920M 월간</p>", [], src), ["920M"])   # 목록 밖 → 차단
+
+    def test_small_counts_and_dates_not_listed(self):
+        inv = ce.number_inventory([{"title": "x", "article": "On 2026-10-20 the 3 segments in Q3 grew to $431 million."}])
+        self.assertEqual([x["숫자"] for x in inv], ["431 million"])
+
+    def _flow(self, replies):
+        calls = []
+
+        def fake_post(url, headers=None, json=None, timeout=None):
+            calls.append(json)
+            r = mock.Mock()
+            r.raise_for_status = lambda: None
+            r.json = lambda: {"content": [{"type": "text", "text": ce.json.dumps(replies[len(calls) - 1],
+                                                                              ensure_ascii=False)}],
+                              "usage": {"input_tokens": 1, "output_tokens": 1}, "stop_reason": "end_turn"}
+            return r
+        with mock.patch.object(ce.requests, "post", side_effect=fake_post):
+            res, viol = ce.write_with_discipline("k", "헌법", {"slug": "spacex", "ko": "SpaceX"},
+                                                 {"body": "논제"}, self.ITEMS, [])
+        return res, viol, calls
+
+    def test_prompt_carries_list_and_retry_carries_number_with_context(self):
+        bad = {"publish": True, "title": "t", "body": "<p>광고 계약으로 Google $920M 월간 지급</p>", "sources": []}
+        good = {"publish": True, "title": "t", "body": "<p>매출 $14,575 million</p>", "sources": []}
+        res, viol, calls = self._flow([bad, good])
+        self.assertIsNone(viol)
+        p1 = calls[0]["messages"][0]["content"]
+        self.assertIn("사용_가능한_숫자", p1)
+        self.assertIn("[14,575 million]", p1)          # 목록 항목(문맥 속 [숫자])이 실제로 실렸다 — 발췌만으로는 안 생긴다
+        self.assertIn("목록 밖 숫자 금지", p1)
+        p2 = calls[1]["messages"][0]["content"]
+        self.assertIn("920M", p2)
+        self.assertIn("Google $920M 월간", p2)          # 위반 숫자의 원고 속 문맥이 사유로 간다
+
+    def test_fact_event_uses_fact_model(self):
+        good = {"publish": True, "title": "t", "body": "<p>해석</p>", "sources": []}
+        _, _, calls = self._flow([good])
+        self.assertEqual(calls[0]["model"], "claude-sonnet-5-5")
+        self.assertEqual(calls[0]["output_config"], {"effort": "medium"})
+        self.assertGreaterEqual(calls[0]["max_tokens"], 16000)
+
+    def test_model_routing(self):
+        launch = [{"title": "Starship Flight 15 slips to November", "article": "x"}]
+        self.assertEqual(ce.pick_model(launch), "claude-haiku-4-5")
+        self.assertEqual(ce.pick_model([{"title": "SpaceX prices $40 billion notes offering"}]), "claude-sonnet-5-5")
+        self.assertEqual(ce.pick_model([{"title": "보도", "primary": True, "event_kind": "contract"}]), "claude-sonnet-5-5")
+        with mock.patch.dict(ce.os.environ, {"COMPANION_MODEL": "m-base", "COMPANION_MODEL_FACT": "m-fact"}):
+            self.assertEqual(ce.pick_model(launch), "m-base")
+            self.assertEqual(ce.pick_model(self.ITEMS), "m-fact")
+
+
+class RecheckFalsePositiveTest(unittest.TestCase):
+    """과거 에세이 재검사(2026-10-23 결정 5)에서 정상 문장으로 실측한 오탐 — 규율 폭은 그대로, 읽기만 고친다."""
+
+    def toks(self, s):
+        return [x[2] for x in ce._num_spans(s)]
+
+    def test_dotted_dates_exempt(self):
+        self.assertEqual(self.toks("파트너십을 발표했다(2026.9.18)."), [])
+        self.assertEqual(self.toks("2026.10 기준"), [])
+
+    def test_quarter_with_four_digit_year_exempt(self):
+        self.assertEqual(self.toks("Q4 2026·Q1 2027 실적"), [])
+        self.assertEqual(self.toks("3Q 2026 실적 · 3Q26"), [])
+
+    def test_korean_word_starting_with_unit_letter_is_not_unit(self):
+        self.assertEqual(self.toks("Claude Opus 4.6 조기 버전"), ["4.6"])
+        self.assertEqual(self.toks("Falcon 9조차 상단 회수에"), ["9"])
+
+    def test_real_units_still_read(self):
+        self.assertEqual(ce._num_tokens("9조원")[0][0], 9e12)
+        self.assertEqual(ce._num_tokens("1조 4,575억원")[0][0], 1.4575e12)
+        self.assertEqual(ce._num_tokens("2억 8천만")[0][0], 2.8e8)
+
+    def test_context_points_at_the_flagged_token(self):
+        ctx = dict(ce.number_context("<p>2026년 8월에 26개 조직이 표적이 됐다</p>", ["26"]))
+        self.assertIn("26개", ctx["26"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

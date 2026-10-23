@@ -51,7 +51,8 @@ PROMPT_PATH = Path(__file__).parent / "prompts" / "companion_essayist.txt"
 
 KST = timezone(timedelta(hours=9))
 UA = {"User-Agent": "Mozilla/5.0 (UNIVERTRIX companion-observatory; univertrix.com)"}
-MODEL = "claude-haiku-4-5"
+MODEL = "claude-haiku-4-5"            # 기본 집필 모델 — COMPANION_MODEL 로 덮어쓴다
+MODEL_FACT = "claude-sonnet-5-5"      # 숫자 중심 사건(실적·계약·조달) — COMPANION_MODEL_FACT 로 덮어쓴다
 MATERIALS = "materials"
 VERDICTS = ("강화", "불변", "약화", "판단 보류")
 DISCLAIMER = ("본 동행 관측은 정보 제공 목적의 기록이며 특정 종목의 매수·매도 "
@@ -333,24 +334,39 @@ _UNIT = {"조": 1e12, "억": 1e8, "만": 1e4, "천": 1e3,
 # 숫자 경계(2026-10-23 오탐·구멍 수리): ① '800MHz' 를 '80' 으로 잘라 읽던 것 — 단위는 '뒤에 다른
 # 글자가 붙지 않을 때만' 취하는 선택 묶음으로 둔다(MHz 같은 남의 단위면 맨 숫자 800 으로 읽는다).
 # ② 한국어에 바로 붙은 숫자('매출145억')를 건너뛰던 것 — 앞 경계에서 한글은 막지 않는다.
+# ③ 한국어 단위 글자가 낱말의 첫 글자일 때('Opus 4.6 조기 버전'·'Falcon 9조차')를 단위로 읽던 오탐 —
+# 과거 에세이 재검사(2026-10-23 결정 5)에서 정상 문장으로 실측. 단위 뒤에 흔한 낱말 꼬리가 붙으면 단위가 아니다.
+_KO_JO = r"조(?![차기건직사정합치성화선약항업작달언금각류심절종례])"
+_KO_EOK = r"억(?![제압측울])"
+_KO_MAN = r"만(?![큼족약])"
+_KO_CHEON = r"천(?![천히문체국재하])"
 _NUM_RE = re.compile(
     r"(?<![\d.,A-Za-z])(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?"
-    r"(?:\s*(조|억|만|천|trillion|billion|bn|million|mn|thousand|T|B|M|K)(?![A-Za-z]))?", re.I)
+    r"(?:\s*(" + _KO_JO + "|" + _KO_EOK + "|" + _KO_MAN + "|" + _KO_CHEON +
+    r"|trillion|billion|bn|million|mn|thousand|T|B|M|K)(?![A-Za-z]))?", re.I)
 # 한국어 복합 단위 — '1조 4,575억'·'2억 8천만'·'1,360만' 을 하나의 값으로(2026-10-23 오탐 실측:
 # '2억 8천만'(= 280 million)을 '2억'과 '8천'으로 쪼개 원문과 못 맞췄다)
-_KO_PART = r"(\d[\d,]*(?:\.\d+)?)\s*(조|억|천만|백만|만)"
+_KO_PART = r"(\d[\d,]*(?:\.\d+)?)\s*(" + _KO_JO + "|" + _KO_EOK + "|천만|백만|" + _KO_MAN + ")"
 _COMPOUND = re.compile(_KO_PART + r"(?:\s*" + _KO_PART + r")*")
 _KO_MULT = {"조": 1e12, "억": 1e8, "천만": 1e7, "백만": 1e6, "만": 1e4}
+# ISO 날짜(2026-10-20)는 맨 앞에 둔다 — 연도 갈래가 '2026' 만 먼저 먹으면 '-10-20' 의 '20' 이
+# 숫자로 남아 대조 대상이 됐다(2026-10-23 숫자 목록 테스트에서 발각)
+# 점 날짜(2026.9.18 · 2026.10)와 분기+4자리 연도(Q1 2027 · 3Q 2026)도 같은 재검사에서 실측한 구멍 —
+# 'Q1 20' 까지만 먹고 '27' 을 숫자로 남겼다. 연도 자리는 4자리를 먼저 시도한다.
 _EXEMPT = re.compile(
-    r"(?<!\d)(?:19|20)\d{2}\s*년|(?<![\d,.])(?:19|20)\d{2}(?![\d,.]|\s*(?:억|만|조|천|명|건|달러))"
-    r"|\d{4}-\d{1,2}-\d{1,2}|\d{1,2}/\d{1,2}(?!\d)|\d{1,2}\s*월\s*\d{1,2}\s*일|\d{1,2}\s*월"
-    r"|\d{1,2}\s*일(?!\s*(?:만|억))|(?<![A-Za-z])[1-4]Q\s*'?\d{0,2}|Q[1-4](?:\s*'?\d{2})?|[1-4]\s*분기|[1-4]H\d{2}"
+    r"\d{4}-\d{1,2}-\d{1,2}|(?<![\d.,])(?:19|20)\d{2}\.(?:1[0-2]|0?[1-9])(?:\.(?:3[01]|[12]\d|0?[1-9]))?(?![\d.])"
+    r"|(?<!\d)(?:19|20)\d{2}\s*년|(?<![\d,.])(?:19|20)\d{2}(?![\d,.]|\s*(?:억|만|조|천|명|건|달러))"
+    r"|\d{1,2}/\d{1,2}(?!\d)|\d{1,2}\s*월\s*\d{1,2}\s*일|\d{1,2}\s*월"
+    r"|\d{1,2}\s*일(?!\s*(?:만|억))|(?<![A-Za-z])[1-4]Q(?:\s*'?(?:\d{4}|\d{2}))?(?!\d)|Q[1-4](?:\s*'?(?:\d{4}|\d{2}))?(?!\d)|[1-4]\s*분기|[1-4]H\d{2}"
     r"|[①-⑳]|(?<![A-Za-z])V\d\b")
 
 
-def _num_tokens(text):
-    """텍스트 → [(값, 허용오차, 원문표기)] — 면제 표기는 빼고, 복합 단위(1조 4,575억)는 합친다."""
-    t = _EXEMPT.sub(" ", text or "")
+def _num_spans(text):
+    """텍스트 → [(값, 허용오차, 원문표기, 시작, 끝)] — 면제 표기는 빼고, 복합 단위(1조 4,575억)는 합친다.
+
+    지운 자리는 같은 길이의 공백으로 채워 위치를 보존한다(숫자 목록의 앞뒤 문맥을 잘라내려고).
+    """
+    t = _EXEMPT.sub(lambda m: " " * len(m.group(0)), text or "")
     out = []
 
     def comp(m):
@@ -358,15 +374,70 @@ def _num_tokens(text):
         total = sum(float(n.replace(",", "")) * _KO_MULT[u] for n, u in parts)
         n_last, u_last = parts[-1]
         dec = len(n_last.split(".")[1]) if "." in n_last else 0
-        out.append((total, 0.5 * 10 ** (-dec) * _KO_MULT[u_last], m.group(0)))
-        return " "
+        out.append((total, 0.5 * 10 ** (-dec) * _KO_MULT[u_last], m.group(0), m.start(), m.end()))
+        return " " * len(m.group(0))
     t = _COMPOUND.sub(comp, t)
     for m in _NUM_RE.finditer(t):
         whole, frac, unit = m.group(1), m.group(2), m.group(3)
         v = float(whole.replace(",", "") + ("." + frac if frac else ""))
         mult = _UNIT.get((unit or "").lower(), 1.0) if unit else 1.0
         dec = len(frac) if frac else 0
-        out.append((v * mult, 0.5 * 10 ** (-dec) * mult, m.group(0).strip()))
+        raw = m.group(0).strip()
+        out.append((v * mult, 0.5 * 10 ** (-dec) * mult, raw, m.start(), m.start() + len(raw)))
+    return out
+
+
+def _num_tokens(text):
+    """텍스트 → [(값, 허용오차, 원문표기)]."""
+    return [x[:3] for x in _num_spans(text)]
+
+
+def _small_count(v, tol):
+    """10 이하 맨 정수(2편·3가지 같은 세기) — 대조 면제."""
+    return tol == 0.5 and v <= 10 and float(v).is_integer()
+
+
+NUM_LIST_MAX = 220      # 프롬프트에 넣는 '사용 가능한 숫자' 상한(SEC 원문 표는 숫자가 수백 개)
+NUM_CTX = 36            # 숫자 앞뒤로 붙이는 문맥 글자 수
+
+
+def number_inventory(items, limit=NUM_LIST_MAX, ctx=NUM_CTX):
+    """수집 원문 → '사용 가능한 숫자' 목록 [{숫자, 문맥, 원천}] (2026-10-23 E2).
+
+    숫자 규율(check_numbers)이 대조하는 바로 그 텍스트(collected_text 의 재료)에서 뽑는다 —
+    목록에 있는 표기는 규율을 통과하고, 목록 밖은 통과하지 못한다. 1순위 원천(SEC)부터, 같은 표기는 한 번.
+    """
+    out, seen = [], set()
+    order = sorted(range(len(items or [])), key=lambda i: not (items[i] or {}).get("primary"))
+    for i in order:
+        x = items[i] or {}
+        text = _norm(" ".join(str(x.get(k) or "") for k in ("title", "article", "raw_desc")))
+        for v, tol, raw, s, e in _num_spans(text):
+            if _small_count(v, tol) or raw in seen:
+                continue
+            seen.add(raw)
+            left = text[max(0, s - ctx):s].lstrip()
+            right = text[e:e + ctx].rstrip()
+            out.append({"숫자": raw, "문맥": f"…{left}[{raw}]{right}…", "원천": i + 1})
+            if len(out) >= limit:
+                return out
+    return out
+
+
+def number_context(body, toks, width=50):
+    """위반 숫자 → 원고 속 앞뒤 문맥(재생성 사유·보류 로그용). 토크나이저가 읽은 자리 그대로 찾는다
+    ('26' 이 '2026' 안에서 먼저 잡히는 식의 엉뚱한 문맥을 피한다)."""
+    plain = _norm(re.sub(r"<[^>]+>", " ", body or ""))
+    spans = {}
+    for _, _, raw, s, e in _num_spans(plain):
+        spans.setdefault(raw, (s, e))
+    out = []
+    for tok in toks:
+        if tok.startswith("차트 "):
+            out.append((tok, "(차트)"))
+            continue
+        s, e = spans.get(tok, (plain.find(tok), plain.find(tok) + len(tok)))
+        out.append((tok, plain[max(0, s - width):e + 30] if s >= 0 else ""))
     return out
 
 
@@ -399,7 +470,7 @@ def check_numbers(html, charts, source_text):
     pool = _source_values(_norm(source_text))
     bad = []
     for v, tol, raw in _num_tokens(body):
-        if tol == 0.5 and v <= 10 and float(v).is_integer():
+        if _small_count(v, tol):
             continue                    # 10 이하 맨 정수 — 세기·순서(2편·3가지)
         if not _matches(v, tol, pool):
             bad.append(raw)
@@ -425,12 +496,36 @@ def check_numbers(html, charts, source_text):
 def has_numbers(html, charts):
     """원문 대조 대상 숫자가 하나라도 있는가(면제 표기 제외)."""
     body = _norm(re.sub(r"<[^>]+>", " ", html or ""))
-    toks = [t for t in _num_tokens(body)
-            if not (t[1] == 0.5 and t[0] <= 10 and float(t[0]).is_integer())]
+    toks = [t for t in _num_tokens(body) if not _small_count(t[0], t[1])]
     return bool(toks) or any((c or {}).get("series") for c in charts or [])
 
 
 _HARD_EVENT = re.compile(r"실적|분기\s*결과|earnings|results|계약|contract|agreement|8-K", re.I)
+# 숫자 중심 사건 — 실적(8-K 2.02)·계약(1.01)·조달. 이 소재는 사실 모델(MODEL_FACT)로 쓴다(2026-10-23 E1:
+# 같은 날 Haiku 에세이 3편이 모두 원문에 없는 숫자를 실었다 — 'ARR $65B'·'Google 20M'·166억 차트)
+_FACT_EVENT = re.compile(
+    r"실적|분기\s*결과|매출|영업이익|earnings|results|revenue|quarter|계약|수주|contract|agreement|award"
+    r"|조달|차입|채권|대출|financing|offering|notes|bonds?|loan|credit\s+facility|8-K", re.I)
+FACT_KINDS = ("earnings", "contract", "financing")
+
+
+def models():
+    """(기본 모델, 사실 모델) — 저장소 변수 COMPANION_MODEL · COMPANION_MODEL_FACT 로 덮어쓴다."""
+    return (os.environ.get("COMPANION_MODEL", "").strip() or MODEL,
+            os.environ.get("COMPANION_MODEL_FACT", "").strip() or MODEL_FACT)
+
+
+def is_fact_event(items):
+    """집필 전에 고른다 — SEC 1순위 원천(실적·계약·조달 8-K)이 있거나 후보 제목이 숫자 중심 사건이면 참."""
+    for x in items or []:
+        if x.get("primary") and x.get("event_kind") in FACT_KINDS:
+            return True
+    return any(_FACT_EVENT.search(str(x.get("title", ""))) for x in items or [])
+
+
+def pick_model(items):
+    base, fact = models()
+    return fact if is_fact_event(items) else base
 
 
 def is_hard_event(res, items):
@@ -544,6 +639,29 @@ def within_days(pub, days, now=None):
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
     return (now - dt).days <= int(days)
+
+
+def pub_date(pub):
+    """발행일(RFC822/ISO/YYYY-MM-DD 혼재) → date. 못 읽으면 None."""
+    from email.utils import parsedate_to_datetime
+    s = str(pub or "").strip()
+    if not s:
+        return None
+    for f in (lambda x: parsedate_to_datetime(x), lambda x: datetime.fromisoformat(x.replace("Z", "+00:00"))):
+        try:
+            return f(s).date()
+        except Exception:
+            continue
+    return None
+
+
+def in_focus(item, day, before=2, after=10):
+    """회수 초점 사건일(day, YYYY-MM-DD) 근처의 후보인가 — 사건일 −before ~ +after 일. 날짜를 못 읽으면 제외."""
+    d = pub_date(item.get("pub"))
+    if d is None:
+        return False
+    c = datetime.strptime(day, "%Y-%m-%d").date()
+    return (c - timedelta(days=before)) <= d <= (c + timedelta(days=after))
 
 
 def widen_query(url, days):
@@ -664,7 +782,7 @@ def mark_consumed(token, doc_name, note):
 # ────────────────────────────────────────────────────────────────
 
 def ask_claude(api_key, constitution, company, thesis, items, recent_titles, memo="",
-               feedback="", full_any=True):
+               feedback="", full_any=True, numbers=None, model=None):
     """헌법 프롬프트 + 논제 원장 + 후보를 주고 판정·집필을 함께 시킨다.
 
     5축에 닿지 않으면 모델이 {"publish": false} 로 침묵을 택한다 — 그것이 정답이다.
@@ -675,11 +793,14 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
         "최근에세이제목": recent_titles[:8],
         "소장메모": memo,
         "직전_원고_반려사유": feedback,
-        "숫자_규율": ("본문·차트의 숫자는 후보 발췌에 그대로 있는 것만 쓴다. 직접 계산하거나 "
-                    "기억으로 채운 숫자는 쓰지 않는다(엔진이 원문과 대조해 걸러낸다)."
+        "숫자_규율": ("본문·차트의 숫자는 아래 '사용_가능한_숫자' 목록에 있는 것만 쓴다 — 목록 밖 숫자 금지. "
+                    "필요하면 숫자 없이 서술하라. 단위 표기만 바꿀 수 있다(5,248 백만 달러 → 52.5억 달러). "
+                    "합·차·비율·연환산처럼 직접 계산한 숫자, 기억으로 채운 숫자는 쓰지 않는다 — "
+                    "엔진이 원문과 대조해 걸러내고, 걸리면 그 숫자가 사유로 되돌아온다."
                     if full_any else
                     "전문을 읽은 원천이 없다 — 숫자와 차트를 쓰지 마라. 실적·계약 사건이면 "
                     "publish=false 로 답하라."),
+        "사용_가능한_숫자": (numbers or []) if full_any else [],
         "후보": [{"제목": x.get("title", ""), "URL": x.get("url", ""),
                   "발행": x.get("pub", ""),
                   "원천등급": "SEC 공시 원문(1순위)" if x.get("primary") else "보도·기타",
@@ -704,15 +825,27 @@ def ask_claude(api_key, constitution, company, thesis, items, recent_titles, mem
  "event_date": "다루는 사건이 일어난 날 YYYY-MM-DD",
  "event_key": ["사건 핵심어 2~3개(예: 3Q26 실적, Flight 14)"],
  "charts": [{{"title": "차트 제목", "subtitle": "부제·단위 설명", "unit": "단위(%·B·건 등, 없으면 빈 문자열)", "series": [{{"label": "항목", "value": 숫자}}]}}]}}""")
+    model = model or models()[0]
+    fact = model != models()[0]
+    # 사실 모델(Sonnet 5.5)은 사고가 기본으로 켜진다 — 사고가 응답 몫을 먹지 않게 상한을 넉넉히,
+    # 노력은 medium(실적 표 대조에는 충분하고 비용이 반쯤)
+    body = {"model": model, "max_tokens": 16000 if fact else 4000,
+            "messages": [{"role": "user", "content": prompt}]}
+    if fact:
+        body["output_config"] = {"effort": "medium"}
     r = requests.post(
         "https://api.anthropic.com/v1/messages",
         headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
                  "content-type": "application/json"},
-        json={"model": MODEL, "max_tokens": 4000,
-              "messages": [{"role": "user", "content": prompt}]},
-        timeout=180)
+        json=body, timeout=300 if fact else 180)
     r.raise_for_status()
-    text = "".join(b.get("text", "") for b in r.json().get("content", []))
+    data = r.json()
+    use = data.get("usage") or {}
+    print(f"[동행] 집필 모델 {model} · 입력 {use.get('input_tokens')} · 출력 {use.get('output_tokens')} 토큰"
+          f" · 종료 {data.get('stop_reason')}")
+    if data.get("stop_reason") == "refusal":
+        return {"publish": False, "reason": "모델이 응답을 거절(refusal) — 침묵"}
+    text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
     text = re.sub(r"```(?:json)?", "", text).strip()
     return json.loads(text[text.find("{"):text.rfind("}") + 1])
 
@@ -969,15 +1102,19 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
     """
     src = collected_text(items)
     full_any = any((x.get("article") or "").strip() for x in items or [])
+    numbers = number_inventory(items) if full_any else []
+    model = pick_model(items)
+    print(f"[동행] {comp['ko']}: 집필 모델 {model} · 사용 가능한 숫자 {len(numbers)}개")
     feedback = ""
     for attempt in (1, 2):
         res = ask_claude(api_key, constitution, comp, thesis, items, recent,
-                         memo=memo, feedback=feedback, full_any=full_any)
+                         memo=memo, feedback=feedback, full_any=full_any,
+                         numbers=numbers, model=model)
         if not res.get("publish"):
             return res, None
         body, charts = res.get("body", ""), res.get("charts") or []
         bad = check_quotes(body, src, len(res.get("sources") or [1]))
-        num_bad = []
+        num_bad, num_ctx = [], []
         if not full_any:
             # 전문이 하나도 없다 — 숫자가 핵심인 사건이면 쓰지 않고, 아니면 숫자·차트 금지
             if is_hard_event(res, items):
@@ -989,10 +1126,8 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
             if nb:
                 num_bad = ["원문에 없는 숫자: " + ", ".join(nb[:8])]
                 # 보류 판단의 근거를 남긴다 — 걸린 숫자의 앞뒤 문맥(오탐인지 진짜 위반인지 가릴 수 있게)
-                plain = _norm(re.sub(r"<[^>]+>", " ", body))
-                for tok in nb[:8]:
-                    i = plain.find(tok)
-                    ctx = plain[max(0, i - 50):i + len(tok) + 30] if i >= 0 else "(차트)"
+                num_ctx = number_context(body, nb[:8])
+                for tok, ctx in num_ctx:
                     print(f"[동행] 숫자 규율 근거 — '{tok}' :: …{ctx}…", file=sys.stderr)
         bad += num_bad
         if not bad:
@@ -1005,6 +1140,11 @@ def write_with_discipline(api_key, constitution, comp, thesis, items, recent, me
             feedback = ("직전 원고가 규율에 걸렸다. 아래를 고쳐 다시 써라: " + reason +
                         " — 원문을 옮기지 말고 해석을 써라. 숫자는 후보의 발췌에 **그대로 있는 것만**"
                         " 쓰고, 직접 계산·추정한 숫자와 차트는 빼라. 강조는 따옴표 대신 네 문장으로.")
+            if num_ctx:
+                # 어느 숫자가 원고의 어느 자리에서 걸렸는지 그대로 돌려준다 — 같은 숫자를 또 쓰지 않게
+                feedback += (" 걸린 숫자와 원고 속 자리: " +
+                             " / ".join(f"'{tok}' ← …{ctx}…" for tok, ctx in num_ctx) +
+                             " — 이 숫자들은 '사용_가능한_숫자' 목록 밖이다. 목록의 숫자로 바꾸거나 숫자 없이 써라.")
             continue
         return res, reason
     return res, "재생성 후에도 규율 위반"
@@ -1156,7 +1296,7 @@ def sec_primary_items(comp, days, today=None):
     hdr = {"User-Agent": ua}
     out = []
     for e in watch.get("events") or []:
-        if e.get("source") != "SEC EDGAR" or e.get("kind") not in ("earnings", "contract"):
+        if e.get("source") != "SEC EDGAR" or e.get("kind") not in FACT_KINDS:
             continue
         if (e.get("date") or "") < cut:
             continue
@@ -1174,7 +1314,7 @@ def sec_primary_items(comp, days, today=None):
 
 
 def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=None,
-             memo=""):
+             memo="", focus=None):
     """자동 수집분 처리 → 에세이 항목 또는 None.
 
     widen_days/exclude/memo 는 회수 모드(S4) 전용 — 평시 호출은 기본값 그대로다.
@@ -1196,6 +1336,10 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
     primary = sec_primary_items(comp, widen_days or 7)        # 실적·계약은 SEC 원문이 1순위
     cands = primary + [c for c in cands if c.get("url") not in {x["url"] for x in primary}]
     cands = [c for c in cands if c.get("url") not in seen_urls]
+    if focus:
+        # 회수 초점(사건일·이름) — 그 사건 근처 자료만 근거로 삼는다
+        cands = [c for c in cands if in_focus(c, focus["date"])]
+        print(f"[동행] {comp['ko']}: 회수 초점 {focus['date']} {focus['label']} — 후보 {len(cands)}")
     if not cands:
         print(f"[동행] {comp['ko']}: 후보 0 · 발행 0 — 침묵")
         return None
@@ -1240,6 +1384,25 @@ BACKFILL_MEMO = ("회수 모드: 수집 정지 기간(2026-09-22~) 동안 놓친
                  "근거는 후보로 주어진 자료뿐이다.")
 
 
+def backfill_focus():
+    """워크플로 입력 companion_backfill_focus → [{date, label}].
+
+    형식: '2026-09-28|Starship Flight 14 첫 궤도;2026-10-20|3Q26 실적'. 비우면 기존 방식(모델이 고름).
+    """
+    out = []
+    for part in (os.environ.get("COMPANION_BACKFILL_FOCUS", "") or "").split(";"):
+        if "|" not in part:
+            continue
+        d, label = (x.strip() for x in part.split("|", 1))
+        try:
+            datetime.strptime(d, "%Y-%m-%d")
+        except ValueError:
+            print(f"[동행] 회수 초점 날짜 형식 오류 — 무시: {part}", file=sys.stderr)
+            continue
+        out.append({"date": d, "label": label[:60]})
+    return out[:BACKFILL_MAX]
+
+
 def backfill_days():
     """워크플로 입력 companion_backfill_days → 정수(기본 0 = 회수 안 함)."""
     try:
@@ -1248,7 +1411,7 @@ def backfill_days():
         return 0
 
 
-def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None):
+def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None, focus=None):
     """수리 배포 후 1회 한정 — spacex 만 쿼리 창을 넓혀 최대 2편.
 
     1회 한정은 상태로 지킨다: state.backfill[slug] 가 있으면 다시 돌지 않는다
@@ -1258,14 +1421,20 @@ def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None
     days = backfill_days() if days is None else days
     if not days:
         return []
+    focus = backfill_focus() if focus is None else focus
+    key = ";".join(f"{f['date']}|{f['label']}" for f in focus)
     comp = by_slug.get(BACKFILL_SLUG)
     done = (state.setdefault("backfill", {}) or {}).get(BACKFILL_SLUG)
     if not comp:
         print(f"[동행] 회수: 대상 {BACKFILL_SLUG} 설정 없음 — 생략", file=sys.stderr)
         return []
-    if done:
+    # 1회 한정은 '같은 회수'에 대해서다 — 초점(사건 목록)이 다르면 새 회수로 본다(2026-10-23 E3).
+    # 같은 초점을 실수로 다시 넣으면 잠금이 막는다. 초점 없는 회수는 예전처럼 한 번뿐이다.
+    if done and (done.get("key", "") == key or not key):
         print(f"[동행] 회수: {BACKFILL_SLUG} 은 {done.get('date')} 에 이미 회수함 — 1회 한정, 생략")
         return []
+    if focus:
+        return _run_focused(comp, api_key, constitution, essays, today, state, days, focus, key)
     out, used = [], set()
     for k in range(BACKFILL_MAX):
         # 2026-10-23 첫 회수에서 2편이 모두 3Q 실적이었다 — URL 만 빼서는 같은 사건의 다른
@@ -1288,6 +1457,32 @@ def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None
     if out:
         state["published"][BACKFILL_SLUG] = today   # 같은 회차 평시 경로는 침묵
     print(f"[동행] 회수 종료 — when:{days}d · 발행 {len(out)}편")
+    return out
+
+
+def _run_focused(comp, api_key, constitution, essays, today, state, days, focus, key):
+    """초점 회수 — 사건마다 1편씩, 그 사건 근처 자료만으로. 규율 경로는 평시와 같다."""
+    out, used = [], set()
+    for k, f in enumerate(focus):
+        memo = (BACKFILL_MEMO + f" 이번 편은 {f['date']} 의 사건 '{f['label']}' 하나만 다룬다. "
+                "후보 중 이 사건의 자료만 근거로 삼고, 이 사건이 5축에 닿지 않으면 publish=false." +
+                "".join(f" 이미 쓴 에세이: 「{e['title']}」 — 같은 사건이면 publish=false." for e in out))
+        entry = run_auto(comp, api_key, constitution, essays + out, today,
+                         widen_days=days, exclude=set(used), memo=memo, focus=f)
+        if not entry:
+            print(f"[동행] 회수 {k + 1}/{len(focus)} ({f['label']}): 발행 없음")
+            continue
+        if duplicate_of(entry, essays + out):
+            print(f"[동행] 회수 {k + 1} ({f['label']}): 같은 사건 중복 — 발행 안 함")
+            continue
+        entry["backfill"] = True
+        out.append(entry)
+        used |= {r["url"] for r in entry.get("sources", [])}
+        print(f"[동행] 회수 {k + 1}/{len(focus)} ({f['label']}) — 「{entry['title']}」")
+    state["backfill"][BACKFILL_SLUG] = {"date": today, "days": days, "published": len(out), "key": key}
+    if out:
+        state["published"][BACKFILL_SLUG] = today
+    print(f"[동행] 초점 회수 종료 — when:{days}d · 초점 {len(focus)} · 발행 {len(out)}편")
     return out
 
 

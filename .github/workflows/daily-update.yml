@@ -18,6 +18,10 @@ on:
         description: '동행 관측 놓친 사건 회수(일) — 0이면 끔. spacex 만, 에세이 상한 2편, 1회 한정(상태로 잠금)'
         type: number
         default: 0
+      companion_backfill_focus:
+        description: '회수 초점(선택) — "YYYY-MM-DD|사건 이름;…" 사건마다 1편·그 날짜 근처 자료만. 같은 초점은 1회 한정'
+        type: string
+        default: ''
 
 # 동시 실행 방지 — 새 실행이 시작되면 진행 중이던 이전 실행은 자동 취소
 concurrency:
@@ -237,6 +241,10 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           # 놓친 사건 회수(S4) — 예약 실행에서는 비어 있어 0(끔)이 된다
           COMPANION_BACKFILL_DAYS: ${{ inputs.companion_backfill_days || 0 }}
+          COMPANION_BACKFILL_FOCUS: ${{ inputs.companion_backfill_focus || '' }}
+          # 집필 모델(E1) — 저장소 변수로 덮어쓴다. 비우면 코드 기본값(haiku-4-5 / 사실 사건 sonnet-5-5)
+          COMPANION_MODEL: ${{ vars.COMPANION_MODEL }}
+          COMPANION_MODEL_FACT: ${{ vars.COMPANION_MODEL_FACT }}
           # 실적·계약 사건의 1순위 원천 = SEC 8-K 원문(⑱) — SEC 는 연락 가능한 User-Agent 필수
           SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
         continue-on-error: true
