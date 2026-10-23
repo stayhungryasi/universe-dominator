@@ -268,8 +268,9 @@ def quarter_label(end):
 def build_quarters(cf, max_q=8):
     """companyfacts → 최근 max_q 개 분기 행(최신 먼저). 값은 백만 달러, 근거(개념·filed·산식) 보존.
 
-    회사가 XBRL 로 낸 공시(10-Q·10-K)만 기계가 읽는다. 상장 전 연간(FY) 수치는 S-1 본문에만
-    있어 4분기는 '누적 연간 − 9개월'을 만들 수 없다 → 빈칸 + 사유(추정 금지).
+    회사가 XBRL 로 낸 공시(10-Q·10-K)만 기계가 읽는다. 4분기는 10-K 의 연간(FY) − 같은 해 9개월 누적
+    (quarter_flow ② 누적 차분)으로 계산한다. 상장 전 연간(FY)은 S-1 본문에만 있어 XBRL 이 없다 →
+    빈칸 + 사유(추정 금지). 그 칸은 월간 엔진이 S-1 원문에서 기입하고 검증관이 대조한다(monthly_run.md 7).
     """
     gaap = ((cf or {}).get("facts") or {}).get("us-gaap") or {}
 
@@ -297,13 +298,16 @@ def build_quarters(cf, max_q=8):
                 how = "기말 잔액"
             if v is None:
                 row[field] = None
-                row["src"][field] = {"note": ("상장 전 연간 수치는 S-1 본문에만 있어 4분기 값을 만들 수 없음"
+                row["src"][field] = {"note": ("XBRL 공시에 이 해의 연간(FY) 값이 없어 '연간 − 9개월'로 4분기를 "
+                                              "계산할 수 없음(상장 전 연간은 S-1 본문에만) — 월간 엔진 S-1 기입 대상"
                                               if _d(end).month == 12 and typ == "flow"
                                               else "공시 원천에 해당 기간 값 없음") if concept else "개념 미보고"}
                 continue
             row[field] = round(v / 1e6)
+            # derived = 누적 공시의 차분으로 계산한 값(연간 − 9개월 · 상반기 − 2분기 등) — 화면에 '계산' 표식
             row["src"][field] = {"concept": concept, "filed": f.get("filed"), "end": f.get("end"),
-                                 "form": f.get("form"), "accn": f.get("accn"), "how": how}
+                                 "form": f.get("form"), "accn": f.get("accn"), "how": how,
+                                 "derived": how not in ("분기 보고값", "기말 잔액")}
             filed.append(f.get("filed", ""))
             row.setdefault("fp", f.get("fp"))
             row.setdefault("fy", f.get("fy"))

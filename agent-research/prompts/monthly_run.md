@@ -21,6 +21,10 @@
    · 이정표 progress 에 parts = [{label, current_num, target_num, unit, op: ">="|"<="|">"|"=="}] 를 함께 적는다. 복합(AND) 조건은 조건별로 한 줄씩.
      숫자로 옮길 수 없는 조건은 current_num=null + reason(추정 금지). progress 가 null 인 이정표는 progress_parts 에 조건별 사유를 남긴다. 문자열 progress 는 표시용으로 유지.
    · 이정표마다 status_history 에 {run_id, status} 1줄 append.
-   · state.run_history 에 {run_id, run_date, price, price_date, probs{bull,base,bear}, band[lo,hi], mid, pw_value} 1줄 append(지난 줄 수정 금지).
+   · state.run_history 에 {run_id, run_date, price, price_date, probs{bull,base,bear}, band[lo,hi], mid, pw_value, summary} 1줄 append(지난 줄 수정 금지). summary 는 이번 run.summary 그대로(최대 3줄) — 관제판 ②가 사건 회차 옆에 직전 월간 회차 요약을 이 줄에서 읽는다.
    · state.kpi_history 에 분기별 운영 KPI(공시 재무 태그가 아닌 것: 가입자·ARPU·명판 GW·발사 수·부문 매출)를 {quarter, period_end, source, published, …} 로 적는다(같은 분기는 갱신).
+   · 공시 재무 분기 결측(2026-10-23 추가): data/spacex_kpi.json 의 auto.quarters 에서 값이 null 인 분기(상장 전 4Q 등 — 기계가 XBRL 누적 차분으로도 못 만든 분기)만,
+     S-1/424B 원문 표에서 같은 키(revenue_usd_m · operating_income_usd_m · net_income_usd_m · ocf_usd_m · capex_usd_m · cash_usd_m · debt_and_leases_usd_m, 백만 달러)로 state.kpi_history 의 그 분기 줄에 적는다.
+     줄마다 fin_source(S-1 원문 URL) · fin_note(표 이름·쪽, 산식 — 예: 'FY2025 − 9M2025') 필수. 기계 값이 있는 분기·키는 쓰지 않는다(기계 우선). 원문에 분기 값이 없고 계산도 원문 숫자로 안 되면 비워 둔다(추정 금지).
+     적은 값은 전부 verify_list.json 에 {claim, value, source_url=fin_source, where_in_report: "state.kpi_history <분기>.<키>"} 로 올려 검증관 대조를 받는다 — 관문이 누락을 실패로 본다.
 

@@ -405,6 +405,45 @@ def soft_checks(st):
     return warn
 
 
+FIN_KEYS = ("revenue_usd_m", "operating_income_usd_m", "net_income_usd_m", "ocf_usd_m", "capex_usd_m",
+            "cash_usd_m", "debt_and_leases_usd_m")
+
+
+def check_kpi_fin(st, vlist):
+    """S-1 원문에서 기입한 분기 재무(state.kpi_history 의 공시 재무 키) — 출처·검증관 대조 필수(2026-10-23).
+
+    기계(XBRL)가 못 만든 분기를 탐사 엔진이 채울 수 있게 했으니, 그 값은 반드시 원문 URL 을 달고
+    verify_list 에 올라 검증관의 숫자 대조를 받아야 한다. 하나라도 빠지면 게시하지 않는다.
+    """
+    fails = []
+    items = (vlist or {}).get("items") if isinstance(vlist, dict) else (vlist or [])
+    where = {}
+    for it in items or []:
+        if isinstance(it, dict):
+            where[re.sub(r"\s+", " ", str(it.get("where_in_report", ""))).strip()] = it
+    for h in (st or {}).get("kpi_history") or []:
+        if not isinstance(h, dict):
+            continue
+        keys = [k for k in FIN_KEYS if h.get(k) is not None]
+        if not keys:
+            continue
+        q = h.get("quarter", "?")
+        if not str(h.get("fin_source", "")).startswith("http"):
+            fails.append(f"kpi_history {q}: 공시 재무 값({', '.join(keys)})에 fin_source(S-1 원문 URL) 없음")
+        for k in keys:
+            it = where.get(f"state.kpi_history {q}.{k}")
+            if not it:
+                fails.append(f"kpi_history {q}.{k}: verify_list 에 없음(검증관 대조 누락)")
+                continue
+            try:
+                same = abs(float(it.get("value")) - float(h[k])) < 0.5
+            except (TypeError, ValueError):
+                same = False
+            if not same:
+                fails.append(f"kpi_history {q}.{k}: verify_list 값({it.get('value')})과 state 값({h[k]}) 불일치")
+    return fails
+
+
 def run_checks(stage="final", st=None, prev=None, md=None, vlist=None, vres=None,
                files=None, root=AR, ci=None):
     st = read_json(STATE) if st is None else st
@@ -425,6 +464,7 @@ def run_checks(stage="final", st=None, prev=None, md=None, vlist=None, vres=None
             f, stats = check_sources(md)
             fails += f
     if stage == "final":
+        fails += check_kpi_fin(st, read_json(VLIST) if vlist is None else vlist)
         fails += check_verify(read_json(VLIST) if vlist is None else vlist,
                               read_json(VRES) if vres is None else vres)
     fails += check_compliance(public_files(root) if files is None else files)

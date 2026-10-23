@@ -81,6 +81,18 @@ class KpiTest(unittest.TestCase):
                          ["3Q26", "2Q26", "1Q26", "4Q25", "3Q25", "2Q25", "1Q25", "4Q24"])
         self.assertIn("S-1", rows[3]["src"]["revenue_usd_m"]["note"])     # 4분기 빈칸에 사유
 
+    def test_q4_is_annual_minus_nine_months_and_marked(self):
+        """결정 4①(2026-10-23): 4분기 = 10-K 연간(FY) − 같은 해 9개월 누적. 계산값은 derived 표식."""
+        fy = dict(_f("2026-01-01", "2026-12-31", 45000e6, "2027-02-20", fp="FY"), form="10-K")
+        nine = _f("2026-01-01", "2026-09-30", 27083e6)
+        v, f, how = sw.quarter_flow([fy, nine], "2026-12-31")
+        self.assertEqual(round(v / 1e6), 45000 - 27083)
+        self.assertIn("누적 2026-01-01~2026-12-31 − 누적 2026-01-01~2026-09-30", how)
+        cf = {"facts": {"us-gaap": {"RevenueFromContractWithCustomerExcludingAssessedTax": {"units": {"USD": [fy, nine]}}}}}
+        row = sw.build_quarters(cf, max_q=1)[0]
+        self.assertEqual((row["quarter"], row["revenue_usd_m"]), ("4Q26", 17917))
+        self.assertTrue(row["src"]["revenue_usd_m"]["derived"])
+
     def test_quarter_flow_missing_prior_is_none(self):
         """1분기 누적이 없으면 2분기 Capex 는 만들지 않는다(추정으로 채우지 않는다)."""
         facts = [_f("2026-01-01", "2026-06-30", 28476e6, "2026-08-04", fp="Q2")]
