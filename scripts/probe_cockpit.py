@@ -726,7 +726,8 @@ def cockpit_html(d):
         rows.append(f'<button class="pc-axis" type="button" data-pc-go="milestones" data-pc-axis="{esc(a["key"])}">'
                     f'<span class="pc-axis-n">{esc(a["ko"])}</span>'
                     f'<span class="pc-bar"><i style="width:{0 if pct is None else round(pct * 100)}%"></i></span>'
-                    f'<span class="pc-axis-c">{"—" if pct is None else str(round(pct * 100)) + "%"} · {esc(cnt)}</span></button>')
+                    f'<span class="pc-axis-c">{"—" if pct is None else str(round(pct * 100)) + "%"}'
+                    f'(측정 {a["measured"]}/{a["n"]}) · {esc(cnt)}</span></button>')
     h.append('<section class="pc-card pc-c3" aria-labelledby="pcH3"><h3 id="pcH3">③ 5축 진척'
              '<span class="pc-tag">측정된 이정표 평균</span></h3>' + "".join(rows) + '</section>')
     tiles = []
