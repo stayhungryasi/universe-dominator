@@ -2646,6 +2646,39 @@ console.log(JSON.stringify(cases.map(c => {
         _bl_txt = __import__("inspect").getsource(_tgm.build_briefing)
         check("브리핑: 본문 조립이 macro_line 을 쓴다(배선)", "macro_line(meta)" in _bl_txt, True)
 
+    # ── 2026-10-23 SpaceX 관제 복구 (알려진 지뢰 ⑰) ─────────────────────────
+    # 외부 라이브러리가 반환 형식을 바꾸자 '0건'으로 위장해 32일 침묵했다.
+    # 버전 미고정 · 실패를 조용한 날로 분류 · 1회 경보 후 침묵 — 세 겹 각각을 지킨다.
+    import fetch_signals as _fsx
+    _req = (Path(__file__).parent.parent / "requirements.txt").read_text(encoding="utf-8")
+    check("⑰ 의존성: googlenewsdecoder 정확 고정(==)",
+          "googlenewsdecoder==" in _req and "googlenewsdecoder>=" not in _req, True)
+    try:
+        from googlenewsdecoder import gnewsdecoder as _gnd
+        _gres = _gnd("https://example.com/not-a-google-news-url")   # 네트워크 없이 실패하는 입력
+        _gkeys = sorted(_gres) if isinstance(_gres, dict) else type(_gres).__name__
+    except Exception as _ge:
+        _gkeys = f"호출 실패: {str(_ge)[:60]}"
+    check("⑰ 계약: 설치된 디코더 반환에 success|status 키(형식 변경 시 여기서 먼저 운다)",
+          isinstance(_gkeys, list) and bool({"success", "status"} & set(_gkeys)), True)
+    check("⑰ 어댑터: 신·구 형식 모두 원문 URL",
+          (_fsx.gnews_decoded({"success": True, "decoded_url": "u"}),
+           _fsx.gnews_decoded({"status": True, "decoded_url": "u"})), ("u", "u"))
+    check("⑰ 분류: 원본≥1 · 디코딩 0 → decode_fail / 원본 0 → zero",
+          (_fsx.classify_outcome(4, [], {"scanned": 4, "decoded": 0}),
+           _fsx.classify_outcome(0, [], {})), ("decode_fail", "zero"))
+    # 전 케이스(재현·변이 확인 완료)는 단위 테스트 묶음 — 관문에 직결한다
+    import unittest as _ut
+    import io as _io
+    for _mod in ("test_event_layer",):
+        try:
+            _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
+            _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)
+            check(f"{_mod}: 전 케이스 통과 ({_res.testsRun}건)",
+                  [str(t[0]) for t in _res.failures + _res.errors], [])
+        except Exception as _te:
+            check(f"{_mod}: 로드", f"{type(_te).__name__}: {str(_te)[:80]}", "ok")
+
     # ── 2026-08 f-string 문법 사고 재발 방지: 전 스크립트 컴파일 전수검사 ──
     # (러너 파이썬을 3.12로 고정해 검증 환경과 일치시키고, 여기서 전 스크립트를
     #  실제 컴파일해 어떤 문법 오류든 수집 단계 진입 전에 차단한다)

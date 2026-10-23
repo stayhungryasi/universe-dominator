@@ -9,6 +9,14 @@
    "emoji": "🚀",
    "sources": [
     {
+     "name": "SpaceX IR 보도자료",
+     "type": "rss",
+     "base": "https://ir.spacex.com",
+     "_why": "회사 공식 보도자료 RSS(Q4) — 구글뉴스 디코더 의존을 줄인다(2026-10-23). 링크가 상대경로로 섞여 base 로 절대화한다.",
+     "url": "https://ir.spacex.com/rss/pressrelease.aspx",
+     "max_age_days": 14
+    },
+    {
      "name": "SpaceX 발사·로드맵",
      "type": "gnews",
      "domain": "",

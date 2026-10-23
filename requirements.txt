@@ -1,5 +1,5 @@
 requests>=2.31.0
 beautifulsoup4>=4.12.0
-googlenewsdecoder>=0.1.7
+googlenewsdecoder==0.2.2   # 고정: 0.2.1 이 반환 키를 status→success 로 바꿔 32일 침묵(2026-10-23 ⑰)
 google-auth>=2.23.0
 yfinance>=0.2.40

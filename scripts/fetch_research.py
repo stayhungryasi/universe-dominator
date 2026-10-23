@@ -143,9 +143,9 @@ def resolve_gnews_url(link):
     if "news.google.com" not in link or gnewsdecoder is None:
         return None
     try:
-        res = gnewsdecoder(link, interval=1)
-        if isinstance(res, dict) and res.get("status") and res.get("decoded_url"):
-            return res["decoded_url"]
+        # 반환 형식(0.1.x status / 0.2.x success)은 fetch_signals 의 어댑터 한 곳이 안다
+        from fetch_signals import gnews_decoded
+        return gnews_decoded(gnewsdecoder(link, interval=1))
     except Exception:
         pass
     return None

@@ -511,7 +511,7 @@ class FeedJudgeTest(unittest.TestCase):
         for _ in range(2):
             a, _ = ps.judge_feeds(self.st("timeout", code=None), self.state, TODAY, self.cfg)
         self.assertEqual(len(a), 1)
-        self.assertIn("timeout 2회 연속", a[0]["text"])
+        self.assertIn("응답 시간 초과 2회 연속", a[0]["text"])
 
     def test_all_ok_is_silent(self):
         a, seen = ps.judge_feeds(self.st("ok", code=200), self.state, TODAY, self.cfg)

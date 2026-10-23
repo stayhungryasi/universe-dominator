@@ -272,36 +272,62 @@ def _bulk_lift(body, src, window=BULK_WINDOW):
 # 수집 — 신호 관측소 규칙 이식 (우아한 저하)
 # ────────────────────────────────────────────────────────────────
 
-def collect_candidates(company, cfg):
-    """회사별 후보 뉴스. 소스 하나가 죽어도 나머지는 살아 있다."""
+def collect_candidates(company, cfg, widen_days=0):
+    """회사별 후보 뉴스. 소스 하나가 죽어도 나머지는 살아 있다.
+
+    widen_days > 0 이면 **회수 모드** — 구글뉴스 쿼리의 when:Nd 를 넓히고 상한을
+    키운다(놓친 사건 회수 1회 한정, S4). 평시에는 0.
+    """
     try:
-        from fetch_signals import parse_rss, resolve_gnews
+        from fetch_signals import parse_rss, resolve_gnews, classify_outcome
     except Exception as e:
         print(f"[동행] 수집 유틸 로드 실패 → 자동 수집 생략 ({e})", file=sys.stderr)
         return []
     import feed_client as fc
+    from urllib.parse import urljoin
     cap = int(cfg.get("rss_cap", 4))
     scan = int(cfg.get("scan_limit", 12))
+    if widen_days:
+        cap, scan = cap * 2, scan * 2
     rows = []
     # 라벨에 회사를 담아야 관제탑이 어느 항로의 소스가 죽었는지 말할 수 있다
     for s in fc.interleave_by_host(company.get("sources", [])):
         label = f"{company['slug']}:{s['name']}"
-        text, outcome, code = fc.fetch(s["url"], label, "companion", headers=UA)
+        url = s["url"]
+        if widen_days and s.get("type") == "gnews":
+            url = widen_query(url, widen_days)
+        text, outcome, code = fc.fetch(url, label, "companion", headers=UA)
         if text is None:
             print(f"[동행] {label} 수집 실패 → 건너뜀 ({outcome} {code})", file=sys.stderr)
             continue
         try:
             got = parse_rss(text, s["name"])
+            items_raw = len(got)
+            stats = {}
             if s.get("type") == "gnews":
-                got = resolve_gnews(got, s.get("domain", ""), cap, scan_limit=scan)
+                got = resolve_gnews(got, s.get("domain", ""), cap, scan_limit=scan,
+                                    stats=stats)
             else:
+                age = s.get("max_age_days")
+                if age:
+                    got = [x for x in got
+                           if within_days(x.get("pub", ""), max(int(age), widen_days or 0))]
                 got = got[:cap]
+                # IR 피드(Q4)는 링크가 상대경로로 섞여 온다 — 기준 주소로 절대화한다
+                base = s.get("base") or ""
+                for x in got:
+                    if base and x.get("url", "").startswith("/"):
+                        x["url"] = urljoin(base, x["url"])
             for x in got:
                 x.pop("feed_source", None)
             rows.extend(got)
-            fc.record("companion", label, "ok" if got else "zero", code, len(got))
-            print(f"[동행] {label}: {len(got)}건")
-            if not got:
+            oc = classify_outcome(items_raw, got, stats)
+            fc.record("companion", label, oc, code, len(got), items_raw=items_raw)
+            print(f"[동행] {label}: {len(got)}건 (원본 {items_raw}건)")
+            if oc == "decode_fail":
+                print(f"[동행] {label}: 원본 {items_raw}건인데 디코딩 전멸 — 고장",
+                      file=sys.stderr)
+            elif not got:
                 print(f"[동행] {label}: 0건 — 피드 점검 대상", file=sys.stderr)
         except Exception as e:
             fc.record("companion", label, "http_error", code, 0)
@@ -316,8 +342,38 @@ def collect_candidates(company, cfg):
     return out
 
 
+def within_days(pub, days, now=None):
+    """발행일(RFC822/ISO 혼재)이 최근 days 일 안인가. 못 읽으면 True(버리지 않는다)."""
+    from email.utils import parsedate_to_datetime
+    now = now or datetime.now(timezone.utc)
+    dt = None
+    try:
+        dt = parsedate_to_datetime(pub)
+    except Exception:
+        try:
+            dt = datetime.fromisoformat((pub or "").replace("Z", "+00:00"))
+        except Exception:
+            return True
+    if dt is None:
+        return True
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return (now - dt).days <= int(days)
+
+
+def widen_query(url, days):
+    """구글뉴스 검색 URL 의 when:Nd 를 days 로 넓힌다(없으면 붙인다). 순수 함수."""
+    if re.search(r"when(?::|%3A)\d+d", url):
+        return re.sub(r"when(?::|%3A)\d+d", f"when:{int(days)}d", url)
+    if "q=" in url:
+        return re.sub(r"(q=[^&]*)", lambda m: m.group(1) + f"+when:{int(days)}d", url, count=1)
+    return url
+
+
 def fetch_article_text(url, limit=6000):
     """원문 본문 대강 추출 — 실패해도 빈 문자열로 우아하게 (signal_column 과 같은 문법)"""
+    if re.search(r"\.pdf(\?|$)", url or "", re.I):
+        return ""              # PDF 를 텍스트로 긁으면 바이너리 쓰레기 — 제목만으로 진행
     try:
         r = requests.get(url, headers=UA, timeout=25)
         r.raise_for_status()
@@ -752,8 +808,12 @@ def run_material(mat, companies, api_key, constitution, essays, today):
                        charts=res.get("charts")), "소재 에세이화"
 
 
-def run_auto(comp, api_key, constitution, essays, today):
-    """자동 수집분 처리 → 에세이 항목 또는 None."""
+def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=None,
+             memo=""):
+    """자동 수집분 처리 → 에세이 항목 또는 None.
+
+    widen_days/exclude/memo 는 회수 모드(S4) 전용 — 평시 호출은 기본값 그대로다.
+    """
     thesis = read_thesis(comp["slug"])
     if thesis["placeholder"]:
         print(f"[동행] {comp['ko']}: 논제 원장 플레이스홀더 — 관찰 대기 🔭 (집필 스킵)")
@@ -763,9 +823,10 @@ def run_auto(comp, api_key, constitution, essays, today):
         return None
 
     cfg = load_json(SRC_PATH, {})
-    cands = collect_candidates(comp, cfg)
+    cands = collect_candidates(comp, cfg, widen_days=widen_days)
     seen_urls = {r["url"] for e in essays if e.get("company") == comp["slug"]
                  for r in normalize_sources(e.get("sources"))}
+    seen_urls |= set(exclude or ())
     cands = [c for c in cands if c.get("url") not in seen_urls]
     if not cands:
         print(f"[동행] {comp['ko']}: 후보 0 · 발행 0 — 침묵")
@@ -776,7 +837,7 @@ def run_auto(comp, api_key, constitution, essays, today):
     recent = [e["title"] for e in essays if e.get("company") == comp["slug"]][:8]
     try:
         res, violation = write_with_discipline(api_key, constitution, comp, thesis,
-                                               cands[:5], recent)
+                                               cands[:5], recent, memo=memo)
     except Exception as e:
         print(f"[동행] {comp['ko']} 집필 실패: {e} — 다음 회차 재시도", file=sys.stderr)
         return None
@@ -794,6 +855,56 @@ def run_auto(comp, api_key, constitution, essays, today):
                        res.get("body", ""),
                        source_registry(cands[:5], res.get("sources")), "auto", today,
                        charts=res.get("charts"))
+
+
+BACKFILL_SLUG = "spacex"     # 회수 대상 — 사건층 정지 기간에 가장 많이 놓친 항로
+BACKFILL_MAX = 2            # 회수 에세이 상한
+BACKFILL_MEMO = ("회수 모드: 수집 정지 기간(2026-09-22~) 동안 놓친 사건을 되짚는다. "
+                 "후보 가운데 실제로 5축에 닿는 사건만 고르고, 이미 쓴 사건은 다시 쓰지 마라. "
+                 "근거는 후보로 주어진 자료뿐이다.")
+
+
+def backfill_days():
+    """워크플로 입력 companion_backfill_days → 정수(기본 0 = 회수 안 함)."""
+    try:
+        return max(0, min(60, int(os.environ.get("COMPANION_BACKFILL_DAYS", "0") or 0)))
+    except ValueError:
+        return 0
+
+
+def run_backfill(by_slug, api_key, constitution, essays, today, state, days=None):
+    """수리 배포 후 1회 한정 — spacex 만 쿼리 창을 넓혀 최대 2편.
+
+    1회 한정은 상태로 지킨다: state.backfill[slug] 가 있으면 다시 돌지 않는다
+    (입력값을 실수로 남겨 둔 채 재실행해도 회수가 반복되지 않는다).
+    인용·준법 규율은 평시 경로(write_with_discipline)를 그대로 탄다.
+    """
+    days = backfill_days() if days is None else days
+    if not days:
+        return []
+    comp = by_slug.get(BACKFILL_SLUG)
+    done = (state.setdefault("backfill", {}) or {}).get(BACKFILL_SLUG)
+    if not comp:
+        print(f"[동행] 회수: 대상 {BACKFILL_SLUG} 설정 없음 — 생략", file=sys.stderr)
+        return []
+    if done:
+        print(f"[동행] 회수: {BACKFILL_SLUG} 은 {done.get('date')} 에 이미 회수함 — 1회 한정, 생략")
+        return []
+    out, used = [], set()
+    for k in range(BACKFILL_MAX):
+        entry = run_auto(comp, api_key, constitution, essays + out, today,
+                         widen_days=days, exclude=set(used), memo=BACKFILL_MEMO)
+        if not entry:
+            break
+        entry["backfill"] = True
+        out.append(entry)
+        used |= {r["url"] for r in entry.get("sources", [])}
+        print(f"[동행] 회수 {k + 1}/{BACKFILL_MAX} — 「{entry['title']}」")
+    state["backfill"][BACKFILL_SLUG] = {"date": today, "days": days, "published": len(out)}
+    if out:
+        state["published"][BACKFILL_SLUG] = today   # 같은 회차 평시 경로는 침묵
+    print(f"[동행] 회수 종료 — when:{days}d · 발행 {len(out)}편")
+    return out
 
 
 def main():
@@ -853,6 +964,11 @@ def main():
             print(f"[동행] 소재함 접근 실패 → 자동 수집만 진행 ({e})", file=sys.stderr)
     else:
         print("[동행] FIREBASE_SERVICE_ACCOUNT 없음 — 소재함 생략")
+
+    # ── ①-b 놓친 사건 회수 (S4, 1회 한정) ──
+    for entry in run_backfill(by_slug, api_key, constitution, essays, today, state):
+        essays.insert(0, entry)
+        published.append(entry)
 
     # ── ② 자동 수집분 (회사당 하루 1편) ──
     for comp in comps:

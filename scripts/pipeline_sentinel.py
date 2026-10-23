@@ -156,6 +156,55 @@ def alert(item, text, today, kind="alert"):
     return {"sig": sig(item, today), "text": text, "kind": kind}
 
 
+REALERT_DAYS = 7        # 미해결 장애 재알림 주기(일) — 2026-10-23 S3
+
+
+def _days(a, b):
+    """두 'YYYY-MM-DD' 사이 일수(b - a). 못 읽으면 None."""
+    try:
+        return (datetime.strptime(b, "%Y-%m-%d") - datetime.strptime(a, "%Y-%m-%d")).days
+    except (TypeError, ValueError):
+        return None
+
+
+def escalate(rec, flag, today, every=REALERT_DAYS):
+    """장애가 임계를 넘은 회차마다 부른다 → None(침묵) | 경보 꼬리 문자열.
+
+    2026-10-23 사고(⑰): 경보가 **한 번 울고 영원히 침묵**했다. 동행 7소스가
+    9/24 에 한 번 '0건 4회 연속'을 알린 뒤 32일 동안 아무 소리도 없었다 —
+    읽은 사람이 놓쳤으면 그걸로 끝이었다. 이제 미해결이면 every 일마다 다시 운다.
+    상태 키: {flag}(bool) · {flag}_first(첫 경보일) · {flag}_last(마지막 경보일).
+    첫 경보일을 모르는 옛 상태(이관 전 alerted:True)는 **즉시 한 번** 다시 운다 —
+    얼마나 오래 묵었는지 모르는 장애를 7일 더 묵히지 않는다.
+    """
+    first_k, last_k = flag + "_first", flag + "_last"
+    if not rec.get(flag):
+        rec[flag], rec[first_k], rec[last_k] = True, today, today
+        return ""
+    last = rec.get(last_k)
+    gap = _days(last, today) if last else None
+    if last and (gap is None or gap < every):
+        return None
+    rec[last_k] = today
+    first = rec.get(first_k)
+    since = _days(first, today) if first else None
+    head = (f" — 미해결, 첫 경보 후 {since}일" if since is not None
+            else " — 미해결, 첫 경보 일자 미상(상태 이관)")
+    return head
+
+
+def clear(rec, flag):
+    """회복 — 경보 상태를 내리고, 경보 중이었으면 True(회복 알림 1회의 근거)."""
+    was = bool(rec.get(flag))
+    rec[flag] = False
+    rec.pop(flag + "_first", None)
+    rec.pop(flag + "_last", None)
+    return was
+
+
+ERROR_OUTCOMES = ("http_error", "timeout", "decode_fail")
+
+
 # ────────────────────────────────────────────────────────────────
 # 판정부 — 전부 순수 함수 (입력 = 산출물, 출력 = 경보 목록). 테스트 가능해야 한다.
 # ────────────────────────────────────────────────────────────────
@@ -205,7 +254,7 @@ def judge_signals(status, names, state, today, cfg):
         except (TypeError, ValueError, AttributeError):
             items = 0
 
-        if outcome not in ("ok", "zero", "http_error", "timeout"):
+        if outcome not in ("ok", "zero") + ERROR_OUTCOMES:
             # 원장에 없거나 모르는 값 — 판정 불가. 카운터를 건드리지 않고
             # obs 로 내보내 호출부가 로그에 남긴다 (침묵은 통과가 아니다).
             obs[n] = {"outcome": outcome or "미기록", "items": 0}
@@ -213,15 +262,13 @@ def judge_signals(status, names, state, today, cfg):
 
         obs[n] = {"outcome": outcome, "items": items}
 
-        if outcome in ("http_error", "timeout"):
+        if outcome in ERROR_OUTCOMES:
             continue                      # judge_feeds 관할 — 중복 발화 금지
 
         if outcome == "ok":
-            was_alerted = rec.get("alerted", False)
             rec["zero_streak"] = 0
-            rec["alerted"] = False
             rec["ever_seen"] = True
-            if was_alerted:
+            if clear(rec, "alerted"):
                 out.append(alert(f"signals-recover:{n}",
                                  f"fetch_signals: {n} 회복 — 응답 {items}건 ✅",
                                  today, kind="recover"))
@@ -232,10 +279,12 @@ def judge_signals(status, names, state, today, cfg):
         # 한 번도 수집된 적 없는 신규 소스는 기준선이 없으므로 아직 판정하지 않는다
         if not rec.get("ever_seen"):
             continue
-        if rec["zero_streak"] >= zero_limit and not rec.get("alerted"):
-            rec["alerted"] = True
-            out.append(alert(f"signals:{n}",
-                             f"fetch_signals: {n} 0건 {rec['zero_streak']}회 연속", today))
+        if rec["zero_streak"] >= zero_limit:
+            tail = escalate(rec, "alerted", today)
+            if tail is not None:
+                out.append(alert(f"signals:{n}",
+                                 f"fetch_signals: {n} 0건 {rec['zero_streak']}회 연속{tail}",
+                                 today))
     return out, obs
 
 
@@ -385,7 +434,7 @@ def judge_bots(cfg, today, step_outcomes, data_dir, now):
 
 _KIND_KO = {"signals": "신호", "companion": "동행", "rates": "금리",
             "research": "리서치", "scout": "취재", "finnhub_xbrl": "공시",
-            "latent": "잠재지배자", "macro": "시장지표"}
+            "latent": "잠재지배자", "macro": "시장지표", "spacex": "SpaceX 관측"}
 
 
 def judge_feeds(status, state, today, cfg):
@@ -395,7 +444,10 @@ def judge_feeds(status, state, today, cfg):
     봤다. 그래서 동행 소스가 통째로 죽어도 아무 소리가 나지 않았다(사각지대).
     이제 feed_client 가 남기는 data/fetch_status.json 을 읽어 판정한다:
 
-      http_error / timeout → **언제나 장애**다. 연속 2회면 경보.
+      http_error / timeout / decode_fail → **언제나 장애**다. 연속 2회면 경보.
+        (decode_fail: 원본 피드는 있는데 디코딩 전멸 — 2026-10-23 ⑰ 이전엔 zero 로
+         위장해 '조용한 날' 임계에 숨었다)
+      미해결이면 REALERT_DAYS(7)일마다 재알림, 회복 시 1회 회복 알림(S3).
       zero (성공했는데 0건) → 그날 발표가 없었을 수도 있다. 임계는 관대하게
         zero_streak_limit(운영값 4)를 그대로 쓴다.
 
@@ -420,35 +472,47 @@ def judge_feeds(status, state, today, cfg):
                                     "err_alerted": False, "zero_alerted": False})
         ko = _KIND_KO.get(kind, kind)
 
-        if outcome in ("http_error", "timeout"):
+        if outcome in ERROR_OUTCOMES:
             seen["error"] += 1
-            rec["zero_streak"], rec["zero_alerted"] = 0, False
+            clear(rec, "zero_alerted")    # 0건 경보는 더 나쁜 상태(요청 실패)로 승계된다
+            rec["zero_streak"] = 0
             rec["err_streak"] = int(rec.get("err_streak", 0)) + 1
-            if rec["err_streak"] >= err_limit and not rec.get("err_alerted"):
-                rec["err_alerted"] = True
-                what = f"HTTP {s['code']}" if s.get("code") else outcome
-                out.append(alert(f"feed:{key}",
-                                 f"{ko} {label}: {what} {rec['err_streak']}회 연속", today))
+            if rec["err_streak"] >= err_limit:
+                tail = escalate(rec, "err_alerted", today)
+                if tail is not None:
+                    if outcome == "decode_fail":
+                        what = f"디코딩 실패(원본 {int(s.get('items_raw') or 0)}건 → 0건)"
+                    elif s.get("code"):
+                        what = f"HTTP {s['code']}"
+                    else:
+                        what = "응답 시간 초과" if outcome == "timeout" else "요청 실패"
+                    out.append(alert(f"feed:{key}",
+                                     f"{ko} {label}: {what} {rec['err_streak']}회 연속{tail}",
+                                     today))
             continue
 
         # 여기부터는 요청 자체는 성공한 경우
-        was_err = rec.get("err_alerted", False)
-        rec["err_streak"], rec["err_alerted"] = 0, False
-        if was_err:
+        rec["err_streak"] = 0
+        if clear(rec, "err_alerted"):
             out.append(alert(f"feed-recover:{key}", f"{ko} {label}: 응답 회복 ✅",
                              today, kind="recover"))
         if outcome == "zero":
             seen["zero"] += 1
             rec["zero_streak"] = int(rec.get("zero_streak", 0)) + 1
             # 신호 소스의 0건은 judge_signals 관할 — 중복 발화 금지
-            if kind != "signals" and rec["zero_streak"] >= zero_limit \
-                    and not rec.get("zero_alerted"):
-                rec["zero_alerted"] = True
-                out.append(alert(f"feed-zero:{key}",
-                                 f"{ko} {label}: 0건 {rec['zero_streak']}회 연속", today))
+            if kind != "signals" and rec["zero_streak"] >= zero_limit:
+                tail = escalate(rec, "zero_alerted", today)
+                if tail is not None:
+                    out.append(alert(f"feed-zero:{key}",
+                                     f"{ko} {label}: 0건 {rec['zero_streak']}회 연속{tail}",
+                                     today))
         else:
             seen["ok"] += 1
-            rec["zero_streak"], rec["zero_alerted"] = 0, False
+            rec["zero_streak"] = 0
+            if clear(rec, "zero_alerted") and kind != "signals":
+                out.append(alert(f"feed-zero-recover:{key}",
+                                 f"{ko} {label}: 수집 회복 — {int(s.get('items') or 0)}건 ✅",
+                                 today, kind="recover"))
 
     # 원장에서 사라진 소스의 기록은 정리한다 (설정에서 뺀 소스가 유령으로 남지 않게)
     for gone in [k for k in recs if k not in srcs]:

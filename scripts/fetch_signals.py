@@ -108,13 +108,43 @@ def _host_matches(url, domain):
     return host == domain or host.endswith("." + domain)
 
 
-def resolve_gnews(rows, domain, cap, scan_limit=None):
+def gnews_decoded(res):
+    """구글뉴스 디코더 반환값 → 원문 URL(실패면 None). **형식 어댑터.**
+
+    2026-09-20 사고: googlenewsdecoder 0.2.1 이 성공 키를 status → success 로 바꿨다
+    (0.1.7: {"status","decoded_url"} / 0.2.x: {"success","decoded_url"}). 요구사항이
+    '>=0.1.7' 이라 다음 회차에 자동 승격됐고, status 만 보던 코드가 모든 기사를
+    버렸다 — 동행·신호의 구글뉴스형 소스가 32일간 '0건'으로 위장했다.
+    두 형식을 다 받고, 목록(배치 호출 반환)이면 첫 성공 원소를 쓴다.
+    다음 형식 변경은 selftest 의 계약 검사(설치된 실물 패키지)가 먼저 운다.
+    """
+    if isinstance(res, list):
+        for r in res:
+            u = gnews_decoded(r)
+            if u:
+                return u
+        return None
+    if not isinstance(res, dict):
+        return None
+    if (res.get("success") or res.get("status")) and res.get("decoded_url"):
+        return res["decoded_url"]
+    return None
+
+
+def resolve_gnews(rows, domain, cap, scan_limit=None, stats=None):
     """구글뉴스 RSS 후처리 — 리다이렉트 링크를 원문 URL로 복원하고 도메인으로 거른다.
 
     구글뉴스 검색은 site: 지정을 느슨하게 해석해 타 도메인 글도 섞어준다.
     복원한 URL의 호스트로 걸러야 진짜 그 랩의 발표만 남는다.
     복원 1건당 1초 간격이 필요하므로 상한(cap)을 채우면 즉시 멈춘다.
+
+    stats(선택): {"scanned","decoded","decode_fail"} 를 채운다 — '원본은 있는데
+    디코딩이 전멸'(decode_fail)과 '정말 조용한 날'(zero)을 호출자가 가르는 근거.
     """
+    st = stats if isinstance(stats, dict) else {}
+    st.setdefault("scanned", 0)
+    st.setdefault("decoded", 0)
+    st.setdefault("decode_fail", 0)
     out = []
     scanned = 0
     scan_limit = scan_limit if scan_limit is not None else cap * 4
@@ -122,18 +152,20 @@ def resolve_gnews(rows, domain, cap, scan_limit=None):
         if len(out) >= cap or scanned >= scan_limit:
             break
         scanned += 1
+        st["scanned"] += 1
         url = x["url"]
         if "news.google.com" in url:
             if gnewsdecoder is None:
+                st["decode_fail"] += 1
                 continue          # 디코더 없으면 리다이렉트 링크를 그대로 싣지 않는다
             try:
-                res = gnewsdecoder(url, interval=1)
-                if isinstance(res, dict) and res.get("status") and res.get("decoded_url"):
-                    url = res["decoded_url"]
-                else:
-                    continue
+                url = gnews_decoded(gnewsdecoder(url, interval=1))
             except Exception:
+                url = None
+            if not url:
+                st["decode_fail"] += 1
                 continue
+        st["decoded"] += 1
         if domain and not _host_matches(url, domain):
             continue
         x["url"] = url
@@ -144,6 +176,21 @@ def resolve_gnews(rows, domain, cap, scan_limit=None):
             x["title"] = x["title"][: -len(tail)].strip() or x["title"]
         out.append(x)
     return out
+
+
+def classify_outcome(items_raw, got, stats=None):
+    """수집 결과 분류 — '조용한 날'과 '고장'을 가른다 (2026-10-23 S2).
+
+    zero 는 **원본 피드 자체가 비었을 때만**이다. 원본이 1건 이상인데 디코딩이
+    하나도 성공하지 못했으면 그건 조용한 날이 아니라 고장(decode_fail)이다.
+    디코딩은 됐는데 도메인 필터가 다 걸렀다면 그건 정상적인 0건(zero)이다.
+    """
+    if got:
+        return "ok"
+    st = stats or {}
+    if items_raw > 0 and st.get("scanned", 0) > 0 and st.get("decoded", 0) == 0:
+        return "decode_fail"
+    return "zero"
 
 
 def collect(cfg):
@@ -161,22 +208,28 @@ def collect(cfg):
             continue
         try:
             got = parse_rss(text, s["name"])
+            items_raw = len(got)
             cap = cfg.get("rss_cap", 5)
+            stats = {}
             if s.get("type") == "hn":
                 got = [x for x in got
                        if (x["points"] or 0) >= cfg.get("min_points", 300)]
             elif s.get("type") == "gnews":
-                got = resolve_gnews(got, s.get("domain", ""), cap)
+                got = resolve_gnews(got, s.get("domain", ""), cap, stats=stats)
             else:
                 got = got[:cap]  # 한 소스가 관측소를 도배하지 못하게
             # feed_source 는 제목 꼬리 제거용 임시 필드 — signals.json 스키마에 남기지 않는다
             for x in got:
                 x.pop("feed_source", None)
             rows.extend(got)
-            fc.record("signals", s["name"], "ok" if got else "zero", code, len(got))
-            print(f"[신호] {s['name']}: {len(got)}건")
+            outcome = classify_outcome(items_raw, got, stats)
+            fc.record("signals", s["name"], outcome, code, len(got), items_raw=items_raw)
+            print(f"[신호] {s['name']}: {len(got)}건 (원본 {items_raw}건)")
+            if outcome == "decode_fail":
+                print(f"[신호] {s['name']}: 원본 {items_raw}건인데 디코딩 전멸 — "
+                      f"조용한 날이 아니라 고장이다", file=sys.stderr)
             # 죽은 소스가 조용히 0건으로 지나가지 않게 — 다음 점검 대상으로 못을 박는다
-            if not got and s.get("type") != "hn":
+            elif not got and s.get("type") != "hn":
                 print(f"[신호] {s['name']}: 0건 — 피드가 죽었을 수 있습니다 (경로 점검 필요)",
                       file=sys.stderr)
         except Exception as e:

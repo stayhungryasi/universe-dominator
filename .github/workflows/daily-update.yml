@@ -14,6 +14,10 @@ on:
         type: choice
         default: quick
         options: [quick, full]
+      companion_backfill_days:
+        description: '동행 관측 놓친 사건 회수(일) — 0이면 끔. spacex 만, 에세이 상한 2편, 1회 한정(상태로 잠금)'
+        type: number
+        default: 0
 
 # 동시 실행 방지 — 새 실행이 시작되면 진행 중이던 이전 실행은 자동 취소
 concurrency:
@@ -215,6 +219,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # 놓친 사건 회수(S4) — 예약 실행에서는 비어 있어 0(끔)이 된다
+          COMPANION_BACKFILL_DAYS: ${{ inputs.companion_backfill_days || 0 }}
         continue-on-error: true
 
       - name: Build all site pages

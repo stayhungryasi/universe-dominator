@@ -15,7 +15,8 @@
   ② 재시도 — 503·429·5xx 는 지수 백오프로 3회까지 다시 두드린다.
   ③ 순서 섞기 — 같은 호스트 연타를 피하도록 소스 순서를 재배열한다.
   ④ 상태 원장 — 소스별 결과를 data/fetch_status.json 에 남긴다.
-     outcome: ok(수확 있음) · zero(성공했으나 0건) · http_error · timeout
+     outcome: ok(수확 있음) · zero(원본 피드가 0건) · decode_fail(원본은 있는데
+     디코딩 전멸 — 2026-10-23 추가) · http_error · timeout
      이 원장이 있어야 정비 관제탑이 **"조용한 날"과 "죽은 소스"를 구분**한다.
      0건은 발표가 없었던 날일 수도 있지만 http_error 는 언제나 장애다 —
      그래서 둘의 경보 임계가 다를 수 있게 됐다.
@@ -121,13 +122,20 @@ def fetch(url, label, kind, headers=None, timeout=25):
     return None, "http_error", code
 
 
-def record(kind, label, outcome, code, items):
-    """소스별 결과를 원장 버퍼에 적는다. 키는 '{kind}:{label}' 로 고정."""
-    _buffer[f"{kind}:{label}"] = {
+def record(kind, label, outcome, code, items, items_raw=None):
+    """소스별 결과를 원장 버퍼에 적는다. 키는 '{kind}:{label}' 로 고정.
+
+    items_raw: 필터·디코딩 **전** 원본 항목 수. items(최종)와 나란히 있어야
+    '원본 0건(조용한 날)'과 '원본은 있는데 전멸(decode_fail)'이 원장에서 갈린다.
+    """
+    rec = {
         "kind": kind, "source": label, "outcome": outcome,
         "code": code, "items": int(items or 0),
         "ts": datetime.now(KST).strftime("%Y-%m-%d %H:%M"),
     }
+    if items_raw is not None:
+        rec["items_raw"] = int(items_raw or 0)
+    _buffer[f"{kind}:{label}"] = rec
 
 
 _forget = set()
