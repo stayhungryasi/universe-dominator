@@ -166,6 +166,11 @@ class ComplianceTest(unittest.TestCase):
             d = self._files(good_state(), t)
             self.assertEqual(len(g.check_compliance(g.public_files(d))), 1, t)
 
+    def test_negated_disclaimer_is_not_reco(self):
+        self.assertEqual(g.reco_text_hits("기계 생성 가정 · 투자 권유 아님 · 목표가 아님"), [])
+        self.assertEqual(len(g.reco_text_hits("목표가 아님 — 그래도 $80 이하 분할 매수")), 1)
+        self.assertEqual(len(g.reco_text_hits("월가 목표주가 $219")), 1)
+
     def test_private_in_ci(self):
         d = self._files(good_state(), "분석")
         self.assertEqual(len(g.check_private(d, ci=True)), 1)

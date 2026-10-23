@@ -53,8 +53,23 @@ class NumberCheckTest(unittest.TestCase):
         self.assertEqual(ce.check_numbers("<p>설치 2억8천만 · 스킬 100만 · 가입 1,360만</p>", [],
                                           src + " 13.6 million subscribers"), [])
 
+    def test_number_boundaries(self):
+        src = "800MHz spectrum. Revenue was $14,575 million."
+        self.assertEqual(ce.check_numbers("<p>800MHz 스펙트럼 인수</p>", [], src), [])      # '80' 으로 자르지 않는다
+        self.assertEqual(ce.check_numbers("<p>900MHz 스펙트럼</p>", [], src), ["900"])
+        self.assertEqual(ce.check_numbers("<p>매출146억 달러, 순이익999억</p>", [], src), ["999억"])
+        # 한글 바로 뒤의 맨 숫자(예전엔 검사를 건너뛰었다)
+        self.assertEqual(ce.check_numbers("<p>ARPU 하락률17% 기록</p>", [], src), ["17"])
+
+    def test_no_coincidental_match(self):
+        """원문에 없는 'Google $920M' 이 감가상각 922 와 우연히 맞으면 안 된다(실측 사고)."""
+        src = "Depreciation amortization 2,473 1,885 922. Revenue was $14.6 billion."
+        self.assertEqual(ce.check_numbers("<p>Google $920M 월간 거래</p>", [], src), ["920M"])
+        # 원문이 더 거칠게 반올림했으면 원문 폭으로 맞춘다
+        self.assertEqual(ce.check_numbers("<p>매출 $14,575M</p>", [], src), [])
+
     def test_exempt_tokens(self):
-        body = "<p>2026년 3분기(3Q26) Flight 14 이후 2편의 관측, 9/28 발사, 10월 20일 실적.</p>"
+        body = "<p>2026년 3분기(3Q26) Flight 14 이후 2편의 관측, 9/28 발사, 10월 20일 실적, 차트 Q3'25 대비.</p>"
         self.assertEqual(ce.check_numbers(body, [], SEC + " Flight 14"), [])
 
 

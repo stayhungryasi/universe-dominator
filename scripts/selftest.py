@@ -2732,8 +2732,18 @@ console.log(JSON.stringify(cases.map(c => {
     check("⑱ 원천: PDF 는 pypdf 로 읽는다(빈 문자열로 넘기지 않는다)",
           "pdf_text(r.content" in __import__("inspect").getsource(_cex.fetch_article_text), True)
     check("⑱ 의존성: pypdf 정확 고정", "pypdf==" in _req, True)
+    # 관제실 v2 — PROBE_DATA 예산·기계 키 0(관제판·데이터·보고서 덩어리 전부)
+    try:
+        import probe_cockpit as _pcm
+        _ph, _pd, _pr = _pcm.render(_agd)
+        _pblob = __import__("json").dumps(_pd, ensure_ascii=False)
+        check("관제실: PROBE_DATA ≤ 400KB", len(_pblob.encode("utf-8")) <= 400 * 1024, True)
+        check("관제실: 관제판·PROBE_DATA·보고서에 축 기계 키 0",
+              __import__("re").findall(r"[A-E]_[a-z]+", _ph + _pblob + __import__("json").dumps(_pr, ensure_ascii=False)), [])
+    except Exception as _ce:
+        check("관제실: 렌더", f"{type(_ce).__name__}: {str(_ce)[:80]}", "ok")
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
-                 "test_number_discipline"):
+                 "test_number_discipline", "test_cockpit"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)
