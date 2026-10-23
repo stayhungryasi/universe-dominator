@@ -339,7 +339,7 @@ def trigger_kind(name):
     return None
 
 
-def judge_triggers(triggers, new_events, today, already):
+def judge_triggers(triggers, new_events, today, already, written_on=None):
     """트리거 대조 → 새 due 목록. already = 이미 기록된 due 키 집합(같은 사유로 두 번 울지 않는다).
 
     ① 새 사건의 종류가 '대기' 트리거의 종류와 맞으면 → '사건 감지'
@@ -360,6 +360,11 @@ def judge_triggers(triggers, new_events, today, already):
                                 "reason": "사건 감지", "event": ev.get("title"),
                                 "event_date": ev.get("date"), "detected_at": today})
         d = parse_trigger_date(t.get("expected_date"))
+        # 트리거를 쓴 날(state.run.run_date) 이미 시작된 구간은 '도래'가 아니다 — 2026-10-23:
+        # 10월 회차가 '2026-4Q ~ 2027-1H' 트리거를 쓰자마자 구간 첫날(10/01)을 도래로 보고
+        # 사건 모드가 발사됐다(사건 없음). 날짜 도래는 작성 이후에 처음 오는 시작일만 센다.
+        if d and written_on and d.isoformat() <= written_on:
+            d = None
         if d and d.isoformat() <= today:
             key = f"{tid}:date:{d.isoformat()}"
             if key not in already:
@@ -673,7 +678,8 @@ def run():
             d["baseline"] = True
         watch["due"] = (watch.get("due") or []) + new_due
     else:
-        new_due = judge_triggers(triggers, fresh, today, already)
+        new_due = judge_triggers(triggers, fresh, today, already,
+                                 written_on=((st.get("run") or {}).get("run_date") or "")[:10] or None)
         if new_due:
             watch["due"] = ((watch.get("due") or []) + new_due)[-60:]
             send_dm(due_message(new_due))

@@ -113,6 +113,13 @@ class TriggerTest(unittest.TestCase):
         d = sw.judge_triggers(self.TRIG, [], "2026-11-02", set())
         self.assertEqual([(x["trigger_id"], x["reason"]) for x in d], [("T1", "예상일 도래")])
 
+    def test_window_already_started_when_written_is_silent(self):
+        trig = [{"id": "T5", "name": "$400억 조달", "expected_date": "2026-4Q ~ 2027-1H", "status": "대기"}]
+        self.assertEqual(sw.judge_triggers(trig, [], "2026-10-23", set(), written_on="2026-10-23"), [])
+        # 작성 이후에 처음 오는 시작일은 운다
+        trig2 = [{"id": "T1", "name": "4Q26 실적", "expected_date": "2027-02-초", "status": "대기"}]
+        self.assertEqual(len(sw.judge_triggers(trig2, [], "2027-02-02", set(), written_on="2026-10-23")), 1)
+
     def test_contract_8k_without_trigger(self):
         ev = [{"kind": "contract", "accn": "C1", "title": "수시공시 — 중요 계약 체결", "date": "2026-10-08"}]
         d = sw.judge_triggers([], ev, "2026-10-23", set())
