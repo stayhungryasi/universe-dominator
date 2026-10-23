@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-23 00:19",
- "generated_at": "2026-10-23T00:19:32.564291+09:00",
+ "generated_label": "2026-10-23 09:54",
+ "generated_at": "2026-10-23T09:54:46.160206+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-23",
@@ -369,7 +369,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 14.73
    },
    "eps_status": null,
    "roe_tangible": 0.3459,
@@ -522,7 +522,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "강한 현금흐름 대비 지정학적 변동성과 유가 사이클 의존도로 인한 예측 불가능성"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -543,18 +548,22 @@
    "risk5": {
     "business_certainty": "✕",
     "mgmt_ability": "○",
-    "price": "✕"
+    "price": "✕",
+    "tax_inflation": "△"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "score": 2
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
    },
-   "notes": "유가 변동성에 따른 구조적 한계로 인해 버핏 기준 투자 대상으로 부적합",
+   "notes": "유가 사이클 쿠폰 의존, 호르무즈 우회 수출 및 이란 분쟁이 단기 수익을 부풀리나 정상화는 2027년까지 지연 예상",
    "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher; Aramco's Record Profits Hide a Growing Cash Flow Crisis",
-    "risk5": "Oil market may not normalize until 2027, Saudi Aramco CEO warns; IMF warns attacks on Saudi Arabia could hurt global economy",
-    "capalloc": "Saudi Aramco profits jump 25%; Stocks to watch this week: Berkshire Hathaway, Saudi Aramco, Glencore"
+    "franchise": "Global economy 영향력, 체계적 대체불가능 에너지 공급자 지위",
+    "risk5": "Oil market may not normalize until 2027, Saudi Aramco CEO warns; IMF warns attacks on Saudi Arabia could hurt global economy; Strait of Hormuz disruptions 및 Iran war driven 가격 변동성",
+    "capalloc": "Q1 FY2026 sees strong cash flow; 25% profit jump; $3.7bn French company agreements 및 $100bn gas unit spinoff 검토",
+    "owner_earnings": "Record profits hide growing cash flow crisis; 유가 변동성에 따른 수익 진폭 구조적 한계"
    }
   },
   "META": {
@@ -1075,7 +1084,11 @@
     },
     "fcf_ttm": 8403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 칩 수요 확실하나 공급 경고와 고평가로 실적 가시성 불명확"
+    }
    },
    "conversion": {
     "value": 0.8351,
@@ -1095,7 +1108,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1113,7 +1126,28 @@
      "period": "2025Q3",
      "end": "2025-09-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "buyback": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "NVDA와 동일 논리로 평가 시 고점 진입 위험; 11월 3일 실적 발표가 방향성 결정 지점",
+   "_evidence": {
+    "franchise": "AI Server Demand Surges; data center sales doubled; new AI infrastructure builds in Europe and India",
+    "risk5": "After 137% run and 70+ P/E; Supply Warning Deepens AI Selloff; stock down despite 50% revenue growth",
+    "capalloc": "Nvidia's $150B Buyback Beats Apple, Trails AMD [2026]",
+    "owner_earnings": "Revenue climbs 50% and data center sales doubled, but the stock is down; 2027 Guidance Yet to Be Proven"
+   }
   },
   "000660.KS": {
    "as_of": "2026-10-23",
@@ -1134,7 +1168,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "사이클리컬 산업의 초고수익률(76% 영업마진)은 지속 불가능한 피크 사이클 신호"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1146,14 +1185,38 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "debt_discipline": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "HBM4 대량생산 진입으로 AI 수요 사이클 초입이나, 20조 캐펙스 의존도 높음. ADR $26.5B 공모 완료로 자본조달 완료했으나 산업 사이클 리스크 상존",
+   "_evidence": {
+    "franchise": "HBM4 enters mass production, Google AI demand surge 등으로 대체 불가능한 기술 수요 확인",
+    "risk5": "Operating margin hits 76% YoY revenue jump 257% - 사이클 피크 특성. 시클리컬 산업의 가격 규제 회피 불가(메모리 반도체 수급 사이클의 구조적 한계)",
+    "capalloc": "SK Hynix raises $26.5 billion in US offering 완료, 현금 포지티브 상태이나 증축 공사(캐펙스 20조) 의존도 높아 부채 규율 미흡",
+    "owner_earnings": "Q2 2026 Operating Margin 76%는 사이클 피크로 해석되며, 10년 상한선 내에서의 정상화 추정 필요"
+   }
   },
   "ASML": {
    "as_of": "2026-10-23",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 40.64
+    "value": 37.83
    },
    "eps_status": null,
    "roe_tangible": 0.639,
@@ -1433,7 +1496,11 @@
     },
     "fcf_ttm": 4113000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "C",
+     "reason": "GAAP 기준 인수 관련 상각비 부담과 높은 스톡옵션 희석으로 실질 순이익이 공시치보다 크게 낮음"
+    }
    },
    "conversion": {
     "value": 2.3518,
@@ -1453,7 +1520,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -1471,7 +1538,30 @@
      "period": "2026Q1",
      "end": "2025-10-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "buyback": 0,
+    "no_dilution": 0,
+    "score": 0,
+    "period": "2024H2"
+   },
+   "notes": "실적 발표 직후 변동성 크며 견고한 사업 실행력에도 불구하고 밸류에이션이 과도한 상황",
+   "_evidence": {
+    "franchise": "Palo Alto Networks beats quarterly estimates on AI demand, continues acquisition spree",
+    "risk5": "34% Growth That's Really 15%, At 84x Earnings",
+    "capalloc": "Palo Alto Networks (PANW) Pays a Large Part of Its Wage Bill in Stock. What Does That Do to Profit?",
+    "owner_earnings": "Great Execution, Terrible Price"
+   }
   },
   "ARM": {
    "as_of": "2026-10-23",
@@ -1688,7 +1778,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.56
+    "value": 58.66
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1827,7 +1917,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 270.91
+    "value": 251.97
    },
    "eps_status": null,
    "roe_tangible": 0.2826,
@@ -1860,7 +1950,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 630.39
+    "value": 592.5
    },
    "eps_status": null,
    "roe_tangible": 0.5276,
@@ -1893,7 +1983,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.76
+    "value": 31.37
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -1941,5 +2031,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-23 00:21"
+ "scout_label": "2026-10-23 09:56"
 }
