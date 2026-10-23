@@ -324,5 +324,47 @@ class StaleRowTest(unittest.TestCase):
         self.assertEqual((a, obs["Anthropic"]["outcome"]), ([], "미기록"))
 
 
+class WithdrawTest(unittest.TestCase):
+    """철회 — 삭제가 아니라 status=withdrawn. 렌더·공지·브리핑·하루 1편 잠금에서 빠진다."""
+
+    def setUp(self):
+        import companion_essays as ce
+        self.ce = ce
+        self.doc = {"essays": [{"slug": "spacex-a", "company": "spacex", "date": "2026-10-23",
+                                "origin": "auto", "title": "A", "sources": [{"url": "https://u/1"}]},
+                               {"slug": "spacex-b", "company": "spacex", "date": "2026-10-20",
+                                "origin": "auto", "title": "B", "sources": []}]}
+
+    def test_withdraw_idempotent_with_one_correction(self):
+        c = {"date": "2026-10-23", "company": "spacex", "text": "정정"}
+        self.assertEqual(self.ce.withdraw(self.doc, {"spacex-a"}, "사유", "t", c), ["spacex-a"])
+        self.assertEqual(self.ce.withdraw(self.doc, {"spacex-a"}, "사유", "t", c), [])
+        self.assertEqual(len(self.doc["corrections"]), 1)
+        self.assertEqual(len(self.doc["essays"]), 2)                    # 삭제하지 않는다
+        self.assertEqual(self.doc["essays"][0]["withdrawn_reason"], "사유")
+
+    def test_withdrawn_frees_daily_lock(self):
+        self.assertTrue(self.ce.published_today(self.doc["essays"], "spacex", "2026-10-23"))
+        self.ce.withdraw(self.doc, {"spacex-a"}, "r", "t")
+        self.assertFalse(self.ce.published_today(self.doc["essays"], "spacex", "2026-10-23"))
+
+    def test_render_excludes_withdrawn(self):
+        import build_site as bs
+        import json
+        import tempfile
+        self.ce.withdraw(self.doc, {"spacex-a"}, "r", "t", {"date": "d", "company": "spacex", "text": "정정"})
+        d = Path(tempfile.mkdtemp())
+        (d / "essays.json").write_text(json.dumps(self.doc, ensure_ascii=False), encoding="utf-8")
+        (d / "companion_sources.json").write_text('{"companies": []}', encoding="utf-8")
+        saved = bs.DATA_DIR
+        try:
+            bs.DATA_DIR = d
+            data = bs.companion_data()
+        finally:
+            bs.DATA_DIR = saved
+        self.assertEqual([e["slug"] for e in data["essays"]], ["spacex-b"])
+        self.assertEqual(data["corrections"][0]["text"], "정정")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1,5 +1,5 @@
 {
- "generated_label": "2026.10.23 10:01",
+ "generated_label": "2026.10.23 10:06",
  "essays": [
   {
    "company": "anthropic",
@@ -47,7 +47,10 @@
    ],
    "origin": "auto",
    "slug": "spacex-bf1c92ad",
-   "backfill": true
+   "backfill": true,
+   "status": "withdrawn",
+   "withdrawn_at": "2026-10-23 10:06 KST",
+   "withdrawn_reason": "원문으로 확인되지 않은 숫자 — IR 실적 PDF 를 읽지 못하고 제목만으로 작성, 차트 수치(Starlink 영업이익 166억 USD·xAI 영업손실 −126억 USD)가 원문에 없음. SEC 8-K 기준 3Q26 Connectivity 영업이익 $2,367M·SI 영업이익 +$431M·순이익 $4,404M. '처음으로 부문 손익 분리'도 사실과 다름(2Q 부터 부문 공시)"
   },
   {
    "company": "spacex",
@@ -64,7 +67,10 @@
    ],
    "origin": "auto",
    "slug": "spacex-63689be8",
-   "backfill": true
+   "backfill": true,
+   "status": "withdrawn",
+   "withdrawn_at": "2026-10-23 10:06 KST",
+   "withdrawn_reason": "사실과 다른 서술 — 10/16 일정 공지만 읽고 '3Q 공식 발표 미공개'라고 씀(10/20 발표 완료). 같은 사건 중복"
   },
   {
    "company": "anthropic",
@@ -991,6 +997,17 @@
    ],
    "origin": "auto",
    "slug": "anthropic-bfa29070"
+  }
+ ],
+ "corrections": [
+  {
+   "date": "2026-10-23",
+   "company": "spacex",
+   "text": "2026-10-23 자동 회수 에세이 2편 철회 — 원문으로 확인되지 않은 숫자",
+   "slugs": [
+    "spacex-bf1c92ad",
+    "spacex-63689be8"
+   ]
   }
  ]
 }

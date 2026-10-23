@@ -165,9 +165,34 @@ def make_slug(company, title, date):
     return f"{company}-{h:08x}"
 
 
+def is_public(e):
+    """공개 대상인가 — 철회(withdrawn)된 에세이는 원장에 남되 어디에도 렌더하지 않는다.
+
+    2026-10-23: 회수 에세이 2편이 원문에 없는 숫자로 게시돼 철회했다. 삭제하지 않는 이유는
+    소급 삭제 금지 원칙 — 무엇을 왜 언제 거뒀는지가 기록으로 남아야 한다.
+    """
+    return isinstance(e, dict) and e.get("status") != "withdrawn"
+
+
+def withdraw(doc, slugs, reason, when, correction=None):
+    """에세이 철회 → 철회한 슬러그 목록. 정정 줄(correction)은 doc.corrections 에 1회만 쌓는다."""
+    done = []
+    for e in doc.get("essays", []):
+        if e.get("slug") in slugs and e.get("status") != "withdrawn":
+            e["status"] = "withdrawn"
+            e["withdrawn_at"] = when
+            e["withdrawn_reason"] = reason
+            done.append(e["slug"])
+    if correction:
+        cs = doc.setdefault("corrections", [])
+        if not any(c.get("text") == correction.get("text") for c in cs):
+            cs.insert(0, correction)
+    return done
+
+
 def published_today(essays, slug, today):
     return any(e.get("company") == slug and e.get("date") == today
-               and e.get("origin") != "직접" for e in essays)
+               and e.get("origin") != "직접" and is_public(e) for e in essays)
 
 
 # ────────────────────────────────────────────────────────────────
@@ -824,7 +849,8 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
 
     cfg = load_json(SRC_PATH, {})
     cands = collect_candidates(comp, cfg, widen_days=widen_days)
-    seen_urls = {r["url"] for e in essays if e.get("company") == comp["slug"]
+    # 철회된 에세이의 출처는 막지 않는다 — 같은 사건을 원문 기반으로 다시 쓸 수 있어야 한다
+    seen_urls = {r["url"] for e in essays if e.get("company") == comp["slug"] and is_public(e)
                  for r in normalize_sources(e.get("sources"))}
     seen_urls |= set(exclude or ())
     cands = [c for c in cands if c.get("url") not in seen_urls]
@@ -834,7 +860,7 @@ def run_auto(comp, api_key, constitution, essays, today, widen_days=0, exclude=N
     for c in cands[:3]:
         c["article_attempted"] = True        # 유료벽 라벨은 '시도했는데 실패'일 때만
         c["article"] = fetch_article_text(c["url"])
-    recent = [e["title"] for e in essays if e.get("company") == comp["slug"]][:8]
+    recent = [e["title"] for e in essays if e.get("company") == comp["slug"] and is_public(e)][:8]
     try:
         res, violation = write_with_discipline(api_key, constitution, comp, thesis,
                                                cands[:5], recent, memo=memo)

@@ -198,6 +198,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ce-essay .ud-acc-meta { font-size: var(--note-meta); }
 .ce-essay .ud-acc-caret { font-size: var(--note-meta); }
 @media (max-width: 480px) { .ce-essay .ud-acc-title { font-size: var(--note-h); } }
+.ce-correction { font-size: var(--note-meta); color: var(--text-secondary); background: var(--gold-bg); border: 1px solid var(--gold); border-radius: 10px; padding: 9px 13px; margin-bottom: 12px; line-height: 1.6; }
 .ce-essay-body { font-size: var(--note-body); line-height: var(--note-body-lh); color: var(--text); letter-spacing: -0.003em; }
 .ce-essay-body h3 { font-size: var(--note-h); font-weight: var(--note-h-weight); color: var(--gold); margin: 20px 0 6px; letter-spacing: -0.02em; }
 .ce-essay-body h3:first-child { margin-top: 4px; }
@@ -441,8 +442,12 @@ function renderCompany(slug){
   // 아코디언 — 연표가 먼저, 전문은 클릭. 한 항로에 에세이가 쌓일수록
   // 전문을 다 펼쳐 두면 '언제 무슨 판정이 났는가'라는 시간의 축이 보이지 않는다.
   // 기본은 최신 1편만 펼침. 독립 토글이라 여러 편을 동시에 열어 비교할 수 있다.
-  const list = (CE.essays || []).filter(e => e.company === slug);
-  $('ceEssays').innerHTML = list.length ? list.map((e, i) => {
+  const list = (CE.essays || []).filter(e => e.company === slug && e.status !== 'withdrawn');
+  // 정정 — 철회한 기록은 조용히 사라지지 않는다. 무엇을 왜 거뒀는지 한 줄을 남긴다.
+  const fixes = (CE.corrections || []).filter(c => c.company === slug);
+  const fixHtml = fixes.map(c => '<div class="ce-correction">정정 · ' + esc(c.date || '') +
+    ' — ' + esc(c.text || '') + '</div>').join('');
+  $('ceEssays').innerHTML = fixHtml + (list.length ? list.map((e, i) => {
     const open = (i === 0);
     return '<div class="ce-essay ud-acc' + (open ? ' open' : '') + '" id="essay-' + esc(e.slug) + '">' +
       '<button class="ud-acc-head" data-toggle="' + esc(e.slug) + '"' +
@@ -464,7 +469,7 @@ function renderCompany(slug){
       '</div>' +
     '</div>';
   }).join('')
-    : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>';
+    : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>');
 
   // 목차 — 필독 해부실의 '해부 목록'을 그대로 복제한다(마크업·클래스·행 구성 동일).
   // 링크(<a href="#essay-…">)라서 클릭하면 해시가 바뀌고, 해시 처리기가 펼치고 스크롤한다

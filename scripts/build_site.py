@@ -1002,8 +1002,11 @@ def companion_data():
                        "html": "" if t["placeholder"] else thesis_md_to_html(t["body"])},
         })
     ess = DATA_DIR / "essays.json"
-    essays = json.loads(ess.read_text(encoding="utf-8")).get("essays", []) if ess.exists() else []
-    return {"companies": companies, "essays": essays}
+    doc = json.loads(ess.read_text(encoding="utf-8")) if ess.exists() else {}
+    # 철회된 에세이는 렌더하지 않는다(원장에는 남는다) — 대신 정정 줄을 싣는다
+    essays = [e for e in doc.get("essays", []) if ce.is_public(e)]
+    corrections = [c for c in doc.get("corrections", []) if isinstance(c, dict)]
+    return {"companies": companies, "essays": essays, "corrections": corrections}
 
 
 def build_journal():

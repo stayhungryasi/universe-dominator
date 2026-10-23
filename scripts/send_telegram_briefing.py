@@ -231,7 +231,7 @@ def build_briefing():
             todays, seen = [], set()
             for e in ess:
                 co = e.get("company")
-                if e.get("date") != today_kst or not co or co in seen:
+                if e.get("date") != today_kst or not co or co in seen                         or e.get("status") == "withdrawn":   # 철회 에세이는 싣지 않는다
                     continue
                 seen.add(co)
                 todays.append(f"· {ko.get(co, co)} 「{esc(e.get('title',''))}」 [{esc(e.get('verdict',''))}]")

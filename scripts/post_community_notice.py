@@ -123,7 +123,7 @@ def detect_events():
         seen_co = set()
         for e in ess:
             co = e.get("company")
-            if e.get("date") != kst_today or not co or co in seen_co:
+            if e.get("date") != kst_today or not co or co in seen_co                     or e.get("status") == "withdrawn":       # 철회 에세이는 공지하지 않는다
                 continue
             seen_co.add(co)
             events.append((f"companion:{co}",
