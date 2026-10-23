@@ -511,8 +511,25 @@ def _read_data_json(name):
         return {}
 
 
+def render_agent_cockpit(ar, today=None, watch=None, status=None, vres=None):
+    """관제실 v2(2026-10-23) → (관제판 HTML, PROBE_DATA, 보고서 덩어리). 판단층은 읽기만 한다."""
+    import probe_cockpit
+    st = ar.read_state()
+    if not st and not ar.report_files():
+        return "", {}, []
+    html, data, reports = probe_cockpit.render(ar, today=today, watch=watch, status=status, vres=vres)
+    size = len(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+    print(f"[OK] 관제실: PROBE_DATA {size // 1024}KB · 보고서 {len(reports)}건 · 검색 {len(data.get('search', []))}건")
+    return html, data, reports
+
+
 def render_agent_probe(ar, today=None, watch=None, status=None, vres=None):
-    """agent-research/ → 탭 HTML(문자열). 판단층은 읽기만 한다."""
+    """탐사선 탭 HTML(관제판) — 하위 호환 진입점. 화면은 관제실 v2 가 그린다."""
+    return render_agent_cockpit(ar, today=today, watch=watch, status=status, vres=vres)[0]
+
+
+def render_agent_probe_v1(ar, today=None, watch=None, status=None, vres=None):
+    """(구) 한 줄로 쌓인 탐사선 탭 — 관제실 v2 이전. 참고용으로만 남긴다."""
     st = ar.read_state()
     files = ar.report_files()
     if not st and not files:
@@ -792,11 +809,13 @@ def build_observatory():
             print(f"[warn] buffett_config.json 읽기 실패(무시): {e}")
     # 🛰 무인 탐사선 — agent-research/ 를 **빌드 시점에** 정적 렌더한다.
     #    클라이언트가 판단층 파일을 직접 긁으면 준법 필터를 우회할 길이 생긴다.
-    agent_html = ""
+    agent_html, probe_data, probe_reports = "", {}, []
     try:
         import agent_report
-        agent_html = render_agent_probe(agent_report)
+        agent_html, probe_data, probe_reports = render_agent_cockpit(agent_report)
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"[warn] 무인 탐사선 렌더 실패(탭은 빈 상태): {e}")
     obs_data = {
         "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
@@ -808,8 +827,11 @@ def build_observatory():
         "legend": legend,
         "legend_meta": legend_meta,
         "agent": agent_html,
+        "probe": probe_data,
+        "probe_reports": probe_reports,
     }
-    html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False))
+    # 스크립트 블록 안의 JSON — 문자열 속 종료 태그가 블록을 닫지 못하게 슬래시를 이스케이프('<\/')
+    html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False).replace("</", "<\\/"))
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
     usd_krw = meta.get("usd_krw")
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
