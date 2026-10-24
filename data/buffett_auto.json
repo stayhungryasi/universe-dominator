@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-24 17:27",
- "generated_at": "2026-10-24T17:27:24.054142+09:00",
+ "generated_label": "2026-10-24 22:31",
+ "generated_at": "2026-10-24T22:31:03.548895+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-24",
@@ -111,7 +111,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "B",
-     "reason": "기록적 고점에서 실적 성장 둔화 신호, 마진 압박 우려"
+     "reason": "record high 근처에서 수익 성장 정체, 마진 압박, 제한적 상승 여력 직면"
     }
    },
    "conversion": {
@@ -168,12 +168,12 @@
     "score": 3,
     "period": "2026H1"
    },
-   "notes": "최강 소비자 프랜차이즈도 성장 부재 + 기록적 고점 밸류에서 리스크 급증",
+   "notes": "소비자 프랜차이즈 강력하나 성장 활주로 소진, iPhone 성장 둔화 신호, 현재 밸류에이션 상한선 접근",
    "_evidence": {
-    "franchise": "Consumer franchise strongest, no substitute products for iPhone ecosystem",
-    "risk5": "Morgan Stanley sees limited upside potential near record highs; UBS flags slowing iPhone growth and gross margin pressure",
-    "capalloc": "Apple announced largest-ever stock buyback under Tim Cook; cash positive operations maintaining capital discipline",
-    "owner_earnings": "Earnings growth expected but margin pressure and slowing iPhone growth amid record valuation levels"
+    "franchise": "Consumer franchise strength evident; however, 'Limited Upside Potential' and 'Slightly Challenging Earnings Setup' suggest franchise pricing power facing headwinds",
+    "risk5": "Gross margin pressure, slowing iPhone growth, and earnings growth uncertainty flagged by UBS and Morgan Stanley",
+    "capalloc": "Announced largest-ever stock buyback under Tim Cook's leadership",
+    "owner_earnings": "Q3 Earnings Beat Estimates but faces margin pressure and iPhone growth deceleration"
    }
   },
   "GOOG": {
@@ -1712,12 +1712,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 초기 수익화 단계로 성장성은 높으나 사이클성 리스크와 경합 심화로 장기 예측 불확실"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1737,13 +1732,19 @@
    },
    "risk5": {
     "business_certainty": "△",
+    "mgmt_ability": "○",
     "price": "✕"
    },
-   "notes": "팹리스 우량사이나 AI 인프라 수요 집중도(Google 의존성)와 모바일 사이클 복귀 리스크 동시 존재; 최근 급등(Nvidia 35억 달러 전환사채, 외국계 강기 목표가)은 기대 선반영 우려",
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "Nvidia 대규모 투자·Google TPU 수주로 ASIC 사업 급성장 중이나, 경기순환형 모바일 사업에 대한 근본적 의존도 지속",
    "_evidence": {
-    "franchise": "MediaTek targets billions in AI accelerator chip revenue by 2027; Google TPU orders amid Broadcom admission of Google straying",
-    "risk5": "SemiAnalysis cuts Google TPU shipment forecast; MediaTek surges daily limit three straight days nearing NT$3,470; Nvidia makes $3.5B convertible bond investment",
-    "owner_earnings": "AI ASIC revenue doubles entering mass production Q4; data center revenue to surpass $2 billion; MediaTek raises AI market share target to 20%"
+    "franchise": "MediaTek targets billions in AI accelerator chip revenue by 2027; First AI Accelerator to Enter Mass Production in Q4",
+    "risk5": "SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday - shows demand uncertainty in new business",
+    "capalloc": "MediaTek Q2 Revenue Hits NT$152.1 Billion, Smashing High-End Guidance; Nvidia's $3.5 Billion Convertible Bond Purchase indicates strong cash generation"
    }
   },
   "MRVL": {
@@ -1971,5 +1972,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-24 17:29"
+ "scout_label": "2026-10-24 22:32"
 }
