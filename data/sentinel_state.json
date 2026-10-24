@@ -24,11 +24,6 @@
  },
  "buffett": [
   {
-   "date": "2026-10-09",
-   "measured": 21,
-   "forward": 21
-  },
-  {
    "date": "2026-10-10",
    "measured": 21,
    "forward": 21
@@ -97,6 +92,11 @@
    "date": "2026-10-23",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-10-24",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
@@ -145,16 +145,19 @@
    "sentinel:probe-stale-recover:2026-10-23",
    "sentinel:probe-stale:2026-10-23",
    "sentinel:signals-recover:Anthropic:2026-10-23"
+  ],
+  "2026-10-24": [
+   "sentinel:feed-recover:signals:Hacker News 300+:2026-10-24"
   ]
  },
  "last_verdict": {
-  "at": "2026-10-23 23:29",
+  "at": "2026-10-24 10:58",
   "ok": false,
   "alerts": [
-   "신호 Hacker News 300+: HTTP 502 2회 연속"
+   "신호 Hacker News 300+: 응답 회복 ✅"
   ]
  },
- "last_run": "2026-10-23 23:29",
+ "last_run": "2026-10-24 10:58",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -215,12 +218,10 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 2,
+   "err_streak": 0,
    "zero_streak": 0,
-   "err_alerted": true,
-   "zero_alerted": false,
-   "err_alerted_first": "2026-10-23",
-   "err_alerted_last": "2026-10-23"
+   "err_alerted": false,
+   "zero_alerted": false
   },
   "signals:OpenAI": {
    "err_streak": 0,
@@ -1119,7 +1120,7 @@
    21,
    25
   ],
-  "at": "2026-10-23"
+  "at": "2026-10-24"
  },
  "probe": {
   "stale": false,

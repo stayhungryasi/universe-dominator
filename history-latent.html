@@ -543,10 +543,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 23:13 · 출처 frankfurter · 네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 10:40 · 출처 frankfurter · 네이버 실시간 환율 보기">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 23:13 · 출처 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 23:13 · 출처 FRED API">10Y <span class="ud-mv">5.13%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 23:13 · 출처 FRED API">30Y <span class="ud-mv">5.42%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 23:13 · 출처 frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 10:40 · 출처 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 10:40 · 출처 FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 10:40 · 출처 FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 10:40 · 출처 frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
     </div>
   </div>
@@ -605,6 +605,76 @@ const DATA = {
   "page_title": "잠재지배자 변동 이력",
   "page_desc": "차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스",
   "entries": [
+    {
+      "date": "2026.10.24",
+      "period": "10.17 → 10.24 (주간)",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label": "잠재지배자 주간 변동 (자동 감지)",
+          "items": [
+            "<strong>KIOXIA Holdings Corporation</strong> 잠재지배자 제외 — 데이터 결측 3거래일 연속, 10.19 확정",
+            "<strong>SK Hynix</strong> 잠재지배자 신규 편입 (<span class='em-up'>21위, $700B, 1Y +181%</span>) — 기준 충족 3거래일 연속, 10.19 확정",
+            "<strong>Intel</strong> 잠재지배자 신규 편입 (<span class='em-up'>27위, $475B, 1Y +136%</span>) — 기준 충족 3거래일 연속, 10.19 확정",
+            "<strong>Palo Alto Networks</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 10.20 확정",
+            "<strong>Applied Materials</strong> 잠재 순위 <span class='em-down'>47위 → 50위 하락</span>",
+            "<strong>Lam Research</strong> 잠재 순위 <span class='em-down'>45위 → 53위 하락</span>",
+            "<strong>CrowdStrike</strong> 잠재 순위 <span class='em-up'>74위 → 60위 상승</span>",
+            "<strong>Marvell Technology</strong> 잠재 순위 <span class='em-up'>89위 → 85위 상승</span>",
+            "<strong>MediaTek</strong> 잠재 순위 <span class='em-down'>87위 → 92위 하락</span>",
+            "<strong>Sandisk</strong> 잠재 순위 <span class='em-down'>100위 → 107위 하락</span>",
+            "<strong>Advantest</strong> 잠재 순위 <span class='em-down'>137위 → 142위 하락</span>",
+            "<strong>Seagate Technology</strong> 잠재 순위 <span class='em-up'>150위 → 147위 상승</span>",
+            "<strong>Fortinet</strong> 잠재 순위 <span class='em-up'>182위 → 167위 상승</span>",
+            "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>801% → 641%</span>",
+            "<strong>Lam Research</strong> 1Y 모멘텀 <span class='em-down'>85% → 56%</span>",
+            "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-up'>158% → 176%</span>",
+            "<strong>Applied Materials</strong> 1Y 모멘텀 <span class='em-down'>80% → 65%</span>"
+          ]
+        },
+        {
+          "type": "items",
+          "label": "경계 관찰",
+          "items": [
+            "<strong>Lam Research</strong> 제외 카운트 1/5 · <strong>Applied Materials</strong> 제외 카운트 1/5 · <strong>Equinor</strong> 편입 카운트 1/3"
+          ]
+        },
+        {
+          "type": "items",
+          "label": "섹터 분포 (12종목)",
+          "items": [
+            "<strong>AI 반도체 (6)</strong>: SK Hynix, Intel, Applied Materials, Lam Research, MediaTek, Advantest",
+            "<strong>AI 소프트웨어 (2)</strong>: CrowdStrike, Fortinet",
+            "<strong>AI 테크 (2)</strong>: Sandisk, Seagate Technology",
+            "<strong>AI 서버 OEM (1)</strong>: Dell",
+            "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ]
+        },
+        {
+          "type": "items",
+          "label": "관전 포인트",
+          "items": [
+            "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+641%</span>",
+            "<strong>신규 중 최고 순위</strong>: SK Hynix — 글로벌 21위 데뷔"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,324 (10/24 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.32"
+            }
+          ]
+        }
+      ]
+    },
     {
       "date": "2026.10.17",
       "period": "10.10 → 10.17 (주간)",
@@ -1745,14 +1815,14 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_date": "2026-10-23",
+    "fetched_date": "2026-10-24",
     "usd_krw": 1324.45,
     "macro": {
       "usd_krw": {
         "value": 1324.45,
         "as_of": "2026-10-23",
         "source": "frankfurter",
-        "measured_at": "2026-10-23T23:13+09:00",
+        "measured_at": "2026-10-24T10:40+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1761,25 +1831,25 @@ const DATA = {
         "value": 156.8,
         "as_of": "2026-10-23",
         "source": "frankfurter",
-        "measured_at": "2026-10-23T23:13+09:00",
+        "measured_at": "2026-10-24T10:40+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust10": {
-        "value": 5.13,
-        "as_of": "2026-10-21",
+        "value": 4.96,
+        "as_of": "2026-10-22",
         "source": "FRED API",
-        "measured_at": "2026-10-23T23:13+09:00",
+        "measured_at": "2026-10-24T10:40+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust30": {
-        "value": 5.42,
-        "as_of": "2026-10-21",
+        "value": 5.29,
+        "as_of": "2026-10-22",
         "source": "FRED API",
-        "measured_at": "2026-10-23T23:13+09:00",
+        "measured_at": "2026-10-24T10:40+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1788,7 +1858,7 @@ const DATA = {
         "value": 107.89,
         "as_of": "2026-10-20",
         "source": "FRED API",
-        "measured_at": "2026-10-23T23:13+09:00",
+        "measured_at": "2026-10-24T10:40+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null

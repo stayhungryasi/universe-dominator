@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-23",
+ "date": "2026-10-24",
  "members": {
   "LRCX": {
    "name": "Lam Research",
@@ -224,17 +224,17 @@
     "name": "Lam Research",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 0,
+    "streak_out": 1,
     "carried_days": 0,
-    "rank": 45
+    "rank": 55
    },
    "AMAT": {
     "name": "Applied Materials",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 0,
+    "streak_out": 1,
     "carried_days": 0,
-    "rank": 46
+    "rank": 50
    },
    "DELL": {
     "name": "Dell",
@@ -242,7 +242,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 49
+    "rank": 53
    },
    "2454.TW": {
     "name": "MediaTek",
@@ -250,7 +250,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 94
+    "rank": 90
    },
    "CRWD": {
     "name": "CrowdStrike",
@@ -258,7 +258,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 69
+    "rank": 65
    },
    "SNDK": {
     "name": "Sandisk",
@@ -266,7 +266,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 90
+    "rank": 99
    },
    "MRVL": {
     "name": "Marvell Technology",
@@ -274,7 +274,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 81
+    "rank": 86
    },
    "STX": {
     "name": "Seagate Technology",
@@ -282,15 +282,15 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 132
+    "rank": 146
    },
    "6857.T": {
     "name": "Advantest",
     "joined": "2026-10-05",
     "streak_in": 7,
-    "streak_out": 1,
+    "streak_out": 0,
     "carried_days": 0,
-    "rank": 144
+    "rank": 141
    },
    "FTNT": {
     "name": "Fortinet",
@@ -298,7 +298,7 @@
     "streak_in": 8,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 170
+    "rank": 168
    },
    "000660.KS": {
     "name": "SK Hynix",
@@ -314,12 +314,19 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 26
+    "rank": 27
    }
   },
-  "candidates": {}
+  "candidates": {
+   "EQNR": {
+    "streak_in": 1,
+    "swap_streak": 0,
+    "name": "Equinor",
+    "rank": 194
+   }
+  }
  },
- "generated_at": "2026-10-23T23:13:15.633211+09:00",
+ "generated_at": "2026-10-24T10:40:32.585159+09:00",
  "limits": {
   "in": 3,
   "out": 5,
