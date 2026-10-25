@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-25 10:30",
- "generated_at": "2026-10-25T10:30:05.400519+09:00",
+ "generated_label": "2026-10-25 17:44",
+ "generated_at": "2026-10-25T17:44:44.263213+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-25",
@@ -108,11 +108,7 @@
     },
     "fcf_ttm": 136683000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "프리미엄 밸류에이션 대비 성장 둔화로 실적 가시성 저하"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0239,
@@ -132,7 +128,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -150,31 +146,7 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "근 고점에서 어닝 테스트 앞두고 있으며 마진 압박 및 iPhone 성장 둔화 우려 제기",
-   "_evidence": {
-    "franchise": "Apple Faces 'Slightly Challenging' Earnings Setup Near Record Highs - Limited Upside Potential",
-    "risk5": "Apple faces gross margin pressure as UBS flags slowing iPhone growth ahead of earnings",
-    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership",
-    "owner_earnings": "参考判断: 成長なきプレミアムとしてMAX28上限の制約"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-25",
@@ -458,7 +430,11 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 수익 성장 확실하나 공급 병목 리스크와 밸류에이션 우려로 가시성 제한"
+    }
    },
    "conversion": {
     "value": 0.9836,
@@ -478,7 +454,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -496,7 +472,30 @@
      "period": "2025Q4",
      "end": "2025-11-02"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "AI칩 수요 강력하나 10년 추정 범위 ±30% 초과로 분류불가, 최근 어닝 후 주가 약세는 고평가 신호",
+   "_evidence": {
+    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; AI chip supply turns into bottleneck",
+    "risk5": "Broadcom (AVGO) Eyes Huge AI Revenue Growth, Is The Stock Getting Too Pricey?; What Does Broadcom (AVGO) Face As AI Chip Supply Turns Into A Bottleneck?; Jim Cramer Says 'Someone Must Know Something' About post-earnings share dip",
+    "capalloc": "Broadcom reports strong earnings with positive cash generation enabling buyback programs",
+    "owner_earnings": "Prediction: Broadcom Stock Could Crush the S&P 500 Through 2030 vs. Analysts Think It Is Worth 50% More but stock lagging market"
+   }
   },
   "SPCX": {
    "as_of": "2026-10-25",
@@ -550,12 +549,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "유가 사이클 종속적 수익성으로 인한 예측 불가능성"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -567,32 +561,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕",
-    "tax_inflation": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026Q1"
-   },
-   "notes": "가스사업 분사(100억 달러 가치 추정) 진행 중이나 유가 변동성과 호르무즈 지정학적 리스크가 현금흐름 위기 신호 제시.",
-   "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher; Saudis offer oil from near Oman in possible sign of shuttling",
-    "risk5": "Oil market may not normalize until 2027, Saudi Aramco CEO warns; Aramco's Record Profits Hide a Growing Cash Flow Crisis; Saudi quarterly deficit highest since 2018",
-    "capalloc": "Saudi Aramco Q4 2025 sees slight stock dip despite strong cash flow; Q1 profit 25% jump; Aramco signs agreements worth $3.7bn with French companies",
-    "owner_earnings": "Aramco's Record Profits Hide a Growing Cash Flow Crisis indicates divergence between reported earnings and normalized owner earnings"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-10-25",
@@ -859,12 +828,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "A",
-     "reason": ""
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -876,34 +840,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "○"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "Post-Buffett 경영진 Abel의 자본배분 신뢰도 상승, 현금 감소는 투자·자사주매입 활동 증가 신호",
-   "_evidence": {
-    "franchise": "Diversified Financial Services 부문에서 BNSF·보험사업(플로트) 등 대체불가능한 자산 보유, 87% 상승 후에도 공정가치 이하 평가",
-    "risk5": "Berkshire Finally Topped Its Pre-Buffett-Exit Peak - 경영진 신뢰도 회복, 다만 24배 PER 평가에 대한 공정성 문의 지속",
-    "capalloc": "Berkshire Hathaway Earnings: Cash Balances Retreat on Increased Investments and Share Buybacks in Q2 - 현금 감소는 투자·자사주매입 증가, 자본배분 기율 유지",
-    "owner_earnings": "Can Berkshire Hathaway (BRK.B) Keep Earning More Than Shareholders Require? - 플로트 복리와 자본배분 기계의 지속적 수익창출 능력"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-10-25",
@@ -1228,15 +1165,15 @@
     "value": 40.64
    },
    "eps_status": null,
-   "roe_tangible": 0.639,
+   "roe_tangible": 0.7976,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 21825400000.0,
-    "goodwill_intangibles": 5178100000.0,
-    "net_income_ttm": 10638400000.0,
-    "asof": "2026-06-30",
+    "equity": 22063900000.0,
+    "goodwill_intangibles": 5171100000.0,
+    "net_income_ttm": 13474300000.0,
+    "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -1869,15 +1806,15 @@
     "value": 833.5
    },
    "eps_status": null,
-   "roe_tangible": 0.5589,
+   "roe_tangible": 0.6902,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 1398929000000.0,
-    "goodwill_intangibles": 406777000000.0,
-    "net_income_ttm": 554490000000.0,
-    "asof": "2026-03-31",
+    "equity": 2404320000000.0,
+    "goodwill_intangibles": 407317000000.0,
+    "net_income_ttm": 1378371000000.0,
+    "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -1902,15 +1839,15 @@
     "value": 270.91
    },
    "eps_status": null,
-   "roe_tangible": 0.2826,
+   "roe_tangible": 0.2951,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 2069994000000.0,
-    "goodwill_intangibles": 37531000000.0,
-    "net_income_ttm": 574454000000.0,
-    "asof": "2026-03-31",
+    "equity": 2142900000000.0,
+    "goodwill_intangibles": 38720000000.0,
+    "net_income_ttm": 620994000000.0,
+    "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -1935,15 +1872,15 @@
     "value": 630.4
    },
    "eps_status": null,
-   "roe_tangible": 0.5276,
+   "roe_tangible": 0.4807,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 795726000000.0,
-    "goodwill_intangibles": 84250000000.0,
-    "net_income_ttm": 375353000000.0,
-    "asof": "2026-03-31",
+    "equity": 1042642000000.0,
+    "goodwill_intangibles": 85751000000.0,
+    "net_income_ttm": 459953000000.0,
+    "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -2013,5 +1950,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-25 10:31"
+ "scout_label": "2026-10-25 17:46"
 }
