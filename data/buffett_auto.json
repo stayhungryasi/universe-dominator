@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-25 17:44",
- "generated_at": "2026-10-25T17:44:44.263213+09:00",
+ "generated_label": "2026-10-25 22:54",
+ "generated_at": "2026-10-25T22:54:54.966771+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-25",
@@ -372,14 +372,14 @@
     "value": 15.43
    },
    "eps_status": null,
-   "roe_tangible": 0.3459,
+   "roe_tangible": 0.3944,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
     "equity": 6432518334000.0,
     "goodwill_intangibles": 24074828000.0,
-    "net_income_ttm": 2216808460000.0,
+    "net_income_ttm": 2527571053000.0,
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
@@ -430,11 +430,7 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 수익 성장 확실하나 공급 병목 리스크와 밸류에이션 우려로 가시성 제한"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9836,
@@ -454,7 +450,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -472,37 +468,14 @@
      "period": "2025Q4",
      "end": "2025-11-02"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "AI칩 수요 강력하나 10년 추정 범위 ±30% 초과로 분류불가, 최근 어닝 후 주가 약세는 고평가 신호",
-   "_evidence": {
-    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; AI chip supply turns into bottleneck",
-    "risk5": "Broadcom (AVGO) Eyes Huge AI Revenue Growth, Is The Stock Getting Too Pricey?; What Does Broadcom (AVGO) Face As AI Chip Supply Turns Into A Bottleneck?; Jim Cramer Says 'Someone Must Know Something' About post-earnings share dip",
-    "capalloc": "Broadcom reports strong earnings with positive cash generation enabling buyback programs",
-    "owner_earnings": "Prediction: Broadcom Stock Could Crush the S&P 500 Through 2030 vs. Analysts Think It Is Worth 50% More but stock lagging market"
-   }
+   ]
   },
   "SPCX": {
    "as_of": "2026-10-25",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": -1.0
+    "value": 0.23
    },
    "eps_status": null,
    "roe_tangible": -0.0571,
@@ -668,7 +641,11 @@
     },
     "fcf_ttm": 3303000000.0,
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "마진 압박과 수익 하락이 실적을 상쇄하며 미래 가치는 로봇과 자율주행 사업화 실현에 의존"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -689,7 +666,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_UnrealizedGainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 45건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -707,7 +684,29 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "△",
+    "no_substitute": "△"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "자동차 매출 감소 속 마진 재정상, 옵티머스와 사이버캡 상용화 타이밍 불확실, 밸류에이션(350배 PER) 과도",
+   "_evidence": {
+    "franchise": "Tesla Trades at 350 Times Earnings; 차·로봇·에너지 모두 본격 수익화 미달성",
+    "risk5": "Tesla Beats on Earnings and Sales Even as Auto Revenue Declines; Musk Tempers Optimus Timeline; 로봇 사업화 가시성 부족",
+    "capalloc": "Tesla Cuts Full-Year Capex Guidance To $20B; 주식 매입 없음, 현금 우호적 운영",
+    "owner_earnings": "Margins Rebound, Profit Still Falls; Musk: Optimus and Cybercab Will Be the Vast Majority of Tesla's Value"
+   }
   },
   "005930.KS": {
    "as_of": "2026-10-25",
@@ -1950,5 +1949,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-25 17:46"
+ "scout_label": "2026-10-25 22:56"
 }
