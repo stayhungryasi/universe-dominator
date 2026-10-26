@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>데이터 천문대 · UNIVERTRIX</title>
+<title>{{t:obs.title}}</title>
+<meta name="description" content="{{t:obs.meta_desc}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -513,6 +514,9 @@ body.obs-data .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
   .pc-row { grid-template-columns: 70px 1fr; }
   .pc-row span:nth-child(2) { display: none; }
   .pc-status { font-size: 12px; }
+  /* 축 진척 카운트 — 좁은 화면에선 둘째 줄로(언어마다 길이가 달라 한 줄 고정은 가로 넘침을 만든다) */
+  .pc-axis { grid-template-columns: 74px 1fr; row-gap: 2px; }
+  .pc-axis-c { grid-column: 1 / -1; white-space: normal; }
 }
 @media (max-width: 760px) {
   /* 천문대 탭 바는 모바일에서 어느 탭이든 가로 스크롤 한 줄 — 탭에 따라 모양이 바뀌지 않게 */
@@ -555,11 +559,11 @@ body.obs-data .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
     <div class="header-right">
       <span class="update-badge">{{FETCHED_DATE}}</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">{{USD_KRW}}</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -582,16 +586,16 @@ body.obs-data .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
   <div class="container">
     <div class="obs-hero">
       <div class="obs-eyebrow">OBSERVATORY</div>
-      <h1 class="obs-title">데이터 천문대</h1>
-      <p class="obs-desc">숫자로 우주를 관측하는 곳 — 시장의 구조와 신호를 실험적으로 전시합니다.</p>
+      <h1 class="obs-title">{{t:nav.observatory}}</h1>
+      <p class="obs-desc">{{t:obs.desc}}</p>
     </div>
     <div class="obs-tabs">
-      <button class="obs-tab active" data-t="solar" onclick="setObsTab('solar', this)">오늘의 태양계</button>
-      <button class="obs-tab" data-t="map" onclick="setObsTab('map', this)">우주 지도</button>
-      <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">관측일지</button>
-      <button class="obs-tab" data-t="parallax" onclick="setObsTab('parallax', this)">시차 관측</button>
-      <button class="obs-tab" data-t="legend" onclick="setObsTab('legend', this)">레전드벤치마크</button>
-      <button class="obs-tab" data-t="agent" onclick="setObsTab('agent', this)">🛰 무인 탐사선</button>
+      <button class="obs-tab active" data-t="solar" onclick="setObsTab('solar', this)">{{t:obs.tab.solar}}</button>
+      <button class="obs-tab" data-t="map" onclick="setObsTab('map', this)">{{t:obs.tab.map}}</button>
+      <button class="obs-tab" data-t="columns" onclick="setObsTab('columns', this)">{{t:obs.tab.columns}}</button>
+      <button class="obs-tab" data-t="parallax" onclick="setObsTab('parallax', this)">{{t:obs.tab.parallax}}</button>
+      <button class="obs-tab" data-t="legend" onclick="setObsTab('legend', this)">{{t:obs.tab.legend}}</button>
+      <button class="obs-tab" data-t="agent" onclick="setObsTab('agent', this)">🛰 {{t:obs.tab.agent}}</button>
     </div>
     <div id="obsBody"></div>
   </div>
@@ -651,9 +655,10 @@ const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','
   '🇸🇦': ['#9fe89f','#4d9e4d'], '🇨🇳': ['#f2a0a0','#c05555'], '🇳🇱': ['#f0c9a0','#c48a4e'], '🇯🇵': ['#f0a9c8','#c45b8a'] };
 const flagColor = f => FLAG_COLOR[f] || ['#c3b8f0','#7a6cc4'];
 
-const SHORT_NAME = {'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
-  '005930.KS':'삼성전자','000660.KS':'SK하이닉스','TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
-  'LLY':'Eli Lilly','XOM':'엑슨모빌','JNJ':'J&J','WMT':'월마트','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'};
+/* 짧은 이름 — 언어별 고유명사(삼성전자·엑슨모빌 등)는 이름 사전(data/i18n/names.json)이 UVX.short 로 싣는다 */
+const SHORT_NAME = Object.assign({'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
+  'TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
+  'LLY':'Eli Lilly','JNJ':'J&J','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'}, UVX.short || {});
 function shortName(s){
   if (SHORT_NAME[s.ticker]) return SHORT_NAME[s.ticker];
   let n = (s.name || '').replace(/\s*\(.*\)/, '').split(' ')[0];
@@ -668,7 +673,7 @@ function loadThree(){
     if (window.THREE) return res();
     const s = document.createElement('script');
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    s.onload = () => res(); s.onerror = () => rej(new Error('three 로드 실패'));
+    s.onload = () => res(); s.onerror = () => rej(new Error('three.js load failed'));
     document.head.appendChild(s);
   });
 }
@@ -684,16 +689,16 @@ function cleanupSolar(){
 
 function renderSolar(){
   const stocks = (DATA.earth || []).slice(0, 20);
-  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">' + T('obs.wait_data') + '</div>'; return; }
   document.getElementById('obsBody').innerHTML =
     '<div class="solar-wrap" id="s3wrap" style="height:' + (window.innerWidth < 700 ? 480 : 640) + 'px;position:relative;cursor:grab;touch-action:none">' +
-      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">☀️ 태양계 정렬 중…</div>' +
+      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">' + T('solar.loading') + '</div>' +
       '<div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>' +
       '<div class="solar-tip" id="solarTip"></div>' +
-      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? '☝️ 한 손가락 회전 · 두 손가락 확대/축소 · 행성 탭 = 정보' : '🖱 드래그 회전 · 휠 확대/축소') + '</div>' +
+      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? T('solar.hint_touch') : T('solar.hint_mouse')) + '</div>' +
     '</div>' +
-    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 순위가 높을수록 안쪽 궤도 — 행성의 얼굴은 실제 태양계 순서(수성→해왕성→왜소행성)</div>' +
-    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측) · 텍스처: Solar System Scope(CC BY 4.0)·NASA</div>';
+    '<div class="solar-legend">' + T('solar.legend3d') + '</div>' +
+    '<div class="solar-legend" style="margin-top:4px">' + T('solar.redrawn', {date: esc(DATA.fetched||'')}) + '</div>';
   loadThree().then(() => boot3d(stocks)).catch(() => renderSolarSVG());
 }
 
@@ -1012,14 +1017,14 @@ function boot3d(stocks){
     const lab = document.createElement('div');
     lab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18,0 0 8px #0a0d18;line-height:1.25;white-space:nowrap';
     lab.innerHTML = '<span style="color:#e6ebfa;font-weight:800;font-size:12.5px">'+esc(shortName(p))+'</span>' +
-      (i < 8 ? '<br><span style="color:#93a0c6;font-weight:700;font-size:10.5px">'+(p.mc>=1000?'$'+(p.mc/1000).toFixed(2)+'T':'$'+Math.round(p.mc)+'B')+'</span>' : '');
+      (i < 8 ? '<br><span style="color:#93a0c6;font-weight:700;font-size:10.5px">'+UVX.mc(p.mc)+'</span>' : '');
     document.getElementById('s3labels').appendChild(lab);
     return { mesh, lab, r, orbR, a: (i*137.5)*Math.PI/180, s: 0.0022/(1+i*0.22), spin: 0.002+Math.random()*0.004 };
   });
   // 태양 라벨
   const sunLab = document.createElement('div');
   sunLab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18;line-height:1.3;white-space:nowrap';
-  sunLab.innerHTML = '<span style="color:#ffd873;font-weight:800;font-size:15px">'+esc(shortName(sun))+'</span><br><span style="color:#d4b06a;font-weight:700;font-size:11.5px">$'+(sun.mc/1000).toFixed(2)+'T</span>';
+  sunLab.innerHTML = '<span style="color:#ffd873;font-weight:800;font-size:15px">'+esc(shortName(sun))+'</span><br><span style="color:#d4b06a;font-weight:700;font-size:11.5px">'+UVX.mc(sun.mc)+'</span>';
   document.getElementById('s3labels').appendChild(sunLab);
 
   // 조작 — 드래그 회전 · 휠 줌 · 호버 툴팁
@@ -1044,7 +1049,7 @@ function boot3d(stocks){
       tip.style.display = 'block';
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
       tip.style.top = (e.clientY - rect.top + 14) + 'px';
-      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+(s.mc>=1000?'$'+(s.mc/1000).toFixed(2)+'T':'$'+Math.round(s.mc)+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+UVX.mc(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
       if (hovered && hovered !== hit.object && hovered.material.emissive) hovered.material.emissive.setHex(0x000000);
       hovered = hit.object;
       if (hovered.material.emissive) hovered.material.emissive.setHex(0x33290f);
@@ -1069,7 +1074,7 @@ function boot3d(stocks){
       tip.style.display = 'block';
       tip.style.left = Math.max(6, Math.min(cx - rect.left - 60, rect.width - 230)) + 'px';
       tip.style.top = Math.max(6, cy - rect.top - 90) + 'px';
-      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+(s.mc>=1000?'$'+(s.mc/1000).toFixed(2)+'T':'$'+Math.round(s.mc)+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+UVX.mc(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
     } else {
       tip.style.display = 'none';
     }
@@ -1168,7 +1173,7 @@ function boot3d(stocks){
 
 function renderSolarSVG(){
   const stocks = (DATA.earth || []).slice(0, 20);
-  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">' + T('obs.wait_data') + '</div>'; return; }
   const sun = stocks[0], planets = stocks.slice(1);
   const W = 880, H = 660, cx = W/2, cy = H/2 + 10;
   const TILT = 0.62;  // 궤도 기울기 (관측 시점)
@@ -1176,7 +1181,7 @@ function renderSolarSVG(){
   const rOf = mc => 5 + Math.pow(mc / maxMc, 0.58) * 30;
   const sunR = 40;
   const orbitBase = sunR + 46, orbitStep = (W/2 - orbitBase - 36) / planets.length;
-  const fmt = mc => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
+  const fmt = mc => UVX.mc(mc);
   const halo = ' style="paint-order:stroke" stroke="#0a0d18" stroke-width="3.2"';
 
   let defs = '<defs>';
@@ -1237,10 +1242,10 @@ function renderSolarSVG(){
   // 행성 노드 생성 (문자열이 아닌 DOM으로 — 층 이동을 위해)
   document.getElementById('obsBody').innerHTML =
     '<div class="solar-wrap">'+svg+'<div class="solar-tip" id="solarTip"></div></div>'+
-    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 행성 색 = 국적 ' +
+    '<div class="solar-legend">' + T('solar.legend_svg') + ' ' +
       [...new Set(planets.map(p=>p.flag).filter(f=>FLAG_COLOR[f]))].map(f =>
         '<span style="display:inline-flex;align-items:center;gap:4px;margin:0 7px"><span style="width:9px;height:9px;border-radius:50%;background:'+flagColor(f)[0]+';display:inline-block"></span>'+f+'</span>').join('') +
-    '</div><div class="solar-legend" style="margin-top:4px">행성은 태양 뒤로도 돕니다 — 매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측)</div>';
+    '</div><div class="solar-legend" style="margin-top:4px">' + T('solar.redrawn_svg', {date: esc(DATA.fetched||'')}) + '</div>';
 
   const NS = 'http://www.w3.org/2000/svg';
   const back = document.getElementById('backLayer'), front = document.getElementById('frontLayer');
@@ -1278,7 +1283,7 @@ function renderSolarSVG(){
       tip.style.display = 'block';
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
       tip.style.top = (e.clientY - rect.top + 14) + 'px';
-      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+fmt(s.mc)+(s.desc?'<br>'+esc(s.desc):'');
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+fmt(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
       paused = true;
     } else { tip.style.display = 'none'; paused = false; }
   });
@@ -1351,13 +1356,13 @@ function setMapFilter(f){ mapFilter = f; renderMap(); }
 
 function renderMap(){
   const all = (DATA.tiles || []).filter(t => t.mc > 0);
-  if (!all.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">지도 데이터 대기 중입니다.</div>'; return; }
+  if (!all.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">' + T('map.wait') + '</div>'; return; }
   // 필터 칩 구성: 전체 · 우주지배자 · 잠재지배자 · 국가별(시총순)
   const gTotals = {};
   all.forEach(t => { gTotals[t.g] = (gTotals[t.g] || 0) + t.mc; });
   const countries = Object.entries(gTotals).sort((a, b) => b[1] - a[1]).map(([g]) => g);
   const flagOf = g => (all.find(t => t.g === g) || {}).f || '';
-  const chips = [['all', '전체'], ['earth', '👑 우주지배자'], ['latent', '✦ 잠재지배자']]
+  const chips = [['all', T('map.all')], ['earth', '👑 ' + T('nav.home')], ['latent', '✦ ' + T('nav.latent')]]
     .concat(countries.map(g => ['g:' + g, flagOf(g) + ' ' + g]));
   const chipsHtml = '<div class="map-chips">' + chips.map(([k, label]) =>
     '<button class="map-chip' + (mapFilter === k ? ' active' : '') + '" onclick="setMapFilter(\'' + k + '\')">' + esc(label) + '</button>').join('') + '</div>';
@@ -1381,7 +1386,7 @@ function renderMap(){
     const inner = [];
     squarify(gb.g.items, gb.x + 1, gb.y + 14, gb.w - 2, gb.h - 15, inner);
     if (gb.w > 46 && gb.h > 26)
-      html += '<div class="map-head" style="left:' + (gb.x + 3) + 'px;top:' + gb.y + 'px">' + esc(gb.g.f + ' ' + gb.g.name + ' 성단') + '</div>';
+      html += '<div class="map-head" style="left:' + (gb.x + 3) + 'px;top:' + gb.y + 'px">' + esc(gb.g.f + ' ' + T('map.cluster', {name: gb.g.name})) + '</div>';
     inner.forEach(t => {
       const label = (typeof shortName === 'function') ? shortName({ ticker: t.t, name: t.n }) : t.t;
       const big = t.w > 46 && t.h > 32, mid = t.w > 26 && t.h > 15;
@@ -1389,21 +1394,21 @@ function renderMap(){
       html += '<div class="map-tile" style="left:' + (t.x + 1) + 'px;top:' + (t.y + 1) + 'px;width:' + Math.max(0, t.w - 2).toFixed(1) + 'px;height:' + Math.max(0, t.h - 2).toFixed(1) + 'px;background-color:' + chgColor(t.chg) + ';color:' + chgText(t.chg) + ';border-radius:' + (t.w > 40 ? 6 : 3) + 'px"' +
         ' data-tip="' + esc(t.n) + '|' + esc(t.f) + '|' + t.mc + '|' + (t.chg === null ? '' : t.chg) + '">' +
         (mid ? '<span class="tk" style="font-size:' + fs.toFixed(1) + 'px">' + esc(label) + '</span>' : '') +
-        (big && t.chg !== null ? '<span class="pc" style="font-size:' + Math.max(8.5, fs * 0.66).toFixed(1) + 'px">' + (t.chg > 0 ? '+' : '') + t.chg + '%</span>' : '') +
+        (big && t.chg !== null ? '<span class="pc" style="font-size:' + Math.max(8.5, fs * 0.66).toFixed(1) + 'px">' + (t.chg > 0 ? '+' : '') + UVX.dec(t.chg) + '%</span>' : '') +
       '</div>';
     });
   });
   const scale = [-3, -2, -1, 0, 1, 2, 3].map(v =>
     '<span style="background:' + chgColor(v) + ';color:' + chgText(v) + ';border-radius:100px">' + (v > 0 ? '+' : '') + v + '%</span>').join('');
-  const subtitle = mapFilter === 'earth' ? '👑 우주지배자 — 지구 TOP 20'
-    : mapFilter === 'latent' ? '✦ 잠재지배자 — 30~200위권 모멘텀 후보'
-    : mapFilter.startsWith('g:') ? flagOf(mapFilter.slice(2)) + ' ' + mapFilter.slice(2) + ' 성단 상세'
-    : '8개 권역 통합';
+  const subtitle = mapFilter === 'earth' ? '👑 ' + T('map.sub_earth')
+    : mapFilter === 'latent' ? '✦ ' + T('map.sub_latent')
+    : mapFilter.startsWith('g:') ? flagOf(mapFilter.slice(2)) + ' ' + T('map.sub_cluster', {name: mapFilter.slice(2)})
+    : T('map.sub_all');
   document.getElementById('obsBody').innerHTML = chipsHtml +
     '<div class="map-wrap"><div class="map-grid" style="height:' + H + 'px">' + html + '</div>' +
     '<div class="solar-tip" id="mapTip"></div></div>' +
     '<div class="map-legend">' + scale + '</div>' +
-    '<div class="solar-legend">빛날수록 상승, 가라앉을수록 하락 — 칸 크기 = 시가총액 · ' + subtitle + ' (' + esc(DATA.fetched || '') + ' 관측)</div>';
+    '<div class="solar-legend">' + T('map.legend', {sub: subtitle, date: esc(DATA.fetched || '')}) + '</div>';
   const wrap = document.querySelector('.map-wrap'), tip = document.getElementById('mapTip');
   wrap.addEventListener('mousemove', e => {
     const t = e.target.closest('.map-tile');
@@ -1413,8 +1418,8 @@ function renderMap(){
       tip.style.display = 'block';
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
       tip.style.top = (e.clientY - rect.top + 14) + 'px';
-      tip.innerHTML = '<b>' + esc(n) + '</b> ' + esc(f) + '<br>' + (mc >= 1000 ? '$' + (mc / 1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B') +
-        (chg !== '' ? '<br>전일 대비 ' + (chg > 0 ? '+' : '') + chg + '%' : '<br>전일 비교 데이터 없음');
+      tip.innerHTML = '<b>' + TX(n) + '</b> ' + esc(f) + '<br>' + UVX.mc(+mc) +
+        (chg !== '' ? '<br>' + T('map.vs_prev') + ' ' + (chg > 0 ? '+' : '') + UVX.dec(chg) + '%' : '<br>' + T('map.no_prev'));
     } else tip.style.display = 'none';
   });
   wrap.addEventListener('mouseleave', () => tip.style.display = 'none');
@@ -1479,9 +1484,12 @@ function makeColViz(c){
 /* ── 시차 관측 — 버핏 멀티플 괴리 (측정층: data/buffett.json) ──
    괴리 = 정당 MAX ÷ P/E − 1. 양수 = 정당선 아래. 판단층은 사람이 취재한 config. */
 const PX_SKIP = ['too_hard', 'unlisted', 'float'];
-const PX_BASIS = { forward: '선행', trailing: '후행 참고', '미취재': '미취재',
-                   too_hard: '추정불가', unlisted: '비상장', float: '플로트형' };
-const PX_ZONES = ['탐색', '본격', '관망', '고평가'];
+/* 화면 이름은 전부 카탈로그(px.*)에서 — 이 구간에 한국어 상태값을 두지 않는다.
+   유형·바구니는 빌드가 판단층 값에서 기계 id(type_id·basis_id)를 붙여 싣는다(build_site.buffett_view).
+   i18n-keys: px.* */
+const PX_ZONES = ['explore', 'commit', 'watch', 'over'];
+function pxBasis(x){ return x.basis_id ? esc(T('px.basis.' + x.basis_id)) : TX(x.basis); }
+function pxType(x){ return x.type_id ? esc(T('px.type.' + x.type_id)) : TX(x.type); }
 
 /* 존 판정은 선행(forward)으로 잰 종목만 — 정당 MAX 가 선행 눈금이라
    후행 P/E 를 같은 자에 대면 전부 고평가로 쏠린다. 후행은 참고 수치로만 싣는다. */
@@ -1491,10 +1499,10 @@ function pxZoned(x){
 
 function pxZone(gap, z){
   if (gap == null) return null;
-  if (gap >= z.explore) return '탐색';
-  if (gap >= z.commit) return '본격';
-  if (gap >= 0) return '관망';
-  return '고평가';
+  if (gap >= z.explore) return 'explore';
+  if (gap >= z.commit) return 'commit';
+  if (gap >= 0) return 'watch';
+  return 'over';
 }
 
 function pxSpark(series){
@@ -1515,30 +1523,17 @@ function pxSpark(series){
 
 function pxPct(g){ return (g >= 0 ? '+' : '') + (g * 100).toFixed(0) + '%'; }
 
+/* 배지 툴팁은 용어집 '⚠ 정점 주의' 항목과 같은 문장을 쓴다 — 두 곳이 어긋나면 안 된다
+   (용어집 항목 = 이 문장 + 꼬리 한 문장) */
+const PX_PEAK_TIP = T('px.peak_tip');
+
 /* 유형 용어집 — 표를 읽기 전에 자(尺)의 눈금을 먼저 설명한다 */
 const PX_GLOSSARY =
-  '<details class="px-gloss" open><summary>유형 용어집 — 이 표의 눈금 읽는 법</summary><dl>' +
-  '<dt>씨즈형</dt><dd>간판만 바꿔도 월세가 오르는 건물. 초콜릿 가게 하나(씨즈캔디)가 이익을 16배 불리는 동안 ' +
-    '쓴 증축비는 고작 3,200만 달러 — 보통 건물이면 4억 달러짜리 공사였다. 건물주가 할 일은 가격표를 새로 붙이는 것뿐.</dd>' +
-  '<dt>통행료형</dt><dd>모두가 건너야 하는 다리. 다리 주인은 공사를 안 해도 통행량이 늘 때마다 돈을 번다 (ASML·Arm). ' +
-    '문제는 이런 다리가 세상에 몇 개 없다는 것.</dd>' +
-  '<dt>플라이트세이프티형</dt><dd>월세는 잘 나오는데, 올리려면 매번 크레인을 불러야 하는 건물 (TSMC·릴리). ' +
-    '우량하지만 번 돈의 상당분이 다시 공사판으로 들어간다.</dd>' +
-  '<dt>시클리컬</dt><dd>월세를 건물주가 아니라 날씨(경기)가 정하는 건물 (메모리·은행·에너지). ' +
-    '호황엔 월세 3배, 불황엔 공실. 그래서 괴리는 보여주되 존에는 올리지 않는다.</dd>' +
-  '<dt>플로트형</dt><dd>월세가 아니라 세입자들이 맡긴 보증금을 공짜로 굴려서 버는 건물주 (버크셔). ' +
-    '월세 장부(P/E)만 보면 영원히 싸 보이니, 이 시차계로는 재지 않는다.</dd>' +
-  '<dt>추정불가(too hard)</dt><dd>10년 뒤 월세 칸이 백지인 건물. 나쁜 건물이라서가 아니라, 아무도 그 칸을 ' +
-    '자신 있게 못 적는 것 (버핏은 2000년 서한에서 그런 경우의 자본 투입은 투기라고 불러야 한다고 했다). ' +
-    '낙제가 아니라 "모른다"는 정직.</dd>' +
-  '<dt>미취재</dt><dd>아직 감정평가사(취재)가 안 다녀간 건물. 실적 시즌에 선행 EPS를 채우면 눈금이 생긴다.</dd>' +
-  '<dt>⚠ 정점 주의</dt><dd>시클리컬 전용 경고등. 정점 이익으로 나눈 P/E는 바닥처럼 보이는 천장이다 — ' +
-    '하이닉스가 4.8배로 "가장 싸 보이는" 순간이 사이클의 꼭대기일 수 있다. 표의 배지가 이것.</dd>' +
+  '<details class="px-gloss" open><summary>' + T('px.gloss.title') + '</summary><dl>' +
+  ['sees', 'toll', 'flight', 'cyclical', 'float', 'too_hard', 'uncovered'].map(k =>
+    '<dt>' + T('px.gloss.' + k + '.dt') + '</dt><dd>' + T('px.gloss.' + k + '.dd') + '</dd>').join('') +
+  '<dt>⚠ ' + T('px.peak') + '</dt><dd>' + PX_PEAK_TIP + ' ' + T('px.gloss.peak_tail') + '</dd>' +
   '</dl></details>';
-
-/* 배지 툴팁은 용어집 '⚠ 정점 주의' 항목과 같은 문장을 쓴다 — 두 곳이 어긋나면 안 된다 */
-const PX_PEAK_TIP = '시클리컬 전용 경고등. 정점 이익으로 나눈 P/E는 바닥처럼 보이는 천장이다 — ' +
-  '하이닉스가 4.8배로 "가장 싸 보이는" 순간이 사이클의 꼭대기일 수 있다.';
 
 function pxRow(x, z, hist){
   const zoned = pxZoned(x);
@@ -1547,24 +1542,24 @@ function pxRow(x, z, hist){
   if (x.gap != null) {
     txt = pxPct(x.gap);
     cls = !zoned ? 'cold'
-      : (zone === '탐색' || zone === '본격') ? 'hot'
-      : (zone === '고평가') ? 'cold' : '';
+      : (zone === 'explore' || zone === 'commit') ? 'hot'
+      : (zone === 'over') ? 'cold' : '';
   }
-  const pe = x.pe != null ? x.pe.toFixed(1) : '—';
+  const pe = x.pe != null ? UVX.dec(x.pe.toFixed(1)) : '—';
   return '<tr>' +
     '<td><div class="px-tk">' + esc(x.ticker) + '</div>' +
-      '<div class="px-name">' + esc(x.name) + '</div></td>' +
-    '<td class="px-type">' + esc(x.type) + '</td>' +
+      '<div class="px-name">' + TX(x.name) + '</div></td>' +
+    '<td class="px-type">' + pxType(x) + '</td>' +
     '<td class="px-num">' + pe +
-      '<span class="px-basis">' + esc(PX_BASIS[x.basis] || x.basis) + '</span>' +
-      (x.eps_asof ? '<div class="px-eps">EPS ' + esc(x.eps_asof) + '</div>' : '') +
-      (x.note ? '<div class="px-eps">' + esc(x.note) + '</div>' : '') + '</td>' +
+      '<span class="px-basis">' + pxBasis(x) + '</span>' +
+      (x.eps_asof ? '<div class="px-eps">EPS ' + TX(x.eps_asof) + '</div>' : '') +
+      (x.note ? '<div class="px-eps">' + TX(x.note) + '</div>' : '') + '</td>' +
     '<td class="px-num">' + (x.fair_max != null ? x.fair_max : '—') + '</td>' +
     '<td><span class="px-gap ' + cls + '">' + txt + '</span>' +
-      (x.cyclical ? '<span class="px-peak" title="' + esc(PX_PEAK_TIP) + '">⚠ 정점 주의</span>' : '') +
-      (zone ? '<div class="px-zonetag">' + zone + '</div>' : '') +
+      (x.cyclical ? '<span class="px-peak" title="' + esc(PX_PEAK_TIP) + '">⚠ ' + T('px.peak') + '</span>' : '') +
+      (zone ? '<div class="px-zonetag">' + T('px.zone.' + zone) + '</div>' : '') +
       pxSpark(hist[x.ticker]) + '</td>' +
-    '<td class="px-why">' + esc(x.rationale) + '</td>' +
+    '<td class="px-why">' + TX(x.rationale) + '</td>' +
   '</tr>';
 }
 
@@ -1573,7 +1568,7 @@ function renderParallax(){
   const items = b.items || [];
   const host = document.getElementById('obsBody');
   if (!items.length) {
-    host.innerHTML = '<div class="obs-note">시차 관측 준비 중 — 첫 측정이 끝나면 이곳에 괴리가 실립니다.</div>';
+    host.innerHTML = '<div class="obs-note">' + T('px.empty') + '</div>';
     return;
   }
   const z = b.zones || { explore: 0.60, commit: 0.40 };
@@ -1584,51 +1579,43 @@ function renderParallax(){
   const measured = board.filter(x => x.gap != null);
   const zonedItems = measured.filter(pxZoned);      // 존 집계는 선행만
 
-  let html = '<div class="px-notice"><b>버핏 프레임의 관측 실험입니다 — 투자 권유가 아닙니다.</b> ' +
-    '정당 멀티플(정당 MAX)은 검증된 수치가 아니라 <b>주관적 추정</b>이며, 괴리는 그 추정에 오늘 시세를 대입한 ' +
-    '산술 결과일 뿐입니다. 정당 MAX는 <b>선행</b> 눈금으로 매긴 자이므로, 존 판정과 아래 집계는 선행 기준으로 ' +
-    '측정한 종목만 셉니다 — 후행(실적 EPS) 수치는 같은 자에 댈 수 없어 <b>참고 수치</b>로만 싣습니다. ' +
-    'EPS 추정 기준일은 표에 함께 적었습니다. 어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+  let html = '<div class="px-notice">' + T('px.notice_html') + '</div>';
 
-  html += '<div class="px-asof">판단층 기준일 ' + esc(b.asof || '—') +
-    ' · 측정 ' + esc(b.generated_label || '—') + ' KST · 매일 3회 자동 측정 (예약 full) · ' +
-    '탐색선 +' + Math.round(z.explore * 100) + '% / 본격선 +' + Math.round(z.commit * 100) + '%</div>';
+  html += '<div class="px-asof">' + T('px.asof', {asof: esc(b.asof || '—'), label: esc(b.generated_label || '—'),
+    e: Math.round(z.explore * 100), c: Math.round(z.commit * 100)}) + '</div>';
 
   html += '<div class="px-strip">' + PX_ZONES.map(n => {
     const c = zonedItems.filter(x => pxZone(x.gap, z) === n).length;
-    const on = (n === '탐색' || n === '본격') && c > 0;
+    const on = (n === 'explore' || n === 'commit') && c > 0;
     return '<div class="px-zone' + (on ? ' on' : '') + '">' +
-      '<div class="z-name">' + n + (n === '탐색' ? ' +' + Math.round(z.explore * 100) + '%↑'
-        : n === '본격' ? ' +' + Math.round(z.commit * 100) + '%↑' : '') + '</div>' +
-      '<div class="z-n">' + c + '<span style="font-size:12px;font-weight:700">종</span></div></div>';
+      '<div class="z-name">' + T('px.zone.' + n) + (n === 'explore' ? ' +' + Math.round(z.explore * 100) + '%↑'
+        : n === 'commit' ? ' +' + Math.round(z.commit * 100) + '%↑' : '') + '</div>' +
+      '<div class="z-n">' + c + '<span style="font-size:12px;font-weight:700">' + T('px.unit', {n: c}) + '</span></div></div>';
   }).join('') + '</div>' +
-  '<div class="px-stripnote"><b>존 판정은 비시클리컬·선행 기준만.</b> 집계 대상 ' + zonedItems.length + '종 — ' +
-  '나머지 ' + (measured.length - zonedItems.length) + '종(후행 참고 · 시클리컬)은 눈금이 달라 존을 매기지 않습니다.</div>';
+  '<div class="px-stripnote">' + T('px.stripnote_html', {n: zonedItems.length, m: measured.length - zonedItems.length}) + '</div>';
 
   html += PX_GLOSSARY;
 
   html += '<div class="px-wrap"><table class="px-table"><thead><tr>' +
-    '<th>티커</th><th>유형</th><th>P/E</th><th>정당 MAX</th><th>괴리</th><th>근거</th>' +
+    '<th>' + T('px.th.ticker') + '</th><th>' + T('px.th.type') + '</th><th>P/E</th><th>' + T('px.th.fair') +
+    '</th><th>' + T('px.th.gap') + '</th><th>' + T('px.th.why') + '</th>' +
     '</tr></thead><tbody>' +
     board.map(x => pxRow(x, z, hist)).join('') + '</tbody></table></div>';
 
   if (basket.length) {
     // 사유 설명은 실제로 담긴 바구니만 말한다 — 없는 사유를 적어두면 표와 어긋난다
-    const reasons = { too_hard: '10년 뒤 월세를 적을 수 없는 별(추정불가)',
-                      float: '매력이 월세가 아니라 보증금인 별(플로트형)',
-                      unlisted: '시세 자체가 없는 별(비상장)' };
-    const present = Object.keys(reasons).filter(k => basket.some(x => x.basis === k))
-      .map(k => reasons[k]).join(', ');
-    html += '<div class="px-hard"><div class="px-hard-title">too hard 바구니 — ' + basket.length + '종</div>' +
-      '<div class="px-hard-desc">낙제가 아니라 원칙입니다. ' + present + ' — 이 자로는 재지 않습니다. ' +
-      '재지 못한다는 사실을 적어두는 것이 억지로 숫자를 만드는 것보다 정직합니다.</div>' +
+    const present = ['too_hard', 'float', 'unlisted'].filter(k => basket.some(x => x.basis === k))
+      .map(k => T('px.reason.' + k)).join(', ');
+    html += '<div class="px-hard"><div class="px-hard-title">' + T('px.basket.title', {n: basket.length}) + '</div>' +
+      '<div class="px-hard-desc">' + T('px.basket.desc', {reasons: present}) + '</div>' +
       '<div class="px-wrap"><table class="px-table"><thead><tr>' +
-      '<th>티커</th><th>유형</th><th>사유</th><th>근거</th></tr></thead><tbody>' +
+      '<th>' + T('px.th.ticker') + '</th><th>' + T('px.th.type') + '</th><th>' + T('px.th.reason') +
+      '</th><th>' + T('px.th.why') + '</th></tr></thead><tbody>' +
       basket.map(x => '<tr><td><div class="px-tk">' + esc(x.ticker) + '</div>' +
-        '<div class="px-name">' + esc(x.name) + '</div></td>' +
-        '<td class="px-type">' + esc(x.type) + '</td>' +
-        '<td class="px-type">' + esc(PX_BASIS[x.basis] || x.basis) + '</td>' +
-        '<td class="px-why">' + esc(x.rationale) + '</td></tr>').join('') +
+        '<div class="px-name">' + TX(x.name) + '</div></td>' +
+        '<td class="px-type">' + pxType(x) + '</td>' +
+        '<td class="px-type">' + pxBasis(x) + '</td>' +
+        '<td class="px-why">' + TX(x.rationale) + '</td></tr>').join('') +
       '</tbody></table></div></div>';
   }
   host.innerHTML = html;
@@ -1638,29 +1625,22 @@ function renderParallax(){
    측정층 data/buffett.json 의 bench + 판단층에서 나른 DATA.legend 를 **표시만** 한다.
    여기서 새로 판정하지 않는다: 버핏존·쿠폰·ROE 는 측정층이 이미 매긴 값을 읽을 뿐이고,
    배지는 사람이 취재해 적어 넣은 칸(전환율·risk5·가드)을 그대로 비춘다. */
-const LG_ZONE_KO = { pass: '통과', prove_growth: '성장 입증 필요',
-                     bond_inferior: '국채 열위', untested: '미검정' };
+/* 존 이름 — 측정층의 기계 값(pass·prove_growth…)에서 화면 이름을 만든다(lg.zone.*).
+   i18n-keys: lg.* */
 const LG_ORDER = ['pass', 'prove_growth', 'bond_inferior', 'untested'];
+function lgZoneName(k){ return T('lg.zone.' + (LG_ORDER.indexOf(k) >= 0 ? k : 'untested')); }
 let lgFilter = null;        // 존 스트립 필터 (null = 전체)
 let lgBlankOpen = false;    // 백지 그룹 접힘 상태 — 기본은 접힘
 let lgOpenRow = null;       // 해부창이 열린 종목 (한 번에 하나)
-/* 금리 라벨도 화면에서는 우리말로 — UST10·KTB10 은 원장 키(기계 이름)다.
-   한국·일본물은 아직 null 이라 안 뜨지만, 배선되는 날 같은 실수를 반복하지 않도록
-   지금 함께 우리말로 둔다. */
-const LG_RATE_KO = { UST10: '미국 10년물', KTB10: '한국 10년물', JGB10: '일본 10년물' };
+/* 금리 라벨 — UST10·KTB10 은 원장 키(기계 이름)다. 화면 이름은 카탈로그(lg.rate.*)에서.
+   한국·일본물은 아직 null 이라 안 뜨지만, 배선되는 날 같은 실수를 반복하지 않도록 함께 둔다. */
+function lgRateName(k){ return T('lg.rate.' + String(k).toLowerCase()) || k; }
 
-const LG_TIP = {
-  pik: '이자를 현금이 아니라 종이(재투자)로 받는 셈. 전환율이 음수라는 건 장부의 이익이 ' +
-       '주주 손에 오기 전에 공사판으로 되돌아갔다는 뜻이다.',
-  hard: '10년 뒤 월세 칸을 자신 있게 적을 수 없는 건물(risk5 사업 확실성 ✕). ' +
-        '낙제가 아니라 "모른다"는 정직 — 판단층에 사람이 그렇게 적어 두었다.',
-  peak: '시클리컬 전용 경고등. 정점 이익으로 계산한 쿠폰은 바닥처럼 보이는 천장이다 — ' +
-        '그래서 쿠폰은 참고로만 적고 존 판정과 통과 가격은 내지 않는다.'
-};
+const LG_TIP = { pik: T('lg.tip.pik'), hard: T('lg.tip.hard'), peak: T('lg.tip.peak') };
 
 /* 퍼센트 표기 — null 은 반드시 —. 0 으로 흘려보내지 않는다(못 잰 것과 0 은 다르다). */
-function lgPct(v, digits){ return v == null ? '—' : (v * 100).toFixed(digits == null ? 1 : digits) + '%'; }
-function lgPp(v){ return v == null ? '—' : (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + 'p'; }
+function lgPct(v, digits){ return v == null ? '—' : UVX.dec((v * 100).toFixed(digits == null ? 1 : digits)) + '%'; }
+function lgPp(v){ return v == null ? '—' : (v >= 0 ? '+' : '') + UVX.dec((v * 100).toFixed(1)) + 'p'; }
 
 /* lg13f-begin — 버크셔 13F 다음 마감(순수 함수: 오늘 → {분기, 마감일, 남은 날}).
    13F 는 분기말 + 45일: 2/14(4분기분)·5/15(1분기분)·8/14(2분기분)·11/14(3분기분).
@@ -1708,32 +1688,18 @@ function lg13F(today){
 function lg13FLine(today){
   const f = lg13F(today || new Date());
   if (!f) return '';
-  const WD = ['일', '월', '화', '수', '목', '금', '토'];
-  const md = (f.due.getMonth() + 1) + '/' + f.due.getDate() + '(' + WD[f.due.getDay()] + ')';
-  return '버크셔 ' + f.q + '분기 13F · <b>' + md + '</b> 마감 · ' +
-    (f.days === 0 ? 'D-day' : 'D-' + f.days) + ' (통상 마감일 장 마감 후 공개)';
+  const WD = T('lg.wd').split(',');
+  const iso = f.due.getFullYear() + '-' + String(f.due.getMonth() + 1).padStart(2, '0') + '-' +
+    String(f.due.getDate()).padStart(2, '0');
+  const md = T('lg.md_wd', {md: UVX.md(iso), wd: WD[f.due.getDay()]});
+  return T('lg.13f_line', {q: f.q, md: md, dday: f.days === 0 ? 'D-day' : 'D-' + f.days});
 }
 /* lg13f-end */
 
 const LG_GLOSSARY =
-  '<details class="px-gloss" open><summary>용어집 — 이 표의 눈금 읽는 법</summary><dl>' +
-  '<dt>버핏존</dt><dd>이 건물의 월세가 국채 이자를 이기는가. (경계값 3배·1.5배는 자작) ' +
-    '10년 뒤 원가쿠폰이 국채의 3배를 넘으면 ' +
-    '<b>통과</b>, 1.5~3배면 <b>성장 입증 필요</b>(지금 값으론 모자라니 성장이 실제로 와야 한다), ' +
-    '1.5배 미만이면 <b>국채 열위</b> — 위험을 지고도 국채만 못하다는 뜻. 아직 취재가 안 끝나 ' +
-    '계산 자체를 못 한 건물은 <b>미검정</b>이다. 미검정은 나쁨이 아니라 백지다.</dd>' +
-  '<dt>PIK</dt><dd>월세를 현금이 아니라 차용증으로 받는 것. 장부에는 이익이 찍히는데 그 돈이 ' +
-    '주주에게 오기 전에 다시 공사판으로 들어간다면, 건물주가 손에 쥔 것은 종이뿐이다. ' +
-    '전환율(주주 손에 남은 몫 ÷ 장부 이익)이 음수인 건물에 이 배지가 붙는다.</dd>' +
-  '<dt>too hard</dt><dd>10년 뒤 월세 칸이 백지인 건물. 나쁜 건물이라서가 아니라 아무도 그 칸을 ' +
-    '자신 있게 못 적는 것 — 버핏은 2000년 서한에서 그런 경우의 자본 투입은 투기라고 불러야 한다고 했다. ' +
-    '이 배지는 기계가 매기지 않는다. ' +
-    '판단층에서 사람이 "사업 확실성 ✕"라고 적은 건물에만 붙는다.</dd>' +
-  '<dt>통과 가격</dt><dd>버핏존이 열리는 주가. 셈법은 이 사이트의 것이고 태도는 1997년 주주서한에서 왔다 — ' +
-    '앞으로 주식을 <b>살</b> 사람에게 가격 하락은 손실이 아니라 세일이다. ' +
-    '햄버거를 평생 사 먹을 사람이 소고기값 하락을 반길지 아쉬워할지 생각해 보라는 그 말. ' +
-    '그래서 이 칸은 예측이 아니라 <b>내가 기다리는 가격표를 미리 적어 두는 자리</b>다. ' +
-    '지금 눈금(g 가정) 위의 산술이므로 가정이 바뀌면 이 가격도 바뀐다.</dd>' +
+  '<details class="px-gloss" open><summary>' + T('lg.gloss.title') + '</summary><dl>' +
+  ['zone', 'pik', 'too_hard', 'pass_price'].map(k =>
+    '<dt>' + T('lg.gloss.' + k + '.dt') + '</dt><dd>' + T('lg.gloss.' + k + '.dd') + '</dd>').join('') +
   '</dl></details>';
 
 /* 비고 — 측정층의 note 문자열을 **그대로 뿌리지 않는다.**
@@ -1744,33 +1710,28 @@ const LG_GLOSSARY =
 /* "자동" 라벨 — 그 칸을 기계가 채웠을 때만. 사람 값에는 아무 표식도 붙이지 않는다
    (표식이 없는 것이 사람이 적었다는 뜻이다). 자동값에 사람의 권위를 씌우지 않는 것이
    이 라벨의 존재 이유다 — 공시 추출·AI 판정은 틀릴 수 있고, 화면이 그 사실을 말해야 한다. */
-/* 사업 확실성 ✕ — 판단층 유형이 '추정불가'이거나 risk5 사업 확실성이 ✕ 인 종목.
+/* 사업 확실성 ✕ — 판단층 유형에 '추정불가'가 들어 있거나(빌드가 uncertain 으로 싣는다) risk5 사업 확실성이 ✕ 인 종목.
    존(측정층)은 그대로 두고 **표시만** 가른다: 산술상 통과일 뿐 버핏 기준으론 추정 불가다(F6). */
 function lgUncertain(x, j){
-  return ((x.type || '').indexOf('추정불가') >= 0) || ((j || {}).cert === '✕');
+  return (x.uncertain === true || x.type_id === 'too_hard') || ((j || {}).cert === '✕');
 }
-const LG_ARITH_TIP = '사업 확실성 ✕ — 산술상 통과일 뿐, 버핏 기준으로는 추정 불가(2000 서한)';
+const LG_ARITH_TIP = T('lg.tip.arith');
 /* 상한 의존 — 가정 g 가 상한에 걸려 있다. 문구는 측정값(상한·요구 성장)에서 만든다 */
 function lgCapTip(b){
-  return '가정 성장률이 상한 ' + lgPct(b.g_used, 0) + '에 걸려 있습니다' +
-    (b.required_g != null ? ' — 가격이 요구하는 성장 ' + lgPct(b.required_g) : '');
+  return T('lg.tip.cap', {g: lgPct(b.g_used, 0)}) +
+    (b.required_g != null ? T('lg.tip.cap_req', {r: lgPct(b.required_g)}) : '');
 }
-const LG_WEAK_TIP = '전망치만으로 세운 가정입니다 — 과거 실적 성장률로 교차 검증되지 ' +
-  '않았습니다. 숫자는 나왔지만 그 숫자를 받쳐주는 실적 이력이 없다는 뜻입니다.';
-const LG_AUTO_TIP = '기계가 채운 값 — 공시(SEC XBRL) 추출 또는 AI 취재입니다. ' +
-  '사람이 취재해 덮어쓰면 이 표식이 사라집니다.';
+const LG_WEAK_TIP = T('lg.tip.weak');
+const LG_AUTO_TIP = T('lg.tip.auto');
 function lgAuto(j, field){
   return ((j.origin || {})[field] === 'auto')
-    ? '<span class="lg-auto" title="' + esc(LG_AUTO_TIP) + '">자동</span>' : '';
+    ? '<span class="lg-auto" title="' + esc(LG_AUTO_TIP) + '">' + T('lg.auto') + '</span>' : '';
 }
 
 /* method 요약 — 어떤 자로 쟀는지 한 마디로. 원문 method 는 길고 태그명이 들어 있어
-   그대로 쓰지 않는다(기계 필드명 화면 노출 금지 — 작업 규칙 8). */
-function lgMethodKo(m){
-  if (!m) return '';
-  if (m.indexOf('SEC XBRL') === 0) return 'SEC XBRL 조정';
-  if (m.indexOf('GAAP 미조정') === 0) return 'GAAP 미조정';
-  return '';
+   그대로 쓰지 않는다(기계 필드명 화면 노출 금지 — 작업 규칙 8). 빌드가 method_id 를 붙인다. */
+function lgMethodKo(j){
+  return (j && j.method_id) ? T('lg.method.' + j.method_id) : '';
 }
 
 /* 정점 가드 — 쿠폰은 참고로 재되 존 판정만 보류한다(측정과 판정의 분리).
@@ -1780,13 +1741,13 @@ function lgGuardNote(b, j){
   // 쿠폰이 안 섰으면 **무엇이 비어서**인지 이름으로 부른다(가드 탓으로 뭉개지 않는다)
   const miss = [];
   if (b.coupon10y == null) {
-    if (b.eps_adj_ttm == null) miss.push('12개월 조정이익 미확보');
-    if (b.g_used == null) miss.push('성장률 가정 미확보');
+    if (b.eps_adj_ttm == null) miss.push(T('lg.miss.eps'));
+    if (b.g_used == null) miss.push(T('lg.miss.g'));
   }
   const head = b.coupon10y != null
-    ? '정점 가드 — 쿠폰 ' + lgPct(b.coupon10y) + ' 참고, 존 판정 보류'
-    : '정점 가드 — 존 판정 보류' + (miss.length ? ' · 쿠폰 미산출(' + miss.join('·') + ')' : '');
-  return head + (j.guard_reason ? '' : ' · 가드 근거 미기재(판단층 취재 필요)');
+    ? T('lg.guard.ref', {c: lgPct(b.coupon10y)})
+    : T('lg.guard.hold') + (miss.length ? T('lg.guard.nocoupon', {m: miss.join('·')}) : '');
+  return head + (j.guard_reason ? '' : T('lg.guard.noreason'));
 }
 
 /* 버핏존 칸에는 존 + 경계 + 짧은 비고만. 값이 산출된 종목의 "기준 날짜·분기·출처" 줄은
@@ -1794,9 +1755,9 @@ function lgGuardNote(b, j){
 function lgBasisNote(b, j){
   if (j.guard || b.guard || b.coupon10y == null) return '';
   const parts = [j.as_of, j.period].filter(Boolean);
-  const how = lgMethodKo(j.method);
+  const how = lgMethodKo(j);
   if (how) parts.push(how);
-  return parts.length ? '기준 ' + parts.join(' · ') : '';
+  return parts.length ? T('lg.basis', {p: parts.join(' · ')}) : '';
 }
 
 function lgNote(b, j){
@@ -1806,9 +1767,9 @@ function lgNote(b, j){
   if (b.coupon10y != null) return '';             // 산출된 종목의 기준 줄은 비고 줄로
   // 이익 결측 사유는 측정층이 상태에서 만든 문장(eps_note)을 비춘다 — 플로트형·낡은 원장·
   // 수집 실패가 전부 '취재 대기' 한 줄로 뭉개지지 않게(legend-audit E)
-  if (b.eps_adj_ttm == null) return b.eps_note || '취재 대기 — 12개월 조정이익 미확보';
-  if (b.g_used == null) return '취재 대기 — 성장률 가정 미확보';
-  if (b.rate10y == null) return '해당 시장 국채 금리 미연결';
+  if (b.eps_adj_ttm == null) return b.eps_note || T('lg.note.eps_wait');
+  if (b.g_used == null) return T('lg.note.g_wait');
+  if (b.rate10y == null) return T('lg.note.rate_missing');
   return '';
 }
 
@@ -1820,40 +1781,37 @@ function lgPassPrice(x, b){
   if (pp == null || cur == null || cur <= 0) return '<span class="lg-neg">—</span>';
   const cy = (x.currency === 'USD' || !x.currency) ? '$' : '';
   const tail = cy ? '' : ' ' + esc(x.currency || '');
-  const money = cy + pp.toLocaleString(undefined, {maximumFractionDigits: 2}) + tail;
+  const money = cy + pp.toLocaleString(UVX.intl, {maximumFractionDigits: 2}) + tail;
   const diff = (pp - cur) / cur;
   if (b.zone_buffett === 'pass') {
-    return '<span class="lg-price lg-pos">이미 통과</span>' +
-      '<div class="lg-gapto">여유 ' + (diff * 100).toFixed(0) + '%</div>';
+    return '<span class="lg-price lg-pos">' + T('lg.pass_already') + '</span>' +
+      '<div class="lg-gapto">' + T('lg.margin', {p: (diff * 100).toFixed(0)}) + '</div>';
   }
   return '<span class="lg-price">' + money + '</span>' +
-    '<div class="lg-gapto">현재가 ' + (diff >= 0 ? '+' : '') +
-    (diff * 100).toFixed(0) + '%</div>';
+    '<div class="lg-gapto">' + T('lg.vs_price', {p: (diff >= 0 ? '+' : '') + (diff * 100).toFixed(0)}) + '</div>';
 }
 
 /* 경계 — 판정선 가격에서 ±5% 안쪽. 판정을 바꾸지 않고 "선 위에 서 있다"는 사실만 말한다.
    문구는 측정층이 잰 상태(어느 선·여유 몇 %)에서 만든다. 선 이름을 매핑하는 게 아니라
    모르는 선이면 아무것도 적지 않는다 — 내부 이름이 화면으로 샐 길이 없다. */
-const LG_LINE_KO = { pass: '통과가격', prove: '국채 1.5배선 가격' };
+const LG_LINES = ['pass', 'prove'];
 function lgEdge(b){
-  if (!b.borderline || b.edge_margin == null || !LG_LINE_KO[b.edge_line]) return '';
-  const m = b.edge_margin;
-  const txt = Math.abs(m) < 0.0005 ? '현재가가 ' + LG_LINE_KO[b.edge_line] + '와 같음'
-    : '현재가가 ' + LG_LINE_KO[b.edge_line] + '보다 ' + (Math.abs(m) * 100).toFixed(1) + '% ' +
-      (m > 0 ? '높음' : '낮음');
-  return '<span class="lg-auto" title="판정선 가격의 ±5% 안쪽 — 주가·금리의 작은 움직임에도 ' +
-    '판정이 바뀔 수 있습니다. 존 전이는 2거래일 연속 확인된 것만 기록합니다.">경계</span>' +
+  if (!b.borderline || b.edge_margin == null || LG_LINES.indexOf(b.edge_line) < 0) return '';
+  const m = b.edge_margin, line = T('lg.line.' + b.edge_line);
+  const txt = Math.abs(m) < 0.0005 ? T('lg.edge.eq', {line: line})
+    : T(m > 0 ? 'lg.edge.above' : 'lg.edge.below', {line: line, p: UVX.dec((Math.abs(m) * 100).toFixed(1))});
+  return '<span class="lg-auto" title="' + esc(T('lg.edge.tip')) + '">' + T('lg.edge.badge') + '</span>' +
     '<div class="lg-sub">' + esc(txt) + '</div>';
 }
 
 /* ROE 칸 — 값이 있으면 값과 출처 표식, 없으면 **왜 없는지**(측정층이 상태에서 만든
    roe_note 를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 된다).
    ROE 는 있는데 그 시장 국채가 미배선이면 비교만 못 한 것이므로 ROE 자체는 보여 준다. */
-const LG_UNADJ_TIP = '해외 공시를 조정 없이 쓴 값 — 투자손익을 빼지 않은 회계 이익 기준입니다.';
+const LG_UNADJ_TIP = T('lg.tip.unadj');
 function lgRoeCell(b, j){
   const roe = b.roe_minus_2x10y;
   const tag = (b.roe_unadjusted
-      ? '<span class="lg-auto" title="' + esc(LG_UNADJ_TIP) + '">GAAP 미조정</span>' : '') +
+      ? '<span class="lg-auto" title="' + esc(LG_UNADJ_TIP) + '">' + T('lg.unadj') + '</span>' : '') +
     (b.roe_from_human ? '' : lgAuto(j, 'roe_tangible'));
   if (roe != null) return lgPp(roe) + tag;
   return '—';
@@ -1862,7 +1820,7 @@ function lgRoeCell(b, j){
    그 칸이 넓어져 버핏존(결론)을 표 밖으로 밀어냈다(2026-09-29, 1090px 에서 절반 잘림). */
 function lgRoeNote(b){
   if (b.roe_minus_2x10y != null) return '';
-  if (b.roe_tangible != null) return '국채 금리 미연결 · 유형 ROE ' + lgPct(b.roe_tangible);
+  if (b.roe_tangible != null) return T('lg.roe.norate', {r: lgPct(b.roe_tangible)});
   return b.roe_note || '';
 }
 
@@ -1870,20 +1828,15 @@ function lgRoeNote(b){
 function lgCalcLine(b){
   if (b.coupon10y == null || b.ey == null) return '';
   const bar = b.rate10y == null ? null : 3 * (b.rate10y / 100);
-  return 'EY ' + lgPct(b.ey) + ' × (1+g ' + lgPct(b.g_used) + ')^10 = 쿠폰 ' +
-    lgPct(b.coupon10y) + ' vs 허들 ' + lgPct(bar);
+  return T('lg.calc', {ey: lgPct(b.ey), g: lgPct(b.g_used), c: lgPct(b.coupon10y), bar: lgPct(bar)});
 }
 
 /* 필드별 출처 — 취재 우선순위가 한눈에 보이게. 사람 값은 '취재', 자동은 '자동',
    빈 칸은 '—'. 무엇을 취재하면 이 종목이 판정에 이르는지가 이 표에서 읽힌다. */
-const LG_FIELD_KO = { eps_adj_ttm: '조정 EPS', roe_tangible: '유형 ROE',
-                      eps_adj_ttm_human: '조정 EPS(취재)',
-                      roe_tangible_human: '유형 ROE(취재)',
-                      g_forward: '전망 성장률', g_cagr3y: '3년 성장률',
-                      cagr3y_human: '3년 성장률(취재)',
-                      conversion: '전환율', risk5: '리스크 5', franchise: '프랜차이즈',
-                      capalloc: '자본배분', owner_earnings: '오너어닝' };
-function lgOriginKo(v){ return v === 'human' ? '취재' : v === 'auto' ? '자동' : '—'; }
+const LG_FIELDS = ['eps_adj_ttm', 'roe_tangible', 'eps_adj_ttm_human', 'roe_tangible_human',
+                   'g_forward', 'g_cagr3y', 'cagr3y_human', 'conversion', 'risk5', 'franchise',
+                   'capalloc', 'owner_earnings'];
+function lgOriginKo(v){ return v === 'human' ? T('lg.origin.human') : v === 'auto' ? T('lg.origin.auto') : '—'; }
 
 function lgDissect(x, j){
   const b = x.bench || {};
@@ -1892,26 +1845,26 @@ function lgDissect(x, j){
   let h = '<div class="lg-dissect">';
   const guarded = j.guard || b.guard;
   if (guarded) h += '<div class="lg-sub">' + esc(lgGuardNote(b, j)) +
-    (j.guard_reason ? ' — 가드 근거: ' + esc(j.guard_reason) : '') + '</div>';
-  if (calc && (guarded || b.hold)) h += '<div class="lg-calc">참고 · ' + esc(calc) + ' (판정에 쓰지 않음)</div>';
+    (j.guard_reason ? T('lg.guard_reason') + TX(j.guard_reason) : '') + '</div>';
+  if (calc && (guarded || b.hold)) h += '<div class="lg-calc">' + T('lg.calc_ref', {calc: esc(calc)}) + '</div>';
   else if (calc) h += '<div class="lg-calc">' + esc(calc) + '</div>';
   // 계산이 안 서면 **왜 안 서는지**를 그 자리에서 말한다. 측정층이 상태에서 만든
   // 문구(bench.note)를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 되고,
   // 새 결측 상태가 생기는 날 화면만 옛말을 한다(2026-09-05 '10년물 없음' 오표기).
-  else h += '<div class="lg-calc">아직 계산이 서지 않습니다' +
-    (b.note ? ' — ' + esc(b.note) : ' — 아래에서 빈 칸을 보세요') + '</div>';
+  else h += '<div class="lg-calc">' + T('lg.calc_none') +
+    (b.note ? ' — ' + TX(b.note) : T('lg.calc_none_hint')) + '</div>';
   h += '<div class="lg-fields">';
-  Object.keys(LG_FIELD_KO).forEach(f => {
-    h += '<div class="lg-fk">' + LG_FIELD_KO[f] + '</div>' +
+  LG_FIELDS.forEach(f => {
+    h += '<div class="lg-fk">' + T('lg.field.' + f) + '</div>' +
          '<div class="lg-fv">' + lgOriginKo(og[f]) + '</div>';
   });
   h += '</div>';
   const bits = [];
-  if (j.method) bits.push('측정 ' + esc(lgMethodKo(j.method) || j.method));
-  if (b.g_used != null) bits.push('성장률 ' + lgPct(b.g_used) +
-    (b.g_capped_from != null ? ' (캡 전 ' + lgPct(b.g_capped_from) + ')' : ''));
-  if (j.as_of) bits.push('기준 ' + esc(j.as_of));
-  if (j.period) bits.push(esc(j.period));
+  if (j.method) bits.push(T('lg.measured') + ' ' + (lgMethodKo(j) ? esc(lgMethodKo(j)) : TX(j.method)));
+  if (b.g_used != null) bits.push(T('lg.growth') + ' ' + lgPct(b.g_used) +
+    (b.g_capped_from != null ? T('lg.before_cap', {g: lgPct(b.g_capped_from)}) : ''));
+  if (j.as_of) bits.push(T('lg.basis', {p: esc(j.as_of)}));
+  if (j.period) bits.push(TX(j.period));
   if (bits.length) h += '<div class="lg-sub" style="margin-top:10px">' +
     bits.join(' · ') + '</div>';
   return h + '</div>';
@@ -1920,7 +1873,7 @@ function lgDissect(x, j){
 function lgRow(x, lg){
   const b = x.bench || {};
   const j = lg[x.ticker] || {};
-  const zone = LG_ZONE_KO[b.zone_buffett] || '미검정';
+  const zone = lgZoneName(b.zone_buffett);
   const roe = b.roe_minus_2x10y;
   const roeCls = roe == null ? '' : (roe >= 0 ? 'lg-pos' : 'lg-neg');
 
@@ -1929,19 +1882,19 @@ function lgRow(x, lg){
   if (j.guard || b.guard) {
     // 참고값 — 판정에 쓰지 않는다는 표식을 값 옆에 붙인다
     coupon = (b.coupon10y == null ? '<span class="lg-neg">—</span>'
-              : '<span class="lg-neg">' + lgPct(b.coupon10y) + ' 참고</span>') +
-      '<span class="lg-badge" title="' + esc(LG_TIP.peak) + '">⚠ 정점 주의</span>';
+              : '<span class="lg-neg">' + T('lg.coupon_ref', {c: lgPct(b.coupon10y)}) + '</span>') +
+      '<span class="lg-badge" title="' + esc(LG_TIP.peak) + '">⚠ ' + T('px.peak') + '</span>';
   } else if (b.coupon10y == null) {
     coupon = '<span class="lg-neg">—</span>';
   } else if (b.hold) {
     // 판정 보류(비영업 손익 왜곡 의심) — 쿠폰은 참고값. 판정에 쓰지 않는다는 표식을 붙인다
-    coupon = '<span class="lg-neg">' + lgPct(b.coupon10y) + ' 참고</span>' + lgAuto(j, 'eps_adj_ttm') +
+    coupon = '<span class="lg-neg">' + T('lg.coupon_ref', {c: lgPct(b.coupon10y)}) + '</span>' + lgAuto(j, 'eps_adj_ttm') +
       '<div class="lg-sub">g ' + lgPct(b.g_used) + '</div>';
   } else {
     // g 표기 — 캡을 씌웠으면 **원값을 함께 적는다**(감춘 조정은 조정이 아니다)
     const gTxt = (b.g_capped_from != null)
-      ? 'g ' + lgPct(b.g_used) + ' 캡(전망 ' + lgPct(b.g_capped_from) + ')'
-      : 'g ' + lgPct(b.g_used) + ' 전망';
+      ? T('lg.g_capped', {g: lgPct(b.g_used), f: lgPct(b.g_capped_from)})
+      : T('lg.g_fwd', {g: lgPct(b.g_used)});
     coupon = lgPct(b.coupon10y) + lgAuto(j, 'eps_adj_ttm') +
       '<div class="lg-sub">' + gTxt + '</div>';
   }
@@ -1964,18 +1917,18 @@ function lgRow(x, lg){
   const tk = esc(x.ticker);
   const notes = [];
   const roeN = lgRoeNote(b);
-  if (roeN) notes.push('ROE: ' + roeN);
-  if (j.conv == null && b.conv_note) notes.push('전환율: ' + b.conv_note);
-  if (j.conv != null && b.conv_check_note) notes.push('전환율: ' + b.conv_check_note);
+  if (roeN) notes.push(T('lg.note.roe') + roeN);
+  if (j.conv == null && b.conv_note) notes.push(T('lg.note.conv') + b.conv_note);
+  if (j.conv != null && b.conv_check_note) notes.push(T('lg.note.conv') + b.conv_check_note);
   const basis = lgBasisNote(b, j);
   if (basis) notes.push(basis);
   const noteRow = notes.length
     ? '<tr class="lg-note-row lg-clickable" onclick="lgToggleRow(\'' + tk + '\')"><td colspan="6">' +
-      notes.map(n => '<span class="lg-note">' + esc(n) + '</span>').join('') + '</td></tr>' : '';
+      notes.map(n => '<span class="lg-note">' + TX(n) + '</span>').join('') + '</td></tr>' : '';
   return '<tr class="lg-clickable' + (notes.length ? ' lg-hasnote' : '') +
     '" onclick="lgToggleRow(\'' + tk + '\')">' +
     '<td><div class="px-tk">' + esc(x.ticker) + badges + '</div>' +
-      '<div class="px-name">' + esc(x.name) + '</div></td>' +
+      '<div class="px-name">' + TX(x.name) + '</div></td>' +
     '<td class="px-num ' + roeCls + '">' + lgRoeCell(b, j) + '</td>' +
     '<td class="px-num">' + coupon + '</td>' +
     // 전환율 — 자동은 C안(캐펙스 전액) 단독. 없으면 셀에는 '—' 만, **왜 없는지**는 비고 줄에
@@ -1985,16 +1938,16 @@ function lgRow(x, lg){
     '<td class="px-num lg-c-price">' + lgPassPrice(x, b) + '</td>' +
     '<td><span class="lg-zonetag">' + zone + '</span>' +
       // 과거 실적으로 교차 검증되지 않은 가정 위의 판정 — 화면이 그렇게 말한다
-      (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">가정 약함</span>' : '') +
+      (b.g_weak ? '<span class="lg-auto" title="' + esc(LG_WEAK_TIP) + '">' + T('lg.weak') + '</span>' : '') +
       // 사업 확실성 ✕ 인데 산술상 통과 — 존은 측정층 그대로, 표식만(F6)
       ((b.zone_buffett === 'pass' && lgUncertain(x, j))
-        ? '<span class="lg-auto" title="' + esc(LG_ARITH_TIP) + '">산술</span>' : '') +
+        ? '<span class="lg-auto" title="' + esc(LG_ARITH_TIP) + '">' + T('lg.arith') + '</span>' : '') +
       // 가정 g 가 상한에 걸린 판정 — 가격이 요구하는 성장을 툴팁에(F6)
       ((b.g_capped_from != null && b.coupon10y != null && !(j.guard || b.guard) && !b.hold)
-        ? '<span class="lg-auto" title="' + esc(lgCapTip(b)) + '">상한 의존</span>' : '') +
+        ? '<span class="lg-auto" title="' + esc(lgCapTip(b)) + '">' + T('lg.capdep') + '</span>' : '') +
       lgEdge(b) +
       (function(){ const n = lgNote(b, j);
-        return n ? '<div class="lg-sub">' + esc(n) + '</div>' : ''; })() + '</td>' +
+        return n ? '<div class="lg-sub">' + TX(n) + '</div>' : ''; })() + '</td>' +
   '</tr>' + noteRow + detail;
 }
 
@@ -2003,34 +1956,26 @@ function renderLegend(){
   const items = b.items || [];
   const host = document.getElementById('obsBody');
   if (!items.length) {
-    host.innerHTML = '<div class="obs-note">레전드벤치마크 준비 중 — 첫 측정이 끝나면 이곳에 실립니다.</div>';
+    host.innerHTML = '<div class="obs-note">' + T('lg.empty') + '</div>';
     return;
   }
   const lg = DATA.legend || {};
   const rates = b.rates || {};
 
-  let html = '<div class="px-notice"><b>버핏존은 버핏 서한의 생각(1992·2000)을 UNIVERTRIX 가 눈금으로 ' +
-    '옮긴 자작 기준에 오늘 시세를 대입한 산술 결과이며(3배·1.5배 경계는 버핏의 숫자가 아니라 ' +
-    '이 사이트가 정한 값입니다) ' +
-    '투자 권유가 아닙니다.</b> 10년 원가쿠폰의 g는 <b>가정</b>입니다. 가정이 바뀌면 결론도 바뀝니다 — ' +
-    '표의 모든 쿠폰 옆에 그 가정을 함께 적어 둔 이유입니다. ' +
-    '<b>자동 취재 값은 공시·AI 추출에 기반하며 오류가 있을 수 있습니다</b> — ' +
-    '\'자동\' 표식이 붙은 값이 그것입니다. ' +
-    '<b>통과 가격은 현재 눈금(g 가정) 기준 산술이며 목표가가 아닙니다.</b> ' +
-    '어떤 항목도 매수·매도 신호가 아닙니다.</div>';
+  let html = '<div class="px-notice">' + T('lg.notice_html') + '</div>';
 
   // 눈금 스트립 — 미배선 국채(KTB·JGB)는 null 이면 아예 적지 않는다.
   // 0 으로 채우면 '금리 0%' 라는 거짓말이 되고, 표기하면 있는 척이 된다.
   const parts = [];
   const bar = rates.UST10 == null ? null : rates.UST10 * 3;
-  parts.push('<span class="r-k">' + LG_RATE_KO.UST10 + '</span> <span class="r-v">' +
-    (rates.UST10 == null ? '—' : rates.UST10.toFixed(2) + '%') + '</span>');
+  parts.push('<span class="r-k">' + lgRateName('UST10') + '</span> <span class="r-v">' +
+    (rates.UST10 == null ? '—' : UVX.dec(rates.UST10.toFixed(2)) + '%') + '</span>');
   ['KTB10', 'JGB10'].forEach(k => {
-    if (rates[k] != null) parts.push('<span class="r-k">' + (LG_RATE_KO[k] || k) + '</span> ' +
-      '<span class="r-v">' + rates[k].toFixed(2) + '%</span>');
+    if (rates[k] != null) parts.push('<span class="r-k">' + lgRateName(k) + '</span> ' +
+      '<span class="r-v">' + UVX.dec(rates[k].toFixed(2)) + '%</span>');
   });
-  parts.push('<span class="r-k">국채×3 허들</span> <span class="r-bar">' +
-    (bar == null ? '—' : bar.toFixed(1) + '%') + '</span>');
+  parts.push('<span class="r-k">' + T('lg.hurdle') + '</span> <span class="r-bar">' +
+    (bar == null ? '—' : UVX.dec(bar.toFixed(1)) + '%') + '</span>');
   html += '<div class="lg-rates">' + parts.join('<span class="r-sep">·</span>') + '</div>';
 
   // 판단층 기준일 = 사람 값·자동 값 중 최신 갱신일. 둘을 함께 적는다 — 자동이 매일
@@ -2038,11 +1983,10 @@ function renderLegend(){
   // (시차 관측 탭의 기준일은 그대로 사람 파일 asof 다 — 정당 MAX 는 사람만 적는 값이다)
   const lm = DATA.legend_meta || {};
   const asofTxt = lm.latest
-    ? lm.latest + ' (자동 ' + (lm.auto || '—') + ' · 사람 ' + (lm.human || '—') + ')'
+    ? T('lg.asof_pair', {latest: lm.latest, auto: lm.auto || '—', human: lm.human || '—'})
     : (b.asof || '—');
-  html += '<div class="px-asof">판단층 기준일 ' + esc(asofTxt) +
-    ' · 측정 ' + esc(b.generated_label || '—') + ' KST' +
-    (rates.source ? ' · 10년물 ' + esc(rates.source) : '') +
+  html += '<div class="px-asof">' + T('lg.asof', {asof: esc(asofTxt), label: esc(b.generated_label || '—')}) +
+    (rates.source ? T('lg.asof_src', {s: esc(rates.source)}) : '') +
     (rates.as_of ? ' (' + esc(rates.as_of) + ')' : '') + '</div>';
 
   // 존 요약 스트립 — 시차 관측과 같은 4칸. 칸을 누르면 보드가 그 판정만 남긴다.
@@ -2058,22 +2002,21 @@ function renderLegend(){
   html += '<div class="px-strip">' + LG_ORDER.map(k =>
     '<div class="px-zone lg-pick' + (lgFilter === k ? ' lg-on' : '') +
     '" onclick="lgSetFilter(\'' + k + '\')" role="button" tabindex="0">' +
-    '<div class="z-name">' + LG_ZONE_KO[k] + '</div>' +
-    '<div class="z-n">' + tally[k] + '<span style="font-size:12px;font-weight:700">종</span>' +
+    '<div class="z-name">' + lgZoneName(k) + '</div>' +
+    '<div class="z-n">' + tally[k] + '<span style="font-size:12px;font-weight:700">' + T('px.unit', {n: tally[k]}) + '</span>' +
     '</div>' + ((k === 'pass' && passUncertain)
-      ? '<div class="z-sub" title="' + esc(LG_ARITH_TIP) + '">그중 사업확실성 ✕ ' +
-        passUncertain + '</div>' : '') +
+      ? '<div class="z-sub" title="' + esc(LG_ARITH_TIP) + '">' + T('lg.pass_uncertain', {n: passUncertain}) + '</div>' : '') +
     '</div>').join('') + '</div>' +
-    '<div class="px-stripnote">합계 ' + items.length + '종' +
-    (lgFilter ? ' · <b>' + LG_ZONE_KO[lgFilter] + '</b>만 보는 중 — ' +
-       '<a href="#legend" onclick="lgSetFilter(null);return false;">전체 보기</a>' : '') +
+    '<div class="px-stripnote">' + T('lg.total', {n: items.length}) +
+    (lgFilter ? T('lg.filtering_html', {z: lgZoneName(lgFilter)}) +
+       '<a href="#legend" onclick="lgSetFilter(null);return false;">' + T('lg.show_all') + '</a>' : '') +
     '</div>';
 
   // 버크셔 관찰 카드 — 스트립 바로 아래. 고정 3줄이고 13F 줄은 오늘 기준으로 계산한다.
-  html += '<div class="lg-watch"><div class="lg-watch-title">🔭 버크셔 관찰</div><ul>' +
+  html += '<div class="lg-watch"><div class="lg-watch-title">🔭 ' + T('lg.watch.title') + '</div><ul>' +
     '<li>' + lg13FLine() + '</li>' +
-    '<li>캐펙스/OCF &gt; <b>1.15</b> = 약세 신호</li>' +
-    '<li>클라우드 성장 &lt; <b>60%</b> = 의심 신호</li>' +
+    '<li>' + T('lg.watch.capex_html') + '</li>' +
+    '<li>' + T('lg.watch.cloud_html') + '</li>' +
     '</ul></div>';
 
   html += LG_GLOSSARY;
@@ -2093,16 +2036,16 @@ function renderLegend(){
   const head = '<div class="px-wrap"><table class="px-table lg-table"><colgroup>' +
     '<col style="width:15%"><col style="width:12%"><col style="width:17%">' +
     '<col style="width:11%"><col style="width:13%"><col style="width:32%"></colgroup><thead><tr>' +
-    '<th>종목</th><th>ROE−2×국채</th><th>10년 원가쿠폰</th>' +
-    '<th class="lg-c-conv">전환율</th><th class="lg-c-price">통과 가격</th>' +
-    '<th>버핏존</th></tr></thead><tbody>';
+    '<th>' + T('lg.th.stock') + '</th><th>' + T('lg.th.roe') + '</th><th>' + T('lg.th.coupon') + '</th>' +
+    '<th class="lg-c-conv">' + T('lg.th.conv') + '</th><th class="lg-c-price">' + T('lg.th.price') + '</th>' +
+    '<th>' + T('lg.th.zone') + '</th></tr></thead><tbody>';
   if (judged.length) {
     html += head + judged.map(x => lgRow(x, lg)).join('') + '</tbody></table></div>';
   }
   if (blank.length) {
     html += '<button class="lg-fold" onclick="lgToggleBlank()">' +
-      (lgBlankOpen ? '▾' : '▸') + ' 백지·정점주의 ' + blank.length + '종' +
-      (lgBlankOpen ? '' : ' — 아직 판정에 필요한 칸이 비어 있는 종목') + '</button>';
+      (lgBlankOpen ? '▾' : '▸') + ' ' + T('lg.fold', {n: blank.length}) +
+      (lgBlankOpen ? '' : T('lg.fold_hint')) + '</button>';
     if (lgBlankOpen) {
       html += head + blank.map(x => lgRow(x, lg)).join('') + '</tbody></table></div>';
     }
@@ -2130,25 +2073,28 @@ function lgToggleBlank(){
 
 /* 🛰 SpaceX 관제실 v2 (2026-10-23) — IIFE 하나. 다른 천문대 탭과 전역 이름을 나누지 않는다.
    첫 화면(관제판)은 빌드가 정적 HTML 로 그렸다. 여기서는 패널 7종·서랍·검색·딥링크만 맡는다.
-   데이터는 빌드 시점에 심은 DATA.probe / DATA.probe_reports — 판단층 파일을 fetch 하지 않는다. */
+   데이터는 빌드 시점에 심은 DATA.probe / DATA.probe_reports — 판단층 파일을 fetch 하지 않는다.
+   화면 문구는 카탈로그(pc.*), 상태 이름(판정·사건 종류·축·시나리오)은 빌드가 그 언어로 싣는다.
+   탐사 원장이 쓴 문장(이정표·사유·보고서)은 콘텐츠 — C()/TXB() 로 원문 표식을 단다.
+   i18n-keys: pc.* */
 const PC = (function(){
   let D = null, R = [], root = null, cur = '', mf = { axis: '', status: '', year: '' }, evKind = '', evMore = false;
   let dList = [], dIdx = -1, dKind = '', repSel = { run: '', sec: '' }, lastFocus = null;
   const LS = 'ud-probe-panel';
   const H = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const C = s => TX(s == null ? '' : s);              // 콘텐츠(탐사 원장 문장) — 번역 전이면 원문 표식
+  const HAN = /[\uac00-\ud7a3]/;
   const reEsc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const reduce = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = id => document.getElementById(id);
-  const fmtN = (v, unit) => (v == null || v === '') ? '—' : (typeof v === 'number' ? v.toLocaleString('ko-KR') : String(v)) + (unit ? ' ' + unit : '');
+  const fmtN = (v, unit) => (v == null || v === '') ? '—' : (typeof v === 'number' ? H(v.toLocaleString(UVX.intl)) : C(String(v))) + (unit ? ' ' + C(unit) : '');
   const pct = p => p == null ? '—' : Math.round(p * 100) + '%';
-  /* 십억 달러 → 한국어 단위('$7,050억' · '$1.2조' · '−$50억'), 결측 '—' */
-  const bnKo = v => { if (typeof v !== 'number') return '—'; const a = Math.abs(v) * 10, sg = v < 0 ? '−' : '';
-    return a >= 10000 ? sg + '$' + (a / 10000).toFixed(1) + '조' : sg + '$' + Math.round(a).toLocaleString('ko-KR') + '억'; };
   const bar = p => '<span class="pc-bar"><i style="width:' + (p == null ? 0 : Math.round(p * 100)) + '%"></i></span>';
-  const link = (u, t) => u && /^https?:/.test(u) ? '<a href="' + H(u) + '" target="_blank" rel="noopener">' + H(t || u) + '</a>' : (u ? H(u) : '—');
+  const link = (u, t) => u && /^https?:/.test(u) ? '<a href="' + H(u) + '" target="_blank" rel="noopener">' + C(t || u) + '</a>' : (u ? C(u) : '—');
   const safeGet = () => { try { return localStorage.getItem(LS) || ''; } catch (e) { return ''; } };
   const safeSet = v => { try { localStorage.setItem(LS, v); } catch (e) {} };
   const panelIds = () => (D.panels || []).map(p => p.id);
+  const ST = ['done', 'early', 'met', 'prog', 'miss', 'wait'];   // 화면 판정 상태 id(빌드의 cls)
 
   /* ── 패널 ── */
   function pMilestones(){
@@ -2156,30 +2102,33 @@ const PC = (function(){
     const years = [...new Set(ms.map(m => m.year))].sort();
     const axes = D.axes || [];
     const fBtn = (k, v, t) => '<button type="button" class="pc-f' + (mf[k] === v ? ' on' : '') + '" data-pc-mf="' + k + '" data-v="' + H(v) + '">' + H(t) + '</button>';
-    let h = '<div class="pc-filters">' + fBtn('axis', '', '전체 축') + axes.map(a => fBtn('axis', a.key, a.ko)).join('') + '</div>';
-    h += '<div class="pc-filters">' + fBtn('status', '', '전체 상태') + ['달성','달성(조기)','현재 충족(판정 연도 전)','진행','미달','미판정'].map(s => fBtn('status', s, s)).join('') +
-         fBtn('year', '', '전체 연도') + years.map(y => fBtn('year', String(y), String(y))).join('') + '</div>';
+    let h = '<div class="pc-filters">' + fBtn('axis', '', T('pc.f.axes')) + axes.map(a => fBtn('axis', a.key, a.ko)).join('') + '</div>';
+    h += '<div class="pc-filters">' + fBtn('status', '', T('pc.f.status')) + ST.map(s => fBtn('status', s, T('pc.st.' + s))).join('') +
+         fBtn('year', '', T('pc.f.years')) + years.map(y => fBtn('year', String(y), String(y))).join('') + '</div>';
     const showY = mf.year ? [Number(mf.year)] : years;
     const showA = mf.axis ? axes.filter(a => a.key === mf.axis) : axes;
-    h += '<div class="pc-wrap"><table class="pc-mx"><thead><tr><th>축</th>' + showY.map(y => '<th>' + y + '</th>').join('') + '</tr></thead><tbody>';
+    h += '<div class="pc-wrap"><table class="pc-mx"><thead><tr><th>' + T('pc.axis') + '</th>' + showY.map(y => '<th>' + y + '</th>').join('') + '</tr></thead><tbody>';
     showA.forEach(a => {
       h += '<tr><td>' + H(a.ko) + '</td>';
       showY.forEach(y => {
-        const cell = ms.filter(m => m.axis === a.key && m.year === y && (!mf.status || (m.shown || m.status) === mf.status));
+        const cell = ms.filter(m => m.axis === a.key && m.year === y && (!mf.status || m.cls === mf.status));
         h += '<td>' + cell.map(m => '<button type="button" class="pc-chip pc-st-' + m.cls + '" style="--p:' + (m.pct == null ? 0 : Math.round(m.pct * 100)) + '%" data-pc-open="milestones" data-pc-id="' + H(m.id) + '" title="' + H(m.text) + '">' +
-          H(m.id) + ' <span style="font-weight:600">' + (m.cls === 'met' ? '충족' : m.pct == null ? '—' : pct(m.pct)) + '</span></button>').join('') + '</td>';
+          H(m.id) + ' <span style="font-weight:600">' + (m.cls === 'met' ? T('pc.met_short') : m.pct == null ? '—' : pct(m.pct)) + '</span></button>').join('') + '</td>';
       });
       h += '</tr>';
     });
-    h += '</tbody></table></div><div class="pc-legend"><span>칸 채움·숫자 = 진척 %(— = 측정 불가)</span><span class="pc-st-done">초록 실선 = 달성</span><span class="pc-st-early">초록 점선 = 달성(조기)</span><span class="pc-st-met">충족 = 현재 충족(판정 연도 전) — 판정 연도에 다시 본다</span><span>강조 실선 = 진행</span><span class="pc-st-miss">빨강 취소선 = 미달</span><span>회색 점선 = 미판정</span></div>';
+    h += '</tbody></table></div><div class="pc-legend"><span>' + T('pc.lg.fill') + '</span><span class="pc-st-done">' + T('pc.lg.done') +
+      '</span><span class="pc-st-early">' + T('pc.lg.early') + '</span><span class="pc-st-met">' + T('pc.lg.met') + '</span><span>' + T('pc.lg.prog') +
+      '</span><span class="pc-st-miss">' + T('pc.lg.miss') + '</span><span>' + T('pc.lg.wait') + '</span></div>';
     return h;
   }
 
   function tlSvg(evs){
     const W = 1000, Hh = 74, today = new Date(D.today + 'T00:00:00'), d0 = new Date(today.getTime() - 90 * 864e5);
     const x = d => 20 + (W - 40) * Math.max(0, Math.min(1, (new Date(d + 'T00:00:00') - d0) / (today - d0)));
-    let s = '<svg class="pc-tl" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="최근 90일 사건 타임라인"><line class="pc-tl-axis" x1="20" y1="40" x2="' + (W - 20) + '" y2="40"/>';
-    for (let k = 0; k <= 3; k++) { const dt = new Date(d0.getTime() + k * 30 * 864e5); s += '<text class="pc-tl-t" x="' + (20 + (W - 40) * k / 3) + '" y="64" text-anchor="middle">' + (dt.getMonth() + 1) + '/' + dt.getDate() + '</text>'; }
+    const iso = dt => dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+    let s = '<svg class="pc-tl" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="' + H(T('pc.tl.aria')) + '"><line class="pc-tl-axis" x1="20" y1="40" x2="' + (W - 20) + '" y2="40"/>';
+    for (let k = 0; k <= 3; k++) { const dt = new Date(d0.getTime() + k * 30 * 864e5); s += '<text class="pc-tl-t" x="' + (20 + (W - 40) * k / 3) + '" y="64" text-anchor="middle">' + H(UVX.md(iso(dt))) + '</text>'; }
     evs.forEach((e, i) => { s += '<circle class="pc-tl-dot pc-k-' + H(e.kind) + '" cx="' + x(e.date).toFixed(1) + '" cy="' + (36 - (i % 3) * 10) + '" r="6" data-pc-open="events" data-pc-id="' + H(e.id) + '"><title>' + H(e.date + ' ' + e.kindKo + ' · ' + e.title) + '</title></circle>'; });
     return s + '<text class="pc-mark" x="' + (W - 22) + '" y="72" text-anchor="end">univertrix.com</text></svg>';
   }
@@ -2187,12 +2136,12 @@ const PC = (function(){
     const all = D.events || [], kinds = [...new Set(all.map(e => e.kindKo))];
     const evs = all.filter(e => !evKind || e.kindKo === evKind);
     const kOf = ko => (all.find(e => e.kindKo === ko) || {}).kind || '';
-    let h = '<div class="pc-filters"><button type="button" class="pc-f' + (!evKind ? ' on' : '') + '" data-pc-ek="">전체</button>' +
+    let h = '<div class="pc-filters"><button type="button" class="pc-f' + (!evKind ? ' on' : '') + '" data-pc-ek="">' + T('pc.f.all') + '</button>' +
       kinds.map(k => '<button type="button" class="pc-f' + (evKind === k ? ' on' : '') + '" data-pc-ek="' + H(k) + '"><i class="pc-kd pc-k-' + H(kOf(k)) + '"></i>' + H(k) + '</button>').join('') + '</div>';
     h += tlSvg(evs);
     const shown = evMore ? evs : evs.slice(0, 10);
-    h += '<ul class="pc-list">' + shown.map(e => '<li><button type="button" class="pc-row" id="pc-' + H(e.id) + '" data-pc-open="events" data-pc-id="' + H(e.id) + '"><span>' + H(e.date) + '</span><span>' + H(e.kindKo) + '</span><span>' + H(e.title) + '</span></button></li>').join('') + '</ul>';
-    if (evs.length > 10 && !evMore) h += '<button type="button" class="pc-more" data-pc-evmore="1">더 보기 (' + (evs.length - 10) + ')</button>';
+    h += '<ul class="pc-list">' + shown.map(e => '<li><button type="button" class="pc-row" id="pc-' + H(e.id) + '" data-pc-open="events" data-pc-id="' + H(e.id) + '"><span>' + H(e.date) + '</span><span>' + H(e.kindKo) + '</span><span>' + C(e.title) + '</span></button></li>').join('') + '</ul>';
+    if (evs.length > 10 && !evMore) h += '<button type="button" class="pc-more" data-pc-evmore="1">' + T('pc.more', {n: evs.length - 10}) + '</button>';
     return h;
   }
   function sparkSvg(vals){
@@ -2204,58 +2153,61 @@ const PC = (function(){
   }
   function pFin(rowSel){
     const f = D.fin || { cols: [], rows: [] };
-    let h = '<div class="pc-wrap"><table class="pc-fin"><thead><tr><th>항목</th>' + f.cols.map(c => '<th>' + H(c) + '</th>').join('') + '<th>추세</th></tr></thead><tbody>';
+    let h = '<div class="pc-wrap"><table class="pc-fin"><thead><tr><th>' + T('pc.fin.item') + '</th>' + f.cols.map(c => '<th>' + H(c) + '</th>').join('') + '<th>' + T('pc.fin.trend') + '</th></tr></thead><tbody>';
     f.rows.forEach(r => {
-      h += '<tr id="pc-fin-' + H(r.id) + '"' + (rowSel === r.id ? ' class="on"' : '') + '><td>' + H(r.label) + '<span class="pc-o">' + (r.origin === '공시 자동' ? '공시' : '취재') + '</span></td>' +
+      h += '<tr id="pc-fin-' + H(r.id) + '"' + (rowSel === r.id ? ' class="on"' : '') + '><td>' + H(r.label) + '<span class="pc-o">' + (r.originId === 'auto' ? T('pc.o.disc') : T('pc.o.probe')) + '</span></td>' +
         r.cells.map((c, i) => '<td><button type="button" class="pc-cell" data-pc-open="fin" data-pc-id="' + H(r.id + '|' + i) + '">' + H(c.t) + (c.mk ? '<sup class="pc-mk">' + H(c.mk) + '</sup>' : '') + '</button></td>').join('') +
         '<td>' + sparkSvg(r.cells.map(c => c.v)) + '</td></tr>';
     });
-    return h + '</tbody></table></div><div class="pc-legend"><span><b class="pc-o">공시</b> 공시 자동(SEC XBRL)</span><span><b class="pc-o">취재</b> 탐사 취재(공시 KPI 표)</span><span><sup class="pc-mk">계산</sup> 누적 공시의 차분(상반기−2분기·연간−9개월)</span><span><sup class="pc-mk">S-1</sup> 탐사 엔진이 S-1 원문에서 기입·검증관 대조</span><span>— = 원천 값 없음(0 으로 채우지 않음)</span><span>univertrix.com</span></div>';
+    return h + '</tbody></table></div><div class="pc-legend"><span><b class="pc-o">' + T('pc.o.disc') + '</b> ' + T('pc.fin.lg_disc') + '</span><span><b class="pc-o">' + T('pc.o.probe') + '</b> ' + T('pc.fin.lg_probe') +
+      '</span><span><sup class="pc-mk">' + T('pc.mk.calc') + '</sup> ' + T('pc.fin.lg_calc') + '</span><span><sup class="pc-mk">S-1</sup> ' + T('pc.fin.lg_s1') + '</span><span>' + T('pc.fin.lg_dash') + '</span><span>univertrix.com</span></div>';
   }
   function histSvg(hist){
     if (!hist.length) return '';
     const vals = hist.flatMap(r => [r.price, ...(r.band || [])]).filter(v => typeof v === 'number');
     const top = Math.ceil(Math.max(...vals, 100) * 1.1 / 50) * 50, W = 1000, Hh = 170, cw = (W - 60) / hist.length;
     const y = v => 130 - (v / top) * 110;
-    let s = '<svg class="pc-tl pc-hist" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="회차별 가정 가치 밴드와 주가">';
+    let s = '<svg class="pc-tl pc-hist" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="' + H(T('pc.hist.aria')) + '">';
     hist.forEach((r, i) => {
       const cx = 50 + cw * i + cw / 2, b = r.band || [];
       if (b.length === 2) s += '<rect x="' + (cx - 14) + '" y="' + y(b[1]).toFixed(1) + '" width="28" height="' + (y(b[0]) - y(b[1])).toFixed(1) + '" rx="4" class="pc-g-band"/>';
       if (typeof r.mid === 'number') s += '<line x1="' + (cx - 16) + '" x2="' + (cx + 16) + '" y1="' + y(r.mid).toFixed(1) + '" y2="' + y(r.mid).toFixed(1) + '" class="pc-g-mid"/>';
       if (typeof r.price === 'number') s += '<circle cx="' + cx + '" cy="' + y(r.price).toFixed(1) + '" r="5" class="pc-g-price"/>';
       const p = r.probs || {};
-      s += '<text class="pc-tl-t" x="' + cx + '" y="146" text-anchor="middle">' + H(r.run_id) + '</text><text class="pc-tl-t" x="' + cx + '" y="157" text-anchor="middle">강 ' + Math.round((p.bull || 0) * 100) + ' · 기 ' + Math.round((p.base || 0) * 100) + ' · 약 ' + Math.round((p.bear || 0) * 100) + '</text>';
+      s += '<text class="pc-tl-t" x="' + cx + '" y="146" text-anchor="middle">' + H(r.run_id) + '</text><text class="pc-tl-t" x="' + cx + '" y="157" text-anchor="middle">' +
+        H(T('pc.hist.probs', {b: Math.round((p.bull || 0) * 100), m: Math.round((p.base || 0) * 100), s: Math.round((p.bear || 0) * 100)})) + '</text>';
     });
-    return s + '<text class="pc-tl-t" x="6" y="' + (y(top) + 10).toFixed(1) + '">$' + top + '</text><text class="pc-tl-t" x="6" y="128">$0</text><text class="pc-tl-t" x="' + (W - 6) + '" y="24" text-anchor="end">● 주가 · 막대 = 가정 가치 밴드 · 가로선 = 중앙</text><text class="pc-mark" x="' + (W - 6) + '" y="12" text-anchor="end">univertrix.com</text></svg>';
+    return s + '<text class="pc-tl-t" x="6" y="' + (y(top) + 10).toFixed(1) + '">$' + top + '</text><text class="pc-tl-t" x="6" y="128">$0</text><text class="pc-tl-t" x="' + (W - 6) + '" y="24" text-anchor="end">' + H(T('pc.hist.legend')) + '</text><text class="pc-mark" x="' + (W - 6) + '" y="12" text-anchor="end">univertrix.com</text></svg>';
   }
   function pScen(){
     const b = D.band || {};
     let h = '<div class="pc-cards3">' + (D.scen || []).map(s => '<div class="pc-sc"><b>' + H(s.ko) + ' · ' + (s.prob == null ? '—' : Math.round(s.prob * 100) + '%') + '</b>' +
-      '<div class="pc-sc-v">주당 가정 가치 $' + H(s.vps) + '</div>2036 매출 ' + bnKo(s.rev) + ' · 영업이익 ' + bnKo(s.op) + ' · FCF ' + bnKo(s.fcf) + ' · 순부채 ' + bnKo(s.netDebt) + ' · 멀티플 ' + H(s.multiple == null ? '—' : s.multiple + '배') +
-      '<div class="pc-sub">' + H(s.rationale) + '</div></div>').join('') + '</div>';
-    h += '<div class="pc-sub">가정 가치 밴드 $' + H(b.lo) + '–$' + H(b.hi) + ' · 중앙 $' + H(b.mid) + ' · 확률가중 $' + H(b.pw) + ' · 할인율 ' + (b.rate == null ? '—' : (b.rate * 100).toFixed(1) + '%') + ' (' + H(b.rateBasis) + ')</div>';
-    h += '<div class="pc-h4">회차별 밴드·주가·확률</div>' + histSvg(D.history || []);
-    h += '<div class="pc-h4">확률 조정 규칙</div><div class="pc-wrap"><table class="pc-tbl"><thead><tr><th>규칙</th><th>조건</th><th>조정</th><th>상태</th></tr></thead><tbody>' +
-      (D.rules || []).map(r => '<tr><td>' + H(r.id) + '</td><td>' + H(r.cond) + '</td><td>' + H(r.delta) + '</td><td>' + H(r.status) + '</td></tr>').join('') + '</tbody></table></div>';
-    if ((D.proposals || []).length) h += '<div class="pc-h4">적용하지 않은 규칙 제안</div><ul class="pc-list">' + D.proposals.map(p => '<li style="padding:8px 12px;font-size:12.5px">' + H(p.cond) + '<div class="pc-sub">' + H(p.reason) + ' · ' + H(p.on) + '</div></li>').join('') + '</ul>';
+      '<div class="pc-sc-v">' + T('pc.sc.vps', {v: H(s.vps)}) + '</div>' +
+      T('pc.sc.line', {rev: UVX.bn(s.rev), op: UVX.bn(s.op), fcf: UVX.bn(s.fcf), nd: UVX.bn(s.netDebt), mult: s.multiple == null ? '—' : T('pc.sc.mult', {m: H(s.multiple)})}) +
+      '<div class="pc-sub">' + C(s.rationale) + '</div></div>').join('') + '</div>';
+    h += '<div class="pc-sub">' + T('pc.sc.band', {lo: H(b.lo), hi: H(b.hi), mid: H(b.mid), pw: H(b.pw), rate: b.rate == null ? '—' : UVX.dec((b.rate * 100).toFixed(1)) + '%'}) + ' (' + C(b.rateBasis) + ')</div>';
+    h += '<div class="pc-h4">' + T('pc.sc.hist_h') + '</div>' + histSvg(D.history || []);
+    h += '<div class="pc-h4">' + T('pc.sc.rules_h') + '</div><div class="pc-wrap"><table class="pc-tbl"><thead><tr><th>' + T('pc.sc.th_rule') + '</th><th>' + T('pc.sc.th_cond') + '</th><th>' + T('pc.sc.th_delta') + '</th><th>' + T('pc.sc.th_state') + '</th></tr></thead><tbody>' +
+      (D.rules || []).map(r => '<tr><td>' + H(r.id) + '</td><td>' + C(r.cond) + '</td><td>' + H(r.delta) + '</td><td>' + C(r.status) + '</td></tr>').join('') + '</tbody></table></div>';
+    if ((D.proposals || []).length) h += '<div class="pc-h4">' + T('pc.sc.props_h') + '</div><ul class="pc-list">' + D.proposals.map(p => '<li style="padding:8px 12px;font-size:12.5px">' + C(p.cond) + '<div class="pc-sub">' + C(p.reason) + ' · ' + H(p.on) + '</div></li>').join('') + '</ul>';
     return h;
   }
   function pReport(){
-    if (!R.length) return '<div class="pc-sub">보고서가 아직 없습니다.</div>';
+    if (!R.length) return '<div class="pc-sub">' + T('pc.rep.none') + '</div>';
     if (!repSel.run) repSel.run = R[0].id;
     const rep = R.find(r => r.id === repSel.run) || R[0];
     let h = '<div class="pc-runs">' + R.map(r => '<button type="button" class="pc-f' + (r.id === rep.id ? ' on' : '') + '" data-pc-run="' + H(r.id) + '">' + H(r.id) + '</button>').join('') + '</div>';
     const sec = rep.sections.find(s => s.id === repSel.sec);
-    h += '<div class="pc-rep"><nav class="pc-toc" aria-label="보고서 목차">' + rep.sections.map(s => '<button type="button" data-pc-sec="' + H(s.id) + '"' + (sec && sec.id === s.id ? ' class="on"' : '') + '>' + H(s.toc) + '</button>').join('') + '</nav>';
-    h += '<div class="pc-body ag-body" id="pcRepBody">' + (sec ? '<h3>' + H(sec.title) + '</h3>' + sec.html : '<p class="pc-sub">왼쪽 목차에서 절을 고르면 그 절만 펼칩니다. · ' + H(rep.title) + '</p>') + '</div></div>';
+    h += '<div class="pc-rep"><nav class="pc-toc" aria-label="' + H(T('pc.rep.toc')) + '">' + rep.sections.map(s => '<button type="button" data-pc-sec="' + H(s.id) + '"' + (sec && sec.id === s.id ? ' class="on"' : '') + '>' + C(s.toc) + '</button>').join('') + '</nav>';
+    h += '<div class="pc-body ag-body" id="pcRepBody">' + (sec ? TXB('<h3>' + C(sec.title) + '</h3>' + sec.html) : '<p class="pc-sub">' + T('pc.rep.pick') + ' · ' + C(rep.title) + '</p>') + '</div></div>';
     return h;
   }
   function pChangelog(openId){
-    return (D.changelog || []).map((c, i) => '<details class="ag-run" id="pc-cl-' + H(c.id) + '"' + ((openId ? openId === c.id : i === 0) ? ' open' : '') + '><summary>' + H(c.title) + '</summary><div class="ag-body">' + c.html + '</div></details>').join('') || '<div class="pc-sub">변화 이력 없음</div>';
+    return (D.changelog || []).map((c, i) => '<details class="ag-run" id="pc-cl-' + H(c.id) + '"' + ((openId ? openId === c.id : i === 0) ? ' open' : '') + '><summary>' + C(c.title) + '</summary><div class="ag-body">' + TXB(c.html) + '</div></details>').join('') || '<div class="pc-sub">' + T('pc.cl.none') + '</div>';
   }
   function pSources(){
-    return '<div class="pc-wrap"><table class="pc-tbl"><thead><tr><th>도메인</th><th>문서</th><th>날짜</th><th>주장 수</th></tr></thead><tbody>' +
-      (D.sources || []).map(s => '<tr><td>' + H(s.domain) + '</td><td><button type="button" class="pc-cell" data-pc-open="sources" data-pc-id="' + H(s.id) + '">' + H(s.name || s.url.slice(0, 60)) + '</button></td><td>' + H(s.date || '—') + '</td><td>' + s.n + '</td></tr>').join('') + '</tbody></table></div>';
+    return '<div class="pc-wrap"><table class="pc-tbl"><thead><tr><th>' + T('pc.src.domain') + '</th><th>' + T('pc.src.doc') + '</th><th>' + T('pc.src.date') + '</th><th>' + T('pc.src.n') + '</th></tr></thead><tbody>' +
+      (D.sources || []).map(s => '<tr><td>' + H(s.domain) + '</td><td><button type="button" class="pc-cell" data-pc-open="sources" data-pc-id="' + H(s.id) + '">' + C(s.name || s.url.slice(0, 60)) + '</button></td><td>' + H(s.date || '—') + '</td><td>' + s.n + '</td></tr>').join('') + '</tbody></table></div>';
   }
   const RENDER = { milestones: pMilestones, events: pEvents, fin: pFin, scen: pScen, report: pReport, changelog: pChangelog, sources: pSources };
 
@@ -2269,7 +2221,7 @@ const PC = (function(){
 
   /* ── 서랍 ── */
   function itemsOf(kind){
-    if (kind === 'milestones') return (D.milestones || []).filter(m => (!mf.axis || m.axis === mf.axis) && (!mf.status || (m.shown || m.status) === mf.status) && (!mf.year || String(m.year) === mf.year));
+    if (kind === 'milestones') return (D.milestones || []).filter(m => (!mf.axis || m.axis === mf.axis) && (!mf.status || m.cls === mf.status) && (!mf.year || String(m.year) === mf.year));
     if (kind === 'events') return (D.events || []).filter(e => !evKind || e.kindKo === evKind);
     if (kind === 'sources') return D.sources || [];
     if (kind === 'triggers') return D.triggers || [];
@@ -2277,39 +2229,39 @@ const PC = (function(){
     return [];
   }
   function dMilestone(m){
-    const parts = (m.parts || []).map(p => '<div class="pc-pp"><span>' + H(p.label) + ' <span class="pc-sub">(' + H(p.op) + ' ' + fmtN(p.tgt, p.unit) + ')</span></span><b>' +
-      (p.cur == null ? '—' : fmtN(p.cur, p.unit)) + ' · ' + pct(p.pct) + '</b>' + bar(p.pct) + (p.reason ? '<span class="pc-sub" style="grid-column:1/-1">' + H(p.reason) + '</span>' : '') + '</div>').join('');
-    return '<p><b style="color:var(--text)">' + H(m.text) + '</b></p><p><span class="pc-chip pc-st-' + m.cls + '" style="display:inline-block;width:auto">' + H(m.shown || m.status) + '</span> · ' + H(m.axisKo) + ' · ' + H(m.year) + '년 판정 · 종합 진척 ' + pct(m.pct) + '</p>' +
-      '<h4>현재 / 목표</h4><p>' + H(m.cur == null ? '—' : m.cur) + ' → ' + H(m.tgt == null ? '—' : m.tgt) + ' ' + H(m.unit) + (m.asof ? ' (' + H(m.asof) + ')' : '') + (m.reason ? '<br>' + H(m.reason) : '') + '</p>' +
-      '<h4>조건별 진척</h4>' + (parts || '<p>—</p>') +
-      '<h4>달성 시 의미</h4><p>' + H(m.hit || '—') + '</p><h4>미달 시 의미</h4><p>' + H(m.miss || '—') + '</p>' + (m.method ? '<h4>확인 방법</h4><p>' + H(m.method) + '</p>' : '') +
-      '<h4>출처</h4><p class="pc-src">' + link(m.source) + (m.meaningSrc ? '<br><span class="pc-sub">의미·확인 방법: ' + H(m.meaningSrc) + ' 보고서 PHASE 2 표</span>' : '') + '</p>' +
-      '<h4>판정 이력</h4><p>' + ((m.history || []).map(x => H(x.run) + ' ' + H(x.status)).join(' → ') || '—') + '</p>';
+    const parts = (m.parts || []).map(p => '<div class="pc-pp"><span>' + C(p.label) + ' <span class="pc-sub">(' + H(p.op) + ' ' + fmtN(p.tgt, p.unit) + ')</span></span><b>' +
+      (p.cur == null ? '—' : fmtN(p.cur, p.unit)) + ' · ' + pct(p.pct) + '</b>' + bar(p.pct) + (p.reason ? '<span class="pc-sub" style="grid-column:1/-1">' + C(p.reason) + '</span>' : '') + '</div>').join('');
+    return '<p><b style="color:var(--text)">' + C(m.text) + '</b></p><p><span class="pc-chip pc-st-' + m.cls + '" style="display:inline-block;width:auto">' + T('pc.st.' + m.cls) + '</span> · ' + H(m.axisKo) + ' · ' + T('pc.d.judge_year', {y: H(m.year)}) + ' · ' + T('pc.d.overall', {p: pct(m.pct)}) + '</p>' +
+      '<h4>' + T('pc.d.cur_tgt') + '</h4><p>' + (m.cur == null ? '—' : C(m.cur)) + ' → ' + (m.tgt == null ? '—' : C(m.tgt)) + ' ' + C(m.unit) + (m.asof ? ' (' + H(m.asof) + ')' : '') + (m.reason ? '<br>' + C(m.reason) : '') + '</p>' +
+      '<h4>' + T('pc.d.parts') + '</h4>' + (parts || '<p>—</p>') +
+      '<h4>' + T('pc.d.hit') + '</h4><p>' + (m.hit ? C(m.hit) : '—') + '</p><h4>' + T('pc.d.miss') + '</h4><p>' + (m.miss ? C(m.miss) : '—') + '</p>' + (m.method ? '<h4>' + T('pc.d.method') + '</h4><p>' + C(m.method) + '</p>' : '') +
+      '<h4>' + T('pc.d.source') + '</h4><p class="pc-src">' + link(m.source) + (m.meaningSrc ? '<br><span class="pc-sub">' + T('pc.d.meaning_src', {r: H(m.meaningSrc)}) + '</span>' : '') + '</p>' +
+      '<h4>' + T('pc.d.history') + '</h4><p>' + ((m.history || []).map(x => H(x.run) + ' ' + (x.cls ? T('pc.st.' + x.cls) : C(x.status))).join(' → ') || '—') + '</p>';
   }
   function dEvent(e){
     const ax = (e.axes || []).map(k => ((D.axes || []).find(a => a.key === k) || {}).ko).filter(Boolean);
-    return '<p><b style="color:var(--text)">' + H(e.title) + '</b></p><p>' + H(e.date) + ' · ' + H(e.kindKo) + ' · ' + H(e.source) + (e.form ? ' · ' + H(e.form) : '') + '</p>' +
-      (e.note ? '<h4>사유</h4><p>' + H(e.note) + '</p>' : '') +
-      '<h4>원문</h4><p class="pc-src">' + link(e.url) + '</p><h4>관련 축</h4><p>' + (H(ax.join(' · ')) || '—') + '</p>' +
-      '<h4>관련 트리거</h4><p>' + ((e.triggers || []).map(t => '<button type="button" class="pc-f" data-pc-open="triggers" data-pc-id="' + H(t) + '">' + H(t) + '</button>').join(' ') || '—') + '</p>';
+    return '<p><b style="color:var(--text)">' + C(e.title) + '</b></p><p>' + H(e.date) + ' · ' + H(e.kindKo) + ' · ' + C(e.source) + (e.form ? ' · ' + C(e.form) : '') + '</p>' +
+      (e.note ? '<h4>' + T('pc.d.note') + '</h4><p>' + C(e.note) + '</p>' : '') +
+      '<h4>' + T('pc.d.original') + '</h4><p class="pc-src">' + link(e.url) + '</p><h4>' + T('pc.d.axes') + '</h4><p>' + (H(ax.join(' · ')) || '—') + '</p>' +
+      '<h4>' + T('pc.d.triggers') + '</h4><p>' + ((e.triggers || []).map(t => '<button type="button" class="pc-f" data-pc-open="triggers" data-pc-id="' + H(t) + '">' + H(t) + '</button>').join(' ') || '—') + '</p>';
   }
   function dTrigger(t){
-    return '<p><b style="color:var(--text)">' + H(t.id) + ' ' + H(t.name) + '</b></p><p>' + H(t.when) + ' · ' + H(t.status) + '</p><h4>예상일 근거</h4><p>' + H(t.expected) + '</p>' +
-      (t.check ? '<h4>확인 방법</h4><p>' + H(t.check) + '</p>' : '') + (t.note ? '<h4>점검 기록</h4><p>' + H(t.note) + '</p>' : '') + (t.prev ? '<h4>지난 예상 vs 실제</h4><p>' + H(t.prev) + '</p>' : '');
+    return '<p><b style="color:var(--text)">' + H(t.id) + ' ' + C(t.name) + '</b></p><p>' + H(t.when) + ' · ' + C(t.statusL || t.status) + '</p><h4>' + T('pc.d.expected') + '</h4><p>' + C(t.expected) + '</p>' +
+      (t.check ? '<h4>' + T('pc.d.method') + '</h4><p>' + C(t.check) + '</p>' : '') + (t.note ? '<h4>' + T('pc.d.checklog') + '</h4><p>' + C(t.note) + '</p>' : '') + (t.prev ? '<h4>' + T('pc.d.prev') + '</h4><p>' + C(t.prev) + '</p>' : '');
   }
   function dFin(key){
     const [rid, ci] = key.split('|'), r = (D.fin.rows || []).find(x => x.id === rid);
     if (!r) return '—';
     const c = r.cells[Number(ci)], s = c.src || {};
     return '<p><b style="color:var(--text)">' + H(r.label) + ' · ' + H(D.fin.cols[Number(ci)]) + '</b></p><p style="font-size:20px;font-weight:800;color:var(--text)">' + H(c.t) + '</p>' +
-      '<p><span class="pc-src-badge">' + H(s.origin) + '</span></p>' +
-      (s.form ? '<h4>공시</h4><p>' + H(s.form) + (s.filed ? ' · 제출 ' + H(s.filed) : '') + '</p>' : (s.filed ? '<h4>발표일</h4><p>' + H(s.filed) + '</p>' : '')) +
-      (s.concept ? '<h4>공시 개념(XBRL)</h4><p>' + H(s.concept) + '</p>' : '') + (s.how ? '<h4>산식·비고</h4><p>' + H(s.how) + '</p>' : '') +
-      '<h4>출처</h4><p class="pc-src">' + (s.url ? link(s.url) : (s.origin === '공시 자동' ? link('https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412', 'SEC EDGAR — SpaceX 공시 목록') : '—')) + '</p>';
+      '<p><span class="pc-src-badge">' + H(s.originL || s.origin) + '</span></p>' +
+      (s.form ? '<h4>' + T('pc.d.filing') + '</h4><p>' + H(s.form) + (s.filed ? ' · ' + T('pc.d.filed', {d: H(s.filed)}) : '') + '</p>' : (s.filed ? '<h4>' + T('pc.d.published') + '</h4><p>' + H(s.filed) + '</p>' : '')) +
+      (s.concept ? '<h4>' + T('pc.d.concept') + '</h4><p>' + H(s.concept) + '</p>' : '') + (s.how ? '<h4>' + T('pc.d.how') + '</h4><p>' + C(s.how) + '</p>' : '') +
+      '<h4>' + T('pc.d.source') + '</h4><p class="pc-src">' + (s.url ? link(s.url) : (s.originId === 'auto' ? link('https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412', T('pc.d.edgar')) : '—')) + '</p>';
   }
   function dSource(s){
-    return '<p><b style="color:var(--text)">' + H(s.name || s.domain) + '</b></p><p class="pc-src">' + link(s.url) + '</p><p>' + H(s.domain) + (s.date ? ' · ' + H(s.date) : '') + ' · 주장 ' + s.n + '건</p>' +
-      '<h4>이 출처를 쓴 주장</h4><ul style="padding-left:16px;margin:0">' + (s.claims || []).map(c => '<li><span class="pc-sub">' + H(c.where) + '</span><br>' + H(c.text) + '</li>').join('') + '</ul>';
+    return '<p><b style="color:var(--text)">' + C(s.name || s.domain) + '</b></p><p class="pc-src">' + link(s.url) + '</p><p>' + H(s.domain) + (s.date ? ' · ' + H(s.date) : '') + ' · ' + T('pc.d.claims_n', {n: s.n}) + '</p>' +
+      '<h4>' + T('pc.d.claims') + '</h4><ul style="padding-left:16px;margin:0">' + (s.claims || []).map(c => '<li><span class="pc-sub">' + C(c.where) + '</span><br>' + C(c.text) + '</li>').join('') + '</ul>';
   }
   function openDrawer(kind, id, fromHash){
     const list = itemsOf(kind);
@@ -2318,7 +2270,7 @@ const PC = (function(){
     if (!item && kind !== 'fin') { const all = kind === 'milestones' ? D.milestones : kind === 'events' ? D.events : kind === 'sources' ? D.sources : D.triggers; item = (all || []).find(x => x.id === id); }
     if (!item && kind !== 'fin') return false;
     dKind = kind; dList = list; dIdx = idx;
-    const t = kind === 'milestones' ? item.id + ' · 이정표' : kind === 'events' ? '사건 · ' + item.date : kind === 'sources' ? '출처' : kind === 'triggers' ? item.id + ' · 트리거' : '재무·KPI';
+    const t = kind === 'milestones' ? T('pc.dt.milestone', {id: item.id}) : kind === 'events' ? T('pc.dt.event', {d: item.date}) : kind === 'sources' ? T('pc.dt.source') : kind === 'triggers' ? T('pc.dt.trigger', {id: item.id}) : T('pc.dt.fin');
     $('pcDrawerT').textContent = t;
     $('pcDrawerB').innerHTML = kind === 'milestones' ? dMilestone(item) : kind === 'events' ? dEvent(item) : kind === 'sources' ? dSource(item) : kind === 'triggers' ? dTrigger(item) : dFin(id);
     lastFocus = lastFocus || document.activeElement;
@@ -2342,8 +2294,9 @@ const PC = (function(){
     const hits = (D.search || []).filter(it => { const hay = (it.title + ' ' + it.text + ' ' + (it.full || '')).toLowerCase(); return toks.every(t => hay.indexOf(t) >= 0); }).slice(0, 20);
     const re = new RegExp('(' + toks.map(reEsc).join('|') + ')', 'gi');
     const hl = s => H(s).replace(re, '<mark>$1</mark>');
-    box.innerHTML = hits.map((it, i) => '<button type="button" class="pc-res' + (i === 0 ? ' on' : '') + '" role="option" data-pc-anchor="' + H(it.anchor) + '"><span class="pc-kind">' + H(it.kind) + '</span>' + hl(it.title) + '<small>' + hl(it.text.slice(0, 140)) + '</small></button>').join('') ||
-      '<div class="pc-res">결과 없음</div>';
+    const ko = s => (UVX.lang !== 'ko' && HAN.test(s)) ? ' lang="ko" data-uvx-pending="1"' : '';
+    box.innerHTML = hits.map((it, i) => '<button type="button" class="pc-res' + (i === 0 ? ' on' : '') + '" role="option" data-pc-anchor="' + H(it.anchor) + '"' + ko(it.title + it.text) + '><span class="pc-kind">' + H(it.kind) + '</span>' + hl(it.title) + '<small>' + hl(it.text.slice(0, 140)) + '</small></button>').join('') ||
+      '<div class="pc-res">' + T('pc.search.none') + '</div>';
     return hits;
   }
   function toggleSearch(on){
@@ -2431,7 +2384,7 @@ function renderAgent(){
   const host = document.getElementById('obsBody');
   const html = DATA.agent || '';
   host.innerHTML = html ||
-    '<div class="obs-note">무인 탐사선 준비 중 — 첫 보고서가 들어오면 여기 실립니다.</div>';
+    '<div class="obs-note">' + T('obs.agent_empty') + '</div>';
   // 옛 공유 링크(#agent-2026-09)는 관제실 보고서 패널로 옮겨 연다
   const h = location.hash.replace('#', '');
   if (h.indexOf('agent-') === 0) history.replaceState(null, '', '#probe/report/' + h.slice(6) + ':s0');
@@ -2440,20 +2393,22 @@ function renderAgent(){
   if (tb && html && location.hash.indexOf('#probe/') !== 0) tb.scrollIntoView({block: 'start'});
 }
 
+/* i18n-keys: col.* */
 function renderColumns(){
   const cols = (DATA.columns || []);
   if (!cols.length) { document.getElementById('obsBody').innerHTML =
-    '<div class="obs-note">첫 관측일지를 준비 중입니다 — 곧 기록이 시작됩니다.</div>'; return; }
+    '<div class="obs-note">' + T('col.empty') + '</div>'; return; }
   // 아코디언 — 연표가 먼저, 전문은 클릭. 기본은 최신 1편만 펼침.
   // 비주얼(col-viz)은 detail 안으로 들어간다: 접힌 목록은 날짜·유형·제목만 남아야
   // '언제 무슨 관측이 있었나'라는 시간의 축이 보인다.
   // 목차 — 필독 해부실의 '해부 목록'을 그대로 쓴다(공용 .ud-index-*, 신규 CSS 없음).
   // 링크라서 클릭하면 해시가 바뀌고, 기존 해시 처리기(openFromHash)가 펼치고 스크롤한다
   // — 이미 뿌려진 #log-{colSeed} 공유 링크와 같은 경로다.
-  const toc = '<div class="ud-index"><div class="ud-index-title">관측 목록 ' + cols.length + '편</div>' +
+  // 앵커(colSlug)는 **원문 제목·날짜**로 만든다(c.slug) — 번역 제목으로 만들면 언어마다 공유 링크가 갈라진다.
+  const toc = '<div class="ud-index"><div class="ud-index-title">' + T('col.toc', {n: cols.length}) + '</div>' +
     cols.map(c => '<a class="ud-index-row" href="#' + colSlug(c) + '">' +
       '<span class="ud-index-date">' + esc(c.date) + '</span>' +
-      esc(c.title) + '</a>').join('') + '</div>';
+      TX(c.title) + '</a>').join('') + '</div>';
   document.getElementById('obsBody').innerHTML = toc + cols.map((c, i) => {
     const open = (i === 0);
     return '<div class="col-card ud-acc'+(open?' open':'')+'" id="col-'+i+'" data-log="'+colSlug(c)+'">'+
@@ -2462,31 +2417,30 @@ function renderColumns(){
           '<span class="col-date">'+esc(c.date)+'</span>'+
           '<span class="col-kind">'+esc(colKind(c))+'</span>'+
         '</span>'+
-        '<span class="ud-acc-title">'+esc(c.title)+'</span>'+
+        '<span class="ud-acc-title">'+TX(c.title)+'</span>'+
         '<span class="ud-acc-caret" aria-hidden="true">▸</span>'+
       '</button>'+
       '<div class="ud-acc-detail" id="colbody-'+i+'">'+
-        '<div class="col-summary">'+esc(c.summary)+'</div>'+
+        '<div class="col-summary">'+TX(c.summary)+'</div>'+
         '<div class="col-viz">'+makeColViz(c)+'</div>'+
         '<div class="col-share">'+
-          '<button onclick="copyColLink(event,'+i+')">🔗 링크 복사</button>'+
-          '<button onclick="copyColText(event,'+i+')">📄 본문 복사</button>'+
+          '<button onclick="copyColLink(event,'+i+')">🔗 '+T('col.copy_link')+'</button>'+
+          '<button onclick="copyColText(event,'+i+')">📄 '+T('col.copy_text')+'</button>'+
           dissectBtn(c)+
         '</div>'+
-        '<div class="col-body">'+c.body+'</div>'+
+        '<div class="col-body">'+TXB(c.body)+'</div>'+
       '</div>'+
     '</div>';
   }).join('');
   openFromHash();
 }
 
-// 칼럼 유형 표식 — 고정 위치에서 종류가 한눈에 잡히게.
+// 칼럼 유형 표식 — 고정 위치에서 종류가 한눈에 잡히게. 유형(signal·weekly·deep)은 빌드가
+// 원문 제목에서 판정해 c.kind 로 싣는다(번역 제목으로 판정하지 않는다).
 // 이모지는 넣지 않는다: 신호 칼럼 제목이 이미 📡 로 시작해 두 번 찍힌다.
 function colKind(c){
-  const t = (c && c.title) || '';
-  if (t.indexOf('📡') === 0) return '신호';
-  if (t.indexOf('주간 관측') >= 0) return '주간';
-  return '심층';
+  const k = (c && c.kind) || ((((c && c.title) || '').indexOf('📡') === 0) ? 'signal' : 'deep');
+  return T('col.kind.' + k);
 }
 
 // 🔬 해부실 연결 — 이 칼럼의 원문이 해부돼 있을 때만 버튼을 만든다.
@@ -2495,10 +2449,10 @@ function dissectBtn(c){
   const id = c && c.url && (DATA.dissected || {})[c.url];
   if (!id) return '';
   return '<a class="dx-jump" href="research.html#dx-' + esc(id) + '" onclick="event.stopPropagation()"'+
-    ' title="이 신호 원문의 문단별 한국어 브리핑">🔬 해부실에서 보기 →</a>';
+    ' title="' + esc(T('col.dissect_tip')) + '">🔬 ' + T('col.dissect') + ' →</a>';
 }
 
-function colSlug(c){ return 'log-' + colSeed((c.title || '') + (c.date || '')); }
+function colSlug(c){ return c.slug || ('log-' + colSeed((c.title || '') + (c.date || ''))); }
 
 function colUrl(c){
   return location.origin + location.pathname.replace(/[^/]*$/, '') + 'observatory.html#' + colSlug(c);
@@ -2506,8 +2460,8 @@ function colUrl(c){
 
 async function copyToClip(text, btn){
   try { await navigator.clipboard.writeText(text); }
-  catch(e) { window.prompt('아래 내용을 복사하세요 (Ctrl+C):', text.slice(0, 2000)); return; }
-  if (btn) { const orig = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = orig; }, 1500); }
+  catch(e) { window.prompt(T('col.copy_prompt'), text.slice(0, 2000)); return; }
+  if (btn) { const orig = btn.textContent; btn.textContent = '✓ ' + T('col.copied'); setTimeout(() => { btn.textContent = orig; }, 1500); }
 }
 
 function copyColLink(ev, i){
@@ -2521,7 +2475,7 @@ function copyColText(ev, i){
   const tmp = document.createElement('div'); tmp.innerHTML = c.body;
   tmp.querySelectorAll('svg, .col-chart').forEach(n => n.remove());
   tmp.querySelectorAll('h3').forEach(n => { n.textContent = '\n■ ' + n.textContent + '\n'; });
-  const text = 'UNIVERTRIX 관측일지 — ' + c.title + ' (' + c.date + ')\n' + colUrl(c) + '\n' +
+  const text = 'UNIVERTRIX ' + T('obs.tab.columns') + ' — ' + c.title + ' (' + c.date + ')\n' + colUrl(c) + '\n' +
     (tmp.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
   copyToClip(text, ev.target);
 }

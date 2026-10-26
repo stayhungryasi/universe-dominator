@@ -11,7 +11,10 @@ import os
 import re
 import shutil
 import sys
+import time
 from pathlib import Path
+
+import i18n
 
 HERE = Path(__file__).parent.parent
 DATA_DIR = HERE / "data"
@@ -28,6 +31,21 @@ SCRIPTS_DIR = HERE / "scripts"
 # 스테이징에서 하고, 검사까지 통과한 뒤에 os.replace 로 한 파일씩 갈아끼운다.
 # 어디서 죽든 실제 경로에는 직전 완성본이 그대로 남는다.
 OUT_DIR = HERE
+# 지금 빌드 중인 언어 — _build_all 이 i18n.LANGS 를 돌며 바꾼다. 기본(ko)이면 지금 화면 그대로
+LANG = i18n.DEFAULT
+
+
+def _w(path, text):
+    """산출물 쓰기 — 윈도우 로컬에서 방금 쓴 파일을 다른 프로세스(색인·백신)가 잠깐 물어
+    errno 22 로 죽는 일이 잦다(CI 리눅스는 무관). 짧게 세 번 다시 시도하고, 그래도면 그대로 던진다
+    (원자적 빌드 검사는 끝내 실패하는 쓰기를 그대로 재현한다)."""
+    for i in range(3):
+        try:
+            return path.write_text(text, encoding="utf-8")
+        except OSError:
+            if i == 2:
+                raise
+            time.sleep(0.4 * (i + 1))
 
 # ── 전 페이지 목록 — 단일 진실 공급원 (Single Source of Truth) ──────────────
 # 2026-08 관측노트 누락 사고: 이 목록이 fix_nav / inject_footer_links /
@@ -122,7 +140,7 @@ def _prev_snapshot_map(data):
 
 def build_main():
     """index.html — 우주지배자 메인 (TOP 20)"""
-    data = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
+    data = localize_latest(json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")))
     template = (SCRIPTS_DIR / "template.html").read_text(encoding="utf-8")
     
     data_json = json.dumps(data, ensure_ascii=False, indent=2)
@@ -141,9 +159,9 @@ def build_main():
     html = html.replace("{{PREV_JSON}}", json.dumps(_prev_snapshot_map(data), ensure_ascii=False))
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{TOP1_NAME}}", top1_name)
-    html = html.replace("{{TOP1_MC}}", f"${top1_mc/1000:.2f}T" if top1_mc >= 1000 else f"${top1_mc:.0f}B")
+    html = html.replace("{{TOP1_MC}}", i18n.mc(LANG, top1_mc))
     html = html.replace("{{TRILLION_COUNT}}", str(trillion_count))
-    html = html.replace("{{TOP20_SUM}}", f"${top20_sum/1000:.1f}T" if top20_sum >= 1000 else f"${top20_sum:.0f}B")
+    html = html.replace("{{TOP20_SUM}}", i18n.mc1(LANG, top20_sum))
 
     # 오늘의 신호 3건 (ud-aurora-v1) — 필독 우선, 이후 추천수순 · 파일 없으면 우아한 저하
     try:
@@ -162,15 +180,45 @@ def build_main():
             return 0.0
         sig_top = sorted(sig_all, key=lambda x: (_sig_ts(x), bool(x.get("pin")), x.get("points") or 0),
                          reverse=True)[:3]
-        sig_top = [{k: x.get(k) for k in ("title", "ko", "url", "pub", "points", "pin")} for x in sig_top]
+        sig_top = [localize_signal({k: x.get(k) for k in ("title", "ko", "url", "pub", "points", "pin")},
+                                   _sig_ts(x)) for x in sig_top]
     except Exception as e:
         print(f"[warn] index 신호 주입 실패(무시): {e}")
         sig_top = []
     html = html.replace("{{SIGNALS_JSON}}", json.dumps(sig_top, ensure_ascii=False))
 
     out = OUT_DIR / "index.html"
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
+
+
+# ── 데이터 현지화 — 빌드 시점에 그 언어로 심는다(화면은 받은 것을 그릴 뿐) ──────────
+def localize_latest(data):
+    """latest.json 사본 → 지역 라벨(카탈로그) · 한국어 종목명(이름 사전). 숫자는 손대지 않는다(G2)."""
+    data = json.loads(json.dumps(data))
+    for key, reg in (data.get("regions") or {}).items():
+        if isinstance(reg, dict):
+            reg["label"] = i18n.t(LANG, "region." + key) if ("region." + key) in i18n.catalog(i18n.DEFAULT) \
+                else reg.get("label")
+            for s in reg.get("stocks") or []:
+                if isinstance(s, dict):
+                    s["name"] = i18n.stock_name(LANG, s.get("ticker"), s.get("name"))
+    for x in data.get("latent") or []:
+        if isinstance(x, dict):
+            x["name"] = i18n.stock_name(LANG, x.get("ticker"), x.get("name"))
+    return data
+
+
+def localize_signal(x, ts):
+    """오늘의 신호 카드 — ko 는 한국어 제목, en 은 **영어 원제**(한국어를 거치지 않는다),
+    es·ja 는 번역 캐시가 있으면 그 언어, 없으면 영어 원제. 날짜는 ISO 로 함께 싣는다."""
+    from datetime import datetime, timezone
+    x = dict(x)
+    if ts:
+        x["pub_iso"] = datetime.fromtimestamp(ts, timezone.utc).date().isoformat()
+    if LANG != i18n.DEFAULT:
+        x["ko"] = x.get("title") or x.get("ko")
+    return x
 
 
 def build_latent():
@@ -182,7 +230,7 @@ def build_latent():
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
     out = OUT_DIR / "latent.html"
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
@@ -197,7 +245,7 @@ def build_megatrend():
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
     out = OUT_DIR / "megatrend.html"
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
@@ -221,7 +269,7 @@ def build_about():
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")  # About은 어느 탭도 비활성
     out = OUT_DIR / "about.html"
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
@@ -275,7 +323,7 @@ def build_research():
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "RESEARCH" else "")
     out = OUT_DIR / "research.html"
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
@@ -295,7 +343,7 @@ def build_community():
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "active" if key == "COMMUNITY" else "")
     out = OUT_DIR / "community.html"
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
@@ -517,7 +565,8 @@ def render_agent_cockpit(ar, today=None, watch=None, status=None, vres=None):
     st = ar.read_state()
     if not st and not ar.report_files():
         return "", {}, []
-    html, data, reports = probe_cockpit.render(ar, today=today, watch=watch, status=status, vres=vres)
+    html, data, reports = probe_cockpit.render(ar, today=today, watch=watch, status=status, vres=vres,
+                                               lang=LANG)
     size = len(json.dumps(data, ensure_ascii=False).encode("utf-8"))
     print(f"[OK] 관제실: PROBE_DATA {size // 1024}KB · 보고서 {len(reports)}건 · 검색 {len(data.get('search', []))}건")
     return html, data, reports
@@ -676,6 +725,9 @@ def legend_rows(items):
             "as_of": (it.get("buffett_asof") or {}).get("latest") or b.get("as_of"),
             "period": b.get("period"),
             "method": b.get("method"),
+            # 측정 방식의 화면 이름 id — 원문 method 는 태그명이 들어 있어 그대로 쓰지 않는다(규칙 8)
+            "method_id": ("xbrl" if str(b.get("method") or "").startswith("SEC XBRL")
+                          else "gaap" if str(b.get("method") or "").startswith("GAAP 미조정") else ""),
         }
     return legend
 
@@ -712,10 +764,12 @@ def build_observatory():
     cols = json.loads(cols_path.read_text(encoding="utf-8")).get("columns", []) if cols_path.exists() else []
     meta = latest.get("meta", {})
     # ── 우주 지도 타일: 전 지역 고유 종목 + 전일 대비 시총 증감 ──
-    FLAG_KO = {"🇺🇸": "미국", "🇰🇷": "한국", "🇯🇵": "일본", "🇹🇼": "대만", "🇨🇳": "중국",
-               "🇭🇰": "홍콩", "🇬🇧": "영국", "🇩🇪": "독일", "🇫🇷": "프랑스", "🇨🇭": "스위스",
-               "🇳🇱": "네덜란드", "🇸🇦": "사우디", "🇩🇰": "덴마크", "🇸🇪": "스웨덴",
-               "🇮🇪": "아일랜드", "🇪🇸": "스페인", "🇮🇹": "이탈리아", "🇹🇭": "태국"}
+    # 국가 이름은 카탈로그(country.<국기 코드>) — 국기 이모지(지역 표시 문자 2개)에서 코드를 만든다
+    def country_name(flag):
+        cps = [ord(c) - 0x1F1E6 for c in (flag or "")]
+        code = "".join(chr(97 + c) for c in cps) if len(cps) == 2 and all(0 <= c < 26 for c in cps) else ""
+        key = "country." + code
+        return i18n.t(LANG, key) if code and key in i18n.catalog(i18n.DEFAULT) else i18n.t(LANG, "country.other")
     prev_mc = {}
     snap_dir = DATA_DIR / "snapshots"
     today = meta.get("fetched_date", "")
@@ -748,8 +802,8 @@ def build_observatory():
             seen.add(tk)
             pm = prev_mc.get(tk)
             chg = round((s["mc"] - pm) / pm * 100, 2) if pm else None
-            tiles.append({"t": tk, "n": s["name"], "mc": s["mc"], "chg": chg,
-                          "g": FLAG_KO.get(s.get("flag", ""), "기타"),
+            tiles.append({"t": tk, "n": i18n.stock_name(LANG, tk, s["name"]), "mc": s["mc"], "chg": chg,
+                          "g": country_name(s.get("flag", "")),
                           "f": s.get("flag", ""),
                           "e": 1 if tk in earth_set else 0,
                           "l": 1 if tk in latent_set else 0})
@@ -761,8 +815,8 @@ def build_observatory():
         seen.add(tk)
         pm = prev_mc.get(tk)
         chg = round((x["mc"] - pm) / pm * 100, 2) if pm else None
-        tiles.append({"t": tk, "n": x["name"], "mc": x["mc"], "chg": chg,
-                      "g": FLAG_KO.get(x.get("country", ""), "기타"),
+        tiles.append({"t": tk, "n": i18n.stock_name(LANG, tk, x["name"]), "mc": x["mc"], "chg": chg,
+                      "g": country_name(x.get("country", "")),
                       "f": x.get("country", ""), "e": 0, "l": 1})
     # 🔬 해부실 연결 지도: {원문 URL: 해부 id} — 칼럼에 '해부실에서 보기' 버튼을
     #    띄울지 판정하는 근거. 해부 글이 없는 칼럼은 버튼을 아예 만들지 않는다.
@@ -818,12 +872,12 @@ def build_observatory():
         traceback.print_exc()
         print(f"[warn] 무인 탐사선 렌더 실패(탭은 빈 상태): {e}")
     obs_data = {
-        "earth": latest.get("regions", {}).get("earth", {}).get("stocks", []),
+        "earth": localize_latest(latest).get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
-        "columns": cols,
+        "columns": columns_view(cols),
         "tiles": tiles,
         "dissected": dissected,
-        "buffett": buffett,
+        "buffett": buffett_view(buffett),
         "legend": legend,
         "legend_meta": legend_meta,
         "agent": agent_html,
@@ -838,14 +892,73 @@ def build_observatory():
     html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")
-    (OUT_DIR / "observatory.html").write_text(html, encoding="utf-8")
+    _w(OUT_DIR / "observatory.html", html)
     print(f"[OK] observatory.html ({len(html):,} chars)")
-    # 구주소 리다이렉트 (북마크 보호)
-    (OUT_DIR / "my-universe.html").write_text(
-        '<!doctype html><meta charset="utf-8">'
-        '<meta http-equiv="refresh" content="0; url=observatory.html">'
-        '<a href="observatory.html">데이터 천문대로 이동</a>', encoding="utf-8")
-    print("[OK] my-universe.html → observatory.html 리다이렉트")
+    # 구주소 리다이렉트 (북마크 보호) — 옛 주소는 한국어 루트에만 있었다
+    if LANG == i18n.DEFAULT:
+        _w(OUT_DIR / "my-universe.html",
+           '<!doctype html><meta charset="utf-8">'
+           '<meta http-equiv="refresh" content="0; url=observatory.html">'
+           '<a href="observatory.html">데이터 천문대로 이동</a>')
+        print("[OK] my-universe.html → observatory.html 리다이렉트")
+
+
+# 칼럼 유형 — **원문 제목**에서 판정한다(번역 제목으로 판정하면 언어마다 갈라진다)
+def column_kind(title):
+    t = title or ""
+    if t.startswith("📡"):
+        return "signal"
+    if "주간 관측" in t:
+        return "weekly"
+    return "deep"
+
+
+def columns_view(cols):
+    """관측일지 — 공유 앵커(slug)와 유형(kind)을 원문 기준으로 붙인다. 본문은 원문(번역은 단계 3 캐시)."""
+    out = []
+    for c in cols or []:
+        c = dict(c)
+        c["slug"] = _col_slug(c)
+        c["kind"] = column_kind(c.get("title"))
+        viz = c.get("viz")
+        if LANG != i18n.DEFAULT and isinstance(viz, dict) and isinstance(viz.get("planets"), list):
+            viz = dict(viz)
+            viz["planets"] = [dict(p, n=i18n.stock_name(LANG, p.get("t"), p.get("n")))
+                              if isinstance(p, dict) else p for p in viz["planets"]]
+            c["viz"] = viz
+        out.append(c)
+    return out
+
+
+# 판단층 분류(사람이 정한 한국어 이름) → 화면 이름 id. 화면 이름은 카탈로그(px.type.*)가 만든다.
+# 모르는 분류는 id 없이 원문 그대로 — 화면이 원문 표식을 단다(지어낸 번역으로 메우지 않는다)
+TYPE_ID = (("추정불가", "too_hard"), ("플라이트세이프티형", "flight"), ("통행료형", "toll"),
+           ("씨즈형", "sees"), ("시클리컬", "cyclical"), ("플로트형", "float"))
+BASIS_ID = {"forward": "forward", "trailing": "trailing", "미취재": "uncovered",
+            "too_hard": "too_hard", "unlisted": "unlisted", "float": "float"}
+
+
+def buffett_view(buffett):
+    """시차 관측·레전드 — 분류·바구니에 기계 id 를 붙이고 종목명을 그 언어로. 측정값은 그대로."""
+    if not isinstance(buffett, dict):
+        return buffett
+    b = dict(buffett)
+    items = []
+    for x in b.get("items") or []:
+        if not isinstance(x, dict):
+            items.append(x)
+            continue
+        x = dict(x)
+        ty = str(x.get("type") or "").strip()
+        # 분류 이름과 **정확히 같을 때만** id — '씨즈형·고자본 혼합' 같은 사람의 수식어를 잘라내지 않는다
+        x["type_id"] = next((i for k, i in TYPE_ID if k == ty), "")
+        # 사업 확실성 ✕ 판정(F6)은 수식어가 붙어도 '추정불가'를 포함하면 참 — 표시 이름과 분리한다
+        x["uncertain"] = "추정불가" in ty
+        x["basis_id"] = BASIS_ID.get(x.get("basis"), "")
+        x["name"] = i18n.stock_name(LANG, x.get("ticker"), x.get("name"))
+        items.append(x)
+    b["items"] = items
+    return b
 
 
 def build_pioneers():
@@ -867,49 +980,40 @@ def build_pioneers():
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{USD_KRW}}",
                         f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
-    (OUT_DIR / "pioneers.html").write_text(html, encoding="utf-8")
+    _w((OUT_DIR / "pioneers.html"), html)
     print(f"[OK] pioneers.html ({len(html):,} chars)")
 
 
+def nav_html(page):
+    """메뉴 — 순서·활성 탭을 상태(페이지)에서 만든다. 탭 이름은 카탈로그(nav.*)의 {{t:}} 자리표시자."""
+    act = NAV_ACTIVE.get(page, page)
+    tabs = "".join(f'<a href="{href}" class="nav-tab{" active" if href == act else ""}">{{{{t:{key}}}}}</a>'
+                   for href, key in NAV)
+    return f'<nav class="site-nav">\n  <div class="site-nav-inner container">{tabs}</div>\n</nav>'
+
+
+_NAV_RE = re.compile(r'<nav class="site-nav">.*?</nav>', re.S)
+
+
 def fix_nav():
-    """전 페이지 nav 정리 (멱등):
-    ① 나의우주 → 데이터 천문대  ② 커뮤니티 → 관제센터  ③ 순서: 천문대가 관제센터 앞"""
-    import re as _re
+    """전 페이지 nav 를 생성기 출력으로 갈아끼운다 (멱등).
+    예전엔 템플릿 메뉴를 정규식으로 개명·재배열했다(나의우주→데이터 천문대 등). 언어가 넷이 되면
+    한국어 탭 이름을 찾는 정규식은 못 쓴다 — 메뉴 전체를 상태에서 다시 만든다(규칙 8)."""
     pages = ALL_PAGES
     n = 0
-    pat = _re.compile(r'(<a href="community\.html"[^>]*>[^<]*</a>)(\s*)(<a href="observatory\.html"[^>]*>[^<]*</a>)')
     for name in pages:
         f = OUT_DIR / name
         if not f.exists():
             continue
         html = f.read_text(encoding="utf-8")
-        new = html.replace('href="my-universe.html"', 'href="observatory.html"')
-        new = new.replace(">나의우주<", ">데이터 천문대<")
-        new = new.replace(">커뮤니티<", ">관제센터<")
-        new = pat.sub(lambda m: m.group(3) + m.group(2) + m.group(1), new)
-        # 관측노트 메뉴 (공개) — 관제센터 뒤에 멱등 삽입
-        if 'href="journal.html"' not in new:
-            new = _re.sub(r'(<a href="community\.html"[^>]*>관제센터</a>)',
-                          lambda m: m.group(1) + '<a href="journal.html" class="nav-tab">관측노트</a>',
-                          new, count=1)
-        if name == "journal.html":
-            new = new.replace('<a href="journal.html" class="nav-tab">관측노트</a>',
-                              '<a href="journal.html" class="nav-tab active">관측노트</a>')
-        # 개척자 메뉴 (세상을 바꾸는 인물 추적) — 관측노트 뒤에 멱등 삽입
-        if 'href="pioneers.html"' not in new:
-            new = _re.sub(r'(<a href="journal\.html"[^>]*>관측노트</a>)',
-                          lambda m: m.group(1) + '<a href="pioneers.html" class="nav-tab">개척자</a>',
-                          new, count=1)
-        if name == "pioneers.html":
-            new = new.replace('<a href="pioneers.html" class="nav-tab">개척자</a>',
-                              '<a href="pioneers.html" class="nav-tab active">개척자</a>')
+        new = _NAV_RE.sub(lambda m: nav_html(name), html, count=1)
         # 광폭 레이아웃 (720px → 1280px) — 대시보드 체급에 맞게, 멱등 주입
         if 'id="wide-fix"' not in new:
             new = new.replace("</head>",
                 '<style id="wide-fix">.container{max-width:1280px}</style>\n</head>', 1)
         if new != html:
-            f.write_text(new, encoding="utf-8"); n += 1
-    print(f"[OK] nav 정리(개명·순서): {n}개 페이지")
+            _w(f, new); n += 1
+    print(f"[OK] nav 생성: {n}개 페이지")
 
 
 def build_policies():
@@ -925,19 +1029,19 @@ def build_policies():
     html = html.replace("{{USD_KRW}}", f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—")
     for key in ["HOME", "LATENT", "MEGA", "RESEARCH", "COMMUNITY", "MY"]:
         html = html.replace("{{ACTIVE_" + key + "}}", "")
-    (OUT_DIR / "policies.html").write_text(html, encoding="utf-8")
+    _w((OUT_DIR / "policies.html"), html)
     print(f"[OK] policies.html ({len(html):,} chars)")
 
 
 def inject_footer_links():
     """전 페이지 푸터에 정책 링크 줄 주입 (멱등)"""
     snippet = ('<div class="uv-policy-links" style="margin-top:10px;font-size:12px;">'
-               '<a href="about.html" style="color:inherit;margin:0 7px">사이트 소개</a>·'
-               '<a href="policies.html#terms" style="color:inherit;margin:0 7px">이용약관</a>·'
-               '<a href="policies.html#privacy" style="color:inherit;margin:0 7px">개인정보처리방침</a>·'
-               '<a href="policies.html#community" style="color:inherit;margin:0 7px">커뮤니티 운영정책</a>·'
-               '<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">투자 고지·면책</a>·'
-               '<a href="policies.html#contact" style="color:inherit;margin:0 7px">문의·제안</a></div>')
+               '<a href="about.html" style="color:inherit;margin:0 7px">{{t:foot.about}}</a>·'
+               '<a href="policies.html#terms" style="color:inherit;margin:0 7px">{{t:foot.terms}}</a>·'
+               '<a href="policies.html#privacy" style="color:inherit;margin:0 7px">{{t:foot.privacy}}</a>·'
+               '<a href="policies.html#community" style="color:inherit;margin:0 7px">{{t:foot.community}}</a>·'
+               '<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">{{t:foot.disclaimer}}</a>·'
+               '<a href="policies.html#contact" style="color:inherit;margin:0 7px">{{t:foot.contact}}</a></div>')
     pages = ALL_PAGES
     n = 0
     for name in pages:
@@ -948,7 +1052,7 @@ def inject_footer_links():
         if "uv-policy-links" in html or "</footer>" not in html:
             continue
         html = html.replace("</footer>", snippet + "\n</footer>", 1)
-        f.write_text(html, encoding="utf-8")
+        _w(f, html)
         n += 1
     print(f"[OK] 푸터 정책 링크 주입: {n}개 페이지")
 
@@ -1075,7 +1179,7 @@ def build_journal():
         html = html.replace("{{ACTIVE_" + key + "}}", "")
     ce_data = companion_data()
     html = html.replace("{{COMPANION_DATA}}", json.dumps(ce_data, ensure_ascii=False))
-    (OUT_DIR / "journal.html").write_text(html, encoding="utf-8")
+    _w((OUT_DIR / "journal.html"), html)
     waiting = [c["ko"] for c in ce_data["companies"] if c["thesis"]["placeholder"]]
     print(f"[OK] journal.html ({len(html):,} chars) — 관측노트 · 동행 {len(ce_data['companies'])}사"
           f" · 에세이 {len(ce_data['essays'])}편"
@@ -1102,7 +1206,7 @@ def build_placeholders():
         for key in ("home","latent","mega","research","community","my"):
             html = html.replace("{{ACTIVE_"+key.upper()+"}}", "active" if p["active"]==key else "")
         out = OUT_DIR / p["filename"]
-        out.write_text(html, encoding="utf-8")
+        _w(out, html)
         print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
@@ -1121,18 +1225,25 @@ def build_history(page_key, active_marker, out_filename):
     for key in ("home","latent"):
         html = html.replace("{{ACTIVE_"+key.upper()+"}}", "active" if active_marker==key else "")
     out = OUT_DIR / out_filename
-    out.write_text(html, encoding="utf-8")
+    _w(out, html)
     print(f"[OK] {out.name} ({len(html):,} chars)")
 
 
-LOGO_HTML = """<a class="brand ud-logo uvx" href="index.html" aria-label="UNIVERTRIX 홈">
+LOGO_HTML = """<a class="brand ud-logo uvx" href="index.html" aria-label="{{t:brand.home}}">
       <span class="uvx-lat"><span class="uvx-word">UNIVERTRIX</span>
         <svg class="uvx-orbit" viewBox="0 0 300 60" preserveAspectRatio="none" fill="none" aria-hidden="true">
           <path d="M8 46 C 62 68, 150 -16, 288 20" stroke-width="1.6"/>
           <circle cx="288" cy="20" r="3.4"/>
         </svg></span>
-      <span class="uvx-kr">우주지배자</span>
+      <span class="uvx-kr">{{t:brand.sub}}</span>
     </a>"""
+
+
+def logo_html(lang):
+    """로고 — 붓글씨 '우주지배자'는 ko 전용. 다른 언어는 같은 자리에 언어 부제(.uvx-sub, 오로라 그대로)."""
+    if lang == i18n.DEFAULT:
+        return LOGO_HTML
+    return LOGO_HTML.replace('<span class="uvx-kr">', '<span class="uvx-kr uvx-sub">', 1)
 
 
 
@@ -1232,9 +1343,8 @@ def inject_aurora_tokens():
         if "ud-aurora-global-v1" in html or "</head>" not in html:
             continue
         html = html.replace("</head>", AURORA_GLOBAL_CSS + "\n</head>", 1)
-        f.write_text(html, encoding="utf-8"); n += 1
+        _w(f, html); n += 1
     print(f"[OK] 오로라 팔레트 주입: {n}개 페이지")
-    verify_pages()
 
 
 def verify_pages():
@@ -1247,7 +1357,9 @@ def verify_pages():
     빌드가 끝났다고 말하려면 산출물이 정말 그렇게 되었는지 확인하고 말해야 한다.
     """
     bad = []
-    for name in ALL_PAGES:
+    for lang in i18n.LANGS:
+      for page in ALL_PAGES:
+        name = i18n.subdir(lang) + page
         f = OUT_DIR / name
         if not f.exists():
             bad.append(f"{name}: 파일 없음")
@@ -1255,6 +1367,12 @@ def verify_pages():
         html = f.read_text(encoding="utf-8")
         if "ud-aurora-global-v1" not in html:
             bad.append(f"{name}: 오로라 주입 누락")
+            continue
+        if I18N_MARK not in html or I18N_HEAD_MARK not in html:
+            bad.append(f"{name}: 다국어 주입 누락")
+            continue
+        if "{{t:" in html:
+            bad.append(f"{name}: 카탈로그 자리표시자 미치환")
             continue
         head = html[:html.find("</head>")]
         i = head.find("<style")
@@ -1265,7 +1383,7 @@ def verify_pages():
         for b in bad:
             print(f"    · {b}", file=sys.stderr)
         sys.exit(1)
-    print(f"[OK] 산출물 검사: {len(ALL_PAGES)}개 페이지 주입·구조 정상")
+    print(f"[OK] 산출물 검사: {len(i18n.LANGS)}개 언어 × {len(ALL_PAGES)}개 페이지 주입·구조 정상")
 
 
 HEADER_FIX_CSS = """<style>
@@ -1416,7 +1534,7 @@ PRESENCE_SNIPPET = """<!-- uv-presence -->
             el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
             ft.appendChild(el);
           }
-          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">\u2726</span> 지금 ' + n + '\uba85\uc774 \uc6b0\uc8fc\ub97c \uad00\uce21 \uc911';
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">\u2726</span> ' + T('common.presence', {n: n});
         }
       } catch (e) {}
     };
@@ -1440,7 +1558,7 @@ def inject_presence():
         if "uv-presence" in html or "</body>" not in html:
             continue
         html = html.replace("</body>", PRESENCE_SNIPPET + "\n</body>", 1)
-        f.write_text(html, encoding="utf-8")
+        _w(f, html)
         n += 1
     print(f"[OK] 접속자 카운터 주입: {n}개 페이지")
 
@@ -1460,14 +1578,14 @@ def inject_header_fix():
         if 'class="brand ud-logo"' not in html:
             html = re.sub(
                 r'<div class="brand">.*?</div>',
-                lambda m: LOGO_HTML,
+                lambda m: logo_html(LANG),
                 html, count=1, flags=re.S,
             )
         # 푸터 브랜드도 통일
         html = html.replace("✨ Stay hungry. ASI",
                             'UNI<span style="color:var(--gold)">V</span>ERTRIX')
         html = html.replace("</head>", HEADER_FIX_CSS + "\n</head>", 1)
-        f.write_text(html, encoding="utf-8")
+        _w(f, html)
         n += 1
     print(f"[OK] 헤더 일관성 CSS 주입: {n}개 페이지")
 
@@ -1525,11 +1643,11 @@ def _macro_title(e, today):
     e = e if isinstance(e, dict) else {}
     ts = str(e.get("measured_at") or "")
     if not ts or e.get("value") is None:
-        return "측정값 없음 — 다음 전체 수집에서 측정"
+        return i18n.t(LANG, "macro.none")
     when = ts[11:16] if ts[:10] == (today or "") else f"{ts[5:10]} {ts[11:16]}"
-    t = f"측정 {when} · 출처 {e.get('source') or '—'}"
+    t = i18n.t(LANG, "macro.measured", when=when, src=e.get("source") or "—")
     if e.get("carried"):
-        t += " · 이번 회차 갱신 실패 — 이전 값"
+        t += i18n.t(LANG, "macro.carried")
     return t
 
 
@@ -1539,7 +1657,7 @@ def _macro_label(key, label, e, today):
     measured = str(e.get("measured_at") or "")[:10]
     if key == "wti" and e.get("value") is not None and e.get("as_of") \
             and str(e["as_of"])[:10] < measured:
-        return label + "(전일)"
+        return label + i18n.t(LANG, "macro.prev_day")
     return label
 
 
@@ -1549,15 +1667,17 @@ MACRO_SHORT = {"usd_krw": "KRW", "wti": "WTI", "ust10": "10Y", "ust30": "30Y", "
 # 헤더 띠 전용 숫자 폭 — WTI 정수($72) · JPY 소수 1자리(148.3). 100달러·자릿수 변화에도
 # 1280px 여유가 남게(2026-09-26). 브리핑은 MACRO_BADGES 의 표기(소수 2자리)를 그대로 쓴다.
 MACRO_HEADER_FMT = {"wti": "usd0", "usd_jpy": "fx1"}
-MACRO_FULL = {"usd_krw": "USD/KRW 환율", "wti": "WTI 원유 현물", "ust10": "미국 10년물 국채 금리",
-              "ust30": "미국 30년물 국채 금리", "usd_jpy": "USD/JPY 환율"}
+def _macro_full(key, label=""):
+    """지표 전체 이름 — 카탈로그(macro.full.<원장 키>)."""
+    k = "macro.full." + key
+    return i18n.t(LANG, k) if k in i18n.catalog(i18n.DEFAULT) else label
 
 
 def _macro_full_title(key, label, e, today):
     """title — 전체 이름 + (WTI 전일 종가 여부) + 측정 시각·출처. 모두 상태에서 만든다."""
-    head = MACRO_FULL.get(key, label)
+    head = _macro_full(key, label)
     if _macro_label(key, label, e, today) != label:       # 관측일 < 측정일 → 전일 종가
-        head += " · 전일 종가"
+        head += i18n.t(LANG, "macro.prev_close")
     return f"{head} · {_macro_title(e, today)}"
 
 
@@ -1586,9 +1706,10 @@ def macro_wrap(page, macro, today):
         return page, False
     krw = m.group(0)
     e = (macro or {}).get("usd_krw") if isinstance(macro, dict) else None
-    title = MACRO_FULL["usd_krw"] + " · 네이버 실시간 환율 보기"
+    title = _macro_full("usd_krw") + " · " + i18n.t(LANG, "common.naver_fx")
     if isinstance(e, dict) and e.get("value") is not None:
-        title = MACRO_FULL["usd_krw"] + " · " + _macro_title(e, today) + " · 네이버 실시간 환율 보기"
+        title = (_macro_full("usd_krw") + " · " + _macro_title(e, today) + " · "
+                 + i18n.t(LANG, "common.naver_fx"))
     krw = krw.replace('class="rate-badge"', 'class="rate-badge" data-mk="usd_krw"', 1)
     krw = re.sub(r'title="[^"]*"', lambda _m: f'title="{html_mod.escape(title)}"', krw, count=1)
     # 화면 라벨만 축약 — 템플릿의 'USD/KRW ' 텍스트(값 span 앞)를 'KRW ' 로
@@ -1617,11 +1738,196 @@ def inject_macro_badges():
             miss.append(name)
             continue
         html = html.replace("</head>", MACRO_CSS + chr(10) + "</head>", 1)
-        f.write_text(html, encoding="utf-8")
+        _w(f, html)
         n += 1
     if miss:
         print(f"[warn] 시장 지표 띠 — USD/KRW 배지를 못 찾은 페이지: {miss}", file=sys.stderr)
     print(f"[OK] 시장 지표 띠 주입: {n}개 페이지")
+
+
+
+# ── 4개 언어 관측소 (2026-10-26 UNIVERTRIX GLOBAL) ─────────────────────────────
+# 빌드는 LANGS × ALL_PAGES. ko 는 루트(주소 불변 — 텔레그램 링크 보호), en/es/ja 는 하위 폴더.
+# 화면 문구는 카탈로그(data/i18n/{lang}.json)에서, 숫자는 같은 데이터에서(G2).
+# 주입 마커 멱등성은 언어별 산출물마다 — 각 언어 폴더의 페이지가 각자 마커를 1회 갖는다.
+I18N_MARK = "uvx-i18n-v1"          # head 첫머리의 런타임(T·UVX) — i18n.runtime_js 가 id 로 단다
+I18N_HEAD_MARK = "uvx-hreflang-v1"   # hreflang·canonical·og·서체·언어 CSS
+
+# 활성 탭 — 이력 페이지는 부모 탭, 소개·정책은 없음
+NAV = (("index.html", "nav.home"), ("latent.html", "nav.latent"), ("megatrend.html", "nav.mega"),
+       ("research.html", "nav.research"), ("observatory.html", "nav.observatory"),
+       ("community.html", "nav.community"), ("journal.html", "nav.journal"),
+       ("pioneers.html", "nav.pioneers"))
+NAV_ACTIVE = {"history-top20.html": "index.html", "history-latent.html": "latent.html"}
+
+I18N_CSS = """<style id="uvx-i18n-css">
+/* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
+.uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
+.uvx-lang>summary::-webkit-details-marker{display:none}
+.uvx-lang>summary:hover,.uvx-lang[open]>summary{color:var(--gold)}
+.uvx-lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:80;min-width:150px;background:var(--bg-card);border:1px solid var(--line-strong);border-radius:12px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.uvx-lang-menu a{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:8px;font-size:13px;font-weight:700;color:var(--text);text-decoration:none}
+.uvx-lang-menu a:hover{background:var(--gold-bg);color:var(--gold)}
+.uvx-lang-menu a[aria-current="true"]{color:var(--gold)}
+.uvx-lang-menu a small{color:var(--text-muted);font-weight:800;letter-spacing:.06em}
+.uvx-band{display:flex;align-items:center;justify-content:center;gap:12px;padding:7px 16px;background:var(--gold-bg);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--text)}
+.uvx-band a{color:var(--gold);text-decoration:none;font-weight:800}
+.uvx-band button{border:0;background:none;color:var(--text-muted);font:inherit;font-size:15px;cursor:pointer;padding:0 4px}
+.uvx-pending{display:block;width:fit-content;margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px dashed var(--line-strong);border-radius:100px;padding:2px 9px}
+.uvx-pagepending{max-width:1080px;margin:10px auto 0;padding:0 20px;font-size:12.5px;font-weight:700;color:var(--text-muted)}
+/* 로고 — 붓글씨 '우주지배자'는 ko 전용. 다른 언어는 같은 자리에 언어 부제(오로라 광 스윕 그대로) */
+.uvx-kr.uvx-sub{font-family:inherit;font-size:13.5px;font-weight:300;letter-spacing:.08em}
+@media(max-width:760px){.uvx-kr.uvx-sub{font-size:11px;letter-spacing:.04em}}
+/* 서체 — Pretendard 단일 + ja 는 Noto Sans JP 폴백 (위계는 굵기) */
+html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans JP',-apple-system,sans-serif}
+</style>"""
+
+# 첫 방문 언어 안내 띠 — 브라우저 언어가 페이지 언어와 다르면 작은 띠 하나. 강제 이동 없음(G1).
+# 닫으면 다시 안 뜬다(localStorage, try/catch). 문구는 **대상 언어로** — 그 언어 독자에게 말한다.
+BAND_JS = r"""<script id="uvx-band">
+(function(){
+  try {
+    var LANGS = __LANGS__, cur = document.documentElement.lang, K = 'uvx-band-off';
+    try { if (localStorage.getItem(K)) return; } catch (e) {}
+    var want = ((navigator.languages && navigator.languages[0]) || navigator.language || '').slice(0, 2).toLowerCase();
+    if (!want || want === cur || !LANGS[want]) return;
+    var a = document.querySelector('.uvx-lang-menu a[hreflang="' + want + '"]');
+    if (!a) return;
+    var b = document.createElement('div');
+    b.className = 'uvx-band'; b.setAttribute('lang', want);
+    var link = document.createElement('a');
+    link.href = a.getAttribute('href') + location.hash; link.textContent = LANGS[want].go;
+    var x = document.createElement('button'); x.type = 'button'; x.textContent = '×';
+    x.setAttribute('aria-label', LANGS[want].close);
+    x.onclick = function(){ try { localStorage.setItem(K, '1'); } catch (e) {} b.remove(); };
+    b.appendChild(link); b.appendChild(x);
+    document.body.insertBefore(b, document.body.firstChild);
+  } catch (e) {}
+})();
+/* 언어 전환기 — 같은 페이지 · 같은 해시로 */
+document.addEventListener('click', function(ev){
+  var a = ev.target.closest && ev.target.closest('.uvx-lang-menu a');
+  if (a && location.hash) { ev.preventDefault(); location.href = a.getAttribute('href') + location.hash; }
+});
+</script>"""
+
+
+def lang_switcher(lang, page):
+    """헤더 계기판 캡슐의 언어 전환기 — <details> 라 JS 없이도 열리고 링크로 이동한다."""
+    rows = []
+    for L2 in i18n.LANGS:
+        cur = ' aria-current="true"' if L2 == lang else ""
+        rows.append(f'<a href="{i18n.href_to(lang, L2, page)}" hreflang="{L2}" lang="{L2}"{cur}>'
+                    f'{i18n.SELF_NAME[L2]}<small>{i18n.SHORT[L2]}</small></a>')
+    return (f'<details class="uvx-lang"><summary aria-label="{html_mod.escape(i18n.t(lang, "common.lang"))}">'
+            f'{i18n.SHORT[lang]}</summary><div class="uvx-lang-menu">{"".join(rows)}</div></details>')
+
+
+def head_links(lang, page):
+    """hreflang 4개 + x-default + canonical + og:locale(+대체) · ja 서체."""
+    done = page in i18n.DONE_PAGES
+    out = [f'<link rel="canonical" href="{i18n.canonical(lang, page)}">']
+    if done or lang == i18n.DEFAULT:
+        for L2 in i18n.LANGS:
+            if done or L2 == i18n.DEFAULT:
+                out.append(f'<link rel="alternate" hreflang="{L2}" href="{i18n.canonical(L2, page)}">')
+        if done:
+            out.append(f'<link rel="alternate" hreflang="x-default" href="{i18n.canonical(i18n.X_DEFAULT, page)}">')
+    out.append(f'<meta property="og:locale" content="{i18n.OG_LOCALE[lang]}">')
+    if done:
+        out += [f'<meta property="og:locale:alternate" content="{i18n.OG_LOCALE[L2]}">'
+                for L2 in i18n.LANGS if L2 != lang]
+    out.append(f'<meta property="og:url" content="{i18n.canonical(lang, page)}">')
+    if lang != i18n.DEFAULT and not done:
+        out.append('<meta name="robots" content="noindex">')     # 본문 번역 전 — 색인하지 않는다
+    if lang == "ja":
+        out.append('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap">')
+    return "\n".join(out)
+
+
+_ASSET_REF = re.compile(r"""(?<=["'(])(assets|data)/""")
+
+
+def relocate(html, lang):
+    """하위 폴더(/en/ 등) 산출물의 루트 자원 참조(assets/·data/)를 한 단 위로. 페이지 간 링크는 같은 폴더라 그대로."""
+    if lang == i18n.DEFAULT:
+        return html
+    return _ASSET_REF.sub(lambda m: "../" + m.group(1) + "/", html)
+
+
+def rates_for_runtime():
+    """관측 위치 렌즈 환율 — 빌드 시점에 심는다(클라이언트 fetch 없음). 1 USD 당 현지 통화."""
+    m = (_header_meta().get("macro") or {})
+    r = {"USD": 1}
+    for key, ccy in (("usd_krw", "KRW"), ("usd_jpy", "JPY")):
+        v = (m.get(key) or {}).get("value")
+        if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
+            r[ccy] = v
+    return r
+
+
+def inject_i18n():
+    """전 페이지 마지막 주입(멱등) — {{t:키}} 치환 · <html lang> · head 런타임 · hreflang · 전환기 · 경로.
+
+    런타임에 싣는 키는 **완성된 페이지**에서 센다(앞선 주입이 넣은 T() 호출까지) — 그래서 마지막에 돈다.
+    """
+    pages = ALL_PAGES
+    n = 0
+    rates = rates_for_runtime()
+    band_langs = {L2: {"go": i18n.t(L2, "common.band_go"), "close": i18n.t(L2, "common.close")}
+                  for L2 in i18n.LANGS}
+    for name in pages:
+        f = OUT_DIR / name
+        if not f.exists():
+            continue
+        html = f.read_text(encoding="utf-8")
+        if I18N_HEAD_MARK in html or "</head>" not in html:
+            continue
+        html = i18n.render(html, LANG)
+        html = re.sub(r'<html lang="[a-z]+"', f'<html lang="{i18n.HTML_LANG[LANG]}"', html, count=1)
+        # 전환기 — 계기판 캡슐의 테마 토글 앞
+        if 'class="theme-toggle"' in html:
+            i = html.find('<button class="theme-toggle"')
+            if i >= 0:
+                html = html[:i] + lang_switcher(LANG, name) + html[i:]
+        # 본문 번역 전 페이지(다른 언어) — 메뉴 바로 아래 한 줄
+        if LANG != i18n.DEFAULT and name not in i18n.DONE_PAGES and "</nav>" in html:
+            html = html.replace("</nav>", "</nav>\n" + f'<div class="uvx-pagepending">'
+                                f'{html_mod.escape(i18n.t(LANG, "common.page_pending"))}</div>', 1)
+        html = html.replace("</head>", f'<!-- {I18N_HEAD_MARK} -->\n' + head_links(LANG, name) + "\n"
+                            + I18N_CSS + "\n</head>", 1)
+        html = html.replace("</body>", BAND_JS.replace("__LANGS__", json.dumps(band_langs, ensure_ascii=False))
+                            + "\n</body>", 1)
+        html = relocate(html, LANG)
+        # 런타임은 head 첫머리 — 페이지의 어떤 스크립트보다 먼저. 키는 완성된 페이지에서 센다
+        rt = i18n.runtime_js(LANG, i18n.js_keys(html), rates)
+        html = html.replace("<head>", "<head>\n" + rt, 1)
+        _w(f, html)
+        n += 1
+    print(f"[OK] 다국어 주입({LANG}): {n}개 페이지")
+
+
+def write_sitemap(root):
+    """sitemap.xml — 완성 페이지는 4개 언어 대체 링크, 나머지는 ko 만. robots.txt 에 위치를 적는다."""
+    from datetime import date
+    today = (_header_meta().get("fetched_date") or date.today().isoformat())[:10]
+    urls = []
+    for page in ALL_PAGES:
+        langs = i18n.LANGS if page in i18n.DONE_PAGES else (i18n.DEFAULT,)
+        for L1 in langs:
+            alts = "".join(f'<xhtml:link rel="alternate" hreflang="{L2}" href="{i18n.canonical(L2, page)}"/>'
+                           for L2 in langs) if len(langs) > 1 else ""
+            if len(langs) > 1:
+                alts += (f'<xhtml:link rel="alternate" hreflang="x-default" '
+                         f'href="{i18n.canonical(i18n.X_DEFAULT, page)}"/>')
+            urls.append(f"<url><loc>{i18n.canonical(L1, page)}</loc><lastmod>{today}</lastmod>{alts}</url>")
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+           'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(urls) + "\n</urlset>\n")
+    _w(root / "sitemap.xml", xml)
+    _w(root / "robots.txt", f"User-agent: *\nAllow: /\nSitemap: {i18n.SITE}/sitemap.xml\n")
+    print(f"[OK] sitemap.xml: {len(urls)}개 주소")
 
 
 def publish(staging, dest):
@@ -1639,6 +1945,18 @@ def publish(staging, dest):
     for f in sorted(staging.glob("*.html")):
         os.replace(str(f), str(dest / f.name))
         moved += 1
+    # 언어 폴더(/en/ 등)와 사이트맵 — 같은 원자 교체. 폴더가 없으면 만든다
+    for lang in i18n.LANGS:
+        if lang == i18n.DEFAULT or not (staging / lang).is_dir():
+            continue
+        (dest / lang).mkdir(exist_ok=True)
+        for f in sorted((staging / lang).glob("*.html")):
+            os.replace(str(f), str(dest / lang / f.name))
+            moved += 1
+    for extra in ("sitemap.xml", "robots.txt"):
+        if (staging / extra).exists():
+            os.replace(str(staging / extra), str(dest / extra))
+            moved += 1
     return moved
 
 
@@ -1657,13 +1975,36 @@ def main():
         n = publish(staging, HERE)
         print(f"[OK] 원자적 교체: {n}개 파일 → 실제 경로")
     finally:
+        global LANG
         OUT_DIR = HERE
+        LANG = i18n.DEFAULT
         shutil.rmtree(staging, ignore_errors=True)
     print("=" * 50)
     print("빌드 완료")
 
 
 def _build_all():
+    """LANGS × ALL_PAGES — 언어마다 같은 빌드·같은 주입을 그 언어 폴더에. 검사는 네 언어가 다 끝난 뒤."""
+    global OUT_DIR, LANG
+    root = OUT_DIR
+    i18n.MISSING.clear()
+    try:
+        for lang in i18n.LANGS:
+            LANG = lang
+            OUT_DIR = root / lang if lang != i18n.DEFAULT else root
+            OUT_DIR.mkdir(parents=True, exist_ok=True)
+            print(f"── {lang} ──")
+            _build_lang()
+    finally:
+        OUT_DIR, LANG = root, i18n.DEFAULT
+    if i18n.MISSING:
+        print(f"[warn] 카탈로그 키 누락 {len(set(i18n.MISSING))}건(ko 로 대신): "
+              f"{sorted(set(i18n.MISSING))[:12]}", file=sys.stderr)
+    verify_pages()
+    write_sitemap(root)
+
+
+def _build_lang():
     build_main()
     build_latent()
     build_megatrend()
@@ -1683,6 +2024,7 @@ def _build_all():
     fix_nav()
     inject_footer_links()
     inject_aurora_tokens()
+    inject_i18n()
 
 
 if __name__ == "__main__":

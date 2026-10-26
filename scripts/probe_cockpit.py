@@ -52,6 +52,32 @@ PANELS = [("milestones", "이정표 매트릭스"), ("events", "사건"), ("fin"
           ("sources", "출처")]
 MARK = "univertrix.com"
 
+# 판정 상태(원장의 한국어 상태값) → 화면 상태 id. 화면 이름은 카탈로그(pc.st.*)가 언어별로 만든다
+SHOWN_CLS = dict(STATUS_CLS, **{MET: "met"})
+TRIGGER_STATUS_ID = {"대기": "pending"}
+
+
+def L(lang, key, **p):
+    """카탈로그 문장(i18n.t) — 관제판·PROBE_DATA 의 화면 문구는 전부 여기서 나온다."""
+    import i18n
+    return i18n.t(lang, key, **p)
+
+
+def C(lang, s):
+    """콘텐츠(탐사 원장 문장) — 번역 전 원문이 한국어면 다른 언어 화면에서 원문 표식을 단다."""
+    import i18n
+    h = esc(s)
+    if lang != "ko" and i18n.has_hangul(str(s or "")):
+        return '<span lang="ko" data-uvx-pending="1">' + h + "</span>"
+    return h
+
+
+def axis_label(lang, axes, key):
+    """축 화면 이름 — ko 는 원장 이름의 짧은 꼴, 다른 언어는 축 머리글자(A~E)에서 카탈로그로."""
+    if lang == "ko":
+        return short_axis(axes, key)
+    return L(lang, "pc.axis." + (key or "?")[:1].upper())
+
 
 def esc(t):
     return (str("" if t is None else t).replace("&", "&amp;").replace("<", "&lt;")
@@ -173,7 +199,7 @@ def attach_meaning(m, meanings):
     return max(cands, key=lambda r: len(t & _tok(r["text"])))
 
 
-def milestone_rows(st, ar, meanings, today=None):
+def milestone_rows(st, ar, meanings, today=None, lang="ko"):
     axes = st.get("axes") or {}
     out = []
     for m in st.get("milestones") or []:
@@ -192,7 +218,7 @@ def milestone_rows(st, ar, meanings, today=None):
         out.append({
             # 축은 머리글자(A~E)로만 싣는다 — 'A_starlink' 같은 기계 키를 페이지 소스에도 남기지 않는다
             "id": m.get("id", ""), "axis": (m.get("axis") or "?")[:1].upper(),
-            "axisKo": short_axis(axes, m.get("axis", "")),
+            "axisKo": axis_label(lang, axes, m.get("axis", "")),
             "year": m.get("year"), "text": m.get("statement", ""), "status": m.get("status", "미판정"),
             "shown": shown, "cls": "met" if shown == MET else STATUS_CLS.get(m.get("status"), "wait"),
             "pct": None if pct is None else round(pct, 3), "parts": parts,
@@ -201,13 +227,14 @@ def milestone_rows(st, ar, meanings, today=None):
             "reason": m.get("progress_reason", ""),
             "hit": mean.get("hit", ""), "miss": mean.get("miss", ""), "method": mean.get("method", ""),
             "meaningSrc": mean.get("src", ""),
-            "history": [{"run": h.get("run_id"), "status": h.get("status")}
+            "history": [{"run": h.get("run_id"), "status": h.get("status"),
+                         "cls": STATUS_CLS.get(h.get("status"), "")}
                         for h in m.get("status_history") or [] if isinstance(h, dict)],
         })
     return out
 
 
-def axis_rows(st, ms):
+def axis_rows(st, ms, lang="ko"):
     axes = st.get("axes") or {}
     keys = list(axes.keys()) if isinstance(axes, dict) and axes else sorted({m["axis"] for m in ms})
     out = []
@@ -219,13 +246,13 @@ def axis_rows(st, ms):
         measured = [m for m in mine if m["pct"] is not None]
         # 축 전체가 '현재 충족' — 측정된 이정표가 전부 판정 연도 전 100% 일 때만(진행과 구분)
         all_met = bool(measured) and all(m["shown"] == MET for m in measured)
-        out.append({"key": k, "ko": short_axis(axes, full), "n": len(mine), "measured": len(nums),
+        out.append({"key": k, "ko": axis_label(lang, axes, full), "n": len(mine), "measured": len(nums),
                     "avg": round(sum(nums) / len(nums), 3) if nums else None, "counts": counts,
                     "met": all_met})
     return out
 
 
-def kpi_series(kpi_doc, st):
+def kpi_series(kpi_doc, st, lang="ko"):
     """KPI 행 — 공시 재무(기계, spacex_kpi.json)는 기계 우선, 운영 KPI 는 탐사 값(state.kpi_history)."""
     qs = list(reversed(((kpi_doc or {}).get("auto") or {}).get("quarters") or []))    # 오래된 → 최신
     hist = {h.get("quarter"): h for h in st.get("kpi_history") or [] if isinstance(h, dict)}
@@ -265,45 +292,52 @@ def kpi_series(kpi_doc, st):
             if v is None and h.get(key) is not None and str(h.get("fin_source", "")).startswith("http"):
                 # 기계가 못 만든 분기 — 탐사 엔진이 S-1 원문에서 기입하고 검증관이 대조한 값(관문 check_kpi_fin)
                 v = h[key]
-                cells.append({"v": v, "t": fmt_kind(v, kind), "mk": "S-1",
-                              "src": {"origin": "S-1 원문(탐사 기입)", "url": h["fin_source"],
+                cells.append({"v": v, "t": fmt_kind(v, kind, lang), "mk": "S-1",
+                              "src": {"origin": "S-1 원문(탐사 기입)", "originId": "s1",
+                                      "originL": L(lang, "pc.o.s1"), "url": h["fin_source"],
                                       "filed": h.get("published"),
-                                      "how": (h.get("fin_note") or "S-1 원문 표") + " · 검증관 대조 대상"}})
+                                      "how": (h.get("fin_note") or L(lang, "pc.how.s1_table"))
+                                      + L(lang, "pc.how.s1_verify")}})
                 continue
             how = src.get("how") or src.get("note")
             derived = bool(v is not None and (src.get("derived") or str(how or "").startswith("누적")))
-            cells.append({"v": v, "t": fmt_kind(v, kind), "mk": "계산" if derived else "",
-                          "src": {"origin": "공시 자동", "form": src.get("form"), "filed": src.get("filed"),
+            cells.append({"v": v, "t": fmt_kind(v, kind, lang), "mk": L(lang, "pc.mk.calc") if derived else "",
+                          "src": {"origin": "공시 자동", "originId": "auto", "originL": L(lang, "pc.o.auto_full"),
+                                  "form": src.get("form"), "filed": src.get("filed"),
                                   "concept": src.get("concept"), "how": how, "url": None}})
-        rows.append({"id": rid, "label": label, "origin": "공시 자동", "cells": cells})
+        rows.append({"id": rid, "label": L(lang, "pc.row." + rid) if lang != "ko" else label,
+                     "origin": "공시 자동", "originId": "auto", "cells": cells})
     for rid, label, key, kind in OPS:
         cells = []
         for c in cols:
             h = hist.get(c) or {}
             v = h.get(key)
-            cells.append({"v": v, "t": fmt_kind(v, kind),
-                          "src": {"origin": "탐사 취재", "url": h.get("source"), "filed": h.get("published"),
-                                  "how": "탐사 엔진이 공시 KPI 표에서 옮김" if v is not None else
-                                  ("이 분기 기록 없음" if h else "탐사 기록 없음")}})
-        rows.append({"id": rid, "label": label, "origin": "탐사 취재", "cells": cells})
+            cells.append({"v": v, "t": fmt_kind(v, kind, lang),
+                          "src": {"origin": "탐사 취재", "originId": "probe", "originL": L(lang, "pc.o.probe_full"),
+                                  "url": h.get("source"), "filed": h.get("published"),
+                                  "how": L(lang, "pc.how.probe") if v is not None else
+                                  (L(lang, "pc.how.noq") if h else L(lang, "pc.how.norec"))}})
+        rows.append({"id": rid, "label": L(lang, "pc.row." + rid) if lang != "ko" else label,
+                     "origin": "탐사 취재", "originId": "probe", "cells": cells})
     # 병합 규칙 — 공시 재무가 비면 S-1 기입값(출처 URL·검증관 대조 필수)만 채우고 칸마다 'S-1' 표식을 단다.
     # 누적 공시의 차분으로 만든 분기 값은 '계산' 표식. 둘 다 없으면 '—'.
     return {"cols": cols, "rows": rows}
 
 
-def fmt_kind(v, kind):
+def fmt_kind(v, kind, lang="ko"):
+    import i18n
     if v is None:
         return "—"
     if kind == "usd":
-        return usd_m_ko(v)
+        return usd_m_ko(v) if lang == "ko" else i18n.usd_m(lang, v)
     if kind == "man":
-        return man_ko(v)
+        return man_ko(v) if lang == "ko" else i18n.count_m(lang, v)
     if kind == "arpu":
         return f"${v:,.0f}"
     if kind == "gw":
-        return f"{v:g}GW"
+        return i18n._dec(lang, f"{v:g}") + "GW"
     if kind == "cnt":
-        return f"{v:,.0f}회"
+        return L(lang, "pc.unit.launches", n=int(v), v=f"{v:,.0f}")
     return str(v)
 
 
@@ -326,13 +360,14 @@ def kpi_tiles(fin):
             dirn = "up" if d > 0 else ("down" if d < 0 else "flat")
         else:
             dirn = "flat"
-        out.append({"id": rid, "label": label, "value": r["cells"][last[0]]["t"] if last else "—",
+        out.append({"id": rid, "label": r["label"], "value": r["cells"][last[0]]["t"] if last else "—",
                     "q": fin["cols"][last[0]] if last else "", "dir": dirn, "origin": r["origin"],
+                    "originId": r.get("originId", ""),
                     "series": [c["v"] if isinstance(c["v"], (int, float)) else None for c in r["cells"]]})
     return out
 
 
-def run_info(st, watch, vres, today):
+def run_info(st, watch, vres, today, lang="ko"):
     run = st.get("run") or {}
     eng = ((watch or {}).get("engine") or {}).get("last_run") or {}
     try:
@@ -345,7 +380,8 @@ def run_info(st, watch, vres, today):
     return {"id": run.get("run_id", ""), "date": run.get("run_date", ""), "mode": run.get("mode", ""),
             "number": run.get("run_number"), "prev": run.get("previous_run_id"),
             "summary": [s for s in run.get("summary") or [] if isinstance(s, str)],
-            "engine": RUN_KO.get(eng.get("conclusion") or "", "기록 없음") if eng else "기록 없음",
+            "engine": (L(lang, "pc.run." + eng.get("conclusion")) if eng.get("conclusion") in RUN_KO
+                       else L(lang, "pc.run.none")) if eng else L(lang, "pc.run.none"),
             "engineOk": eng.get("conclusion") == "success", "engineDate": (eng.get("created_at") or "")[:10],
             "verify": [ok, checked], "next": sch.get("next", ""), "overdue": sch.get("overdue_days", 0),
             "stale": sch.get("stale", False), "age": sch.get("age_days")}
@@ -367,7 +403,7 @@ def changelog_summary(ar, run_id, n=3, width=110):
     return []
 
 
-def delta_blocks(st, ar, n=3):
+def delta_blocks(st, ar, n=3, lang="ko"):
     """② 이번 회차에 바뀐 것 — 최신이 사건 회차면 [사건 회차] + [직전 월간 회차] 두 블록, 월간이면 하나.
 
     요약은 기록된 것만 쓴다: 현재 회차는 state.run.summary, 지난 회차는 run_history 줄의 summary,
@@ -379,7 +415,8 @@ def delta_blocks(st, ar, n=3):
     def summ(rid, own=None):
         s = [x for x in (own or (hist.get(rid) or {}).get("summary") or []) if isinstance(x, str)]
         return (s or changelog_summary(ar, rid, n))[:n]
-    blocks = [{"id": run.get("run_id", ""), "kind": "사건 회차" if run.get("mode") == "event" else "월간 회차",
+    blocks = [{"id": run.get("run_id", ""),
+               "kind": L(lang, "pc.delta.event") if run.get("mode") == "event" else L(lang, "pc.delta.monthly"),
                "lines": summ(run.get("run_id"), run.get("summary"))}]
     if run.get("mode") == "event":
         prev = run.get("previous_monthly_run_id") or ""
@@ -388,11 +425,11 @@ def delta_blocks(st, ar, n=3):
                       if isinstance(h, dict) and re.fullmatch(r"\d{4}-\d{2}", str(h.get("run_id")))]
             prev = months[-1] if months else ""
         if prev:
-            blocks.append({"id": prev, "kind": "직전 월간 회차", "lines": summ(prev)})
+            blocks.append({"id": prev, "kind": L(lang, "pc.delta.prev_monthly"), "lines": summ(prev)})
     return blocks
 
 
-def trigger_rows(st, today):
+def trigger_rows(st, today, lang="ko"):
     try:
         from spacex_watch import parse_trigger_date
         from build_site import _window_end
@@ -405,24 +442,28 @@ def trigger_rows(st, today):
         d = parse_trigger_date(t.get("expected_date")) if parse_trigger_date else None
         we = _window_end(t.get("expected_date", "")) if _window_end else None
         if d is None:
-            when, dday = "예상일 미정", None
+            when, dday = L(lang, "pc.when.tbd"), None
         else:
             dday = (d - today).days
             if dday < 0 and we is not None and today <= we:
-                when = f"구간 중 ~{we.month}/{we.day}"
+                import i18n
+                when = L(lang, "pc.when.window", end=i18n.md(lang, we.isoformat()))
             elif dday < 0:
-                when = f"예상일 경과 {-dday}일"
+                when = L(lang, "pc.when.passed", n=-dday)
             else:
                 when = "D-day" if dday == 0 else f"D-{dday}"
+        st_raw = t.get("status", "대기")
+        st_id = TRIGGER_STATUS_ID.get(st_raw)
         out.append({"id": t.get("id", ""), "name": t.get("name", ""), "expected": t.get("expected_date", ""),
-                    "status": t.get("status", "대기"), "when": when, "dday": dday,
+                    "status": st_raw, "statusL": L(lang, "pc.tst." + st_id) if st_id else st_raw,
+                    "when": when, "dday": dday,
                     "sort": d.isoformat() if d else "9999", "check": t.get("check", ""),
                     "note": t.get("note", ""), "prev": t.get("prev", "")})
     out.sort(key=lambda r: (r["status"] != "대기", r["sort"]))
     return out
 
 
-def event_rows(watch, essays_doc, today, triggers):
+def event_rows(watch, essays_doc, today, triggers, lang="ko"):
     out = []
     cut = (today - timedelta(days=90)).isoformat()
     try:
@@ -438,7 +479,8 @@ def event_rows(watch, essays_doc, today, triggers):
         rel_ax = {"starship": ["B"], "earnings": ["A", "C", "D"],
                   "financing": ["D"], "contract": ["C", "D"]}.get(kind, [])
         out.append({"id": "ev-" + re.sub(r"[^0-9A-Za-z]", "", (e.get("accn") or e.get("id") or e.get("url") or ""))[-16:],
-                    "date": e.get("date", ""), "kind": kind, "kindKo": EVENT_KIND_KO.get(kind, "공시"),
+                    "date": e.get("date", ""), "kind": kind,
+                    "kindKo": L(lang, "pc.kind." + (kind if kind in EVENT_KIND_KO else "filing")),
                     "title": e.get("title", ""), "url": e.get("url", ""), "source": e.get("source", ""),
                     "form": e.get("form", ""), "axes": rel_ax, "triggers": rel_t})
     for e in (essays_doc or {}).get("essays") or []:
@@ -448,19 +490,21 @@ def event_rows(watch, essays_doc, today, triggers):
         # 철회 에세이는 원제목·사유를 싣지 않는다 — 사유에는 틀린 숫자가 인용돼 있고, 제목이
         # 페이지에 다시 나타나면 철회가 무효가 된다(관문 verify_pages 가 막는다). 정정 문구만.
         out.append({"id": "es-" + e.get("slug", "")[-10:], "date": e.get("date", ""),
-                    "kind": "withdraw" if wd else "essay", "kindKo": "철회·정정" if wd else "동행 에세이",
-                    "title": "동행 에세이 1편 철회 — 원문으로 확인되지 않은 숫자" if wd else e.get("title", ""),
+                    "kind": "withdraw" if wd else "essay",
+                    "kindKo": L(lang, "pc.kind.withdraw") if wd else L(lang, "pc.kind.essay"),
+                    "title": L(lang, "pc.withdrawn_title") if wd else e.get("title", ""),
                     "url": "journal.html#companion",
-                    "source": "관측노트 동행 관측", "form": "에세이", "note": "",
+                    "source": L(lang, "pc.essay_source"), "form": L(lang, "pc.essay_form"), "note": "",
                     "axes": [], "triggers": []})
     out.sort(key=lambda r: r["date"], reverse=True)
     return out
 
 
-def scenario_rows(st):
+def scenario_rows(st, lang="ko"):
     sc = st.get("scenarios") or {}
     out = []
-    for k, ko in (("bull", "강세"), ("base", "기본"), ("bear", "약세")):
+    for k in ("bull", "base", "bear"):
+        ko = L(lang, "pc.scen." + k)
         s = sc.get(k) or {}
         y = s.get("y2036") or {}
         out.append({"key": k, "ko": ko, "prob": s.get("probability"), "prev": s.get("probability_prev"),
@@ -471,13 +515,14 @@ def scenario_rows(st):
     return out
 
 
-def rule_rows(st):
+def rule_rows(st, lang="ko"):
     out = []
     for r in st.get("probability_adjustment_rules") or []:
         if not isinstance(r, dict):
             continue
         d = []
-        for k, ko in (("bull", "강세"), ("base", "기본"), ("bear", "약세")):
+        for k in ("bull", "base", "bear"):
+            ko = L(lang, "pc.scen." + k)
             if isinstance(r.get(k), (int, float)):
                 d.append(f"{ko} {'+' if r[k] > 0 else '−'}{abs(r[k]) * 100:.0f}p")
         st_txt = str(r.get("status", "대기"))
@@ -516,7 +561,7 @@ def toc_label(title):
     return (m.group(1) + " " + m.group(2)) if m else t
 
 
-def report_bundle(ar, axes):
+def report_bundle(ar, axes, lang="ko"):
     """보고서별 절 HTML(준법 필터 통과본) — PROBE_DATA 와 별도 덩어리."""
     from build_site import report_title, ko_axes
     reps = []
@@ -525,6 +570,8 @@ def report_bundle(ar, axes):
         secs = []
         for i, (title, md) in enumerate(split_sections(body)):
             sid = f"s{i}"
+            if title == "개요":
+                title = L(lang, "pc.rep.overview")
             secs.append({"id": sid, "title": ko_axes(title, axes), "toc": ko_axes(toc_label(title), axes),
                          "html": ar.md_to_html(ko_axes(md, axes))})
         reps.append({"id": f.stem, "title": report_title(f), "phase4Cut": info["phase4"],
@@ -549,7 +596,7 @@ _LINK = re.compile(r"\[([^\]]+)\]\((https?://[^\s)]+)\)")
 _DATE_IN = re.compile(r"(20\d{2})[-.](\d{1,2})(?:[-.](\d{1,2}))?")
 
 
-def source_rows(reports_md, st, events):
+def source_rows(reports_md, st, events, lang="ko"):
     """URL 전수 중복 제거 — 도메인·문서명·날짜·그 출처를 쓴 주장 수·주장 목록."""
     srcs = {}
 
@@ -566,25 +613,25 @@ def source_rows(reports_md, st, events):
         if len(s["claims"]) < 40:
             s["claims"].append({"where": where, "text": re.sub(r"\s+", " ", _LINK.sub(r"\1", claim or ""))[:160]})
     for rid, md in reports_md:
-        sec = "개요"
+        sec = L(lang, "pc.rep.overview")
         for ln in md.splitlines():
             m = re.match(r"^##\s+(.+)$", ln.strip())
             if m:
                 sec = toc_label(m.group(1))
                 continue
             for name, url in _LINK.findall(ln):
-                add(url, name, f"보고서 {rid} · {sec}", ln.strip().lstrip("|-> "))
+                add(url, name, L(lang, "pc.where.report", r=rid, s=sec), ln.strip().lstrip("|-> "))
     for m in st.get("milestones") or []:
         pg = m.get("progress") if isinstance(m.get("progress"), dict) else {}
         u = pg.get("source", "")
         if isinstance(u, str) and u.startswith("http"):
-            add(u, "", f"이정표 {m.get('id')}", m.get("statement", ""))
+            add(u, "", L(lang, "pc.where.milestone", id=m.get("id")), m.get("statement", ""))
     for h in st.get("kpi_history") or []:
         if isinstance(h, dict) and str(h.get("source", "")).startswith("http"):
-            add(h["source"], "", f"운영 KPI {h.get('quarter')}", f"{h.get('quarter')} 가입자·ARPU·명판·발사·부문 매출")
+            add(h["source"], "", L(lang, "pc.where.kpi", q=h.get("quarter")), L(lang, "pc.where.kpi_claim", q=h.get("quarter")))
     for e in events:
         if str(e.get("url", "")).startswith("http"):
-            add(e["url"], e.get("title", ""), f"사건 {e.get('date')}", e.get("title", ""))
+            add(e["url"], e.get("title", ""), L(lang, "pc.where.event", d=e.get("date")), e.get("title", ""))
     rows = sorted(srcs.values(), key=lambda s: (-len(s["claims"]), s["domain"]))
     for i, s in enumerate(rows):
         s["id"] = f"src{i}"
@@ -592,37 +639,38 @@ def source_rows(reports_md, st, events):
     return rows
 
 
-def search_index(ms, events, reports, changelog, sources, triggers):
+def search_index(ms, events, reports, changelog, sources, triggers, lang="ko"):
     """검색 색인 [{kind, id, title, text(앞 300자), anchor}] — 빌드 시점에 만든다."""
     def plain(h):
         return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h or "")).strip()
     idx = []
     for m in ms:
-        idx.append({"kind": "이정표", "id": m["id"], "title": f"{m['id']} {m['text']}",
-                    "text": f"{m['axisKo']} · {m['status']} · {m.get('cur') or ''} → {m.get('tgt') or ''}"[:300],
+        st_l = m["status"] if lang == "ko" else L(lang, "pc.st." + m["cls"])
+        idx.append({"kind": L(lang, "pc.ks.milestone"), "id": m["id"], "title": f"{m['id']} {m['text']}",
+                    "text": f"{m['axisKo']} · {st_l} · {m.get('cur') or ''} → {m.get('tgt') or ''}"[:300],
                     "anchor": f"milestones/{m['id']}"})
     for e in events:
-        idx.append({"kind": "사건", "id": e["id"], "title": e["title"],
+        idx.append({"kind": L(lang, "pc.ks.event"), "id": e["id"], "title": e["title"],
                     "text": f"{e['date']} · {e['kindKo']} · {e['source']} {e.get('note', '')}"[:300],
                     "anchor": f"events/{e['id']}"})
     for t in triggers:
-        idx.append({"kind": "트리거", "id": t["id"], "title": f"{t['id']} {t['name']}",
+        idx.append({"kind": L(lang, "pc.ks.trigger"), "id": t["id"], "title": f"{t['id']} {t['name']}",
                     "text": f"{t['expected']} {t['check']} {t['note']}"[:300], "anchor": f"triggers/{t['id']}"})
     for r in reports:
         for s in r["sections"]:
-            idx.append({"kind": "보고서", "id": f"{r['id']}:{s['id']}", "title": f"{r['id']} · {s['toc']}",
+            idx.append({"kind": L(lang, "pc.ks.report"), "id": f"{r['id']}:{s['id']}", "title": f"{r['id']} · {s['toc']}",
                         "text": plain(s["html"])[:300], "anchor": f"report/{r['id']}:{s['id']}",
                         "full": plain(s["html"])[:4000]})
     for c in changelog:
-        idx.append({"kind": "변화 이력", "id": c["id"], "title": c["title"], "text": plain(c["html"])[:300],
+        idx.append({"kind": L(lang, "pc.ks.changelog"), "id": c["id"], "title": c["title"], "text": plain(c["html"])[:300],
                     "anchor": f"changelog/{c['id']}", "full": plain(c["html"])[:2000]})
     for s in sources:
-        idx.append({"kind": "출처", "id": s["id"], "title": f"{s['domain']} {s['name']}"[:160],
-                    "text": f"{s['url']} · 주장 {s['n']}건"[:300], "anchor": f"sources/{s['id']}"})
+        idx.append({"kind": L(lang, "pc.ks.source"), "id": s["id"], "title": f"{s['domain']} {s['name']}"[:160],
+                    "text": (f"{s['url']} · " + L(lang, "pc.d.claims_n", n=s["n"]))[:300], "anchor": f"sources/{s['id']}"})
     return idx
 
 
-def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=None):
+def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=None, lang="ko"):
     """→ (PROBE_DATA, probe_reports). 판단층은 읽기만 한다."""
     st = ar.read_state() or {}
     today = today or kst_today()
@@ -634,38 +682,40 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
     axes = st.get("axes") or {}
     files = ar.report_files()
     meanings = meanings_from_reports(sorted(files, key=lambda f: f.stem), [k[:1].upper() for k in axes.keys()])
-    ms = milestone_rows(st, ar, meanings, today)
-    triggers = trigger_rows(st, today)
-    events = event_rows(watch, essays, today, triggers)
-    fin = kpi_series(kpi, st)
-    reports = report_bundle(ar, axes)
+    ms = milestone_rows(st, ar, meanings, today, lang)
+    triggers = trigger_rows(st, today, lang)
+    events = event_rows(watch, essays, today, triggers, lang)
+    fin = kpi_series(kpi, st, lang)
+    reports = report_bundle(ar, axes, lang)
     changelog = changelog_runs(ar, axes)
     reports_md = [(f.stem, ar.sanitize(f.read_text(encoding="utf-8"))[0]) for f in files]
-    sources = source_rows(reports_md, st, events)
-    rules, props = rule_rows(st)
+    sources = source_rows(reports_md, st, events, lang)
+    rules, props = rule_rows(st, lang)
     val = st.get("valuation") or {}
     mkt = st.get("market") or {}
-    srcs_state = [{"name": r.get("source", "").split(":", 1)[-1], "state": SRC_STATE_KO.get(r.get("outcome"), "미기록")}
+    srcs_state = [{"name": r.get("source", "").split(":", 1)[-1],
+                   "state": L(lang, "pc.src_state." + r.get("outcome")) if r.get("outcome") in SRC_STATE_KO
+                   else L(lang, "pc.src_state.none")}
                   for r in ((status or {}).get("sources") or {}).values()
                   if isinstance(r, dict) and r.get("kind") == "companion"
                   and str(r.get("source", "")).startswith("spacex:")]
     data = {
-        "v": 2, "today": today.isoformat(),
-        "run": run_info(st, watch, vres, today),
-        "delta": delta_blocks(st, ar),
+        "v": 2, "today": today.isoformat(), "lang": lang,
+        "run": run_info(st, watch, vres, today, lang),
+        "delta": delta_blocks(st, ar, lang=lang),
         "price": {"v": mkt.get("price_usd"), "date": mkt.get("price_asof", ""), "src": mkt.get("price_source", "")},
         "band": {"lo": (val.get("fair_value_band_usd") or [None, None])[0],
                  "hi": (val.get("fair_value_band_usd") or [None, None])[-1],
                  "mid": val.get("fair_value_midpoint_usd"), "pw": val.get("probability_weighted_value_usd"),
                  "rate": val.get("discount_rate"), "rateBasis": val.get("discount_rate_basis", ""),
                  "multiple": val.get("multiple_crosscheck_basis", "")},
-        "scen": scenario_rows(st), "rules": rules, "proposals": props,
+        "scen": scenario_rows(st, lang), "rules": rules, "proposals": props,
         "history": [h for h in st.get("run_history") or [] if isinstance(h, dict)],
-        "axes": axis_rows(st, ms), "milestones": ms, "triggers": triggers, "events": events,
+        "axes": axis_rows(st, ms, lang), "milestones": ms, "triggers": triggers, "events": events,
         "fin": fin, "tiles": kpi_tiles(fin), "changelog": changelog, "sources": sources,
-        "feeds": srcs_state, "panels": [{"id": p, "ko": ko} for p, ko in PANELS],
+        "feeds": srcs_state, "panels": [{"id": p, "ko": L(lang, "pc.panel." + p)} for p, _ in PANELS],
     }
-    data["search"] = search_index(ms, events, reports, changelog, sources, triggers)
+    data["search"] = search_index(ms, events, reports, changelog, sources, triggers, lang)
     return data, reports
 
 
@@ -682,7 +732,7 @@ def label_w(s, em=14):
     return sum(em if ord(c) > 0x3000 else em * 0.6 for c in s)
 
 
-def gauge_svg(d):
+def gauge_svg(d, lang="ko"):
     """① 가격 vs 가정 가치 밴드 — 인라인 SVG. '목표가'·'상승여력' 표현 없음."""
     p, b = d["price"].get("v"), d["band"]
     vals = [x for x in (p, b.get("hi"), b.get("lo")) + tuple(s.get("vps") for s in d["scen"])
@@ -693,7 +743,7 @@ def gauge_svg(d):
 
     def x(v):
         return X0 + (X1 - X0) * max(0, min(1, v / top))
-    o = [f'<svg class="pc-gauge" viewBox="0 0 {W} 90" role="img" aria-label="가격과 가정 가치 밴드">']
+    o = [f'<svg class="pc-gauge" viewBox="0 0 {W} 90" role="img" aria-label="{esc(L(lang, "pc.gauge.aria"))}">']
     o.append(f'<line x1="{X0}" y1="40" x2="{X1}" y2="40" class="pc-g-axis"/>')
     if isinstance(b.get("lo"), (int, float)) and isinstance(b.get("hi"), (int, float)):
         o.append(f'<rect x="{x(b["lo"]):.1f}" y="30" width="{x(b["hi"]) - x(b["lo"]):.1f}" height="20" rx="4" class="pc-g-band"/>')
@@ -727,7 +777,7 @@ def gauge_svg(d):
                  f'text-anchor="{"start" if start else "middle"}">{esc(label)}</text>')
     if isinstance(p, (int, float)):
         o.append(f'<circle cx="{x(p):.1f}" cy="40" r="7" class="pc-g-price"/>')
-        o.append(f'<text x="{min(x(p), X1 - 30):.1f}" y="86" class="pc-g-lbl pc-g-strong" text-anchor="middle">주가 ${p:g}</text>')
+        o.append(f'<text x="{min(x(p), X1 - 30):.1f}" y="86" class="pc-g-lbl pc-g-strong" text-anchor="middle">{esc(L(lang, "pc.gauge.price", p=f"{p:g}"))}</text>')
     o.append(f'<text x="{X0}" y="50" class="pc-g-sm" text-anchor="start" dy="-12">$0</text>')
     o.append(f'<text x="{X1}" y="60" class="pc-g-sm" text-anchor="end">${top}</text>')
     o.append(f'<text x="{X1}" y="10" class="pc-mark" text-anchor="end">{MARK}</text>')
@@ -735,7 +785,7 @@ def gauge_svg(d):
     return "".join(o)
 
 
-def prob_bar(d):
+def prob_bar(d, lang="ko"):
     hist = d.get("history") or []
     base = None
     run_id = d["run"]["id"]
@@ -754,8 +804,9 @@ def prob_bar(d):
                 dlt = f'<i class="pc-{"up" if dd > 0 else "down"}">{"▲" if dd > 0 else "▼"}{abs(dd)}</i>'
         cells.append(f'<span class="pc-pb pc-pb-{s["key"]}" style="flex:{pr:.3f}">'
                      f'{esc(s["ko"])} {pr * 100:.0f}{dlt}</span>')
-    lbl = f'{esc(base["run_id"])} 대비' if base else ""
-    return f'<div class="pc-probs" aria-label="시나리오 확률">{"".join(cells)}</div><div class="pc-sub">확률 · {lbl}</div>'
+    lbl = esc(L(lang, "pc.prob.vs", r=base["run_id"])) if base else ""
+    return (f'<div class="pc-probs" aria-label="{esc(L(lang, "pc.prob.aria"))}">{"".join(cells)}</div>'
+            f'<div class="pc-sub">{esc(L(lang, "pc.prob.label"))} · {lbl}</div>')
 
 
 def spark(series, w=84, h=14):
@@ -773,91 +824,100 @@ def spark(series, w=84, h=14):
 ARROW = {"up": "↗", "down": "↘", "flat": "→"}
 
 
-def cockpit_html(d):
+def cockpit_html(d, lang="ko"):
+    import i18n
     r = d["run"]
+
+    def md(x):
+        return mmdd(x) if lang == "ko" else i18n.md(lang, x)
     tr = (d["triggers"] or [{}])[0] if d["triggers"] else None
     eng_cls = "ok" if r["engineOk"] and not r["overdue"] and not r["stale"] else "warn"
     if r["overdue"] > 0:
-        eng_txt = f"예정일 경과 {r['overdue']}일 — 엔진 점검 중"
+        eng_txt = L(lang, "pc.eng.overdue", n=r["overdue"])
     elif r["stale"]:
-        eng_txt = "관측 공백이 길어지고 있습니다 — 엔진 점검 중"
+        eng_txt = L(lang, "pc.eng.stale")
     else:
-        eng_txt = f"엔진 {r['engine']}"
+        eng_txt = L(lang, "pc.eng.ok", e=r["engine"])
     v_ok, v_n = r["verify"]
-    trig = (f' · 다음 트리거 <b>{esc(short_name(tr["name"]))}</b> ({esc(tr["when"])})' if tr else "")
+    trig = (L(lang, "pc.status.trigger_html", name=C(lang, short_name(tr["name"])), when=esc(tr["when"]))
+            if tr else "")
     h = [f'<div class="pc" id="pcRoot" data-pc-run="{esc(r["id"])}">']
-    h.append(f'<div class="pc-note">{DISCLAIMER}</div>')
+    h.append(f'<div class="pc-note">{esc(L(lang, "pc.disclaimer"))}</div>')
     h.append(f'<div class="pc-status"><span class="pc-dot pc-dot-{eng_cls}" aria-hidden="true"></span>'
-             f'<span class="pc-status-t"><b>{esc(r["id"])}</b> 회차 · 관측 {mmdd(r["date"])} · {esc(eng_txt)}'
-             f' · 검증 {v_ok}/{v_n} · 다음 회차 {mmdd(r["next"])}{trig}</span>'
-             f'<button class="pc-search-btn" id="pcSearchBtn" type="button" aria-label="검색(단축키 /)">'
-             f'<span>검색</span><kbd>/</kbd></button></div>')
+             f'<span class="pc-status-t">'
+             + L(lang, "pc.status.line_html", run=esc(r["id"]), date=md(r["date"]), eng=esc(eng_txt),
+                 ok=v_ok, n=v_n, next=md(r["next"]))
+             + f'{trig}</span>'
+             f'<button class="pc-search-btn" id="pcSearchBtn" type="button" aria-label="{esc(L(lang, "pc.search.aria_btn"))}">'
+             f'<span>{esc(L(lang, "pc.search.btn"))}</span><kbd>/</kbd></button></div>')
     h.append('<div class="pc-search" id="pcSearch" hidden><input id="pcQ" type="search" autocomplete="off" '
-             'placeholder="보고서·이정표·사건·변화 이력·출처 검색" aria-label="탐사선 검색">'
+             f'placeholder="{esc(L(lang, "pc.search.ph"))}" aria-label="{esc(L(lang, "pc.search.aria"))}">'
              '<div class="pc-results" id="pcResults" role="listbox"></div></div>')
     # ① ②
     b = d["band"]
-    band_txt = (f'가정 가치 밴드 ${b["lo"]:g}–${b["hi"]:g} · 중앙 ${b["mid"]:g}'
-                if all(isinstance(b.get(k), (int, float)) for k in ("lo", "hi", "mid")) else "가정 가치 밴드 —")
+    band_txt = (L(lang, "pc.band", lo=f'{b["lo"]:g}', hi=f'{b["hi"]:g}', mid=f'{b["mid"]:g}')
+                if all(isinstance(b.get(k), (int, float)) for k in ("lo", "hi", "mid")) else L(lang, "pc.band_none"))
     price = d["price"]
     h.append('<div class="pc-grid">')
-    h.append('<section class="pc-card pc-c1" aria-labelledby="pcH1"><h3 id="pcH1">① 가격 vs 가정 가치</h3>'
-             + gauge_svg(d) + f'<div class="pc-sub">{esc(band_txt)} · 주가 ${price.get("v")} ({mmdd(price.get("date"))})</div>'
-             + prob_bar(d) + '</section>')
+    h.append(f'<section class="pc-card pc-c1" aria-labelledby="pcH1"><h3 id="pcH1">{esc(L(lang, "pc.h1"))}</h3>'
+             + gauge_svg(d, lang) + f'<div class="pc-sub">{esc(band_txt)} · '
+             + esc(L(lang, "pc.price_asof", p=price.get("v"), d=md(price.get("date")))) + '</div>'
+             + prob_bar(d, lang) + '</section>')
     blocks = []
     for bl in d.get("delta") or [{"id": r["id"], "kind": "", "lines": r["summary"]}]:
-        items = "".join(f'<li>{esc(s)}</li>' for s in bl["lines"][:3]) or "<li>요약 없음</li>"
+        items = "".join(f'<li>{C(lang, s)}</li>' for s in bl["lines"][:3]) or f'<li>{esc(L(lang, "pc.delta.none"))}</li>'
         blocks.append(f'<div class="pc-dblk"><div class="pc-dlbl"><b>{esc(bl["id"])}</b> {esc(bl["kind"])}</div>'
                       f'<ul class="pc-delta">{items}</ul></div>')
     h.append(f'<section class="pc-card pc-c2{" pc-c2-two" if len(blocks) > 1 else ""}" aria-labelledby="pcH2">'
-             f'<h3 id="pcH2">② 이번 회차에 바뀐 것'
-             f'<button class="pc-more pc-more-h" type="button" data-pc-go="changelog">전체 델타 →</button></h3>'
+             f'<h3 id="pcH2">{esc(L(lang, "pc.h2"))}'
+             f'<button class="pc-more pc-more-h" type="button" data-pc-go="changelog">{esc(L(lang, "pc.h2_more"))}</button></h3>'
              f'{"".join(blocks)}</section>')
     # ③ ④
     rows = []
     for a in d["axes"]:
         pct = a["avg"]
         c = a["counts"]
-        cnt = " · ".join(f"{'현재 충족' if k == MET else k} {c[k]}" for k in SHOWN
+        cnt = " · ".join(f"{L(lang, 'pc.st_short.' + SHOWN_CLS.get(k, 'wait'))} {c[k]}" for k in SHOWN
                          if c.get(k) and not (a.get("met") and k == MET))
         if a.get("met"):
-            cnt = MET + (" · " + cnt if cnt else "")
+            cnt = L(lang, "pc.st.met") + (" · " + cnt if cnt else "")
         rows.append(f'<button class="pc-axis" type="button" data-pc-go="milestones" data-pc-axis="{esc(a["key"])}">'
                     f'<span class="pc-axis-n">{esc(a["ko"])}</span>'
                     f'<span class="pc-bar"><i style="width:{0 if pct is None else round(pct * 100)}%"></i></span>'
                     f'<span class="pc-axis-c">{"—" if pct is None else str(round(pct * 100)) + "%"}'
-                    f'(측정 {a["measured"]}/{a["n"]}) · {esc(cnt)}</span></button>')
-    h.append('<section class="pc-card pc-c3" aria-labelledby="pcH3"><h3 id="pcH3">③ 5축 진척'
-             '<span class="pc-tag">측정된 이정표 평균</span></h3>' + "".join(rows) + '</section>')
+                    + esc(L(lang, "pc.measured", m=a["measured"], n=a["n"])) + f' · {esc(cnt)}</span></button>')
+    h.append(f'<section class="pc-card pc-c3" aria-labelledby="pcH3"><h3 id="pcH3">{esc(L(lang, "pc.h3"))}'
+             f'<span class="pc-tag">{esc(L(lang, "pc.h3_tag"))}</span></h3>' + "".join(rows) + '</section>')
     tiles = []
     for t in d["tiles"]:
         tiles.append(f'<button class="pc-tile" type="button" data-pc-go="fin" data-pc-row="{esc(t["id"])}">'
                      f'<span class="pc-tile-l">{esc(t["label"])} <em>{esc(t["q"])}</em></span>'
                      f'<span class="pc-tile-v">{esc(t["value"])} <i class="pc-{t["dir"]}">{ARROW[t["dir"]]}</i></span>'
-                     f'{spark(t["series"])}<span class="pc-tile-o">{"공시" if t["origin"] == "공시 자동" else "취재"}</span></button>')
-    h.append('<section class="pc-card pc-c4" aria-labelledby="pcH4"><h3 id="pcH4">④ KPI'
-             f'<span class="pc-tag">분기 · 추세</span></h3><div class="pc-tiles">{"".join(tiles)}</div>'
+                     f'{spark(t["series"])}<span class="pc-tile-o">'
+                     f'{esc(L(lang, "pc.o.disc" if t.get("originId") == "auto" else "pc.o.probe"))}</span></button>')
+    h.append(f'<section class="pc-card pc-c4" aria-labelledby="pcH4"><h3 id="pcH4">{esc(L(lang, "pc.h4"))}'
+             f'<span class="pc-tag">{esc(L(lang, "pc.h4_tag"))}</span></h3><div class="pc-tiles">{"".join(tiles)}</div>'
              f'<div class="pc-mark-row">{MARK}</div></section>')
     # ⑤
     trs = []
     for t in (d["triggers"] or [])[:3]:
         trs.append(f'<button class="pc-trig" type="button" data-pc-open="triggers" data-pc-id="{esc(t["id"])}">'
                    f'<span class="pc-trig-d">{esc(t["when"])}</span>'
-                   f'<span class="pc-trig-n"><b>{esc(t["id"])}</b> {esc(t["name"])}</span>'
-                   f'<span class="pc-trig-e">{esc(t["expected"])}</span></button>')
-    h.append('<section class="pc-card pc-c5" aria-labelledby="pcH5"><h3 id="pcH5">⑤ 다음에 볼 것'
-             f'<span class="pc-tag">트리거 · 예상일 근거</span></h3><div class="pc-trigs">{"".join(trs)}</div></section>')
+                   f'<span class="pc-trig-n"><b>{esc(t["id"])}</b> {C(lang, t["name"])}</span>'
+                   f'<span class="pc-trig-e">{C(lang, t["expected"])}</span></button>')
+    h.append(f'<section class="pc-card pc-c5" aria-labelledby="pcH5"><h3 id="pcH5">{esc(L(lang, "pc.h5"))}'
+             f'<span class="pc-tag">{esc(L(lang, "pc.h5_tag"))}</span></h3><div class="pc-trigs">{"".join(trs)}</div></section>')
     h.append('</div>')
     # 패널 · 서랍
     tabs = "".join(f'<button class="pc-seg" type="button" role="tab" data-pc-panel="{p["id"]}" aria-selected="false">'
                    f'<kbd>{i + 1}</kbd>{esc(p["ko"])}</button>' for i, p in enumerate(d["panels"]))
-    h.append(f'<div class="pc-segs" role="tablist" aria-label="근거 패널">{tabs}</div>')
+    h.append(f'<div class="pc-segs" role="tablist" aria-label="{esc(L(lang, "pc.segs_aria"))}">{tabs}</div>')
     h.append('<div class="pc-panel" id="pcPanel" role="tabpanel"></div>')
     h.append('<aside class="pc-drawer" id="pcDrawer" aria-hidden="true" tabindex="-1">'
-             '<div class="pc-drawer-h"><button type="button" class="pc-nav" data-pc-step="-1" aria-label="이전 항목">←</button>'
-             '<button type="button" class="pc-nav" data-pc-step="1" aria-label="다음 항목">→</button>'
+             f'<div class="pc-drawer-h"><button type="button" class="pc-nav" data-pc-step="-1" aria-label="{esc(L(lang, "pc.prev"))}">←</button>'
+             f'<button type="button" class="pc-nav" data-pc-step="1" aria-label="{esc(L(lang, "pc.next"))}">→</button>'
              '<span class="pc-drawer-t" id="pcDrawerT"></span>'
-             '<button type="button" class="pc-x" id="pcDrawerX" aria-label="닫기(Esc)">✕</button></div>'
+             f'<button type="button" class="pc-x" id="pcDrawerX" aria-label="{esc(L(lang, "pc.close"))}">✕</button></div>'
              '<div class="pc-drawer-b" id="pcDrawerB"></div></aside>')
     h.append('<div class="pc-scrim" id="pcScrim" hidden></div>')
     h.append('</div>')
@@ -869,7 +929,7 @@ def short_name(name):
     return re.split(r"\s+[—–-]\s+|\s*·\s*|\(", name or "")[0].strip()[:40]
 
 
-def render(ar, today=None, **kw):
-    """→ (관제판 HTML, PROBE_DATA, 보고서 덩어리)."""
-    data, reports = build(ar, today=today, **kw)
-    return cockpit_html(data), data, reports
+def render(ar, today=None, lang="ko", **kw):
+    """→ (관제판 HTML, PROBE_DATA, 보고서 덩어리). lang 은 i18n.LANGS 중 하나(기본 ko)."""
+    data, reports = build(ar, today=today, lang=lang, **kw)
+    return cockpit_html(data, lang), data, reports

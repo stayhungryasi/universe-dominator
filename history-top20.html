@@ -1,6 +1,66 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="light">
 <head>
+<script id="uvx-i18n-v1">
+(function(){
+var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
+function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
+  s = pick(s, p ? p.n : undefined);
+  if (p) s = String(s).replace(/\{(\w+)\}/g, function(m, x){ return p[x] != null ? p[x] : m; });
+  return s; }
+function TP(pre){ var o = {}; for (var k in M) if (k.indexOf(pre) === 0) o[k.slice(pre.length)] = M[k]; return o; }
+var es = L === 'es', ja = L === 'ja', ko = L === 'ko';
+function dec(s){ return es ? String(s).replace('.', ',') : String(s); }
+function num(v, d){ if (typeof v !== 'number' || !isFinite(v)) return '—';
+  if (d == null) d = (Math.abs(v) >= 100 || v % 1 === 0) ? 0 : 1;
+  return v.toLocaleString("ko-KR", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function mc(b){ if (typeof b !== 'number' || !isFinite(b)) return '—';
+  if (ja) return b >= 1000 ? (b / 1000).toFixed(2) + '兆ドル' : Math.round(b * 10).toLocaleString('ja-JP') + '億ドル';
+  var pre = es ? 'US$' : '$';
+  return b >= 1000 ? pre + dec((b / 1000).toFixed(2)) + 'T' : pre + Math.round(b) + 'B'; }
+var CCY = (function(){ var d = "KRW"; try { var s = localStorage.getItem('uvx-ccy'); if (s && R[s]) d = s; } catch (e) {} return d; })();
+function local(b){ if (typeof b !== 'number' || !isFinite(b)) return '';
+  var r = R[CCY]; if (CCY === 'USD' || !r) return '';
+  var v = b * r;                                 // 십억 단위 현지 통화
+  if (CCY === 'KRW') { var jo = v / 1000; return ko ? (jo >= 1000 ? (jo / 1000).toFixed(1) + U.cheonjo_won : jo.toFixed(0) + U.jo_won)
+      : ja ? Math.round(v * 10).toLocaleString('ja-JP') + '億ウォン' : '₩' + dec((v / 1000).toFixed(0)) + 'T'; }
+  if (CCY === 'JPY') { var cho = v / 1000; return ja ? (cho >= 100 ? cho.toFixed(0) : cho.toFixed(1)) + '兆円'
+      : ko ? Math.round(cho).toLocaleString('ko-KR') + U.jo_yen : '¥' + dec(cho.toFixed(cho >= 100 ? 0 : 1)) + 'T'; }
+  var sym = CCY === 'EUR' ? '€' : CCY === 'MXN' ? 'MX$' : CCY + ' ';
+  if (ja) return (v >= 1000 ? (v / 1000).toFixed(2) + '兆' : Math.round(v * 10).toLocaleString('ja-JP') + '億') + (CCY === 'EUR' ? 'ユーロ' : 'ペソ');
+  if (ko) return sym + (v >= 1000 ? (v / 1000).toFixed(2) + 'T' : Math.round(v) + 'B');
+  return sym + (v >= 1000 ? dec((v / 1000).toFixed(2)) + 'T' : Math.round(v) + 'B'); }
+function bn(v){ if (typeof v !== 'number' || !isFinite(v)) return '—';   /* 십억 달러 — i18n.usd_bn 과 같은 규칙 */
+  var sg = v < 0 ? '−' : '', a = Math.abs(v);
+  if (ko) return a >= 1000 ? sg + '$' + (a / 1000).toFixed(1) + U.jo : sg + '$' + Math.round(a * 10).toLocaleString('ko-KR') + U.eok;
+  if (ja) return a >= 1000 ? sg + (a / 1000).toFixed(1) + '兆ドル' : sg + Math.round(a * 10).toLocaleString('ja-JP') + '億ドル';
+  var pre = es ? 'US$' : '$';
+  return a >= 1000 ? sg + pre + dec((a / 1000).toFixed(1)) + 'T' : sg + pre + Math.round(a).toLocaleString("ko-KR") + 'B'; }
+function pct(v, d){ return (typeof v !== 'number' || !isFinite(v)) ? '—' : dec((v * 100).toFixed(d == null ? 0 : d)) + '%'; }
+var MON = { en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            es: ['ene','feb','mar','abr','may','jun','jul','ago','sept','oct','nov','dic'] };
+function date(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if (!m) return iso ? String(iso) : '—';
+  var y = +m[1], mo = +m[2], d = +m[3];
+  if (ko) return m[1] + '.' + m[2] + '.' + m[3];
+  if (L === 'en') return MON.en[mo - 1] + ' ' + d + ', ' + y;
+  if (es) return d + ' ' + MON.es[mo - 1] + ' ' + y;
+  return y + '年' + mo + '月' + d + '日'; }
+function md(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if (!m) return '—';
+  var mo = +m[2], d = +m[3]; return L === 'en' ? MON.en[mo - 1] + ' ' + d : es ? d + '/' + mo : mo + '/' + d; }
+var HAN = /[\uac00-\ud7a3]/;
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식으로 감싼다. 화면 문구(chrome)에는 쓰지 않는다 */
+function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1">' + h + '<\/span>' : h; }
+/* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
+function TXB(html, tag){ tag = tag || 'div';
+  if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
+  return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK하이닉스", "005930.KS": "삼성전자", "WMT": "월마트", "XOM": "엑슨모빌"},
+  esc: esc, rates: R, ccy: CCY, intl: "ko-KR" };
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>우주지배자 변동 이력 · 우주지배자</title>
@@ -527,6 +587,33 @@ document.addEventListener('DOMContentLoaded', function () {
 .ud-index-date{color:var(--text-muted);font-weight:700;font-size:12px;margin-right:8px;font-variant-numeric:tabular-nums}
 </style>
 
+<!-- uvx-hreflang-v1 -->
+<link rel="canonical" href="https://univertrix.com/history-top20">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/history-top20">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://univertrix.com/history-top20">
+<style id="uvx-i18n-css">
+/* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
+.uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
+.uvx-lang>summary::-webkit-details-marker{display:none}
+.uvx-lang>summary:hover,.uvx-lang[open]>summary{color:var(--gold)}
+.uvx-lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:80;min-width:150px;background:var(--bg-card);border:1px solid var(--line-strong);border-radius:12px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.uvx-lang-menu a{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:8px;font-size:13px;font-weight:700;color:var(--text);text-decoration:none}
+.uvx-lang-menu a:hover{background:var(--gold-bg);color:var(--gold)}
+.uvx-lang-menu a[aria-current="true"]{color:var(--gold)}
+.uvx-lang-menu a small{color:var(--text-muted);font-weight:800;letter-spacing:.06em}
+.uvx-band{display:flex;align-items:center;justify-content:center;gap:12px;padding:7px 16px;background:var(--gold-bg);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--text)}
+.uvx-band a{color:var(--gold);text-decoration:none;font-weight:800}
+.uvx-band button{border:0;background:none;color:var(--text-muted);font:inherit;font-size:15px;cursor:pointer;padding:0 4px}
+.uvx-pending{display:block;width:fit-content;margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px dashed var(--line-strong);border-radius:100px;padding:2px 9px}
+.uvx-pagepending{max-width:1080px;margin:10px auto 0;padding:0 20px;font-size:12.5px;font-weight:700;color:var(--text-muted)}
+/* 로고 — 붓글씨 '우주지배자'는 ko 전용. 다른 언어는 같은 자리에 언어 부제(오로라 광 스윕 그대로) */
+.uvx-kr.uvx-sub{font-family:inherit;font-size:13.5px;font-weight:300;letter-spacing:.08em}
+@media(max-width:760px){.uvx-kr.uvx-sub{font-size:11px;letter-spacing:.04em}}
+/* 서체 — Pretendard 단일 + ja 는 Noto Sans JP 폴백 (위계는 굵기) */
+html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans JP',-apple-system,sans-serif}
+</style>
 </head>
 <body>
 
@@ -547,20 +634,13 @@ document.addEventListener('DOMContentLoaded', function () {
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 10:17 · 출처 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 10:17 · 출처 FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 10:17 · 출처 FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 10:17 · 출처 frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
+      <details class="uvx-lang"><summary aria-label="언어">KO</summary><div class="uvx-lang-menu"><a href="history-top20.html" hreflang="ko" lang="ko" aria-current="true">한국어<small>KO</small></a><a href="en/history-top20.html" hreflang="en" lang="en">English<small>EN</small></a><a href="es/history-top20.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="ja/history-top20.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
     </div>
   </div>
 </header>
 
 <nav class="site-nav">
-  <div class="site-nav-inner container">
-    <a href="index.html" class="nav-tab active">우주지배자</a>
-    <a href="latent.html" class="nav-tab ">잠재지배자</a>
-    <a href="megatrend.html" class="nav-tab">메가트렌드</a>
-    <a href="research.html" class="nav-tab">리서치</a>
-    <a href="observatory.html" class="nav-tab">데이터 천문대</a>
-    <a href="community.html" class="nav-tab">관제센터</a><a href="journal.html" class="nav-tab">관측노트</a><a href="pioneers.html" class="nav-tab">개척자</a>
-  </div>
+  <div class="site-nav-inner container"><a href="index.html" class="nav-tab active">우주지배자</a><a href="latent.html" class="nav-tab">잠재지배자</a><a href="megatrend.html" class="nav-tab">메가트렌드</a><a href="research.html" class="nav-tab">리서치</a><a href="observatory.html" class="nav-tab">데이터 천문대</a><a href="community.html" class="nav-tab">관제센터</a><a href="journal.html" class="nav-tab">관측노트</a><a href="pioneers.html" class="nav-tab">개척자</a></div>
 </nav>
 
 <main class="container">
@@ -1399,7 +1479,7 @@ if (DATA.entries && DATA.entries.length > 0) {
             el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
             ft.appendChild(el);
           }
-          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> 지금 ' + n + '명이 우주를 관측 중';
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> ' + T('common.presence', {n: n});
         }
       } catch (e) {}
     };
@@ -1408,6 +1488,32 @@ if (DATA.entries && DATA.entries.length > 0) {
     setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
   } catch (e) {}
 })();
+</script>
+<script id="uvx-band">
+(function(){
+  try {
+    var LANGS = {"ko": {"go": "한국어로 보기 →", "close": "닫기"}, "en": {"go": "View in English →", "close": "Close"}, "es": {"go": "Ver en español →", "close": "Cerrar"}, "ja": {"go": "日本語で見る →", "close": "閉じる"}}, cur = document.documentElement.lang, K = 'uvx-band-off';
+    try { if (localStorage.getItem(K)) return; } catch (e) {}
+    var want = ((navigator.languages && navigator.languages[0]) || navigator.language || '').slice(0, 2).toLowerCase();
+    if (!want || want === cur || !LANGS[want]) return;
+    var a = document.querySelector('.uvx-lang-menu a[hreflang="' + want + '"]');
+    if (!a) return;
+    var b = document.createElement('div');
+    b.className = 'uvx-band'; b.setAttribute('lang', want);
+    var link = document.createElement('a');
+    link.href = a.getAttribute('href') + location.hash; link.textContent = LANGS[want].go;
+    var x = document.createElement('button'); x.type = 'button'; x.textContent = '×';
+    x.setAttribute('aria-label', LANGS[want].close);
+    x.onclick = function(){ try { localStorage.setItem(K, '1'); } catch (e) {} b.remove(); };
+    b.appendChild(link); b.appendChild(x);
+    document.body.insertBefore(b, document.body.firstChild);
+  } catch (e) {}
+})();
+/* 언어 전환기 — 같은 페이지 · 같은 해시로 */
+document.addEventListener('click', function(ev){
+  var a = ev.target.closest && ev.target.closest('.uvx-lang-menu a');
+  if (a && location.hash) { ev.preventDefault(); location.href = a.getAttribute('href') + location.hash; }
+});
 </script>
 </body>
 </html>

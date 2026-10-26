@@ -207,8 +207,9 @@ def main():
     _cw = [float(w) for w in _re_lg.findall(r"width:(\d+(?:\.\d+)?)%", _cg.group(1))] if _cg else []
     check("레전드 표: colgroup 6칸 · 합 100%", (len(_cw), sum(_cw)), (6, 100.0))
     check("레전드 표: 전환율·ROE 원인 비고는 셀이 아니라 비고 줄로",
-          ("'전환율: ' + b.conv_note" in _ob, "'ROE: ' + roeN" in _ob,
-           "esc(b.conv_note) + '</div>'" in _ob, "esc(b.roe_note) + '</div>'" in _ob),
+          ("T('lg.note.conv') + b.conv_note" in _ob, "T('lg.note.roe') + roeN" in _ob,
+           "esc(b.conv_note) + '</div>'" in _ob or "TX(b.conv_note) + '</div>'" in _ob,
+           "esc(b.roe_note) + '</div>'" in _ob or "TX(b.roe_note) + '</div>'" in _ob),
           (True, True, False, False))
     check("레전드 표: 480px 규칙이 버핏존(마지막 칸)을 숨기지 않는다(예외 규칙)",
           ".px-table.lg-table th:last-child, .px-table.lg-table td:last-child" in _css, True)
@@ -1012,6 +1013,12 @@ def main():
     # 2026-11-14 는 토요일 → 마감은 11/16(월). 화면 D-23 → 실제 D-25.
     # 표시층 함수를 그대로 node 로 돌린다(같은 로직을 파이썬으로 두 벌 두지 않는다).
     import re as _re4, shutil as _sh4, subprocess as _sp4
+    # 표시층 JS 는 화면 문장을 T()·UVX 서식기로 부른다 — node 실측 구간 앞에 ko 런타임(전 키)을 붙인다
+    import i18n as _i18n
+    _I18N_KO = ("var window = {}; var localStorage = {getItem: function(){ return null; }};" +
+                _i18n.runtime_js("ko", sorted(_i18n.catalog("ko")), {"USD": 1})
+                .replace('<script id="uvx-i18n-v1">', "").replace("</script>", "").replace("<" + chr(92) + "/", "</") +
+                ";var T = window.T, TP = window.TP, TX = window.TX, TXB = window.TXB, UVX = window.UVX;")
     _tpl4 = (Path(__file__).parent / "observatory-template.html").read_text(encoding="utf-8")
     _m4 = _re4.search(r"/\* lg13f-begin.*?/\* lg13f-end \*/", _tpl4, _re4.S)
     check("F4 13F: 표시층에서 순수 함수 구간을 찾는다", _m4 is not None, True)
@@ -1020,7 +1027,7 @@ def main():
     if _m4 is not None and _sh4.which("node") is None:
         check("F4 13F: node 필요(표시층 날짜 계산 실측)", None, "node")
     elif _m4 is not None:
-        _js4 = _m4.group(0) + """
+        _js4 = _I18N_KO + _m4.group(0) + """
 const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' +
   String(d.getDate()).padStart(2, '0');
 const cases = [[2026, 9, 22], [2026, 10, 17], [2027, 3, 1], [2026, 10, 16], [2026, 7, 14]];
@@ -1055,7 +1062,8 @@ console.log(JSON.stringify(cases.map(c => {
     # 말하는 것.** 서한에서 온 것은 생각이다 — 1992(쿠폰은 분석가가 추정)·2000(무위험금리 =
     # 장기 국채, 추정 불가 사업의 자본 투입은 투기)·1997(햄버거 퀴즈).
     _F5_BAN = ("서한의 눈금", "주주서한의 셈법", "모든 투입은 투기")
-    for _src5 in ("scripts/observatory-template.html", "observatory.html"):
+    # 2026-10-26 4개 언어: 화면 문장은 템플릿이 아니라 ko 카탈로그(정본)에 있다 — 정본과 산출물을 본다
+    for _src5 in ("data/i18n/ko.json", "observatory.html"):
         _p5 = Path(__file__).parent.parent / _src5
         if not _p5.exists():
             check(f"F5 귀속: {_src5} 존재", False, True)
@@ -1096,11 +1104,13 @@ console.log(JSON.stringify(cases.map(c => {
                                   "buffett": {"eps_adj_ttm": 15.43, "g_cagr3y": 0.2,
                                               "g_forward": 0.175}}, 431.89, {"UST10": 5.12})
         _data6 = {"buffett": {"items": [
-            {"ticker": "NVDA", "name": "NVIDIA", "type": "추정불가", "bench": _nv6, "currency": "USD"},
-            {"ticker": "TSM", "name": "TSMC", "type": "플라이트세이프티형", "bench": _ts6,
+            {"ticker": "NVDA", "name": "NVIDIA", "type": "추정불가", "type_id": "too_hard",
+             "uncertain": True, "bench": _nv6, "currency": "USD"},
+            {"ticker": "TSM", "name": "TSMC", "type": "플라이트세이프티형", "type_id": "flight",
+             "uncertain": False, "bench": _ts6,
              "currency": "USD"}], "rates": {"UST10": 5.12}, "generated_label": "x"},
             "legend": {"NVDA": {"origin": {}}, "TSM": {"origin": {}}}, "legend_meta": {}}
-        _js6 = ("const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;')"
+        _js6 = (_I18N_KO + "const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;')"
                 ".replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');"
                 "const host = {innerHTML: ''}; const document = {getElementById: () => host};"
                 "const DATA = " + _j6.dumps(_data6, ensure_ascii=False) + ";"
@@ -2119,7 +2129,8 @@ console.log(JSON.stringify(cases.map(c => {
     import build_site as _bs
 
     _INJECTORS = ("fix_nav", "inject_footer_links", "inject_presence",
-                  "inject_header_fix", "inject_aurora_tokens", "inject_macro_badges")
+                  "inject_header_fix", "inject_aurora_tokens", "inject_macro_badges",
+                  "inject_i18n")
 
     check("ALL_PAGES: 상수 존재", isinstance(getattr(_bs, "ALL_PAGES", None), tuple), True)
     check("ALL_PAGES: 중복 없음",
@@ -2237,8 +2248,8 @@ console.log(JSON.stringify(cases.map(c => {
     _vp_src = _inspect.getsource(_vp)
     check("관문: build_site 를 import 하지 않는다",
           ("import build_site" in _vp_src or "from build_site" in _vp_src), False)
-    check("관문: 마커 6종을 스스로 들고 있다(2026-09-26 시장 지표 띠 추가)",
-          len(_vp.MARKERS), 6)
+    check("관문: 마커 8종을 스스로 들고 있다(2026-09-26 시장 지표 띠 · 2026-10-26 다국어 2종 추가)",
+          len(_vp.MARKERS), 8)
     # 시장 지표 띠의 배지 5개도 페이지에 있어야 한다 — 정상 페이지 픽스처에 함께 싣는다
     _badges = "".join(f'data-mk="{k}"' for k in _vp.MACRO_BADGE_KEYS)
     check("관문: 정상 페이지는 통과",
@@ -2754,7 +2765,8 @@ console.log(JSON.stringify(cases.map(c => {
     except Exception as _ce:
         check("관제실: 렌더", f"{type(_ce).__name__}: {str(_ce)[:80]}", "ok")
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
-                 "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit"):
+                 "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit",
+                 "test_i18n"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)

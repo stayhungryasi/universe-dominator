@@ -13,6 +13,16 @@
 - 3D: Three.js r128 (observatory-template.html의 boot3d), 텍스처 `assets/textures/`
 - 호스팅: Cloudflare Pages
 
+## 4개 언어 관측소 (2026-10-26 UNIVERTRIX GLOBAL — 설계서 `docs/i18n/PLAN.md`)
+- 빌드는 `i18n.LANGS × ALL_PAGES`: ko → 루트(**주소 불변** — 텔레그램 링크 보호), en/es/ja → `/en/` `/es/` `/ja/` 같은 파일명. 강제 리다이렉트 금지, 첫 방문 안내 띠만
+- 화면 문구는 **카탈로그** `data/i18n/{ko,en,es,ja}.json`(키 = 의미 단위, ko 가 정본). 템플릿은 HTML `{{t:키}}` · JS `T('키', {n})` · `TP('접두사.')`. 동적 키는 `i18n-keys: px.*` 힌트 주석으로 런타임에 싣는다
+- 런타임(`uvx-i18n-v1`)은 head 첫머리 — `T`·`UVX.mc/bn/local/pct/date/md` 서식기 + 그 페이지가 쓰는 키만. 서식 규칙은 `i18n.py` 파이썬 판과 JS 판이 같아야 한다(test_i18n 이 node 로 대조)
+- 데이터 현지화는 **빌드에서**: 지역·국가명(카탈로그) · 한국어 종목명(`data/i18n/names.json`). 콘텐츠(칼럼 등)는 번역 캐시가 없으면 원문 + `lang="ko" data-uvx-pending` 표식 — JS 에서는 콘텐츠 문자열에 `TX()`/`TXB()`, 화면 문구에는 `T()`
+- 상태값 → 화면 이름은 **기계 id** 로: 판단층의 한국어 상태값(추정불가·대기·달성 등)은 빌드가 id 를 붙이고(type_id·uncertain·cls·method_id) 화면은 카탈로그로 만든다. 한국어 문장을 키로 번역 매핑하지 않는다(규칙 8)
+- 새 페이지 추가는 기존 3단계 + ④ 화면 문구를 카탈로그 키로 ⑤ 다 되면 `i18n.DONE_PAGES` 등재(그 전까지 en/es/ja 는 noindex + '번역 준비 중' 띠)
+- 관문: G2 숫자(`i18n_numbers` — 숫자 규율 `check_numbers` 를 양방향 재사용) · G4 준법(`i18n_compliance.purpose` — 문장의 목적, 4개 언어 한 함수) · 산출물 한글 0 · hreflang 상호성 → `test_i18n`(selftest 묶음) · 렌더 실측은 `scripts/check_i18n_render.py`(로컬, Playwright)
+- 지뢰: 파이썬이 JS 를 생성할 때 ko 단위 낱말('조원')을 런타임 코드에 박으면 en 산출물에 한글이 남는다 → `i18n.UNITS` 언어별 사전으로. 판단층 유형 이름은 자유 문장('씨즈형·고자본 혼합')이라 **정확히 일치할 때만** id — 포함 검사로 id 를 붙이면 ko 화면의 수식어가 잘린다(2026-10-26 회귀 실측)
+
 ## 디자인 확정 스펙 (오로라, 2026-08 확정 — 임의 변경 금지)
 - 낮: 스노우 #FBFBFC / 그래파이트 #16181D / 카드 #F5F5F7
 - 밤: 우주 블랙 #0A0B0F / #F4F5F8 / 카드 #12141B

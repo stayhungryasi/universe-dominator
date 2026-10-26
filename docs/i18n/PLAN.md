@@ -86,6 +86,7 @@
 1. 용어 사전 확정(`data/i18n/glossary.json`, 현재 '초안')
 2. es 기본 통화 — 기본안 USD
 3. es 금액 표기 — 지시대로 `US$5,09T`(T·B). 스페인어 'billón'=10¹² 와 혼동 소지 → 'B' 대신 'mil M' 을 쓸지
-4. 로고 부제 문구(en 'Universe Sovereigns' 등)
+4. 로고 부제 문구 — 기본안 en 'Sovereigns' · es 'Soberanos' · ja '宇宙の覇者'('Universe Sovereigns' 는 1440px 헤더 계기판을 밀어내 탈락)
 5. 정책·소개 문서 번역본 법적 검수(단계 2)
-6. 번역 모델 — 지시 기본 Haiku 4.5. Haiku 5.5 가 입력·출력 모두 1/10 단가 → 관문 통과율을 보고 전환할지
+6. 시차 관측 존 이름 en/es — 탐색·본격·관망·고평가 → Explore·Focus·Watch·Overvalued ('본격'을 'Commit' 으로 옮기면 행동 권유처럼 읽혀 'Focus' 로)
+7. 번역 모델 — 지시 기본 Haiku 4.5. Haiku 5.5 가 입력·출력 모두 1/10 단가 → 관문 통과율을 보고 전환할지

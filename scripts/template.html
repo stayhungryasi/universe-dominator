@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>우주지배자</title>
-<meta name="description" content="글로벌 시가총액 TOP 종목. 매일 자동 갱신.">
+<title>{{t:idx.title}}</title>
+<meta name="description" content="{{t:idx.meta_desc}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 /* ────────── 라이트 테마 (시안 A · Ivory Editorial) ────────── */
@@ -1029,11 +1029,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <span class="update-badge">{{FETCHED_DATE}}</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW" 
          target="_blank" rel="noopener" class="rate-badge" 
-         title="네이버 실시간 환율 보기">
+         title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
@@ -1059,24 +1059,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <div class="solar-hero">
   <div class="solar-wrap" id="s3wrap">
-    <div id="s3load">☀️ 태양계 정렬 중…</div>
+    <div id="s3load">{{t:solar.loading}}</div>
     <div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
     <div class="solar-tip" id="solarTip"></div>
     <div class="s3hint" id="s3hint"></div>
     <div class="hero-ov"><div class="ov-in">
       <div class="ov-top">
         <div>
-          <div class="ov-stage">STAGE 0 · <b>LIFTOFF</b> — 진입</div>
-          <div class="ov-date" style="margin-top:6px">DAY {{FETCHED_DATE}} · 매일 아침 다시 그려집니다</div>
-          <h1>우주지배자</h1>
-          <p class="ov-sub">글로벌 시가총액 TOP 종목, 매일 갱신</p>
+          <div class="ov-stage">STAGE 0 · <b>LIFTOFF</b> — {{t:idx.stage0}}</div>
+          <div class="ov-date" style="margin-top:6px">DAY {{FETCHED_DATE}} · {{t:idx.redrawn}}</div>
+          <h1>{{t:idx.h1}}</h1>
+          <p class="ov-sub">{{t:idx.sub}}</p>
         </div>
-        <a href="about.html" class="ov-about">About →</a>
+        <a href="about.html" class="ov-about">{{t:idx.about}}</a>
       </div>
-      <div class="ov-legend">오늘의 태양계 — 행성 크기 = 시총 · 태양 = 왕좌</div>
+      <div class="ov-legend">{{t:idx.legend}}</div>
     </div></div>
     <div class="hero-fade" aria-hidden="true"></div>
-    <button type="button" class="hero-scroll" id="heroScroll" aria-label="아래로 스크롤">
+    <button type="button" class="hero-scroll" id="heroScroll" aria-label="{{t:common.scrolldown}}">
       <span class="hs-chev" aria-hidden="true">⌄</span>
       <span class="hs-label">SCROLL</span>
     </button>
@@ -1087,45 +1087,45 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <main class="container">
 
 <section class="hero" id="stage1">
-  <div class="stage-k">STAGE 1 · <b>MAX-Q</b> — 왕좌, 최대 압력 구간</div>
+  <div class="stage-k">STAGE 1 · <b>MAX-Q</b> — {{t:idx.stage1}}</div>
 
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-label">TOP 20 합계</div>
+      <div class="stat-label">{{t:idx.stat.sum}}</div>
       <div class="stat-value">{{TOP20_SUM}}</div>
       <div class="stat-sub">USD</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">현재 1위</div>
+      <div class="stat-label">{{t:idx.stat.top1}}</div>
       <div class="stat-value">{{TOP1_MC}}</div>
       <div class="stat-sub">{{TOP1_NAME}}</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">조 단위 클럽</div>
-      <div class="stat-value">{{TRILLION_COUNT}}<span class="unit">개사</span></div>
-      <div class="stat-sub">$1T 이상</div>
+      <div class="stat-label">{{t:idx.stat.tclub}}</div>
+      <div class="stat-value">{{TRILLION_COUNT}}<span class="unit">{{t:idx.stat.unit}}</span></div>
+      <div class="stat-sub">{{t:idx.stat.tclub_sub}}</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">왕좌 격차</div>
+      <div class="stat-label">{{t:idx.stat.gap}}</div>
       <div class="stat-value" id="throneGapVal">—</div>
-      <div class="stat-sub" id="throneGapSub">1위 − 2위</div>
+      <div class="stat-sub" id="throneGapSub">{{t:idx.stat.gap_sub}}</div>
     </div>
   </div>
 </section>
 
 <section class="throne-sec">
-  <div class="throne-who">오늘의 왕좌 — <b id="throneName">—</b></div>
+  <div class="throne-who">{{t:idx.throne}} — <b id="throneName">—</b></div>
   <div class="throne-num" id="throneNum">—</div>
   <div class="throne-sub" id="throneSub">&nbsp;</div>
 </section>
 
 <section class="section" id="stage2">
-  <div class="stage-k">STAGE 2 · <b>ORBIT</b> — 궤도 진입</div>
+  <div class="stage-k">STAGE 2 · <b>ORBIT</b> — {{t:idx.stage2}}</div>
   <div class="section-head">
     <h2 class="section-title">TOP 20</h2>
-    <a href="history-top20.html" class="history-btn">History <span class="history-btn-arrow">→</span></a>
+    <a href="history-top20.html" class="history-btn">{{t:idx.history}} <span class="history-btn-arrow">→</span></a>
   </div>
-  <p class="section-desc">탭을 눌러서 지역별 전환 가능</p>
+  <p class="section-desc">{{t:idx.tabs_hint}}</p>
   <div class="tabs-wrap">
     <div class="tabs-scroll">
       <div class="tabs" id="regionTabs"></div>
@@ -1136,22 +1136,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 <section class="section" id="stage3">
-  <div class="stage-k">STAGE 3 · <b>TELEMETRY</b> — 지상 수신</div>
+  <div class="stage-k">STAGE 3 · <b>TELEMETRY</b> — {{t:idx.stage3}}</div>
   <div class="section-head">
-    <h2 class="section-title">오늘의 신호</h2>
+    <h2 class="section-title">{{t:idx.signals}}</h2>
     <div class="head-btns">
-      <a href="research.html#signals" class="history-btn">신호 관측소 <span class="history-btn-arrow">→</span></a>
-      <a href="research.html#dissect" class="history-btn">필독 해부실 <span class="history-btn-arrow">→</span></a>
-      <a href="observatory.html#columns" class="history-btn">관측일지 <span class="history-btn-arrow">→</span></a>
+      <a href="research.html#signals" class="history-btn">{{t:nav.signals}} <span class="history-btn-arrow">→</span></a>
+      <a href="research.html#dissect" class="history-btn">{{t:nav.dissect}} <span class="history-btn-arrow">→</span></a>
+      <a href="observatory.html#columns" class="history-btn">{{t:obs.tab.columns}} <span class="history-btn-arrow">→</span></a>
     </div>
   </div>
   <div class="sig-grid" id="sigGrid"></div>
 </section>
 
 <section class="next-sec" id="stage4">
-  <div class="nk">STAGE 4 · LANDING — 다음 발사까지</div>
+  <div class="nk">STAGE 4 · LANDING — {{t:idx.stage4}}</div>
   <div class="nt" id="nextTm">--:--:--</div>
-  <p>부스터는 매일 아침 8시에 다시 섭니다 — 우주의 질서가 재기록됩니다</p>
+  <p>{{t:idx.booster}}</p>
 </section>
 
 </main>
@@ -1166,16 +1166,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <div class="disclaimer-box">
     <div class="disclaimer-label">Disclaimer</div>
     <ul class="disclaimer-list">
-      <li>본 자료는 글로벌 상장기업의 시가총액 정보 제공을 목적으로 합니다.</li>
-      <li>특정 종목의 매수·매도 권유 또는 투자 자문·중개·알선에 해당하지 않습니다.</li>
-      <li>표시된 데이터는 외부 출처를 인용한 것으로, 정확성·완전성·시의성을 보증하지 않습니다.</li>
-      <li>환율 및 시가총액은 시점에 따라 변동될 수 있습니다.</li>
-      <li>모든 투자 판단과 그에 따른 손익은 전적으로 투자자 본인에게 귀속됩니다.</li>
+      <li>{{t:disc.mc1}}</li>
+      <li>{{t:disc.mc2}}</li>
+      <li>{{t:disc.mc3}}</li>
+      <li>{{t:disc.mc4}}</li>
+      <li>{{t:disc.mc5}}</li>
     </ul>
   </div>
   
   <p class="footer-source">
-    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 매일 08:00 KST 자동 갱신
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · {{t:idx.source_tail}}
   </p>
 </footer>
 
@@ -1190,16 +1190,9 @@ function toggleTheme() {
 const DATA = {{DATA_JSON}};
 const PREV = {{PREV_JSON}};  // 전일 스냅샷 (build_site 주입)
 
-const fmtMC = (mc) => {
-  if (mc >= 1000) return '$' + (mc / 1000).toFixed(2) + 'T';
-  return '$' + mc.toFixed(0) + 'B';
-};
+const fmtMC = (mc) => UVX.mc(mc);   // 언어별 표기(i18n.py 와 같은 규칙)
 const USD_KRW = (DATA.meta && DATA.meta.usd_krw) || 1480;
-const fmtKRW = (mc) => {
-  const krw = mc * (USD_KRW / 1000);
-  if (krw >= 1000) return (krw / 1000).toFixed(1) + '천조원';
-  return krw.toFixed(0) + '조원';
-};
+const fmtKRW = (mc) => UVX.local(mc);   // 관측 위치 통화(ko 원화 · ja 엔화 · en/es 없음)
 
 const tabs = document.getElementById('regionTabs');
 const stockList = document.getElementById('stockList');
@@ -1361,9 +1354,9 @@ function switchRegion(key) {
     if (p && p.mc > 0 && mcNow > 0) {
       const pct = (mcNow / p.mc - 1) * 100;
       const cls = pct > 0.05 ? 'dup' : pct < -0.05 ? 'ddown' : 'dkeep';
-      mcHtml = `<span class="d-mc ${cls}">${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%</span>`;
+      mcHtml = `<span class="d-mc ${cls}">${pct >= 0 ? '+' : ''}${UVX.dec(pct.toFixed(1))}%</span>`;
     }
-    return `<div class="stock-delta" title="전일 대비">${rankHtml}${mcHtml}</div>`;
+    return `<div class="stock-delta" title="${T('idx.vs_prev')}">${rankHtml}${mcHtml}</div>`;
   };
   stockList.innerHTML = stocks.map((s, i) => {
     const mc = s.mc !== undefined ? s.mc : s[3];
@@ -1375,15 +1368,15 @@ function switchRegion(key) {
       <div class="stock-row">
         <div class="stock-rank">${i+1}</div>
         <div class="stock-info">
-          <a href="${stockUrl(ticker, name)}" target="_blank" rel="noopener" class="stock-name">${name}</a>
-          ${s.desc ? `<div class="stock-desc">${s.desc}</div>` : ''}
+          <a href="${stockUrl(ticker, name)}" target="_blank" rel="noopener" class="stock-name">${TX(name)}</a>
+          ${s.desc ? `<div class="stock-desc">${TX(s.desc)}</div>` : ''}
           <div class="stock-meta">
             <span class="stock-flag">${flagFromEmoji(flag)}</span>
             <span>${ticker}</span>
           </div>
         </div>
         ${deltaChip(ticker, i + 1, mc) || '<div class="stock-delta"></div>'}
-        <div class="stock-grav" title="1위 대비 ${(topMC > 0 ? (mc / topMC) * 100 : 0).toFixed(1)}%"><i style="width:${gravPct.toFixed(1)}%"></i></div>
+        <div class="stock-grav" title="${T('idx.vs_top1', {p: UVX.dec((topMC > 0 ? (mc / topMC) * 100 : 0).toFixed(1))})}"><i style="width:${gravPct.toFixed(1)}%"></i></div>
         <div class="stock-mc">
           <div class="stock-mc-usd">${fmtMC(mc)}</div>
           <div class="stock-mc-krw">${fmtKRW(mc)}</div>
@@ -1409,7 +1402,7 @@ if (firstRegion) switchRegion(firstRegion);
   const n0 = earth[0].name !== undefined ? earth[0].name : earth[0][0];
   const n1 = earth[1].name !== undefined ? earth[1].name : earth[1][0];
   gapVal.textContent = fmtMC(mc0 - mc1);
-  if (gapSub) gapSub.textContent = `${n0} − ${n1}`;
+  if (gapSub) gapSub.innerHTML = TX(n0) + ' − ' + TX(n1);
 })();
 
 // 모든 렌더링 끝난 후 국기 이모지 → SVG로 변환 (Windows·Linux 호환)
@@ -1431,9 +1424,10 @@ const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','
   '🇸🇦': ['#9fe89f','#4d9e4d'], '🇨🇳': ['#f2a0a0','#c05555'], '🇳🇱': ['#f0c9a0','#c48a4e'], '🇯🇵': ['#f0a9c8','#c45b8a'] };
 const flagColor = f => FLAG_COLOR[f] || ['#c3b8f0','#7a6cc4'];
 
-const SHORT_NAME = {'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
-  '005930.KS':'삼성전자','000660.KS':'SK하이닉스','TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
-  'LLY':'Eli Lilly','XOM':'엑슨모빌','JNJ':'J&J','WMT':'월마트','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'};
+/* 짧은 이름 — 언어별 고유명사(삼성전자·엑슨모빌 등)는 이름 사전(data/i18n/names.json)이 UVX.short 로 싣는다 */
+const SHORT_NAME = Object.assign({'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
+  'TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
+  'LLY':'Eli Lilly','JNJ':'J&J','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'}, UVX.short || {});
 function shortName(s){
   if (SHORT_NAME[s.ticker]) return SHORT_NAME[s.ticker];
   let n = (s.name || '').replace(/\s*\(.*\)/, '').split(' ')[0];
@@ -1446,7 +1440,7 @@ function loadThree(){
     if (window.THREE) return res();
     const s = document.createElement('script');
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    s.onload = () => res(); s.onerror = () => rej(new Error('three 로드 실패'));
+    s.onload = () => res(); s.onerror = () => rej(new Error('three.js load failed'));
     document.head.appendChild(s);
   });
 }
@@ -1462,16 +1456,16 @@ function cleanupSolar(){
 
 function renderSolar(){
   const stocks = (DATA.earth || []).slice(0, 20);
-  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">데이터 수집 대기 중입니다.</div>'; return; }
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">' + T('obs.wait_data') + '</div>'; return; }
   document.getElementById('obsBody').innerHTML =
     '<div class="solar-wrap" id="s3wrap" style="height:' + (window.innerWidth < 700 ? 480 : 640) + 'px;position:relative;cursor:grab;touch-action:none">' +
-      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">☀️ 태양계 정렬 중…</div>' +
+      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">' + T('solar.loading') + '</div>' +
       '<div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>' +
       '<div class="solar-tip" id="solarTip"></div>' +
-      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? '☝️ 한 손가락 회전 · 두 손가락 확대/축소 · 행성 탭 = 정보' : '🖱 드래그 회전 · 휠 확대/축소') + '</div>' +
+      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? T('solar.hint_touch') : T('solar.hint_mouse')) + '</div>' +
     '</div>' +
-    '<div class="solar-legend">행성 크기 = 시가총액 · 태양 = 현재 왕좌 · 순위가 높을수록 안쪽 궤도 — 행성의 얼굴은 실제 태양계 순서(수성→해왕성→왜소행성)</div>' +
-    '<div class="solar-legend" style="margin-top:4px">매일 아침 다시 그려집니다 ('+esc(DATA.fetched||'')+' 관측) · 텍스처: Solar System Scope(CC BY 4.0)·NASA</div>';
+    '<div class="solar-legend">' + T('solar.legend3d') + '</div>' +
+    '<div class="solar-legend" style="margin-top:4px">' + T('solar.redrawn', {date: esc(DATA.fetched||'')}) + '</div>';
   loadThree().then(() => boot3d(stocks)).catch(() => renderSolarSVG());
 }
 
@@ -1790,14 +1784,14 @@ function boot3d(stocks){
     const lab = document.createElement('div');
     lab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18,0 0 8px #0a0d18;line-height:1.25;white-space:nowrap';
     lab.innerHTML = '<span style="color:#e6ebfa;font-weight:800;font-size:12.5px">'+esc(shortName(p))+'</span>' +
-      (i < 8 ? '<br><span style="color:#93a0c6;font-weight:700;font-size:10.5px">'+(p.mc>=1000?'$'+(p.mc/1000).toFixed(2)+'T':'$'+Math.round(p.mc)+'B')+'</span>' : '');
+      (i < 8 ? '<br><span style="color:#93a0c6;font-weight:700;font-size:10.5px">'+UVX.mc(p.mc)+'</span>' : '');
     document.getElementById('s3labels').appendChild(lab);
     return { mesh, lab, r, orbR, a: (i*137.5)*Math.PI/180, s: 0.0022/(1+i*0.22), spin: 0.002+Math.random()*0.004 };
   });
   // 태양 라벨
   const sunLab = document.createElement('div');
   sunLab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18;line-height:1.3;white-space:nowrap';
-  sunLab.innerHTML = '<span style="color:#ffd873;font-weight:800;font-size:15px">'+esc(shortName(sun))+'</span><br><span style="color:#d4b06a;font-weight:700;font-size:11.5px">$'+(sun.mc/1000).toFixed(2)+'T</span>';
+  sunLab.innerHTML = '<span style="color:#ffd873;font-weight:800;font-size:15px">'+esc(shortName(sun))+'</span><br><span style="color:#d4b06a;font-weight:700;font-size:11.5px">'+UVX.mc(sun.mc)+'</span>';
   document.getElementById('s3labels').appendChild(sunLab);
 
   // 조작 — 드래그 회전 · 휠 줌 · 호버 툴팁
@@ -1822,7 +1816,7 @@ function boot3d(stocks){
       tip.style.display = 'block';
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
       tip.style.top = (e.clientY - rect.top + 14) + 'px';
-      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+(s.mc>=1000?'$'+(s.mc/1000).toFixed(2)+'T':'$'+Math.round(s.mc)+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+UVX.mc(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
       if (hovered && hovered !== hit.object && hovered.material.emissive) hovered.material.emissive.setHex(0x000000);
       hovered = hit.object;
       if (hovered.material.emissive) hovered.material.emissive.setHex(0x33290f);
@@ -1847,7 +1841,7 @@ function boot3d(stocks){
       tip.style.display = 'block';
       tip.style.left = Math.max(6, Math.min(cx - rect.left - 60, rect.width - 230)) + 'px';
       tip.style.top = Math.max(6, cy - rect.top - 90) + 'px';
-      tip.innerHTML = '<b>'+esc(s.name)+'</b> '+esc(s.flag||'')+'<br>'+(s.mc>=1000?'$'+(s.mc/1000).toFixed(2)+'T':'$'+Math.round(s.mc)+'B')+(s.desc?'<br>'+esc(s.desc):'');
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+UVX.mc(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
     } else {
       tip.style.display = 'none';
     }
@@ -1951,24 +1945,24 @@ function colSeed(str){ let h = 2166136261;
   try{
     var E=(DATA.regions.earth&&DATA.regions.earth.stocks)||[];
     if(E.length){var t=E[0];
-      document.getElementById('throneName').textContent=t.name;
-      document.getElementById('throneNum').textContent=t.mc>=1000?'$'+(t.mc/1000).toFixed(2)+'T':'$'+Math.round(t.mc)+'B';
+      document.getElementById('throneName').innerHTML=TX(t.name);
+      document.getElementById('throneNum').textContent=UVX.mc(t.mc);
       var pm=((PREV.earth||{})[(t.ticker||'').toUpperCase()]||{}).mc, sub=[];
-      if(pm){var d=(t.mc/pm-1)*100; sub.push('1D '+(d>=0?'+':'')+d.toFixed(1)+'%');}
-      var cho=t.mc*USD_KRW/1000; sub.push(cho>=1000?(cho/1000).toFixed(1)+'천조원':Math.round(cho)+'조원');
+      if(pm){var d=(t.mc/pm-1)*100; sub.push('1D '+(d>=0?'+':'')+UVX.dec(d.toFixed(1))+'%');}
+      var loc=UVX.local(t.mc); if(loc) sub.push(loc);
       document.getElementById('throneSub').textContent=sub.join(' · ');
     }
   }catch(e){}
   try{
     var S=Array.isArray(SIGNALS)?SIGNALS:[]; var g=document.getElementById('sigGrid');
     if(g) g.innerHTML=S.length? S.map(function(x){
-      var d=String(x.pub||'').slice(5,10).replace('-','.');
+      var d=UVX.lang==='ko'?String(x.pub||'').slice(5,10).replace('-','.'):(x.pub_iso?UVX.md(x.pub_iso):'');
       return '<a class="sig-card" target="_blank" rel="noopener" href="'+esc(x.url||'#')+'">'
-        +'<div class="sig-meta">'+(x.pin?'<span class="sig-pin">필독</span>':'')+'<span>▲'+(x.points||0)+(d?' · '+d:'')+'</span></div>'
-        +'<div class="sig-title">'+esc(x.ko||x.title||'')+'</div></a>';
-    }).join(''):'<div class="sig-empty">오늘 수신된 신호가 없습니다 — 관측소에서 전체 기록을 볼 수 있습니다</div>';
+        +'<div class="sig-meta">'+(x.pin?'<span class="sig-pin">'+T('idx.sig.pin')+'</span>':'')+'<span>▲'+(x.points||0)+(d?' · '+d:'')+'</span></div>'
+        +'<div class="sig-title">'+TX(x.ko||x.title||'')+'</div></a>';
+    }).join(''):'<div class="sig-empty">'+T('idx.sig.empty')+'</div>';
   }catch(e){}
-  function tick(){var n=new Date(),t=new Date(n);t.setHours(8,0,0,0);if(t<=n)t.setDate(t.getDate()+1);
+  function tick(){var n=new Date(),t=new Date(n);t.setUTCHours(23,0,0,0);if(t<=n)t.setUTCDate(t.getUTCDate()+1);
     var sc=Math.floor((t-n)/1000),p=function(v){return String(v).padStart(2,'0')};
     var el=document.getElementById('nextTm'); if(el)el.textContent=p(Math.floor(sc/3600))+':'+p(Math.floor(sc%3600/60))+':'+p(sc%60);}
   tick(); setInterval(tick,1000);
@@ -1989,10 +1983,10 @@ function colSeed(str){ let h = 2166136261;
   })();
   try{
     var hint=document.getElementById('s3hint');
-    if(hint) hint.textContent=('ontouchstart' in window)?'☝️ 한 손가락 회전 · 두 손가락 확대/축소 · 행성 탭 = 정보':'🖱 드래그 회전 · 휠 확대/축소 · 행성 클릭 = 정보';
+    if(hint) hint.textContent=('ontouchstart' in window)?T('solar.hint_touch'):T('solar.hint_mouse_click');
     var E2=(DATA.regions.earth&&DATA.regions.earth.stocks)||[];
     if(E2.length&&document.getElementById('s3wrap'))
-      loadThree().then(function(){boot3d(E2)}).catch(function(){var l=document.getElementById('s3load'); if(l)l.textContent='3D 로드 실패 — 새로고침 해보세요';});
+      loadThree().then(function(){boot3d(E2)}).catch(function(){var l=document.getElementById('s3load'); if(l)l.textContent=T('solar.fail');});
   }catch(e){}
 
   /* 스크롤 유도 — 클릭하면 STAGE 1로, 스크롤이 시작되면 사라진다.

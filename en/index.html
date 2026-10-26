@@ -1,0 +1,4419 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<script id="uvx-i18n-v1">
+(function(){
+var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "idx.sig.empty": "No signals received today — see the full log in the Signal Observatory", "idx.sig.pin": "Must-read", "idx.vs_prev": "vs previous day", "idx.vs_top1": "{p}% of #1", "obs.wait_data": "Waiting for data collection.", "solar.fail": "3D failed to load — try refreshing", "solar.hint_mouse": "🖱 Drag to rotate · scroll to zoom", "solar.hint_mouse_click": "🖱 Drag to rotate · scroll to zoom · click a planet for info", "solar.hint_touch": "☝️ One finger to rotate · two to zoom · tap a planet for info", "solar.legend3d": "Planet size = market cap · Sun = current Throne · higher rank = inner orbit — planet faces follow the real solar system order (Mercury → Neptune → dwarf planets)", "solar.loading": "☀️ Aligning the solar system…", "solar.redrawn": "Redrawn every morning (observed {date}) · Textures: Solar System Scope (CC BY 4.0) · NASA"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
+function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
+  s = pick(s, p ? p.n : undefined);
+  if (p) s = String(s).replace(/\{(\w+)\}/g, function(m, x){ return p[x] != null ? p[x] : m; });
+  return s; }
+function TP(pre){ var o = {}; for (var k in M) if (k.indexOf(pre) === 0) o[k.slice(pre.length)] = M[k]; return o; }
+var es = L === 'es', ja = L === 'ja', ko = L === 'ko';
+function dec(s){ return es ? String(s).replace('.', ',') : String(s); }
+function num(v, d){ if (typeof v !== 'number' || !isFinite(v)) return '—';
+  if (d == null) d = (Math.abs(v) >= 100 || v % 1 === 0) ? 0 : 1;
+  return v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function mc(b){ if (typeof b !== 'number' || !isFinite(b)) return '—';
+  if (ja) return b >= 1000 ? (b / 1000).toFixed(2) + '兆ドル' : Math.round(b * 10).toLocaleString('ja-JP') + '億ドル';
+  var pre = es ? 'US$' : '$';
+  return b >= 1000 ? pre + dec((b / 1000).toFixed(2)) + 'T' : pre + Math.round(b) + 'B'; }
+var CCY = (function(){ var d = "USD"; try { var s = localStorage.getItem('uvx-ccy'); if (s && R[s]) d = s; } catch (e) {} return d; })();
+function local(b){ if (typeof b !== 'number' || !isFinite(b)) return '';
+  var r = R[CCY]; if (CCY === 'USD' || !r) return '';
+  var v = b * r;                                 // 십억 단위 현지 통화
+  if (CCY === 'KRW') { var jo = v / 1000; return ko ? (jo >= 1000 ? (jo / 1000).toFixed(1) + U.cheonjo_won : jo.toFixed(0) + U.jo_won)
+      : ja ? Math.round(v * 10).toLocaleString('ja-JP') + '億ウォン' : '₩' + dec((v / 1000).toFixed(0)) + 'T'; }
+  if (CCY === 'JPY') { var cho = v / 1000; return ja ? (cho >= 100 ? cho.toFixed(0) : cho.toFixed(1)) + '兆円'
+      : ko ? Math.round(cho).toLocaleString('ko-KR') + U.jo_yen : '¥' + dec(cho.toFixed(cho >= 100 ? 0 : 1)) + 'T'; }
+  var sym = CCY === 'EUR' ? '€' : CCY === 'MXN' ? 'MX$' : CCY + ' ';
+  if (ja) return (v >= 1000 ? (v / 1000).toFixed(2) + '兆' : Math.round(v * 10).toLocaleString('ja-JP') + '億') + (CCY === 'EUR' ? 'ユーロ' : 'ペソ');
+  if (ko) return sym + (v >= 1000 ? (v / 1000).toFixed(2) + 'T' : Math.round(v) + 'B');
+  return sym + (v >= 1000 ? dec((v / 1000).toFixed(2)) + 'T' : Math.round(v) + 'B'); }
+function bn(v){ if (typeof v !== 'number' || !isFinite(v)) return '—';   /* 십억 달러 — i18n.usd_bn 과 같은 규칙 */
+  var sg = v < 0 ? '−' : '', a = Math.abs(v);
+  if (ko) return a >= 1000 ? sg + '$' + (a / 1000).toFixed(1) + U.jo : sg + '$' + Math.round(a * 10).toLocaleString('ko-KR') + U.eok;
+  if (ja) return a >= 1000 ? sg + (a / 1000).toFixed(1) + '兆ドル' : sg + Math.round(a * 10).toLocaleString('ja-JP') + '億ドル';
+  var pre = es ? 'US$' : '$';
+  return a >= 1000 ? sg + pre + dec((a / 1000).toFixed(1)) + 'T' : sg + pre + Math.round(a).toLocaleString("en-US") + 'B'; }
+function pct(v, d){ return (typeof v !== 'number' || !isFinite(v)) ? '—' : dec((v * 100).toFixed(d == null ? 0 : d)) + '%'; }
+var MON = { en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            es: ['ene','feb','mar','abr','may','jun','jul','ago','sept','oct','nov','dic'] };
+function date(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if (!m) return iso ? String(iso) : '—';
+  var y = +m[1], mo = +m[2], d = +m[3];
+  if (ko) return m[1] + '.' + m[2] + '.' + m[3];
+  if (L === 'en') return MON.en[mo - 1] + ' ' + d + ', ' + y;
+  if (es) return d + ' ' + MON.es[mo - 1] + ' ' + y;
+  return y + '年' + mo + '月' + d + '日'; }
+function md(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if (!m) return '—';
+  var mo = +m[2], d = +m[3]; return L === 'en' ? MON.en[mo - 1] + ' ' + d : es ? d + '/' + mo : mo + '/' + d; }
+var HAN = /[\uac00-\ud7a3]/;
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식으로 감싼다. 화면 문구(chrome)에는 쓰지 않는다 */
+function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1">' + h + '<\/span>' : h; }
+/* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
+function TXB(html, tag){ tag = tag || 'div';
+  if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
+  return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK hynix", "005930.KS": "Samsung", "WMT": "Walmart", "XOM": "ExxonMobil"},
+  esc: esc, rates: R, ccy: CCY, intl: "en-US" };
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereigns — Global Market Cap Rankings · UNIVERTRIX</title>
+<meta name="description" content="The world&#x27;s top companies by market cap, automatically updated every day.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+/* ────────── 라이트 테마 (시안 A · Ivory Editorial) ────────── */
+:root, [data-theme="light"] {
+  --bg: #FBFBFC;
+  --bg-card: #F5F5F7;
+  --bg-hover: #ECECF0;
+  --text: #16181D;
+  --text-secondary: #4A4E58;
+  --text-muted: #7E828B;
+  --gold: #565CE8;
+  --gold-bg: rgba(86,92,232,0.08);
+  --aurora2: #3EC8D8;
+  --line: #E8E9EC;
+  --line-strong: #D8DAE0;
+  --up: #565CE8;
+  --header-bg: rgba(251, 251, 252, 0.92);
+  --tab-active-bg: var(--text);
+  --tab-active-text: var(--bg);
+  --toggle-icon-color: var(--text);
+}
+
+/* ────────── 다크 테마 (시안 B · Premium Dark) ────────── */
+[data-theme="dark"] {
+  --bg: #0A0B0F;
+  --bg-card: #12141B;
+  --bg-hover: #191C25;
+  --text: #F4F5F8;
+  --text-secondary: #C3C7D1;
+  --text-muted: #7C8290;
+  --gold: #8B93FF;
+  --gold-bg: rgba(139, 147, 255, 0.10);
+  --aurora2: #4FE0EF;
+  --line: #1E2027;
+  --line-strong: #2A2D38;
+  --up: #8B93FF;
+  --header-bg: rgba(10, 11, 15, 0.92);
+  --tab-active-bg: var(--gold);
+  --tab-active-text: var(--bg);
+  --toggle-icon-color: var(--gold);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+/* 테마 전환 부드럽게 */
+body, .site-header, .stat-card, .stock-row, .stock-list,
+.latent-card, .history-list, .history-row, .tab, .update-badge,
+.site-footer, .theme-toggle {
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ────────── HEADER ────────── */
+.site-header {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* 상단 네비게이션 */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-nav-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.site-nav-inner::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  flex-shrink: 0;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-tab:hover { color: var(--text-secondary); }
+
+.nav-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--gold);
+}
+
+@media (max-width: 480px) {
+  .nav-tab { padding: 12px 14px; font-size: 13px; }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 0;
+}
+
+.brand-star { color: var(--gold); font-size: 15px; flex-shrink: 0; }
+.brand-tag { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.update-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--gold-bg);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .update-badge { border: 1px solid rgba(212,166,88,0.3); }
+
+.update-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s ease-in-out infinite;
+}
+[data-theme="dark"] .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.rate-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.rate-badge:hover {
+  border-color: var(--gold);
+  background: var(--bg-card);
+}
+
+.rate-badge:hover #usdKrwDisplay,
+.rate-badge:hover .rate-badge-arrow {
+  color: var(--gold);
+}
+
+.rate-badge-arrow {
+  font-size: 10px;
+  margin-left: 2px;
+  color: var(--text-muted);
+  opacity: 0.7;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.rate-badge:hover .rate-badge-arrow {
+  opacity: 1;
+}
+
+.rate-badge #usdKrwDisplay {
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* ────────── THEME TOGGLE ────────── */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  color: var(--toggle-icon-color);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-hover);
+  border-color: var(--line-strong);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 라이트 모드일 때 달 아이콘만 표시 (다크로 갈 거니까) */
+[data-theme="light"] .icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+/* ────────── HERO ────────── */
+.hero { padding: 48px 0 32px; }
+.hero-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.about-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 100px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary); text-decoration: none;
+  transition: border-color 0.2s, color 0.2s; white-space: nowrap; }
+.about-btn:hover { border-color: var(--gold); color: var(--gold); }
+.about-btn-arrow { font-size: 11px; transition: transform 0.2s; }
+.about-btn:hover .about-btn-arrow { transform: translateX(2px); }
+@media (max-width: 480px) { .about-btn { padding: 6px 12px; font-size: 11px; } }
+
+.hero-title {
+  font-size: clamp(40px, 8vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.hero-sub {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* ────────── STATS ────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 32px;
+}
+
+@media (max-width: 720px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 18px;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-value .unit {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+.stat-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-top: 6px;
+}
+
+@media (max-width: 480px) {
+  .stat-value { font-size: 20px; }
+  .stat-card { padding: 14px 12px; }
+  .stat-label { font-size: 11px; }
+}
+
+/* ────────── SECTION ────────── */
+.section { margin-top: 56px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+.history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.history-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.history-btn-arrow {
+  font-size: 11px;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+.history-btn:hover .history-btn-arrow {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.section-desc {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.head-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 480px) {
+  .history-btn { padding: 6px 12px; font-size: 11px; }
+  .head-btns { gap: 6px; }
+}
+
+/* ────────── TABS ────────── */
+.tabs-wrap {
+  position: sticky;
+  top: 57px;
+  background: var(--bg);
+  padding: 12px 0;
+  z-index: 40;
+  margin: 0 -20px 16px;
+}
+
+.tabs-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 20px;
+}
+
+.tabs-scroll::-webkit-scrollbar { display: none; }
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  width: max-content;
+}
+
+.tab {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.tab.active {
+  background: var(--tab-active-bg);
+  border-color: var(--tab-active-bg);
+  color: var(--tab-active-text);
+}
+
+/* ────────── STOCK LIST ────────── */
+.stock-list {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.stock-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  gap: 14px;
+}
+
+/* ── 중력장 바: 광폭(1280px)에서 생긴 중앙 공백을 정보로 채운다.
+     각 지역 1위(태양) 대비 시총 비율 = 왕좌와의 거리 시각화 ── */
+.stock-grav { display: none; }
+.stock-delta { display: none; }
+
+@media (min-width: 900px) {
+  .stock-delta {
+    display: flex; flex-direction: column; gap: 2px;
+    font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+    line-height: 1.25; white-space: nowrap;
+  }
+  .stock-delta .d-rank.dup { color: var(--gold); }
+  .stock-delta .d-rank.ddown { color: #386ee1; }
+  .stock-delta .d-rank.dkeep { color: var(--text-muted); font-weight: 700; }
+  .stock-delta .d-rank.dnew { color: var(--gold); letter-spacing: 0.05em; }
+  .stock-delta .d-mc { font-size: 11.5px; font-weight: 700; }
+  .stock-delta .d-mc.dup { color: var(--gold); }
+  .stock-delta .d-mc.ddown { color: #386ee1; }
+  .stock-delta .d-mc.dkeep { color: var(--text-muted); }
+}
+
+@media (min-width: 900px) {
+  .stock-row {
+    grid-template-columns: 32px minmax(220px, 27%) 84px 1fr auto;
+    gap: 20px;
+  }
+  .stock-grav {
+    display: block;
+    height: 6px;
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .stock-grav > i {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold), #f2ba3c);
+    transition: width 0.5s ease;
+  }
+}
+
+.stock-row:last-child { border-bottom: none; }
+.stock-row:hover { background: var(--bg-hover); }
+
+.stock-rank {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-row:nth-child(1) .stock-rank,
+.stock-row:nth-child(2) .stock-rank,
+.stock-row:nth-child(3) .stock-rank {
+  color: var(--gold);
+}
+
+.stock-info { min-width: 0; }
+
+.stock-name {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.stock-name:hover { color: var(--gold); }
+
+.stock-desc {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stock-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stock-flag { font-size: 14px; display: inline-flex; align-items: center; }
+.flag-img {
+  width: 1.4em;
+  height: 1em;
+  margin-right: 5px;
+  vertical-align: -0.12em;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+  background: #ddd;
+  display: inline-block;
+}
+
+.stock-mc { text-align: right; white-space: nowrap; }
+
+.stock-mc-usd {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.stock-mc-krw {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  margin-top: 3px;
+}
+
+@media (max-width: 480px) {
+  .stock-row { padding: 14px 16px; gap: 10px; }
+  .stock-name { font-size: 16px; }
+  .stock-desc { font-size: 11.5px; }
+  .stock-mc-usd { font-size: 18px; }
+  .stock-mc-krw { font-size: 12px; }
+  .stock-rank { font-size: 14px; }
+}
+
+/* ────────── LATENT CARDS ────────── */
+.latent-grid { display: grid; gap: 12px; }
+
+@media (min-width: 720px) {
+  .latent-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.latent-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.latent-card:hover { border-color: var(--line-strong); }
+
+.latent-card.star {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--gold-bg) 100%);
+  border-color: var(--gold);
+}
+[data-theme="dark"] .latent-card.star {
+  box-shadow: 0 0 30px rgba(212,166,88,0.10);
+}
+
+.latent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.latent-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+.latent-badge.normal {
+  background: var(--gold-bg);
+  color: var(--gold);
+}
+[data-theme="light"] .latent-badge.normal { background: var(--bg); color: var(--text-secondary); }
+
+.latent-badge.new { background: var(--up); color: white; }
+.latent-badge.star-badge { background: var(--gold); color: white; }
+[data-theme="dark"] .latent-badge.star-badge { color: var(--bg); }
+
+.latent-name {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 4px;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.latent-name:hover { color: var(--gold); }
+
+.latent-ticker {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.latent-theme {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  background: var(--gold-bg);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+
+.latent-story {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.latent-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.latent-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.latent-stat-val {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.latent-stat-val.gain { color: var(--up); }
+
+/* ────────── HISTORY ────────── */
+.history-list {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.history-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  gap: 14px;
+}
+
+.history-row:last-child { border-bottom: none; }
+.history-row:hover { background: var(--bg-hover); }
+.history-row:last-child .history-year,
+.history-row:last-child .history-top { color: var(--gold); }
+
+.history-year {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.history-info { min-width: 0; }
+
+.history-top {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.history-top:hover { color: var(--gold); }
+
+.history-key {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.history-mc {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .history-row { padding: 14px 16px; grid-template-columns: 44px 1fr auto; gap: 10px; }
+  .history-year { font-size: 14px; }
+  .history-top { font-size: 16px; }
+  .history-mc { font-size: 16px; }
+}
+
+/* ────────── FOOTER ────────── */
+.site-footer {
+  margin-top: 80px;
+  padding: 32px 0 48px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.footer-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.footer-divider { color: var(--text-muted); font-weight: 400; }
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--gold); }
+
+.disclaimer-box {
+  margin: 28px auto 14px;
+  padding: 18px 22px;
+  max-width: 640px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--gold);
+  border-radius: 3px;
+  text-align: left;
+}
+
+.disclaimer-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.disclaimer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.disclaimer-list li {
+  padding-left: 12px;
+  position: relative;
+}
+
+.disclaimer-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  opacity: 0.55;
+}
+
+.footer-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 12px 0 0;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 480px) {
+  .disclaimer-box { padding: 14px 16px; max-width: 100%; }
+  .disclaimer-list { font-size: 11.5px; line-height: 1.7; }
+}
+
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; gap: 8px; }
+  .rate-badge { font-size: 11px; padding: 5px 10px; }
+  .update-badge { font-size: 11px; padding: 5px 10px; }
+}
+
+@media (max-width: 380px) {
+  .brand-tag { display: none; }
+  .update-badge::before { display: none; }
+}
+</style>
+
+<script>
+  // 페이지 로드 즉시 테마 적용 (FOUC 방지)
+  (function() {
+    const saved = localStorage.getItem('ud-theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<style id="ud-aurora-v1">
+/* ud-aurora-v1 — 최종 확정 디자인 본적용 (스노우×그래파이트×오로라, 멱등) */
+.container{max-width:1080px}
+/* 하락색: 인디고 액센트와의 혼동 방지 → 뮤트 */
+.stock-delta .d-rank.ddown, .stock-delta .d-mc.ddown { color: var(--text-muted) !important; }
+/* 카드 온기: 곡률+옅은 그림자 */
+.stat-card{border-radius:16px;box-shadow:0 5px 18px rgba(22,24,29,.05);border:1px solid var(--line)}
+.stock-list{border-radius:18px;box-shadow:0 5px 18px rgba(22,24,29,.05)}
+[data-theme="dark"] .stat-card,[data-theme="dark"] .stock-list{box-shadow:0 6px 22px rgba(0,0,0,.45)}
+/* 활성 탭: 오로라 헤어라인 */
+.tab.active, .tabs .tab.active{box-shadow:0 2px 0 0 var(--aurora2)}
+/* 메뉴 아래 헤어라인: 골드 → 오로라 */
+.site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
+[data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+
+/* ── 태양계 전폭 히어로 ── */
+.solar-hero{width:100%;background:#0a0d18}
+.solar-wrap{position:relative;height:min(76vh,720px);cursor:grab;touch-action:none;background:#0a0d18;overflow:hidden;max-width:1600px;margin:0 auto}
+@media(max-width:700px){.solar-wrap{height:60vh;min-height:420px}}
+#s3load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18}
+.s3hint{position:absolute;left:14px;bottom:12px;font-size:11px;color:#8a94b8;pointer-events:none;z-index:3}
+.solar-tip{position:absolute;pointer-events:none;background:rgba(20,25,40,.95);color:#f5f1e6;border:1px solid #565CE8;border-radius:10px;padding:8px 12px;font-size:12.5px;display:none;max-width:220px;z-index:5}
+.solar-tip b{color:#8B93FF}
+.hero-ov{position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(115deg,rgba(10,13,24,.62) 0%,rgba(10,13,24,.28) 26%,transparent 46%)}
+.hero-ov .ov-in{max-width:1080px;margin:0 auto;height:100%;padding:30px 20px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.hero-ov .ov-top{display:flex;justify-content:space-between;align-items:flex-start}
+.hero-ov .ov-date{font-size:11px;letter-spacing:.3em;color:#9aa3b8;font-weight:700}
+.hero-ov h1{font-weight:900;font-size:clamp(34px,5.4vw,56px);color:#F4F5F8;margin-top:10px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.55)}
+.hero-ov .ov-sub{color:#B9BFCE;font-size:14px;font-weight:600;margin-top:6px}
+.hero-ov .ov-about{pointer-events:auto;display:inline-block;border:1px solid rgba(244,245,248,.4);background:rgba(10,13,24,.4);color:#F4F5F8;border-radius:100px;padding:8px 18px;font-weight:800;font-size:13px;text-decoration:none;backdrop-filter:blur(6px)}
+.hero-ov .ov-about:hover{border-color:#F4F5F8}
+/* 범례 — 행성 라벨(JPMorgan 등)과 겹쳐 읽히지 않던 문제: 스크림을 깔아 분리한다 */
+.hero-ov .ov-legend{align-self:flex-start;font-size:11px;letter-spacing:.16em;color:#b6bed4;font-weight:700;
+  background:rgba(10,13,24,.62);border:1px solid rgba(244,245,248,.10);border-radius:100px;
+  padding:6px 13px;backdrop-filter:blur(6px)}
+@media(max-width:760px){.hero-ov .ov-legend{display:none}}
+
+/* ── 히어로 하단: 페이지로 녹아드는 페이드 + 스크롤 유도 ── */
+/* z-2 — 캔버스·행성 라벨 위, 조작 힌트(z-3)·오버레이(z-3) 아래.
+   z-4 로 두면 좌하단 드래그 힌트가 페이드에 씻겨 안 보인다 */
+.hero-fade{position:absolute;left:0;right:0;bottom:0;height:120px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,13,24,0) 0%,var(--bg) 100%)}
+.hero-scroll{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:none;border:0;padding:6px 14px;cursor:pointer;font-family:inherit;
+  color:var(--text-muted);transition:opacity .35s ease,color .2s}
+.hero-scroll:hover{color:var(--gold)}
+.hero-scroll .hs-chev{font-size:17px;line-height:1;animation:hsBounce 1.9s ease-in-out infinite}
+.hero-scroll .hs-label{font-size:11px;font-weight:800;letter-spacing:.34em;text-indent:.34em}
+.hero-scroll.gone{opacity:0;pointer-events:none}
+@keyframes hsBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media(prefers-reduced-motion:reduce){.hero-scroll .hs-chev{animation:none}}
+@media(max-width:760px){.hero-fade{height:84px}.hero-scroll{bottom:10px}}
+@media(max-width:760px){
+  .hero-ov{background:linear-gradient(180deg,rgba(10,13,24,.55),transparent 34%)}
+  .hero-ov h1,.hero-ov .ov-sub{display:none}
+  .hero-ov .ov-in{padding:16px 16px 26px}
+  .hero-ov .ov-date{font-size:9.5px;letter-spacing:.2em}
+  .hero-ov .ov-about{padding:6px 13px;font-size:12px}
+  .hero .solar-wrap{height:56vh;min-height:400px}
+}
+
+/* ── 왕좌 스윕 ── */
+.throne-sec{text-align:center;padding:54px 0 44px}
+.throne-who{font-weight:900;font-size:clamp(19px,2.8vw,27px)}
+.throne-who b{color:var(--gold)}
+.throne-num{font-weight:900;font-size:clamp(64px,12vw,140px);line-height:1.05;letter-spacing:-.035em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(100deg,var(--text) 30%,var(--gold) 46%,var(--aurora2) 54%,var(--text) 70%);background-size:240% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+@media(prefers-reduced-motion:no-preference){.throne-num{animation:udsweep 5.5s ease-in-out infinite}}
+@keyframes udsweep{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+.throne-sub{color:var(--text-muted);font-size:13.5px;margin-top:10px;font-weight:600}
+
+/* ── 오늘의 신호 ── */
+.sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:760px){.sig-grid{grid-template-columns:1fr}}
+.sig-card{display:block;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;text-decoration:none;box-shadow:0 5px 18px rgba(22,24,29,.05);transition:.15s}
+.sig-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.sig-meta{font-size:13px;font-weight:900;color:var(--gold);letter-spacing:.06em;display:flex;align-items:center;gap:8px}
+.sig-pin{background:var(--gold);color:var(--bg);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:900}
+.sig-title{color:var(--text);font-weight:800;font-size:16.5px;margin-top:9px;line-height:1.55}
+.sig-empty{color:var(--text-muted);font-size:13.5px}
+
+/* ── 발사 시퀀스 (r02 이식) ── */
+.stage-k{font-size:11px;font-weight:900;letter-spacing:.3em;color:var(--text-muted);margin-bottom:10px}
+.stage-k b{color:var(--gold)}
+.hero-ov .ov-stage{font-size:11px;letter-spacing:.3em;color:#9aa3b8;font-weight:900}
+.hero-ov .ov-stage b{color:#8B93FF}
+.asc-rail{position:fixed;left:18px;top:0;bottom:0;width:1px;background:var(--line);z-index:40;pointer-events:none}
+.asc-rail i{position:absolute;left:0;top:0;width:1px;height:0;background:linear-gradient(180deg,var(--gold),var(--aurora2))}
+.asc-rail span{position:absolute;left:9px;font-size:12.5px;font-weight:900;letter-spacing:.26em;color:var(--text-muted);writing-mode:vertical-rl;transition:color .25s}
+.asc-rail span.on{color:var(--gold)}
+@media(max-width:1220px){.asc-rail{display:none}}
+
+/* ── 다음 관측 ── */
+.next-sec{text-align:center;padding:54px 0 24px}
+.next-sec .nk{font-size:12px;letter-spacing:.3em;color:var(--text-muted);font-weight:800}
+.next-sec .nt{font-weight:900;font-size:clamp(34px,6vw,58px);font-variant-numeric:tabular-nums;margin-top:10px;color:var(--text)}
+.next-sec p{color:var(--text-muted);font-size:13px;margin-top:8px;font-weight:600}
+</style>
+<style id="wide-fix">.container{max-width:1080px}</style>
+<style>
+/* 헤더 모바일 일관성 + 실시간 날짜·시계 (전 페이지 공통 — build_site.py 주입) */
+@media (max-width: 480px) {
+  .site-header-inner { flex-wrap: wrap; }
+  .brand { flex-shrink: 0; }
+}
+.update-badge .ud-clock { margin-left: 6px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+/* UNIVERTRIX 로고 (build_site.py 주입) */
+.brand.ud-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+/* ── UNIVERTRIX 종합 로고 (오로라×궤도×호흡×서예) ── */
+.uvx{display:inline-flex;align-items:center;gap:13px;text-decoration:none}
+.uvx-lat{position:relative;display:inline-block}
+.uvx-word{font-size:20px;letter-spacing:.3em;font-weight:400;line-height:1;
+  background:linear-gradient(95deg,var(--text) 12%,var(--gold) 46%,var(--aurora2) 62%,var(--text) 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-variation-settings:'wght' 528}
+.uvx-orbit{position:absolute;inset:-12px -11px -8px -7px;width:calc(100% + 18px);height:calc(100% + 20px);pointer-events:none;overflow:visible}
+.uvx-orbit path{stroke:var(--gold);opacity:.9}
+.uvx-orbit circle{fill:var(--aurora2)}
+.uvx-kr{font-family:'Nanum Brush Script',cursive;font-size:26px;line-height:1;padding-left:13px;border-left:1px solid var(--text-muted);white-space:nowrap;
+  background:linear-gradient(95deg,var(--text) 10%,var(--gold) 42%,var(--aurora2) 60%,var(--text) 90%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+@media(prefers-reduced-motion:no-preference){
+  .uvx-word{animation:uvbreath 6s ease-in-out infinite}
+  .uvx-kr{animation:krbreath 6s ease-in-out infinite}
+  @keyframes uvbreath{0%,100%{font-variation-settings:'wght' 340}50%{font-variation-settings:'wght' 800}}
+  @keyframes krbreath{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+}
+[data-theme="dark"] .uvx-word{filter:drop-shadow(0 0 13px rgba(139,147,255,.4))}
+[data-theme="dark"] .uvx-kr{filter:drop-shadow(0 0 11px rgba(139,147,255,.35))}
+@media(max-width:760px){.uvx{gap:9px}.uvx-word{font-size:15.5px;letter-spacing:.22em}.uvx-kr{font-size:20px;padding-left:9px}.uvx-orbit{inset:-9px -8px -6px -5px}}
+.ud-logo-word .v { color: var(--gold); }
+@media (max-width: 480px) { .ud-logo-word { font-size: 13.5px; letter-spacing: 0.16em; } .ud-logo-mark { height: 22px; } }
+
+/* ud-hdr-refine-v2 — 상태 스트립 통합: 배지 3개 → 계기판 캡슐 하나 */
+.site-header-inner { padding: 15px 20px; }
+.header-right {
+  gap: 0; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 100px; padding: 3px 5px 3px 4px; align-items: center;
+  box-shadow: 0 1px 2px rgba(28,35,51,0.04);
+}
+.header-right .update-badge {
+  background: transparent; border: none; border-radius: 0;
+  padding: 5px 13px; color: var(--text-secondary);
+}
+[data-theme="dark"] .header-right .update-badge { border: none; }
+.header-right .update-badge .ud-clock { color: var(--gold); font-weight: 800; }
+.header-right .rate-badge {
+  background: transparent; border: none; border-radius: 0;
+  border-left: 1px solid var(--line); padding: 5px 13px;
+}
+.header-right .rate-badge:hover { border-color: var(--line); }
+.header-right .rate-badge:hover #usdKrwDisplay, .header-right .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.header-right .theme-toggle {
+  width: 34px; height: 30px; border: none; border-radius: 0 100px 100px 0;
+  border-left: 1px solid var(--line); background: transparent; margin-left: 0;
+}
+.header-right .theme-toggle:hover { color: var(--gold); }
+@media (max-width: 480px) {
+  .header-right { padding: 2px 3px 2px 2px; }
+  .header-right .update-badge, .header-right .rate-badge { padding: 4px 9px; }
+}
+
+/* ud-hdr-refine-v4 — 아이보리 복원: 헤더는 본문과 한 몸, 세련됨은 디테일에서.
+   (한때 페이지에 주입됐던 v3 네이비 블록을 아래 리셋이 캐스케이드로 무력화한다) */
+.site-header { background: var(--header-bg); border-bottom: none; position: relative; }
+.site-header::after { content: none; }
+.site-header .ud-logo, .site-header .ud-logo-word { color: var(--text); }
+.site-header .ud-logo-word { letter-spacing: 0.2em; }
+.site-header .ud-logo-word .v { color: var(--gold); }
+.site-header .ud-logo-mark { --gold: #9C7A3A; }
+[data-theme="dark"] .site-header .ud-logo-mark { --gold: #D4A658; }
+.site-header .header-right {
+  background: var(--bg-card); border-color: var(--line);
+  box-shadow: 0 1px 2px rgba(28,35,51,0.05);
+}
+.site-header .update-badge, .site-header .update-badge .ud-date { color: var(--text-secondary); }
+.site-header .update-badge .ud-clock { color: var(--gold); }
+.site-header .update-badge::before { background: var(--gold); box-shadow: none; }
+[data-theme="dark"] .site-header .update-badge::before { box-shadow: 0 0 8px var(--gold); }
+.site-header .rate-badge { color: var(--text-secondary); border-left-color: var(--line); }
+.site-header .rate-badge #usdKrwDisplay { color: var(--text); }
+.site-header .rate-badge:hover #usdKrwDisplay, .site-header .rate-badge:hover .rate-badge-arrow { color: var(--gold); }
+.site-header .theme-toggle { color: var(--text-secondary); border-left-color: var(--line); }
+.site-header .theme-toggle:hover { color: var(--gold); }
+/* 헤더+메뉴 = 하나의 아이보리 존, 경계는 메뉴 아래 은은한 골드 헤어라인 한 줄 */
+.site-nav { border-bottom: 1px solid var(--line); }
+.site-nav::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent 8%, rgba(156,122,58,0.38), transparent 92%);
+}
+[data-theme="dark"] .site-nav::after {
+  background: linear-gradient(90deg, transparent 8%, rgba(212,166,88,0.3), transparent 92%);
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var badge = document.querySelector('.update-badge');
+  if (!badge) return;
+  badge.innerHTML = '<span class="ud-date"></span><span class="ud-clock"></span>';
+  var dt = badge.querySelector('.ud-date');
+  var clk = badge.querySelector('.ud-clock');
+  // 2026-09-26 폭 절약: 날짜는 MM.DD, 시계는 HH:MM(초 없음) → 30초마다 갱신이면 충분하다
+  function tick() {
+    var now = new Date();
+    dt.textContent = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).slice(5).replace('-', '.');
+    clk.textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit',
+                                                      hour12: false, timeZone: 'Asia/Seoul' });
+  }
+  tick();
+  setInterval(tick, 30000);
+});
+</script>
+<style>
+/* ud-macro-v1 — 헤더 시장 지표 띠. 배지는 USD/KRW 와 같은 규격(rate-badge)을 쓴다.
+   좁은 폭에서는 줄바꿈하지 않고 띠 안에서 가로 스크롤한다(판형 전역 정리는 이월 건).
+   header-right 에는 줄어들 수 있게 하는 최소 속성만 준다 — 레이아웃을 새로 짜지 않는다. */
+.site-header .header-right { min-width: 0; max-width: 100%; flex-shrink: 1; flex-wrap: nowrap; }
+.ud-macro { display: inline-flex; align-items: center; flex-wrap: nowrap; min-width: 0;
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.ud-macro::-webkit-scrollbar { display: none; }
+.ud-macro .rate-badge { flex: 0 0 auto; white-space: nowrap; }
+/* 띠 안 배지 좌우 여백 13→11px (1280px 여유 확보). 480px 이하 규칙(9px)은 건드리지 않는다 */
+@media (min-width: 481px) {
+  .site-header .header-right .ud-macro .rate-badge { padding-left: 11px; padding-right: 11px; }
+}
+.rate-badge .ud-mv { color: var(--text); font-weight: 800; }
+.rate-badge:hover .ud-mv { color: var(--gold); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+<style id="ud-aurora-global-v1">
+/* ud-aurora-global-v1 — 전 페이지 오로라 팔레트 통일 (build_site 주입 · 멱등)
+   토큰 리맵이므로 각 페이지 기존 컴포넌트가 자동으로 새 팔레트를 입는다 */
+:root, [data-theme="light"] {
+  --bg:#FBFBFC; --bg-card:#F5F5F7; --bg-hover:#ECECF0;
+  --text:#16181D; --text-secondary:#4A4E58; --text-muted:#7E828B;
+  --gold:#565CE8; --gold-bg:rgba(86,92,232,0.08); --aurora2:#3EC8D8;
+  --line:#E8E9EC; --line-strong:#D8DAE0; --up:#565CE8;
+  --header-bg:rgba(251,251,252,0.92);
+  --tab-active-bg:var(--text); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--text);
+}
+[data-theme="dark"] {
+  --bg:#0A0B0F; --bg-card:#12141B; --bg-hover:#191C25;
+  --text:#F4F5F8; --text-secondary:#C3C7D1; --text-muted:#7C8290;
+  --gold:#8B93FF; --gold-bg:rgba(139,147,255,0.10); --aurora2:#4FE0EF;
+  --line:#1E2027; --line-strong:#2A2D38; --up:#8B93FF;
+  --header-bg:rgba(10,11,15,0.92);
+  --tab-active-bg:var(--gold); --tab-active-text:var(--bg);
+  --toggle-icon-color:var(--gold);
+}
+/* ── 정렬 통일: 헤더·메뉴·본문을 같은 1080px 기둥에 ── */
+.site-header-inner{max-width:1080px !important;margin:0 auto !important;padding:14px 20px !important;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.site-nav-inner{max-width:1080px !important;margin:0 auto !important;padding:0 20px !important;justify-content:space-between}
+/* 첫/끝 탭의 내부 패딩만큼 광학 보정 — 탭 '글자'가 로고 좌변·캡슐 우변과 정렬 */
+.site-nav-inner .nav-tab:first-child{margin-left:-14px}
+.site-nav-inner .nav-tab:last-child{margin-right:-14px}
+@media(max-width:860px){.site-nav-inner{justify-content:flex-start}.site-nav-inner .nav-tab:first-child,.site-nav-inner .nav-tab:last-child{margin:0}}
+.container{max-width:1080px !important}
+
+/* 메뉴 하단 헤어라인: 골드 → 오로라 */
+.site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(86,92,232,.35),rgba(62,200,216,.35),transparent 92%) !important}
+[data-theme="dark"] .site-nav::after{background:linear-gradient(90deg,transparent 8%,rgba(139,147,255,.4),rgba(79,224,239,.4),transparent 92%) !important}
+
+/* ── ud-accordion-v1 — 목록형 아코디언 공용 문법 ────────────────────────────
+   동행 관측 에세이(journal)와 관측일지 칼럼(observatory)이 **같은 구조**를 쓴다.
+   같은 것을 두 벌 구현하면 반드시 갈라지므로 구조·동작은 여기 한 곳에만 둔다.
+   각 페이지는 제목 크기 같은 '자기 눈금'만 따로 준다.
+
+   여백·모서리·스크롤 여유는 필독 해부실 본문 카드(.dx-card)와 같은 값을 쓴다
+   — 같은 사이트의 '읽는 카드'는 한 톤이어야 한다(2026-08-24 실측 대조 후 정렬).
+
+   ⚠️ 펼침에 max-height 전환을 쓰지 않는다: 본문에 차트 SVG 가 들어 있어 접힌
+   상태의 높이를 잴 수 없다(0 이나 잘린 값이 나온다). 애니메이션 한 번 보자고
+   근거가 되는 그림이 깨지는 쪽을 택하지 않는다 — 상태 변화는 캐럿 회전이 알린다. */
+.ud-acc{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;scroll-margin-top:90px;overflow:hidden}
+.ud-acc-head{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:none;border:none;text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+.ud-acc-head:hover{background:var(--bg)}
+.ud-acc.open>.ud-acc-head{border-bottom:1px solid var(--line)}
+.ud-acc-meta{display:flex;align-items:center;gap:9px;flex-shrink:0;font-size:12.5px;color:var(--text-muted)}
+.ud-acc-title{flex:1;min-width:0;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ud-acc-caret{margin-left:auto;flex-shrink:0;color:var(--text-muted);font-size:12.5px;transition:transform .15s}
+.ud-acc.open .ud-acc-caret{transform:rotate(90deg)}
+.ud-acc-detail{display:none;padding:22px 24px}
+.ud-acc.open>.ud-acc-detail{display:block}
+@media(max-width:480px){.ud-acc-head{gap:8px;padding:12px 14px}.ud-acc-detail{padding:18px 16px}}
+
+/* ── ud-pin-v1 — 📌 고정 공지 카드 공용 문법 ────────────────────────────────
+   관제센터 공지(.post.pinned)에서 뽑아 올렸다. 관측노트의 논제 원장이 같은
+   '맨 위에 못 박힌 것' 이라는 뜻을 쓰므로 같은 표식을 써야 한 사이트로 읽힌다. */
+.ud-pin{border-color:var(--gold) !important;border-width:1.5px !important}
+.ud-pin-badge{display:inline-flex;align-items:center;flex-shrink:0;font-size:11px;font-weight:800;border-radius:100px;padding:2px 9px;background:var(--gold);color:#fff}
+/* 판단층이 바뀐 사실은 눈에 띄어야 한다 — 갱신 7일 이내면 배지에 점이 붙는다 */
+.ud-new-dot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:currentColor;animation:ud-new-pulse 2s ease-in-out infinite;vertical-align:middle}
+@keyframes ud-new-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── ud-index-v1 — 목록 앞의 목차(연표) 공용 문법 ──────────────────────────
+   필독 해부실(.dx-index)에서 뽑아 올렸다. 관측노트 동행 탭의 에세이 목차가
+   같은 일을 하므로 같은 문법을 쓴다 — 헤어라인 행, 골드 대문자 소제목.
+   행의 배치(block / flex)는 페이지가 정한다: 해부실은 제목이 길어 줄바꿈이 맞고,
+   에세이 목차는 날짜·판정·제목을 한 줄에 세우는 편이 연표로 읽힌다.
+   ⚠️ 이 블록은 head 끝에 나중에 주입된다 — 같은 특이도면 여기가 이긴다.
+   페이지에서 덮어쓰려면 특이도를 한 단 올려라(#id 등). */
+.ud-index{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}
+.ud-index-title{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ud-index-row{display:block;width:100%;padding:7px 0;border:0;border-top:1px solid var(--line);background:none;text-align:left;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--text);text-decoration:none;line-height:1.45;cursor:pointer}
+.ud-index-row:first-of-type{border-top:0}
+.ud-index-row:hover{color:var(--gold)}
+.ud-index-date{color:var(--text-muted);font-weight:700;font-size:12px;margin-right:8px;font-variant-numeric:tabular-nums}
+</style>
+
+<!-- uvx-hreflang-v1 -->
+<link rel="canonical" href="https://univertrix.com/en/">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:url" content="https://univertrix.com/en/">
+<style id="uvx-i18n-css">
+/* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
+.uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
+.uvx-lang>summary::-webkit-details-marker{display:none}
+.uvx-lang>summary:hover,.uvx-lang[open]>summary{color:var(--gold)}
+.uvx-lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:80;min-width:150px;background:var(--bg-card);border:1px solid var(--line-strong);border-radius:12px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.uvx-lang-menu a{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:8px;font-size:13px;font-weight:700;color:var(--text);text-decoration:none}
+.uvx-lang-menu a:hover{background:var(--gold-bg);color:var(--gold)}
+.uvx-lang-menu a[aria-current="true"]{color:var(--gold)}
+.uvx-lang-menu a small{color:var(--text-muted);font-weight:800;letter-spacing:.06em}
+.uvx-band{display:flex;align-items:center;justify-content:center;gap:12px;padding:7px 16px;background:var(--gold-bg);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--text)}
+.uvx-band a{color:var(--gold);text-decoration:none;font-weight:800}
+.uvx-band button{border:0;background:none;color:var(--text-muted);font:inherit;font-size:15px;cursor:pointer;padding:0 4px}
+.uvx-pending{display:block;width:fit-content;margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px dashed var(--line-strong);border-radius:100px;padding:2px 9px}
+.uvx-pagepending{max-width:1080px;margin:10px auto 0;padding:0 20px;font-size:12.5px;font-weight:700;color:var(--text-muted)}
+/* 로고 — 붓글씨 '우주지배자'는 ko 전용. 다른 언어는 같은 자리에 언어 부제(오로라 광 스윕 그대로) */
+.uvx-kr.uvx-sub{font-family:inherit;font-size:13.5px;font-weight:300;letter-spacing:.08em}
+@media(max-width:760px){.uvx-kr.uvx-sub{font-size:11px;letter-spacing:.04em}}
+/* 서체 — Pretendard 단일 + ja 는 Noto Sans JP 폴백 (위계는 굵기) */
+html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans JP',-apple-system,sans-serif}
+</style>
+</head>
+<body>
+
+<div class="asc-rail" aria-hidden="true">
+  <i id="ascFill"></i>
+  <span style="top:5%" data-tgt="s3wrap">LIFTOFF</span>
+  <span style="top:28%" data-tgt="stage1">MAX-Q</span>
+  <span style="top:50%" data-tgt="stage2">ORBIT</span>
+  <span style="top:72%" data-tgt="stage3">TELEMETRY</span>
+  <span style="bottom:4%" data-tgt="stage4">LANDING</span>
+</div>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand ud-logo uvx" href="index.html" aria-label="UNIVERTRIX home">
+      <span class="uvx-lat"><span class="uvx-word">UNIVERTRIX</span>
+        <svg class="uvx-orbit" viewBox="0 0 300 60" preserveAspectRatio="none" fill="none" aria-hidden="true">
+          <path d="M8 46 C 62 68, 150 -16, 288 20" stroke-width="1.6"/>
+          <circle cx="288" cy="20" r="3.4"/>
+        </svg></span>
+      <span class="uvx-kr uvx-sub">Sovereigns</span>
+    </a>
+    <div class="header-right">
+      <span class="update-badge">2026.10.26</span>
+      <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW" 
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" 
+         title="USD/KRW exchange rate · Measured 10:17 · Source frankfurter · Live USD/KRW on Naver">
+        KRW <span id="usdKrwDisplay">—</span>
+        <span class="rate-badge-arrow" aria-hidden="true">↗</span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 10:17 · Source FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 10:17 · Source FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 10:17 · Source FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 10:17 · Source frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../index.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/index.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/index.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/index.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="site-nav-inner container"><a href="index.html" class="nav-tab active">Sovereigns</a><a href="latent.html" class="nav-tab">Contenders</a><a href="megatrend.html" class="nav-tab">Megatrends</a><a href="research.html" class="nav-tab">Research</a><a href="observatory.html" class="nav-tab">Data Observatory</a><a href="community.html" class="nav-tab">Mission Control</a><a href="journal.html" class="nav-tab">Field Notes</a><a href="pioneers.html" class="nav-tab">Pioneers</a></div>
+</nav>
+
+<div class="solar-hero">
+  <div class="solar-wrap" id="s3wrap">
+    <div id="s3load">☀️ Aligning the solar system…</div>
+    <div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+    <div class="solar-tip" id="solarTip"></div>
+    <div class="s3hint" id="s3hint"></div>
+    <div class="hero-ov"><div class="ov-in">
+      <div class="ov-top">
+        <div>
+          <div class="ov-stage">STAGE 0 · <b>LIFTOFF</b> — Entry</div>
+          <div class="ov-date" style="margin-top:6px">DAY 2026.10.26 · Redrawn every morning</div>
+          <h1>Sovereigns</h1>
+          <p class="ov-sub">The world&#x27;s top companies by market cap, updated daily</p>
+        </div>
+        <a href="about.html" class="ov-about">About →</a>
+      </div>
+      <div class="ov-legend">Today&#x27;s Solar System — planet size = market cap · Sun = Throne</div>
+    </div></div>
+    <div class="hero-fade" aria-hidden="true"></div>
+    <button type="button" class="hero-scroll" id="heroScroll" aria-label="Scroll down">
+      <span class="hs-chev" aria-hidden="true">⌄</span>
+      <span class="hs-label">SCROLL</span>
+    </button>
+  </div>
+</div>
+
+
+<main class="container">
+
+<section class="hero" id="stage1">
+  <div class="stage-k">STAGE 1 · <b>MAX-Q</b> — The Throne, zone of maximum pressure</div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">TOP 20 total</div>
+      <div class="stat-value">$39.6T</div>
+      <div class="stat-sub">USD</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Current #1</div>
+      <div class="stat-value">$5.09T</div>
+      <div class="stat-sub">NVIDIA</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Trillion-dollar club</div>
+      <div class="stat-value">14<span class="unit">cos</span></div>
+      <div class="stat-sub">$1T and above</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Throne gap</div>
+      <div class="stat-value" id="throneGapVal">—</div>
+      <div class="stat-sub" id="throneGapSub">#1 − #2</div>
+    </div>
+  </div>
+</section>
+
+<section class="throne-sec">
+  <div class="throne-who">Today&#x27;s Throne — <b id="throneName">—</b></div>
+  <div class="throne-num" id="throneNum">—</div>
+  <div class="throne-sub" id="throneSub">&nbsp;</div>
+</section>
+
+<section class="section" id="stage2">
+  <div class="stage-k">STAGE 2 · <b>ORBIT</b> — Orbit insertion</div>
+  <div class="section-head">
+    <h2 class="section-title">TOP 20</h2>
+    <a href="history-top20.html" class="history-btn">History <span class="history-btn-arrow">→</span></a>
+  </div>
+  <p class="section-desc">Tap a tab to switch regions</p>
+  <div class="tabs-wrap">
+    <div class="tabs-scroll">
+      <div class="tabs" id="regionTabs"></div>
+    </div>
+  </div>
+  <div id="stockList" class="stock-list"></div>
+</section>
+
+
+<section class="section" id="stage3">
+  <div class="stage-k">STAGE 3 · <b>TELEMETRY</b> — Ground reception</div>
+  <div class="section-head">
+    <h2 class="section-title">Today&#x27;s Signals</h2>
+    <div class="head-btns">
+      <a href="research.html#signals" class="history-btn">Signal Observatory <span class="history-btn-arrow">→</span></a>
+      <a href="research.html#dissect" class="history-btn">Must-Read Dissection Lab <span class="history-btn-arrow">→</span></a>
+      <a href="observatory.html#columns" class="history-btn">Logbook <span class="history-btn-arrow">→</span></a>
+    </div>
+  </div>
+  <div class="sig-grid" id="sigGrid"></div>
+</section>
+
+<section class="next-sec" id="stage4">
+  <div class="nk">STAGE 4 · LANDING — Until the next launch</div>
+  <div class="nt" id="nextTm">--:--:--</div>
+  <p>The booster stands again every morning at 8 KST — the order of the universe is rewritten</p>
+</section>
+
+</main>
+
+<footer class="site-footer container">
+  <div class="footer-brand">
+    <span>UNI<span style="color:var(--gold)">V</span>ERTRIX</span>
+    <span class="footer-divider">·</span>
+    <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
+  </div>
+  
+  <div class="disclaimer-box">
+    <div class="disclaimer-label">Disclaimer</div>
+    <ul class="disclaimer-list">
+      <li>This material is provided for information on the market capitalization of listed companies worldwide.</li>
+      <li>It is not a solicitation to buy or sell any security, nor investment advice, brokerage or intermediation.</li>
+      <li>Data shown is cited from external sources; its accuracy, completeness and timeliness are not guaranteed.</li>
+      <li>Exchange rates and market capitalizations may change over time.</li>
+      <li>All investment decisions, and any resulting gains or losses, rest solely with the investor.</li>
+    </ul>
+  </div>
+  
+  <p class="footer-source">
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · auto-updated daily at 08:00 KST
+  </p>
+<div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">About</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Terms</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacy</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Community Policy</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Investment Disclaimer</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contact</a></div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('ud-theme', next);
+}
+
+const DATA = {
+  "regions": {
+    "earth": {
+      "label": "Earth",
+      "subtitle": "Global",
+      "stocks": [
+        {
+          "name": "NVIDIA",
+          "ticker": "NVDA",
+          "flag": "🇺🇸",
+          "mc": 5094.0,
+          "desc": "AI 가속기 패권자"
+        },
+        {
+          "name": "Apple",
+          "ticker": "AAPL",
+          "flag": "🇺🇸",
+          "mc": 5074.0,
+          "desc": "프리미엄 디바이스·서비스"
+        },
+        {
+          "name": "Microsoft",
+          "ticker": "MSFT",
+          "flag": "🇺🇸",
+          "mc": 3894.0,
+          "desc": "엔터프라이즈 + Azure 클라우드"
+        },
+        {
+          "name": "Alphabet (Google)",
+          "ticker": "GOOG",
+          "flag": "🇺🇸",
+          "mc": 3880.0,
+          "desc": "검색·광고 + Gemini AI"
+        },
+        {
+          "name": "Amazon",
+          "ticker": "AMZN",
+          "flag": "🇺🇸",
+          "mc": 2675.0,
+          "desc": "전자상거래 + AWS 클라우드"
+        },
+        {
+          "name": "TSMC",
+          "ticker": "TSM",
+          "flag": "🇹🇼",
+          "mc": 2170.0,
+          "desc": "세계 1위 파운드리"
+        },
+        {
+          "name": "SpaceX",
+          "ticker": "SPCX",
+          "flag": "🇺🇸",
+          "mc": 2003.0,
+          "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"
+        },
+        {
+          "name": "Meta Platforms (Facebook)",
+          "ticker": "META",
+          "flag": "🇺🇸",
+          "mc": 1637.0,
+          "desc": "글로벌 SNS·광고 1위"
+        },
+        {
+          "name": "Saudi Aramco",
+          "ticker": "2222.SR",
+          "flag": "🇸🇦",
+          "mc": 1623.0,
+          "desc": "세계 최대 석유 기업"
+        },
+        {
+          "name": "Broadcom",
+          "ticker": "AVGO",
+          "flag": "🇺🇸",
+          "mc": 1535.0,
+          "desc": "통신·AI 반도체 거인"
+        },
+        {
+          "name": "Tesla",
+          "ticker": "TSLA",
+          "flag": "🇺🇸",
+          "mc": 1471.0,
+          "desc": "EV·자율주행·로봇"
+        },
+        {
+          "name": "Berkshire Hathaway",
+          "ticker": "BRK-B",
+          "flag": "🇺🇸",
+          "mc": 1160.0,
+          "desc": "워런 버핏의 투자 제국"
+        },
+        {
+          "name": "Eli Lilly",
+          "ticker": "LLY",
+          "flag": "🇺🇸",
+          "mc": 1135.0,
+          "desc": "GLP-1 비만약 美 선두"
+        },
+        {
+          "name": "Samsung Electronics",
+          "ticker": "005930.KS",
+          "flag": "🇰🇷",
+          "mc": 1046.0,
+          "desc": "메모리·스마트폰 글로벌 1위"
+        },
+        {
+          "name": "Micron Technology",
+          "ticker": "MU",
+          "flag": "🇺🇸",
+          "mc": 992.88,
+          "desc": "美 최대 메모리 반도체"
+        },
+        {
+          "name": "Walmart",
+          "ticker": "WMT",
+          "flag": "🇺🇸",
+          "mc": 951.17,
+          "desc": "美 1위 소매유통"
+        },
+        {
+          "name": "JPMorgan Chase",
+          "ticker": "JPM",
+          "flag": "🇺🇸",
+          "mc": 880.54,
+          "desc": "美 최대 은행"
+        },
+        {
+          "name": "AMD",
+          "ticker": "AMD",
+          "flag": "🇺🇸",
+          "mc": 843.64,
+          "desc": "CPU·GPU 추격자"
+        },
+        {
+          "name": "Visa",
+          "ticker": "V",
+          "flag": "🇺🇸",
+          "mc": 765.81,
+          "desc": "글로벌 결제 네트워크 1위"
+        },
+        {
+          "name": "Exxon Mobil",
+          "ticker": "XOM",
+          "flag": "🇺🇸",
+          "mc": 753.34,
+          "desc": "美 최대 석유 메이저"
+        }
+      ]
+    },
+    "us": {
+      "label": "United States",
+      "subtitle": "United States",
+      "stocks": [
+        {
+          "name": "NVIDIA",
+          "ticker": "NVDA",
+          "flag": "🇺🇸",
+          "mc": 5094.0,
+          "desc": "AI 가속기 패권자"
+        },
+        {
+          "name": "Apple",
+          "ticker": "AAPL",
+          "flag": "🇺🇸",
+          "mc": 5074.0,
+          "desc": "프리미엄 디바이스·서비스"
+        },
+        {
+          "name": "Microsoft",
+          "ticker": "MSFT",
+          "flag": "🇺🇸",
+          "mc": 3894.0,
+          "desc": "엔터프라이즈 + Azure 클라우드"
+        },
+        {
+          "name": "Alphabet (Google)",
+          "ticker": "GOOG",
+          "flag": "🇺🇸",
+          "mc": 3880.0,
+          "desc": "검색·광고 + Gemini AI"
+        },
+        {
+          "name": "Amazon",
+          "ticker": "AMZN",
+          "flag": "🇺🇸",
+          "mc": 2675.0,
+          "desc": "전자상거래 + AWS 클라우드"
+        },
+        {
+          "name": "SpaceX",
+          "ticker": "SPCX",
+          "flag": "🇺🇸",
+          "mc": 2003.0,
+          "desc": "재사용 로켓 + Starlink — 우주 인프라 지배자"
+        },
+        {
+          "name": "Meta Platforms (Facebook)",
+          "ticker": "META",
+          "flag": "🇺🇸",
+          "mc": 1637.0,
+          "desc": "글로벌 SNS·광고 1위"
+        },
+        {
+          "name": "Broadcom",
+          "ticker": "AVGO",
+          "flag": "🇺🇸",
+          "mc": 1535.0,
+          "desc": "통신·AI 반도체 거인"
+        },
+        {
+          "name": "Tesla",
+          "ticker": "TSLA",
+          "flag": "🇺🇸",
+          "mc": 1471.0,
+          "desc": "EV·자율주행·로봇"
+        },
+        {
+          "name": "Berkshire Hathaway",
+          "ticker": "BRK-B",
+          "flag": "🇺🇸",
+          "mc": 1160.0,
+          "desc": "워런 버핏의 투자 제국"
+        },
+        {
+          "name": "Eli Lilly",
+          "ticker": "LLY",
+          "flag": "🇺🇸",
+          "mc": 1135.0,
+          "desc": "GLP-1 비만약 美 선두"
+        },
+        {
+          "name": "Micron Technology",
+          "ticker": "MU",
+          "flag": "🇺🇸",
+          "mc": 992.88,
+          "desc": "美 최대 메모리 반도체"
+        },
+        {
+          "name": "Walmart",
+          "ticker": "WMT",
+          "flag": "🇺🇸",
+          "mc": 951.17,
+          "desc": "美 1위 소매유통"
+        },
+        {
+          "name": "JPMorgan Chase",
+          "ticker": "JPM",
+          "flag": "🇺🇸",
+          "mc": 880.54,
+          "desc": "美 최대 은행"
+        },
+        {
+          "name": "AMD",
+          "ticker": "AMD",
+          "flag": "🇺🇸",
+          "mc": 843.64,
+          "desc": "CPU·GPU 추격자"
+        },
+        {
+          "name": "Visa",
+          "ticker": "V",
+          "flag": "🇺🇸",
+          "mc": 765.81,
+          "desc": "글로벌 결제 네트워크 1위"
+        },
+        {
+          "name": "Exxon Mobil",
+          "ticker": "XOM",
+          "flag": "🇺🇸",
+          "mc": 753.34,
+          "desc": "美 최대 석유 메이저"
+        },
+        {
+          "name": "Johnson & Johnson",
+          "ticker": "JNJ",
+          "flag": "🇺🇸",
+          "mc": 635.07,
+          "desc": "글로벌 헬스케어 거인"
+        },
+        {
+          "name": "Mastercard",
+          "ticker": "MA",
+          "flag": "🇺🇸",
+          "mc": 546.27,
+          "desc": "글로벌 결제 네트워크 2위"
+        },
+        {
+          "name": "AbbVie",
+          "ticker": "ABBV",
+          "flag": "🇺🇸",
+          "mc": 504.75,
+          "desc": "글로벌 제약 빅5"
+        }
+      ]
+    },
+    "korea": {
+      "label": "Korea",
+      "subtitle": "KRX",
+      "stocks": [
+        {
+          "name": "Samsung Electronics",
+          "ticker": "005930.KS",
+          "flag": "🇰🇷",
+          "mc": 1046.0,
+          "desc": "메모리·스마트폰 글로벌 1위"
+        },
+        {
+          "name": "SK hynix",
+          "ticker": "000660.KS",
+          "flag": "🇰🇷",
+          "mc": 706.21,
+          "desc": "HBM·D램 강자"
+        },
+        {
+          "name": "SK Square",
+          "ticker": "402340.KS",
+          "flag": "🇰🇷",
+          "mc": 76.07,
+          "desc": "SK ICT 지주회사"
+        },
+        {
+          "name": "LG Energy Solution",
+          "ticker": "373220.KS",
+          "flag": "🇰🇷",
+          "mc": 66.65,
+          "desc": "K배터리 1위"
+        },
+        {
+          "name": "Hyundai Motor",
+          "ticker": "005380.KS",
+          "flag": "🇰🇷",
+          "mc": 57.1,
+          "desc": "글로벌 완성차 빅5"
+        },
+        {
+          "name": "Samsung Biologics",
+          "ticker": "207940.KS",
+          "flag": "🇰🇷",
+          "mc": 51.57,
+          "desc": "글로벌 CDMO 1위"
+        },
+        {
+          "name": "KB Financial Group",
+          "ticker": "KB",
+          "flag": "🇰🇷",
+          "mc": 40.28,
+          "desc": "국내 1위 금융지주"
+        },
+        {
+          "name": "Samsung C&T",
+          "ticker": "028260.KS",
+          "flag": "🇰🇷",
+          "mc": 35.31,
+          "desc": "삼성그룹 지주격"
+        },
+        {
+          "name": "Samsung Life Insurance",
+          "ticker": "032830.KS",
+          "flag": "🇰🇷",
+          "mc": 33.87,
+          "desc": "국내 1위 생명보험"
+        },
+        {
+          "name": "Celltrion",
+          "ticker": "068270.KS",
+          "flag": "🇰🇷",
+          "mc": 32.88,
+          "desc": "K바이오시밀러 선두"
+        },
+        {
+          "name": "Shinhan Financial Group",
+          "ticker": "SHG",
+          "flag": "🇰🇷",
+          "mc": 31.21,
+          "desc": "국내 2위 금융지주"
+        },
+        {
+          "name": "Kia",
+          "ticker": "000270.KS",
+          "flag": "🇰🇷",
+          "mc": 30.86,
+          "desc": "글로벌 완성차 빅5"
+        },
+        {
+          "name": "Hanwha Aerospace",
+          "ticker": "012450.KS",
+          "flag": "🇰🇷",
+          "mc": 29.42,
+          "desc": "K방산 대표주"
+        },
+        {
+          "name": "Doosan Enerbility",
+          "ticker": "034020.KS",
+          "flag": "🇰🇷",
+          "mc": 27.87,
+          "desc": "원전·풍력 발전"
+        },
+        {
+          "name": "Hana Financial Group",
+          "ticker": "086790.KS",
+          "flag": "🇰🇷",
+          "mc": 23.42,
+          "desc": "국내 3위 금융지주"
+        },
+        {
+          "name": "HD Hyundai Heavy Industries",
+          "ticker": "329180.KS",
+          "flag": "🇰🇷",
+          "mc": 23.35,
+          "desc": "세계 1위 조선"
+        },
+        {
+          "name": "Samsung Electro-Mechanics",
+          "ticker": "009155.KS",
+          "flag": "🇰🇷",
+          "mc": 22.14,
+          "desc": "MLCC 글로벌 빅3"
+        },
+        {
+          "name": "Hyundai Mobis",
+          "ticker": "012330.KS",
+          "flag": "🇰🇷",
+          "mc": 21.92,
+          "desc": "현대차 핵심 부품사"
+        },
+        {
+          "name": "LG Electronics",
+          "ticker": "066570.KS",
+          "flag": "🇰🇷",
+          "mc": 21.11,
+          "desc": "가전·전장 글로벌"
+        },
+        {
+          "name": "NAVER",
+          "ticker": "035420.KS",
+          "flag": "🇰🇷",
+          "mc": 19.65,
+          "desc": "국내 1위 검색 포털"
+        }
+      ]
+    },
+    "japan": {
+      "label": "Japan",
+      "subtitle": "TSE",
+      "stocks": [
+        {
+          "name": "Mitsubishi UFJ Financial",
+          "ticker": "MUFG",
+          "flag": "🇯🇵",
+          "mc": 237.15,
+          "desc": "일본 최대 금융그룹"
+        },
+        {
+          "name": "Toyota",
+          "ticker": "TM",
+          "flag": "🇯🇵",
+          "mc": 231.78,
+          "desc": "세계 판매 1위 완성차"
+        },
+        {
+          "name": "Recruit",
+          "ticker": "6098.T",
+          "flag": "🇯🇵",
+          "mc": 163.9,
+          "desc": "인재·HR 테크 (Indeed 보유)"
+        },
+        {
+          "name": "Hitachi",
+          "ticker": "6501.T",
+          "flag": "🇯🇵",
+          "mc": 158.96,
+          "desc": "DX·산업장비 (Hitachi)"
+        },
+        {
+          "name": "SoftBank Group Corp.",
+          "ticker": "9984.T",
+          "flag": "🇯🇵",
+          "mc": 154.08,
+          "desc": "글로벌 AI 투자 큰손"
+        },
+        {
+          "name": "Sony",
+          "ticker": "SONY",
+          "flag": "🇯🇵",
+          "mc": 152.3,
+          "desc": "게임·이미지센서·엔터"
+        },
+        {
+          "name": "Sumitomo Mitsui Financial Group",
+          "ticker": "SMFG",
+          "flag": "🇯🇵",
+          "mc": 149.27,
+          "desc": "일본 3대 메가뱅크"
+        },
+        {
+          "name": "Fast Retailing",
+          "ticker": "9983.T",
+          "flag": "🇯🇵",
+          "mc": 147.47,
+          "desc": "유니클로 모회사"
+        },
+        {
+          "name": "Advantest",
+          "ticker": "6857.T",
+          "flag": "🇯🇵",
+          "mc": 145.32,
+          "desc": "반도체 테스터 1위"
+        },
+        {
+          "name": "Tokyo Electron",
+          "ticker": "8035.T",
+          "flag": "🇯🇵",
+          "mc": 132.51,
+          "desc": "반도체 장비 빅3"
+        },
+        {
+          "name": "KIOXIA Holdings Corporation",
+          "ticker": "285A.T",
+          "flag": "🇯🇵",
+          "mc": 127.16,
+          "desc": "낸드 플래시 3강 (구 도시바 메모리)"
+        },
+        {
+          "name": "Keyence",
+          "ticker": "6861.T",
+          "flag": "🇯🇵",
+          "mc": 121.06,
+          "desc": "산업 센서 글로벌"
+        },
+        {
+          "name": "Mizuho Financial Group",
+          "ticker": "MFG",
+          "flag": "🇯🇵",
+          "mc": 115.53,
+          "desc": "일본 3대 메가뱅크"
+        },
+        {
+          "name": "Mitsubishi Corporation",
+          "ticker": "8058.T",
+          "flag": "🇯🇵",
+          "mc": 113.79,
+          "desc": "일본 최대 종합상사"
+        },
+        {
+          "name": "Tokio Marine",
+          "ticker": "8766.T",
+          "flag": "🇯🇵",
+          "mc": 103.63,
+          "desc": "일본 1위 손해보험"
+        },
+        {
+          "name": "Itōchū Shōji",
+          "ticker": "8001.T",
+          "flag": "🇯🇵",
+          "mc": 103.42,
+          "desc": "종합상사 빅5 (Itochu)"
+        },
+        {
+          "name": "Mitsui Bussan",
+          "ticker": "8031.T",
+          "flag": "🇯🇵",
+          "mc": 91.44,
+          "desc": "일본 2위 상사 (Mitsui)"
+        },
+        {
+          "name": "NTT (Nippon Telegraph & Telephone)",
+          "ticker": "9432.T",
+          "flag": "🇯🇵",
+          "mc": 90.46,
+          "desc": "일본 최대 통신사 (NTT)"
+        },
+        {
+          "name": "Japan Tobacco",
+          "ticker": "2914.T",
+          "flag": "🇯🇵",
+          "mc": 85.39,
+          "desc": ""
+        },
+        {
+          "name": "Mitsubishi Heavy Industries",
+          "ticker": "7011.T",
+          "flag": "🇯🇵",
+          "mc": 75.39,
+          "desc": "방산·중공업 (MHI)"
+        }
+      ]
+    },
+    "europe": {
+      "label": "Europe",
+      "subtitle": "EU + UK + CH",
+      "stocks": [
+        {
+          "name": "ASML",
+          "ticker": "ASML",
+          "flag": "🇳🇱",
+          "mc": 605.79,
+          "desc": "노광장비 글로벌 독점"
+        },
+        {
+          "name": "Roche",
+          "ticker": "RO.SW",
+          "flag": "🇨🇭",
+          "mc": 384.09,
+          "desc": "글로벌 제약·진단 거인"
+        },
+        {
+          "name": "HSBC",
+          "ticker": "HSBC",
+          "flag": "🇬🇧",
+          "mc": 310.12,
+          "desc": "글로벌 빅뱅크"
+        },
+        {
+          "name": "Shell",
+          "ticker": "SHEL",
+          "flag": "🇬🇧",
+          "mc": 307.29,
+          "desc": "유럽 석유 메이저 (Shell)"
+        },
+        {
+          "name": "Novartis",
+          "ticker": "NVS",
+          "flag": "🇨🇭",
+          "mc": 287.23,
+          "desc": "스위스 제약 빅3"
+        },
+        {
+          "name": "SAP",
+          "ticker": "SAP",
+          "flag": "🇩🇪",
+          "mc": 274.86,
+          "desc": ""
+        },
+        {
+          "name": "AstraZeneca",
+          "ticker": "AZN",
+          "flag": "🇬🇧",
+          "mc": 265.96,
+          "desc": "영국 제약 빅3"
+        },
+        {
+          "name": "Nestlé",
+          "ticker": "NESN.SW",
+          "flag": "🇨🇭",
+          "mc": 261.16,
+          "desc": "세계 최대 식품 (Nestlé)"
+        },
+        {
+          "name": "L'Oréal",
+          "ticker": "OR.PA",
+          "flag": "🇫🇷",
+          "mc": 260.93,
+          "desc": "세계 최대 화장품 (L'Oréal)"
+        },
+        {
+          "name": "Linde",
+          "ticker": "LIN",
+          "flag": "🇺🇸",
+          "mc": 234.56,
+          "desc": "글로벌 1위 산업가스"
+        },
+        {
+          "name": "Arm Holdings",
+          "ticker": "ARM",
+          "flag": "🇬🇧",
+          "mc": 224.63,
+          "desc": "AI 칩 CPU IP"
+        },
+        {
+          "name": "Siemens",
+          "ticker": "SIE.DE",
+          "flag": "🇩🇪",
+          "mc": 220.45,
+          "desc": "산업 자동화 거인 (Siemens)"
+        },
+        {
+          "name": "LVMH",
+          "ticker": "MC.PA",
+          "flag": "🇫🇷",
+          "mc": 212.09,
+          "desc": "명품 콘글로머릿 1위 (LVMH)"
+        },
+        {
+          "name": "TotalEnergies",
+          "ticker": "TTE",
+          "flag": "🇺🇸",
+          "mc": 204.56,
+          "desc": "프랑스 에너지 메이저"
+        },
+        {
+          "name": "Inditex",
+          "ticker": "ITX.MC",
+          "flag": "🇪🇸",
+          "mc": 198.54,
+          "desc": "Zara 모회사 (Inditex)"
+        },
+        {
+          "name": "Santander",
+          "ticker": "SAN",
+          "flag": "🇺🇸",
+          "mc": 185.53,
+          "desc": "스페인 1위 은행 (Santander)"
+        },
+        {
+          "name": "Allianz SE",
+          "ticker": "ALV.DE",
+          "flag": "🇩🇪",
+          "mc": 182.31,
+          "desc": "유럽 최대 보험그룹"
+        },
+        {
+          "name": "Novo Nordisk",
+          "ticker": "NVO",
+          "flag": "🇩🇰",
+          "mc": 172.28,
+          "desc": "GLP-1 비만약 글로벌 1위"
+        },
+        {
+          "name": "Airbus",
+          "ticker": "AIR.PA",
+          "flag": "🇫🇷",
+          "mc": 171.11,
+          "desc": "세계 1위 민항기 제조"
+        },
+        {
+          "name": "Prosus",
+          "ticker": "PRX.AS",
+          "flag": "🇳🇱",
+          "mc": 167.72,
+          "desc": "Naspers 자회사 (Prosus)"
+        }
+      ]
+    },
+    "taiwan": {
+      "label": "Taiwan",
+      "subtitle": "TWSE",
+      "stocks": [
+        {
+          "name": "TSMC",
+          "ticker": "TSM",
+          "flag": "🇹🇼",
+          "mc": 2170.0,
+          "desc": "세계 1위 파운드리"
+        },
+        {
+          "name": "MediaTek",
+          "ticker": "2454.TW",
+          "flag": "🇹🇼",
+          "mc": 197.12,
+          "desc": "모바일 AP 출하 1위 — 엣지 AI로 확장"
+        },
+        {
+          "name": "Delta Electronics",
+          "ticker": "2308.TW",
+          "flag": "🇹🇼",
+          "mc": 124.72,
+          "desc": "AI 서버 전원·냉각의 숨은 지배자"
+        },
+        {
+          "name": "Foxconn (Hon Hai Precision Industry)",
+          "ticker": "2317.TW",
+          "flag": "🇹🇼",
+          "mc": 106.13,
+          "desc": "폭스콘 — 세계의 조립공장, AI 서버로 변신"
+        },
+        {
+          "name": "ASE Group",
+          "ticker": "ASX",
+          "flag": "🇹🇼",
+          "mc": 85.07,
+          "desc": "반도체 후공정(OSAT) 세계 1위"
+        },
+        {
+          "name": "Nan Ya Plastics",
+          "ticker": "1303.TW",
+          "flag": "🇹🇼",
+          "mc": 73.47,
+          "desc": "포모사 그룹 화학·전자소재 핵심"
+        },
+        {
+          "name": "Fubon Financial",
+          "ticker": "2881.TW",
+          "flag": "🇹🇼",
+          "mc": 66.66,
+          "desc": "대만 금융지주 양대산맥 푸본"
+        },
+        {
+          "name": "Unimicron",
+          "ticker": "3037.TW",
+          "flag": "🇹🇼",
+          "mc": 54.78,
+          "desc": "AI 칩 기판(ABF) 세계 1위"
+        },
+        {
+          "name": "Cathay Financial Holding",
+          "ticker": "2882.TW",
+          "flag": "🇹🇼",
+          "mc": 51.24,
+          "desc": "대만 최대 보험·금융그룹 캐세이"
+        },
+        {
+          "name": "United Microelectronics",
+          "ticker": "UMC",
+          "flag": "🇹🇼",
+          "mc": 47.37,
+          "desc": "성숙공정 파운드리 강자"
+        },
+        {
+          "name": "CTBC Financial Holding",
+          "ticker": "2891.TW",
+          "flag": "🇹🇼",
+          "mc": 45.35,
+          "desc": "대만 금융지주 CTBC"
+        },
+        {
+          "name": "Nanya Technology",
+          "ticker": "2408.TW",
+          "flag": "🇹🇼",
+          "mc": 43.96,
+          "desc": "대만 대표 D램 메이커"
+        },
+        {
+          "name": "Quanta Computer",
+          "ticker": "2382.TW",
+          "flag": "🇹🇼",
+          "mc": 40.62,
+          "desc": "AI 서버 조립 강자 콴타"
+        },
+        {
+          "name": "Chunghwa Telecom",
+          "ticker": "CHT",
+          "flag": "🇹🇼",
+          "mc": 37.63,
+          "desc": "대만 통신 1위 중화텔레콤"
+        },
+        {
+          "name": "Taishin Financial Holdings",
+          "ticker": "2887.TW",
+          "flag": "🇹🇼",
+          "mc": 32.54,
+          "desc": "대만 중견 금융지주 타이신"
+        },
+        {
+          "name": "Yageo",
+          "ticker": "2327.TW",
+          "flag": "🇹🇼",
+          "mc": 32.12,
+          "desc": "MLCC 수동부품 글로벌 강자"
+        },
+        {
+          "name": "Wiwynn",
+          "ticker": "6669.TW",
+          "flag": "🇹🇼",
+          "mc": 31.47,
+          "desc": "하이퍼스케일러 전용 AI 서버 제조사"
+        },
+        {
+          "name": "Global Unichip Corp.",
+          "ticker": "3443.TW",
+          "flag": "🇹🇼",
+          "mc": 31.28,
+          "desc": ""
+        },
+        {
+          "name": "Formosa Petrochemical",
+          "ticker": "6505.TW",
+          "flag": "🇹🇼",
+          "mc": 31.22,
+          "desc": ""
+        },
+        {
+          "name": "Yuanta Financial Holding",
+          "ticker": "2885.TW",
+          "flag": "🇹🇼",
+          "mc": 30.89,
+          "desc": "대만 증권 1위 위안타"
+        }
+      ]
+    },
+    "china": {
+      "label": "China",
+      "subtitle": "Mainland (SH·SZ)",
+      "stocks": [
+        {
+          "name": "CXMT",
+          "ticker": "688825.SS",
+          "flag": "🇨🇳",
+          "mc": 454.6,
+          "desc": ""
+        },
+        {
+          "name": "Tencent",
+          "ticker": "TCEHY",
+          "flag": "🇨🇳",
+          "mc": 446.32,
+          "desc": "위챗 + 게임 제국"
+        },
+        {
+          "name": "China Construction Bank",
+          "ticker": "601939.SS",
+          "flag": "🇨🇳",
+          "mc": 442.87,
+          "desc": "중국 4대 국유은행 (CCB)"
+        },
+        {
+          "name": "Agricultural Bank of China",
+          "ticker": "601288.SS",
+          "flag": "🇨🇳",
+          "mc": 376.99,
+          "desc": "중국 4대 국유은행 (ABC)"
+        },
+        {
+          "name": "Bank of China",
+          "ticker": "601988.SS",
+          "flag": "🇨🇳",
+          "mc": 334.53,
+          "desc": "중국 4대 국유은행 (BOC)"
+        },
+        {
+          "name": "ICBC",
+          "ticker": "1398.HK",
+          "flag": "🇨🇳",
+          "mc": 328.88,
+          "desc": "세계 1위 은행 (ICBC)"
+        },
+        {
+          "name": "Kweichow Moutai",
+          "ticker": "600519.SS",
+          "flag": "🇨🇳",
+          "mc": 250.02,
+          "desc": "중국 명품 백주 (마오타이)"
+        },
+        {
+          "name": "Alibaba",
+          "ticker": "BABA",
+          "flag": "🇨🇳",
+          "mc": 247.87,
+          "desc": "전자상거래 + 클라우드"
+        },
+        {
+          "name": "PetroChina",
+          "ticker": "0857.HK",
+          "flag": "🇨🇳",
+          "mc": 224.05,
+          "desc": "중국 최대 석유 (PetroChina)"
+        },
+        {
+          "name": "China Mobile",
+          "ticker": "0941.HK",
+          "flag": "🇨🇳",
+          "mc": 212.8,
+          "desc": "세계 1위 이통사"
+        },
+        {
+          "name": "CM Bank",
+          "ticker": "3968.HK",
+          "flag": "🇨🇳",
+          "mc": 165.38,
+          "desc": "중국 빅5 은행 (CMB)"
+        },
+        {
+          "name": "CATL",
+          "ticker": "300750.SZ",
+          "flag": "🇨🇳",
+          "mc": 164.71,
+          "desc": "세계 1위 배터리 (CATL)"
+        },
+        {
+          "name": "China Shenhua Energy",
+          "ticker": "601088.SS",
+          "flag": "🇨🇳",
+          "mc": 163.12,
+          "desc": "중국 최대 석탄"
+        },
+        {
+          "name": "China Life Insurance",
+          "ticker": "601628.SS",
+          "flag": "🇨🇳",
+          "mc": 146.09,
+          "desc": "중국 1위 생명보험"
+        },
+        {
+          "name": "Foxconn Industrial Internet",
+          "ticker": "601138.SS",
+          "flag": "🇨🇳",
+          "mc": 145.23,
+          "desc": "폭스콘 中 자회사"
+        },
+        {
+          "name": "Ping An Insurance",
+          "ticker": "601318.SS",
+          "flag": "🇨🇳",
+          "mc": 140.41,
+          "desc": "중국 1위 종합금융 (Ping An)"
+        },
+        {
+          "name": "CNOOC",
+          "ticker": "0883.HK",
+          "flag": "🇨🇳",
+          "mc": 140.06,
+          "desc": "중국 3대 해양 석유 (CNOOC)"
+        },
+        {
+          "name": "Zijin Mining",
+          "ticker": "601899.SS",
+          "flag": "🇨🇳",
+          "mc": 114.69,
+          "desc": "중국 최대 금속 광산"
+        },
+        {
+          "name": "PDD Holdings (Pinduoduo)",
+          "ticker": "PDD",
+          "flag": "🇨🇳",
+          "mc": 112.5,
+          "desc": "초저가 커머스 (핀둬둬·Temu)"
+        },
+        {
+          "name": "BYD",
+          "ticker": "002594.SZ",
+          "flag": "🇨🇳",
+          "mc": 111.21,
+          "desc": "세계 1위 EV (BYD)"
+        }
+      ]
+    },
+    "hk": {
+      "label": "Hong Kong",
+      "subtitle": "HKEX",
+      "stocks": [
+        {
+          "name": "AIA",
+          "ticker": "1299.HK",
+          "flag": "🇭🇰",
+          "mc": 93.3,
+          "desc": "아시아 1위 생명보험 (AIA)"
+        },
+        {
+          "name": "Bank of China (Hong Kong)",
+          "ticker": "2388.HK",
+          "flag": "🇭🇰",
+          "mc": 65.86,
+          "desc": "중국은행 홍콩 (BOCHK)"
+        },
+        {
+          "name": "Hong Kong Exchanges & Clearing",
+          "ticker": "0388.HK",
+          "flag": "🇭🇰",
+          "mc": 59.73,
+          "desc": "홍콩 증권거래소"
+        },
+        {
+          "name": "Swire Pacific",
+          "ticker": "0019.HK",
+          "flag": "🇭🇰",
+          "mc": 47.85,
+          "desc": "캐세이퍼시픽 보유 복합기업"
+        },
+        {
+          "name": "Jardine Matheson",
+          "ticker": "J36.SI",
+          "flag": "🇭🇰",
+          "mc": 42.83,
+          "desc": "아시아 복합 대기업 (Jardine)"
+        },
+        {
+          "name": "Zijin Gold International Company Limited",
+          "ticker": "2259.HK",
+          "flag": "🇭🇰",
+          "mc": 41.34,
+          "desc": "쯔진 계열 글로벌 금 채굴"
+        },
+        {
+          "name": "Sun Hung Kai Properties",
+          "ticker": "0016.HK",
+          "flag": "🇭🇰",
+          "mc": 38.96,
+          "desc": "홍콩 최대 부동산"
+        },
+        {
+          "name": "Lenovo",
+          "ticker": "0992.HK",
+          "flag": "🇭🇰",
+          "mc": 35.79,
+          "desc": "세계 1위 PC 제조"
+        },
+        {
+          "name": "CK Hutchison Holdings",
+          "ticker": "0001.HK",
+          "flag": "🇭🇰",
+          "mc": 31.41,
+          "desc": "리카싱 글로벌 복합기업"
+        },
+        {
+          "name": "Techtronic Industries",
+          "ticker": "0669.HK",
+          "flag": "🇭🇰",
+          "mc": 30.02,
+          "desc": "전동공구 세계 강자 (Milwaukee)"
+        },
+        {
+          "name": "China Resources Land",
+          "ticker": "1109.HK",
+          "flag": "🇭🇰",
+          "mc": 26.81,
+          "desc": "중국 대형 부동산 개발"
+        },
+        {
+          "name": "MTR Corporation",
+          "ticker": "0066.HK",
+          "flag": "🇭🇰",
+          "mc": 25.65,
+          "desc": "홍콩 지하철 + 부동산"
+        },
+        {
+          "name": "CLP Group",
+          "ticker": "0002.HK",
+          "flag": "🇭🇰",
+          "mc": 24.48,
+          "desc": "홍콩 전력 유틸리티"
+        },
+        {
+          "name": "CK Infrastructure",
+          "ticker": "1038.HK",
+          "flag": "🇭🇰",
+          "mc": 21.61,
+          "desc": "글로벌 인프라 투자 (리카싱 계열)"
+        },
+        {
+          "name": "China Unicom",
+          "ticker": "0762.HK",
+          "flag": "🇭🇰",
+          "mc": 20.27,
+          "desc": "중국 3대 통신사"
+        },
+        {
+          "name": "CK Asset Holdings",
+          "ticker": "1113.HK",
+          "flag": "🇭🇰",
+          "mc": 19.68,
+          "desc": "리카싱 계열 부동산"
+        },
+        {
+          "name": "Swire Properties",
+          "ticker": "1972.HK",
+          "flag": "🇭🇰",
+          "mc": 17.67,
+          "desc": ""
+        },
+        {
+          "name": "Galaxy Entertainment",
+          "ticker": "0027.HK",
+          "flag": "🇭🇰",
+          "mc": 17.63,
+          "desc": "마카오 카지노·리조트"
+        },
+        {
+          "name": "Hongkong Land",
+          "ticker": "H78.SI",
+          "flag": "🇭🇰",
+          "mc": 17.52,
+          "desc": "홍콩 센트럴 프라임 부동산"
+        },
+        {
+          "name": "China Overseas Land & Investment",
+          "ticker": "0688.HK",
+          "flag": "🇭🇰",
+          "mc": 17.38,
+          "desc": "중국 국유 부동산 개발"
+        }
+      ]
+    }
+  },
+  "watch100": [
+    {
+      "rank": 1,
+      "ticker": "NVDA",
+      "name": "NVIDIA"
+    },
+    {
+      "rank": 2,
+      "ticker": "AAPL",
+      "name": "Apple"
+    },
+    {
+      "rank": 3,
+      "ticker": "MSFT",
+      "name": "Microsoft"
+    },
+    {
+      "rank": 4,
+      "ticker": "GOOG",
+      "name": "Alphabet (Google)"
+    },
+    {
+      "rank": 5,
+      "ticker": "AMZN",
+      "name": "Amazon"
+    },
+    {
+      "rank": 6,
+      "ticker": "TSM",
+      "name": "TSMC"
+    },
+    {
+      "rank": 7,
+      "ticker": "SPCX",
+      "name": "SpaceX"
+    },
+    {
+      "rank": 8,
+      "ticker": "META",
+      "name": "Meta Platforms (Facebook)"
+    },
+    {
+      "rank": 9,
+      "ticker": "2222.SR",
+      "name": "Saudi Aramco"
+    },
+    {
+      "rank": 10,
+      "ticker": "AVGO",
+      "name": "Broadcom"
+    },
+    {
+      "rank": 11,
+      "ticker": "TSLA",
+      "name": "Tesla"
+    },
+    {
+      "rank": 12,
+      "ticker": "BRK-B",
+      "name": "Berkshire Hathaway"
+    },
+    {
+      "rank": 13,
+      "ticker": "LLY",
+      "name": "Eli Lilly"
+    },
+    {
+      "rank": 14,
+      "ticker": "005930.KS",
+      "name": "삼성전자"
+    },
+    {
+      "rank": 15,
+      "ticker": "MU",
+      "name": "Micron Technology"
+    },
+    {
+      "rank": 16,
+      "ticker": "WMT",
+      "name": "Walmart"
+    },
+    {
+      "rank": 17,
+      "ticker": "JPM",
+      "name": "JPMorgan Chase"
+    },
+    {
+      "rank": 18,
+      "ticker": "AMD",
+      "name": "AMD"
+    },
+    {
+      "rank": 19,
+      "ticker": "V",
+      "name": "Visa"
+    },
+    {
+      "rank": 20,
+      "ticker": "XOM",
+      "name": "Exxon Mobil"
+    },
+    {
+      "rank": 21,
+      "ticker": "000660.KS",
+      "name": "SK하이닉스"
+    },
+    {
+      "rank": 22,
+      "ticker": "JNJ",
+      "name": "Johnson & Johnson"
+    },
+    {
+      "rank": 23,
+      "ticker": "ASML",
+      "name": "ASML"
+    },
+    {
+      "rank": 24,
+      "ticker": "MA",
+      "name": "Mastercard"
+    },
+    {
+      "rank": 25,
+      "ticker": "ABBV",
+      "name": "AbbVie"
+    },
+    {
+      "rank": 26,
+      "ticker": "PLTR",
+      "name": "Palantir"
+    },
+    {
+      "rank": 27,
+      "ticker": "INTC",
+      "name": "Intel"
+    },
+    {
+      "rank": 28,
+      "ticker": "CVX",
+      "name": "Chevron"
+    },
+    {
+      "rank": 29,
+      "ticker": "688825.SS",
+      "name": "CXMT"
+    },
+    {
+      "rank": 30,
+      "ticker": "TCEHY",
+      "name": "Tencent"
+    },
+    {
+      "rank": 31,
+      "ticker": "COST",
+      "name": "Costco"
+    },
+    {
+      "rank": 32,
+      "ticker": "601939.SS",
+      "name": "China Construction Bank"
+    },
+    {
+      "rank": 33,
+      "ticker": "CSCO",
+      "name": "Cisco"
+    },
+    {
+      "rank": 34,
+      "ticker": "KO",
+      "name": "Coca-Cola"
+    },
+    {
+      "rank": 35,
+      "ticker": "RO.SW",
+      "name": "Roche"
+    },
+    {
+      "rank": 36,
+      "ticker": "ORCL",
+      "name": "Oracle"
+    },
+    {
+      "rank": 37,
+      "ticker": "601288.SS",
+      "name": "Agricultural Bank of China"
+    },
+    {
+      "rank": 38,
+      "ticker": "UNH",
+      "name": "UnitedHealth"
+    },
+    {
+      "rank": 39,
+      "ticker": "PG",
+      "name": "Procter & Gamble"
+    },
+    {
+      "rank": 40,
+      "ticker": "MRK",
+      "name": "Merck"
+    },
+    {
+      "rank": 41,
+      "ticker": "BAC",
+      "name": "Bank of America"
+    },
+    {
+      "rank": 42,
+      "ticker": "601988.SS",
+      "name": "Bank of China"
+    },
+    {
+      "rank": 43,
+      "ticker": "1398.HK",
+      "name": "ICBC"
+    },
+    {
+      "rank": 44,
+      "ticker": "HD",
+      "name": "Home Depot"
+    },
+    {
+      "rank": 45,
+      "ticker": "CAT",
+      "name": "Caterpillar"
+    },
+    {
+      "rank": 46,
+      "ticker": "PANW",
+      "name": "Palo Alto Networks"
+    },
+    {
+      "rank": 47,
+      "ticker": "PM",
+      "name": "Philip Morris International"
+    },
+    {
+      "rank": 48,
+      "ticker": "HSBC",
+      "name": "HSBC"
+    },
+    {
+      "rank": 49,
+      "ticker": "SHEL",
+      "name": "Shell"
+    },
+    {
+      "rank": 50,
+      "ticker": "AMAT",
+      "name": "Applied Materials"
+    },
+    {
+      "rank": 51,
+      "ticker": "GE",
+      "name": "General Electric"
+    },
+    {
+      "rank": 52,
+      "ticker": "DELL",
+      "name": "Dell"
+    },
+    {
+      "rank": 53,
+      "ticker": "LRCX",
+      "name": "Lam Research"
+    },
+    {
+      "rank": 54,
+      "ticker": "NVS",
+      "name": "Novartis"
+    },
+    {
+      "rank": 55,
+      "ticker": "MS",
+      "name": "Morgan Stanley"
+    },
+    {
+      "rank": 56,
+      "ticker": "RY",
+      "name": "Royal Bank Of Canada"
+    },
+    {
+      "rank": 57,
+      "ticker": "SAP",
+      "name": "SAP"
+    },
+    {
+      "rank": 58,
+      "ticker": "NFLX",
+      "name": "Netflix"
+    },
+    {
+      "rank": 59,
+      "ticker": "AZN",
+      "name": "AstraZeneca"
+    },
+    {
+      "rank": 60,
+      "ticker": "CRWD",
+      "name": "CrowdStrike"
+    },
+    {
+      "rank": 61,
+      "ticker": "NESN.SW",
+      "name": "Nestlé"
+    },
+    {
+      "rank": 62,
+      "ticker": "OR.PA",
+      "name": "L'Oréal"
+    },
+    {
+      "rank": 63,
+      "ticker": "TXN",
+      "name": "Texas Instruments"
+    },
+    {
+      "rank": 64,
+      "ticker": "RTX",
+      "name": "RTX"
+    },
+    {
+      "rank": 65,
+      "ticker": "GS",
+      "name": "Goldman Sachs"
+    },
+    {
+      "rank": 66,
+      "ticker": "600519.SS",
+      "name": "Kweichow Moutai"
+    },
+    {
+      "rank": 67,
+      "ticker": "TMO",
+      "name": "Thermo Fisher Scientific"
+    },
+    {
+      "rank": 68,
+      "ticker": "BABA",
+      "name": "Alibaba"
+    },
+    {
+      "rank": 69,
+      "ticker": "WFC",
+      "name": "Wells Fargo"
+    },
+    {
+      "rank": 70,
+      "ticker": "IBM",
+      "name": "IBM"
+    },
+    {
+      "rank": 71,
+      "ticker": "AMGN",
+      "name": "Amgen"
+    },
+    {
+      "rank": 72,
+      "ticker": "MUFG",
+      "name": "Mitsubishi UFJ Financial"
+    },
+    {
+      "rank": 73,
+      "ticker": "LIN",
+      "name": "Linde"
+    },
+    {
+      "rank": 74,
+      "ticker": "TM",
+      "name": "Toyota"
+    },
+    {
+      "rank": 75,
+      "ticker": "ARM",
+      "name": "Arm Holdings"
+    },
+    {
+      "rank": 76,
+      "ticker": "0857.HK",
+      "name": "PetroChina"
+    },
+    {
+      "rank": 77,
+      "ticker": "SIE.DE",
+      "name": "Siemens"
+    },
+    {
+      "rank": 78,
+      "ticker": "ANET",
+      "name": "Arista Networks"
+    },
+    {
+      "rank": 79,
+      "ticker": "GEV",
+      "name": "GE Vernova"
+    },
+    {
+      "rank": 80,
+      "ticker": "SHOP",
+      "name": "Shopify"
+    },
+    {
+      "rank": 81,
+      "ticker": "0941.HK",
+      "name": "China Mobile"
+    },
+    {
+      "rank": 82,
+      "ticker": "MC.PA",
+      "name": "LVMH"
+    },
+    {
+      "rank": 83,
+      "ticker": "AXP",
+      "name": "American Express"
+    },
+    {
+      "rank": 84,
+      "ticker": "IHC.AE",
+      "name": "International Holding Company"
+    },
+    {
+      "rank": 85,
+      "ticker": "MRVL",
+      "name": "Marvell Technology"
+    },
+    {
+      "rank": 86,
+      "ticker": "CRM",
+      "name": "Salesforce"
+    },
+    {
+      "rank": 87,
+      "ticker": "TTE",
+      "name": "TotalEnergies"
+    },
+    {
+      "rank": 88,
+      "ticker": "TD",
+      "name": "Toronto Dominion Bank"
+    },
+    {
+      "rank": 89,
+      "ticker": "C",
+      "name": "Citigroup"
+    },
+    {
+      "rank": 90,
+      "ticker": "ITX.MC",
+      "name": "Inditex"
+    },
+    {
+      "rank": 91,
+      "ticker": "BHP",
+      "name": "BHP Group"
+    },
+    {
+      "rank": 92,
+      "ticker": "2454.TW",
+      "name": "MediaTek"
+    },
+    {
+      "rank": 93,
+      "ticker": "DIS",
+      "name": "Walt Disney"
+    },
+    {
+      "rank": 94,
+      "ticker": "GILD",
+      "name": "Gilead Sciences"
+    },
+    {
+      "rank": 95,
+      "ticker": "KLAC",
+      "name": "KLA"
+    },
+    {
+      "rank": 96,
+      "ticker": "CBA.AX",
+      "name": "Commonwealth Bank"
+    },
+    {
+      "rank": 97,
+      "ticker": "ADI",
+      "name": "Analog Devices"
+    },
+    {
+      "rank": 98,
+      "ticker": "QCOM",
+      "name": "QUALCOMM"
+    },
+    {
+      "rank": 99,
+      "ticker": "VZ",
+      "name": "Verizon"
+    },
+    {
+      "rank": 100,
+      "ticker": "SAN",
+      "name": "Santander"
+    }
+  ],
+  "meta": {
+    "fetched_at": "2026-10-26T10:17:32.914670+09:00",
+    "fetched_date": "2026-10-26",
+    "usd_krw": 1324.45,
+    "errors": [],
+    "warnings": [],
+    "macro": {
+      "usd_krw": {
+        "value": 1324.45,
+        "as_of": "2026-10-23",
+        "source": "frankfurter",
+        "measured_at": "2026-10-26T10:17+09:00",
+        "outcome": "ok",
+        "carried": false,
+        "note": null
+      },
+      "usd_jpy": {
+        "value": 156.8,
+        "as_of": "2026-10-23",
+        "source": "frankfurter",
+        "measured_at": "2026-10-26T10:17+09:00",
+        "outcome": "ok",
+        "carried": false,
+        "note": null
+      },
+      "ust10": {
+        "value": 4.96,
+        "as_of": "2026-10-22",
+        "source": "FRED API",
+        "measured_at": "2026-10-26T10:17+09:00",
+        "outcome": "ok",
+        "carried": false,
+        "note": null
+      },
+      "ust30": {
+        "value": 5.29,
+        "as_of": "2026-10-22",
+        "source": "FRED API",
+        "measured_at": "2026-10-26T10:17+09:00",
+        "outcome": "ok",
+        "carried": false,
+        "note": null
+      },
+      "wti": {
+        "value": 107.89,
+        "as_of": "2026-10-20",
+        "source": "FRED API",
+        "measured_at": "2026-10-26T10:17+09:00",
+        "outcome": "ok",
+        "carried": false,
+        "note": null
+      }
+    }
+  },
+  "latent": [
+    {
+      "rank": 21,
+      "ticker": "000660.KS",
+      "name": "SK hynix",
+      "country": "🇰🇷",
+      "mc": 706.76,
+      "momentum_1y": 160,
+      "momentum_1m": -31,
+      "momentum_3m": -30,
+      "momentum_6m": 14,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 21위 · 1년 +160% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": "2026-10-19"
+    },
+    {
+      "rank": 27,
+      "ticker": "INTC",
+      "name": "Intel",
+      "country": "🇺🇸",
+      "mc": 459.67,
+      "momentum_1y": 120,
+      "momentum_1m": -32,
+      "momentum_3m": -5,
+      "momentum_6m": 5,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 27위 · 1년 +120% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": "2026-10-19"
+    },
+    {
+      "rank": 50,
+      "ticker": "AMAT",
+      "name": "Applied Materials",
+      "country": "🇺🇸",
+      "mc": 299.37,
+      "momentum_1y": 63,
+      "momentum_1m": -20,
+      "momentum_3m": -27,
+      "momentum_6m": -10,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 50위 · 1년 +63% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "watch",
+      "streak_out": 2,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 52,
+      "ticker": "DELL",
+      "name": "Dell",
+      "country": "🇺🇸",
+      "mc": 290.21,
+      "momentum_1y": 181,
+      "momentum_1m": -15,
+      "momentum_3m": 7,
+      "momentum_6m": 111,
+      "theme": "AI 서버 OEM",
+      "story": "★ 신규 — NVIDIA Blackwell 서버 공급망 핵심. 1일 +33% 폭등.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 53,
+      "ticker": "LRCX",
+      "name": "Lam Research",
+      "country": "🇺🇸",
+      "mc": 287.95,
+      "momentum_1y": 47,
+      "momentum_1m": -25,
+      "momentum_3m": -21,
+      "momentum_6m": -14,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 53위 · 1년 +47% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "watch",
+      "streak_out": 2,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 60,
+      "ticker": "CRWD",
+      "name": "CrowdStrike",
+      "country": "🇺🇸",
+      "mc": 263.73,
+      "momentum_1y": 94,
+      "momentum_1m": -1,
+      "momentum_3m": 43,
+      "momentum_6m": 130,
+      "theme": "AI 소프트웨어",
+      "story": "AI 소프트웨어 · 글로벌 60위 · 1년 +94% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 85,
+      "ticker": "MRVL",
+      "name": "Marvell Technology",
+      "country": "🇺🇸",
+      "mc": 205.36,
+      "momentum_1y": 158,
+      "momentum_1m": -12,
+      "momentum_3m": 21,
+      "momentum_6m": 39,
+      "theme": "AI 광 인터커넥트",
+      "story": "★ 신규 — NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (6/2 Computex). NVIDIA $2B 직접 투자, 1일 +42% 폭등.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 92,
+      "ticker": "2454.TW",
+      "name": "MediaTek",
+      "country": "🇹🇼",
+      "mc": 197.12,
+      "momentum_1y": 185,
+      "momentum_1m": -20,
+      "momentum_3m": 3,
+      "momentum_6m": 75,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 92위 · 1년 +185% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 107,
+      "ticker": "SNDK",
+      "name": "Sandisk",
+      "country": "🇺🇸",
+      "mc": 178.92,
+      "momentum_1y": 601,
+      "momentum_1m": -29,
+      "momentum_3m": -3,
+      "momentum_6m": 25,
+      "theme": "AI 테크",
+      "story": "AI 테크 · 글로벌 107위 · 1년 +601% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 144,
+      "ticker": "6857.T",
+      "name": "Advantest",
+      "country": "🇯🇵",
+      "mc": 145.23,
+      "momentum_1y": 69,
+      "momentum_1m": -4,
+      "momentum_3m": 7,
+      "momentum_6m": 14,
+      "theme": "AI 반도체",
+      "story": "AI 반도체 · 글로벌 144위 · 1년 +69% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "watch",
+      "streak_out": 1,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": "2026-10-05"
+    },
+    {
+      "rank": 146,
+      "ticker": "STX",
+      "name": "Seagate Technology",
+      "country": "🇺🇸",
+      "mc": 143.36,
+      "momentum_1y": 174,
+      "momentum_1m": -30,
+      "momentum_3m": -23,
+      "momentum_6m": 8,
+      "theme": "AI 테크",
+      "story": "AI 테크 · 글로벌 146위 · 1년 +174% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 167,
+      "ticker": "FTNT",
+      "name": "Fortinet",
+      "country": "🇺🇸",
+      "mc": 132.06,
+      "momentum_1y": 111,
+      "momentum_1m": 1,
+      "momentum_3m": 18,
+      "momentum_6m": 113,
+      "theme": "AI 소프트웨어",
+      "story": "AI 소프트웨어 · 글로벌 167위 · 1년 +111% — 폭발적 성장 모멘텀의 AI 가치사슬 후보.",
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": "2026-10-06"
+    }
+  ],
+  "history": [
+    {
+      "year": 2016,
+      "top": "Apple",
+      "mc": 604,
+      "key": "스마트폰 시대 정점"
+    },
+    {
+      "year": 2017,
+      "top": "Apple",
+      "mc": 754,
+      "key": "FAANG 시대"
+    },
+    {
+      "year": 2018,
+      "top": "Apple",
+      "mc": 851,
+      "key": "최초 $1T 돌파"
+    },
+    {
+      "year": 2019,
+      "top": "Microsoft",
+      "mc": 905,
+      "key": "클라우드 시대 개막"
+    },
+    {
+      "year": 2020,
+      "top": "Saudi Aramco",
+      "mc": 1601,
+      "key": "IPO 후 1위 등극"
+    },
+    {
+      "year": 2021,
+      "top": "Apple",
+      "mc": 2051,
+      "key": "재탈환, Tesla 부상"
+    },
+    {
+      "year": 2022,
+      "top": "Apple",
+      "mc": 2850,
+      "key": "역대 최고치"
+    },
+    {
+      "year": 2023,
+      "top": "Apple",
+      "mc": 2609,
+      "key": "AI 1차 신호"
+    },
+    {
+      "year": 2024,
+      "top": "Microsoft",
+      "mc": 3126,
+      "key": "NVIDIA TOP 3 진입"
+    },
+    {
+      "year": 2025,
+      "top": "Apple",
+      "mc": 3337,
+      "key": "AI 1년 차"
+    },
+    {
+      "year": 2026,
+      "top": "NVIDIA",
+      "mc": 5114,
+      "key": "AI 패권 완성"
+    }
+  ]
+};
+const PREV = {"earth": {"NVDA": {"r": 1, "mc": 5094.0}, "AAPL": {"r": 2, "mc": 5074.0}, "MSFT": {"r": 3, "mc": 3894.0}, "GOOG": {"r": 4, "mc": 3880.0}, "AMZN": {"r": 5, "mc": 2675.0}, "TSM": {"r": 6, "mc": 2170.0}, "SPCX": {"r": 7, "mc": 2003.0}, "2222.SR": {"r": 8, "mc": 1638.0}, "META": {"r": 9, "mc": 1637.0}, "AVGO": {"r": 10, "mc": 1535.0}, "TSLA": {"r": 11, "mc": 1471.0}, "BRK-B": {"r": 12, "mc": 1160.0}, "LLY": {"r": 13, "mc": 1135.0}, "005930.KS": {"r": 14, "mc": 1058.0}, "MU": {"r": 15, "mc": 992.88}, "WMT": {"r": 16, "mc": 951.17}, "JPM": {"r": 17, "mc": 880.54}, "AMD": {"r": 18, "mc": 843.64}, "V": {"r": 19, "mc": 765.81}, "XOM": {"r": 20, "mc": 753.34}}, "us": {"NVDA": {"r": 1, "mc": 5094.0}, "AAPL": {"r": 2, "mc": 5074.0}, "MSFT": {"r": 3, "mc": 3894.0}, "GOOG": {"r": 4, "mc": 3880.0}, "AMZN": {"r": 5, "mc": 2675.0}, "SPCX": {"r": 6, "mc": 2003.0}, "META": {"r": 7, "mc": 1637.0}, "AVGO": {"r": 8, "mc": 1535.0}, "TSLA": {"r": 9, "mc": 1471.0}, "BRK-B": {"r": 10, "mc": 1160.0}, "LLY": {"r": 11, "mc": 1135.0}, "MU": {"r": 12, "mc": 992.88}, "WMT": {"r": 13, "mc": 951.17}, "JPM": {"r": 14, "mc": 880.54}, "AMD": {"r": 15, "mc": 843.64}, "V": {"r": 16, "mc": 765.81}, "XOM": {"r": 17, "mc": 753.34}, "JNJ": {"r": 18, "mc": 635.07}, "MA": {"r": 19, "mc": 546.27}, "ABBV": {"r": 20, "mc": 504.75}}, "korea": {"005930.KS": {"r": 1, "mc": 1058.0}, "000660.KS": {"r": 2, "mc": 702.36}, "402340.KS": {"r": 3, "mc": 77.06}, "373220.KS": {"r": 4, "mc": 67.63}, "005380.KS": {"r": 5, "mc": 58.38}, "207940.KS": {"r": 6, "mc": 51.5}, "KB": {"r": 7, "mc": 40.28}, "028260.KS": {"r": 8, "mc": 35.56}, "068270.KS": {"r": 9, "mc": 33.45}, "032830.KS": {"r": 10, "mc": 33.19}, "000270.KS": {"r": 11, "mc": 31.35}, "SHG": {"r": 12, "mc": 31.21}, "012450.KS": {"r": 13, "mc": 30.74}, "034020.KS": {"r": 14, "mc": 28.64}, "329180.KS": {"r": 15, "mc": 24.15}, "086790.KS": {"r": 16, "mc": 23.44}, "009155.KS": {"r": 17, "mc": 22.29}, "012330.KS": {"r": 18, "mc": 21.92}, "066570.KS": {"r": 19, "mc": 21.26}, "035420.KS": {"r": 20, "mc": 19.62}}, "japan": {"MUFG": {"r": 1, "mc": 237.15}, "TM": {"r": 2, "mc": 231.78}, "6098.T": {"r": 3, "mc": 167.46}, "8035.T": {"r": 4, "mc": 165.99}, "6501.T": {"r": 5, "mc": 156.82}, "9984.T": {"r": 6, "mc": 154.16}, "SONY": {"r": 7, "mc": 152.3}, "SMFG": {"r": 8, "mc": 149.27}, "6857.T": {"r": 9, "mc": 147.7}, "9983.T": {"r": 10, "mc": 147.3}, "6861.T": {"r": 11, "mc": 120.25}, "MFG": {"r": 12, "mc": 115.53}, "8058.T": {"r": 13, "mc": 109.24}, "8001.T": {"r": 14, "mc": 100.52}, "8766.T": {"r": 15, "mc": 94.62}, "9432.T": {"r": 16, "mc": 89.49}, "8031.T": {"r": 17, "mc": 88.66}, "2914.T": {"r": 18, "mc": 84.67}, "7011.T": {"r": 19, "mc": 76.82}, "6981.T": {"r": 20, "mc": 71.84}}, "europe": {"ASML": {"r": 1, "mc": 605.79}, "RO.SW": {"r": 2, "mc": 384.09}, "HSBC": {"r": 3, "mc": 310.12}, "SHEL": {"r": 4, "mc": 307.46}, "NVS": {"r": 5, "mc": 287.23}, "SAP": {"r": 6, "mc": 274.86}, "AZN": {"r": 7, "mc": 265.96}, "NESN.SW": {"r": 8, "mc": 261.16}, "OR.PA": {"r": 9, "mc": 260.93}, "LIN": {"r": 10, "mc": 234.56}, "ARM": {"r": 11, "mc": 224.63}, "SIE.DE": {"r": 12, "mc": 220.45}, "MC.PA": {"r": 13, "mc": 212.09}, "TTE": {"r": 14, "mc": 204.56}, "ITX.MC": {"r": 15, "mc": 198.54}, "SAN": {"r": 16, "mc": 185.53}, "ALV.DE": {"r": 17, "mc": 182.31}, "NVO": {"r": 18, "mc": 172.28}, "AIR.PA": {"r": 19, "mc": 171.11}, "PRX.AS": {"r": 20, "mc": 167.72}}, "taiwan": {"TSM": {"r": 1, "mc": 2170.0}, "2454.TW": {"r": 2, "mc": 197.12}, "2308.TW": {"r": 3, "mc": 124.72}, "2317.TW": {"r": 4, "mc": 106.13}, "ASX": {"r": 5, "mc": 85.07}, "1303.TW": {"r": 6, "mc": 73.47}, "2881.TW": {"r": 7, "mc": 66.66}, "3037.TW": {"r": 8, "mc": 54.78}, "2882.TW": {"r": 9, "mc": 51.24}, "UMC": {"r": 10, "mc": 47.37}, "2891.TW": {"r": 11, "mc": 45.35}, "2408.TW": {"r": 12, "mc": 43.96}, "2382.TW": {"r": 13, "mc": 40.62}, "CHT": {"r": 14, "mc": 37.63}, "2887.TW": {"r": 15, "mc": 32.54}, "2327.TW": {"r": 16, "mc": 32.12}, "6669.TW": {"r": 17, "mc": 31.47}, "3443.TW": {"r": 18, "mc": 31.28}, "6505.TW": {"r": 19, "mc": 31.22}, "2885.TW": {"r": 20, "mc": 30.89}}, "china": {"688825.SS": {"r": 1, "mc": 454.6}, "TCEHY": {"r": 2, "mc": 446.95}, "601939.SS": {"r": 3, "mc": 442.87}, "601288.SS": {"r": 4, "mc": 376.99}, "601988.SS": {"r": 5, "mc": 334.53}, "1398.HK": {"r": 6, "mc": 328.88}, "600519.SS": {"r": 7, "mc": 250.02}, "BABA": {"r": 8, "mc": 247.87}, "0857.HK": {"r": 9, "mc": 224.05}, "0941.HK": {"r": 10, "mc": 213.08}, "3968.HK": {"r": 11, "mc": 165.38}, "300750.SZ": {"r": 12, "mc": 164.71}, "601088.SS": {"r": 13, "mc": 163.12}, "601628.SS": {"r": 14, "mc": 146.09}, "601138.SS": {"r": 15, "mc": 145.23}, "601318.SS": {"r": 16, "mc": 140.41}, "0883.HK": {"r": 17, "mc": 140.06}, "601899.SS": {"r": 18, "mc": 114.69}, "PDD": {"r": 19, "mc": 112.5}, "002594.SZ": {"r": 20, "mc": 111.21}}, "hk": {"1299.HK": {"r": 1, "mc": 93.3}, "2388.HK": {"r": 2, "mc": 65.86}, "0388.HK": {"r": 3, "mc": 59.73}, "0019.HK": {"r": 4, "mc": 47.85}, "J36.SI": {"r": 5, "mc": 42.28}, "2259.HK": {"r": 6, "mc": 41.34}, "0016.HK": {"r": 7, "mc": 38.96}, "0992.HK": {"r": 8, "mc": 35.79}, "0001.HK": {"r": 9, "mc": 31.41}, "0669.HK": {"r": 10, "mc": 30.03}, "1109.HK": {"r": 11, "mc": 26.81}, "0066.HK": {"r": 12, "mc": 25.65}, "0002.HK": {"r": 13, "mc": 24.48}, "1038.HK": {"r": 14, "mc": 21.61}, "0762.HK": {"r": 15, "mc": 20.27}, "1113.HK": {"r": 16, "mc": 19.68}, "1972.HK": {"r": 17, "mc": 17.67}, "0027.HK": {"r": 18, "mc": 17.63}, "H78.SI": {"r": 19, "mc": 17.46}, "0688.HK": {"r": 20, "mc": 17.38}}};  // 전일 스냅샷 (build_site 주입)
+
+const fmtMC = (mc) => UVX.mc(mc);   // 언어별 표기(i18n.py 와 같은 규칙)
+const USD_KRW = (DATA.meta && DATA.meta.usd_krw) || 1480;
+const fmtKRW = (mc) => UVX.local(mc);   // 관측 위치 통화(ko 원화 · ja 엔화 · en/es 없음)
+
+const tabs = document.getElementById('regionTabs');
+const stockList = document.getElementById('stockList');
+const regionKeys = Object.keys(DATA.regions);
+
+regionKeys.forEach((key, idx) => {
+  const r = DATA.regions[key];
+  if (!r || !r.stocks || r.stocks.length === 0) return;
+  const btn = document.createElement('button');
+  btn.className = 'tab' + (idx === 0 ? ' active' : '');
+  btn.dataset.region = key;
+  btn.textContent = r.label;
+  btn.onclick = () => switchRegion(key);
+  tabs.appendChild(btn);
+});
+
+// 특정 티커는 개별 URL 매핑 (표준 패턴 예외)
+const STOCK_URL_OVERRIDES = {
+  // Alphabet (Google) — 항상 Class A (GOOGL) 페이지로 통일
+  'GOOG':    'https://www.google.com/finance/quote/GOOGL:NASDAQ',
+  'GOOGL':   'https://www.google.com/finance/quote/GOOGL:NASDAQ',
+  // Berkshire Hathaway — Google Finance는 점 표기 사용
+  'BRK.A':   'https://www.google.com/finance/quote/BRK.A:NYSE',
+  'BRK-A':   'https://www.google.com/finance/quote/BRK.A:NYSE',
+  'BRKA':    'https://www.google.com/finance/quote/BRK.A:NYSE',
+  'BRK.B':   'https://www.google.com/finance/quote/BRK.B:NYSE',
+  'BRK-B':   'https://www.google.com/finance/quote/BRK.B:NYSE',
+  'BRKB':    'https://www.google.com/finance/quote/BRK.B:NYSE',
+};
+
+// 미국 종목 거래소 매핑 (NASDAQ vs NYSE 판별용)
+const US_EXCHANGE = {
+  // NASDAQ
+  NVDA:'NASDAQ', AAPL:'NASDAQ', MSFT:'NASDAQ', GOOGL:'NASDAQ', GOOG:'NASDAQ',
+  AMZN:'NASDAQ', META:'NASDAQ', TSLA:'NASDAQ', AVGO:'NASDAQ', ASML:'NASDAQ',
+  AMD:'NASDAQ', INTC:'NASDAQ', MU:'NASDAQ', ADBE:'NASDAQ', NFLX:'NASDAQ',
+  COST:'NASDAQ', PEP:'NASDAQ', CSCO:'NASDAQ', CMCSA:'NASDAQ', TMUS:'NASDAQ',
+  TXN:'NASDAQ', QCOM:'NASDAQ', BKNG:'NASDAQ', AMAT:'NASDAQ', LRCX:'NASDAQ',
+  KLAC:'NASDAQ', PYPL:'NASDAQ', PLTR:'NASDAQ', ANET:'NASDAQ', MRVL:'NASDAQ',
+  ARM:'NASDAQ', AMGN:'NASDAQ', GILD:'NASDAQ', INTU:'NASDAQ', REGN:'NASDAQ',
+  SBUX:'NASDAQ', ABNB:'NASDAQ', MDLZ:'NASDAQ', ISRG:'NASDAQ', ADP:'NASDAQ',
+  CDNS:'NASDAQ', SNPS:'NASDAQ', PANW:'NASDAQ', FTNT:'NASDAQ', VRTX:'NASDAQ',
+  MAR:'NASDAQ', MELI:'NASDAQ', AZN:'NASDAQ', NVO:'NASDAQ', WBA:'NASDAQ',
+  BIIB:'NASDAQ', EBAY:'NASDAQ', ROKU:'NASDAQ',
+  // NYSE
+  JPM:'NYSE', V:'NYSE', WMT:'NYSE', UNH:'NYSE', JNJ:'NYSE', XOM:'NYSE',
+  PG:'NYSE', MA:'NYSE', HD:'NYSE', CVX:'NYSE', KO:'NYSE', MRK:'NYSE',
+  ABBV:'NYSE', LLY:'NYSE', ORCL:'NYSE', BAC:'NYSE', TM:'NYSE', TSM:'NYSE',
+  ACN:'NYSE', DIS:'NYSE', NKE:'NYSE', CRM:'NYSE', MCD:'NYSE', IBM:'NYSE',
+  BA:'NYSE', CAT:'NYSE', GS:'NYSE', AXP:'NYSE', BLK:'NYSE', MS:'NYSE',
+  C:'NYSE', WFC:'NYSE', NVS:'NYSE', SHEL:'NYSE', BP:'NYSE', UL:'NYSE',
+  DEO:'NYSE', HSBC:'NYSE', RY:'NYSE', TD:'NYSE', DELL:'NYSE', VRT:'NYSE',
+  GEV:'NYSE', F:'NYSE', GM:'NYSE', PFE:'NYSE', T:'NYSE', PM:'NYSE',
+  LIN:'NYSE', RTX:'NYSE', SPGI:'NYSE', NOW:'NYSE', UPS:'NYSE', LMT:'NYSE',
+  // Korean ADRs (한국 회사인데 NYSE 상장)
+  KB:'NYSE', SHG:'NYSE', KEP:'NYSE', LPL:'NYSE', PKX:'NYSE', WF:'NYSE', SKM:'NYSE',
+};
+
+// 거래소 접미사 → Google Finance 거래소 코드
+const GOOGLE_EXCHANGE = {
+  'T':  'TYO',      // 일본 도쿄
+  'HK': 'HKG',      // 홍콩
+  'SS': 'SHA',      // 상하이
+  'SZ': 'SHE',      // 선전
+  'L':  'LON',      // 런던
+  'PA': 'EPA',      // 파리 (Euronext)
+  'DE': 'ETR',      // 프랑크푸르트 (Xetra)
+  'F':  'FRA',      // 프랑크푸르트
+  'SW': 'SWX',      // 스위스
+  'AS': 'AMS',      // 암스테르담
+  'MI': 'BIT',      // 밀라노
+  'MC': 'BME',      // 마드리드
+  'CO': 'CPH',      // 코펜하겐
+  'ST': 'STO',      // 스톡홀름
+  'OL': 'OSL',      // 오슬로
+  'TW': 'TPE',      // 대만 타이베이
+  'SR': 'TADAWUL',  // 사우디
+  'AX': 'ASX',      // 호주
+  'TO': 'TSE',      // 토론토
+  'SA': 'BVMF',     // 브라질
+  'MX': 'BMV',      // 멕시코
+};
+
+// 종목 페이지 URL 생성 (한국=Naver, 글로벌=Google Finance 하이브리드)
+function stockUrl(ticker, name) {
+  const t = (ticker || '').trim();
+  const tUpper = t.toUpperCase();
+  
+  // 0) 특수 케이스 — 개별 매핑 (Alphabet, Berkshire 등)
+  if (tUpper in STOCK_URL_OVERRIDES) {
+    return STOCK_URL_OVERRIDES[tUpper];
+  }
+  
+  // 1) 한국 종목 (.KS/.KQ) → Naver Finance
+  if (t.endsWith('.KS') || t.endsWith('.KQ')) {
+    const code = t.split('.')[0];
+    return `https://finance.naver.com/item/main.naver?code=${code}`;
+  }
+  
+  // 2) 거래소 접미사 있는 글로벌 종목 → Google Finance
+  if (t.includes('.')) {
+    const parts = t.split('.');
+    const code = parts[0];
+    const ourSuffix = parts[parts.length - 1].toUpperCase();
+    const gEx = GOOGLE_EXCHANGE[ourSuffix];
+    if (gEx) {
+      return `https://www.google.com/finance/quote/${code}:${gEx}`;
+    }
+    // 매핑 없는 접미사 — Google 검색 폴백
+    return `https://www.google.com/search?q=${encodeURIComponent(t + ' stock')}`;
+  }
+  
+  // 3) 미국 종목 (접미사 없음) → Google Finance (NASDAQ/NYSE 판별, 기본 NASDAQ)
+  if (t) {
+    const ex = US_EXCHANGE[tUpper] || 'NASDAQ';
+    return `https://www.google.com/finance/quote/${tUpper}:${ex}`;
+  }
+  
+  // 4) 티커 없음 (history 섹션) → Google 검색
+  return `https://www.google.com/search?q=${encodeURIComponent((name||'') + ' stock')}`;
+}
+
+// 국기 이모지(🇺🇸)를 flagcdn.com SVG 이미지로 변환 — 모든 플랫폼 동일 표시
+function flagFromEmoji(emoji) {
+  if (!emoji || typeof emoji !== 'string') return '';
+  const chars = [...emoji];
+  if (chars.length < 2) return '';
+  const c1 = chars[0].codePointAt(0);
+  const c2 = chars[1].codePointAt(0);
+  // Regional Indicator Symbol Letter A-Z = U+1F1E6 .. U+1F1FF
+  if (c1 < 0x1F1E6 || c1 > 0x1F1FF || c2 < 0x1F1E6 || c2 > 0x1F1FF) return '';
+  const a = String.fromCharCode(97 + (c1 - 0x1F1E6));
+  const b = String.fromCharCode(97 + (c2 - 0x1F1E6));
+  const code = a + b;
+  return `<img class="flag-img" src="https://flagcdn.com/${code}.svg" alt="${code}" loading="lazy" onerror="this.style.display='none'" />`;
+}
+function parseFlags() { /* 이미지 직접 사용이라 별도 호출 불필요 */ }
+
+function switchRegion(key) {
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.region === key);
+  });
+  const stocks = DATA.regions[key].stocks;
+  const topMC = stocks.length ? (stocks[0].mc !== undefined ? stocks[0].mc : stocks[0][3]) : 0;
+  const prevR = (typeof PREV !== 'undefined' && PREV[key]) || {};
+  // 전일 대비 변동 칩: 순위 이동 + 시총 변동률 (전일 스냅샷 없으면 통째로 생략)
+  const deltaChip = (ticker, rankNow, mcNow) => {
+    if (!Object.keys(prevR).length) return '';
+    const p = prevR[(ticker || '').toUpperCase()];
+    let rankHtml;
+    if (!p) rankHtml = '<span class="d-rank dnew">NEW</span>';
+    else {
+      const d = p.r - rankNow;
+      rankHtml = d > 0 ? `<span class="d-rank dup">▲${d}</span>`
+               : d < 0 ? `<span class="d-rank ddown">▼${-d}</span>`
+               : '<span class="d-rank dkeep">—</span>';
+    }
+    let mcHtml = '';
+    if (p && p.mc > 0 && mcNow > 0) {
+      const pct = (mcNow / p.mc - 1) * 100;
+      const cls = pct > 0.05 ? 'dup' : pct < -0.05 ? 'ddown' : 'dkeep';
+      mcHtml = `<span class="d-mc ${cls}">${pct >= 0 ? '+' : ''}${UVX.dec(pct.toFixed(1))}%</span>`;
+    }
+    return `<div class="stock-delta" title="${T('idx.vs_prev')}">${rankHtml}${mcHtml}</div>`;
+  };
+  stockList.innerHTML = stocks.map((s, i) => {
+    const mc = s.mc !== undefined ? s.mc : s[3];
+    const name = s.name !== undefined ? s.name : s[0];
+    const ticker = s.ticker !== undefined ? s.ticker : s[1];
+    const flag = s.flag !== undefined ? s.flag : (s[2] || '');
+    const gravPct = topMC > 0 ? Math.max(1.5, (mc / topMC) * 100) : 0;
+    return `
+      <div class="stock-row">
+        <div class="stock-rank">${i+1}</div>
+        <div class="stock-info">
+          <a href="${stockUrl(ticker, name)}" target="_blank" rel="noopener" class="stock-name">${TX(name)}</a>
+          ${s.desc ? `<div class="stock-desc">${TX(s.desc)}</div>` : ''}
+          <div class="stock-meta">
+            <span class="stock-flag">${flagFromEmoji(flag)}</span>
+            <span>${ticker}</span>
+          </div>
+        </div>
+        ${deltaChip(ticker, i + 1, mc) || '<div class="stock-delta"></div>'}
+        <div class="stock-grav" title="${T('idx.vs_top1', {p: UVX.dec((topMC > 0 ? (mc / topMC) * 100 : 0).toFixed(1))})}"><i style="width:${gravPct.toFixed(1)}%"></i></div>
+        <div class="stock-mc">
+          <div class="stock-mc-usd">${fmtMC(mc)}</div>
+          <div class="stock-mc-krw">${fmtKRW(mc)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  parseFlags();
+}
+
+const firstRegion = regionKeys.find(k => DATA.regions[k] && DATA.regions[k].stocks && DATA.regions[k].stocks.length > 0);
+if (firstRegion) switchRegion(firstRegion);
+
+// ── 왕좌 격차 카드: 지구 1위 − 2위 ──
+(function fillThroneGap() {
+  const gapVal = document.getElementById('throneGapVal');
+  const gapSub = document.getElementById('throneGapSub');
+  if (!gapVal) return;
+  const earth = (DATA.regions.earth && DATA.regions.earth.stocks) || [];
+  if (earth.length < 2) return;
+  const mc0 = earth[0].mc !== undefined ? earth[0].mc : earth[0][3];
+  const mc1 = earth[1].mc !== undefined ? earth[1].mc : earth[1][3];
+  const n0 = earth[0].name !== undefined ? earth[0].name : earth[0][0];
+  const n1 = earth[1].name !== undefined ? earth[1].name : earth[1][0];
+  gapVal.textContent = fmtMC(mc0 - mc1);
+  if (gapSub) gapSub.innerHTML = TX(n0) + ' − ' + TX(n1);
+})();
+
+// 모든 렌더링 끝난 후 국기 이모지 → SVG로 변환 (Windows·Linux 호환)
+parseFlags();
+
+// 푸터에 오늘 환율 표시
+const rateEl = document.getElementById('usdKrwDisplay');
+if (rateEl) {
+  rateEl.textContent = USD_KRW.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+</script>
+
+<script>
+/* ud-aurora-v1 — 오늘의 태양계(천문대 v11 원본) + 왕좌 스윕 + 신호 + 카운트다운 */
+const SIGNALS = [{"title": "Dolly Parton's Imagination Library", "ko": "Dolly Parton's Imagination Library", "url": "https://imaginationlibrary.com/", "pub": "Sun, 25 Oct 2026 18:23:54 +0000", "points": 369, "pin": false, "pub_iso": "2026-10-25"}, {"title": "Oregon Police Are Charging a Local News Outlet $2.5M for Records About One Cop", "ko": "Oregon Police Are Charging a Local News Outlet $2.5M for Records About One Cop", "url": "https://theintercept.com/2026/10/01/oregon-police-misconduct-public-records-cost-fee/", "pub": "Sun, 25 Oct 2026 18:04:11 +0000", "points": 377, "pin": false, "pub_iso": "2026-10-25"}, {"title": "I refuse to accept a censored Internet. Join Me at FOSDEM 27", "ko": "I refuse to accept a censored Internet. Join Me at FOSDEM 27", "url": "https://talkweb.eu/openweb/4558/", "pub": "Sun, 25 Oct 2026 17:30:55 +0000", "points": 383, "pin": false, "pub_iso": "2026-10-25"}];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let solarRAF = null;
+const FLAG_COLOR = { '🇺🇸': ['#a9bcf0','#5b74c4'], '🇹🇼': ['#7fe0cc','#2e9d87'], '🇰🇷': ['#ffd88a','#c99544'],
+  '🇸🇦': ['#9fe89f','#4d9e4d'], '🇨🇳': ['#f2a0a0','#c05555'], '🇳🇱': ['#f0c9a0','#c48a4e'], '🇯🇵': ['#f0a9c8','#c45b8a'] };
+const flagColor = f => FLAG_COLOR[f] || ['#c3b8f0','#7a6cc4'];
+
+/* 짧은 이름 — 언어별 고유명사(삼성전자·엑슨모빌 등)는 이름 사전(../data/i18n/names.json)이 UVX.short 로 싣는다 */
+const SHORT_NAME = Object.assign({'GOOG':'Google','GOOGL':'Google','BRK-B':'Berkshire','2222.SR':'Aramco',
+  'TSM':'TSMC','SPCX':'SpaceX','JPM':'JPMorgan',
+  'LLY':'Eli Lilly','JNJ':'J&J','V':'Visa','MA':'Mastercard','MU':'Micron','AVGO':'Broadcom'}, UVX.short || {});
+function shortName(s){
+  if (SHORT_NAME[s.ticker]) return SHORT_NAME[s.ticker];
+  let n = (s.name || '').replace(/\s*\(.*\)/, '').split(' ')[0];
+  return (n && n.length <= 11) ? n : (n ? n.slice(0, 11) : s.ticker);
+}
+let solar3d = null;  // {renderer, raf} 정리용
+
+function loadThree(){
+  return new Promise((res, rej) => {
+    if (window.THREE) return res();
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s.onload = () => res(); s.onerror = () => rej(new Error('three.js load failed'));
+    document.head.appendChild(s);
+  });
+}
+
+function cleanupSolar(){
+  if (solar3d) {
+    cancelAnimationFrame(solar3d.raf);
+    try { solar3d.renderer.dispose(); } catch(e){}
+    solar3d = null;
+  }
+  if (solarRAF) { cancelAnimationFrame(solarRAF); solarRAF = null; }
+}
+
+function renderSolar(){
+  const stocks = (DATA.earth || []).slice(0, 20);
+  if (!stocks.length) { document.getElementById('obsBody').innerHTML = '<div class="obs-note">' + T('obs.wait_data') + '</div>'; return; }
+  document.getElementById('obsBody').innerHTML =
+    '<div class="solar-wrap" id="s3wrap" style="height:' + (window.innerWidth < 700 ? 480 : 640) + 'px;position:relative;cursor:grab;touch-action:none">' +
+      '<div id="s3load" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a94b8;font-size:14px;font-weight:700;z-index:4;background:#0a0d18">' + T('solar.loading') + '</div>' +
+      '<div id="s3labels" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>' +
+      '<div class="solar-tip" id="solarTip"></div>' +
+      '<div style="position:absolute;left:12px;bottom:10px;font-size:11px;color:#8a94b8;pointer-events:none">' + (('ontouchstart' in window) ? T('solar.hint_touch') : T('solar.hint_mouse')) + '</div>' +
+    '</div>' +
+    '<div class="solar-legend">' + T('solar.legend3d') + '</div>' +
+    '<div class="solar-legend" style="margin-top:4px">' + T('solar.redrawn', {date: esc(DATA.fetched||'')}) + '</div>';
+  loadThree().then(() => boot3d(stocks)).catch(() => renderSolarSVG());
+}
+
+/* 절차적 텍스처 — 코드로 만드는 행성 표면 */
+function glowTex(color){
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d');
+  const gr = g.createRadialGradient(128,128,0,128,128,128);
+  gr.addColorStop(0, color); gr.addColorStop(0.35, color.replace(')',',0.45)').replace('rgb','rgba'));
+  gr.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = gr; g.fillRect(0,0,256,256);
+  return new THREE.CanvasTexture(c);
+}
+function _hex(h){ const n = parseInt(h.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+const __texCache = {};
+function planetTex(hi, lo, seed, rocky){
+  const W = 256, Hh = 128;
+  const c = document.createElement('canvas'); c.width = W; c.height = Hh;
+  const g = c.getContext('2d');
+  let s = (seed || 1) % 2147483646 + 1; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  const A = _hex(hi), B = _hex(lo);
+  // 값 노이즈 (가로 순환 — 구에 감아도 이음매 없음)
+  const GX = 32, GY = 17, grid = [];
+  for (let i = 0; i < GX*GY; i++) grid.push(rnd());
+  const gv = (x, y) => grid[(((y % GY) + GY) % GY) * GX + (((x % GX) + GX) % GX)];
+  const sm = t => t*t*(3-2*t);
+  const nz = (x, y) => { const x0 = Math.floor(x), y0 = Math.floor(y), fx = sm(x-x0), fy = sm(y-y0);
+    return gv(x0,y0)*(1-fx)*(1-fy) + gv(x0+1,y0)*fx*(1-fy) + gv(x0,y0+1)*(1-fx)*fy + gv(x0+1,y0+1)*fx*fy; };
+  const fbm = (x, y) => nz(x,y)*0.5 + nz(x*2.03, y*2.03)*0.28 + nz(x*4.1, y*4.1)*0.15 + nz(x*8.2, y*8.2)*0.07;
+  const phase = rnd()*6.28, bands = 6 + Math.floor(rnd()*6);
+  const img = g.createImageData(W, Hh), d = img.data;
+  for (let y = 0; y < Hh; y++) {
+    const v = y / Hh;
+    const polar = 0.58 + 0.42*Math.sin(v*Math.PI);          // 극지방 어둡게
+    for (let x = 0; x < W; x++) {
+      const u = x / W;
+      const n = fbm(u*GX*0.55, v*GY*0.55);
+      let t;
+      if (rocky) {
+        t = n;                                               // 대륙형 얼룩
+        t = t < 0.48 ? t*0.55 : 0.35 + (t-0.48)*1.35;
+      } else {
+        const warp = (fbm(u*GX*0.8 + 9.7, v*GY*0.8) - 0.5) * 0.16;  // 소용돌이 워프
+        t = Math.sin((v + warp)*Math.PI*bands + phase)*0.5 + 0.5;    // 흐르는 줄무늬
+        t = Math.pow(t, 1.25)*0.78 + n*0.22;
+      }
+      const i4 = (y*W + x) * 4;
+      d[i4]   = (B[0] + (A[0]-B[0])*t) * polar;
+      d[i4+1] = (B[1] + (A[1]-B[1])*t) * polar;
+      d[i4+2] = (B[2] + (A[2]-B[2])*t) * polar;
+      d[i4+3] = 255;
+    }
+  }
+  g.putImageData(img, 0, 0);
+  if (rocky) {  // 크레이터
+    for (let i = 0; i < 30; i++) {
+      const cx = rnd()*W, cy = Hh*0.12 + rnd()*Hh*0.76, r = rnd()*8 + 1.5;
+      g.strokeStyle = 'rgba(8,10,20,0.35)'; g.lineWidth = 1.4;
+      g.beginPath(); g.arc(cx, cy, r, 0, 6.3); g.stroke();
+      g.fillStyle = 'rgba(255,255,255,0.10)';
+      g.beginPath(); g.arc(cx - r*0.28, cy - r*0.28, r*0.55, 0, 6.3); g.fill();
+    }
+  } else if (rnd() > 0.45) {  // 대적점 폭풍
+    const cx = rnd()*W, cy = Hh*(0.55 + rnd()*0.2);
+    for (let k = 3; k >= 1; k--) {
+      g.fillStyle = 'rgba(150,60,30,' + (0.10*k).toFixed(2) + ')';
+      g.beginPath(); g.ellipse(cx, cy, 15*k, 7*k, -0.25, 0, 6.3); g.fill();
+    }
+  }
+  const t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping;
+  if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+function ringTex(){
+  const c = document.createElement('canvas'); c.width = 256; c.height = 1;
+  const g = c.getContext('2d');
+  let s = 99; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  for (let x = 0; x < 256; x++) {
+    const a = (Math.sin(x*0.22)*0.5+0.5) * (0.25 + rnd()*0.5) * (x < 18 || x > 244 ? 0.15 : 1);
+    g.fillStyle = 'rgba(216,201,160,' + a.toFixed(2) + ')';
+    g.fillRect(x, 0, 1, 1);
+  }
+  return new THREE.CanvasTexture(c);
+}
+function milkyTex(){
+  if (__texCache.milky) return __texCache.milky;
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 512;
+  const g = c.getContext('2d');
+  g.fillStyle = '#07090f'; g.fillRect(0, 0, 1024, 512);
+  let s = 12345; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  // 은하수 띠 — 겹겹의 뿌연 발광 + 갈색 성간운
+  for (let i = 0; i < 420; i++) {
+    const t = i / 420, x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*62 + (rnd()-0.5)*130;
+    const r = rnd()*26 + 5;
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    const warm = rnd() > 0.75;
+    gr.addColorStop(0, warm ? 'rgba(185,135,90,0.12)' : 'rgba(175,190,235,0.12)');
+    gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.3); g.fill();
+  }
+  // 대형 발광 성운 2점 (레퍼런스의 색 포인트)
+  [[0.22, 0.38, 'rgba(210,120,60,0.16)', 150], [0.72, 0.6, 'rgba(110,140,230,0.13)', 180]].forEach(([fx, fy, col2, rr]) => {
+    const gr2 = g.createRadialGradient(1024*fx, 512*fy, 0, 1024*fx, 512*fy, rr);
+    gr2.addColorStop(0, col2); gr2.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr2; g.beginPath(); g.arc(1024*fx, 512*fy, rr, 0, 6.3); g.fill();
+  });
+  // 암흑 성운 줄기
+  for (let i = 0; i < 70; i++) {
+    const t = rnd(), x = t*1024, y = 256 + Math.sin(t*Math.PI*2)*56 + (rnd()-0.5)*46;
+    g.fillStyle = 'rgba(5,6,10,0.16)';
+    g.beginPath(); g.ellipse(x, y, rnd()*36+9, rnd()*9+3, rnd()*3, 0, 6.3); g.fill();
+  }
+  // 별 5500개 (색 온도 섞기)
+  const cols = ['#f5f1e6','#f5f1e6','#f5f1e6','#cfe0ff','#ffe0c9','#ffd0d0'];
+  for (let i = 0; i < 3400; i++) {
+    const band = rnd() < 0.55;
+    const x = rnd()*1024;
+    const y = band ? 256 + Math.sin(x/1024*Math.PI*2)*62 + (rnd()-0.5)*150 : rnd()*512;
+    g.fillStyle = cols[Math.floor(rnd()*cols.length)];
+    g.globalAlpha = rnd()*0.85 + 0.1;
+    const r = rnd() < 0.985 ? rnd()*1.1 + 0.2 : rnd()*2.2 + 1.2;
+    g.beginPath(); g.arc(x, y, r, 0, 6.3); g.fill();
+  }
+  g.globalAlpha = 1;
+  const t = new THREE.CanvasTexture(c);
+  if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+  __texCache.milky = t;
+  return t;
+}
+function sunTex(){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+  const g = c.getContext('2d');
+  g.fillStyle = '#ffd873'; g.fillRect(0,0,512,256);
+  let s = 42; const rnd = () => (s = (s*16807)%2147483647)/2147483647;
+  for (let i = 0; i < 320; i++) {
+    g.fillStyle = 'rgba(' + (rnd()>0.4? '255,250,225' : '224,140,40') + ',' + (rnd()*0.22+0.04).toFixed(2) + ')';
+    g.beginPath(); g.arc(rnd()*512, rnd()*256, rnd()*16+2, 0, 6.3); g.fill();
+  }
+  return new THREE.CanvasTexture(c);
+}
+function hexToRgbStr(h){ const n = parseInt(h.slice(1),16); return 'rgb('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+')'; }
+
+function boot3d(stocks){
+  const wrap = document.getElementById('s3wrap');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const sun = stocks[0], planets = stocks.slice(1);
+  const maxMc = sun.mc;
+  const rOf = mc => 6 + Math.pow(mc / maxMc, 0.58) * 34;
+  const sunR = 60;
+  const orbitBase = sunR + 46, orbitStep = 31;
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0a0d18, 0.00055);
+  const camera = new THREE.PerspectiveCamera(45, W/H, 1, 6000);
+  // 화면비 반응형 카메라 거리: 세로 폰(좁은 화면)은 수평 시야가 좁아지므로
+  // 그만큼 멀리서 시작해야 태양계 전체가 담긴다 (PC 4:3 기준 660)
+  const fitK = Math.min(1.75, Math.max(1, (4 / 3) / (W / H)));
+  const introEnd = Math.min(1080, Math.round(660 * fitK));
+  const maxDist = Math.max(1100, introEnd + 250);
+  let camTheta = 0.35, camPhi = 1.12, camDist = introEnd - 20;
+  let introT = 0;                // 진입 연출 진행도 (0→1)
+  let lastTouch = performance.now();  // 마지막 조작 시각 (자동 선회용)
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));  // 레티나 4K 선명도
+  renderer.setSize(W, H);
+  renderer.setClearColor(0x07090f);
+  if (THREE.ACESFilmicToneMapping !== undefined) {
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+  }
+  if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
+  wrap.insertBefore(renderer.domElement, wrap.firstChild);
+
+  // 조명 — 태양이 진짜 광원
+  scene.add(new THREE.AmbientLight(0x2a3350, 0.9));
+  const sunLight = new THREE.PointLight(0xffe6b0, 2.1, 0, 2);
+  scene.add(sunLight);
+
+  const texQueue = [];
+  // 실사 텍스처 풀 — 종목마다 서로 다른 행성 얼굴 (파일이 없으면 해당 항목만 절차적 폴백)
+  const GAS_POOL = ['jupiter.jpg', 'saturn.jpg', 'uranus.jpg', 'neptune.jpg', 'venus_atm.jpg', 'gas1.jpg', 'gas2.jpg', 'ice1.jpg'];
+  const ROCK_POOL = ['mars.jpg', 'mercury.jpg', 'venus.jpg', 'ceres.jpg', 'makemake.jpg', 'haumea.jpg', 'eris.jpg', 'moon.jpg', 'rock1.jpg', 'rock2.jpg'];
+  // 실제 태양계 순서 — 2위부터 안쪽 궤도: 수성→금성→지구→화성→목성→토성→천왕성→해왕성→왜소행성들
+  const SOLAR_ORDER = ['mercury.jpg', 'venus.jpg', 'earth.jpg', 'mars.jpg', 'jupiter.jpg',
+    'saturn.jpg', 'uranus.jpg', 'neptune.jpg', 'ceres.jpg', 'moon.jpg', 'eris.jpg',
+    'haumea.jpg', 'makemake.jpg', 'venus_atm.jpg', 'gas1.jpg', 'rock1.jpg', 'gas2.jpg',
+    'rock2.jpg', 'ice1.jpg'];
+  const __usedTex = new Set();
+  function pickRealTex(pool, seed){
+    for (let k = 0; k < pool.length; k++) {
+      const name = pool[(seed + k) % pool.length];
+      if (!__usedTex.has(name)) { __usedTex.add(name); return name; }
+    }
+    return pool[seed % pool.length];
+  }
+  // ── 실사 텍스처 (../assets/textures/ 에 파일이 있으면 자동 승격, 없으면 절차적 폴백) ──
+  const REAL_TEX_BASE = '../assets/textures/';
+  const texLoader = new THREE.TextureLoader();
+  function loadReal(name, onOk){
+    texLoader.load(REAL_TEX_BASE + name, t => {
+      if (THREE.sRGBEncoding !== undefined) t.encoding = THREE.sRGBEncoding;
+      onOk(t);
+    }, undefined, () => {});  // 실패 시 침묵 — 절차적 유지
+  }
+  // 은하수 배경 — 먼저 단색으로 즉시, 텍스처는 뒤이어 장착
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(2800, 48, 32),
+    new THREE.MeshBasicMaterial({ color: 0x0a0d1a, side: THREE.BackSide }));
+  sky.material.fog = false;
+  sky.rotation.z = 0.42;
+  scene.add(sky);
+  // ★ v11.3 배경 확정: 구체에 어떤 텍스처도 씌우지 않는다 (부장님 판정 2회 확정).
+  //   절차적 은하수(milkyTex)의 발광 원 420개가 구체 확대로 '뿌연 블롭' 오염의 진범.
+  //   깔끔한 우주 = 민무늬 심연(#0a0d1a) + 별 입자만. milkyTex·실사 milky 모두 봉인.
+  // setTimeout(() => { try { sky.material.map = milkyTex(); sky.material.color.set(0xffffff); sky.material.needsUpdate = true; } catch(e){} }, 30);
+  // ★ 은하수 배경은 절차적 고정 — 실사 milky.jpg는 2K를 구체 안에서 ~5배 확대해
+  //   사진 별들이 거대 블롭으로 번짐 (2026-08-08 배경 오염 사고). 행성 실사는 유지.
+  // loadReal('milky.jpg', t => { sky.material.map = t; sky.material.color.set(0xffffff); sky.material.needsUpdate = true; });
+
+  // 별밭 — 원형 소프트 입자 (사각형 아티팩트 제거), 카메라 항로 바깥(1700+)에 배치
+  const starSprite = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const g = c.getContext('2d');
+    const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, 'rgba(255,255,255,1)');
+    gr.addColorStop(0.25, 'rgba(255,250,235,0.85)');
+    gr.addColorStop(0.6, 'rgba(230,235,255,0.25)');
+    gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  })();
+  // 별밭 배치·크기를 fitK로 함께 스케일 → 카메라:별껍질 거리 비율이 기기 무관 동일
+  // (모바일은 카메라가 멀리 물러나므로, 별도 같이 밀어야 PC와 같은 안정적 우주가 된다)
+  [[2000, 1900 * fitK, 3.8 * fitK, 0.8], [700, 2600 * fitK, 6 * fitK, 0.5]].forEach(([n, rad, size, op]) => {
+    const pos = new Float32Array(n*3);
+    for (let i = 0; i < n; i++) {
+      const u = Math.random()*2-1, t = Math.random()*Math.PI*2, rr = rad + Math.random()*900*fitK;
+      const sq = Math.sqrt(1-u*u);
+      pos[i*3] = rr*sq*Math.cos(t); pos[i*3+1] = rr*u; pos[i*3+2] = rr*sq*Math.sin(t);
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+      map: starSprite, color: 0xffffff, size, transparent: true, opacity: op,
+      sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending })));
+  });
+
+  // 태양 — 발광 코어 + 이중 광륜
+  const sunUni = { t: { value: 0 } };
+  let sunMat;
+  try {
+    sunMat = new THREE.ShaderMaterial({
+      uniforms: sunUni,
+      vertexShader: 'varying vec3 vP; varying vec3 vNv; void main(){ vP = position; vNv = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: [
+        'varying vec3 vP; varying vec3 vNv; uniform float t;',
+        'float hash(vec3 p){ return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }',
+        'float noise(vec3 p){ vec3 i = floor(p); vec3 f = fract(p); f = f*f*(3.0-2.0*f);',
+        '  return mix(mix(mix(hash(i), hash(i+vec3(1,0,0)), f.x), mix(hash(i+vec3(0,1,0)), hash(i+vec3(1,1,0)), f.x), f.y),',
+        '    mix(mix(hash(i+vec3(0,0,1)), hash(i+vec3(1,0,1)), f.x), mix(hash(i+vec3(0,1,1)), hash(i+vec3(1,1,1)), f.x), f.y), f.z); }',
+        'float fbm(vec3 p){ float v = 0.0; float a = 0.5; for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.07; a *= 0.5; } return v; }',
+        'void main(){',
+        '  vec3 p = normalize(vP) * 3.2;',
+        '  float n = fbm(p + vec3(t*0.055, t*0.04, t*0.05)) + 0.45 * fbm(p*2.6 - vec3(t*0.085, 0.0, t*0.06));',
+        '  vec3 deep = vec3(0.66, 0.22, 0.02); vec3 mid = vec3(1.0, 0.60, 0.10); vec3 hot = vec3(1.0, 0.95, 0.74);',
+        '  vec3 col = mix(deep, mid, smoothstep(0.34, 0.72, n)) * 1.25;',
+        '  col = mix(col, hot, smoothstep(0.95, 1.35, n));',
+        '  float rim = pow(1.0 - abs(vNv.z), 2.2);',
+        '  col += rim * vec3(1.0, 0.55, 0.12) * 0.8;',
+        '  gl_FragColor = vec4(col, 1.0); }'
+      ].join('\n')
+    });
+  } catch(e) { sunMat = new THREE.MeshBasicMaterial({ map: sunTex() }); }
+  const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(sunR, 64, 48), sunMat);
+  loadReal('sun.jpg', t => { sunMesh.material = new THREE.MeshBasicMaterial({ map: t }); });
+  sunMesh.userData.i = 0; scene.add(sunMesh);
+  const glowM = new THREE.SpriteMaterial({ map: glowTex('rgb(255,240,200)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
+  const glow0 = new THREE.Sprite(glowM); glow0.material.opacity = 1; glow0.scale.set(sunR*3.4, sunR*3.4, 1); scene.add(glow0);
+  const glow1 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex('rgb(255,205,95)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85 }));
+  glow1.scale.set(sunR*7, sunR*7, 1); scene.add(glow1);
+  const glow2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex('rgb(255,170,60)'), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.45 }));
+  glow2.scale.set(sunR*13, sunR*13, 1); scene.add(glow2);
+
+  // 행성들
+  const bodies = [sunMesh];
+  const orbs = planets.map((p, i) => {
+    const r = rOf(p.mc);
+    const [hi, lo] = flagColor(p.flag);
+    const mesh = new THREE.Mesh(
+      new THREE.SphereGeometry(r, 48, 32),
+      new THREE.MeshStandardMaterial({ color: new THREE.Color(lo), roughness: 0.92, metalness: 0.04 }));
+    mesh.userData.i = i + 1;
+    scene.add(mesh); bodies.push(mesh);
+    texQueue.push({ mesh, hi, lo, seed: colSeed(p.ticker), rocky: r < 13 });
+    const realName = SOLAR_ORDER[i] || pickRealTex(r >= 15 ? GAS_POOL : ROCK_POOL, colSeed(p.ticker));
+    loadReal(realName, t => {
+      mesh.material.map = t; mesh.material.bumpMap = null;
+      mesh.material.color.set(0xffffff); mesh.material.needsUpdate = true;
+      mesh.userData.realTex = true;
+    });
+    if (i === 5 || i === 6) {  // 토성·천왕성 궤도 — 실사 고리
+      const geo = new THREE.RingGeometry(r*1.45, r*2.15, 96);
+      const pos = geo.attributes.position, uv = geo.attributes.uv, v3 = new THREE.Vector3();
+      const inR = r*1.45, outR = r*2.15;
+      for (let k = 0; k < pos.count; k++) {
+        v3.fromBufferAttribute(pos, k);
+        uv.setXY(k, (v3.length() - inR) / (outR - inR), 0.5);
+      }
+      const ring = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+        map: ringTex(), transparent: true, opacity: i === 5 ? 0.9 : 0.35, side: THREE.DoubleSide, depthWrite: false }));
+      loadReal('ring.png', t => { ring.material.map = t; ring.material.needsUpdate = true; });
+      ring.rotation.x = i === 5 ? Math.PI/2.35 : Math.PI/2.05;
+      mesh.add(ring);
+    }
+    const orbR = orbitBase + orbitStep*(i+1);  // 궤도 반경 (궤도선은 표시하지 않음 — 행성이 주인공)
+    // 라벨 (HTML — 항상 선명)
+    const lab = document.createElement('div');
+    lab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18,0 0 8px #0a0d18;line-height:1.25;white-space:nowrap';
+    lab.innerHTML = '<span style="color:#e6ebfa;font-weight:800;font-size:12.5px">'+esc(shortName(p))+'</span>' +
+      (i < 8 ? '<br><span style="color:#93a0c6;font-weight:700;font-size:10.5px">'+UVX.mc(p.mc)+'</span>' : '');
+    document.getElementById('s3labels').appendChild(lab);
+    return { mesh, lab, r, orbR, a: (i*137.5)*Math.PI/180, s: 0.0022/(1+i*0.22), spin: 0.002+Math.random()*0.004 };
+  });
+  // 태양 라벨
+  const sunLab = document.createElement('div');
+  sunLab.style.cssText = 'position:absolute;transform:translate(-50%,0);text-align:center;pointer-events:none;text-shadow:0 1px 4px #0a0d18;line-height:1.3;white-space:nowrap';
+  sunLab.innerHTML = '<span style="color:#ffd873;font-weight:800;font-size:15px">'+esc(shortName(sun))+'</span><br><span style="color:#d4b06a;font-weight:700;font-size:11.5px">'+UVX.mc(sun.mc)+'</span>';
+  document.getElementById('s3labels').appendChild(sunLab);
+
+  // 조작 — 드래그 회전 · 휠 줌 · 호버 툴팁
+  const tip = document.getElementById('solarTip');
+  const ray = new THREE.Raycaster(), mouseV = new THREE.Vector2();
+  let dragging = false, px = 0, py = 0, hovered = null;
+  wrap.addEventListener('mousedown', e => { dragging = true; lastTouch = performance.now(); px = e.clientX; py = e.clientY; wrap.style.cursor = 'grabbing'; });
+  window.addEventListener('mouseup', () => { dragging = false; wrap.style.cursor = 'grab'; });
+  wrap.addEventListener('mousemove', e => {
+    const rect = wrap.getBoundingClientRect();
+    if (dragging) {
+      lastTouch = performance.now();
+      camTheta -= (e.clientX - px) * 0.005; camPhi -= (e.clientY - py) * 0.004;
+      camPhi = Math.max(0.35, Math.min(1.45, camPhi)); px = e.clientX; py = e.clientY;
+    }
+    mouseV.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouseV.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    ray.setFromCamera(mouseV, camera);
+    const hit = ray.intersectObjects(bodies)[0];
+    if (hit) {
+      const s = stocks[hit.object.userData.i];
+      tip.style.display = 'block';
+      tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
+      tip.style.top = (e.clientY - rect.top + 14) + 'px';
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+UVX.mc(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
+      if (hovered && hovered !== hit.object && hovered.material.emissive) hovered.material.emissive.setHex(0x000000);
+      hovered = hit.object;
+      if (hovered.material.emissive) hovered.material.emissive.setHex(0x33290f);
+    } else {
+      tip.style.display = 'none';
+      if (hovered && hovered.material.emissive) hovered.material.emissive.setHex(0x000000);
+      hovered = null;
+    }
+  });
+  wrap.addEventListener('wheel', e => { e.preventDefault(); lastTouch = performance.now();
+    camDist = Math.max(320, Math.min(maxDist, camDist + e.deltaY * 0.5)); }, { passive: false });
+
+  // ── 모바일 터치: 한 손가락 회전 · 두 손가락 핀치 줌 · 짧은 탭 = 행성 정보 ──
+  function probeTip(cx, cy){
+    const rect = wrap.getBoundingClientRect();
+    mouseV.x = ((cx - rect.left) / rect.width) * 2 - 1;
+    mouseV.y = -((cy - rect.top) / rect.height) * 2 + 1;
+    ray.setFromCamera(mouseV, camera);
+    const hit = ray.intersectObjects(bodies)[0];
+    if (hit) {
+      const s = stocks[hit.object.userData.i];
+      tip.style.display = 'block';
+      tip.style.left = Math.max(6, Math.min(cx - rect.left - 60, rect.width - 230)) + 'px';
+      tip.style.top = Math.max(6, cy - rect.top - 90) + 'px';
+      tip.innerHTML = '<b>'+TX(s.name)+'</b> '+esc(s.flag||'')+'<br>'+UVX.mc(s.mc)+(s.desc?'<br>'+TX(s.desc):'');
+    } else {
+      tip.style.display = 'none';
+    }
+  }
+  let pinchD = 0, tapX = 0, tapY = 0, tapT = 0, tapMoved = false;
+  wrap.addEventListener('touchstart', e => {
+    lastTouch = performance.now();
+    if (e.touches.length === 1) {
+      dragging = true; tapMoved = false;
+      px = e.touches[0].clientX; py = e.touches[0].clientY;
+      tapX = px; tapY = py; tapT = performance.now();
+    } else if (e.touches.length === 2) {
+      dragging = false; tapMoved = true;
+      pinchD = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                          e.touches[0].clientY - e.touches[1].clientY);
+    }
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    e.preventDefault();  // 캔버스 위에서는 페이지 스크롤 대신 우주가 움직인다
+    lastTouch = performance.now();
+    if (e.touches.length === 1 && dragging) {
+      const x = e.touches[0].clientX, y = e.touches[0].clientY;
+      if (Math.abs(x - tapX) + Math.abs(y - tapY) > 8) tapMoved = true;
+      camTheta -= (x - px) * 0.005; camPhi -= (y - py) * 0.004;
+      camPhi = Math.max(0.35, Math.min(1.45, camPhi)); px = x; py = y;
+    } else if (e.touches.length === 2) {
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                           e.touches[0].clientY - e.touches[1].clientY);
+      if (pinchD > 0 && d > 0) {
+        camDist = Math.max(320, Math.min(maxDist, camDist * (pinchD / d)));
+      }
+      pinchD = d;
+    }
+  }, { passive: false });
+  wrap.addEventListener('touchend', e => {
+    lastTouch = performance.now();
+    if (e.touches.length === 0) {
+      dragging = false;
+      if (!tapMoved && performance.now() - tapT < 350) probeTip(tapX, tapY);
+    } else if (e.touches.length === 1) {
+      dragging = true; tapMoved = true;
+      px = e.touches[0].clientX; py = e.touches[0].clientY;
+    }
+    pinchD = 0;
+  }, { passive: true });
+
+  const v = new THREE.Vector3();
+  function place(mesh, lab, yOff){
+    v.copy(mesh.position); v.y -= yOff; v.project(camera);
+    if (v.z > 1) { lab.style.display = 'none'; return; }
+    lab.style.display = '';
+    lab.style.left = ((v.x*0.5+0.5)*W) + 'px';
+    lab.style.top = ((-v.y*0.5+0.5)*H) + 'px';
+    lab.style.opacity = Math.max(0.45, 1.15 - mesh.position.distanceTo(camera.position)/1400).toFixed(2);
+  }
+  let t0 = 0, firstFrame = true;
+  function frame(t){
+    const dt = Math.min(50, t - t0); t0 = t;
+    if (firstFrame) { firstFrame = false; const ld = document.getElementById('s3load'); if (ld) ld.remove(); }
+    // 텍스처 지연 장착 — 프레임당 1개씩 (첫 화면을 막지 않음)
+    if (texQueue.length) {
+      const q = texQueue.shift();
+      try { if (q.mesh.userData.realTex) throw 0;
+        const key = q.seed + (q.rocky ? 'r' : 'g');
+        const tex = __texCache[key] || (__texCache[key] = planetTex(q.hi, q.lo, q.seed, q.rocky));
+        q.mesh.material.map = tex; q.mesh.material.bumpMap = tex;
+        q.mesh.material.bumpScale = q.rocky ? 0.7 : 0.35;
+        q.mesh.material.color.set(0xffffff);
+        q.mesh.material.needsUpdate = true; } catch(e){}
+    }
+    // 진입 돌리 (2.2초) + 3초 무조작 시 자동 선회
+    if (introT < 1) { introT = Math.min(1, introT + dt / 2200);
+      const ease = 1 - Math.pow(1 - introT, 3);
+      camDist = (introEnd + 490) - 490 * ease;
+      camTheta += dt * 0.00018;
+    } else if (!dragging && performance.now() - lastTouch > 3000) {
+      camTheta += dt * 0.00006;
+    }
+    orbs.forEach(o => {
+      o.a += o.s * dt * 0.06;
+      o.mesh.position.set(Math.cos(o.a)*o.orbR, 0, Math.sin(o.a)*o.orbR);
+      o.mesh.rotation.y += o.spin;
+    });
+    if (sunUni) sunUni.t.value = t * 0.001;
+    const pulse = 1 + Math.sin(t/900)*0.05;
+    glow1.scale.set(sunR*6.5*pulse, sunR*6.5*pulse, 1);
+    camera.position.set(camDist*Math.sin(camPhi)*Math.cos(camTheta), camDist*Math.cos(camPhi), camDist*Math.sin(camPhi)*Math.sin(camTheta));
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    orbs.forEach(o => place(o.mesh, o.lab, o.r + 6));
+    place(sunMesh, sunLab, sunR + 6);
+    solar3d.raf = requestAnimationFrame(frame);
+  }
+  solar3d = { renderer, raf: requestAnimationFrame(frame) };
+}
+function colSeed(str){ let h = 2166136261;
+  for (const ch of String(str||'')) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  return h >>> 0; }
+
+(function(){
+  try{
+    var E=(DATA.regions.earth&&DATA.regions.earth.stocks)||[];
+    if(E.length){var t=E[0];
+      document.getElementById('throneName').innerHTML=TX(t.name);
+      document.getElementById('throneNum').textContent=UVX.mc(t.mc);
+      var pm=((PREV.earth||{})[(t.ticker||'').toUpperCase()]||{}).mc, sub=[];
+      if(pm){var d=(t.mc/pm-1)*100; sub.push('1D '+(d>=0?'+':'')+UVX.dec(d.toFixed(1))+'%');}
+      var loc=UVX.local(t.mc); if(loc) sub.push(loc);
+      document.getElementById('throneSub').textContent=sub.join(' · ');
+    }
+  }catch(e){}
+  try{
+    var S=Array.isArray(SIGNALS)?SIGNALS:[]; var g=document.getElementById('sigGrid');
+    if(g) g.innerHTML=S.length? S.map(function(x){
+      var d=UVX.lang==='ko'?String(x.pub||'').slice(5,10).replace('-','.'):(x.pub_iso?UVX.md(x.pub_iso):'');
+      return '<a class="sig-card" target="_blank" rel="noopener" href="'+esc(x.url||'#')+'">'
+        +'<div class="sig-meta">'+(x.pin?'<span class="sig-pin">'+T('idx.sig.pin')+'</span>':'')+'<span>▲'+(x.points||0)+(d?' · '+d:'')+'</span></div>'
+        +'<div class="sig-title">'+TX(x.ko||x.title||'')+'</div></a>';
+    }).join(''):'<div class="sig-empty">'+T('idx.sig.empty')+'</div>';
+  }catch(e){}
+  function tick(){var n=new Date(),t=new Date(n);t.setUTCHours(23,0,0,0);if(t<=n)t.setUTCDate(t.getUTCDate()+1);
+    var sc=Math.floor((t-n)/1000),p=function(v){return String(v).padStart(2,'0')};
+    var el=document.getElementById('nextTm'); if(el)el.textContent=p(Math.floor(sc/3600))+':'+p(Math.floor(sc%3600/60))+':'+p(sc%60);}
+  tick(); setInterval(tick,1000);
+  // 발사 시퀀스 레일 — 스크롤 진행 게이지 + 현 구간 점등
+  (function(){
+    var fill=document.getElementById('ascFill'); if(!fill) return;
+    var marks=[].slice.call(document.querySelectorAll('.asc-rail [data-tgt]'));
+    function upd(){
+      var h=document.documentElement, p=h.scrollTop/((h.scrollHeight-h.clientHeight)||1);
+      fill.style.height=(Math.min(1,Math.max(0,p))*100).toFixed(1)+'%';
+      var act=0;
+      marks.forEach(function(m,i){var el=document.getElementById(m.getAttribute('data-tgt'));
+        if(el&&el.getBoundingClientRect().top<innerHeight*0.55) act=i;});
+      marks.forEach(function(m,i){m.classList.toggle('on',i===act)});
+    }
+    addEventListener('scroll',function(){requestAnimationFrame(upd)},{passive:true});
+    addEventListener('resize',upd); upd();
+  })();
+  try{
+    var hint=document.getElementById('s3hint');
+    if(hint) hint.textContent=('ontouchstart' in window)?T('solar.hint_touch'):T('solar.hint_mouse_click');
+    var E2=(DATA.regions.earth&&DATA.regions.earth.stocks)||[];
+    if(E2.length&&document.getElementById('s3wrap'))
+      loadThree().then(function(){boot3d(E2)}).catch(function(){var l=document.getElementById('s3load'); if(l)l.textContent=T('solar.fail');});
+  }catch(e){}
+
+  /* 스크롤 유도 — 클릭하면 STAGE 1로, 스크롤이 시작되면 사라진다.
+     3D 조작을 막지 않도록 페이드는 pointer-events:none 이고,
+     버튼만 히트 영역을 가진다(히어로 하단 중앙의 작은 영역). */
+  try{
+    var hs=document.getElementById('heroScroll');
+    if(hs){
+      hs.addEventListener('click',function(){
+        var t=document.getElementById('stage1');
+        if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      var onScroll=function(){
+        if(window.scrollY>40) hs.classList.add('gone');
+        else hs.classList.remove('gone');
+      };
+      window.addEventListener('scroll',onScroll,{passive:true});
+      onScroll();
+    }
+  }catch(e){}
+})();
+</script>
+<!-- uv-presence -->
+<script type="module">
+(async () => {
+  try {
+    const cfg = await (await fetch('../data/firebase_config.json?v=' + Date.now())).json();
+    if (!cfg || !cfg.apiKey) return;
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getFirestore, doc, setDoc, collection, query, where, Timestamp, serverTimestamp, getCountFromServer } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const db = getFirestore(initializeApp(cfg, 'presence'));
+
+    let pid = localStorage.getItem('uv_pid');
+    if (!pid) { pid = 'p' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('uv_pid', pid); }
+
+    const beat = () => setDoc(doc(db, 'presence', pid), { t: serverTimestamp() }).catch(() => {});
+    const count = async () => {
+      try {
+        const cutoff = Timestamp.fromMillis(Date.now() - 2 * 60 * 1000);
+        const snap = await getCountFromServer(query(collection(db, 'presence'), where('t', '>', cutoff)));
+        const n = snap.data().count;
+        if (n > 0) {
+          let el = document.getElementById('uvPresence');
+          if (!el) {
+            const ft = document.querySelector('.site-footer') || document.querySelector('footer');
+            if (!ft) return;
+            el = document.createElement('div');
+            el.id = 'uvPresence';
+            el.style.cssText = 'margin-top:8px;font-size:12px;color:var(--text-muted,#8a8577);';
+            ft.appendChild(el);
+          }
+          el.innerHTML = '<span style="color:var(--gold,#9C7A3A)">✦</span> ' + T('common.presence', {n: n});
+        }
+      } catch (e) {}
+    };
+    await beat(); await count();
+    setInterval(beat, 60 * 1000 + Math.floor(Math.random() * 5000));
+    setInterval(count, 60 * 1000 + Math.floor(Math.random() * 5000));
+  } catch (e) {}
+})();
+</script>
+<script id="uvx-band">
+(function(){
+  try {
+    var LANGS = {"ko": {"go": "한국어로 보기 →", "close": "닫기"}, "en": {"go": "View in English →", "close": "Close"}, "es": {"go": "Ver en español →", "close": "Cerrar"}, "ja": {"go": "日本語で見る →", "close": "閉じる"}}, cur = document.documentElement.lang, K = 'uvx-band-off';
+    try { if (localStorage.getItem(K)) return; } catch (e) {}
+    var want = ((navigator.languages && navigator.languages[0]) || navigator.language || '').slice(0, 2).toLowerCase();
+    if (!want || want === cur || !LANGS[want]) return;
+    var a = document.querySelector('.uvx-lang-menu a[hreflang="' + want + '"]');
+    if (!a) return;
+    var b = document.createElement('div');
+    b.className = 'uvx-band'; b.setAttribute('lang', want);
+    var link = document.createElement('a');
+    link.href = a.getAttribute('href') + location.hash; link.textContent = LANGS[want].go;
+    var x = document.createElement('button'); x.type = 'button'; x.textContent = '×';
+    x.setAttribute('aria-label', LANGS[want].close);
+    x.onclick = function(){ try { localStorage.setItem(K, '1'); } catch (e) {} b.remove(); };
+    b.appendChild(link); b.appendChild(x);
+    document.body.insertBefore(b, document.body.firstChild);
+  } catch (e) {}
+})();
+/* 언어 전환기 — 같은 페이지 · 같은 해시로 */
+document.addEventListener('click', function(ev){
+  var a = ev.target.closest && ev.target.closest('.uvx-lang-menu a');
+  if (a && location.hash) { ev.preventDefault(); location.href = a.getAttribute('href') + location.hash; }
+});
+</script>
+</body>
+</html>

@@ -30,7 +30,13 @@ MARKERS = {
     "uv-policy-links": "푸터 정책 링크",
     "ud-aurora-global-v1": "오로라 팔레트",
     "ud-macro-v1": "시장 지표 띠",
+    "uvx-i18n-v1": "다국어 런타임",          # 2026-10-26 4개 언어 관측소
+    "uvx-hreflang-v1": "다국어 head(hreflang·canonical)",
 }
+
+# 언어 폴더 — build_site·i18n 의 상수를 가져오지 않고 **다시 적는다**(관문은 다른 다리로 선다).
+# 루트(ko)와 이 폴더들의 *.html 을 전부 본다. 새 언어가 생기면 여기에도 적어야 관문이 본다.
+LANG_DIRS = ("en", "es", "ja")
 
 # 시장 지표 띠의 배지 5개 — 띠 마커만 있고 배지가 빠진 페이지를 잡는다(2026-09-26).
 # 역시 build_site 의 상수를 가져오지 않고 문자열로 다시 적는다.
@@ -44,13 +50,17 @@ STUB_MAX_BYTES = 1000
 def targets():
     """검사 대상 — 루트의 *.html 중 레이아웃이 있는 페이지."""
     out, stubs = [], []
-    for f in sorted(ROOT.glob("*.html")):
+    files = sorted(ROOT.glob("*.html"))
+    for d in LANG_DIRS:
+        files += sorted((ROOT / d).glob("*.html"))
+    for f in files:
         raw = f.read_text(encoding="utf-8", errors="replace")
+        name = f.name if f.parent == ROOT else f"{f.parent.name}/{f.name}"
         has_head_end = "</hea" + "d>" in raw          # 종료 태그 문자열은 쪼개 적는다
         if not has_head_end and len(raw.encode("utf-8")) <= STUB_MAX_BYTES:
-            stubs.append(f.name)
+            stubs.append(name)
             continue
-        out.append((f.name, raw))
+        out.append((name, raw))
     return out, stubs
 
 
@@ -63,6 +73,8 @@ def check(pages):
                     if f'data-mk="{k}"' not in raw]
         if "</hea" + "d>" not in raw:
             missing.append("head 끝 태그 없음")
+        if "{{t:" in raw:
+            missing.append("카탈로그 자리표시자 미치환")
         if missing:
             bad[name] = missing
     return bad
