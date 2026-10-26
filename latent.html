@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "latent.mc": "시가총액", "latent.rank": "Rank {n}", "latent.ret1y": "1년 수익률", "latent.st.miss": "데이터 결측 {a}/{b}", "latent.st.new": "편입 {n}일째", "latent.st.out": "제외 카운트 {a}/{b}", "latent.star": "다음 우주지배자"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -56,7 +56,14 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK하이닉스", "005930.KS": "삼성전자", "WMT": "월마트", "XOM": "엑슨모빌"},
   esc: esc, rates: R, ccy: CCY, intl: "ko-KR" };
 })();
@@ -485,7 +492,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/latent">
 <link rel="alternate" hreflang="ko" href="https://univertrix.com/latent">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/latent">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/latent">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/latent">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/latent">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/latent">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
@@ -2665,11 +2679,11 @@ function flagFromEmoji(emoji) {
   return `<img class="flag-img" src="https://flagcdn.com/${a}${b}.svg" alt="${a}${b}" loading="lazy" onerror="this.style.display='none'" />`;
 }
 
-const fmtMC = (mc) => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
+const fmtMC = (mc) => UVX.mc(mc);   // 언어별 표기(i18n.py 와 같은 규칙)
 
 // 단기 모멘텀 스트립: 1M/3M/6M — 상승 금빛 · 하락 코발트, 값 없으면 항목 생략
 const momCell = (label, v) => (v === null || v === undefined) ? ''
-  : `<span>${label} <b class="${v >= 0 ? 'mup' : 'mdown'}">${v >= 0 ? '+' : ''}${v}%</b></span>`;
+  : `<span>${label} <b class="${v >= 0 ? 'mup' : 'mdown'}">${v >= 0 ? '+' : ''}${UVX.dec(v)}%</b></span>`;
 const momStrip = (c) => {
   const cells = momCell('1M', c.momentum_1m) + momCell('3M', c.momentum_3m) + momCell('6M', c.momentum_6m);
   return cells ? `<div class="latent-momentum">${cells}</div>` : '';
@@ -2677,11 +2691,11 @@ const momStrip = (c) => {
 
 // 명단 관성 상태 배지 — 문구는 상태의 숫자에서 만든다(상태 문자열·필드명을 화면에 옮기지 않는다)
 const statusBadge = (c) => {
-  if (c.status === 'new' && c.new_day) return `<span class="latent-badge st-new">편입 ${c.new_day}일째</span>`;
+  if (c.status === 'new' && c.new_day) return `<span class="latent-badge st-new">${T('latent.st.new', {n: c.new_day})}</span>`;
   if (c.status === 'watch' && c.carried_days > 0)
-    return `<span class="latent-badge st-watch">데이터 결측 ${c.carried_days}/${c.miss_limit}</span>`;
+    return `<span class="latent-badge st-watch">${T('latent.st.miss', {a: c.carried_days, b: c.miss_limit})}</span>`;
   if (c.status === 'watch' && c.streak_out > 0)
-    return `<span class="latent-badge st-watch">제외 카운트 ${c.streak_out}/${c.out_limit}</span>`;
+    return `<span class="latent-badge st-watch">${T('latent.st.out', {a: c.streak_out, b: c.out_limit})}</span>`;
   return '';
 };
 
@@ -2690,27 +2704,27 @@ if (DATA.latent && DATA.latent.length > 0) {
   latentGrid.innerHTML = DATA.latent.map((c) => {
     const star = c.is_star ? 'star' : '';
     let badge;
-    if (c.is_star) badge = '<span class="latent-badge star-badge">★ 다음 우주지배자</span>';
+    if (c.is_star) badge = '<span class="latent-badge star-badge">★ ' + T('latent.star') + '</span>';
     else if (c.is_new) badge = '<span class="latent-badge new">NEW</span>';
-    else badge = `<span class="latent-badge normal">Rank ${c.rank}</span>`;
+    else badge = `<span class="latent-badge normal">${T('latent.rank', {n: c.rank})}</span>`;
     return `
       <div class="latent-card ${star}">
         <div class="latent-header">${badge}${statusBadge(c)}</div>
-        <a href="${stockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${c.name}</a>
+        <a href="${stockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${TX(c.name)}</a>
         <div class="latent-ticker">
           <span>${flagFromEmoji(c.country)}</span>
           <span>${c.ticker}</span>
         </div>
-        <div class="latent-theme">${c.theme}</div>
-        <div class="latent-story">${c.story}</div>
+        <div class="latent-theme">${TX(c.theme)}</div>
+        <div class="latent-story">${TX(c.story)}</div>
         <div class="latent-stats">
           <div>
-            <div class="latent-stat-label">시가총액</div>
+            <div class="latent-stat-label">${T('latent.mc')}</div>
             <div class="latent-stat-val">${fmtMC(c.mc)}</div>
           </div>
           <div style="text-align:right;">
-            <div class="latent-stat-label">1년 수익률</div>
-            <div class="latent-stat-val ${c.momentum_1y >= 0 ? 'gain' : ''}">${c.momentum_1y >= 0 ? '+' : ''}${c.momentum_1y}%</div>
+            <div class="latent-stat-label">${T('latent.ret1y')}</div>
+            <div class="latent-stat-val ${c.momentum_1y >= 0 ? 'gain' : ''}">${c.momentum_1y >= 0 ? '+' : ''}${UVX.dec(c.momentum_1y)}%</div>
           </div>
         </div>
         ${momStrip(c)}

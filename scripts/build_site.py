@@ -221,12 +221,181 @@ def localize_signal(x, ts):
     return x
 
 
+# ── 단계 2 데이터 현지화(빌드 시점) — 상태에서 그 언어로 만든다. 숫자는 손대지 않는다 ─────────
+# 신호 분류(수집기 분류값) → id. 화면 이름·색은 id 에서(카탈로그 sig.tag.*). 모든 언어(ko 포함)에 붙인다
+SIG_TAG_ID = {"에세이": "essay", "모델 발표": "model", "연구": "research", "정책·규제": "policy",
+              "투자·산업": "invest", "기타": "other"}
+# 동행 에세이 판정·출처 — 원장의 한국어 판정값 → id(화면 코드가 한국어 값을 비교하지 않게)
+VERDICT_ID = {"강화": "up", "불변": "flat", "약화": "down"}
+# 실적 일정 제목 — 수집기(fetch_calendar)가 만든 형식. 구조화 필드(name·hour)가 있으면 그것이 먼저
+_EARN_TITLE = re.compile(r"^(?P<name>.+?) \((?P<tk>[^()\s]+)\) 실적 발표(?: · (?P<hour>장전|장후|장중))?$")
+_HOUR_ID = {"장전": "bmo", "장후": "amc", "장중": "dmh"}
+_SEP_CLASS = re.compile(r" \(별도 클래스( \d+)?\)")
+
+
+def latent_view(rows):
+    """잠재지배자 카드 — 테마·사유가 수집기의 **자동 문장**이면 같은 상태(테마·순위·1년)로 그 언어 문장을 만든다.
+    사람이 쓴 해설(latent_overrides)은 콘텐츠 — 번역 캐시 전까지 원문(표식)."""
+    if LANG == i18n.DEFAULT:
+        return rows
+    try:
+        import generate_candidates as gc
+        theme_id, tmpl = gc.THEME_ID, gc.template_story
+    except Exception as e:
+        print(f"[warn] 잠재지배자 자동 문장 판정 불가 — 원문 유지: {e}", file=sys.stderr)
+        return rows
+    out = []
+    for c in rows or []:
+        c = dict(c)
+        tid = c.get("theme_id") or theme_id.get(c.get("theme"))
+        auto = c.get("story_auto")
+        if auto is None:
+            try:
+                auto = (c.get("story") == tmpl(c))
+            except Exception:
+                auto = False
+        if tid:
+            c["theme"] = i18n.t(LANG, "latent.theme." + tid)
+            if auto and isinstance(c.get("momentum_1y"), (int, float)):
+                c["story"] = i18n.t(LANG, "latent.story", theme=c["theme"], rank=c.get("rank"),
+                                    m=f"{c['momentum_1y']:+}")
+        out.append(c)
+    return out
+
+
+def calendar_view(cal):
+    """주요일정 — 실적 일정은 수집기가 만든 한 줄을 상태(종목·티커·장 시간)에서 그 언어로 다시 만든다."""
+    if LANG == i18n.DEFAULT or not isinstance(cal, dict):
+        return cal
+    cal = dict(cal)
+    evs = []
+    for e in cal.get("events") or []:
+        e = dict(e)
+        if e.get("type") == "earnings":
+            m = _EARN_TITLE.match(str(e.get("title") or ""))
+            name, tk, hour = (e.get("name"), e.get("ticker"), e.get("hour"))
+            if m and not name:
+                name, tk, hour = m.group("name"), m.group("tk"), _HOUR_ID.get(m.group("hour") or "", "")
+            if name and tk:
+                e["title"] = i18n.t(LANG, "cal.earn", name=i18n.stock_name(LANG, tk, name), tk=tk) + \
+                    (i18n.t(LANG, "cal.hour." + hour) if hour in ("bmo", "amc", "dmh") else "")
+        evs.append(e)
+    cal["events"] = evs
+    return cal
+
+
+def gurus_view(g):
+    """거인의 어깨 — 분기 표기는 보고 기준일(상태)에서, 클래스 표기는 그 언어로. 기관 이름·소개는 콘텐츠."""
+    if not isinstance(g, dict):
+        return g
+    g = dict(g)
+    out = []
+    for x in g.get("gurus") or []:
+        x = dict(x)
+        m = re.match(r"^(\d{4})-(\d{2})", str(x.get("period") or ""))
+        if m and LANG != i18n.DEFAULT:
+            x["period_label"] = i18n.t(LANG, "gu.period", y=m.group(1), q=(int(m.group(2)) - 1) // 3 + 1)
+        if LANG != i18n.DEFAULT:
+            x["holdings"] = [dict(h, name=_SEP_CLASS.sub(lambda mm: " (" + i18n.t(LANG, "gu.sep_class") +
+                                                                 (mm.group(1) or "") + ")", str(h.get("name") or "")))
+                             for h in x.get("holdings") or [] if isinstance(h, dict)]
+        out.append(x)
+    g["gurus"] = out
+    return g
+
+
+def signals_view(sig):
+    """신호 — 분류 id 는 모든 언어에. 제목은 ko 한국어 · en **영어 원제**(한국어를 거치지 않는다)."""
+    if not isinstance(sig, dict):
+        return sig
+    sig = dict(sig)
+    out = []
+    for x in sig.get("signals") or []:
+        x = dict(x)
+        x["tag_id"] = SIG_TAG_ID.get(x.get("tag") or "기타", "other")
+        if LANG != i18n.DEFAULT:
+            x["ko"] = x.get("title") or x.get("ko")
+        out.append(x)
+    sig["signals"] = out
+    return sig
+
+
+def research_view(rdata):
+    """리서치 기사 — ko 는 한국어 제목, 다른 언어는 원제. 요약은 콘텐츠(번역 캐시 전까지 원문 표식)."""
+    if LANG == i18n.DEFAULT:
+        return rdata
+    rdata = dict(rdata)
+    st = []
+    for s in rdata.get("stocks") or []:
+        s = dict(s)
+        s["name"] = i18n.stock_name(LANG, s.get("ticker"), s.get("name"))
+        s["articles"] = [dict(a, title_ko=None) for a in s.get("articles") or [] if isinstance(a, dict)]
+        st.append(s)
+    rdata["stocks"] = st
+    return rdata
+
+
+def dissect_view(items):
+    """필독 해부실 — 다른 언어는 원제(영어 원문)를 제목으로. 문단 브리핑은 단계 3 이 원문에서 새로 만든다."""
+    if LANG == i18n.DEFAULT:
+        return items
+    return [dict(it, ko_title=None) for it in items or [] if isinstance(it, dict)]
+
+
+def pioneers_view(doc):
+    """개척자 — 이름은 ko 한국어 · 다른 언어 영문. 헤드라인은 ko 번역 · 다른 언어 원제. 역할·메모는 콘텐츠."""
+    if not isinstance(doc, dict):
+        return doc
+    doc = dict(doc)
+    people = []
+    for p in doc.get("people") or []:
+        p = dict(p)
+        p["name"] = p.get("ko") if LANG == i18n.DEFAULT else (p.get("en") or p.get("ko"))
+        if LANG != i18n.DEFAULT:
+            p["items"] = [dict(it, ko=it.get("title") or it.get("ko")) for it in p.get("items") or []
+                          if isinstance(it, dict)]
+        people.append(p)
+    doc["people"] = people
+    return doc
+
+
+def essays_view(essays):
+    """동행 에세이 — 판정·출처 id 를 모든 언어에 붙인다(화면 코드가 한국어 판정값을 비교하지 않게)."""
+    out = []
+    for e in essays or []:
+        e = dict(e)
+        e["verdict_id"] = VERDICT_ID.get(str(e.get("verdict") or "").strip(), "hold")
+        e["origin_id"] = "direct" if e.get("origin") == "직접" else ""
+        out.append(e)
+    return out
+
+
+def history_view(data, page_key):
+    """변동 이력 — 제목·설명은 카탈로그. 구조화 사건(events)이 있는 기록은 그 언어로 다시 만든다.
+    사건 구조가 없는 과거 기록은 콘텐츠(번역 캐시 전까지 원문 표식)."""
+    if LANG == i18n.DEFAULT:
+        return data
+    data = dict(data)
+    data["page_title"] = i18n.t(LANG, f"hist.{page_key}.title")
+    data["page_desc"] = i18n.t(LANG, f"hist.{page_key}.desc")
+    try:
+        import weekly_history as wh
+        render = wh.render_entry
+    except Exception:
+        render = None
+    if render:
+        data["entries"] = [render(e, LANG) if isinstance(e, dict) and e.get("events") else e
+                           for e in data.get("entries") or []]
+    return data
+
+
 def build_latent():
     """latent.html — 잠재지배자"""
     template_path = SCRIPTS_DIR / "latent-template.html"
     if not template_path.exists():
         print(f"[skip] latent-template.html 없음"); return
-    data = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
+    data = localize_latest(json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")))
+    data["latent"] = latent_view(data.get("latent"))
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
     out = OUT_DIR / "latent.html"
@@ -284,11 +453,12 @@ def build_research():
     else:
         rdata = {"generated_label": "", "stocks": []}
     cal_path = DATA_DIR / "calendar.json"
-    rdata["calendar"] = json.loads(cal_path.read_text(encoding="utf-8")) if cal_path.exists() else {"events": []}
+    rdata = research_view(rdata)
+    rdata["calendar"] = calendar_view(json.loads(cal_path.read_text(encoding="utf-8")) if cal_path.exists() else {"events": []})
     gurus_path = DATA_DIR / "gurus.json"
-    rdata["gurus"] = json.loads(gurus_path.read_text(encoding="utf-8")) if gurus_path.exists() else {"gurus": []}
+    rdata["gurus"] = gurus_view(json.loads(gurus_path.read_text(encoding="utf-8")) if gurus_path.exists() else {"gurus": []})
     signals_path = DATA_DIR / "signals.json"
-    rdata["signals"] = json.loads(signals_path.read_text(encoding="utf-8")) if signals_path.exists() else {"signals": []}
+    rdata["signals"] = signals_view(json.loads(signals_path.read_text(encoding="utf-8")) if signals_path.exists() else {"signals": []})
     # 🔬 필독 해부실 — 실패 기록(failures)은 내부용이므로 페이지에 싣지 않는다
     tr_path = DATA_DIR / "translations.json"
     tr = json.loads(tr_path.read_text(encoding="utf-8")) if tr_path.exists() else {}
@@ -307,7 +477,7 @@ def build_research():
         except Exception as e:
             print(f"[warn] 칼럼 역방향 링크 생성 실패(무시): {e}")
     rdata["translations"] = {"generated_label": tr.get("generated_label", ""),
-                             "items": tr_items,
+                             "items": dissect_view(tr_items),
                              "column_links": column_links}
     template = template_path.read_text(encoding="utf-8")
     # 헤더 배지 값 (placeholder 방식과 동일)
@@ -316,7 +486,6 @@ def build_research():
     usd_krw = meta.get("usd_krw")
     usd_krw_str = f"{usd_krw:,.2f}" if isinstance(usd_krw, (int, float)) else "—"
     html = template
-    html = html.replace("{{PAGE_TITLE}}", "리서치")
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{USD_KRW}}", usd_krw_str)
     html = html.replace("{{DATA_JSON}}", json.dumps(rdata, ensure_ascii=False))
@@ -972,6 +1141,7 @@ def build_pioneers():
         pioneers = json.loads(data_path.read_text(encoding="utf-8"))
     else:
         pioneers = {"updated": "", "people": []}  # 첫 full 수집 전 — 빈 상태 렌더
+    pioneers = pioneers_view(pioneers)
     meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
     usd_krw = meta.get("usd_krw")
@@ -1159,7 +1329,7 @@ def companion_data():
     ess = DATA_DIR / "essays.json"
     doc = json.loads(ess.read_text(encoding="utf-8")) if ess.exists() else {}
     # 철회된 에세이는 렌더하지 않는다(원장에는 남는다) — 대신 정정 줄을 싣는다
-    essays = [e for e in doc.get("essays", []) if ce.is_public(e)]
+    essays = essays_view([e for e in doc.get("essays", []) if ce.is_public(e)])
     corrections = [c for c in doc.get("corrections", []) if isinstance(c, dict)]
     return {"companies": companies, "essays": essays, "corrections": corrections}
 
@@ -1215,12 +1385,12 @@ def build_history(page_key, active_marker, out_filename):
     data_path = DATA_DIR / f"history-{page_key}.json"
     if not template_path.exists() or not data_path.exists():
         print(f"[skip] history-{page_key} 자원 없음"); return
-    data = json.loads(data_path.read_text(encoding="utf-8"))
+    data = history_view(json.loads(data_path.read_text(encoding="utf-8")), page_key)
     data["meta"] = _header_meta()
     template = template_path.read_text(encoding="utf-8")
     html = template
-    html = html.replace("{{PAGE_TITLE}}", data.get("page_title","History"))
-    html = html.replace("{{PAGE_DESC}}", data.get("page_desc",""))
+    html = html.replace("{{PAGE_TITLE}}", html_mod.escape(data.get("page_title", "History")))
+    html = html.replace("{{PAGE_DESC}}", html_mod.escape(data.get("page_desc", "")))
     html = html.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
     for key in ("home","latent"):
         html = html.replace("{{ACTIVE_"+key.upper()+"}}", "active" if active_marker==key else "")

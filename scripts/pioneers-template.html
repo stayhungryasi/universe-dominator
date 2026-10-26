@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>개척자 · UNIVERTRIX</title>
+<title>{{t:pn.title}}</title>
+<meta name="description" content="{{t:pn.desc}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -137,11 +138,11 @@ main { flex: 1; padding: 0 0 48px; }
     <div class="header-right">
       <span class="update-badge">{{FETCHED_DATE}}</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">{{USD_KRW}}</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -164,13 +165,12 @@ main { flex: 1; padding: 0 0 48px; }
   <div class="container">
     <div class="pn-hero">
       <div class="pn-eyebrow">PIONEERS</div>
-      <h1 class="pn-title">개척자</h1>
-      <p class="pn-desc">우주를 돌리는 사람들 — 세상을 바꾸는 인물들의 최신 신호를 매일 추적합니다.</p>
+      <h1 class="pn-title">{{t:nav.pioneers}}</h1>
+      <p class="pn-desc">{{t:pn.desc}}</p>
       <div class="pn-updated" id="pnUpdated"></div>
     </div>
     <div class="pn-grid" id="pnGrid"></div>
-    <p class="pn-disclaim">※ 본 페이지는 공개 뉴스 헤드라인을 자동 수집·번역한 것으로 정보 제공 목적이며,
-    특정 인물·기업에 대한 평가나 투자 권유가 아닙니다. 원문은 각 링크의 해당 언론사에 있습니다.</p>
+    <p class="pn-disclaim">{{t:pn.disclaim}}</p>
   </div>
 </main>
 
@@ -204,9 +204,9 @@ function esc(s) {
   const grid = document.getElementById('pnGrid');
   const upd = document.getElementById('pnUpdated');
   const people = (PIONEERS && PIONEERS.people) || [];
-  if (upd && PIONEERS && PIONEERS.updated) upd.textContent = '마지막 관측: ' + PIONEERS.updated;
+  if (upd && PIONEERS && PIONEERS.updated) upd.textContent = T('pn.updated', {d: PIONEERS.updated});
   if (!people.length) {
-    grid.innerHTML = '<div class="pn-empty">첫 관측 데이터를 기다리는 중입니다 — 다음 전체 수집 후 표시됩니다.</div>';
+    grid.innerHTML = '<div class="pn-empty">' + T('pn.empty') + '</div>';
     return;
   }
   grid.innerHTML = people.map(p => {
@@ -214,18 +214,18 @@ function esc(s) {
       <div class="pn-item">
         <div class="pn-item-meta">
           <span>${esc(it.date || '')}</span>
-          ${it.source ? `<span>·</span><span class="pn-item-src">${esc(it.source)}</span>` : ''}
+          ${it.source ? `<span>·</span><span class="pn-item-src">${PN(it.source)}</span>` : ''}
         </div>
-        <a class="pn-item-title" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.ko || it.title)}</a>
-      </div>`).join('') || '<div class="pn-empty">최근 3주 내 포착된 신호가 없습니다.</div>';
+        <a class="pn-item-title" href="${esc(it.url)}" target="_blank" rel="noopener">${TX(it.ko || it.title)}</a>
+      </div>`).join('') || '<div class="pn-empty">' + T('pn.none3w') + '</div>';
     return `
       <div class="pn-card">
         <div class="pn-head">
-          <span class="pn-name">${esc(p.ko)}</span>
-          <span class="pn-en">${esc(p.en)}</span>
+          <span class="pn-name">${TX(p.name || p.ko)}</span>
+          ${UVX.lang === 'ko' ? `<span class="pn-en">${esc(p.en)}</span>` : ''}
         </div>
-        <div class="pn-role">${esc(p.role)}</div>
-        ${p.note ? `<div class="pn-note">${esc(p.note)}</div>` : ''}
+        <div class="pn-role">${TX(p.role)}</div>
+        ${p.note ? `<div class="pn-note">${TX(p.note)}</div>` : ''}
         <div class="pn-items">${items}</div>
       </div>`;
   }).join('');

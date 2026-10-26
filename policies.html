@@ -56,7 +56,14 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK하이닉스", "005930.KS": "삼성전자", "WMT": "월마트", "XOM": "엑슨모빌"},
   esc: esc, rates: R, ccy: CCY, intl: "ko-KR" };
 })();
@@ -126,6 +133,8 @@ body {
 @media (max-width: 480px) { .rate-badge { font-size: 11px; padding: 5px 10px; } .update-badge { font-size: 11px; padding: 5px 10px; } }
 @media (max-width: 380px) { .update-badge::before { display: none; } }
 
+.pol-review { font-size: 12.5px; color: var(--text-secondary); background: var(--gold-bg); border: 1px solid var(--gold); border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; }
+.pol-review:empty { display: none; }
 .theme-toggle {
   width: 36px; height: 36px; border-radius: 50%;
   border: 1px solid var(--line); background: var(--bg-card);
@@ -404,7 +413,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/policies">
 <link rel="alternate" hreflang="ko" href="https://univertrix.com/policies">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/policies">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/policies">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/policies">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/policies">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/policies">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
@@ -466,6 +482,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
       <div class="pol-eyebrow">POLICY</div>
       <h1 class="pol-title">약관 및 정책</h1>
     </div>
+    <div class="pol-review"></div>
     <div class="pol-nav">
       <a href="#terms">이용약관</a><a href="#privacy">개인정보처리방침</a><a href="#community">커뮤니티 운영정책</a><a href="#disclaimer">투자 고지·면책</a><a href="#contact">문의·제안</a>
     </div>
@@ -474,7 +491,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
       <h2>이용약관</h2>
       <div class="pol-date">시행일: 2026년 7월 28일</div>
       <h3>제1조 (목적과 서비스의 성격)</h3>
-      <p>UNIVERTRIX(univertrix.com, 이하 "사이트")는 글로벌 상장기업의 시가총액 순위와 관련 정보를 기록·제공하는 정보 서비스입니다. 사이트의 모든 콘텐츠는 정보 제공 목적이며, 투자 자문·중개·일임·권유에 해당하지 않습니다.</p>
+      <p>UNIVERTRIX(univertrix.com, 이하 &quot;사이트&quot;)는 글로벌 상장기업의 시가총액 순위와 관련 정보를 기록·제공하는 정보 서비스입니다. 사이트의 모든 콘텐츠는 정보 제공 목적이며, 투자 자문·중개·일임·권유에 해당하지 않습니다.</p>
       <h3>제2조 (계정)</h3>
       <p>커뮤니티 이용을 위한 로그인은 Google 계정 인증으로 이루어집니다. 이용자는 본인 계정으로만 활동해야 하며, 계정 도용·양도는 금지됩니다.</p>
       <h3>제3조 (콘텐츠의 권리)</h3>
@@ -551,7 +568,6 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     </div>
   </div>
 </main>
-
 
 <footer class="site-footer">
   <div class="container">

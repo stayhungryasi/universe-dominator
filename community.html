@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+var L = "ko", M = {"cm.anon": "우주인", "cm.c.first": "첫 댓글을 남겨 주세요.", "cm.c.login": "댓글은 로그인 후 작성할 수 있습니다.", "cm.c.ph": "댓글 남기기 (최대 300자)", "cm.c.send": "등록", "cm.del": "삭제", "cm.del_confirm": "이 교신을 삭제할까요?", "cm.empty": "아직 교신이 없습니다 — 첫 기록을 남겨 주세요.", "cm.err.500": "500자를 넘었습니다.", "cm.err.del": "삭제 실패:", "cm.err.fail": "실패:", "cm.err.gif": "움직이는 GIF는 링크 칸을 이용해 주세요 (압축 시 애니메이션이 사라집니다).", "cm.err.image_only": "이미지 파일만 첨부할 수 있습니다.", "cm.err.imghost": "이미지 링크는 tenor / giphy / imgur / ibb / postimg 만 붙일 수 있습니다.", "cm.err.login": "로그인 실패:", "cm.err.read": "이미지를 읽지 못했습니다.", "cm.err.save": "저장 실패:", "cm.err.send": "전송 실패:", "cm.err.size": "사진 용량이 너무 큽니다 — 더 작은 사진으로 시도해 주세요.", "cm.gif_sum": "움직이는 GIF는 링크로 (tenor·giphy 등)", "cm.gravity": "중력", "cm.hot": "오늘의 인기 {n}위", "cm.loading_short": "불러오는 중…", "cm.login": "구글로 시작하기", "cm.login_hint": "로그인하면 누구나 자유롭게 글을 남길 수 있습니다.", "cm.logout": "로그아웃", "cm.need_login": "로그인 후 이용할 수 있습니다.", "cm.nick.btn": "이름 변경", "cm.nick.len": "2~20자로 입력해 주세요.", "cm.nick.prompt": "커뮤니티에 표시할 이름 (2~20자)", "cm.nick.tip": "표시 이름 변경", "cm.notice": "공지", "cm.ph.gif": "GIF 링크 붙여넣기 (tenor / giphy / imgur / ibb / postimg)", "cm.ph.tags": "종목 태그 (선택 · 쉼표로 최대 3개, 예: 엔비디아, SK하이닉스)", "cm.ph.text": "오늘의 관측을 남겨 주세요 (최대 500자)", "cm.photo": "사진 첨부", "cm.photo_hint": "드래그해서 놓거나, 붙여넣기(Ctrl+V)도 됩니다", "cm.photo_loading": "사진 불러오는 중…", "cm.pin": "공지로 고정", "cm.preparing": "관제센터 개설 준비 중입니다 — 곧 교신이 시작됩니다.", "cm.rel.day": "{n}일 전", "cm.rel.hour": "{n}시간 전", "cm.rel.min": "{n}분 전", "cm.rel.now": "방금", "cm.send": "교신 보내기", "common.presence": "지금 {n}명이 우주를 관측 중"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -56,7 +56,14 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK하이닉스", "005930.KS": "삼성전자", "WMT": "월마트", "XOM": "엑슨모빌"},
   esc: esc, rates: R, ccy: CCY, intl: "ko-KR" };
 })();
@@ -64,6 +71,7 @@ window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>관제센터 · UNIVERTRIX</title>
+<meta name="description" content="우주를 지켜보는 사람들의 교신 — 오늘의 관측과 생각을 자유롭게 남겨 주세요.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -451,7 +459,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/community">
 <link rel="alternate" hreflang="ko" href="https://univertrix.com/community">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/community">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/community">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/community">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/community">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/community">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
@@ -559,9 +574,10 @@ const $ = id => document.getElementById(id);
 let app, auth, db, me = null, posts = [], sortMode = 'new', myNick = null;
 const nickCache = {};  // uid → 닉네임 (없으면 null)
 
-function rel(ts){ if(!ts) return '방금'; const s=(Date.now()-ts.toDate().getTime())/1000;
-  if(s<60) return '방금'; if(s<3600) return Math.floor(s/60)+'분 전'; if(s<86400) return Math.floor(s/3600)+'시간 전';
-  if(s<604800) return Math.floor(s/86400)+'일 전'; const d=ts.toDate(); return (d.getMonth()+1)+'/'+d.getDate(); }
+function rel(ts){ if(!ts) return T('cm.rel.now'); const s=(Date.now()-ts.toDate().getTime())/1000;
+  if(s<60) return T('cm.rel.now'); if(s<3600) return T('cm.rel.min', {n: Math.floor(s/60)}); if(s<86400) return T('cm.rel.hour', {n: Math.floor(s/3600)});
+  if(s<604800) return T('cm.rel.day', {n: Math.floor(s/86400)}); const d=ts.toDate();
+  return UVX.md(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')); }
 function avatarHtml(name, photo){ return photo ? '<span class="avatar"><img src="'+esc(photo)+'" alt="" referrerpolicy="no-referrer"></span>'
   : '<span class="avatar">'+esc((name||'?').charAt(0))+'</span>'; }
 
@@ -572,16 +588,16 @@ async function fetchNicks(uids){
     catch(e){ nickCache[u] = null; }
   }));
 }
-const shownName = (uid, fallback) => nickCache[uid] || fallback || '우주인';
+const shownName = (uid, fallback) => nickCache[uid] || fallback || T('cm.anon');
 let pendingImg = null;  // 업로드 대기 중인 압축 이미지 (dataURL)
 const imageCache = {};  // imgId → dataURL
 
 async function compressImage(file){
-  if (!file || !file.type.startsWith('image/')) throw new Error('이미지 파일만 첨부할 수 있습니다.');
-  if (file.type === 'image/gif') throw new Error('움직이는 GIF는 링크 칸을 이용해 주세요 (압축 시 애니메이션이 사라집니다).');
+  if (!file || !file.type.startsWith('image/')) throw new Error(T('cm.err.image_only'));
+  if (file.type === 'image/gif') throw new Error(T('cm.err.gif'));
   const url = URL.createObjectURL(file);
   try {
-    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('이미지를 읽지 못했습니다.')); i.src = url; });
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error(T('cm.err.read'))); i.src = url; });
     for (const [maxW, q] of [[900, 0.72], [700, 0.55], [550, 0.42]]) {
       const scale = Math.min(1, maxW / Math.max(img.width, img.height));
       const c = document.createElement('canvas');
@@ -591,7 +607,7 @@ async function compressImage(file){
       const data = c.toDataURL('image/jpeg', q);
       if (data.length < 350000) return data;
     }
-    throw new Error('사진 용량이 너무 큽니다 — 더 작은 사진으로 시도해 주세요.');
+    throw new Error(T('cm.err.size'));
   } finally { URL.revokeObjectURL(url); }
 }
 
@@ -609,39 +625,39 @@ function renderImgPrev(){
 
 async function changeNick(){
   const cur = myNick || me.displayName || '';
-  const v = prompt('커뮤니티에 표시할 이름 (2~20자)', cur);
+  const v = prompt(T('cm.nick.prompt'), cur);
   if (v === null) return;
   const nick = v.trim();
-  if (nick.length < 2 || nick.length > 20) { alert('2~20자로 입력해 주세요.'); return; }
+  if (nick.length < 2 || nick.length > 20) { alert(T('cm.nick.len')); return; }
   try {
     await setDoc(doc(db, 'users', me.uid), { nick });
     myNick = nick; nickCache[me.uid] = nick;
     renderAuth(); renderFeed();
-  } catch(e){ alert('저장 실패: ' + e.message); }
+  } catch(e){ alert(T('cm.err.save') + ' ' + e.message); }
 }
 
 function renderAuth(){
   const bar = $('authBar'), cw = $('composerWrap');
   if(me){
-    const dispName = myNick || me.displayName || '우주인';
+    const dispName = myNick || me.displayName || T('cm.anon');
     bar.innerHTML = '<span class="me">'+avatarHtml(dispName, me.photoURL)+esc(dispName)+'</span>'+
-      '<button class="btn btn-ghost" id="btnNick" title="표시 이름 변경">✏️ 이름 변경</button>'+
-      '<button class="btn btn-ghost" id="btnOut">로그아웃</button>';
+      '<button class="btn btn-ghost" id="btnNick" title="' + esc(T('cm.nick.tip')) + '">✏️ ' + T('cm.nick.btn') + '</button>'+
+      '<button class="btn btn-ghost" id="btnOut">' + T('cm.logout') + '</button>';
     $('btnNick').onclick = changeNick;
     $('btnOut').onclick = () => signOut(auth);
     const isAdmin = window.__cfg && window.__cfg.adminUid && me.uid === window.__cfg.adminUid;
-    cw.innerHTML = '<div class="composer"><textarea id="txt" maxlength="600" placeholder="오늘의 관측을 남겨 주세요 (최대 500자)"></textarea>'+
+    cw.innerHTML = '<div class="composer"><textarea id="txt" maxlength="600" placeholder="' + esc(T('cm.ph.text')) + '"></textarea>'+
       '<div class="emoji-bar">'+['🚀','📈','📉','✦','🌕','🔥','💎','😂','👍','🙌','💰','🤔','😱','🎯','⚡','🌍','🪐','☄️','📊','🐂','🐻','🤝','🧨','🎉'].map(e=>'<button type="button" class="emoji-btn" data-e="'+e+'">'+e+'</button>').join('')+'</div>'+
-      '<div class="composer-foot"><button type="button" class="btn-photo" id="btnPhoto">📷 사진 첨부</button>'+
+      '<div class="composer-foot"><button type="button" class="btn-photo" id="btnPhoto">📷 ' + T('cm.photo') + '</button>'+
       '<input type="file" id="fileInp" accept="image/*" style="display:none">'+
-      '<span class="comm-guide" style="margin:0">드래그해서 놓거나, 붙여넣기(Ctrl+V)도 됩니다</span></div>'+
+      '<span class="comm-guide" style="margin:0">' + T('cm.photo_hint') + '</span></div>'+
       '<div id="imgPrev"></div>'+
-      '<details style="margin-top:6px"><summary class="comm-guide" style="cursor:pointer">움직이는 GIF는 링크로 (tenor·giphy 등)</summary>'+
-      '<div class="composer-foot"><input id="imgUrl" maxlength="500" placeholder="GIF 링크 붙여넣기 (tenor / giphy / imgur / ibb / postimg)"></div></details>'+
-      '<div class="composer-foot"><input id="tags" maxlength="60" placeholder="종목 태그 (선택 · 쉼표로 최대 3개, 예: 엔비디아, SK하이닉스)">'+
+      '<details style="margin-top:6px"><summary class="comm-guide" style="cursor:pointer">' + T('cm.gif_sum') + '</summary>'+
+      '<div class="composer-foot"><input id="imgUrl" maxlength="500" placeholder="' + esc(T('cm.ph.gif')) + '"></div></details>'+
+      '<div class="composer-foot"><input id="tags" maxlength="60" placeholder="' + esc(T('cm.ph.tags')) + '">'+
       '<span class="char-count" id="cc">0/500</span>'+
-      (isAdmin ? '<label class="pin-label"><input type="checkbox" id="pinChk"> 📌 공지로 고정</label>' : '')+
-      '<button class="btn btn-gold" id="btnSend">교신 보내기</button></div></div>';
+      (isAdmin ? '<label class="pin-label"><input type="checkbox" id="pinChk"> 📌 ' + T('cm.pin') + '</label>' : '')+
+      '<button class="btn btn-gold" id="btnSend">' + T('cm.send') + '</button></div></div>';
     document.querySelectorAll('.emoji-btn').forEach(b => b.onclick = () => {
       const t = $('txt'), s = t.selectionStart || t.value.length;
       t.value = t.value.slice(0, s) + b.dataset.e + t.value.slice(t.selectionEnd || s);
@@ -662,19 +678,19 @@ function renderAuth(){
     });
     $('btnSend').onclick = sendPost;
   } else {
-    bar.innerHTML = '<button class="btn btn-gold" id="btnIn">구글로 시작하기</button>'+
-      '<span class="comm-guide">로그인하면 누구나 자유롭게 글을 남길 수 있습니다.</span>';
-    $('btnIn').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e=>alert('로그인 실패: '+e.message));
+    bar.innerHTML = '<button class="btn btn-gold" id="btnIn">' + T('cm.login') + '</button>'+
+      '<span class="comm-guide">' + T('cm.login_hint') + '</span>';
+    $('btnIn').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e=>alert(T('cm.err.login') + ' '+e.message));
     cw.innerHTML = '';
   }
 }
 
 async function sendPost(){
   const text = $('txt').value.trim();
-  if(!text) return; if(text.length>500){ alert('500자를 넘었습니다.'); return; }
+  if(!text) return; if(text.length>500){ alert(T('cm.err.500')); return; }
   const tags = $('tags').value.split(',').map(t=>t.trim()).filter(Boolean).slice(0,3);
   const img = ($('imgUrl').value || '').trim();
-  if (img && !imgOk(img)) { alert('이미지 링크는 tenor / giphy / imgur / ibb / postimg 만 붙일 수 있습니다.'); return; }
+  if (img && !imgOk(img)) { alert(T('cm.err.imghost')); return; }
   const pinned = !!(document.getElementById('pinChk') && document.getElementById('pinChk').checked);
   $('btnSend').disabled = true;
   try{
@@ -683,11 +699,11 @@ async function sendPost(){
       const ref = await addDoc(collection(db,'images'), { uid: me.uid, data: pendingImg, created: serverTimestamp() });
       imgId = ref.id; imageCache[imgId] = pendingImg;
     }
-    await addDoc(collection(db,'posts'), { uid: me.uid, name: myNick || me.displayName || '우주인', photo: me.photoURL||'', text, tags, img, imgId, pinned, created: serverTimestamp() });
+    await addDoc(collection(db,'posts'), { uid: me.uid, name: myNick || me.displayName || T('cm.anon'), photo: me.photoURL||'', text, tags, img, imgId, pinned, created: serverTimestamp() });
     $('txt').value=''; $('tags').value=''; $('imgUrl').value=''; $('cc').textContent='0/500';
     pendingImg = null; renderImgPrev();
     await loadFeed();
-  }catch(e){ alert('전송 실패: '+e.message); }
+  }catch(e){ alert(T('cm.err.send') + ' '+e.message); }
   $('btnSend').disabled = false;
 }
 
@@ -725,19 +741,19 @@ function renderFeed(){
   $('feed').innerHTML = list.length ? list.map(p =>
     '<div class="post'+(p.pinned?' pinned ud-pin':'')+'" id="p-'+p.id+'">'+
       '<div class="post-head">'+
-      (p.pinned ? '<span class="ud-pin-badge">📌 공지</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 오늘의 인기 '+(hotIds.indexOf(p.id)+1)+'위</span>' : ''))+
-      avatarHtml(shownName(p.uid,p.name),p.photo)+'<span class="post-name">'+esc(shownName(p.uid,p.name))+'</span>'+
+      (p.pinned ? '<span class="ud-pin-badge">📌 ' + T('cm.notice') + '</span>' : (hotIds.includes(p.id) ? '<span class="badge hot">🔥 ' + T('cm.hot', {n: hotIds.indexOf(p.id)+1}) + '</span>' : ''))+
+      avatarHtml(shownName(p.uid,p.name),p.photo)+'<span class="post-name">'+UT(shownName(p.uid,p.name))+'</span>'+
       '<span class="post-time">'+rel(p.created)+'</span>'+
-      (me && (me.uid===p.uid || (window.__cfg && me.uid===window.__cfg.adminUid)) ? '<button class="post-del" data-del="'+p.id+'">삭제</button>' : '')+'</div>'+
-      '<div class="post-text">'+esc(p.text)+'</div>'+
-      (p.imgId ? '<div class="post-img" data-imgid="'+esc(p.imgId)+'">'+(imageCache[p.imgId]?'<img src="'+imageCache[p.imgId]+'" alt="">':'<span class="comm-guide">사진 불러오는 중…</span>')+'</div>'
+      (me && (me.uid===p.uid || (window.__cfg && me.uid===window.__cfg.adminUid)) ? '<button class="post-del" data-del="'+p.id+'">' + T('cm.del') + '</button>' : '')+'</div>'+
+      '<div class="post-text">'+UT(p.text)+'</div>'+
+      (p.imgId ? '<div class="post-img" data-imgid="'+esc(p.imgId)+'">'+(imageCache[p.imgId]?'<img src="'+imageCache[p.imgId]+'" alt="">':'<span class="comm-guide">' + T('cm.photo_loading') + '</span>')+'</div>'
         : (p.img && imgOk(p.img) ? '<div class="post-img"><a href="'+esc(p.img)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.parentNode.style.display=\'none\'"></a></div>' : ''))+
-      (p.tags && p.tags.length ? '<div class="post-tags">'+p.tags.map(t=>'<span class="tag-chip">'+esc(t)+'</span>').join('')+'</div>' : '')+
+      (p.tags && p.tags.length ? '<div class="post-tags">'+p.tags.map(t=>'<span class="tag-chip">'+UT(t)+'</span>').join('')+'</div>' : '')+
       '<div class="post-foot">'+
-        '<button class="act'+(p.mine?' on':'')+'" data-star="'+p.id+'">✦ 중력 '+p.stars+'</button>'+
+        '<button class="act'+(p.mine?' on':'')+'" data-star="'+p.id+'">✦ ' + T('cm.gravity') + ' '+p.stars+'</button>'+
         '<button class="act" data-cmt="'+p.id+'">💬 '+p.comments+'</button>'+
       '</div><div class="comments" id="c-'+p.id+'" style="display:none"></div></div>'
-  ).join('') : '<div class="comm-note">아직 교신이 없습니다 — 첫 기록을 남겨 주세요.</div>';
+  ).join('') : '<div class="comm-note">' + T('cm.empty') + '</div>';
   $('feed').querySelectorAll('[data-star]').forEach(b=> b.onclick = ()=>toggleStar(b.dataset.star));
   $('feed').querySelectorAll('[data-cmt]').forEach(b=> b.onclick = ()=>toggleComments(b.dataset.cmt));
   $('feed').querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>delPost(b.dataset.del));
@@ -752,46 +768,46 @@ function renderFeed(){
 }
 
 async function toggleStar(id){
-  if(!me){ alert('로그인 후 이용할 수 있습니다.'); return; }
+  if(!me){ alert(T('cm.need_login')); return; }
   const p = posts.find(x=>x.id===id); if(!p) return;
   const ref = doc(db,'posts',id,'stars',me.uid);
   try{
     if(p.mine){ await deleteDoc(ref); p.mine=false; p.stars--; }
     else { await setDoc(ref,{t:serverTimestamp()}); p.mine=true; p.stars++; }
     renderFeed();
-  }catch(e){ alert('실패: '+e.message); }
+  }catch(e){ alert(T('cm.err.fail') + ' '+e.message); }
 }
 
 async function delPost(id){
-  if(!confirm('이 교신을 삭제할까요?')) return;
+  if(!confirm(T('cm.del_confirm'))) return;
   try{ await deleteDoc(doc(db,'posts',id)); posts = posts.filter(p=>p.id!==id); renderFeed(); }
-  catch(e){ alert('삭제 실패: '+e.message); }
+  catch(e){ alert(T('cm.err.del') + ' '+e.message); }
 }
 
 async function toggleComments(id){
   const box = $('c-'+id);
   if(box.style.display!=='none'){ box.style.display='none'; return; }
-  box.style.display='block'; box.innerHTML='<span class="comm-guide">불러오는 중…</span>';
+  box.style.display='block'; box.innerHTML='<span class="comm-guide">' + T('cm.loading_short') + '</span>';
   const snap = await getDocs(query(collection(db,'posts',id,'comments'), orderBy('created','asc'), limit(100)));
   await fetchNicks(snap.docs.map(d=>d.data().uid));
   const rows = snap.docs.map(d=>{ const c=d.data(); return '<div class="comment">'+avatarHtml(shownName(c.uid,c.name),c.photo)+
-    '<div class="comment-body"><b>'+esc(shownName(c.uid,c.name))+'</b>'+esc(c.text)+
-    (me&&(me.uid===c.uid||(window.__cfg&&me.uid===window.__cfg.adminUid))?' <button class="post-del" data-cdel="'+id+'/'+d.id+'">삭제</button>':'')+'</div></div>'; }).join('');
-  box.innerHTML = (rows || '<span class="comm-guide">첫 댓글을 남겨 주세요.</span>') +
-    (me ? '<div class="comment-form"><input id="ci-'+id+'" maxlength="300" placeholder="댓글 남기기 (최대 300자)"><button class="btn btn-gold" data-csend="'+id+'">등록</button></div>'
-        : '<div class="comm-guide">댓글은 로그인 후 작성할 수 있습니다.</div>');
+    '<div class="comment-body"><b>'+UT(shownName(c.uid,c.name))+'</b>'+UT(c.text)+
+    (me&&(me.uid===c.uid||(window.__cfg&&me.uid===window.__cfg.adminUid))?' <button class="post-del" data-cdel="'+id+'/'+d.id+'">' + T('cm.del') + '</button>':'')+'</div></div>'; }).join('');
+  box.innerHTML = (rows || '<span class="comm-guide">' + T('cm.c.first') + '</span>') +
+    (me ? '<div class="comment-form"><input id="ci-'+id+'" maxlength="300" placeholder="' + esc(T('cm.c.ph')) + '"><button class="btn btn-gold" data-csend="'+id+'">' + T('cm.c.send') + '</button></div>'
+        : '<div class="comm-guide">' + T('cm.c.login') + '</div>');
   box.querySelectorAll('[data-csend]').forEach(b=> b.onclick = async ()=>{
     const inp = $('ci-'+id), t = inp.value.trim(); if(!t) return;
-    try{ await addDoc(collection(db,'posts',id,'comments'), { uid:me.uid, name: myNick || me.displayName || '우주인', photo:me.photoURL||'', text:t, created:serverTimestamp() });
+    try{ await addDoc(collection(db,'posts',id,'comments'), { uid:me.uid, name: myNick || me.displayName || T('cm.anon'), photo:me.photoURL||'', text:t, created:serverTimestamp() });
       const p=posts.find(x=>x.id===id); if(p) p.comments++;
       box.style.display='none'; renderFeed(); toggleComments(id);
-    }catch(e){ alert('실패: '+e.message); } });
+    }catch(e){ alert(T('cm.err.fail') + ' '+e.message); } });
   box.querySelectorAll('[data-cdel]').forEach(b=> b.onclick = async ()=>{
     const [pid,cid]=b.dataset.cdel.split('/');
     try{ await deleteDoc(doc(db,'posts',pid,'comments',cid));
       const p=posts.find(x=>x.id===pid); if(p) p.comments--;
       box.style.display='none'; renderFeed(); toggleComments(pid);
-    }catch(e){ alert('실패: '+e.message); } });
+    }catch(e){ alert(T('cm.err.fail') + ' '+e.message); } });
 }
 
 window.setSort = (s, btn)=>{ sortMode=s;
@@ -801,7 +817,7 @@ window.setSort = (s, btn)=>{ sortMode=s;
 (async function init(){
   let cfg = null;
   try{ cfg = await (await fetch('data/firebase_config.json?v='+Date.now())).json(); }catch(e){}
-  if(!cfg || !cfg.apiKey){ $('feed').innerHTML = '<div class="comm-note">관제센터 개설 준비 중입니다 — 곧 교신이 시작됩니다.</div>'; return; }
+  if(!cfg || !cfg.apiKey){ $('feed').innerHTML = '<div class="comm-note">' + T('cm.preparing') + '</div>'; return; }
   window.__cfg = cfg;
   app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
   onAuthStateChanged(auth, async u => {

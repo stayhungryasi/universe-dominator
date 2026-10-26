@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "hist.empty": "아직 기록이 없습니다.", "lg.auto": "자동"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -56,7 +56,14 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK하이닉스", "005930.KS": "삼성전자", "WMT": "월마트", "XOM": "엑슨모빌"},
   esc: esc, rates: R, ccy: CCY, intl: "ko-KR" };
 })();
@@ -590,7 +597,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/history-latent">
 <link rel="alternate" hreflang="ko" href="https://univertrix.com/history-latent">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/history-latent">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/history-latent">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/history-latent">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/history-latent">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/history-latent">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
@@ -1993,13 +2007,12 @@ function renderBlock(block) {
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
-      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">자동</span>' : ''}</div>
-      ${e.period ? `<div class="entry-period">${e.period}</div>` : ''}
-      ${(e.blocks || []).map(renderBlock).join('')}
+      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
+      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
     </div>
   `).join('');
 } else {
-  timeline.innerHTML = '<div class="empty">아직 기록이 없습니다.</div>';
+  timeline.innerHTML = '<div class="empty">' + T('hist.empty') + '</div>';
 }
 </script>
 <!-- uv-presence -->

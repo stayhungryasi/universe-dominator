@@ -56,14 +56,21 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SKハイニックス", "005930.KS": "サムスン", "WMT": "ウォルマート", "XOM": "エクソンモービル"},
   esc: esc, rates: R, ccy: CCY, intl: "ja-JP" };
 })();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>이용약관·정책 · UNIVERTRIX</title>
+<title>利用規約·ポリシー · UNIVERTRIX</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -126,6 +133,8 @@ body {
 @media (max-width: 480px) { .rate-badge { font-size: 11px; padding: 5px 10px; } .update-badge { font-size: 11px; padding: 5px 10px; } }
 @media (max-width: 380px) { .update-badge::before { display: none; } }
 
+.pol-review { font-size: 12.5px; color: var(--text-secondary); background: var(--gold-bg); border: 1px solid var(--gold); border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; }
+.pol-review:empty { display: none; }
 .theme-toggle {
   width: 36px; height: 36px; border-radius: 50%;
   border: 1px solid var(--line); background: var(--bg-card);
@@ -403,9 +412,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/ja/policies">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/policies">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/policies">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/policies">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/policies">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/policies">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_LA">
 <meta property="og:url" content="https://univertrix.com/ja/policies">
-<meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
@@ -449,7 +465,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
         KRW <span id="usdKrwDisplay">1,324.45</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI原油スポット · 前日終値 · 測定 10:17 · 出典 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="米国10年国債利回り · 測定 10:17 · 出典 FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="米国30年国債利回り · 測定 10:17 · 出典 FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY為替レート · 測定 10:17 · 出典 frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
-      <details class="uvx-lang"><summary aria-label="言語">JA</summary><div class="uvx-lang-menu"><a href="../policies.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/policies.html" hreflang="en" lang="en">English<small>EN</small></a><a href="../es/policies.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/policies.html" hreflang="ja" lang="ja" aria-current="true">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <details class="uvx-lang"><summary aria-label="言語">JA</summary><div class="uvx-lang-menu"><a href="../policies.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/policies.html" hreflang="en" lang="en">English<small>EN</small></a><a href="../es/policies.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/policies.html" hreflang="ja" lang="ja" aria-current="true">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="テーマ切替">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -460,100 +476,99 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
 <nav class="site-nav">
   <div class="site-nav-inner container"><a href="index.html" class="nav-tab">宇宙の覇者</a><a href="latent.html" class="nav-tab">次代の覇者候補</a><a href="megatrend.html" class="nav-tab">メガトレンド</a><a href="research.html" class="nav-tab">リサーチ</a><a href="observatory.html" class="nav-tab">データ天文台</a><a href="community.html" class="nav-tab">管制センター</a><a href="journal.html" class="nav-tab">観測ノート</a><a href="pioneers.html" class="nav-tab">開拓者</a></div>
 </nav>
-<div class="uvx-pagepending">このページは翻訳準備中です — 本文は韓国語の原文です。</div>
 
 <main>
   <div class="container" style="max-width: 860px;">
     <div class="pol-hero">
       <div class="pol-eyebrow">POLICY</div>
-      <h1 class="pol-title">약관 및 정책</h1>
+      <h1 class="pol-title">規約およびポリシー</h1>
     </div>
+    <div class="pol-review">この翻訳は便宜上のもので、検収待ちです。韓国語の原文と異なる場合は韓国語の原文が優先します。</div>
     <div class="pol-nav">
-      <a href="#terms">이용약관</a><a href="#privacy">개인정보처리방침</a><a href="#community">커뮤니티 운영정책</a><a href="#disclaimer">투자 고지·면책</a><a href="#contact">문의·제안</a>
+      <a href="#terms">利用規約</a><a href="#privacy">プライバシーポリシー</a><a href="#community">コミュニティ運営方針</a><a href="#disclaimer">投資に関する注意・免責</a><a href="#contact">お問い合わせ</a>
     </div>
 
     <div class="pol-sec" id="terms">
-      <h2>이용약관</h2>
-      <div class="pol-date">시행일: 2026년 7월 28일</div>
-      <h3>제1조 (목적과 서비스의 성격)</h3>
-      <p>UNIVERTRIX(univertrix.com, 이하 "사이트")는 글로벌 상장기업의 시가총액 순위와 관련 정보를 기록·제공하는 정보 서비스입니다. 사이트의 모든 콘텐츠는 정보 제공 목적이며, 투자 자문·중개·일임·권유에 해당하지 않습니다.</p>
-      <h3>제2조 (계정)</h3>
-      <p>커뮤니티 이용을 위한 로그인은 Google 계정 인증으로 이루어집니다. 이용자는 본인 계정으로만 활동해야 하며, 계정 도용·양도는 금지됩니다.</p>
-      <h3>제3조 (콘텐츠의 권리)</h3>
-      <p>이용자가 커뮤니티에 게시한 글·댓글·이미지의 권리는 작성자에게 있습니다. 다만 작성자는 사이트가 해당 콘텐츠를 사이트 내에 게시·노출하는 것을 허락합니다. 이용자는 본인 게시물을 언제든 직접 삭제할 수 있습니다.</p>
-      <h3>제4조 (금지 행위)</h3>
-      <p>커뮤니티 운영정책(아래)에서 금지하는 행위, 서비스의 정상 운영을 방해하는 행위(자동화 도배, 취약점 악용 등), 관련 법령 위반 행위는 금지됩니다.</p>
-      <h3>제5조 (서비스의 변경·중단)</h3>
-      <p>사이트는 무료로 제공되며, 운영상 필요에 따라 기능이 변경·중단될 수 있습니다. 데이터의 무결성을 위해 노력하지만 상시 무중단·무오류를 보증하지 않습니다.</p>
-      <h3>제6조 (책임의 한계)</h3>
-      <p>사이트가 제공하는 정보의 이용으로 발생한 어떠한 손해에 대해서도 사이트는 책임을 지지 않습니다. 자세한 내용은 투자 고지·면책 조항을 따릅니다.</p>
-      <h3>제7조 (준거법)</h3>
-      <p>본 약관은 대한민국 법령에 따라 해석됩니다.</p>
+      <h2>利用規約</h2>
+      <div class="pol-date">施行日: 2026年7月28日</div>
+      <h3>第1条(目的とサービスの性格)</h3>
+      <p>UNIVERTRIX(univertrix.com、以下「サイト」)は、世界の上場企業の時価総額ランキングと関連情報を記録·提供する情報サービスです。サイトのすべてのコンテンツは情報提供を目的としており、投資助言·仲介·一任·勧誘には該当しません。</p>
+      <h3>第2条(アカウント)</h3>
+      <p>コミュニティ利用のためのログインはGoogleアカウント認証で行います。利用者は本人のアカウントでのみ活動しなければならず、アカウントの盗用·譲渡は禁止されます。</p>
+      <h3>第3条(コンテンツの権利)</h3>
+      <p>利用者がコミュニティに投稿した文章·コメント·画像の権利は作成者にあります。ただし作成者は、サイトが当該コンテンツをサイト内に掲載·表示することを許諾します。利用者は自分の投稿をいつでも直接削除できます。</p>
+      <h3>第4条(禁止行為)</h3>
+      <p>コミュニティ運営ポリシー(下記)で禁止する行為、サービスの正常な運営を妨げる行為(自動化による連投、脆弱性の悪用など)、関連法令に違反する行為は禁止されます。</p>
+      <h3>第5条(サービスの変更·中断)</h3>
+      <p>サイトは無料で提供され、運営上の必要に応じて機能が変更·中断されることがあります。データの完全性に努めますが、常時無停止·無誤りを保証するものではありません。</p>
+      <h3>第6条(責任の限界)</h3>
+      <p>サイトが提供する情報の利用により生じたいかなる損害についても、サイトは責任を負いません。詳細は投資告知·免責条項に従います。</p>
+      <h3>第7条(準拠法)</h3>
+      <p>本規約は大韓民国の法令に従って解釈されます。</p>
     </div>
 
     <div class="pol-sec" id="privacy">
-      <h2>개인정보처리방침</h2>
-      <div class="pol-date">시행일: 2026년 7월 28일</div>
-      <h3>1. 수집하는 정보</h3>
+      <h2>個人情報処理方針</h2>
+      <div class="pol-date">施行日: 2026年7月28日</div>
+      <h3>1. 収集する情報</h3>
       <ul>
-        <li><b>커뮤니티 로그인 시</b>: Google 계정의 이름, 이메일 주소, 프로필 사진, 고유 식별자(UID) — Google 인증 과정에서 수집됩니다.</li>
-        <li><b>이용자가 작성한 콘텐츠</b>: 글, 댓글, 태그, 첨부 이미지, 닉네임, 공감(중력) 기록.</li>
-        <li><b>접속자 수 집계</b>: 브라우저에 저장되는 무작위 익명 식별자와 접속 시각 — 이름·이메일 등과 연결되지 않습니다.</li>
+        <li><b>コミュニティへのログイン時</b>: Googleアカウントの名前、メールアドレス、プロフィール写真、固有識別子(UID) — Google認証の過程で収集されます。</li>
+        <li><b>利用者が作成したコンテンツ</b>: 投稿、コメント、タグ、添付画像、ニックネーム、共感(重力)の記録。</li>
+        <li><b>接続者数の集計</b>: ブラウザに保存されるランダムな匿名識別子と接続時刻 — 名前·メールなどとは紐づきません。</li>
       </ul>
-      <h3>2. 이용 목적</h3>
-      <p>커뮤니티 기능 제공(로그인, 게시물 표시, 본인 게시물 관리), 실시간 접속자 수 표시, 서비스 품질 유지·부정 이용 방지.</p>
-      <h3>3. 보관 및 파기</h3>
-      <p>게시물은 작성자가 삭제하거나 운영정책 위반으로 삭제될 때까지 보관됩니다. 계정 정보 및 게시물 일괄 삭제를 원하시면 아래 문의 창구로 요청해 주세요. 지체 없이 처리합니다.</p>
-      <h3>4. 처리 위탁 및 국외 이전</h3>
-      <p>데이터 저장과 인증은 Google Firebase(Google LLC), 사이트 호스팅은 Cloudflare, Inc.를 통해 처리되며, 이 과정에서 데이터가 해외 서버에 저장될 수 있습니다. 각 사는 자체 보안 기준에 따라 정보를 보호합니다.</p>
-      <h3>5. 쿠키 및 유사 기술</h3>
-      <p>화면 테마 설정과 익명 접속자 식별자를 브라우저 저장소(localStorage)에 보관합니다. 광고·추적 쿠키는 사용하지 않습니다.</p>
-      <h3>6. 이용자의 권리</h3>
-      <p>본인 게시물의 열람·삭제는 사이트에서 직접 가능하며, 계정 관련 정보의 삭제·정정은 문의 창구를 통해 요청할 수 있습니다.</p>
-      <h3>7. 문의처</h3>
-      <p>개인정보 관련 문의: 아래 문의·제안 창구를 이용해 주세요.</p>
+      <h3>2. 利用目的</h3>
+      <p>コミュニティ機能の提供(ログイン、投稿の表示、自分の投稿の管理)、リアルタイム接続者数の表示、サービス品質の維持·不正利用の防止。</p>
+      <h3>3. 保管および破棄</h3>
+      <p>投稿は作成者が削除するか、運営ポリシー違反で削除されるまで保管されます。アカウント情報と投稿の一括削除をご希望の場合は、下記のお問い合わせ窓口にご依頼ください。遅滞なく処理します。</p>
+      <h3>4. 処理の委託および国外移転</h3>
+      <p>データの保存と認証はGoogle Firebase(Google LLC)、サイトのホスティングはCloudflare, Inc.を通じて処理され、この過程でデータが海外のサーバーに保存されることがあります。各社は独自のセキュリティ基準に従って情報を保護します。</p>
+      <h3>5. Cookieおよび類似技術</h3>
+      <p>画面テーマの設定と匿名の接続者識別子をブラウザのストレージ(localStorage)に保管します。広告·追跡Cookieは使用しません。</p>
+      <h3>6. 利用者の権利</h3>
+      <p>自分の投稿の閲覧·削除はサイトで直接でき、アカウント関連情報の削除·訂正はお問い合わせ窓口を通じて依頼できます。</p>
+      <h3>7. お問い合わせ先</h3>
+      <p>個人情報に関するお問い合わせ: 下記のお問い合わせ·ご提案窓口をご利用ください。</p>
     </div>
 
     <div class="pol-sec" id="community">
-      <h2>커뮤니티 운영정책</h2>
-      <div class="pol-date">관제센터(커뮤니티)를 건강하게 지키기 위한 약속입니다.</div>
-      <h3>금지되는 교신</h3>
+      <h2>コミュニティ運営ポリシー</h2>
+      <div class="pol-date">管制センター(コミュニティ)を健全に保つための約束です。</div>
+      <h3>禁止される交信</h3>
       <ul>
-        <li>불법 정보, 음란물, 폭력·혐오·차별 표현</li>
-        <li>타인 비방, 명예훼손, 개인정보(본인·타인) 노출</li>
-        <li>도배·스팸, 상업적 광고, 외부 유료 서비스 홍보</li>
-        <li>리딩방 유도, 종목 매수·매도 선동, 미확인 정보를 사실처럼 유포하는 행위</li>
-        <li>계정 도용, 관리자·봇 사칭</li>
+        <li>違法情報、わいせつ物、暴力·嫌悪·差別表現</li>
+        <li>他者への誹謗、名誉毀損、個人情報(本人·他人)の露出</li>
+        <li>連投·スパム、商業広告、外部有料サービスの宣伝</li>
+        <li>有料の銘柄情報グループへの勧誘、特定銘柄の売買を煽る行為、未確認情報を事実のように流布する行為</li>
+        <li>アカウントの盗用、管理者·ボットのなりすまし</li>
       </ul>
-      <h3>조치</h3>
-      <p>위반 게시물은 사전 통보 없이 삭제될 수 있으며, 반복·중대 위반 시 계정 이용이 제한될 수 있습니다.</p>
-      <h3>신고</h3>
-      <p>문제 게시물을 발견하시면 문의·제안 창구로 알려주세요.</p>
+      <h3>措置</h3>
+      <p>違反投稿は事前通知なく削除されることがあり、繰り返しまたは重大な違反の場合はアカウントの利用が制限されることがあります。</p>
+      <h3>通報</h3>
+      <p>問題のある投稿を見つけたら、お問い合わせ·ご提案窓口でお知らせください。</p>
     </div>
 
     <div class="pol-sec" id="disclaimer">
-      <h2>투자 고지·면책</h2>
-      <div class="pol-date">사이트의 모든 화면·문서·발송물에 공통 적용됩니다.</div>
+      <h2>投資に関する注意・免責</h2>
+      <div class="pol-date">サイトのすべての画面·文書·発信物に共通して適用されます。</div>
       <ul>
-        <li>본 사이트는 글로벌 상장기업의 시가총액 정보 제공을 목적으로 합니다.</li>
-        <li>특정 종목의 매수·매도 권유 또는 투자 자문·중개·알선에 해당하지 않습니다.</li>
-        <li>표시된 데이터는 외부 출처(companiesmarketcap.com, SEC EDGAR 등)를 인용한 것으로, 정확성·완전성·시의성을 보증하지 않습니다.</li>
-        <li>환율 및 시가총액은 시점에 따라 변동될 수 있습니다.</li>
-        <li>커뮤니티 게시물은 작성자 개인의 의견이며 사이트의 입장이 아닙니다.</li>
-        <li>모든 투자 판단과 그에 따른 손익은 전적으로 투자자 본인에게 귀속됩니다.</li>
+        <li>本サイトは世界の上場企業の時価総額情報の提供を目的としています。</li>
+        <li>特定銘柄の売買の勧誘、または投資助言・仲介・斡旋に該当するものではありません。</li>
+        <li>表示データは外部の出典(companiesmarketcap.com、SEC EDGARなど)を引用したもので、正確性·完全性·適時性を保証しません。</li>
+        <li>為替レートおよび時価総額は時点により変動することがあります。</li>
+        <li>コミュニティの投稿は作成者個人の意見であり、サイトの立場ではありません。</li>
+        <li>すべての投資判断およびそれに伴う損益は、投資家ご本人に帰属します。</li>
       </ul>
     </div>
 
     <div class="pol-sec" id="contact">
-      <h2>문의·제안</h2>
-      <p>제휴, 광고, 기능 제안, 오류 제보, 개인정보 관련 요청 등 모든 문의를 환영합니다.</p>
-      <p>📮 텔레그램: <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700">t.me/stayhungryasi</a></p>
-      <p>✉️ 이메일: <a href="mailto:univertrix00@gmail.com" style="color:var(--gold);font-weight:700">univertrix00@gmail.com</a></p>
-      <p>💬 또는 커뮤니티에 교신을 남겨 주세요 — 관제탑이 확인합니다.</p>
+      <h2>お問い合わせ</h2>
+      <p>提携、広告、機能のご提案、不具合の報告、個人情報関連のご依頼など、あらゆるお問い合わせを歓迎します。</p>
+      <p>📮 Telegram: <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700">t.me/stayhungryasi</a></p>
+      <p>✉️ メール: <a href="mailto:univertrix00@gmail.com" style="color:var(--gold);font-weight:700">univertrix00@gmail.com</a></p>
+      <p>💬 またはコミュニティに交信を残してください — 管制塔が確認します。</p>
     </div>
   </div>
 </main>
-
 
 <footer class="site-footer">
   <div class="container">

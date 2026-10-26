@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{PAGE_TITLE}} · 우주지배자</title>
+<title>{{PAGE_TITLE}} · {{t:brand.sub}}</title>
 <meta name="description" content="{{PAGE_DESC}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
@@ -326,11 +326,11 @@ body {
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}"></button>
     </div>
   </div>
 </header>
@@ -363,7 +363,7 @@ body {
     <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
   </div>
   <p class="footer-source">
-    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 매일 08:00 KST 자동 갱신
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · {{t:idx.source_tail}}
   </p>
 </footer>
 
@@ -431,13 +431,12 @@ function renderBlock(block) {
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
-      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">자동</span>' : ''}</div>
-      ${e.period ? `<div class="entry-period">${e.period}</div>` : ''}
-      ${(e.blocks || []).map(renderBlock).join('')}
+      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
+      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
     </div>
   `).join('');
 } else {
-  timeline.innerHTML = '<div class="empty">아직 기록이 없습니다.</div>';
+  timeline.innerHTML = '<div class="empty">' + T('hist.empty') + '</div>';
 }
 </script>
 </body>

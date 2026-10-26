@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "es", M = {"common.presence": {"one": "{n} persona observa el universo ahora", "other": "{n} personas observan el universo ahora"}}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Traducción en preparación — original en coreano", U = {};
+var L = "es", M = {"common.presence": {"one": "{n} persona observa el universo ahora", "other": "{n} personas observan el universo ahora"}, "lg.th.stock": "Valor", "mega.cat.rank": "Seguimiento de puestos", "mega.cat.themes": "6 megatendencias", "mega.cat.throne": "El N.º 1 en el tiempo", "mega.cat.top10": "El TOP 10 en el tiempo", "mega.lg.out": "— fuera del TOP 10", "mega.lg.r1": "N.º 1", "mega.lg.r23": "Puestos 2–3", "mega.lg.r45": "Puestos 4–5 (negrita)", "mega.lg.r610": "Puestos 6–10 (normal)", "mega.matrix.d": "Capitalizaciones de un vistazo. Usa las flechas laterales para pasar de año.", "mega.matrix.h": "Matriz detallada", "mega.next_year": "Año siguiente", "mega.prev_year": "Año anterior", "mega.rank": "Puesto", "mega.rank.d": "Cambios de puesto en el TOP 10 de 18 valores clave: 20 años de auge y caída en una pantalla. Usa las flechas laterales para pasar de año.", "mega.rank.h": "Seguimiento de puestos de valores clave", "mega.runners": "Puestos 2–3:", "mega.themes.d": "Desde las capitalizaciones gigantes hasta la leyenda de NVIDIA: no una simple clasificación, sino un registro de ciclos de hegemonía.", "mega.themes.h": "6 megatendencias de 20 años", "mega.throne.d": "Quién dominó el universo durante 20 años: el Trono pasó de ExxonMobil y PetroChina a Apple y NVIDIA.", "mega.throne.h": "La empresa N.º 1 en el tiempo", "mega.top10.aria": "Gráfico de cambios de puesto del TOP 10, 2006-2026", "mega.top10.d": "20 años de cambios de puesto en el TOP 10 mundial por capitalización. Toca un nombre (leyenda) o una línea para resaltar solo esa trayectoria.", "mega.top10.h": "El TOP 10 en el tiempo (2006–2026)", "mega.top10.hint": "Toca de nuevo para quitar el resaltado · fíjate en la subida de NVIDIA"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Traducción en preparación — original en coreano", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -56,15 +56,22 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK hynix", "005930.KS": "Samsung", "WMT": "Walmart", "XOM": "ExxonMobil"},
   esc: esc, rates: R, ccy: CCY, intl: "es-ES" };
 })();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메가트렌드 · 우주지배자</title>
-<meta name="description" content="20년이 들려주는 우주의 변천 — 2006~2026 글로벌 시가총액 TOP 10 분석">
+<title>Megatendencias · UNIVERTRIX</title>
+<meta name="description" content="Cómo cambió el universo en 20 años: análisis del TOP 10 mundial por capitalización, 2006–2026">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -612,9 +619,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/es/megatrend">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/megatrend">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/megatrend">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/megatrend">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/megatrend">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/megatrend">
 <meta property="og:locale" content="es_LA">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/es/megatrend">
-<meta name="robots" content="noindex">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
@@ -657,7 +671,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="Petróleo WTI al contado · cierre anterior · Medido 10:17 · Fuente FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="Rendimiento del Tesoro de EE. UU. a 10 años · Medido 10:17 · Fuente FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="Rendimiento del Tesoro de EE. UU. a 30 años · Medido 10:17 · Fuente FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="Tipo de cambio USD/JPY · Medido 10:17 · Fuente frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
-      <details class="uvx-lang"><summary aria-label="Idioma">ES</summary><div class="uvx-lang-menu"><a href="../megatrend.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/megatrend.html" hreflang="en" lang="en">English<small>EN</small></a><a href="../es/megatrend.html" hreflang="es" lang="es" aria-current="true">Español<small>ES</small></a><a href="../ja/megatrend.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <details class="uvx-lang"><summary aria-label="Idioma">ES</summary><div class="uvx-lang-menu"><a href="../megatrend.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/megatrend.html" hreflang="en" lang="en">English<small>EN</small></a><a href="../es/megatrend.html" hreflang="es" lang="es" aria-current="true">Español<small>ES</small></a><a href="../ja/megatrend.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -668,13 +682,12 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
 <nav class="site-nav">
   <div class="site-nav-inner container"><a href="index.html" class="nav-tab">Soberanos</a><a href="latent.html" class="nav-tab">Aspirantes</a><a href="megatrend.html" class="nav-tab active">Megatendencias</a><a href="research.html" class="nav-tab">Investigación</a><a href="observatory.html" class="nav-tab">Observatorio de Datos</a><a href="community.html" class="nav-tab">Control de Misión</a><a href="journal.html" class="nav-tab">Notas de Campo</a><a href="pioneers.html" class="nav-tab">Pioneros</a></div>
 </nav>
-<div class="uvx-pagepending">Esta página se está traduciendo: el texto es el original en coreano.</div>
 
 <main class="container">
   <section class="page-hero">
     <div class="page-eyebrow">Megatrend</div>
-    <h1 class="page-title">메가트렌드</h1>
-    <p class="page-desc">20년이 들려주는 우주의 변천 — 2006~2026 글로벌 시가총액 TOP 10 분석</p>
+    <h1 class="page-title">Megatendencias</h1>
+    <p class="page-desc">Cómo cambió el universo en 20 años: análisis del TOP 10 mundial por capitalización, 2006–2026</p>
   </section>
 
   <div class="cat-nav" id="catNav"></div>
@@ -688,7 +701,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <span class="footer-divider">·</span>
     <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
   </div>
-  <p class="footer-source">2016~2025 PwC Global Top 100 / 2026 companiesmarketcap.com · 각 연도 5월 24일 기준</p>
+  <p class="footer-source">2016–2025 PwC Global Top 100 / 2026 companiesmarketcap.com · a 24 de mayo de cada año</p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">Acerca de</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Términos</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacidad</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Normas de la Comunidad</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Aviso de Inversión</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contacto</a></div>
 </footer>
 
@@ -1898,7 +1911,7 @@ const DATA = {
 // 카테고리 nav 렌더
 const catNav = document.getElementById('catNav');
 catNav.innerHTML = DATA.categories.map((c, i) =>
-  `<button class="cat-btn ${i === 0 ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
+  `<button class="cat-btn ${i === 0 ? 'active' : ''}" data-cat="${c.id}">${T('mega.cat.' + c.id) || TX(c.label)}</button>`
 ).join('');
 
 // 카테고리 본문 렌더
@@ -1928,29 +1941,29 @@ function shortName(name) {
 // PANE 1: TOP 10 변천사 (Bump Chart + 매트릭스)
 const top10Html = `
   <div class="cat-pane active" data-pane="top10">
-    <h2 class="cat-pane-title">TOP 10 변천사 (2006~2026)</h2>
-    <p class="cat-pane-desc">20년간 글로벌 시가총액 TOP 10의 순위 변화. 종목명(범례)이나 선을 탭하면 해당 흐름만 강조됩니다.</p>
+    <h2 class="cat-pane-title">${T('mega.top10.h')}</h2>
+    <p class="cat-pane-desc">${T('mega.top10.d')}</p>
 
     <div class="bump-section">
       <div class="bump-legend" id="bumpLegend"></div>
       <div class="bump-wrap">
         <div style="position: relative; width: 100%; overflow: hidden;">
-          <svg id="bumpChart" viewBox="0 0 720 460" width="100%" style="display:block;" role="img" aria-label="TOP 10 순위 변화 범프 차트 2006-2026"></svg>
+          <svg id="bumpChart" viewBox="0 0 720 460" width="100%" style="display:block;" role="img" aria-label="${T('mega.top10.aria')}"></svg>
         </div>
-        <div class="bump-hint">다시 탭하면 강조가 해제됩니다 · NVIDIA의 상승 곡선을 주목하세요</div>
+        <div class="bump-hint">${T('mega.top10.hint')}</div>
       </div>
     </div>
 
-    <h3 class="cat-pane-title" style="font-size:17px; margin-top:32px;">상세 매트릭스</h3>
-    <p class="cat-pane-desc">시가총액 수치까지 한눈에. 양옆 화살표로 연도를 넘겨보세요.</p>
+    <h3 class="cat-pane-title" style="font-size:17px; margin-top:32px;">${T('mega.matrix.h')}</h3>
+    <p class="cat-pane-desc">${T('mega.matrix.d')}</p>
     <div class="matrix-viewport">
-      <div class="scroll-arrow left hidden" id="matrixLeft" aria-label="이전 연도">‹</div>
-      <div class="scroll-arrow right" id="matrixRight" aria-label="다음 연도">›</div>
+      <div class="scroll-arrow left hidden" id="matrixLeft" aria-label="${T('mega.prev_year')}">‹</div>
+      <div class="scroll-arrow right" id="matrixRight" aria-label="${T('mega.next_year')}">›</div>
       <div class="matrix-scroll" id="matrixScroll">
         <table class="matrix">
           <thead>
             <tr>
-              <th>순위</th>
+              <th>${T('mega.rank')}</th>
               ${DATA.top10_years.map(y => `<th>${y}</th>`).join('')}
             </tr>
           </thead>
@@ -1958,7 +1971,7 @@ const top10Html = `
             ${DATA.top10.map((row, i) => `
               <tr>
                 <td>${i + 1}</td>
-                ${row.map((cell, j) => `<td class="${i === 0 ? 'rank-1' : ''}">${cell}</td>`).join('')}
+                ${row.map((cell, j) => `<td class="${i === 0 ? 'rank-1' : ''}">${TX(cell)}</td>`).join('')}
               </tr>
             `).join('')}
           </tbody>
@@ -1971,18 +1984,18 @@ const top10Html = `
 // PANE 2: 1위 변천
 const throneHtml = `
   <div class="cat-pane" data-pane="throne">
-    <h2 class="cat-pane-title">1위 기업 변천사</h2>
-    <p class="cat-pane-desc">누가 20년간 우주를 지배했나 — ExxonMobil·PetroChina에서 Apple, NVIDIA로 이어진 왕좌 이동.</p>
+    <h2 class="cat-pane-title">${T('mega.throne.h')}</h2>
+    <p class="cat-pane-desc">${T('mega.throne.d')}</p>
     <div class="throne-list">
       ${DATA.throne.map(t => `
         <div class="throne-card">
           <div class="throne-header">
             <span class="throne-year">${t.year}</span>
-            <span class="throne-winner">${t.winner}</span>
+            <span class="throne-winner">${TX(t.winner)}</span>
             <span class="throne-mc">${t.mc}</span>
           </div>
-          <div class="throne-runners">2~3위: <strong>${t.runners}</strong></div>
-          <div class="throne-narrative">${t.narrative}</div>
+          <div class="throne-runners">${T('mega.runners')} <strong>${TX(t.runners)}</strong></div>
+          <div class="throne-narrative">${TX(t.narrative)}</div>
         </div>
       `).join('')}
     </div>
@@ -1992,31 +2005,31 @@ const throneHtml = `
 // PANE 3: 6대 메가트렌드
 const themesHtml = `
   <div class="cat-pane" data-pane="themes">
-    <h2 class="cat-pane-title">20년이 들려주는 6가지 메가트렌드</h2>
-    <p class="cat-pane-desc">시총 거대화부터 NVIDIA 신화까지 — 단순 순위표가 아닌 패권 사이클의 기록.</p>
+    <h2 class="cat-pane-title">${T('mega.themes.h')}</h2>
+    <p class="cat-pane-desc">${T('mega.themes.d')}</p>
     <div class="themes-grid">
       ${DATA.themes.map(t => {
         let body = '';
         if (t.stats) {
           body = `<div class="theme-stats">${t.stats.map(s => `
-            <div class="theme-stat"><span class="theme-stat-k">${s.k}</span><span class="theme-stat-v">${s.v}</span></div>
+            <div class="theme-stat"><span class="theme-stat-k">${TX(s.k)}</span><span class="theme-stat-v">${TX(s.v)}</span></div>
           `).join('')}</div>`;
         }
         if (t.phases) {
           body += `<div class="theme-phases">${t.phases.map(p => `
             <div class="theme-phase">
-              <span class="theme-phase-period">${p.period}</span>
-              <span class="theme-phase-leader">${p.leader || p.count || ''}${(p.theme || p.members) ? `<span>${p.theme || p.members}</span>` : ''}</span>
+              <span class="theme-phase-period">${TX(p.period)}</span>
+              <span class="theme-phase-leader">${TX(p.leader || p.count || '')}${(p.theme || p.members) ? `<span>${TX(p.theme || p.members)}</span>` : ''}</span>
             </div>
           `).join('')}</div>`;
         }
         return `
           <div class="theme-card">
             <div class="theme-num">${t.num}</div>
-            <h3 class="theme-title">${t.title}</h3>
-            <div class="theme-subtitle">${t.subtitle}</div>
+            <h3 class="theme-title">${TX(t.title)}</h3>
+            <div class="theme-subtitle">${TX(t.subtitle)}</div>
             ${body}
-            <div class="theme-insight">${t.insight}</div>
+            <div class="theme-insight">${TX(t.insight)}</div>
           </div>
         `;
       }).join('')}
@@ -2027,16 +2040,16 @@ const themesHtml = `
 // PANE 4: 순위 추적 매트릭스 (화살표 스크롤)
 const rankHtml = `
   <div class="cat-pane" data-pane="rank">
-    <h2 class="cat-pane-title">핵심 종목 순위 추적</h2>
-    <p class="cat-pane-desc">18개 핵심 종목의 TOP 10 내 순위 변동 — 20년의 흥망성쇠를 한 화면에. 양옆 화살표로 연도를 넘겨보세요.</p>
+    <h2 class="cat-pane-title">${T('mega.rank.h')}</h2>
+    <p class="cat-pane-desc">${T('mega.rank.d')}</p>
     <div class="matrix-viewport">
-      <div class="scroll-arrow left hidden" id="rankLeft" aria-label="이전 연도">‹</div>
-      <div class="scroll-arrow right" id="rankRight" aria-label="다음 연도">›</div>
+      <div class="scroll-arrow left hidden" id="rankLeft" aria-label="${T('mega.prev_year')}">‹</div>
+      <div class="scroll-arrow right" id="rankRight" aria-label="${T('mega.next_year')}">›</div>
       <div class="matrix-scroll" id="rankScroll">
         <table class="rank-matrix">
           <thead>
             <tr>
-              <th>종목</th>
+              <th>${T('lg.th.stock')}</th>
               ${DATA.top10_years.map(y => `<th>${y.slice(-2)}</th>`).join('')}
             </tr>
           </thead>
@@ -2052,11 +2065,11 @@ const rankHtml = `
       </div>
     </div>
     <div class="rank-legend">
-      <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold);"></span>1위</div>
-      <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold-bg);"></span>2~3위</div>
-      <div class="rank-legend-item">4~5위 (Bold)</div>
-      <div class="rank-legend-item">6~10위 (Regular)</div>
-      <div class="rank-legend-item">— TOP 10 밖</div>
+      <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold);"></span>${T('mega.lg.r1')}</div>
+      <div class="rank-legend-item"><span class="rank-legend-chip" style="background:var(--gold-bg);"></span>${T('mega.lg.r23')}</div>
+      <div class="rank-legend-item">${T('mega.lg.r45')}</div>
+      <div class="rank-legend-item">${T('mega.lg.r610')}</div>
+      <div class="rank-legend-item">${T('mega.lg.out')}</div>
     </div>
   </div>
 `;

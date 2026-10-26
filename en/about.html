@@ -56,14 +56,22 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK hynix", "005930.KS": "Samsung", "WMT": "Walmart", "XOM": "ExxonMobil"},
   esc: esc, rates: R, ccy: CCY, intl: "en-US" };
 })();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About · 우주지배자</title>
+<title>About · UNIVERTRIX</title>
+<meta name="description" content="UNIVERTRIX — the universe turns, the record remains. An observatory that records global market caps automatically every day.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -413,9 +421,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/en/about">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/about">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/about">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/about">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/about">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/about">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/en/about">
-<meta name="robots" content="noindex">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
@@ -458,7 +473,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
         KRW <span id="usdKrwDisplay">1,324.45</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 10:17 · Source FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 10:17 · Source FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 10:17 · Source FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 10:17 · Source frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
-      <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../about.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/about.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/about.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/about.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../about.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/about.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/about.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/about.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -469,41 +484,40 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
 <nav class="site-nav">
   <div class="site-nav-inner container"><a href="index.html" class="nav-tab">Sovereigns</a><a href="latent.html" class="nav-tab">Contenders</a><a href="megatrend.html" class="nav-tab">Megatrends</a><a href="research.html" class="nav-tab">Research</a><a href="observatory.html" class="nav-tab">Data Observatory</a><a href="community.html" class="nav-tab">Mission Control</a><a href="journal.html" class="nav-tab">Field Notes</a><a href="pioneers.html" class="nav-tab">Pioneers</a></div>
 </nav>
-<div class="uvx-pagepending">This page is being translated — the body text is the Korean original.</div>
 
 <main class="about-main">
   <div class="container">
     <div class="about-wrap">
       <div class="about-eyebrow">About</div>
       <div class="about-brand">UNI<span class="v">V</span>ERTRIX</div>
-      <div class="about-motto">Universum vertitur, matrix manet — 우주는 돌고, 기록은 남는다</div>
+      <div class="about-motto">Universum vertitur, matrix manet — the universe turns, the record remains</div>
 
       <div class="about-sec">
-        <h2>왜 우주지배자인가</h2>
-        <p>폭발적으로 성장하는 기업은 지구를 지배하고, 전지구적 지배 기업은 결국 <strong>우주 전체로 그 영향력을 확장</strong>합니다. 이미 궤도 위에서 사업을 운영하는 기업들이 그 서막입니다.</p>
-        <p>우리는 AI가 스스로를 가속하는 <strong>특이점의 문턱</strong>에 서 있습니다. 시가총액 순위는 단순한 숫자가 아니라, 어떤 힘이 다음 시대를 지배할지 보여주는 가장 정직한 지도입니다.</p>
-        <div class="about-quote">왕좌를 차지하는 것은 거인들의 일이고,<br>빠짐없이 적어두는 것은 우리의 일입니다.</div>
+        <h2>Why Sovereigns of the universe</h2>
+        <p>Explosively growing companies come to rule the Earth, and globe-spanning companies eventually <strong>extend their reach to the whole universe</strong>. Companies already running businesses in orbit are the prologue.</p>
+        <p>We stand at <strong>the threshold of the singularity</strong>, where AI accelerates itself. Market-cap rankings are not mere numbers; they are the most honest map of which forces will rule the next era.</p>
+        <div class="about-quote">Taking the Throne is the giants' work;<br>writing it all down is ours.</div>
       </div>
 
       <div class="about-sec">
-        <h2>무엇을 기록하는가</h2>
-        <p><strong>매일 세 번</strong>, 사람의 손을 거치지 않고 자동으로 — 7개 권역의 시가총액 TOP 20(우주지배자), 규칙으로 선별한 차세대 후보(잠재지배자), 20년의 왕좌 이동(메가트렌드), 그리고 종목별 글로벌 리서치를 수집·번역·요약해 기록합니다.</p>
-        <p>모든 변동은 매주 히스토리로 남습니다. 우주는 돌지만, 기록은 남으니까요.</p>
+        <h2>What we record</h2>
+        <p><strong>Three times a day</strong>, automatically and untouched by human hands — we collect, translate, summarize and record the market-cap TOP 20 in 7 regions (Sovereigns), rule-selected next-generation candidates (Contenders), 20 years of Throne changes (Megatrends) and global research on each stock.</p>
+        <p>Every change is kept as weekly history. The universe turns, but the record remains.</p>
       </div>
 
       <div class="about-sec">
-        <h2>이름의 비밀</h2>
+        <h2>The secret of the name</h2>
         <div class="about-name">
           <div class="nm">UNI<span class="v">V</span>ERTRIX</div>
-          <p><strong>UNIVERSE + -trix</strong> — 라틴어 행위자 접미사 <em>-trix</em>, "~하는 자". 우주를 기록하는 자.</p>
-          <p>그리고 그 안에는 라틴어 <strong><em>vertere</em>(돌다)</strong>가 숨어 있습니다. UNI<strong>VERT</strong>RIX — 도는 우주, 남는 기록.</p>
+          <p><strong>UNIVERSE + -trix</strong> — the Latin agent suffix <em>-trix</em>, "one who does". The one who records the universe.</p>
+          <p>And hidden inside is the Latin <strong><em>vertere</em> (to turn)</strong>. UNI<strong>VERT</strong>RIX — a turning universe, a lasting record.</p>
         </div>
       </div>
 
       <div class="about-cta">
-        <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener">텔레그램에서 매일 브리핑 받기 →</a>
+        <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener">Get the daily briefing on Telegram →</a>
       </div>
-      <div class="about-back"><a href="index.html">← 우주지배자로 돌아가기</a></div>
+      <div class="about-back"><a href="index.html">← Back to Sovereigns</a></div>
     </div>
   </div>
 </main>

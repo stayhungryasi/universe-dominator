@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ja", M = {"common.presence": "いま{n}人が宇宙を観測中"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "翻訳準備中 — 韓国語の原文", U = {};
+var L = "ja", M = {"common.presence": "いま{n}人が宇宙を観測中", "hist.empty": "まだ記録がありません。", "lg.auto": "自動"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "翻訳準備中 — 韓国語の原文", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -56,15 +56,22 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SKハイニックス", "005930.KS": "サムスン", "WMT": "ウォルマート", "XOM": "エクソンモービル"},
   esc: esc, rates: R, ccy: CCY, intl: "ja-JP" };
 })();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>잠재지배자 변동 이력 · 우주지배자</title>
-<meta name="description" content="차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스">
+<title>次代の覇者候補 変動履歴 · 宇宙の覇者</title>
+<meta name="description" content="次世代の覇者候補群の時点別変動 — 卒業·新規編入、セクター分布、注目点、歴史的ケース">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 /* 라이트 / 다크 테마 변수는 메인과 동일 */
@@ -589,9 +596,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/ja/history-latent">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/history-latent">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/history-latent">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/history-latent">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/history-latent">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/history-latent">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_LA">
 <meta property="og:url" content="https://univertrix.com/ja/history-latent">
-<meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
@@ -635,7 +649,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI原油スポット · 前日終値 · 測定 10:17 · 出典 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="米国10年国債利回り · 測定 10:17 · 出典 FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="米国30年国債利回り · 測定 10:17 · 出典 FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY為替レート · 測定 10:17 · 出典 frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
-      <details class="uvx-lang"><summary aria-label="言語">JA</summary><div class="uvx-lang-menu"><a href="../history-latent.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/history-latent.html" hreflang="en" lang="en">English<small>EN</small></a><a href="../es/history-latent.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/history-latent.html" hreflang="ja" lang="ja" aria-current="true">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
+      <details class="uvx-lang"><summary aria-label="言語">JA</summary><div class="uvx-lang-menu"><a href="../history-latent.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/history-latent.html" hreflang="en" lang="en">English<small>EN</small></a><a href="../es/history-latent.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/history-latent.html" hreflang="ja" lang="ja" aria-current="true">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="テーマ切替"></button>
     </div>
   </div>
 </header>
@@ -643,13 +657,12 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
 <nav class="site-nav">
   <div class="site-nav-inner container"><a href="index.html" class="nav-tab">宇宙の覇者</a><a href="latent.html" class="nav-tab active">次代の覇者候補</a><a href="megatrend.html" class="nav-tab">メガトレンド</a><a href="research.html" class="nav-tab">リサーチ</a><a href="observatory.html" class="nav-tab">データ天文台</a><a href="community.html" class="nav-tab">管制センター</a><a href="journal.html" class="nav-tab">観測ノート</a><a href="pioneers.html" class="nav-tab">開拓者</a></div>
 </nav>
-<div class="uvx-pagepending">このページは翻訳準備中です — 本文は韓国語の原文です。</div>
 
 <main class="container">
   <section class="page-hero">
     <div class="page-eyebrow">History</div>
-    <h1 class="page-title">잠재지배자 변동 이력</h1>
-    <p class="page-desc">차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스</p>
+    <h1 class="page-title">次代の覇者候補 変動履歴</h1>
+    <p class="page-desc">次世代の覇者候補群の時点別変動 — 卒業·新規編入、セクター分布、注目点、歴史的ケース</p>
   </section>
 
   <section class="timeline" id="timeline"></section>
@@ -662,7 +675,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
   </div>
   <p class="footer-source">
-    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 매일 08:00 KST 자동 갱신
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 毎日08:00 KST自動更新
   </p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">サイト紹介</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">利用規約</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">プライバシーポリシー</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">コミュニティ運営方針</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">投資に関する注意・免責</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">お問い合わせ</a></div>
 </footer>
@@ -684,8 +697,8 @@ function toggleTheme() {
 
 // 데이터 + 렌더
 const DATA = {
-  "page_title": "잠재지배자 변동 이력",
-  "page_desc": "차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스",
+  "page_title": "次代の覇者候補 変動履歴",
+  "page_desc": "次世代の覇者候補群の時点別変動 — 卒業·新規編入、セクター分布、注目点、歴史的ケース",
   "entries": [
     {
       "date": "2026.10.24",
@@ -1995,13 +2008,12 @@ function renderBlock(block) {
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
-      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">자동</span>' : ''}</div>
-      ${e.period ? `<div class="entry-period">${e.period}</div>` : ''}
-      ${(e.blocks || []).map(renderBlock).join('')}
+      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
+      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
     </div>
   `).join('');
 } else {
-  timeline.innerHTML = '<div class="empty">아직 기록이 없습니다.</div>';
+  timeline.innerHTML = '<div class="empty">' + T('hist.empty') + '</div>';
 }
 </script>
 <!-- uv-presence -->

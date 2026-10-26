@@ -1553,7 +1553,7 @@ function pxRow(x, z, hist){
     '<td class="px-num">' + pe +
       '<span class="px-basis">' + pxBasis(x) + '</span>' +
       (x.eps_asof ? '<div class="px-eps">EPS ' + TX(x.eps_asof) + '</div>' : '') +
-      (x.note ? '<div class="px-eps">' + TX(x.note) + '</div>' : '') + '</td>' +
+      (x.note ? '<div class="px-eps">' + TX(lgNC(x.note_nc, x.note)) + '</div>' : '') + '</td>' +
     '<td class="px-num">' + (x.fair_max != null ? x.fair_max : '—') + '</td>' +
     '<td><span class="px-gap ' + cls + '">' + txt + '</span>' +
       (x.cyclical ? '<span class="px-peak" title="' + esc(PX_PEAK_TIP) + '">⚠ ' + T('px.peak') + '</span>' : '') +
@@ -1626,7 +1626,19 @@ function renderParallax(){
    여기서 새로 판정하지 않는다: 버핏존·쿠폰·ROE 는 측정층이 이미 매긴 값을 읽을 뿐이고,
    배지는 사람이 취재해 적어 넣은 칸(전환율·risk5·가드)을 그대로 비춘다. */
 /* 존 이름 — 측정층의 기계 값(pass·prove_growth…)에서 화면 이름을 만든다(lg.zone.*).
-   i18n-keys: lg.* */
+   i18n-keys: lg.* nc.* */
+/* 측정층 비고 — 코드(*_nc)가 있으면 그 언어 문장으로 만든다(fetch_buffett.render_nc 와 같은 규칙).
+   코드가 없는 옛 측정값은 원문 문장(번역 전 — 화면이 원문 표식을 단다). */
+function lgNC(nc, fallback){
+  if (!Array.isArray(nc) || !nc.length) return fallback || '';
+  return nc.map(p => {
+    const code = p[0], prm = p[1] || {};
+    if (code === '_raw') return String(prm.s || '');
+    const q = {};
+    Object.keys(prm).forEach(k => { q[k] = Array.isArray(prm[k]) ? prm[k].map(x => T('nc.item.' + x)).join('·') : prm[k]; });
+    return T('nc.' + code, q);
+  }).filter(Boolean).join(' · ');
+}
 const LG_ORDER = ['pass', 'prove_growth', 'bond_inferior', 'untested'];
 function lgZoneName(k){ return T('lg.zone.' + (LG_ORDER.indexOf(k) >= 0 ? k : 'untested')); }
 let lgFilter = null;        // 존 스트립 필터 (null = 전체)
@@ -1763,11 +1775,11 @@ function lgBasisNote(b, j){
 function lgNote(b, j){
   if (j.guard || b.guard) return lgGuardNote(b, j);
   // 비영업 손익 왜곡 보류 — 측정층이 상태(비율)에서 만든 문장을 비춘다(F2)
-  if (b.hold) return b.note || '';
+  if (b.hold) return lgNC(b.note_nc, b.note);
   if (b.coupon10y != null) return '';             // 산출된 종목의 기준 줄은 비고 줄로
   // 이익 결측 사유는 측정층이 상태에서 만든 문장(eps_note)을 비춘다 — 플로트형·낡은 원장·
   // 수집 실패가 전부 '취재 대기' 한 줄로 뭉개지지 않게(legend-audit E)
-  if (b.eps_adj_ttm == null) return b.eps_note || T('lg.note.eps_wait');
+  if (b.eps_adj_ttm == null) return lgNC(b.eps_note_nc, b.eps_note) || T('lg.note.eps_wait');
   if (b.g_used == null) return T('lg.note.g_wait');
   if (b.rate10y == null) return T('lg.note.rate_missing');
   return '';
@@ -1821,7 +1833,7 @@ function lgRoeCell(b, j){
 function lgRoeNote(b){
   if (b.roe_minus_2x10y != null) return '';
   if (b.roe_tangible != null) return T('lg.roe.norate', {r: lgPct(b.roe_tangible)});
-  return b.roe_note || '';
+  return lgNC(b.roe_note_nc, b.roe_note);
 }
 
 /* 계산 전개 — 결론만 보여주면 눈금을 못 되짚는다. 한 줄로 전 과정을 편다. */
@@ -1852,7 +1864,7 @@ function lgDissect(x, j){
   // 문구(bench.note)를 그대로 비춘다 — 여기서 사유를 다시 해석하면 규칙이 두 벌이 되고,
   // 새 결측 상태가 생기는 날 화면만 옛말을 한다(2026-09-05 '10년물 없음' 오표기).
   else h += '<div class="lg-calc">' + T('lg.calc_none') +
-    (b.note ? ' — ' + TX(b.note) : T('lg.calc_none_hint')) + '</div>';
+    (b.note ? ' — ' + TX(lgNC(b.note_nc, b.note)) : T('lg.calc_none_hint')) + '</div>';
   h += '<div class="lg-fields">';
   LG_FIELDS.forEach(f => {
     h += '<div class="lg-fk">' + T('lg.field.' + f) + '</div>' +
@@ -1918,8 +1930,8 @@ function lgRow(x, lg){
   const notes = [];
   const roeN = lgRoeNote(b);
   if (roeN) notes.push(T('lg.note.roe') + roeN);
-  if (j.conv == null && b.conv_note) notes.push(T('lg.note.conv') + b.conv_note);
-  if (j.conv != null && b.conv_check_note) notes.push(T('lg.note.conv') + b.conv_check_note);
+  if (j.conv == null && b.conv_note) notes.push(T('lg.note.conv') + lgNC(b.conv_note_nc, b.conv_note));
+  if (j.conv != null && b.conv_check_note) notes.push(T('lg.note.conv') + lgNC(b.conv_check_note_nc, b.conv_check_note));
   const basis = lgBasisNote(b, j);
   if (basis) notes.push(basis);
   const noteRow = notes.length

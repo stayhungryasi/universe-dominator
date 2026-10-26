@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>관측노트 · UNIVERTRIX</title>
+<title>{{t:jn.title}}</title>
+<meta name="description" content="{{t:jn.desc}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -224,11 +225,11 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ce-essay-body .ce-disc, .ce-essay-body .ce-coi { font-size: var(--note-meta); color: var(--text-muted); margin-top: 10px; line-height: 1.6; }
 /* 판정 배지 — 약화도 숨기지 않는다. 반증의 기록이 있어야 확신의 기록이 신뢰를 얻는다. */
 .ce-verdict { font-size: var(--note-meta); font-weight: 800; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--line-strong); }
-.ce-v-강화 { color: #fff; background: linear-gradient(120deg, #565CE8, #3EC8D8); border-color: transparent; }
-[data-theme="dark"] .ce-v-강화 { background: linear-gradient(120deg, #8B93FF, #4FE0EF); color: #0A0B0F; }
-.ce-v-불변 { color: var(--text-secondary); }
-.ce-v-약화 { color: var(--text-muted); background: var(--bg); }
-.ce-v-보류 { color: var(--text-muted); border-style: dashed; }
+.ce-v-up { color: #fff; background: linear-gradient(120deg, #565CE8, #3EC8D8); border-color: transparent; }
+[data-theme="dark"] .ce-v-up { background: linear-gradient(120deg, #8B93FF, #4FE0EF); color: #0A0B0F; }
+.ce-v-flat { color: var(--text-secondary); }
+.ce-v-down { color: var(--text-muted); background: var(--bg); }
+.ce-v-hold { color: var(--text-muted); border-style: dashed; }
 .ce-origin { font-size: var(--note-meta); font-weight: 800; color: var(--gold); }
 
 .ce-inbox { background: var(--bg-card); border: 1px dashed var(--line-strong); border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; }
@@ -254,11 +255,11 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
     <div class="header-right">
       <span class="update-badge">{{FETCHED_DATE}}</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">{{USD_KRW}}</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -281,8 +282,8 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
   <div class="container" style="max-width: 780px;">
     <div class="nt-hero">
       <div class="nt-eyebrow">OBSERVATION NOTES</div>
-      <h1 class="nt-title">관측노트</h1>
-      <p class="nt-desc">관측소장의 생각 일지 — 세계는 순위표가 기록하고, 생각은 여기에 한 줄씩 쌓입니다.</p>
+      <h1 class="nt-title">{{t:nav.journal}}</h1>
+      <p class="nt-desc">{{t:jn.desc}}</p>
     </div>
 
     <div class="ce-tabs" id="ceTabs"></div>
@@ -290,7 +291,7 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
     <!-- 한줄 노트 (기존) -->
     <div id="paneNotes">
       <div id="ntCompose"></div>
-      <div id="ntBody"><div class="nt-count">📡 노트를 불러오는 중…</div></div>
+      <div id="ntBody"><div class="nt-count">📡 {{t:jn.loading}}</div></div>
     </div>
 
     <!-- 동행 관측 (기업 탭) -->
@@ -355,7 +356,7 @@ const isAdmin = () => me && cfg && cfg.adminUid && me.uid === cfg.adminUid;
 let ceTab = 'notes', ceMode = 'essay';
 
 function renderTabs(){
-  const tabs = [{ id: 'notes', label: '한줄 노트' }].concat(
+  const tabs = [{ id: 'notes', label: T('jn.tab.notes') }].concat(
     (CE.companies || []).map(c => ({ id: c.slug, label: c.emoji + ' ' + c.ko })));
   $('ceTabs').innerHTML = tabs.map(t =>
     '<button class="ce-tab' + (t.id === ceTab ? ' active' : '') + '" data-tab="' + t.id + '">' +
@@ -391,8 +392,7 @@ function isRecent(updated, days){
 const CE_PROBE = { spacex: 'observatory.html#agent' };
 function probeLink(slug){
   return CE_PROBE[slug]
-    ? '<div class="ce-probe">월간 전면 재해부는 ' +
-      '<a href="' + CE_PROBE[slug] + '">데이터 천문대 🛰 무인 탐사선</a> 에서.</div>'
+    ? '<div class="ce-probe">' + T('ce.probe_html', {href: CE_PROBE[slug]}) + '</div>'
     : '';
 }
 
@@ -405,31 +405,31 @@ function renderCompany(slug){
   $('ceThesis').innerHTML = '<div class="ce-thesis ud-acc ud-pin" id="thesisCard">' +
     '<button class="ud-acc-head" id="thesisHead" aria-expanded="false" aria-controls="thesisBody">' +
       '<span class="ce-thesis-head">' +
-        '<span class="ud-pin-badge">📌<span class="ce-wide-only"> 논제 원장</span></span>' +
+        '<span class="ud-pin-badge">📌<span class="ce-wide-only"> ' + T('ce.thesis') + '</span></span>' +
         '<span class="ce-thesis-name">' + esc(c.emoji + ' ' + c.ko) + '</span>' +
         (th.placeholder
-          ? '<span class="ce-thesis-ver">논제 취재 중 🔭</span>'
+          ? '<span class="ce-thesis-ver">' + T('ce.thesis_wait') + ' 🔭</span>'
           : '<span class="ce-thesis-ver' + (fresh ? ' ud-new-dot' : '') + '"' +
-            (fresh ? ' title="최근 7일 안에 갱신된 판단층입니다"' : '') + '>' +
-            '<span class="ce-wide-only">논제 </span>v' + esc(th.version) +
-            ' · <span class="ce-wide-only">갱신 </span>' +
+            (fresh ? ' title="' + esc(T('ce.fresh_tip')) + '"' : '') + '>' +
+            '<span class="ce-wide-only">' + T('ce.thesis_short') + ' </span>v' + esc(th.version) +
+            ' · <span class="ce-wide-only">' + T('ce.updated') + ' </span>' +
             '<span class="ce-wide-only">' + esc(th.updated) + '</span>' +
             '<span class="ce-narrow-only">' + esc(String(th.updated).slice(5)) + '</span>' +
             '</span>') +
-        '<span class="ce-thesis-more"><span class="ce-wide-only">원장 전문 </span>' +
+        '<span class="ce-thesis-more"><span class="ce-wide-only">' + T('ce.full') + ' </span>' +
           '<span class="ud-acc-caret" aria-hidden="true">▸</span></span>' +
       '</span>' +
       '<span class="ce-thesis-one">' +
         (th.placeholder
-          ? '10년 논제를 취재하는 중입니다. 논제가 서기 전까지는 에세이를 쓰지 않습니다 — 논제 없는 기록은 스크랩이기 때문입니다.'
-          : esc(th.one || '')) +
+          ? T('ce.wait_one')
+          : TX(th.one || '')) +
       '</span>' +
     '</button>' +
     '<div class="ud-acc-detail" id="thesisBody">' +
       (th.placeholder
         ? '<div class="ce-waiting"><div class="ce-waiting-icon">🔭</div>' +
-          '<div class="ce-waiting-text">논제가 서면 이 자리에 핵심 가설과 반증 조건이 들어섭니다.</div></div>'
-        : '<div class="ce-thesis-body">' + (th.html || '') + '</div>') +
+          '<div class="ce-waiting-text">' + T('ce.wait_body') + '</div></div>'
+        : '<div class="ce-thesis-body">' + TXB(th.html || '') + '</div>') +
     '</div>' +
   '</div>' + probeLink(slug);
   $('thesisHead').onclick = () => {
@@ -447,8 +447,8 @@ function renderCompany(slug){
   const unverifiable = e => ((e.number_check || {}).status === 'unverifiable');
   // 정정 — 철회한 기록은 조용히 사라지지 않는다. 무엇을 왜 거뒀는지 한 줄을 남긴다.
   const fixes = (CE.corrections || []).filter(c => c.company === slug);
-  const fixHtml = fixes.map(c => '<div class="ce-correction">정정 · ' + esc(c.date || '') +
-    ' — ' + esc(c.text || '') + '</div>').join('');
+  const fixHtml = fixes.map(c => '<div class="ce-correction">' + T('ce.correction') + ' · ' + esc(c.date || '') +
+    ' — ' + TX(c.text || '') + '</div>').join('');
   $('ceEssays').innerHTML = fixHtml + (list.length ? list.map((e, i) => {
     const open = (i === 0);
     return '<div class="ce-essay ud-acc' + (open ? ' open' : '') + '" id="essay-' + esc(e.slug) + '">' +
@@ -456,34 +456,34 @@ function renderCompany(slug){
         ' aria-expanded="' + open + '" aria-controls="detail-' + esc(e.slug) + '">' +
         '<span class="ud-acc-meta">' +
           '<span>' + esc(e.date) + '</span>' +
-          '<span class="ce-verdict ce-v-' + verdictClass(e.verdict) + '">' + esc(e.verdict) + '</span>' +
-          (e.origin === '직접' ? '<span class="ce-origin">소장 직접</span>' : '') +
-          (unverifiable(e) ? '<span class="ce-origin">원문 대조 불가</span>' : '') +
+          '<span class="ce-verdict ce-v-' + verdictClass(e) + '">' + esc(T('ce.v.' + verdictClass(e))) + '</span>' +
+          (e.origin_id === 'direct' ? '<span class="ce-origin">' + T('ce.direct') + '</span>' : '') +
+          (unverifiable(e) ? '<span class="ce-origin">' + T('ce.unverifiable') + '</span>' : '') +
         '</span>' +
-        '<span class="ud-acc-title">' + esc(e.title) + '</span>' +
+        '<span class="ud-acc-title">' + TX(e.title) + '</span>' +
         '<span class="ud-acc-caret" aria-hidden="true">▸</span>' +
       '</button>' +
       '<div class="ud-acc-detail" id="detail-' + esc(e.slug) + '">' +
         '<div class="ce-share">' +
-          '<button data-copy="' + esc(e.slug) + '">🔗 링크 복사</button>' +
-          '<button data-copytext="' + i + '">📄 본문 복사</button>' +
+          '<button data-copy="' + esc(e.slug) + '">🔗 ' + T('col.copy_link') + '</button>' +
+          '<button data-copytext="' + i + '">📄 ' + T('col.copy_text') + '</button>' +
         '</div>' +
-        (unverifiable(e) ? '<div class="ce-correction">숫자 규율 도입 이전 기록 — 원문 대조 불가 · 출처를 지금 다시 열 수 없어 본문 숫자를 원문과 대조하지 못했습니다(' + esc((e.number_check || {}).checked_at || '') + ' 재검사).</div>' : '') +
-        '<div class="ce-essay-body">' + (e.html || '') + '</div>' +
+        (unverifiable(e) ? '<div class="ce-correction">' + T('ce.unverifiable_long', {d: esc((e.number_check || {}).checked_at || '')}) + '</div>' : '') +
+        '<div class="ce-essay-body">' + TXB(e.html || '') + '</div>' +
       '</div>' +
     '</div>';
   }).join('')
-    : '<div class="nt-count">아직 이 항로의 관측 기록이 없습니다.</div>');
+    : '<div class="nt-count">' + T('ce.none') + '</div>');
 
   // 목차 — 필독 해부실의 '해부 목록'을 그대로 복제한다(마크업·클래스·행 구성 동일).
   // 링크(<a href="#essay-…">)라서 클릭하면 해시가 바뀌고, 해시 처리기가 펼치고 스크롤한다
   // — 해부실이 openDissectFromHash 로 하는 일과 같은 경로다.
   // 1편이어도 띄운다(연표의 시작점이다). 0편만 미표시.
   $('ceToc').innerHTML = list.length
-    ? '<div class="ud-index"><div class="ud-index-title">관측 기록 ' + list.length + '편</div>' +
+    ? '<div class="ud-index"><div class="ud-index-title">' + esc(T('ce.toc', {n: list.length})) + '</div>' +
       list.map(e => '<a class="ud-index-row" href="#essay-' + esc(e.slug) + '">' +
         '<span class="ud-index-date">' + esc(e.date) + '</span>' +
-        esc(e.title) + '</a>').join('') + '</div>'
+        TX(e.title) + '</a>').join('') + '</div>'
     : '';
 
   document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => toggleEssay(b.dataset.toggle));
@@ -509,8 +509,10 @@ function toggleEssay(slug){
 
 
 // 약화도 회색으로 '명시'한다 — 숨기지 않는 것이 이 노트의 신뢰 조건이다
-function verdictClass(v){
-  return v === '강화' ? '강화' : v === '불변' ? '불변' : v === '약화' ? '약화' : '보류';
+/* 판정 id 는 빌드가 붙인다(verdict_id: up·flat·down·hold) — 원장의 한국어 판정값을 화면 코드가 비교하지 않는다 */
+function verdictClass(e){
+  const v = (e && e.verdict_id) || 'hold';
+  return ['up', 'flat', 'down', 'hold'].indexOf(v) >= 0 ? v : 'hold';
 }
 
 function essayUrl(slug){
@@ -519,10 +521,10 @@ function essayUrl(slug){
 
 // 복사 장치는 관측일지 칼럼(copyColLink/copyColText)과 같은 문법이다
 function copyToClip(text, btn){
-  const done = () => { const o = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = o; }, 1500); };
+  const done = () => { const o = btn.textContent; btn.textContent = '✓ ' + T('col.copied'); setTimeout(() => { btn.textContent = o; }, 1500); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(done, () => window.prompt('아래 내용을 복사하세요 (Ctrl+C):', text.slice(0, 2000)));
-  } else { window.prompt('아래 내용을 복사하세요 (Ctrl+C):', text.slice(0, 2000)); }
+    navigator.clipboard.writeText(text).then(done, () => window.prompt(T('col.copy_prompt'), text.slice(0, 2000)));
+  } else { window.prompt(T('col.copy_prompt'), text.slice(0, 2000)); }
 }
 
 function copyEssayLink(btn){ copyToClip(essayUrl(btn.dataset.copy), btn); }
@@ -555,18 +557,17 @@ function openEssayFromHash(){
 function renderInbox(){
   if (!isAdmin() || ceTab === 'notes') { $('ceInbox').innerHTML = ''; return; }
   $('ceInbox').innerHTML = '<div class="ce-inbox">' +
-    '<div class="ce-inbox-title">📮 소재 투입함 — ' + esc((companyOf(ceTab) || {}).ko || '') + '</div>' +
-    '<input id="ceUrl" placeholder="링크 (선택)">' +
-    '<input id="ceTitle" placeholder="제목 (선택 — 직접 게재 시 에세이 제목이 됩니다)">' +
-    '<textarea id="ceMemo" placeholder="메모 — 에세이화라면 관점·지시, 직접 게재라면 본문 전체"></textarea>' +
+    '<div class="ce-inbox-title">📮 ' + T('ib.title') + ' — ' + esc((companyOf(ceTab) || {}).ko || '') + '</div>' +
+    '<input id="ceUrl" placeholder="' + esc(T('ib.ph.url')) + '">' +
+    '<input id="ceTitle" placeholder="' + esc(T('ib.ph.title')) + '">' +
+    '<textarea id="ceMemo" placeholder="' + esc(T('ib.ph.memo')) + '"></textarea>' +
     '<div class="ce-mode">' +
-      '<button data-mode="essay" class="' + (ceMode === 'essay' ? 'on' : '') + '">에세이화</button>' +
-      '<button data-mode="direct" class="' + (ceMode === 'direct' ? 'on' : '') + '">직접 게재</button>' +
+      '<button data-mode="essay" class="' + (ceMode === 'essay' ? 'on' : '') + '">' + T('ib.essay') + '</button>' +
+      '<button data-mode="direct" class="' + (ceMode === 'direct' ? 'on' : '') + '">' + T('ib.direct') + '</button>' +
     '</div>' +
-    '<button class="btn-gold" id="ceSend" style="width:100%">소재 투입</button>' +
-    '<div class="ce-inbox-note">다음 발사(하루 3회) 때 집필됩니다 — 즉시 반영되지 않습니다. ' +
-      '직접 게재는 AI가 손대지 않고 그대로 실립니다.</div>' +
-    '<div class="ce-mat" id="ceMats">내 소재를 불러오는 중…</div>' +
+    '<button class="btn-gold" id="ceSend" style="width:100%">' + T('ib.send') + '</button>' +
+    '<div class="ce-inbox-note">' + T('ib.note') + '</div>' +
+    '<div class="ce-mat" id="ceMats">' + T('ib.loading') + '</div>' +
   '</div>';
   document.querySelectorAll('.ce-mode button').forEach(b => b.onclick = () => { ceMode = b.dataset.mode; renderInbox(); loadMaterials(); });
   $('ceSend').onclick = sendMaterial;
@@ -575,15 +576,15 @@ function renderInbox(){
 
 async function sendMaterial(){
   const memo = $('ceMemo').value.trim(), url = $('ceUrl').value.trim();
-  if (!memo && !url) { alert('링크나 메모 중 하나는 필요합니다.'); return; }
-  if (ceMode === 'direct' && !memo) { alert('직접 게재는 본문(메모)이 필요합니다.'); return; }
+  if (!memo && !url) { alert(T('ib.err.need')); return; }
+  if (ceMode === 'direct' && !memo) { alert(T('ib.err.direct')); return; }
   try {
     await addDoc(collection(db, 'materials'), {
       uid: me.uid, company: ceTab, mode: ceMode, url, memo,
       title: $('ceTitle').value.trim(), consumed: false, created: serverTimestamp() });
     $('ceMemo').value = ''; $('ceUrl').value = ''; $('ceTitle').value = '';
     loadMaterials();
-  } catch(e){ alert('투입 실패: ' + e.message); }
+  } catch(e){ alert(T('ib.err.send') + ' ' + e.message); }
 }
 
 // consumed 필터를 클라이언트에서 건다 — where+orderBy 복합 색인을 요구하지 않기 위해서다
@@ -594,12 +595,12 @@ async function loadMaterials(){
     const snap = await getDocs(query(collection(db, 'materials'), orderBy('created', 'desc'), limit(30)));
     const mine = snap.docs.map(d => d.data()).filter(m => !m.consumed);
     box.innerHTML = mine.length
-      ? '<b>대기 중인 소재 ' + mine.length + '건</b>' + mine.map(m =>
+      ? '<b>' + T('ib.waiting', {n: mine.length}) + '</b>' + mine.map(m =>
           '<div class="ce-mat-item">' + esc((companyOf(m.company) || {}).ko || m.company) +
-          ' · ' + (m.mode === 'direct' ? '직접 게재' : '에세이화') + ' — ' +
+          ' · ' + (m.mode === 'direct' ? T('ib.direct') : T('ib.essay')) + ' — ' +
           esc((m.title || m.memo || m.url || '').slice(0, 60)) + '</div>').join('')
-      : '<b>대기 중인 소재 없음</b> — 모두 집필됐거나 판정이 끝났습니다.';
-  } catch(e){ box.innerHTML = '소재 목록을 불러오지 못했습니다 (보안 규칙 확인 필요).'; }
+      : T('ib.none_html');
+  } catch(e){ box.innerHTML = T('ib.err.load'); }
 }
 
 async function init(){
@@ -613,7 +614,7 @@ async function init(){
   } else if (companyOf(h)) {
     setTab(h, false);
   }
-  if (!cfg || !cfg.apiKey) { $('ntBody').innerHTML = '<div class="nt-count">관측노트 개설 준비 중입니다.</div>'; return; }
+  if (!cfg || !cfg.apiKey) { $('ntBody').innerHTML = '<div class="nt-count">' + T('jn.preparing') + '</div>'; return; }
   app = initializeApp(cfg); auth = getAuth(app); db = getFirestore(app);
   onAuthStateChanged(auth, async u => { me = u; renderCompose(); renderLogin(); renderInbox(); });
   await loadList();
@@ -622,17 +623,17 @@ async function init(){
 function renderCompose(){
   $('ntCompose').innerHTML = isAdmin()
     ? '<div class="nt-box">' +
-        '<textarea id="ntText" placeholder="오늘의 생각 — 한 줄이면 충분합니다"></textarea>' +
-        '<div class="nt-row"><input id="ntTags" placeholder="태그 (선택, 쉼표 구분)">' +
-        '<button class="btn-gold" id="ntSave">기록</button></div></div>'
+        '<textarea id="ntText" placeholder="' + esc(T('jn.ph.text')) + '"></textarea>' +
+        '<div class="nt-row"><input id="ntTags" placeholder="' + esc(T('jn.ph.tags')) + '">' +
+        '<button class="btn-gold" id="ntSave">' + T('jn.save') + '</button></div></div>'
     : '';
   if (isAdmin()) $('ntSave').onclick = save;
 }
 
 function renderLogin(){
   $('ntLogin').innerHTML = me
-    ? (isAdmin() ? '<button id="ntOut">로그아웃</button>' : '<span style="font-size:12px;color:var(--text-muted)">읽기 전용 — 기록은 관측소장만 남깁니다</span> · <button id="ntOut">로그아웃</button>')
-    : '<button id="ntIn">관측소장 로그인</button>';
+    ? (isAdmin() ? '<button id="ntOut">' + T('cm.logout') + '</button>' : '<span style="font-size:12px;color:var(--text-muted)">' + T('jn.readonly') + '</span> · <button id="ntOut">' + T('cm.logout') + '</button>')
+    : '<button id="ntIn">' + T('jn.login') + '</button>';
   const bIn = $('ntIn'), bOut = $('ntOut');
   if (bIn) bIn.onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e => alert(e.message));
   if (bOut) bOut.onclick = () => signOut(auth);
@@ -642,21 +643,21 @@ async function loadList(){
   try {
     const snap = await getDocs(query(collection(db, 'judgments'), orderBy('created', 'desc'), limit(100)));
     const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    let html = '<div class="nt-count">총 ' + items.length + '개의 기록</div>';
+    let html = '<div class="nt-count">' + esc(T('jn.count', {n: items.length})) + '</div>';
     html += items.map(i =>
       '<div class="nt-item">' +
         '<div class="nt-meta"><span>' + fmtWhen(i.created) + '</span>' +
-        (i.tags && i.tags.length ? '<span class="nt-tag">#' + i.tags.map(esc).join(' #') + '</span>' : '') +
-        (isAdmin() ? '<button class="nt-del" data-del="' + i.id + '">삭제</button>' : '') + '</div>' +
-        '<div class="nt-text">' + esc(i.text) + '</div>' +
-      '</div>').join('') || '<div class="nt-count">첫 기록을 기다리는 중입니다.</div>';
+        (i.tags && i.tags.length ? '<span class="nt-tag">#' + i.tags.map(UT).join(' #') + '</span>' : '') +
+        (isAdmin() ? '<button class="nt-del" data-del="' + i.id + '">' + T('cm.del') + '</button>' : '') + '</div>' +
+        '<div class="nt-text">' + UT(i.text) + '</div>' +
+      '</div>').join('') || '<div class="nt-count">' + T('jn.first') + '</div>';
     $('ntBody').innerHTML = html;
     document.querySelectorAll('.nt-del').forEach(b => b.onclick = async () => {
-      if (!confirm('이 기록을 삭제할까요?')) return;
+      if (!confirm(T('jn.del_confirm'))) return;
       await deleteDoc(doc(db, 'judgments', b.dataset.del)); loadList();
     });
   } catch(e) {
-    $('ntBody').innerHTML = '<div class="nt-count">노트를 불러오지 못했습니다 — 잠시 후 새로고침해 주세요.</div>';
+    $('ntBody').innerHTML = '<div class="nt-count">' + T('jn.load_fail') + '</div>';
   }
 }
 

@@ -352,6 +352,45 @@ def edge_of(coupon, rate_pct):
     return line, round(lines[line], 4)
 
 
+def render_nc(parts, lang="ko"):
+    """비고 코드 목록 → 문장(카탈로그 nc.*). [["코드", {매개변수}], ...] 를 ' · ' 로 잇는다.
+
+    2026-10-26 4개 언어: 비고는 **코드로** 싣고 화면이 그 언어로 만든다(observatory lgNC).
+    한국어 문장도 이 렌더러가 ko 카탈로그로 만든다 — 규칙이 두 벌이 되지 않게.
+    목록 매개변수(빠진 재료 등)는 nc.item.* 로 옮겨 '·' 로 잇는다. '_raw' 는 옛 호출이 넘긴 문장 그대로.
+    """
+    import i18n
+    out = []
+    for p in parts or []:
+        code = p[0]
+        params = p[1] if len(p) > 1 and isinstance(p[1], dict) else {}
+        if code == "_raw":
+            out.append(str(params.get("s", "")))
+            continue
+        pp = {k: ("·".join(i18n.t(lang, "nc.item." + x) for x in v) if isinstance(v, list) else v)
+              for k, v in params.items()}
+        out.append(i18n.t(lang, "nc." + code, **pp))
+    return " · ".join(s for s in out if s)
+
+
+def untested_codes(price, eps_ttm, g, rate, market, coupon, eps_codes=None):
+    """판정이 없는 이유 — 빠진 것을 **전부** 코드로(untested_note 의 상태 판정 본체)."""
+    parts = []
+    if price is None:
+        parts.append(["price_missing"])
+    if eps_ttm is None:
+        parts += (eps_codes or [["eps_wait"]])
+    if g is None:
+        parts.append(["g_missing"])
+    if rate is None:
+        parts.append(["rate_unwired." + market.lower()] if market in RATE_UNIMPLEMENTED else ["rate_missing"])
+    if parts:
+        return parts
+    if coupon is None:
+        return [["neg_earnings"]]
+    return []
+
+
 def untested_note(price, eps_ttm, g, rate, market, coupon, eps_why=""):
     """왜 판정이 없는가 — **상태에서 생성한다.** 내부 문자열을 번역하지 않는다.
 
@@ -365,23 +404,24 @@ def untested_note(price, eps_ttm, g, rate, market, coupon, eps_why=""):
     그래서 여기서는 **빠진 것을 전부 이름으로 부른다.** 하나만 적으면 그것을
     채웠을 때 다음 결측이 튀어나와 "고쳤는데 왜 그대로냐"가 된다.
     기계 필드명(eps_adj_ttm·coupon10y)은 쓰지 않는다 — 이 문구는 화면에 나간다.
+    (2026-10-26) 본체는 untested_codes — 이 함수는 ko 문장 렌더만 한다.
     """
-    bits = []
-    if price is None:
-        bits.append("시세 미확보")
-    if eps_ttm is None:
-        bits.append(eps_why or "취재 대기 — 12개월 조정이익 미확보")
-    if g is None:
-        bits.append("성장률 가정 미확보(3y CAGR·전망 중 결측)")
-    if rate is None:
-        bits.append(RATE_UNIMPLEMENTED.get(market, "10년물 없음"))
-    if bits:
-        return " · ".join(bits)
-    # 빠진 칸이 없는데도 쿠폰이 서지 않는 경우 — 적자(음수 이익수익률)가 그것이다.
-    # 여기까지 오면 '못 잰 것'이 아니라 '재보니 계산이 성립하지 않는 것'이다.
-    if coupon is None:
-        return "이익이 음수 — 10년 쿠폰이 성립하지 않음"
-    return ""
+    eps_codes = [["_raw", {"s": eps_why}]] if eps_why else None
+    return render_nc(untested_codes(price, eps_ttm, g, rate, market, coupon, eps_codes))
+
+
+def eps_codes(status, type_=""):
+    """12개월 조정이익이 왜 없는가 — 상태 → 코드(legend-audit E). 모르는 상태는 종전 문구."""
+    st = status.get("state") if isinstance(status, dict) else None
+    if st == "float_skip" or "플로트형" in (type_ or ""):
+        return [["eps.float_skip"]]
+    if st == "stale" and status.get("period"):
+        return [["eps.stale", {"p": status["period"]}]]
+    if st in ("api_fail", "no_shares", "foreign_missing", "implausible"):
+        return [["eps." + st]]
+    if st in ("short_history", "no_window"):
+        return [["eps.short_history"]]
+    return [["eps_wait"]]
 
 
 def eps_note(status, type_=""):
@@ -391,22 +431,23 @@ def eps_note(status, type_=""):
     수집 실패, 기계 조정이 무의미한 업종(플로트형)은 할 일이 서로 다르다.
     모르는 상태는 종전 문구로 떨어진다 — 내부 문자열이 화면으로 나갈 길이 없다.
     """
-    st = status.get("state") if isinstance(status, dict) else None
-    if st == "float_skip" or "플로트형" in (type_ or ""):
-        return "투자평가손익 지배 — 자동 조정 무의미, 사람 취재 전용"
-    if st == "stale" and status.get("period"):
-        return f"공시 최신 분기 미확보(창이 {status['period']}에 멈춤) — 12개월 조정이익 미확보"
+    return render_nc(eps_codes(status, type_))
+
+
+def roe_codes(basis):
+    """유형 ROE 가 왜 없는가 — 상태 → 코드(legend-audit C)."""
+    if not isinstance(basis, dict):
+        return [["roe.none"]]
+    st, kind = basis.get("status"), basis.get("kind")
+    if st == "income_missing":
+        return [["roe.income_missing"]]
     if st == "api_fail":
-        return "공시 수집 실패 — 12개월 조정이익 미확보"
-    if st == "no_shares":
-        return "희석주식수 공시 없음 — 12개월 조정이익 미확보"
-    if st in ("short_history", "no_window"):
-        return "연속 4분기 공시 미확보 — 12개월 조정이익 미확보"
-    if st == "foreign_missing":
-        return "해외 공시 이익 미확보 — 12개월 조정이익 미확보"
-    if st == "implausible":
-        return "산출값 타당성 보류 — 12개월 조정이익 미확보"
-    return "취재 대기 — 12개월 조정이익 미확보"
+        return [["roe.api_fail_yf" if kind == "yfinance" else "roe.api_fail"]]
+    if st == "equity_missing":
+        return [["roe.equity_missing_yf" if kind == "yfinance" else "roe.equity_missing"]]
+    if st in ("equity_negative", "tangible_negative"):
+        return [["roe." + st]]
+    return [["roe.none"]]
 
 
 def roe_note(basis):
@@ -417,22 +458,18 @@ def roe_note(basis):
     '(부채 조달 인수)' 같은 **원인 해석은 적지 않는다**: 같은 상태(영업권·무형 > 자기자본)
     라도 AVGO 는 차입 인수, PANW 는 주식 인수다. 기계가 아는 것은 숫자뿐이다.
     """
-    if not isinstance(basis, dict):
-        return "ROE 미산출"
-    st, kind = basis.get("status"), basis.get("kind")
-    if st == "income_missing":
-        return "12개월 이익 미확보 — ROE 산출 불가"
-    if st == "api_fail":
-        return ("해외 공시 조회 실패 — ROE 산출 불가" if kind == "yfinance"
-                else "공시 수집 실패 — ROE 산출 불가")
-    if st == "equity_missing":
-        return ("해외 공시 대차대조표 미확보 — ROE 산출 불가" if kind == "yfinance"
-                else "자기자본 항목 미매핑 — ROE 산출 불가")
-    if st == "equity_negative":
-        return "자기자본 음수 — ROE 산출 불가"
-    if st == "tangible_negative":
-        return "유형자본 음수 — ROE 산출 불가(영업권·무형자산 > 자기자본)"
-    return "ROE 미산출"
+    return render_nc(roe_codes(basis))
+
+
+def conv_codes(status):
+    """전환율이 왜 없는가 — 상태 → 코드(2026-09-29 전환율 회귀)."""
+    st = status.get("state") if isinstance(status, dict) else None
+    if st == "c_missing":
+        miss = [m for m in (status.get("missing") or []) if m in ("dna", "capex")]
+        return [["conv.c_missing", {"m": miss}]] if miss else [["conv.c_missing_generic"]]
+    if st in ("adj_nonpositive", "income_missing", "foreign", "float_skip", "api_fail"):
+        return [["conv." + st]]
+    return [["conv.none"]]
 
 
 def conv_note(status):
@@ -442,23 +479,19 @@ def conv_note(status):
     으로 메우지 않는다. 그 빈칸이 '미취재' 로 뭉개지지 않게 빠진 재료를 이름으로 부른다.
     모르는 상태는 일반 문구로 떨어진다 — 내부 문자열이 화면으로 샐 길이 없다.
     """
-    st = status.get("state") if isinstance(status, dict) else None
-    if st == "c_missing":
-        names = {"dna": "감가상각", "capex": "캐펙스"}
-        miss = [names[m] for m in (status.get("missing") or []) if m in names]
-        return ("·".join(miss) + " 항목 미확보" if miss else "캐펙스 기준 재료 미확보") + \
-            " — 전환율 산출 불가"
-    if st == "adj_nonpositive":
-        return "조정순이익 0 이하 — 전환율 무의미"
-    if st == "income_missing":
-        return "12개월 이익 미확보 — 전환율 산출 불가"
-    if st == "foreign":
-        return "해외 공시 — 현금흐름 미조립, 전환율 산출 불가"
-    if st == "float_skip":
-        return "투자평가손익 지배 — 사람 취재 전용"
-    if st == "api_fail":
-        return "공시 수집 실패 — 전환율 산출 불가"
-    return "전환율 미산출"
+    return render_nc(conv_codes(status))
+
+
+def divergence_codes(div):
+    """핵심이익 교차검증 어긋남 — 상태(비율) → 코드. 모르는 상태·비율 없음은 빈 목록."""
+    if not isinstance(div, dict) or div.get("state") != "nonop_distortion":
+        return []
+    r = _num(div.get("ratio"))
+    if r is None:
+        return []
+    if r < 0:
+        return [["div.sign"]]
+    return [["div.high" if r > 1 else "div.low", {"p": f"{abs(r - 1.0) * 100:.0f}"}]]
 
 
 def divergence_note(div):
@@ -468,16 +501,14 @@ def divergence_note(div):
     벗어난 방향과 크기를 숫자로 함께 적어, 읽는 사람이 되짚을 수 있게 한다.
     모르는 상태·비율 없음은 빈 문자열 — 보류하지 않는다.
     """
-    if not isinstance(div, dict) or div.get("state") != "nonop_distortion":
-        return ""
-    r = _num(div.get("ratio"))
-    if r is None:
-        return ""
-    if r < 0:
-        how = "영업이익 기준과 부호가 반대"
-    else:
-        how = f"영업이익 기준보다 {abs(r - 1.0) * 100:.0f}% {'높음' if r > 1 else '낮음'}"
-    return f"비영업 손익 왜곡 의심 — 조정이익이 {how}"
+    return render_nc(divergence_codes(div))
+
+
+def conv_check_codes(check, human=False):
+    st = check.get("state") if isinstance(check, dict) else None
+    if human or st != "cash_mismatch":
+        return []
+    return [["cash_mismatch"]]
 
 
 def conv_check_note(check, human=False):
@@ -486,10 +517,7 @@ def conv_check_note(check, human=False):
     사람이 지정한 전환율에는 붙이지 않는다: 기계의 대조는 기계가 조립한 C 에 대한 것이다.
     모르는 상태는 빈 문자열 — 내부 문자열이 화면으로 샐 길이 없다.
     """
-    st = check.get("state") if isinstance(check, dict) else None
-    if human or st != "cash_mismatch":
-        return ""
-    return "현금흐름표와 부호 불일치 — 확인 필요"
+    return render_nc(conv_check_codes(check, human))
 
 
 def measure_bench(c, price, rates, prev_bench=None):
@@ -543,16 +571,24 @@ def measure_bench(c, price, rates, prev_bench=None):
         "required_g_prove": required_growth(eps_ttm, price, rate, 1.5),
         # 이익 결측 사유(상태에서 생성) · 사람 취재 EPS 사용 여부
         "eps_note": "" if eps_ttm is not None else eps_note(b.get("eps_status"), c.get("type")),
+        # 다국어 — 비고는 코드로도 싣는다(화면이 그 언어 문장을 만든다 · render_nc)
+        "eps_note_nc": [] if eps_ttm is not None else eps_codes(b.get("eps_status"), c.get("type")),
         "eps_from_human": eps_human,
         # ROE 결측 사유(상태에서 생성) · 사람 취재값 사용 여부 · 해외 GAAP 미조정 여부
         "roe_note": "" if roe is not None else roe_note(b.get("roe_basis")),
+        "roe_note_nc": [] if roe is not None else roe_codes(b.get("roe_basis")),
         "roe_from_human": roe_human,
         # 전환율 결측 사유(상태에서 생성) — 값이 있으면(자동·사람 무관) 비고 없음
         "conv_note": ("" if _num(b.get("conversion")) is not None
                       else conv_note(b.get("conversion_status"))),
+        "conv_note_nc": ([] if _num(b.get("conversion")) is not None
+                         else conv_codes(b.get("conversion_status"))),
         # 값은 있는데 현금흐름표와 부호가 어긋나는 경우 — 자동값일 때만(사람 값엔 기계 대조가
         # 닿지 않는다). 문구는 상태에서 만든다.
         "conv_check_note": conv_check_note(
+            b.get("conversion_check"),
+            (c.get("buffett_origin") or {}).get("conversion") == "human"),
+        "conv_check_note_nc": conv_check_codes(
             b.get("conversion_check"),
             (c.get("buffett_origin") or {}).get("conversion") == "human"),
         "roe_unadjusted": bool(roe is not None and not roe_human
@@ -571,10 +607,10 @@ def measure_bench(c, price, rates, prev_bench=None):
         # 판단할 재료마저 사라진다. 존은 여전히 untested(판정 없음) 한 칸에 둔다.
         out["zone_buffett"] = ZONE_UNTESTED
         out["borderline"] = False
-        out["note"] = ("시클리컬 정점 가드 — 쿠폰 참고, 존 판정 보류" if coupon is not None
-                       else "시클리컬 정점 가드 — 존 판정 보류 · "
-                       + untested_note(_num(price), eps_ttm, g, rate, market, coupon,
-                                       out["eps_note"]))
+        out["note_nc"] = ([["guard_ref"]] if coupon is not None
+                          else [["guard_hold"]] + untested_codes(_num(price), eps_ttm, g, rate, market,
+                                                                 coupon, out["eps_note_nc"] or None))
+        out["note"] = render_nc(out["note_nc"])
         return out
 
     # 비영업 손익 왜곡 보류(F2-b) — 자동층이 잰 조정이익이 영업이익 기준에서 크게 벗어났다.
@@ -587,13 +623,15 @@ def measure_bench(c, price, rates, prev_bench=None):
         out["hold"] = "nonop_distortion"
         out["zone_buffett"] = ZONE_UNTESTED
         out["borderline"] = False
-        out["note"] = hold_note + " · 존 판정 보류"
+        out["note_nc"] = divergence_codes(b.get("eps_divergence")) + [["zone_hold"]]
+        out["note"] = render_nc(out["note_nc"])
         return out
 
     out["zone_buffett"] = zone_of_buffett(coupon, rate)
     if out["zone_buffett"] == ZONE_UNTESTED:
-        out["note"] = untested_note(_num(price), eps_ttm, g, rate, market, coupon,
-                                    out["eps_note"])
+        out["note_nc"] = untested_codes(_num(price), eps_ttm, g, rate, market, coupon,
+                                        out["eps_note_nc"] or None)
+        out["note"] = render_nc(out["note_nc"])
     out["pass_price"] = pass_price(eps_ttm, g, rate)
     line, margin = edge_of(coupon, rate)
     out["edge_line"], out["edge_margin"] = line, margin
@@ -618,7 +656,7 @@ def measure_gap(c, price, trailing_pe):
     elif isinstance(trailing_pe, (int, float)) and trailing_pe > 0:
         pe, basis = float(trailing_pe), "trailing"
     if pe is None or pe <= 0 or fair_max is None:
-        return None, None, basis, False, "EPS 취재 전 — 괴리 미산출"
+        return None, None, basis, False, render_nc([["px.no_eps"]])
     gap = float(fair_max) / pe - 1.0
     # 존 판정 자격 — 두 관문을 모두 통과해야 한다 (규칙은 여기 한 곳에만 둔다)
     #  ① 선행 기준일 것: 정당 MAX 는 '선행' 눈금으로 매긴 자다. 후행 P/E 는
@@ -824,7 +862,7 @@ def main():
             continue
 
         if row["fair_max"] is None:
-            row["note"] = "정당 MAX 미지정"
+            row["note"], row["note_nc"] = render_nc([["px.no_fair"]]), [["px.no_fair"]]
             out_items.append(row)
             n_skipped += 1
             print(f"[시차] {ticker}: 정당 MAX 없음 — 건너뜀")
@@ -832,7 +870,7 @@ def main():
 
         # ③ 시세는 위에서 이미 불렀다 — 여기서 두 번 부르지 않는다(호출 2배 방지)
         if price is None:
-            row["note"] = "시세 취득 실패"
+            row["note"], row["note_nc"] = render_nc([["px.price_fail"]]), [["px.price_fail"]]
             out_items.append(row)
             n_unpriced += 1
             print(f"[시차] {ticker}: 시세 실패 — 괴리 미산출", file=sys.stderr)
@@ -848,6 +886,7 @@ def main():
         row["basis"] = basis
         if gap is None:
             row["note"] = note
+            row["note_nc"] = [["px.no_eps"]] if note == render_nc([["px.no_eps"]]) else [["_raw", {"s": note}]]
             out_items.append(row)
             n_skipped += 1
             print(f"[시차] {ticker}: 미취재 (P/E 없음)")

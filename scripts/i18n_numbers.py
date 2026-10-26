@@ -33,6 +33,9 @@ def _plain(text):
 def normalize(text, lang):
     """그 언어의 숫자 표기 → 숫자 규율이 읽는 표기(한국어·영어 단위)."""
     t = _plain(text)
+    if lang == "ko":
+        # 조문 번호 '제1조'는 금액 단위 '조'(10^12)가 아니다 — 약관 번역에서 '1조 원'으로 읽던 오탐
+        t = re.sub(r"제\s*(\d+)\s*조(?![원\d])", r"제\1항", t)
     if lang == "ja":
         t = t.replace("四半期", "분기")
         for a, b in (("兆", "조"), ("億", "억"), ("万", "만"), ("千", "천")):
@@ -54,19 +57,40 @@ def normalize(text, lang):
     return t
 
 
-def check(src_ko, translated, lang):
-    """→ (번역에만 있는 숫자, 원문에만 있는 숫자). 둘 다 빈 목록이면 통과."""
-    import companion_essays as ce
-    src = normalize(src_ko, "ko")
+def check(src_ko, translated, lang, src_lang="ko"):
+    """→ (번역에만 있는 숫자, 원문에만 있는 숫자). 둘 다 빈 목록이면 통과.
+    src_lang: 원문 언어 — 영어 원문(신호·리서치 원제)에서 es·ja 로 바로 옮길 때 'en'."""
+    src = normalize(src_ko, src_lang)
     dst = normalize(translated, lang)
-    extra = ce.check_numbers(dst, [], src)
-    missing = ce.check_numbers(src, [], dst)
+    extra = _strict(dst, src)
+    missing = _strict(src, dst)
     # 면제 비대칭 보정 — 한쪽만 날짜·연도로 면제된 **맨 숫자**('최근 90일' ↔ 'last 90 days',
     # '2000년' ↔ 'de 2000,')는 반대쪽 본문에 같은 숫자가 그대로 있으면 같은 숫자다.
     # 단위가 붙은 값(1조·$32 million)은 보정하지 않는다 — 그건 환산 대조가 맡는다.
     extra = [x for x in extra if not _bare_in(x, src)]
     missing = [x for x in missing if not _bare_in(x, dst)]
     return extra, missing
+
+
+def _strict(text, other):
+    """text 의 숫자 중 other 에 **같은 값**이 없는 것(표기 그대로 목록).
+
+    숫자 규율(check_numbers)과 같은 토큰·환산 기계를 쓰되 허용 오차가 다르다: 에세이 규율은
+    '두 표기의 반올림 폭 중 큰 쪽'(원문 쪽 반올림을 설명하려고)이지만, **번역은 값을 바꿀 이유가 없다** —
+    더 정밀한 쪽의 폭으로 잰다. 큰 쪽으로 재면 '5조 → 5.5 trillion' 이 반올림 폭(0.5조) 안이라
+    통과한다(2026-10-26 변이 테스트에서 실측).
+    """
+    import companion_essays as ce
+    body = ce._norm(re.sub(r"<[^>]+>", " ", text or ""))
+    pool = ce._source_values(ce._norm(re.sub(r"<[^>]+>", " ", other or "")))
+    bad = []
+    for v, tol, raw in ce._num_tokens(body):
+        if ce._small_count(v, tol):
+            continue
+        if not any(abs(abs(v) - abs(x)) <= min(tol, xt) * (1 + 1e-9) + 1e-12 for x, xt in pool):
+            if raw not in bad:
+                bad.append(raw)
+    return bad
 
 
 def _bare_in(token, text):
@@ -76,6 +100,6 @@ def _bare_in(token, text):
     return re.search(pat, text) is not None
 
 
-def ok(src_ko, translated, lang):
-    e, m = check(src_ko, translated, lang)
+def ok(src_ko, translated, lang, src_lang="ko"):
+    e, m = check(src_ko, translated, lang, src_lang)
     return not e and not m

@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{PAGE_TITLE}} · 우주지배자</title>
+<title>{{t:rs.title}}</title>
+<meta name="description" content="{{t:rs.desc}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -113,7 +114,7 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 .page-title { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
 .page-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
 .gen-label { font-size: 12px; color: var(--text-muted); margin-bottom: 22px; }
-.group-tabs { display: flex; gap: 8px; margin: 18px 0 22px; }
+.group-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 22px; }
 .group-tab { padding: 8px 16px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); font-size: 13px; font-weight: 700; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
 .group-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 .stock-block { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
@@ -232,11 +233,11 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
     <div class="header-right">
       <span class="update-badge">{{FETCHED_DATE}}</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">{{USD_KRW}}</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -258,16 +259,16 @@ main.research-main { display: block; align-items: stretch; padding: 36px 0 60px;
 <main class="research-main">
   <div class="container">
     <div class="page-eyebrow">RESEARCH</div>
-    <h1 class="page-title">리서치</h1>
-    <p class="page-desc">우주지배자 · 잠재지배자 종목의 글로벌 리서치·분석 기사 — 매일 자동 수집.</p>
+    <h1 class="page-title">{{t:nav.research}}</h1>
+    <p class="page-desc">{{t:rs.desc}}</p>
     <div class="gen-label" id="genLabel"></div>
     <div class="group-tabs">
-      <button class="group-tab active" data-g="universe" onclick="setGroup('universe', this)">우주지배자</button>
-      <button class="group-tab" data-g="latent" onclick="setGroup('latent', this)">잠재지배자</button>
-      <button class="group-tab" data-g="calendar" onclick="setGroup('calendar', this)">주요일정</button>
-      <button class="group-tab" data-g="gurus" onclick="setGroup('gurus', this)">거인의 어깨</button>
-      <button class="group-tab" data-g="signals" onclick="setGroup('signals', this)">📡 신호 관측소</button>
-      <button class="group-tab" data-g="dissect" onclick="setGroup('dissect', this)">🔬 필독 해부실</button>
+      <button class="group-tab active" data-g="universe" onclick="setGroup('universe', this)">{{t:nav.home}}</button>
+      <button class="group-tab" data-g="latent" onclick="setGroup('latent', this)">{{t:nav.latent}}</button>
+      <button class="group-tab" data-g="calendar" onclick="setGroup('calendar', this)">{{t:rs.tab.calendar}}</button>
+      <button class="group-tab" data-g="gurus" onclick="setGroup('gurus', this)">{{t:rs.tab.gurus}}</button>
+      <button class="group-tab" data-g="signals" onclick="setGroup('signals', this)">📡 {{t:nav.signals}}</button>
+      <button class="group-tab" data-g="dissect" onclick="setGroup('dissect', this)">🔬 {{t:nav.dissect}}</button>
     </div>
     <div id="list"></div>
   </div>
@@ -306,27 +307,27 @@ function render(group) {
   const list = document.getElementById('list');
   const stocks = (DATA.stocks || []).filter(s => s.group === group);
   if (!stocks.length) {
-    list.innerHTML = '<div class="no-art">수집된 리서치가 아직 없습니다 — 다음 자동 갱신을 기다려 주세요.</div>';
+    list.innerHTML = '<div class="no-art">' + T('rs.none') + '</div>';
     return;
   }
   list.innerHTML = stocks.map(s => {
     const arts = (s.articles || []).map(a => {
       const hasKo = a.title_ko && a.title_ko !== a.title;
-      const bullets = (a.summary_ko || []).map(b => '<li>' + esc(b) + '</li>').join('');
+      const bullets = (a.summary_ko || []).map(b => '<li>' + TX(b) + '</li>').join('');
       return '<a class="art" href="' + esc(a.link) + '" target="_blank" rel="noopener">' +
-        '<div class="art-title">' + esc(hasKo ? a.title_ko : a.title) + '</div>' +
+        '<div class="art-title">' + TX(hasKo ? a.title_ko : a.title) + '</div>' +
         (hasKo ? '<div class="art-orig">' + esc(a.title) + '</div>' : '') +
         (bullets ? '<ul class="art-summary">' + bullets + '</ul>' : '') +
-        '<div class="art-meta">' + esc(a.source) + (a.date_label ? ' · ' + esc(a.date_label) : '') + '</div>' +
+        '<div class="art-meta">' + PN(a.source) + (a.date_label ? ' · ' + esc(a.date_label) : '') + '</div>' +
       '</a>';
     }).join('');
     return '<div class="stock-block">' +
       '<div class="stock-head">' +
-        (s.rank ? '<span class="stock-rank">' + esc(s.rank) + '위</span>' : '') +
-        '<span class="stock-name">' + esc(s.name) + '</span>' +
+        (s.rank ? '<span class="stock-rank">' + esc(T('rs.rank', {n: s.rank})) + '</span>' : '') +
+        '<span class="stock-name">' + TX(s.name) + '</span>' +
         '<span class="stock-ticker">' + esc(s.ticker) + '</span>' +
       '</div>' +
-      (arts || '<div class="no-art">최근 2주 내 수집된 기사 없음</div>') +
+      (arts || '<div class="no-art">' + T('rs.none2w') + '</div>') +
     '</div>';
   }).join('');
 }
@@ -339,10 +340,10 @@ function calTimeline(evs){
   const fmt = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   const byDay = {};
   evs.forEach(e => { (byDay[e.date] = byDay[e.date] || []).push(e); });
-  const DOW = ['일','월','화','수','목','금','토'];
+  const DOW = T('lg.wd').split(',');
   let o = '';
   o += '<rect width="' + W + '" height="' + H + '" rx="14" fill="var(--bg-card)"/>';
-  o += '<text x="20" y="30" fill="var(--gold)" font-size="16.5" font-weight="800">다가오는 2주 — 관측 캘린더</text>';
+  o += '<text x="20" y="30" fill="var(--gold)" font-size="16.5" font-weight="800">' + esc(T('cal.head')) + '</text>';
   o += '<text x="' + (W-20) + '" y="30" text-anchor="end" fill="var(--gold)" font-size="10.5" font-weight="800">UNIVERTRIX · univertrix.com</text>';
   let total = 0;
   for (let i = 0; i < 14; i++) {
@@ -352,8 +353,8 @@ function calTimeline(evs){
     const isToday = i === 0, isWknd = dow === 0 || dow === 6;
     if (isWknd) o += '<rect x="' + (x+2).toFixed(1) + '" y="' + top + '" width="' + (colW-4).toFixed(1) + '" height="' + (rowH-12) + '" fill="var(--cal-wknd)" rx="8"/>';
     if (isToday) o += '<rect x="' + (x+2).toFixed(1) + '" y="' + top + '" width="' + (colW-4).toFixed(1) + '" height="' + (rowH-12) + '" fill="var(--gold-bg, rgba(242,186,60,0.12))" stroke="var(--gold)" stroke-width="1.2" rx="8"/>';
-    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+20) + '" text-anchor="middle" fill="' + (isToday ? 'var(--gold)' : 'var(--text)') + '" font-size="13.5" font-weight="800">' + (d.getMonth()+1) + '/' + d.getDate() + '</text>';
-    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+36) + '" text-anchor="middle" fill="' + (isToday ? 'var(--gold)' : 'var(--text-muted)') + '" font-size="10.5" font-weight="700">' + (isToday ? '오늘' : DOW[dow]) + '</text>';
+    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+20) + '" text-anchor="middle" fill="' + (isToday ? 'var(--gold)' : 'var(--text)') + '" font-size="13.5" font-weight="800">' + esc(UVX.md(fmt(d))) + '</text>';
+    o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+36) + '" text-anchor="middle" fill="' + (isToday ? 'var(--gold)' : 'var(--text-muted)') + '" font-size="10.5" font-weight="700">' + esc(isToday ? T('cal.today') : DOW[dow]) + '</text>';
     const dayEvs = byDay[fmt(d)] || [];
     total += dayEvs.length;
     dayEvs.slice(0, 4).forEach((e, k) => {
@@ -366,7 +367,7 @@ function calTimeline(evs){
     if (dayEvs.length > 4)
       o += '<text x="' + (x+colW/2).toFixed(1) + '" y="' + (top+46+4*33+13) + '" text-anchor="middle" fill="var(--text-muted)" font-size="10" font-weight="800">+' + (dayEvs.length-4) + '</text>';
   }
-  o += '<text x="20" y="' + (H-8) + '" fill="var(--text-muted)" font-size="9.5">금빛 = 실적 발표 · 코발트 = 경제지표·기타 — 2주 내 ' + total + '건</text>';
+  o += '<text x="20" y="' + (H-8) + '" fill="var(--text-muted)" font-size="9.5">' + esc(T('cal.legend', {n: total})) + '</text>';
   return '<div class="col-chart" style="margin:0 0 18px;border-radius:14px;overflow:hidden;border:1px solid var(--line);line-height:0">' +
     '<svg style="width:100%;height:auto;display:block" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + o + '</svg></div>';
 }
@@ -375,21 +376,21 @@ function renderCalendar() {
   const list = document.getElementById('list');
   const evs = (DATA.calendar && DATA.calendar.events) || [];
   if (!evs.length) {
-    list.innerHTML = '<div class="no-art">수집된 일정이 아직 없습니다 — 다음 자동 갱신을 기다려 주세요.</div>';
+    list.innerHTML = '<div class="no-art">' + T('cal.none') + '</div>';
     return;
   }
   const today = new Date(new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }));
-  const typeLabel = { macro: 'FOMC·매크로', earnings: '실적 발표', event: '이벤트' };
+  const typeLabel = { macro: T('cal.type.macro'), earnings: T('cal.type.earnings'), event: T('cal.type.event') };
   list.innerHTML = calTimeline(evs) + evs.map(e => {
     const d = new Date(e.date);
     const diff = Math.round((d - today) / 86400000);
     const dday = diff === 0 ? 'TODAY' : (diff > 0 ? 'D-' + diff : 'D+' + Math.abs(diff));
-    const md = (d.getMonth() + 1) + '/' + d.getDate();
+    const md = UVX.md(e.date);
     return '<div class="cal-item">' +
       '<div class="cal-date"><div class="d">' + md + '</div>' +
       '<span class="dday' + (diff === 0 ? ' today' : '') + '">' + dday + '</span></div>' +
-      '<div class="cal-body"><div class="cal-title">' + esc(e.title) + '</div>' +
-      '<span class="cal-type ' + esc(e.type || '') + '">' + (typeLabel[e.type] || '일정') + '</span></div>' +
+      '<div class="cal-body"><div class="cal-title">' + TX(e.title) + '</div>' +
+      '<span class="cal-type ' + esc(e.type || '') + '">' + esc(typeLabel[e.type] || T('cal.type.other')) + '</span></div>' +
     '</div>';
   }).join('');
 }
@@ -398,38 +399,36 @@ function renderGurus() {
   const list = document.getElementById('list');
   const gs = (DATA.gurus && DATA.gurus.gurus) || [];
   if (!gs.length) {
-    list.innerHTML = '<div class="no-art">거인 포트폴리오가 아직 수집되지 않았습니다 — 다음 자동 갱신을 기다려 주세요.</div>';
+    list.innerHTML = '<div class="no-art">' + T('gu.none') + '</div>';
     return;
   }
-  const note = '<div class="guru-note">SEC 13F 공시 기준 — 분기 1회 · 최대 45일 지연 공시 · 미국 상장 롱포지션만 포함됩니다. ' +
-    '실제 현재 보유와 다를 수 있으며, 투자 권유가 아닙니다.' +
-    (DATA.gurus.generated_label ? ' <span style="white-space:nowrap">(수집: ' + esc(DATA.gurus.generated_label) + ' KST)</span>' : '') + '</div>';
+  const note = '<div class="guru-note">' + T('gu.note') +
+    (DATA.gurus.generated_label ? ' <span style="white-space:nowrap">' + esc(T('gu.collected', {d: DATA.gurus.generated_label})) + '</span>' : '') + '</div>';
   list.innerHTML = note + gs.map((g, gi) => {
     const rows = (g.holdings || []).map((h, i) => {
       let cls = '', txt = h.chg || '―';
-      if (txt === 'NEW') { cls = 'new'; txt = '신규'; }
+      if (txt === 'NEW') { cls = 'new'; txt = T('gu.new'); }
       else if (txt.startsWith('+')) cls = 'up';
       else if (txt.startsWith('-')) cls = 'down';
       const bw = Math.min(100, (h.pct / (g.holdings[0].pct || 1)) * 100);
       return '<div class="guru-row">' +
         '<span class="guru-rank">' + (i + 1) + '</span>' +
-        '<span class="guru-issuer">' + esc(h.name) + '</span>' +
+        '<span class="guru-issuer">' + TX(h.name) + '</span>' +
         '<span class="guru-bar-wrap"><span class="guru-bar" style="width:' + bw + '%"></span></span>' +
-        '<span class="guru-pct">' + h.pct + '%</span>' +
+        '<span class="guru-pct">' + UVX.dec(h.pct) + '%</span>' +
         '<span class="guru-chg ' + cls + '">' + esc(txt) + '</span>' +
       '</div>';
     }).join('');
     const exits = (g.exits && g.exits.length)
-      ? '<div class="guru-exits"><b>전량 매도:</b> ' + g.exits.map(esc).join(' · ') + '</div>' : '';
+      ? '<div class="guru-exits"><b>' + T('gu.exits') + '</b> ' + g.exits.map(esc).join(' · ') + '</div>' : '';
     return '<div class="guru-block" id="guru-' + gi + '" onclick="toggleGuru(' + gi + ')">' +
-      '<div class="guru-head"><span class="guru-name">' + esc(g.name_ko) + '</span>' +
-      '<span class="guru-person">' + esc(g.person) + '</span>' +
+      '<div class="guru-head"><span class="guru-name">' + TX(g.name_ko) + '</span>' +
+      '<span class="guru-person">' + TX(g.person) + '</span>' +
       '<span class="guru-toggle">▼</span></div>' +
-      '<div class="guru-tagline">' + esc(g.tagline) + '</div>' +
+      '<div class="guru-tagline">' + TX(g.tagline) + '</div>' +
       '<div class="guru-body">' +
-        '<div class="guru-meta">' + esc(g.period_label) + ' 보고 (공시 ' + esc(g.filed) + ') · 운용 $' +
-          Number(g.total_b).toLocaleString() + 'B · ' + g.positions + '종목 중 TOP ' + (g.holdings || []).length +
-          ' · 지분 증감은 전분기 대비</div>' +
+        '<div class="guru-meta">' + T('gu.meta', {period: TX(g.period_label), filed: esc(g.filed),
+          aum: Number(g.total_b).toLocaleString(UVX.intl), n: g.positions, top: (g.holdings || []).length}) + '</div>' +
         rows + exits +
       '</div>' +
     '</div>';
@@ -443,13 +442,14 @@ function toggleGuru(gi) {
   if (!wasOpen) { el.classList.add('open'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
 }
 
-const TAG_COLOR = { '에세이': '#9c7a3a', '모델 발표': '#386ee1', '연구': '#2e9d87', '정책·규제': '#c05555', '투자·산업': '#7a6cc4', '기타': '#6a7390' };
+/* 신호 분류 — 수집기의 분류값(한국어 상태값)에 빌드가 id(tag_id)를 붙인다. 색·이름은 id 에서 */
+const TAG_COLOR = { essay: '#9c7a3a', model: '#386ee1', research: '#2e9d87', policy: '#c05555', invest: '#7a6cc4', other: '#6a7390' };
 function renderSignals(){
   const sg = (DATA.signals && DATA.signals.signals) || [];
   const label = (DATA.signals && DATA.signals.generated_label) || '';
   if (!sg.length) { document.getElementById('list').innerHTML =
-    '<div class="empty-note">📡 신호 관측소 가동 준비 중 — 첫 수집 후 이곳에 실리콘밸리의 고신호 담론·발표가 잡힙니다.</div>'; return; }
-  let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">해커뉴스 300점↑ 집단 주목 + AI 랩 공식 발표 — 매일 자동 포착' + (label ? ' (최근 수집: ' + esc(label) + ' KST)' : '') + '</div>';
+    '<div class="empty-note">📡 ' + T('sig.empty') + '</div>'; return; }
+  let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">' + T('sig.gen') + (label ? ' ' + esc(T('sig.collected', {d: label})) : '') + '</div>';
   const now = Date.now();
   // 고정 기간: 추천수 1000↑ 초신성급 = 30일, 그 외 필독 = 7일
   const pinDays = x => ((x.points || 0) >= 1000 ? 30 : 7);
@@ -467,17 +467,17 @@ function renderSignals(){
   pinned.sort(byVotes);
   rest.sort(byVotes);
   const card = (x, pin) => {
-    const tag = x.tag || '기타';
+    const tag = x.tag_id || 'other';
     return '<div class="sig-card' + (pin ? ' pin' : '') + '">' +
-      (pin ? '<div class="sig-pin-label">📌 필독 신호 — 관제탑 지정</div>' : '') +
+      (pin ? '<div class="sig-pin-label">📌 ' + T('sig.pin') + '</div>' : '') +
       '<div class="sig-meta">' +
-      '<span class="sig-tag" style="background:' + (TAG_COLOR[tag] || '#6a7390') + '">' + esc(tag) + '</span>' +
+      '<span class="sig-tag" style="background:' + (TAG_COLOR[tag] || '#6a7390') + '">' + esc(T('sig.tag.' + tag) || x.tag) + '</span>' +
       (x.points ? '<span class="sig-points">▲ ' + x.points + '</span>' : '') +
       '<span>' + esc(x.source || '') + (x.captured ? ' · ' + esc(x.captured.slice(5, 16)) : '') + '</span></div>' +
       '<a href="' + esc(x.url) + '" target="_blank" rel="noopener noreferrer" class="sig-link">' +
-      '<div class="sig-title">' + esc(x.ko || x.title) + '</div>' +
-      (x.ko ? '<div class="sig-title-en">' + esc(x.title) + '</div>' : '') + '</a>' +
-      (x.why ? '<div class="sig-why">' + esc(x.why) + '</div>' : '') +
+      '<div class="sig-title">' + TX(x.ko || x.title) + '</div>' +
+      (x.ko && x.ko !== x.title ? '<div class="sig-title-en">' + esc(x.title) + '</div>' : '') + '</a>' +
+      (x.why ? '<div class="sig-why">' + TX(x.why) + '</div>' : '') +
     '</div>';
   };
   if (pinned.length) html += pinned.map(x => card(x, true)).join('');
@@ -486,36 +486,36 @@ function renderSignals(){
 }
 
 // 🔬 필독 해부실 — 필독 신호 원문의 문단별 한국어 브리핑 (전문 번역 아님)
-const DX_NOTICE = '본 글은 원문의 논지를 재서술한 브리핑이며 전문 번역이 아닙니다.';
+const DX_NOTICE = T('dx.notice');
 function renderDissect(){
   const items = (DATA.translations && DATA.translations.items) || [];
   const label = (DATA.translations && DATA.translations.generated_label) || '';
   if (!items.length) { document.getElementById('list').innerHTML =
-    '<div class="empty-note">🔬 해부실 준비 중 — 필독 신호가 지정되면 원문을 문단별로 해부해 이곳에 싣습니다.</div>'; return; }
-  let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">필독 신호의 원문을 문단·섹션 단위로 재서술한 한국어 브리핑' + (label ? ' (최근 해부: ' + esc(label) + ' KST)' : '') + '</div>';
-  html += '<div class="ud-index"><div class="ud-index-title">해부 목록 ' + items.length + '건</div>' +
+    '<div class="empty-note">🔬 ' + T('dx.empty') + '</div>'; return; }
+  let html = '<div class="gen-note" style="font-size:12px;color:var(--text-muted);margin-bottom:14px">' + T('dx.gen') + (label ? ' ' + esc(T('dx.collected', {d: label})) : '') + '</div>';
+  html += '<div class="ud-index"><div class="ud-index-title">' + esc(T('dx.toc', {n: items.length})) + '</div>' +
     items.map(it => '<a class="ud-index-row" href="#dx-' + esc(it.id) + '">' +
       '<span class="ud-index-date">' + esc(it.date || '') + '</span>' +
-      esc(it.ko_title || it.title) + '</a>').join('') + '</div>';
+      TX(it.ko_title || it.title) + '</a>').join('') + '</div>';
   const colLinks = (DATA.translations && DATA.translations.column_links) || {};
   html += items.map(it => {
-    const secs = (it.sections || []).map(s =>
-      '<div class="dx-sec"><h4>' + esc(s.h || '') + '</h4><p>' + esc(s.ko || '') + '</p></div>').join('');
+    const secs = TXB((it.sections || []).map(s =>
+      '<div class="dx-sec"><h4>' + esc(s.h || '') + '</h4><p>' + esc(s.ko || '') + '</p></div>').join(''));
     // 역방향 링크 — 이 원문으로 쓴 관측일지 칼럼이 있을 때만 (영구 슬러그 #log-)
     const slug = colLinks[it.id];
     return '<div class="dx-card" id="dx-' + esc(it.id) + '">' +
-      '<div class="dx-meta"><span class="dx-badge">🔬 해부</span>' +
-        '<span>' + esc(it.source || '') + (it.date ? ' · ' + esc(it.date) : '') + '</span></div>' +
-      '<div class="dx-title">' + esc(it.ko_title || it.title) + '</div>' +
-      (it.ko_title && it.title ? '<div class="dx-orig">' + esc(it.title) + '</div>' : '') +
-      '<a class="dx-src" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">원문 읽기 ↗</a>' +
+      '<div class="dx-meta"><span class="dx-badge">🔬 ' + T('dx.badge') + '</span>' +
+        '<span>' + PN(it.source || '') + (it.date ? ' · ' + esc(it.date) : '') + '</span></div>' +
+      '<div class="dx-title">' + TX(it.ko_title || it.title) + '</div>' +
+      (it.ko_title && it.title && it.ko_title !== it.title ? '<div class="dx-orig">' + esc(it.title) + '</div>' : '') +
+      '<a class="dx-src" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">' + T('dx.read_orig') + ' ↗</a>' +
       '<div class="dx-actions">' +
-        '<button onclick="dxCopyLink(event,\'' + esc(it.id) + '\')">🔗 링크 복사</button>' +
-        (slug ? '<a href="observatory.html#' + esc(slug) + '">📄 칼럼 보기 →</a>' : '') +
+        '<button onclick="dxCopyLink(event,\'' + esc(it.id) + '\')">🔗 ' + T('col.copy_link') + '</button>' +
+        (slug ? '<a href="observatory.html#' + esc(slug) + '">📄 ' + T('dx.see_column') + ' →</a>' : '') +
       '</div>' +
       secs +
-      (it.caveat ? '<div class="dx-caveat">⚠ ' + esc(it.caveat) + '</div>' : '') +
-      '<div class="dx-notice">' + DX_NOTICE + ' 인용은 최소한으로 제한했으며, 정확한 표현·수치는 위 원문을 확인해 주십시오.</div>' +
+      (it.caveat ? '<div class="dx-caveat">⚠ ' + TX(it.caveat) + '</div>' : '') +
+      '<div class="dx-notice">' + DX_NOTICE + ' ' + T('dx.notice2') + '</div>' +
     '</div>';
   }).join('');
   document.getElementById('list').innerHTML = html;
@@ -527,11 +527,11 @@ function dxCopyLink(ev, id){
   ev.preventDefault(); ev.stopPropagation();
   const btn = ev.target;
   const url = location.origin + location.pathname.replace(/[^/]*$/, '') + 'research.html#dx-' + id;
-  const done = () => { const o = btn.textContent; btn.textContent = '✓ 복사됨'; setTimeout(() => { btn.textContent = o; }, 1500); };
+  const done = () => { const o = btn.textContent; btn.textContent = '✓ ' + T('col.copied'); setTimeout(() => { btn.textContent = o; }, 1500); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(done, () => window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url));
+    navigator.clipboard.writeText(url).then(done, () => window.prompt(T('dx.copy_prompt'), url));
   } else {
-    window.prompt('아래 주소를 복사하세요 (Ctrl+C):', url);
+    window.prompt(T('dx.copy_prompt'), url);
   }
 }
 
@@ -551,7 +551,7 @@ function setGroup(g, btn) {
 
 document.addEventListener('DOMContentLoaded', function () {
   if (DATA.generated_label) {
-    document.getElementById('genLabel').textContent = '마지막 수집: ' + DATA.generated_label + ' KST';
+    document.getElementById('genLabel').textContent = T('rs.collected', {d: DATA.generated_label});
   }
   // 해부실 딥링크 (#dx-…) — 관측일지 '해부실에서 보기'·해부 글 링크 복사가 이 경로로 들어온다
   // (관측일지의 #log- 진입 처리와 같은 패턴: 탭을 열면 렌더 끝에서 openDissectFromHash가 스크롤)

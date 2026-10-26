@@ -29,6 +29,14 @@ sys.path.insert(0, str(Path(__file__).parent))
 import i18n  # noqa: E402
 
 OBS_TABS = ("solar", "map", "columns", "parallax", "legend", "agent")
+# 탭이 있는 페이지 — (페이지, 클릭 선택자 형식, 탭 id 목록)
+TABBED = {
+    "observatory.html": ('.obs-tab[data-t="{}"]', OBS_TABS),
+    "research.html": ('.group-tab[data-g="{}"]', ("universe", "latent", "calendar", "gurus", "signals", "dissect")),
+    "megatrend.html": ('.cat-btn[data-cat="{}"]', ("top10", "throne", "themes", "rank")),
+}
+# 단계 2: 완성 페이지 전부 — 탭 없는 페이지는 한 번만 연다
+PLAIN = tuple(pg for pg in i18n.DONE_PAGES if pg not in TABBED)
 VIEWPORTS = (("desktop", 1440, 900), ("mobile", 390, 844))
 
 # 화면에 보이는 텍스트 노드 중 한글이 있는데 원문 표식(lang=ko) 밖에 있는 것
@@ -99,20 +107,21 @@ def main():
                     errs = []
                     pg.on("console", lambda m, e=errs: m.type == "error" and e.append(m.text[:200]))
                     pg.on("pageerror", lambda x, e=errs: e.append("PAGEERROR " + str(x)[:200]))
-                    targets = [("index.html", None), ("research.html", None)]
-                    tabs = OBS_TABS if theme == "light" else ("solar", "agent")
-                    if a.quick:
-                        tabs = tuple(t for t in tabs if t != "columns")
-                    targets += [("observatory.html", t) for t in tabs]
+                    if theme == "dark":
+                        targets = [("index.html", None), ("journal.html", None), ("research.html", "signals")] +                             [("observatory.html", t) for t in ("solar", "agent")]
+                    else:
+                        targets = [(pg, None) for pg in PLAIN]
+                        for pg_, (_, tabs) in TABBED.items():
+                            if a.quick:
+                                tabs = tuple(t for t in tabs if t not in ("columns", "dissect"))
+                            targets += [(pg_, t) for t in tabs]
                     for page, tab in targets:
-                        if theme == "dark" and page == "research.html":
-                            continue
                         key = f"{lang}/{page}{'#' + tab if tab else ''} {vpname} {theme}"
                         errs.clear()
                         pg.goto(base + i18n.subdir(lang) + page, wait_until="load")
                         pg.wait_for_timeout(900)
                         if tab:
-                            pg.click(f'.obs-tab[data-t="{tab}"]')
+                            pg.click(TABBED[page][0].format(tab))
                             pg.wait_for_timeout(700)
                         ran += 1
                         rec = {"key": key}
@@ -128,7 +137,7 @@ def main():
                             rec["unmarked_hangul"] = um
                             if um:
                                 bad.append(f"{key}: 표식 없는 한글 {um[:4]}")
-                        if tab == "agent" and vpname == "desktop":
+                        if page == "observatory.html" and tab == "agent" and vpname == "desktop":
                             ck = pg.evaluate(JS_COCKPIT)
                             rec["cockpit"] = ck
                             if ck and ck["bottom"] > ck["ih"]:

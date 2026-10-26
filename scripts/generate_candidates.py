@@ -75,6 +75,11 @@ SECTOR_MAP = {
     "인터넷":     ("AI 인터넷",      BASE + "/internet/largest-internet-companies-by-market-cap/"),
 }
 
+# 표시 테마 → 기계 id — 화면 문장(다른 언어)은 이 id 에서 만든다(build_site.latent_view · 카탈로그 latent.theme.*)
+THEME_ID = {theme: tid for tid, theme in (("semis", "AI 반도체"), ("software", "AI 소프트웨어"), ("ai", "AI"),
+                                         ("tech", "AI 테크"), ("power", "AI 전력 인프라"),
+                                         ("internet", "AI 인터넷"))}
+
 DEFAULT_CRITERIA = {
     "글로벌_순위_최소": 21,
     "글로벌_순위_최대": 200,
@@ -337,6 +342,9 @@ def build_card(c, overrides):
         "momentum_1m": c.get("m1"), "momentum_3m": c.get("m3"), "momentum_6m": c.get("m6"),
         "theme": ov.get("theme", c["theme"]),
         "story": ov.get("story", template_story(c)),
+        # 다국어 — 테마가 수집 테마 그대로면 id, 사유가 자동 문장이면 표식(사람 해설은 콘텐츠)
+        "theme_id": "" if "theme" in ov else THEME_ID.get(c["theme"], ""),
+        "story_auto": "story" not in ov,
         "auto": True,
     }
 

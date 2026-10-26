@@ -154,9 +154,11 @@ def fetch_earnings(watch):
             if in_horizon(dstr) and (sym, dstr) not in seen:
                 seen.add((sym, dstr))
                 hour = {"bmo": "장전", "amc": "장후", "dmh": "장중"}.get(x.get("hour", ""), "")
+                # 다국어 — 화면 문장은 상태(name·ticker·hour 코드)에서 언어별로 다시 만든다(build_site.calendar_view)
                 out.append({"date": dstr, "type": "earnings",
                             "title": f"{name} ({sym}) 실적 발표" + (f" · {hour}" if hour else ""),
-                            "ticker": sym})
+                            "ticker": sym, "name": name,
+                            "hour": x.get("hour", "") if x.get("hour") in ("bmo", "amc", "dmh") else ""})
     print(f"  [실적] 종목별 조회: {len(out)}건 확보 (실패 {fail}/{len(watch)})")
     return out
 

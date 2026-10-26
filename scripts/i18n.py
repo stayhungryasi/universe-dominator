@@ -38,7 +38,9 @@ DEFAULT_CCY = {"ko": "KRW", "en": "USD", "es": "USD", "ja": "JPY"}
 
 # 화면 문구 100% 완료 페이지 — 한글 0·hreflang·sitemap 검사 대상. 단계마다 늘어난다.
 # (나머지 페이지도 4개 언어로 빌드되지만 본문 번역 전이라 noindex + '번역 준비 중' 띠)
-DONE_PAGES = ("index.html", "observatory.html")
+DONE_PAGES = ("index.html", "latent.html", "megatrend.html", "research.html", "community.html",
+              "observatory.html", "journal.html", "pioneers.html", "history-top20.html",
+              "history-latent.html", "about.html", "policies.html")
 
 HANGUL = re.compile(r"[가-힣ㄱ-ㆎ]")
 
@@ -105,10 +107,13 @@ def t(lang, key, **params):
 
 
 _T_RE = re.compile(r"\{\{t:([a-z0-9_.\-]+)\}\}")
+# 강조 태그가 섞인 문단(소개·정책) — 키가 _html 로 끝날 때만 무이스케이프. 카탈로그는 저장소의 신뢰 원본이다
+_TH_RE = re.compile(r"\{\{t!([a-z0-9_.\-]+_html)\}\}")
 
 
 def render(html, lang):
-    """템플릿의 {{t:키}} → 그 언어 문장(HTML 이스케이프). 매개변수 문장은 JS 나 파이썬에서 만든다."""
+    """템플릿의 {{t:키}} → 그 언어 문장(HTML 이스케이프) · {{t!키_html}} → 그대로. 매개변수 문장은 JS·파이썬에서."""
+    html = _TH_RE.sub(lambda m: t(lang, m.group(1)), html)
     return _T_RE.sub(lambda m: _html.escape(t(lang, m.group(1)), quote=True), html)
 
 
@@ -122,6 +127,10 @@ def js_keys(html):
     """페이지가 쓰는 키 — 직접 호출 + 접두사 호출 + 'i18n-keys: a.* b.c' 힌트 주석."""
     keys = set(_JS_KEY.findall(html))
     prefixes = set(_JS_PREFIX.findall(html))
+    # T('mega.cat.' + id) — 점으로 끝나는 키는 동적 키의 접두사다(2026-10-26 렌더 실측: 접두사를
+    # 키로 싣자 런타임에 null 이 들어가 분류 칩이 한국어 상태값으로 떨어졌다)
+    prefixes |= {k for k in keys if k.endswith(".")}
+    keys = {k for k in keys if not k.endswith(".")}
     for h in _HINT.findall(html):
         for k in h.split():
             if k.endswith("*"):
@@ -352,7 +361,14 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '</span>' + html + '</' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '</span><sup class="uvx-ut">' + lg.toUpperCase() + '</sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '</span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: __SHORT__,
   esc: esc, rates: R, ccy: CCY, intl: __INTL__ };
 })();

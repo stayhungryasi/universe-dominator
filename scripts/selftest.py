@@ -207,7 +207,7 @@ def main():
     _cw = [float(w) for w in _re_lg.findall(r"width:(\d+(?:\.\d+)?)%", _cg.group(1))] if _cg else []
     check("레전드 표: colgroup 6칸 · 합 100%", (len(_cw), sum(_cw)), (6, 100.0))
     check("레전드 표: 전환율·ROE 원인 비고는 셀이 아니라 비고 줄로",
-          ("T('lg.note.conv') + b.conv_note" in _ob, "T('lg.note.roe') + roeN" in _ob,
+          ("T('lg.note.conv') + lgNC(b.conv_note_nc, b.conv_note)" in _ob, "T('lg.note.roe') + roeN" in _ob,
            "esc(b.conv_note) + '</div>'" in _ob or "TX(b.conv_note) + '</div>'" in _ob,
            "esc(b.roe_note) + '</div>'" in _ob or "TX(b.roe_note) + '</div>'" in _ob),
           (True, True, False, False))
@@ -2636,7 +2636,8 @@ console.log(JSON.stringify(cases.map(c => {
               (True, True, True, False))
         import verify_pages as _vpm
         _full, _ = _bsm.macro_wrap(_tpls[0].read_text(encoding="utf-8"), _m2, "2026-09-26")
-        _full = _full + " ".join(_vpm.MARKERS) + "</hea" + "d>"
+        import i18n as _i18n_m3  # 템플릿의 {{t:키}} 는 빌드가 그 언어로 치환한다 — 관문은 치환된 산출물을 본다
+        _full = _i18n_m3.render(_full, "ko") + " ".join(_vpm.MARKERS) + "</hea" + "d>"
         _cut = _full.replace('data-mk="ust30"', "")
         check("시장지표 ③: 관문 — 5배지가 다 있으면 통과", _vpm.check([("a.html", _full)]), {})
         check("시장지표 ③: 관문 — 배지 하나 빠지면 그 이름으로 잡는다",

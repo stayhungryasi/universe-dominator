@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>잠재지배자 · 우주지배자</title>
-<meta name="description" content="TOP 20 외 강력한 모멘텀을 보유한 차세대 후보 종목">
+<title>{{t:latent.title}}</title>
+<meta name="description" content="{{t:latent.meta_desc}}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 :root, [data-theme="light"] {
@@ -221,11 +221,11 @@ body {
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" title="네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" title="{{t:common.naver_fx}}">
         USD/KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="{{t:common.theme}}">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
@@ -247,13 +247,13 @@ body {
 <main class="container">
   <section class="page-hero">
     <div class="page-eyebrow">Next Universe</div>
-    <h1 class="page-title">잠재지배자</h1>
-    <p class="page-desc">TOP 20 외 강력한 모멘텀을 보유한 차세대 우주지배자 후보. AI·신산업 가치사슬을 중심으로 큐레이션.</p>
+    <h1 class="page-title">{{t:nav.latent}}</h1>
+    <p class="page-desc">{{t:latent.desc}}</p>
   </section>
 
   <div class="section-head">
     <div></div>
-    <a href="history-latent.html" class="history-btn">History <span class="history-btn-arrow">→</span></a>
+    <a href="history-latent.html" class="history-btn">{{t:idx.history}} <span class="history-btn-arrow">→</span></a>
   </div>
 
   <div class="latent-grid" id="latentGrid"></div>
@@ -330,11 +330,11 @@ function flagFromEmoji(emoji) {
   return `<img class="flag-img" src="https://flagcdn.com/${a}${b}.svg" alt="${a}${b}" loading="lazy" onerror="this.style.display='none'" />`;
 }
 
-const fmtMC = (mc) => mc >= 1000 ? '$' + (mc/1000).toFixed(2) + 'T' : '$' + Math.round(mc) + 'B';
+const fmtMC = (mc) => UVX.mc(mc);   // 언어별 표기(i18n.py 와 같은 규칙)
 
 // 단기 모멘텀 스트립: 1M/3M/6M — 상승 금빛 · 하락 코발트, 값 없으면 항목 생략
 const momCell = (label, v) => (v === null || v === undefined) ? ''
-  : `<span>${label} <b class="${v >= 0 ? 'mup' : 'mdown'}">${v >= 0 ? '+' : ''}${v}%</b></span>`;
+  : `<span>${label} <b class="${v >= 0 ? 'mup' : 'mdown'}">${v >= 0 ? '+' : ''}${UVX.dec(v)}%</b></span>`;
 const momStrip = (c) => {
   const cells = momCell('1M', c.momentum_1m) + momCell('3M', c.momentum_3m) + momCell('6M', c.momentum_6m);
   return cells ? `<div class="latent-momentum">${cells}</div>` : '';
@@ -342,11 +342,11 @@ const momStrip = (c) => {
 
 // 명단 관성 상태 배지 — 문구는 상태의 숫자에서 만든다(상태 문자열·필드명을 화면에 옮기지 않는다)
 const statusBadge = (c) => {
-  if (c.status === 'new' && c.new_day) return `<span class="latent-badge st-new">편입 ${c.new_day}일째</span>`;
+  if (c.status === 'new' && c.new_day) return `<span class="latent-badge st-new">${T('latent.st.new', {n: c.new_day})}</span>`;
   if (c.status === 'watch' && c.carried_days > 0)
-    return `<span class="latent-badge st-watch">데이터 결측 ${c.carried_days}/${c.miss_limit}</span>`;
+    return `<span class="latent-badge st-watch">${T('latent.st.miss', {a: c.carried_days, b: c.miss_limit})}</span>`;
   if (c.status === 'watch' && c.streak_out > 0)
-    return `<span class="latent-badge st-watch">제외 카운트 ${c.streak_out}/${c.out_limit}</span>`;
+    return `<span class="latent-badge st-watch">${T('latent.st.out', {a: c.streak_out, b: c.out_limit})}</span>`;
   return '';
 };
 
@@ -355,27 +355,27 @@ if (DATA.latent && DATA.latent.length > 0) {
   latentGrid.innerHTML = DATA.latent.map((c) => {
     const star = c.is_star ? 'star' : '';
     let badge;
-    if (c.is_star) badge = '<span class="latent-badge star-badge">★ 다음 우주지배자</span>';
+    if (c.is_star) badge = '<span class="latent-badge star-badge">★ ' + T('latent.star') + '</span>';
     else if (c.is_new) badge = '<span class="latent-badge new">NEW</span>';
-    else badge = `<span class="latent-badge normal">Rank ${c.rank}</span>`;
+    else badge = `<span class="latent-badge normal">${T('latent.rank', {n: c.rank})}</span>`;
     return `
       <div class="latent-card ${star}">
         <div class="latent-header">${badge}${statusBadge(c)}</div>
-        <a href="${stockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${c.name}</a>
+        <a href="${stockUrl(c.ticker, c.name)}" target="_blank" rel="noopener" class="latent-name">${TX(c.name)}</a>
         <div class="latent-ticker">
           <span>${flagFromEmoji(c.country)}</span>
           <span>${c.ticker}</span>
         </div>
-        <div class="latent-theme">${c.theme}</div>
-        <div class="latent-story">${c.story}</div>
+        <div class="latent-theme">${TX(c.theme)}</div>
+        <div class="latent-story">${TX(c.story)}</div>
         <div class="latent-stats">
           <div>
-            <div class="latent-stat-label">시가총액</div>
+            <div class="latent-stat-label">${T('latent.mc')}</div>
             <div class="latent-stat-val">${fmtMC(c.mc)}</div>
           </div>
           <div style="text-align:right;">
-            <div class="latent-stat-label">1년 수익률</div>
-            <div class="latent-stat-val ${c.momentum_1y >= 0 ? 'gain' : ''}">${c.momentum_1y >= 0 ? '+' : ''}${c.momentum_1y}%</div>
+            <div class="latent-stat-label">${T('latent.ret1y')}</div>
+            <div class="latent-stat-val ${c.momentum_1y >= 0 ? 'gain' : ''}">${c.momentum_1y >= 0 ? '+' : ''}${UVX.dec(c.momentum_1y)}%</div>
           </div>
         </div>
         ${momStrip(c)}

@@ -28,7 +28,7 @@ import i18n_numbers as N        # noqa: E402
 
 ROOT = Path(__file__).parent.parent
 SCRIPTS = Path(__file__).parent
-CODE = ["template.html", "observatory-template.html", "build_site.py", "probe_cockpit.py", "i18n.py"]
+CODE = ["template.html", "build_site.py", "probe_cockpit.py", "i18n.py", "weekly_history.py", "fetch_buffett.py"] +     sorted(p.name for p in SCRIPTS.glob("*-template.html"))
 # 동적으로 만드는 키 — 접두사 + 상태 id 전수(새 상태가 생기면 여기와 카탈로그에 함께 넣는다)
 DYNAMIC = {
     "px.type.": ("sees", "toll", "flight", "cyclical", "float", "too_hard"),
@@ -58,6 +58,27 @@ DYNAMIC = {
     "pc.tst.": ("pending",),
     "macro.full.": ("usd_krw", "wti", "ust10", "ust30", "usd_jpy"),
     "nav.": ("home", "latent", "mega", "research", "observatory", "community", "journal", "pioneers"),
+    # 단계 2 — 측정층 비고 코드(fetch_buffett *_codes) · 변동 이력 사건 · 잠재 테마 · 일정 · 신호 · 판정
+    "nc.": ("price_missing", "eps_wait", "g_missing", "rate_missing", "neg_earnings", "cash_mismatch",
+            "guard_ref", "guard_hold", "zone_hold", "rate_unwired.ktb10", "rate_unwired.jgb10",
+            "rate_unwired.tw10", "rate_unwired.sa10", "px.no_eps", "px.no_fair", "px.price_fail",
+            "item.dna", "item.capex", "div.sign", "div.high", "div.low")
+           + tuple("eps." + x for x in ("float_skip", "stale", "api_fail", "no_shares", "short_history",
+                                        "foreign_missing", "implausible"))
+           + tuple("roe." + x for x in ("none", "income_missing", "api_fail", "api_fail_yf", "equity_missing",
+                                        "equity_missing_yf", "equity_negative", "tangible_negative"))
+           + tuple("conv." + x for x in ("c_missing", "c_missing_generic", "adj_nonpositive", "income_missing",
+                                         "foreign", "float_skip", "api_fail", "none")),
+    "hist.watch.": ("miss", "out", "in", "swap", "wait"),
+    "hist.lbl.": ("weekly", "latent_weekly", "watch", "sector", "points", "fx"),
+    "hist.top20.": ("title", "desc"),
+    "hist.latent.": ("title", "desc"),
+    "latent.theme.": ("semis", "software", "ai", "tech", "power", "internet"),
+    "cal.hour.": ("bmo", "amc", "dmh"),
+    "cal.type.": ("macro", "earnings", "event", "other"),
+    "sig.tag.": ("essay", "model", "research", "policy", "invest", "other"),
+    "ce.v.": ("up", "flat", "down", "hold"),
+    "mega.cat.": ("top10", "throne", "themes", "rank"),
 }
 
 
@@ -69,7 +90,8 @@ def code_keys():
     keys = set()
     for name in CODE:
         t = (SCRIPTS / name).read_text(encoding="utf-8")
-        keys |= set(re.findall(r"\{\{t:([a-z0-9_.\-]+)\}\}", t))
+        keys |= set(re.findall(r"\{\{t[:!]([a-z0-9_.\-]+)\}\}", t))
+        keys |= set(re.findall(r"""\b_t\(\s*(?:lang|"ko"),\s*['"]([a-z0-9_.\-]+)['"]""", t))
         keys |= set(re.findall(r"""\bT\(\s*['"]([a-z0-9_.\-]+)['"]""", t))
         keys |= set(re.findall(r"""\bL\(\s*lang,\s*['"]([a-z0-9_.\-]+)['"]""", t))
         keys |= set(re.findall(r"""i18n\.t\(\s*(?:LANG|lang|L2),\s*['"]([a-z0-9_.\-]+)['"]""", t))
@@ -160,6 +182,19 @@ class CatalogTest(unittest.TestCase):
                for s in vals(v) if G.violations(s, L)]
         self.assertEqual(bad, [])
 
+    def test_glossary_terms(self):
+        """용어 사전 — 화면 문구도 번역 관문과 같은 함수로 잰다(사이트 고유명은 한 이름)."""
+        import i18n_gates as Q
+        bad = []
+        for k, v in self.cats["ko"].items():
+            if k.startswith("_") or not isinstance(v, str):
+                continue
+            src = re.sub(r"\s*·\s*우주지배자$", "", v)      # 탭 제목 끝의 브랜드 = UNIVERTRIX
+            for L in ("en", "es", "ja"):
+                for s in vals(self.cats[L].get(k, "")):
+                    bad += [(L, k, why) for why in Q.glossary(src, s, L)]
+        self.assertEqual(bad, [])
+
     def test_names_cover_korean_stock_names(self):
         latest = json.loads((ROOT / "data" / "latest.json").read_text(encoding="utf-8"))
         names = [(s.get("ticker"), s.get("name")) for r in latest.get("regions", {}).values()
@@ -173,13 +208,14 @@ class ComplianceTest(unittest.TestCase):
     """판정 함수 — 정상 문장으로 오탐을 먼저 잰다(방지선 규칙 ②)."""
 
     def test_advice_is_caught_in_every_language(self):
-        for L, s in (("ko", "지금 분할 매수하세요."), ("en", "We recommend you buy NVDA now."),
+        for L, s in (("ko", "지금 분할 매수하세요."), ("ko", "지금 신규 진입하세요."), ("en", "We recommend you buy NVDA now."),
                      ("es", "Recomendamos comprar ahora."), ("ja", "この銘柄は買い推奨です。")):
             self.assertEqual(G.purpose(s, L), "advice", (L, s))
 
     def test_disclaimers_and_analysis_pass(self):
         for L, s in (("ko", "어떤 항목도 매수·매도 신호가 아닙니다."), ("ko", "STAGE 2 · ORBIT — 궤도 진입"),
-                     ("ko", "매출 비중 42%"), ("en", "Nothing here is a buy or sell signal."),
+                     ("ko", "매출 비중 42%"), ("ko", "엔비디아 TOP 20 신규 진입 (3위)"),
+                     ("ko", "시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름"), ("en", "Nothing here is a buy or sell signal."),
                      ("en", "The buy-back continued."), ("en", "not a price target"),
                      ("es", "no un precio objetivo."), ("ja", "目標株価ではありません。"),
                      ("ja", "売上高が伸びた。"), ("ja", "売買シグナルではありません。")):
@@ -210,6 +246,18 @@ class NumberGateTest(unittest.TestCase):
         self.assertFalse(N.ok(ko, "expansion cost $33 million", "en"))
         self.assertFalse(N.ok(ko, "3,300万ドル", "ja"))
         self.assertFalse(N.ok(ko, "33 millones de dólares", "es"))
+
+    def test_translation_must_keep_the_value_exactly(self):
+        # 에세이 규율의 '큰 쪽 반올림 폭'이면 5조 → 5.5 trillion 이 통과한다 — 번역은 더 정밀한 쪽 폭으로
+        self.assertFalse(N.ok("시총 5조 달러", "market cap of $5.5 trillion", "en"))
+        self.assertFalse(N.ok("매출 146.2억 달러", "revenue of $14.6 billion", "en"))
+        self.assertTrue(N.ok("매출 146억 달러", "revenue of $14.6 billion", "en"))
+
+    def test_article_number_is_not_money(self):
+        # '제1조'(조문)는 1조(10^12)가 아니다 — 약관 번역에서 실제로 났던 오탐(2026-10-26)
+        self.assertTrue(N.ok("제1조 (목적)", "Article 1 (Purpose)", "en"))
+        self.assertTrue(N.ok("제12조 (준거법)", "第12条(準拠法)", "ja"))
+        self.assertFalse(N.ok("시가총액 1조 원", "market cap of KRW 1", "en"))
 
     def test_missing_number_is_blocked(self):
         self.assertFalse(N.ok("매출 146억 달러, 영업이익 23억 달러", "revenue $14.6 billion", "en"))
@@ -286,6 +334,11 @@ class OutputTest(unittest.TestCase):
             self.assertNotIn("{{t:", h, (L, p))
             chrome = re.sub(r"<[^>]+>", "\n", strip_payloads(h))
             self.assertEqual(G.violations(chrome, L), [], (L, p))
+            # 런타임 사전에 빈 값(null) 0 — 페이지가 부르는데 카탈로그에 없는 키·접두사를 키로 실은 것
+            m = re.search(r'var L = "[a-z]+", M = (\{.*?\}), R = ', h, re.S)
+            self.assertIsNotNone(m, (L, p))
+            nulls = sorted(k for k, v in json.loads(m.group(1)).items() if v is None)
+            self.assertEqual(nulls, [], (L, p))
 
 
 class MutationTest(unittest.TestCase):

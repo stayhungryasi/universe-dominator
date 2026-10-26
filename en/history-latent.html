@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "hist.empty": "No records yet.", "lg.auto": "Auto"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Translation in progress — Korean original", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -56,15 +56,22 @@ function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<sp
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
   return '<' + tag + ' lang="ko" data-uvx-pending="1"><span class="uvx-pending" lang="' + L + '">' + esc(P) + '<\/span>' + html + '<\/' + tag + '>'; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB;
+/* 사용자 작성 글(관제센터·관측노트) — 번역하지 않는다. 페이지 언어와 다른 언어면 lang 표식 + 작은 언어 칩 */
+var KANA = /[぀-ヿ]/;
+function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.test(str) ? 'ko' : KANA.test(str) ? 'ja' : '';
+  if (!lg || lg === L) return h;
+  return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
+/* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
+function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
+window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK hynix", "005930.KS": "Samsung", "WMT": "Walmart", "XOM": "ExxonMobil"},
   esc: esc, rates: R, ccy: CCY, intl: "en-US" };
 })();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>잠재지배자 변동 이력 · 우주지배자</title>
-<meta name="description" content="차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스">
+<title>Contenders change log · Sovereigns</title>
+<meta name="description" content="Dated changes among next-generation candidates — graduations and new entries, sector mix, points to watch and historical cases">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 /* 라이트 / 다크 테마 변수는 메인과 동일 */
@@ -589,9 +596,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- uvx-hreflang-v1 -->
 <link rel="canonical" href="https://univertrix.com/en/history-latent">
+<link rel="alternate" hreflang="ko" href="https://univertrix.com/history-latent">
+<link rel="alternate" hreflang="en" href="https://univertrix.com/en/history-latent">
+<link rel="alternate" hreflang="es" href="https://univertrix.com/es/history-latent">
+<link rel="alternate" hreflang="ja" href="https://univertrix.com/ja/history-latent">
+<link rel="alternate" hreflang="x-default" href="https://univertrix.com/en/history-latent">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="es_LA">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta property="og:url" content="https://univertrix.com/en/history-latent">
-<meta name="robots" content="noindex">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
@@ -634,7 +648,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
       </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 10:17 · Source FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 10:17 · Source FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 10:17 · Source FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 10:17 · Source frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
-      <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../history-latent.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/history-latent.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/history-latent.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/history-latent.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
+      <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../history-latent.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/history-latent.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/history-latent.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/history-latent.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"></button>
     </div>
   </div>
 </header>
@@ -642,13 +656,12 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
 <nav class="site-nav">
   <div class="site-nav-inner container"><a href="index.html" class="nav-tab">Sovereigns</a><a href="latent.html" class="nav-tab active">Contenders</a><a href="megatrend.html" class="nav-tab">Megatrends</a><a href="research.html" class="nav-tab">Research</a><a href="observatory.html" class="nav-tab">Data Observatory</a><a href="community.html" class="nav-tab">Mission Control</a><a href="journal.html" class="nav-tab">Field Notes</a><a href="pioneers.html" class="nav-tab">Pioneers</a></div>
 </nav>
-<div class="uvx-pagepending">This page is being translated — the body text is the Korean original.</div>
 
 <main class="container">
   <section class="page-hero">
     <div class="page-eyebrow">History</div>
-    <h1 class="page-title">잠재지배자 변동 이력</h1>
-    <p class="page-desc">차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스</p>
+    <h1 class="page-title">Contenders change log</h1>
+    <p class="page-desc">Dated changes among next-generation candidates — graduations and new entries, sector mix, points to watch and historical cases</p>
   </section>
 
   <section class="timeline" id="timeline"></section>
@@ -661,7 +674,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <a href="https://t.me/stayhungryasi" target="_blank" rel="noopener" class="footer-link">t.me/stayhungryasi</a>
   </div>
   <p class="footer-source">
-    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · 매일 08:00 KST 자동 갱신
+    Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · auto-updated daily at 08:00 KST
   </p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">About</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Terms</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacy</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Community Policy</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Investment Disclaimer</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contact</a></div>
 </footer>
@@ -683,8 +696,8 @@ function toggleTheme() {
 
 // 데이터 + 렌더
 const DATA = {
-  "page_title": "잠재지배자 변동 이력",
-  "page_desc": "차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스",
+  "page_title": "Contenders change log",
+  "page_desc": "Dated changes among next-generation candidates — graduations and new entries, sector mix, points to watch and historical cases",
   "entries": [
     {
       "date": "2026.10.24",
@@ -1994,13 +2007,12 @@ function renderBlock(block) {
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
-      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">자동</span>' : ''}</div>
-      ${e.period ? `<div class="entry-period">${e.period}</div>` : ''}
-      ${(e.blocks || []).map(renderBlock).join('')}
+      <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
+      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
     </div>
   `).join('');
 } else {
-  timeline.innerHTML = '<div class="empty">아직 기록이 없습니다.</div>';
+  timeline.innerHTML = '<div class="empty">' + T('hist.empty') + '</div>';
 }
 </script>
 <!-- uv-presence -->

@@ -119,50 +119,150 @@ def diff_region(prev_stocks, curr_stocks):
     }
 
 
+def _t(lang, key, **p):
+    import i18n
+    return i18n.t(lang, key, **p)
+
+
+def _mc(lang, mc):
+    import i18n
+    return fmt_mc(mc) if lang == "ko" else i18n.mc(lang, mc)
+
+
+def _nm(lang, ev):
+    import i18n
+    return i18n.stock_name(lang, ev.get("tk"), ev.get("name") or ev.get("tk") or "")
+
+
+# ── 사건(event) → 문장 — 문장은 사건(상태)에서 언어별로 만든다(CLAUDE.md 규칙 8).
+#    ko 문장도 같은 렌더러(ko 카탈로그 hist.ev.*)로 만든다 — 규칙이 두 벌이 되지 않게.
+#    다국어 빌드(build_site.history_view)가 render_entry 로 같은 사건을 그 언어로 다시 그린다.
+def render_event(ev, lang="ko"):
+    k = ev.get("k")
+    nm = _nm(lang, ev)
+    if k in ("enter", "exit"):
+        pre = "" if ev.get("region") in (None, "earth") else \
+            "[" + _t(lang, "region." + ev["region"]) + "] "
+        if k == "enter":
+            return pre + _t(lang, "hist.ev.enter", name=nm, rank=ev.get("rank"), mc=_mc(lang, ev.get("mc") or 0))
+        return pre + _t(lang, "hist.ev.exit", name=nm)
+    if k == "rank_up":
+        return _t(lang, "hist.ev.rank_up", name=nm, a=ev["a"], b=ev["b"], mc=_mc(lang, ev.get("mc") or 0))
+    if k == "rank_down":
+        return _t(lang, "hist.ev.rank_down", name=nm, a=ev["a"], b=ev["b"])
+    if k == "mc_move":
+        return _t(lang, "hist.ev.mc_move", name=nm, cls="em-up" if ev["pct"] >= 0 else "em-down",
+                  pct=f"{'+' if ev['pct'] >= 0 else ''}{ev['pct']:.0f}%",
+                  a=_mc(lang, ev["old"]), b=_mc(lang, ev["new"]))
+    if k == "l_enter":
+        mom = "" if ev.get("mom") is None else _t(lang, "hist.ev.mom_tail", m=ev["mom"])
+        return _t(lang, "hist.ev.l_enter", name=nm, rank=ev.get("rank", "?"), mc=_mc(lang, ev.get("mc") or 0), mom=mom)
+    if k == "grad":
+        return _t(lang, "hist.ev.grad", name=nm, rank=ev.get("rank"))
+    if k == "l_exit":
+        return _t(lang, "hist.ev.l_exit", name=nm)
+    if k == "l_rank":
+        return _t(lang, "hist.ev.l_rank_up" if ev["b"] < ev["a"] else "hist.ev.l_rank_down", name=nm, a=ev["a"], b=ev["b"])
+    if k == "l_mom":
+        return _t(lang, "hist.ev.l_mom", name=nm, cls="em-up" if ev["b"] >= ev["a"] else "em-down", a=ev["a"], b=ev["b"])
+    if k == "t_in":
+        facts = []
+        if ev.get("rank"):
+            facts.append(_t(lang, "hist.ev.rank_fact", n=ev["rank"]))
+        if ev.get("mc"):
+            facts.append(_mc(lang, ev["mc"]))
+        if ev.get("mom") is not None:
+            facts.append(f"1Y {ev['mom']:+}%")
+        fact = _t(lang, "hist.ev.facts", f=", ".join(facts)) if facts else ""
+        why = (_t(lang, "hist.ev.why_swap", who=ev["replacing"], n=ev.get("swap", "?")) if ev.get("replacing")
+               else _t(lang, "hist.ev.why_in", n=ev.get("streak", "?")))
+        return _t(lang, "hist.ev.t_in", name=nm, fact=fact, why=why, when=ev["when"])
+    if k == "t_out":
+        if ev.get("by"):
+            why = _t(lang, "hist.ev.why_replaced", who=ev["by"])
+        elif ev.get("carried"):
+            why = _t(lang, "hist.ev.why_carried", n=ev["carried"])
+        elif ev.get("out"):
+            why = _t(lang, "hist.ev.why_out", n=ev["out"])
+        else:
+            why = None
+        tail = _t(lang, "hist.ev.tail_why", why=why, when=ev["when"]) if why else _t(lang, "hist.ev.tail", when=ev["when"])
+        return _t(lang, "hist.ev.t_out", name=nm, tail=tail)
+    if k == "watch":
+        return " · ".join(_t(lang, "hist.watch." + p["w"], name=_nm(lang, p), a=p.get("a"), b=p.get("b"))
+                          for p in ev.get("parts") or [])
+    if k == "sector":
+        th = _t(lang, "latent.theme." + ev["tid"]) if ev.get("tid") and lang != "ko" else ev.get("theme", "")
+        names = ", ".join(_nm(lang, x) for x in ev.get("names") or [])
+        return _t(lang, "hist.ev.sector", theme=th, n=len(ev.get("names") or []), names=names)
+    if k == "pt_hot":
+        return _t(lang, "hist.ev.pt_hot", name=nm, m=ev["m"])
+    if k == "pt_new":
+        return _t(lang, "hist.ev.pt_new", name=nm, rank=ev.get("rank", "?"))
+    if k == "pt_grad":
+        return _t(lang, "hist.ev.pt_grad", names=", ".join(_nm(lang, x) for x in ev.get("names") or []))
+    return ""
+
+
+def _block(label_id, events, lang="ko", **lp):
+    return {"type": "items", "label_id": label_id, "label_p": lp, "label": _t(lang, "hist.lbl." + label_id, **lp),
+            "events": events, "items": [render_event(e, lang) for e in events]}
+
+
+def render_entry(entry, lang):
+    """저장된 기록(사건 구조가 있는 것) → 그 언어로 다시 그린 사본. 사건이 없는 블록은 그대로."""
+    e = dict(entry)
+    if e.get("prev") and e.get("curr"):
+        e["period"] = _t(lang, "hist.period", a=_short_date(e["prev"]), b=_short_date(e["curr"]))
+    blocks = []
+    for b in e.get("blocks") or []:
+        b = dict(b)
+        if b.get("type") == "items" and b.get("events") is not None:
+            b["items"] = [render_event(x, lang) for x in b["events"]]
+            if b.get("label_id"):
+                b["label"] = _t(lang, "hist.lbl." + b["label_id"], **(b.get("label_p") or {}))
+        elif b.get("type") == "stats" and b.get("fx"):
+            fx = b["fx"]
+            b["label"] = _t(lang, "hist.lbl.fx")
+            b["items"] = [{"k": "USD/KRW", "v": _t(lang, "hist.fx.rate", r=fx["rate"], d=fx["date"])},
+                          {"k": _t(lang, "hist.fx.formula_k"), "v": _t(lang, "hist.fx.formula", m=fx["mult"])}]
+        blocks.append(b)
+    e["blocks"] = blocks
+    return e
+
+
 def build_items(curr_snap, prev_snap):
-    """전 지역을 훑어 변동 사항 items 리스트 생성."""
-    items = []
-    
+    """전 지역을 훑어 변동 사건 리스트 생성(문장은 render_event 가 만든다)."""
+    events = []
+
     for region_key, label in REGION_LABELS.items():
         prev_stocks = prev_snap.get("regions", {}).get(region_key, [])
         curr_stocks = curr_snap.get("regions", {}).get(region_key, [])
         if not prev_stocks or not curr_stocks:
             continue
-        
+
         d = diff_region(prev_stocks, curr_stocks)
-        
+
         # 지구 지역은 상세히, 나머지는 진입/이탈 위주로 간결하게
         is_earth = (region_key == "earth")
-        prefix = "" if is_earth else f"[{label}] "
-        
+
         for s in d["entered"]:
-            items.append(
-                f"{prefix}<strong>{s['name']}</strong> "
-                f"TOP 20 신규 진입 (<span class='em-up'>{s['rank']}위, {fmt_mc(s['mc'])}</span>)"
-            )
+            events.append({"k": "enter", "region": region_key, "name": s["name"], "tk": s.get("ticker"),
+                           "rank": s["rank"], "mc": s["mc"]})
         for s in d["exited"]:
-            items.append(f"{prefix}<strong>{s['name']}</strong> TOP 20 이탈")
-        
+            events.append({"k": "exit", "region": region_key, "name": s["name"], "tk": s.get("ticker")})
+
         if is_earth:
             for cs, old_r, new_r in d["rank_up"]:
-                items.append(
-                    f"<strong>{cs['name']}</strong> "
-                    f"<span class='em-up'>{old_r}위 → {new_r}위 상승</span> ({fmt_mc(cs['mc'])})"
-                )
+                events.append({"k": "rank_up", "name": cs["name"], "tk": cs.get("ticker"),
+                               "a": old_r, "b": new_r, "mc": cs["mc"]})
             for cs, old_r, new_r in d["rank_down"]:
-                items.append(
-                    f"<strong>{cs['name']}</strong> "
-                    f"<span class='em-down'>{old_r}위 → {new_r}위 하락</span>"
-                )
+                events.append({"k": "rank_down", "name": cs["name"], "tk": cs.get("ticker"), "a": old_r, "b": new_r})
             for cs, old_mc, new_mc, pct in d["big_mc"][:5]:
-                cls = "em-up" if pct >= 0 else "em-down"
-                items.append(
-                    f"<strong>{cs['name']}</strong> "
-                    f"시총 <span class='{cls}'>{fmt_pct(old_mc, new_mc)}</span> "
-                    f"({fmt_mc(old_mc)} → {fmt_mc(new_mc)})"
-                )
-    
-    return items
+                events.append({"k": "mc_move", "name": cs["name"], "tk": cs.get("ticker"),
+                               "pct": (new_mc - old_mc) / old_mc * 100, "old": old_mc, "new": new_mc})
+
+    return events
 
 
 
@@ -204,55 +304,33 @@ def diff_latent(prev_latent, curr_latent):
 
 
 def build_latent_items(d, curr_snap):
-    """잠재지배자 변동 items 생성. 이탈 종목이 TOP 20에 있으면 '졸업'으로 구분."""
-    items = []
+    """잠재지배자 변동 사건 생성. 이탈 종목이 TOP 20에 있으면 '졸업'으로 구분."""
+    events = []
     earth = _earth_tickers(curr_snap)
 
     for s in d["entered"]:
-        mom = s.get("momentum_1y")
-        mom_str = f", 1Y +{mom}%" if mom is not None else ""
-        items.append(
-            f"<strong>{s['name']}</strong> 잠재지배자 신규 편입 "
-            f"(<span class='em-up'>{s.get('rank','?')}위, {fmt_mc(s.get('mc',0))}{mom_str}</span>)"
-        )
+        events.append({"k": "l_enter", "name": s["name"], "tk": s.get("ticker"), "rank": s.get("rank", "?"),
+                       "mc": s.get("mc", 0), "mom": s.get("momentum_1y")})
 
     for s in d["exited"]:
         tk = s.get("ticker")
         if tk in earth:
             s["_grad"] = True
-            gr = earth[tk]
-            items.append(
-                f"<strong>{s['name']}</strong> — "
-                f"<span class='em-up'>★ TOP 20 졸업 (글로벌 {gr}위)</span>"
-            )
+            events.append({"k": "grad", "name": s["name"], "tk": tk, "rank": earth[tk]})
         else:
-            items.append(f"<strong>{s['name']}</strong> 잠재지배자 목록에서 제외")
+            events.append({"k": "l_exit", "name": s["name"], "tk": tk})
 
     for cs, pr, cr in sorted(d["rank_moves"], key=lambda x: x[0].get("rank") or 999):
-        up = cr < pr
-        cls = "em-up" if up else "em-down"
-        word = "상승" if up else "하락"
-        items.append(
-            f"<strong>{cs['name']}</strong> 잠재 순위 "
-            f"<span class='{cls}'>{pr}위 → {cr}위 {word}</span>"
-        )
+        events.append({"k": "l_rank", "name": cs["name"], "tk": cs.get("ticker"), "a": pr, "b": cr})
 
     for cs, pm, cm in d["mom_moves"]:
-        cls = "em-up" if cm >= pm else "em-down"
-        items.append(
-            f"<strong>{cs['name']}</strong> 1Y 모멘텀 "
-            f"<span class='{cls}'>{pm}% → {cm}%</span>"
-        )
+        events.append({"k": "l_mom", "name": cs["name"], "tk": cs.get("ticker"), "a": pm, "b": cm})
 
     for cs, pmc, cmc, pct in sorted(d["mc_moves"], key=lambda x: -abs(x[3]))[:5]:
-        cls = "em-up" if pct >= 0 else "em-down"
-        items.append(
-            f"<strong>{cs['name']}</strong> 시총 "
-            f"<span class='{cls}'>{fmt_pct(pmc, cmc)}</span> "
-            f"({fmt_mc(pmc)} → {fmt_mc(cmc)})"
-        )
+        events.append({"k": "mc_move", "name": cs["name"], "tk": cs.get("ticker"),
+                       "pct": (cmc - pmc) / pmc * 100, "old": pmc, "new": cmc})
 
-    return items
+    return events
 
 
 def load_latent_state():
@@ -281,46 +359,30 @@ def _short_date(dstr):
 
 
 def build_transition_items(trans, curr_snap):
-    """확정 전이 → 이력 문구. 사유는 전이에 실린 숫자에서 만든다(내부 문자열을 옮기지 않는다)."""
-    items, entered, grads = [], [], []
+    """확정 전이 → 이력 사건. 사유는 전이에 실린 숫자에서 만든다(내부 문자열을 옮기지 않는다)."""
+    events, entered, grads = [], [], []
     earth = _earth_tickers(curr_snap)
     for t in trans:
         name, when = t.get("name") or t.get("ticker", ""), _short_date(t["date"])
         if t.get("dir") == "in":
             entered.append(t)
-            facts = [f"{t['rank']}위"] if t.get("rank") else []
-            if t.get("mc"):
-                facts.append(fmt_mc(t["mc"]))
-            if t.get("momentum_1y") is not None:
-                facts.append(f"1Y {t['momentum_1y']:+}%")
-            if t.get("replacing_name"):
-                why = f"{t['replacing_name']} 자리 교체 · 우위 {t.get('swap_streak', '?')}거래일 연속"
-            else:
-                why = f"기준 충족 {t.get('streak_in', '?')}거래일 연속"
-            fact = f"(<span class='em-up'>{', '.join(facts)}</span>) " if facts else ""
-            items.append(f"<strong>{name}</strong> 잠재지배자 신규 편입 {fact}— {why}, {when} 확정")
+            events.append({"k": "t_in", "name": name, "tk": t.get("ticker"), "rank": t.get("rank"),
+                           "mc": t.get("mc"), "mom": t.get("momentum_1y"), "when": when,
+                           "replacing": t.get("replacing_name"), "swap": t.get("swap_streak", "?"),
+                           "streak": t.get("streak_in", "?")})
             continue
         tk = t.get("ticker")
         if tk in earth:
             grads.append(t)
-            items.append(f"<strong>{name}</strong> — "
-                         f"<span class='em-up'>★ TOP 20 졸업 (글로벌 {earth[tk]}위)</span>")
+            events.append({"k": "grad", "name": name, "tk": tk, "rank": earth[tk]})
             continue
-        if t.get("replaced_by_name"):
-            why = f"{t['replaced_by_name']}에 자리 교체"
-        elif t.get("carried_days"):
-            why = f"데이터 결측 {t['carried_days']}거래일 연속"
-        elif t.get("streak_out"):
-            why = f"기준 미달 {t['streak_out']}거래일 연속"
-        else:
-            why = None
-        tail = f" — {why}, {when} 확정" if why else f", {when} 확정"
-        items.append(f"<strong>{name}</strong> 잠재지배자 제외{tail}")
-    return items, entered, grads
+        events.append({"k": "t_out", "name": name, "tk": tk, "when": when, "by": t.get("replaced_by_name"),
+                       "carried": t.get("carried_days"), "out": t.get("streak_out")})
+    return events, entered, grads
 
 
 def build_watch_line(state):
-    """'경계 관찰' 한 줄 — 제외 카운트가 도는 멤버와 대기 중인 후보. 낱말은 상태 숫자에서 만든다."""
+    """'경계 관찰' 한 줄의 사건 — 제외 카운트가 도는 멤버와 대기 중인 후보. 낱말은 상태 숫자에서 만든다."""
     if not state:
         return None
     lim = state.get("limits") or {}
@@ -330,20 +392,20 @@ def build_watch_line(state):
                                                                kv[1].get("carried_days", 0))):
         nm = m.get("name") or tk
         if m.get("carried_days"):
-            parts.append(f"<strong>{nm}</strong> 데이터 결측 {m['carried_days']}/{lim.get('miss', '?')}")
+            parts.append({"w": "miss", "name": nm, "tk": tk, "a": m["carried_days"], "b": lim.get("miss", "?")})
         elif m.get("streak_out"):
-            parts.append(f"<strong>{nm}</strong> 제외 카운트 {m['streak_out']}/{lim.get('out', '?')}")
+            parts.append({"w": "out", "name": nm, "tk": tk, "a": m["streak_out"], "b": lim.get("out", "?")})
     full = len(members) >= int(lim.get("cap", 14))
     for tk, c in sorted((state.get("candidates") or {}).items(),
                         key=lambda kv: kv[1].get("rank") or 999):
         nm = c.get("name") or tk
         if c.get("streak_in", 0) < int(lim.get("in", 3)):
-            parts.append(f"<strong>{nm}</strong> 편입 카운트 {c.get('streak_in', 0)}/{lim.get('in', '?')}")
+            parts.append({"w": "in", "name": nm, "tk": tk, "a": c.get("streak_in", 0), "b": lim.get("in", "?")})
         elif full and c.get("swap_streak"):
-            parts.append(f"<strong>{nm}</strong> 교체 카운트 {c['swap_streak']}/{lim.get('swap_days', '?')}")
+            parts.append({"w": "swap", "name": nm, "tk": tk, "a": c["swap_streak"], "b": lim.get("swap_days", "?")})
         elif full:
-            parts.append(f"<strong>{nm}</strong> 기준 충족 {c.get('streak_in')}거래일 · 빈자리 대기")
-    return " · ".join(parts) if parts else None
+            parts.append({"w": "wait", "name": nm, "tk": tk, "a": c.get("streak_in")})
+    return {"k": "watch", "parts": parts} if parts else None
 
 
 def build_latent_extra_blocks(curr_latent, d):
@@ -353,32 +415,33 @@ def build_latent_extra_blocks(curr_latent, d):
     themes = {}
     for s in curr_latent:
         th = s.get("theme") or "기타"
-        themes.setdefault(th, []).append(s.get("name", ""))
+        themes.setdefault(th, []).append(s)
     if themes:
-        items = [f"<strong>{th} ({len(names)})</strong>: {', '.join(names)}"
-                 for th, names in sorted(themes.items(), key=lambda kv: -len(kv[1]))]
-        blocks.append({"type": "items", "label": f"섹터 분포 ({len(curr_latent)}종목)", "items": items})
+        evs = [{"k": "sector", "theme": th, "tid": next((x.get("theme_id") for x in rows if x.get("theme_id")), ""),
+                "names": [{"name": x.get("name", ""), "tk": x.get("ticker")} for x in rows]}
+               for th, rows in sorted(themes.items(), key=lambda kv: -len(kv[1]))]
+        blocks.append(_block("sector", evs, n=len(curr_latent)))
     # 관전 포인트 (숫자 기반)
     pts = []
     moms = [s for s in curr_latent if s.get("momentum_1y") is not None]
     if moms:
         hot = max(moms, key=lambda s: s["momentum_1y"])
-        pts.append(f"<strong>가장 폭발적</strong>: {hot['name']} — 1Y <span class='em-up'>+{hot['momentum_1y']}%</span>")
+        pts.append({"k": "pt_hot", "name": hot["name"], "tk": hot.get("ticker"), "m": hot["momentum_1y"]})
     if d.get("entered"):
         top_new = min(d["entered"], key=lambda s: s.get("rank") or 999)
-        pts.append(f"<strong>신규 중 최고 순위</strong>: {top_new['name']} — 글로벌 {top_new.get('rank','?')}위 데뷔")
+        pts.append({"k": "pt_new", "name": top_new["name"], "tk": top_new.get("ticker"), "rank": top_new.get("rank", "?")})
     grads = [s for s in d.get("exited", []) if s.get("_grad")]
     if grads:
-        pts.append(f"<strong>졸업</strong>: {', '.join(s['name'] for s in grads)} — TOP 20 진입")
+        pts.append({"k": "pt_grad", "names": [{"name": s["name"], "tk": s.get("ticker")} for s in grads]})
     if pts:
-        blocks.append({"type": "items", "label": "관전 포인트", "items": pts})
+        blocks.append(_block("points", pts))
     return blocks
 
 
 # ───────────────────────── 공통 헬퍼 ─────────────────────────
 
 def _fx_block():
-    """환율·환산 블록 (latest.json meta 기준). 없으면 None."""
+    """환율·환산 블록 (latest.json meta 기준). 없으면 None. 상태(fx)를 함께 남겨 언어별로 다시 그린다."""
     try:
         m = json.loads(LATEST_PATH.read_text(encoding="utf-8")).get("meta", {})
         fx = m.get("usd_krw")
@@ -387,22 +450,24 @@ def _fx_block():
         date_label = m.get("fetched_date", "")[-5:].replace("-", "/")
         rate_disp = f"{fx:,.0f}"
         mult = f"{fx/1000:.2f}"
-        return {"type": "stats", "label": "환율 · 환산",
-                "items": [{"k": "USD/KRW", "v": f"{rate_disp} ({date_label} 기준)"},
-                          {"k": "환산식", "v": f"시총(조원) = 시총(USD bn) × {mult}"}]}
+        st = {"rate": rate_disp, "date": date_label, "mult": mult}
+        return {"type": "stats", "label": _t("ko", "hist.lbl.fx"), "fx": st,
+                "items": [{"k": "USD/KRW", "v": _t("ko", "hist.fx.rate", r=rate_disp, d=date_label)},
+                          {"k": _t("ko", "hist.fx.formula_k"), "v": _t("ko", "hist.fx.formula", m=mult)}]}
     except Exception:
         return None
 
 
-def _make_entry(items, prev_date, curr_date, label):
+def _make_entry(events, prev_date, curr_date, label_id):
     def short(dstr):
         dt = datetime.strptime(dstr, "%Y-%m-%d")
         return f"{dt.month}.{dt.day}"
     entry = {
         "date": curr_date.replace("-", "."),
-        "period": f"{short(prev_date)} → {short(curr_date)} (주간)",
+        "period": _t("ko", "hist.period", a=short(prev_date), b=short(curr_date)),
+        "prev": prev_date, "curr": curr_date,
         "auto": True,
-        "blocks": [{"type": "items", "label": label, "items": items}],
+        "blocks": [_block(label_id, events)],
     }
     return entry
 
@@ -460,9 +525,10 @@ def main():
     print(f"[비교] {prev_date} → {curr_date}")
 
     # ── 우주지배자 (TOP 20) ──
-    items = build_items(curr_snap, prev_snap)
+    events = build_items(curr_snap, prev_snap)
+    items = [render_event(e) for e in events]
     if items:
-        entry = _make_entry(items, prev_date, curr_date, "주간 변동 사항 (자동 감지)")
+        entry = _make_entry(events, prev_date, curr_date, "weekly")
         fx = _fx_block()
         if fx:
             entry["blocks"].append(fx)
@@ -489,13 +555,14 @@ def main():
         litems += build_latent_items(dl, curr_snap)
     else:
         print("[정보] 잠재지배자: 비교할 스냅샷 latent 없음 — 순위·모멘텀 변동 생략")
-    watch = build_watch_line(lstate)
+    watch_ev = build_watch_line(lstate)
+    watch = render_event(watch_ev) if watch_ev else None
     if litems or watch:
-        lentry = _make_entry(litems, prev_date, curr_date, "잠재지배자 주간 변동 (자동 감지)")
+        lentry = _make_entry(litems, prev_date, curr_date, "latent_weekly")
         if not litems:
             lentry["blocks"] = []
-        if watch:
-            lentry["blocks"].append({"type": "items", "label": "경계 관찰", "items": [watch]})
+        if watch_ev:
+            lentry["blocks"].append(_block("watch", [watch_ev]))
         if curr_latent:
             lentry["blocks"].extend(build_latent_extra_blocks(
                 curr_latent, {"entered": entered,
@@ -508,7 +575,7 @@ def main():
             "page_desc": "차세대 우주지배자 후보의 시점별 변동 기록",
             "entries": [],
         }, lentry)
-        _preview("잠재지배자 History", litems + ([watch] if watch else []))
+        _preview("잠재지배자 History", [render_event(e) for e in litems] + ([watch] if watch else []))
     else:
         print("[정보] 잠재지배자: 이번 주 변동 없음")
 
