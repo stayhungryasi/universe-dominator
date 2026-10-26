@@ -132,7 +132,7 @@ def strip_payloads(html):
     t = re.sub(r"(?<![:'\"\w\\])//[^\n]*", " ", t)
     # 허용 목록 — 전환기의 '한국어' 링크(lang=ko 표식이 붙은 자기 이름)
     t = re.sub(r'<a [^>]*lang="ko"[^>]*>한국어<small>', " ", t)
-    t = re.sub(r'<span lang="ko" data-uvx-pending="1">[^<]*</span>', " ", t)
+    t = re.sub(r'<span lang="ko" data-uvx-pending="1"[^>]*>[^<]*</span>', " ", t)
     return t
 
 
@@ -227,7 +227,7 @@ class ComplianceTest(unittest.TestCase):
         import probe_cockpit as pc
         for L in i18n.LANGS:
             h, d, _ = pc.render(ar, today=date(2026, 10, 26), lang=L)
-            plain = re.sub(r'<span lang="ko" data-uvx-pending="1">[^<]*</span>', " ", h)
+            plain = re.sub(r'<span lang="ko" data-uvx-pending="1"[^>]*>[^<]*</span>', " ", h)
             self.assertEqual(G.violations(plain, L), [], L)
             if L != "ko":
                 # 관제판의 화면 문구는 그 언어 — 남는 한글은 원문 표식(탐사 원장 문장) 안에만
@@ -399,6 +399,84 @@ class MutationTest(unittest.TestCase):
         self.assertEqual(hangul_lines(strip_payloads(h)), [])
         bad = h.replace("</main>", "<p>이 문장은 번역되지 않았다</p></main>", 1)
         self.assertTrue(hangul_lines(strip_payloads(bad)))
+
+
+class InlineMarkTest(unittest.TestCase):
+    """F4 — 짧은 원문에도 보이는 표식('KO' 꼬리표 + title=번역 준비 중). JS 판과 파이썬 판이 같은 마크업."""
+
+    def _js(self, L, expr):
+        js = (i18n.runtime_js(L, [], {"USD": 1})
+              .replace('<script id="uvx-i18n-v1">', "").replace("</script>", "").replace("<\\/", "</"))
+        js = "var window = {}; var localStorage = {getItem: function(){ return null; }};" + js + \
+             ";console.log(JSON.stringify(" + expr + "))"
+        p = subprocess.run(["node"], input=js, capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(p.returncode, 0, p.stderr[:300])
+        return json.loads(p.stdout.strip().splitlines()[-1])
+
+    def test_tx_tag_and_python_twin(self):
+        if shutil.which("node") is None:
+            self.skipTest("node 없음")
+        for L in ("en", "es", "ja"):
+            got = self._js(L, "[window.TX('메모리 사이클'), window.TX('Memory'), "
+                              "window.TXI('<b>삼성</b> x'), window.TXI(window.TX('삼성') + ' up')]")
+            self.assertEqual(got[0], i18n.pending_inline(L, "메모리 사이클"), L)
+            self.assertIn('class="uvx-ko"', got[0])
+            self.assertIn('title="' + i18n.t(L, "common.pending").replace("'", "&#39;"), got[0].replace("&#x27;", "&#39;"))
+            self.assertEqual(got[1], "Memory")
+            self.assertTrue(got[2].startswith('<span lang="ko" data-uvx-pending="1"'), got[2])
+            self.assertEqual(got[3].count("uvx-ko"), 1, "이미 표식된 조각은 다시 감싸지 않는다")
+        ko = self._js("ko", "[window.TX('메모리'), window.TXI('<b>삼성</b>')]")
+        self.assertEqual(ko, ["메모리", "<b>삼성</b>"])
+
+    def test_css_present(self):
+        import build_site as bs
+        self.assertIn(".uvx-ko{", bs.I18N_CSS)
+
+
+class NamesTest(unittest.TestCase):
+    """F5 — 이름표: 한국 기업만 일본어 표기, 해외 기업은 라틴 표기(ja_short 없음 → en_short)."""
+
+    def test_foreign_ja_short_is_latin(self):
+        kana_kanji = re.compile(r"[぀-ヿ一-鿿]")
+        for tk, ent in i18n.names().items():
+            if not isinstance(ent, dict):
+                continue
+            korean = i18n.has_hangul(ent.get("ko", ""))
+            short = i18n.short_name("ja", tk) or ""
+            if not korean:
+                self.assertFalse(kana_kanji.search(short), f"{tk}: 해외 기업 ja 이름표가 일본어 표기 '{short}'")
+        self.assertEqual(i18n.short_name("ja", "XOM"), "ExxonMobil")
+        self.assertEqual(i18n.short_name("ja", "005930.KS"), "サムスン")
+
+
+class ParallaxJournalTest(unittest.TestCase):
+    """F3 — 시차 관측 일지: 같은 상태에서 4개 언어 문장. ko 는 이전 문장 그대로(관측노트·DM)."""
+
+    def test_ko_unchanged_and_l10n_clean(self):
+        import parallax_journal as pj
+        b = {"rate10y": 4.96, "price": 210.0, "g_used": 0.2, "coupon10y": 0.2035,
+             "edge_line": "pass", "edge_margin": -0.2688}
+        self.assertEqual(pj.buffett_phrase("META", "pass", "prove_growth", b, "rate", {"rate10y": 4.7}, 2),
+                         "🔭 버핏존 — META 통과→성장 입증 필요 (2거래일 확인) · 원인 금리 +26bp · "
+                         "현재가가 통과가격보다 26.9% 낮음 · 10년 쿠폰 20.3% vs 국채×3 14.9% · g 20.0%")
+        self.assertEqual(pj.phrase("NVDA", "관망", "본격", 0.38, 0.42), "🔭 시차 관측 — NVDA 괴리 +38% → +42%, 본격선 위로")
+        self.assertEqual(pj.phrase("NVDA", "탐색", "관망", 0.61, None), "🔭 시차 관측 — NVDA 괴리 +61% → —, 본격선 아래로")
+        self.assertEqual(pj.buffett_phrase("X", "zzz", "pass", {}, None, None, 2),
+                         "🔭 버핏존 — X —→통과 (2거래일 확인) · 원인 미상(비교 기준 없음) · 10년 쿠폰 — vs 국채×3 — · g —")
+        digits = lambda s: re.findall(r"\d+", s.replace(",", "."))
+        for fn, args in ((pj.buffett_phrase, ("META", "pass", "prove_growth", b, "price", {"price": 200.0}, 2)),
+                         (pj.phrase, ("NVDA", "관망", "고평가", -0.05, 0.004))):
+            ko = fn(*args)
+            for L, s in pj.l10n(fn, *args).items():
+                self.assertFalse(i18n.has_hangul(s), f"{L}: {s}")
+                self.assertEqual(digits(s), digits(ko), f"{L} 숫자가 ko 와 다름: {s}")
+
+    def test_note_carries_l10n_and_journal_reads_it(self):
+        src = (SCRIPTS / "parallax_journal.py").read_text(encoding="utf-8")
+        self.assertIn('"l10n": {"mapValue"', src)
+        self.assertIn('e.get("l10n")', src)
+        jt = (SCRIPTS / "journal-template.html").read_text(encoding="utf-8")
+        self.assertIn("i.l10n[UVX.lang]", jt)
 
 
 if __name__ == "__main__":

@@ -66,10 +66,7 @@ def L(lang, key, **p):
 def C(lang, s):
     """콘텐츠(탐사 원장 문장) — 번역 전 원문이 한국어면 다른 언어 화면에서 원문 표식을 단다."""
     import i18n
-    h = esc(s)
-    if lang != "ko" and i18n.has_hangul(str(s or "")):
-        return '<span lang="ko" data-uvx-pending="1">' + h + "</span>"
-    return h
+    return i18n.pending_inline(lang, esc(s))
 
 
 def axis_label(lang, axes, key):
@@ -500,6 +497,38 @@ def event_rows(watch, essays_doc, today, triggers, lang="ko"):
     return out
 
 
+def cockpit_rows(st, ar, today, lang="ko"):
+    """마일스톤 · 트리거 · 변화 요약 행 — 화면(build)과 번역 엔진(cockpit_nodes)이 같은 함수로 만든다."""
+    axes = st.get("axes") or {}
+    files = ar.report_files()
+    meanings = meanings_from_reports(sorted(files, key=lambda f: f.stem), [k[:1].upper() for k in axes.keys()])
+    return (milestone_rows(st, ar, meanings, today, lang), trigger_rows(st, today, lang),
+            delta_blocks(st, ar, lang=lang))
+
+
+def localize_rows(lang, ms, triggers, delta, cache_dir=None):
+    """다른 언어 화면 — 번역 캐시(관문 통과 · 원문 해시 일치)가 있는 행만 그 언어 문장으로. 없으면 원문(표식)."""
+    if lang == "ko":
+        return ms, triggers, delta
+    import i18n_content as IC
+    sp = IC.COCKPIT
+
+    def ap(kind, rows):
+        return [IC.apply_node(kind, lang, r.get("id"), r, sp[kind], cache_dir) if r.get("id") else r for r in rows]
+    return ap("probe_ms", ms), ap("probe_trig", triggers), ap("probe_delta", delta)
+
+
+def cockpit_nodes(ar, today=None):
+    """번역 엔진용 → {kind: [(id, 날짜, 행)]}. 날짜 '' = 늘 걸려 있는 화면(엔진이 오늘로 친다)."""
+    st = ar.read_state() or {}
+    if not st:
+        return {}
+    ms, trig, delta = cockpit_rows(st, ar, today or kst_today(), "ko")
+    return {"probe_ms": [(r["id"], "", r) for r in ms if r.get("id")],
+            "probe_trig": [(r["id"], "", r) for r in trig if r.get("id")],
+            "probe_delta": [(b["id"], "", b) for b in delta if b.get("id")]}
+
+
 def scenario_rows(st, lang="ko"):
     sc = st.get("scenarios") or {}
     out = []
@@ -702,10 +731,9 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
     essays = read_json(DATA_DIR / "essays.json", {}) if essays is None else essays
     axes = st.get("axes") or {}
     files = ar.report_files()
-    meanings = meanings_from_reports(sorted(files, key=lambda f: f.stem), [k[:1].upper() for k in axes.keys()])
-    ms = milestone_rows(st, ar, meanings, today, lang)
-    triggers = trigger_rows(st, today, lang)
-    events = event_rows(watch, essays, today, triggers, lang)
+    ms, triggers, delta = cockpit_rows(st, ar, today, lang)
+    events = event_rows(watch, essays, today, triggers, lang)     # 트리거 분류는 원문 이름으로(번역 전)
+    ms, triggers, delta = localize_rows(lang, ms, triggers, delta)
     fin = kpi_series(kpi, st, lang)
     reports = report_bundle(ar, axes, lang)
     changelog = changelog_runs(ar, axes)
@@ -723,7 +751,7 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
     data = {
         "v": 2, "today": today.isoformat(), "lang": lang,
         "run": run_info(st, watch, vres, today, lang),
-        "delta": delta_blocks(st, ar, lang=lang),
+        "delta": delta,
         "price": {"v": mkt.get("price_usd"), "date": mkt.get("price_asof", ""), "src": mkt.get("price_source", "")},
         "band": {"lo": (val.get("fair_value_band_usd") or [None, None])[0],
                  "hi": (val.get("fair_value_band_usd") or [None, None])[-1],

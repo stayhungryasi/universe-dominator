@@ -1,5 +1,5 @@
 {
-  "_doc": "고유명사 사전 — 한국어로 수집되는 종목명의 언어별 이름. ko 는 데이터 원래 이름(역조회용), *_short 는 3D 이름표·우주 지도의 짧은 이름. 없는 종목은 원래 이름 그대로(한글이면 '원문' 표식). selftest 가 latest.json 의 한글 종목명이 여기 전부 있는지 본다.",
+  "_doc": "고유명사 사전 — 한국어로 수집되는 종목명의 언어별 이름. ko 는 데이터 원래 이름(역조회용), *_short 는 3D 이름표·우주 지도의 짧은 이름. 없는 종목은 원래 이름 그대로(한글이면 '원문' 표식). selftest 가 latest.json 의 한글 종목명이 여기 전부 있는지 본다. ja_short 는 한국 기업만(일본어 표기) — 해외 기업은 라틴 표기(ja 이름표는 en_short 로 떨어진다 · test_i18n 검사).",
   "005930.KS": {"ko": "삼성전자", "en": "Samsung Electronics", "es": "Samsung Electronics", "ja": "サムスン電子",
                 "ko_short": "삼성전자", "en_short": "Samsung", "ja_short": "サムスン"},
   "000660.KS": {"ko": "SK하이닉스", "en": "SK hynix", "es": "SK hynix", "ja": "SKハイニックス",
@@ -21,6 +21,8 @@
   "009155.KS": {"ko": "삼성전기", "en": "Samsung Electro-Mechanics", "es": "Samsung Electro-Mechanics", "ja": "サムスン電機"},
   "012330.KS": {"ko": "현대모비스", "en": "Hyundai Mobis", "es": "Hyundai Mobis", "ja": "現代モービス"},
   "066570.KS": {"ko": "LG전자", "en": "LG Electronics", "es": "LG Electronics", "ja": "LGエレクトロニクス"},
-  "XOM":       {"ko_short": "엑슨모빌", "en_short": "ExxonMobil", "ja_short": "エクソンモービル"},
-  "WMT":       {"ko_short": "월마트", "en_short": "Walmart", "ja_short": "ウォルマート"}
+  "267260.KS": {"ko": "HD현대일렉트릭", "en": "HD Hyundai Electric", "es": "HD Hyundai Electric", "ja": "HD現代エレクトリック"},
+  "042660.KS": {"ko": "한화오션", "en": "Hanwha Ocean", "es": "Hanwha Ocean", "ja": "ハンファオーシャン"},
+  "XOM":       {"ko_short": "엑슨모빌", "en_short": "ExxonMobil"},
+  "WMT":       {"ko_short": "월마트", "en_short": "Walmart"}
 }

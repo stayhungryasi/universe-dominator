@@ -396,31 +396,33 @@ const DATA = {{DATA_JSON}};
 
 const timeline = document.getElementById('timeline');
 
-function renderBlock(block) {
+// M: 조각 표식기 — 사건 구조가 있는 기록은 TXI(조각 단위 원문 표식), 없는 옛 기록은 그대로(기록 전체를 TXB 로)
+function renderBlock(block, M) {
   if (!block) return '';
+  M = M || (h => h);
   if (block.type === 'items') {
     return `
       <div class="entry-block">
-        <div class="entry-block-label">${block.label || ''}</div>
+        <div class="entry-block-label">${M(block.label || '')}</div>
         <ul class="entry-items">
-          ${block.items.map(it => `<li>${it}</li>`).join('')}
+          ${block.items.map(it => `<li>${M(it)}</li>`).join('')}
         </ul>
       </div>`;
   }
   if (block.type === 'prose') {
     return `
       <div class="entry-block">
-        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
-        <p class="entry-prose">${block.text}</p>
+        ${block.label ? `<div class="entry-block-label">${M(block.label)}</div>` : ''}
+        <p class="entry-prose">${M(block.text)}</p>
       </div>`;
   }
   if (block.type === 'stats') {
     return `
       <div class="entry-block">
-        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
+        ${block.label ? `<div class="entry-block-label">${M(block.label)}</div>` : ''}
         <div class="entry-stat-row">
           ${block.items.map(it => `
-            <div><span class="entry-stat-label">${it.k}</span><span class="entry-stat-val">${it.v}</span></div>
+            <div><span class="entry-stat-label">${M(it.k)}</span><span class="entry-stat-val">${M(it.v)}</span></div>
           `).join('')}
         </div>
       </div>`;
@@ -428,11 +430,18 @@ function renderBlock(block) {
   return '';
 }
 
+// 사건·환율 상태가 실린 기록(단계 2 이후 + 2026-10-26 이관분) — 그 언어로 다시 그려졌다
+function structured(e) {
+  return !!(e.prev && e.curr) || (e.blocks || []).some(b => b && (b.events || b.fx || b.label_id));
+}
+
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
       <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
-      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
+      ${structured(e)
+        ? (e.period ? `<div class="entry-period">${TXI(e.period)}</div>` : '') + (e.blocks || []).map(b => renderBlock(b, TXI)).join('')
+        : TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(b => renderBlock(b)).join(''))}
     </div>
   `).join('');
 } else {

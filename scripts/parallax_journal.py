@@ -42,6 +42,7 @@ KST = timezone(timedelta(hours=9))
 MAX_PER_DAY = 5
 COLLECTION = "judgments"      # 관측노트가 읽는 컬렉션
 TAG = "시차"
+TAG_ID = "parallax"           # 다른 언어 화면의 태그 이름은 카탈로그 jn.tag.parallax
 
 ZONE_ORDER = ["고평가", "관망", "본격", "탐색"]
 
@@ -108,36 +109,58 @@ def sig(ticker, before, after, day, kind="parallax"):
     return hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
 
 
-def _pct(x):
-    return "—" if x is None else f"{x * 100:.1f}%"
+# ── 문장은 상태에서 언어별로 만든다(F3, 2026-10-26) ─────────────────────────
+# 관측노트는 Firestore 에 글자로 남는다 — 화면(journal.html)이 나중에 다시 그릴 수 없으므로
+# 기록하는 순간 **같은 렌더러**로 en·es·ja 문장을 함께 실어 보낸다(l10n). ko 문장·DM 은 그대로.
+# 숫자는 같은 상태에서 나온다(G2) — 언어별로 다른 것은 소수점 표기뿐(es 쉼표).
+L10N_LANGS = ("en", "es", "ja")
 
 
-def margin_phrase(line, margin):
+def _t(lang, key, **p):
+    import i18n
+    return i18n.t(lang, key, **p)
+
+
+def _d(lang, s):
+    """숫자 글자의 소수점만 그 언어로(es 쉼표). ko·en·ja 는 그대로."""
+    return s.replace(".", ",") if lang == "es" else s
+
+
+def _zone(lang, z):
+    return _t(lang, "lg.zone." + z) if z in ZONE_KO else "—"
+
+
+def _pct(x, lang="ko"):
+    return "—" if x is None else _d(lang, f"{x * 100:.1f}%")
+
+
+def margin_phrase(line, margin, lang="ko"):
     """판정선 여유 한 마디 — **상태(선·여유)에서 만든다.** 기계 이름은 쓰지 않는다."""
     if line not in LINE_KO or margin is None:
         return ""
+    name = _t(lang, "lg.line." + line)
     if abs(margin) < 0.0005:
-        return f"현재가가 {LINE_KO[line]}와 같음"
-    side = "높음" if margin > 0 else "낮음"
-    return f"현재가가 {LINE_KO[line]}보다 {abs(margin) * 100:.1f}% {side}"
+        return _t(lang, "jn.bz.margin_eq", line=name)
+    return _t(lang, "jn.bz.margin_hi" if margin > 0 else "jn.bz.margin_lo", line=name,
+              p=_d(lang, f"{abs(margin) * 100:.1f}%"))
 
 
-def cause_phrase(cause, anchor, bench):
+def cause_phrase(cause, anchor, bench, lang="ko"):
     """원인과 그 크기 — 금리는 bp, 주가는 %. 원인을 못 가렸으면 그렇게 말한다."""
     if cause == "rate":
         r0, r1 = (anchor or {}).get("rate10y"), bench.get("rate10y")
         if r0 is not None and r1 is not None:
-            return f"원인 금리 {(r1 - r0) * 100:+.0f}bp"
+            return _t(lang, "jn.bz.cause_rate", v=f"{(r1 - r0) * 100:+.0f}")
     if cause == "price":
         p0, p1 = (anchor or {}).get("price"), bench.get("price")
         if p0 and p1:
-            return f"원인 주가 {(p1 / p0 - 1) * 100:+.1f}%"
+            return _t(lang, "jn.bz.cause_price", v=_d(lang, f"{(p1 / p0 - 1) * 100:+.1f}"))
     if cause in CAUSE_KO:
-        return f"원인 {CAUSE_KO[cause]}"
-    return "원인 미상(비교 기준 없음)"
+        return _t(lang, "jn.bz.cause_named", c=_t(lang, "jn.bz.cause." + cause))
+    return _t(lang, "jn.bz.cause_unknown")
 
 
-def buffett_phrase(ticker, before, after, bench, cause=None, anchor=None, days=CONFIRM_DAYS):
+def buffett_phrase(ticker, before, after, bench, cause=None, anchor=None, days=CONFIRM_DAYS, lang="ko"):
     """버핏존 확정 전이 한 줄 — 관측노트와 DM 이 같은 문장을 쓴다.
 
     선장님 지정 골격(쿠폰과 문턱을 나란히)은 그대로 두되 **화면에 나가는 문장이라**
@@ -147,15 +170,19 @@ def buffett_phrase(ticker, before, after, bench, cause=None, anchor=None, days=C
     rate = bench.get("rate10y")
     bar = None if rate is None else 3.0 * (rate / 100.0)
     g = bench.get("g_used")
-    g_txt = "—" if g is None else f"{g * 100:.1f}%"
-    bits = [f"🔭 버핏존 — {ticker} {ZONE_KO.get(before, '—')}→{ZONE_KO.get(after, '—')}"
-            f" ({days}거래일 확인)",
-            cause_phrase(cause, anchor, bench)]
-    mp = margin_phrase(bench.get("edge_line"), bench.get("edge_margin"))
+    g_txt = "—" if g is None else _d(lang, f"{g * 100:.1f}%")
+    bits = [_t(lang, "jn.bz.head", tk=ticker, a=_zone(lang, before), b=_zone(lang, after), n=days),
+            cause_phrase(cause, anchor, bench, lang)]
+    mp = margin_phrase(bench.get("edge_line"), bench.get("edge_margin"), lang)
     if mp:
         bits.append(mp)
-    bits.append(f"10년 쿠폰 {_pct(bench.get('coupon10y'))} vs 국채×3 {_pct(bar)} · g {g_txt}")
+    bits.append(_t(lang, "jn.bz.coupon", c=_pct(bench.get("coupon10y"), lang), bar=_pct(bar, lang), g=g_txt))
     return " · ".join(bits)
+
+
+def l10n(fn, *a, **kw):
+    """같은 상태 → en·es·ja 문장 {언어: 문장}. 관측노트(Firestore)에 함께 싣는다."""
+    return {L: fn(*a, lang=L, **kw) for L in L10N_LANGS}
 
 
 def _snap(bench):
@@ -251,6 +278,7 @@ def step_buffett(bstate, items, today):
         events.append({
             "ticker": tk, "before": conf, "after": z, "kind": "buffett", "cause": cause,
             "text": buffett_phrase(tk, conf, z, bench, cause, anchor.get(tk), c["days"]),
+            "l10n": l10n(buffett_phrase, tk, conf, z, bench, cause, anchor.get(tk), c["days"]),
         })
         zones[tk], anchor[tk] = z, _snap(bench)
         cand.pop(tk, None)
@@ -309,20 +337,20 @@ def notify_dm(events, state, today):
     return len(fresh)
 
 
-def phrase(ticker, before, after, gap_before, gap_after):
+def phrase(ticker, before, after, gap_before, gap_after, lang="ko"):
     """존 전이 한 줄 — 올라섰는지 내려섰는지를 방향으로 말한다"""
     up = ZONE_ORDER.index(after) > ZONE_ORDER.index(before)
     if after == "본격":
-        tail = "본격선 위로" if up else "본격선 아래로"
+        tail = "commit_up" if up else "commit_down"
     elif after == "탐색":
-        tail = "탐색선 위로"
+        tail = "explore_up"
     elif after == "고평가":
-        tail = "정당선 위로 (고평가 구간)"
+        tail = "over_up"
     else:
-        tail = "본격선 아래로" if before in ("본격", "탐색") else "정당선 아래로"
+        tail = "commit_down" if before in ("본격", "탐색") else "fair_down"
     gb = "—" if gap_before is None else f"{gap_before * 100:+.0f}%"
     ga = "—" if gap_after is None else f"{gap_after * 100:+.0f}%"
-    return f"🔭 시차 관측 — {ticker} 괴리 {gb} → {ga}, {tail}"
+    return _t(lang, "jn.px.line", tk=ticker, gb=gb, ga=ga, tail=_t(lang, "jn.px.tail." + tail))
 
 
 def is_zoned(x):
@@ -367,6 +395,7 @@ def detect_events(items, zones, prev_zones, prev_gaps, prev_fp=None):
             "ticker": t, "before": before, "after": now_zone,
             "gap_before": prev_gaps.get(t), "gap_after": gap,
             "text": phrase(t, before, now_zone, prev_gaps.get(t), gap),
+            "l10n": l10n(phrase, t, before, now_zone, prev_gaps.get(t), gap),
         })
     # 변화 폭이 큰 순서로 — 상한에 걸릴 때 더 중요한 사건이 남도록
     events.sort(key=lambda e: abs(ZONE_ORDER.index(e["after"]) - ZONE_ORDER.index(e["before"])),
@@ -386,7 +415,7 @@ def firestore_token(sa_info):
     return creds.token
 
 
-def post_note(sa_info, token, admin_uid, text):
+def post_note(sa_info, token, admin_uid, text, texts=None):
     pid = sa_info["project_id"]
     doc_id = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     doc = f"projects/{pid}/databases/(default)/documents/{COLLECTION}/{doc_id}"
@@ -395,6 +424,9 @@ def post_note(sa_info, token, admin_uid, text):
             "uid": {"stringValue": admin_uid},
             "text": {"stringValue": text},
             "tags": {"arrayValue": {"values": [{"stringValue": TAG}]}},
+            # 다른 언어 화면용 — 같은 상태에서 만든 문장(화면은 l10n[언어] → 없으면 원문 text)
+            "l10n": {"mapValue": {"fields": {L: {"stringValue": v} for L, v in (texts or {}).items() if v}}},
+            "tag_ids": {"arrayValue": {"values": [{"stringValue": TAG_ID}]}},
         }}, "currentDocument": {"exists": False}},
         {"transform": {"document": doc, "fieldTransforms": [
             {"fieldPath": "created", "setToServerValue": "REQUEST_TIME"}]}},
@@ -506,7 +538,7 @@ def main():
     done = 0
     for e in fresh:
         try:
-            post_note(sa_info, token, admin_uid, e["text"])
+            post_note(sa_info, token, admin_uid, e["text"], e.get("l10n"))
             posted_today.add(sig(e["ticker"], e["before"], e["after"], today,
                                  e.get("kind", "parallax")))
             done += 1

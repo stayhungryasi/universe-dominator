@@ -355,8 +355,14 @@ function md(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if
   var mo = +m[2], d = +m[3]; return L === 'en' ? MON.en[mo - 1] + ' ' + d : es ? d + '/' + mo : mo + '/' + d; }
 var HAN = /[\uac00-\ud7a3]/;
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식으로 감싼다. 화면 문구(chrome)에는 쓰지 않는다 */
-function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1">' + h + '</span>' : h; }
+/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식 + 작은 'KO' 꼬리표(title=번역 준비 중).
+   화면 문구(chrome)에는 쓰지 않는다. 마크업은 파이썬 판 i18n.pending_inline 과 같다(test_i18n 대조) */
+function KOT(){ return '<sup class="uvx-ko" title="' + esc(P) + '" aria-hidden="true">KO</sup>'; }
+function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + h + '</span>' + KOT() : h; }
+/* 이미 HTML 인 짧은 콘텐츠(변동 이력 한 줄 등) — 표식 밖에 한글이 남았을 때만 감싼다(이미 표식된 조각은 빼고 잰다) */
+function TXI(html){ var s = String(html == null ? '' : html);
+  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<[/]span>/g, '').replace(/<[^>]*>/g, ''))) return s;
+  return '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + s + '</span>' + KOT(); }
 /* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
@@ -368,7 +374,7 @@ function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.tes
   return '<span lang="' + lg + '" data-uvx-user="1">' + h + '</span><sup class="uvx-ut">' + lg.toUpperCase() + '</sup>'; }
 /* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
 function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '</span>' : h; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
+window.T = T; window.TP = TP; window.TX = TX; window.TXI = TXI; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: __SHORT__,
   esc: esc, rates: R, ccy: CCY, intl: __INTL__ };
 })();
@@ -397,3 +403,14 @@ def runtime_js(lang, keys, rates=None):
 
 def has_hangul(s):
     return bool(HANGUL.search(s or ""))
+
+
+def pending_inline(lang, html):
+    """파이썬이 만드는 짧은 원문 조각의 표식 — 런타임 TX/TXI 와 같은 마크업(lang=ko + 'KO' 꼬리표 + title).
+    html 은 이미 이스케이프된 조각. ko 이거나 한글이 없으면 그대로."""
+    if lang == DEFAULT or not has_hangul(html):
+        return html
+    import html as _h
+    p = _h.escape(t(lang, "common.pending"), quote=True)
+    return (f'<span lang="ko" data-uvx-pending="1" title="{p}">{html}</span>'
+            f'<sup class="uvx-ko" title="{p}" aria-hidden="true">KO</sup>')

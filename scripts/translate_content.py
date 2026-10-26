@@ -260,6 +260,17 @@ def probe_nodes():
         return []
 
 
+def cockpit_nodes():
+    """탐사 관제판 행(마일스톤 · 트리거 · 변화 요약) — probe_cockpit 이 화면에 싣는 것과 같은 행."""
+    try:
+        import agent_report as ar
+        import probe_cockpit as pc
+        return pc.cockpit_nodes(ar)
+    except Exception as e:
+        print(f"[번역] 관제판 행 수집 실패 — 이번 회차 제외 ({e})", file=sys.stderr)
+        return {}
+
+
 def thesis_nodes():
     """동행 논제 원장 — 화면(build_site.companion_data)과 같은 칸."""
     try:
@@ -297,6 +308,8 @@ def collect(today, data_dir=None, cache_dir=None, log=print):
     if data_dir is None:          # 판단층 원장은 실제 저장소에서만(테스트는 data_dir 로 격리)
         sources.append(("probe", IC.PROBE, probe_nodes()))
         sources.append(("thesis", IC.THESIS, thesis_nodes()))
+        for kind, nodes in cockpit_nodes().items():
+            sources.append((kind, IC.COCKPIT[kind], nodes))
     for kind, spec, its in sources:
         for iid, date, node in its:
             for L in IC.TARGETS:

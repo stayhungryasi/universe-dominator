@@ -291,5 +291,67 @@ class MutationTest(unittest.TestCase):
         self.assertTrue(any("마크다운" in r for r in reasons))
 
 
+class F2F3Test(unittest.TestCase):
+    """F2 관제판 행 · F3 시차 서술 — 엔진과 빌드가 같은 칸·같은 해시. 번역이 판정 id 를 바꾸지 않는다."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _ok(self, kind, lang, iid, node, spec, tr):
+        f = IC.fields_for(spec, node, lang)
+        IC.write_cache(lang, kind, iid, {"src_hash": IC.src_hash(f), "status": "ok",
+                                         "fields": {p: tr(v[0]) for p, v in f.items()}}, self.tmp)
+
+    def test_cockpit_rows_localize_only_with_matching_cache(self):
+        import probe_cockpit as pc
+        ms = [{"id": "A-1", "text": "가입자 2,000만 이상", "status": "진행", "parts": [{"label": "소비자 가입자", "unit": "만 명"}]}]
+        trig = [{"id": "T1", "name": "4Q26 실적", "status": "대기", "expected": "2027-02-초(추정)"}]
+        delta = [{"id": "2026-10", "kind": "x", "lines": ["판정 변화 없음"]}]
+        self._ok("probe_ms", "en", "A-1", ms[0], IC.COCKPIT["probe_ms"], lambda s: "EN:" + s)
+        self._ok("probe_delta", "en", "2026-10", delta[0], IC.COCKPIT["probe_delta"], lambda s: "EN:" + s)
+        m2, t2, d2 = pc.localize_rows("en", ms, trig, delta, self.tmp)
+        self.assertEqual(m2[0]["text"], "EN:가입자 2,000만 이상")
+        self.assertEqual(m2[0]["parts"][0]["label"], "EN:소비자 가입자")
+        self.assertEqual(m2[0]["status"], "진행", "상태값은 번역 대상이 아니다(기계 id + 카탈로그)")
+        self.assertEqual(t2[0]["name"], "4Q26 실적", "캐시 없는 행은 원문")
+        self.assertEqual(d2[0]["lines"], ["EN:판정 변화 없음"])
+        ms[0]["text"] = "가입자 2,500만 이상"          # 원문이 바뀌면 캐시 무효
+        self.assertEqual(pc.localize_rows("en", ms, trig, delta, self.tmp)[0][0]["text"], "가입자 2,500만 이상")
+        self.assertIs(pc.localize_rows("ko", ms, trig, delta, self.tmp)[0], ms)
+
+    def test_engine_collects_cockpit_kinds(self):
+        nodes = {"probe_ms": [("A-1", "", {"id": "A-1", "text": "이정표 문장"})]}
+        with mock.patch.object(TC, "cockpit_nodes", return_value=nodes), \
+             mock.patch.object(TC, "probe_nodes", return_value=[]), \
+             mock.patch.object(TC, "thesis_nodes", return_value=[]), \
+             mock.patch.object(IC, "SPECS", {}):
+            jobs, _ = TC.collect(TODAY, data_dir=None, cache_dir=self.tmp, log=lambda *a: None)
+        self.assertEqual(sorted({(j[1], j[3]) for j in jobs}), [("probe_ms", L) for L in ("en", "es", "ja")])
+
+    def test_parallax_spec_skips_exact_types_and_keeps_ids(self):
+        sp = IC.SPECS["parallax"]
+        exact = {"ticker": "NVDA", "type": "추정불가", "rationale": "대형 세입자 이탈", "eps_asof": None}
+        mixed = {"ticker": "AMZN", "type": "씨즈형·고자본 혼합", "rationale": "혼합체", "eps_asof": "2026-08 컨센서스 역산"}
+        self.assertEqual(sorted(IC.fields_for(sp, exact, "en")), ["rationale"])
+        self.assertEqual(sorted(IC.fields_for(sp, mixed, "en")), ["eps_asof", "rationale", "type"])
+        self.assertTrue(sp.get("late"), "load_data 가 끼우면 판정 id 를 뽑기 전에 유형 이름이 바뀐다")
+        import build_site as bs
+        old = bs.LANG
+        unc = {"ticker": "ZZZ", "type": "추정불가 경계", "rationale": "근거", "basis": "forward"}
+        self._ok("parallax", "en", "ZZZ", unc, sp, lambda s: "EN:" + s)
+        try:
+            bs.LANG = "en"
+            with mock.patch.object(IC, "CACHE", self.tmp):
+                v = bs.buffett_view({"items": [unc]})["items"][0]
+        finally:
+            bs.LANG = old
+        self.assertEqual(v["type"], "EN:추정불가 경계")
+        self.assertTrue(v["uncertain"], "판정(추정불가 포함)은 원문에서 — 번역 뒤에 재면 사라진다")
+        self.assertEqual(v["type_id"], "")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

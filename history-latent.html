@@ -50,8 +50,14 @@ function md(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if
   var mo = +m[2], d = +m[3]; return L === 'en' ? MON.en[mo - 1] + ' ' + d : es ? d + '/' + mo : mo + '/' + d; }
 var HAN = /[\uac00-\ud7a3]/;
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식으로 감싼다. 화면 문구(chrome)에는 쓰지 않는다 */
-function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1">' + h + '<\/span>' : h; }
+/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식 + 작은 'KO' 꼬리표(title=번역 준비 중).
+   화면 문구(chrome)에는 쓰지 않는다. 마크업은 파이썬 판 i18n.pending_inline 과 같다(test_i18n 대조) */
+function KOT(){ return '<sup class="uvx-ko" title="' + esc(P) + '" aria-hidden="true">KO<\/sup>'; }
+function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + h + '<\/span>' + KOT() : h; }
+/* 이미 HTML 인 짧은 콘텐츠(변동 이력 한 줄 등) — 표식 밖에 한글이 남았을 때만 감싼다(이미 표식된 조각은 빼고 잰다) */
+function TXI(html){ var s = String(html == null ? '' : html);
+  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<\/span>/g, '').replace(/<[^>]*>/g, ''))) return s;
+  return '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + s + '<\/span>' + KOT(); }
 /* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
@@ -63,7 +69,7 @@ function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.tes
   return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
 /* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
 function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
+window.T = T; window.TP = TP; window.TX = TX; window.TXI = TXI; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK하이닉스", "005930.KS": "삼성전자", "WMT": "월마트", "XOM": "엑슨모빌"},
   esc: esc, rates: R, ccy: CCY, intl: "ko-KR" };
 })();
@@ -609,6 +615,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
+.uvx-ko{display:inline-block;margin-left:3px;padding:0 3px;font-size:9px;line-height:12px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px solid var(--line-strong);border-radius:3px;vertical-align:1px;cursor:help;white-space:nowrap;font-style:normal}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -726,6 +733,135 @@ const DATA = {
             "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-up'>158% → 176%</span>",
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>801% → 641%</span>",
             "<strong>Applied Materials</strong> 1Y 모멘텀 <span class='em-down'>80% → 65%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "t_out",
+              "name": "KIOXIA Holdings Corporation",
+              "when": "10.19",
+              "carried": 3,
+              "tk": "285A.T"
+            },
+            {
+              "k": "t_in",
+              "name": "SK Hynix",
+              "when": "10.19",
+              "rank": 21,
+              "mc": 700.0,
+              "mom": 181,
+              "streak": 3,
+              "tk": "000660.KS"
+            },
+            {
+              "k": "t_in",
+              "name": "Intel",
+              "when": "10.19",
+              "rank": 27,
+              "mc": 475.0,
+              "mom": 136,
+              "streak": 3,
+              "tk": "INTC"
+            },
+            {
+              "k": "t_out",
+              "name": "Palo Alto Networks",
+              "when": "10.20",
+              "out": 5,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 47,
+              "b": 50,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 45,
+              "b": 53,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 74,
+              "b": 60,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 89,
+              "b": 85,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 87,
+              "b": 92,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 100,
+              "b": 107,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Advantest",
+              "a": 137,
+              "b": 142,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 150,
+              "b": 147,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Fortinet",
+              "a": 182,
+              "b": 167,
+              "tk": "FTNT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 85,
+              "b": 56,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 158,
+              "b": 176,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 801,
+              "b": 641,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 80,
+              "b": 65,
+              "tk": "AMAT"
+            }
           ]
         },
         {
@@ -733,6 +869,36 @@ const DATA = {
           "label": "경계 관찰",
           "items": [
             "<strong>Lam Research</strong> 제외 카운트 1/5 · <strong>Applied Materials</strong> 제외 카운트 1/5 · <strong>Equinor</strong> 편입 카운트 1/3"
+          ],
+          "label_id": "watch",
+          "label_p": {},
+          "events": [
+            {
+              "k": "watch",
+              "parts": [
+                {
+                  "w": "out",
+                  "name": "Lam Research",
+                  "tk": "LRCX",
+                  "a": 1,
+                  "b": 5
+                },
+                {
+                  "w": "out",
+                  "name": "Applied Materials",
+                  "tk": "AMAT",
+                  "a": 1,
+                  "b": 5
+                },
+                {
+                  "w": "in",
+                  "name": "Equinor",
+                  "tk": null,
+                  "a": 1,
+                  "b": 3
+                }
+              ]
+            }
           ]
         },
         {
@@ -744,6 +910,95 @@ const DATA = {
             "<strong>AI 테크 (2)</strong>: Sandisk, Seagate Technology",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 12
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "SK Hynix",
+                  "tk": "000660.KS"
+                },
+                {
+                  "name": "Intel",
+                  "tk": "INTC"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                },
+                {
+                  "name": "Fortinet",
+                  "tk": "FTNT"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -752,6 +1007,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+641%</span>",
             "<strong>신규 중 최고 순위</strong>: SK Hynix — 글로벌 21위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 641,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "SK Hynix",
+              "rank": 21,
+              "tk": "000660.KS"
+            }
           ]
         },
         {
@@ -766,9 +1037,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.32"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,324",
+            "date": "10/24",
+            "mult": "1.32"
+          }
         }
-      ]
+      ],
+      "prev": "2026-10-17",
+      "curr": "2026-10-24"
     },
     {
       "date": "2026.10.17",
@@ -810,6 +1088,232 @@ const DATA = {
             "<strong>Applied Materials</strong> 시총 <span class='em-down'>-19%</span> ($402B → $325B)",
             "<strong>Seagate Technology</strong> 시총 <span class='em-down'>-18%</span> ($178B → $145B)",
             "<strong>Palo Alto Networks</strong> 시총 <span class='em-down'>-18%</span> ($343B → $280B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "t_out",
+              "name": "Arm Holdings",
+              "when": "10.15",
+              "out": 5,
+              "tk": "ARM"
+            },
+            {
+              "k": "t_out",
+              "name": "Delta Electronics",
+              "when": "10.16",
+              "out": 5,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 36,
+              "b": 45,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 35,
+              "b": 47,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 39,
+              "b": 53,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Palo Alto Networks",
+              "a": 45,
+              "b": 56,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 57,
+              "b": 74,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 75,
+              "b": 87,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 70,
+              "b": 89,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 78,
+              "b": 100,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Advantest",
+              "a": 97,
+              "b": 137,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 105,
+              "b": 150,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Fortinet",
+              "a": 159,
+              "b": 182,
+              "tk": "FTNT"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 107,
+              "b": 501,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 234,
+              "b": 202,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 172,
+              "b": 134,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Advantest",
+              "a": 123,
+              "b": 88,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 276,
+              "b": 199,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "CrowdStrike",
+              "a": 116,
+              "b": 89,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 253,
+              "b": 183,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Palo Alto Networks",
+              "a": 95,
+              "b": 66,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 120,
+              "b": 801,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 130,
+              "b": 80,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 204,
+              "b": 158,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 126,
+              "b": 85,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Fortinet",
+              "a": 126,
+              "b": 103,
+              "tk": "FTNT"
+            },
+            {
+              "k": "mc_move",
+              "name": "KIOXIA Holdings Corporation",
+              "pct": -72,
+              "old": 177.0,
+              "new": 49.0,
+              "tk": "285A.T"
+            },
+            {
+              "k": "mc_move",
+              "name": "Dell",
+              "pct": -23,
+              "old": 373.0,
+              "new": 287.0,
+              "tk": "DELL"
+            },
+            {
+              "k": "mc_move",
+              "name": "Applied Materials",
+              "pct": -19,
+              "old": 402.0,
+              "new": 325.0,
+              "tk": "AMAT"
+            },
+            {
+              "k": "mc_move",
+              "name": "Seagate Technology",
+              "pct": -18,
+              "old": 178.0,
+              "new": 145.0,
+              "tk": "STX"
+            },
+            {
+              "k": "mc_move",
+              "name": "Palo Alto Networks",
+              "pct": -18,
+              "old": 343.0,
+              "new": 280.0,
+              "tk": "PANW"
+            }
           ]
         },
         {
@@ -817,6 +1321,43 @@ const DATA = {
           "label": "경계 관찰",
           "items": [
             "<strong>Palo Alto Networks</strong> 제외 카운트 3/5 · <strong>KIOXIA Holdings Corporation</strong> 데이터 결측 2/3 · <strong>SK Hynix</strong> 편입 카운트 2/3 · <strong>Intel</strong> 편입 카운트 2/3"
+          ],
+          "label_id": "watch",
+          "label_p": {},
+          "events": [
+            {
+              "k": "watch",
+              "parts": [
+                {
+                  "w": "out",
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW",
+                  "a": 3,
+                  "b": 5
+                },
+                {
+                  "w": "miss",
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T",
+                  "a": 2,
+                  "b": 3
+                },
+                {
+                  "w": "in",
+                  "name": "SK Hynix",
+                  "tk": "000660.KS",
+                  "a": 2,
+                  "b": 3
+                },
+                {
+                  "w": "in",
+                  "name": "Intel",
+                  "tk": "INTC",
+                  "a": 2,
+                  "b": 3
+                }
+              ]
+            }
           ]
         },
         {
@@ -828,6 +1369,95 @@ const DATA = {
             "<strong>AI 테크 (3)</strong>: Sandisk, Seagate Technology, KIOXIA Holdings Corporation",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 12
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                },
+                {
+                  "name": "Fortinet",
+                  "tk": "FTNT"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -835,6 +1465,16 @@ const DATA = {
           "label": "관전 포인트",
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+801%</span>"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 801,
+              "tk": "SNDK"
+            }
           ]
         },
         {
@@ -849,9 +1489,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.33"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,332",
+            "date": "10/17",
+            "mult": "1.33"
+          }
         }
-      ]
+      ],
+      "prev": "2026-10-10",
+      "curr": "2026-10-17"
     },
     {
       "date": "2026.10.10",
@@ -878,6 +1525,128 @@ const DATA = {
             "<strong>Arm Holdings</strong> 1Y 모멘텀 <span class='em-down'>102% → 56%</span>",
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>286% → 120%</span>",
             "<strong>KIOXIA Holdings Corporation</strong> 1Y 모멘텀 <span class='em-down'>233% → 172%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "t_out",
+              "name": "Tokyo Electron",
+              "when": "10.5",
+              "out": 5,
+              "tk": "8035.T"
+            },
+            {
+              "k": "t_in",
+              "name": "Advantest",
+              "when": "10.5",
+              "rank": 105,
+              "mc": 184.0,
+              "mom": 114,
+              "streak": 7,
+              "tk": "6857.T"
+            },
+            {
+              "k": "t_out",
+              "name": "ASML",
+              "when": "10.6",
+              "out": 5,
+              "tk": "ASML"
+            },
+            {
+              "k": "t_in",
+              "name": "Fortinet",
+              "when": "10.6",
+              "rank": 166,
+              "mc": 135.0,
+              "mom": 113,
+              "streak": 8,
+              "tk": "FTNT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 31,
+              "b": 36,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Arm Holdings",
+              "a": 49,
+              "b": 56,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 69,
+              "b": 75,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 67,
+              "b": 78,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 99,
+              "b": 105,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 95,
+              "b": 107,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 140,
+              "b": 134,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 270,
+              "b": 234,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 233,
+              "b": 253,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Arm Holdings",
+              "a": 102,
+              "b": 56,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 286,
+              "b": 120,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 233,
+              "b": 172,
+              "tk": "285A.T"
+            }
           ]
         },
         {
@@ -885,6 +1654,22 @@ const DATA = {
           "label": "경계 관찰",
           "items": [
             "<strong>Arm Holdings</strong> 제외 카운트 1/5"
+          ],
+          "label_id": "watch",
+          "label_p": {},
+          "events": [
+            {
+              "k": "watch",
+              "parts": [
+                {
+                  "w": "out",
+                  "name": "Arm Holdings",
+                  "tk": "ARM",
+                  "a": 1,
+                  "b": 5
+                }
+              ]
+            }
           ]
         },
         {
@@ -897,6 +1682,110 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                },
+                {
+                  "name": "Fortinet",
+                  "tk": "FTNT"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -905,6 +1794,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Dell — 1Y <span class='em-up'>+276%</span>",
             "<strong>신규 중 최고 순위</strong>: Advantest — 글로벌 105위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Dell",
+              "m": 276,
+              "tk": "DELL"
+            },
+            {
+              "k": "pt_new",
+              "name": "Advantest",
+              "rank": 105,
+              "tk": "6857.T"
+            }
           ]
         },
         {
@@ -919,9 +1824,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.34"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,341",
+            "date": "10/10",
+            "mult": "1.34"
+          }
         }
-      ]
+      ],
+      "prev": "2026-10-03",
+      "curr": "2026-10-10"
     },
     {
       "date": "2026.10.03",
@@ -949,6 +1861,129 @@ const DATA = {
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>785% → 286%</span>",
             "<strong>Seagate Technology</strong> 1Y 모멘텀 <span class='em-down'>317% → 233%</span>",
             "<strong>Tokyo Electron</strong> 1Y 모멘텀 <span class='em-down'>94% → -59%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 36,
+              "b": 31,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 37,
+              "b": 34,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Palo Alto Networks",
+              "a": 52,
+              "b": 47,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 66,
+              "b": 56,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 64,
+              "b": 67,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 61,
+              "b": 69,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 76,
+              "b": 70,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 102,
+              "b": 95,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 93,
+              "b": 99,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 130,
+              "b": 113,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 143,
+              "b": 140,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 987,
+              "b": 233,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Arm Holdings",
+              "a": 121,
+              "b": 102,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 330,
+              "b": 282,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 785,
+              "b": 286,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 317,
+              "b": 233,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Tokyo Electron",
+              "a": 94,
+              "b": -59,
+              "tk": "8035.T"
+            }
           ]
         },
         {
@@ -956,6 +1991,48 @@ const DATA = {
           "label": "경계 관찰",
           "items": [
             "<strong>Tokyo Electron</strong> 제외 카운트 4/5 · <strong>ASML</strong> 제외 카운트 3/5 · <strong>Advantest</strong> 교체 카운트 2/5 · <strong>Fortinet</strong> 기준 충족 6거래일 · 빈자리 대기 · <strong>ASE Group</strong> 기준 충족 6거래일 · 빈자리 대기"
+          ],
+          "label_id": "watch",
+          "label_p": {},
+          "events": [
+            {
+              "k": "watch",
+              "parts": [
+                {
+                  "w": "out",
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T",
+                  "a": 4,
+                  "b": 5
+                },
+                {
+                  "w": "out",
+                  "name": "ASML",
+                  "tk": "ASML",
+                  "a": 3,
+                  "b": 5
+                },
+                {
+                  "w": "swap",
+                  "name": "Advantest",
+                  "tk": "6857.T",
+                  "a": 2,
+                  "b": 5
+                },
+                {
+                  "w": "wait",
+                  "name": "Fortinet",
+                  "tk": "FTNT",
+                  "a": 6
+                },
+                {
+                  "w": "wait",
+                  "name": "ASE Group",
+                  "tk": "ASX",
+                  "a": 6
+                }
+              ]
+            }
           ]
         },
         {
@@ -968,6 +2045,110 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -975,6 +2156,16 @@ const DATA = {
           "label": "관전 포인트",
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+286%</span>"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 286,
+              "tk": "SNDK"
+            }
           ]
         },
         {
@@ -989,9 +2180,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.35"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,348",
+            "date": "10/03",
+            "mult": "1.35"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-26",
+      "curr": "2026-10-03"
     },
     {
       "date": "2026.09.26",
@@ -1021,6 +2219,143 @@ const DATA = {
             "<strong>Lam Research</strong> 1Y 모멘텀 <span class='em-up'>128% → 146%</span>",
             "<strong>CrowdStrike</strong> 1Y 모멘텀 <span class='em-up'>89% → 113%</span>",
             "<strong>Seagate Technology</strong> 1Y 모멘텀 <span class='em-up'>296% → 317%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 40,
+              "b": 36,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 43,
+              "b": 37,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 39,
+              "b": 43,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Arm Holdings",
+              "a": 54,
+              "b": 49,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 73,
+              "b": 61,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 61,
+              "b": 64,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 69,
+              "b": 66,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 84,
+              "b": 76,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 97,
+              "b": 93,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 145,
+              "b": 130,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 157,
+              "b": 143,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 229,
+              "b": 213,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Delta Electronics",
+              "a": 84,
+              "b": 108,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Arm Holdings",
+              "a": 88,
+              "b": 121,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 712,
+              "b": 785,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 196,
+              "b": 279,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 128,
+              "b": 146,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "CrowdStrike",
+              "a": 89,
+              "b": 113,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 296,
+              "b": 317,
+              "tk": "STX"
+            }
           ]
         },
         {
@@ -1028,6 +2363,36 @@ const DATA = {
           "label": "경계 관찰",
           "items": [
             "<strong>Advantest</strong> 편입 카운트 1/3 · <strong>Fortinet</strong> 편입 카운트 1/3 · <strong>ASE Group</strong> 편입 카운트 1/3"
+          ],
+          "label_id": "watch",
+          "label_p": {},
+          "events": [
+            {
+              "k": "watch",
+              "parts": [
+                {
+                  "w": "in",
+                  "name": "Advantest",
+                  "tk": "6857.T",
+                  "a": 1,
+                  "b": 3
+                },
+                {
+                  "w": "in",
+                  "name": "Fortinet",
+                  "tk": "FTNT",
+                  "a": 1,
+                  "b": 3
+                },
+                {
+                  "w": "in",
+                  "name": "ASE Group",
+                  "tk": "ASX",
+                  "a": 1,
+                  "b": 3
+                }
+              ]
+            }
           ]
         },
         {
@@ -1040,6 +2405,110 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1047,6 +2516,16 @@ const DATA = {
           "label": "관전 포인트",
           "items": [
             "<strong>가장 폭발적</strong>: KIOXIA Holdings Corporation — 1Y <span class='em-up'>+987%</span>"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "KIOXIA Holdings Corporation",
+              "m": 987,
+              "tk": "285A.T"
+            }
           ]
         },
         {
@@ -1061,9 +2540,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.36"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,355",
+            "date": "09/26",
+            "mult": "1.36"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-19",
+      "curr": "2026-09-26"
     },
     {
       "date": "2026.09.19",
@@ -1094,6 +2580,149 @@ const DATA = {
             "<strong>ASML</strong> 1Y 모멘텀 <span class='em-down'>111% → 81%</span>",
             "<strong>Fortinet</strong> 1Y 모멘텀 <span class='em-up'>93% → 110%</span>",
             "<strong>Dell</strong> 1Y 모멘텀 <span class='em-down'>352% → 330%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Arm Holdings",
+              "rank": 54,
+              "mc": 294.0,
+              "mom": 88,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_exit",
+              "name": "KIOXIA Holdings Corporation",
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 40,
+              "b": 43,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 71,
+              "b": 61,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 91,
+              "b": 69,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 80,
+              "b": 73,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 90,
+              "b": 84,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 106,
+              "b": 97,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 150,
+              "b": 145,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 168,
+              "b": 157,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Fortinet",
+              "a": 197,
+              "b": 179,
+              "tk": "FTNT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 838,
+              "b": 712,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 168,
+              "b": 134,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 255,
+              "b": 229,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 158,
+              "b": 128,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Tokyo Electron",
+              "a": 130,
+              "b": 97,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 322,
+              "b": 296,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "ASML",
+              "a": 111,
+              "b": 81,
+              "tk": "ASML"
+            },
+            {
+              "k": "l_mom",
+              "name": "Fortinet",
+              "a": 93,
+              "b": 110,
+              "tk": "FTNT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 352,
+              "b": 330,
+              "tk": "DELL"
+            }
           ]
         },
         {
@@ -1106,6 +2735,110 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                },
+                {
+                  "name": "Fortinet",
+                  "tk": "FTNT"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1114,6 +2847,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+712%</span>",
             "<strong>신규 중 최고 순위</strong>: Arm Holdings — 글로벌 54위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 712,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Arm Holdings",
+              "rank": 54,
+              "tk": "ARM"
+            }
           ]
         },
         {
@@ -1128,13 +2877,20 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.39"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,388",
+            "date": "09/19",
+            "mult": "1.39"
+          }
         },
         {
           "type": "prose",
           "text": "※ 9/25 규율 개정 전 기록 — 경계 요동으로 확인"
         }
-      ]
+      ],
+      "prev": "2026-09-12",
+      "curr": "2026-09-19"
     },
     {
       "date": "2026.09.12",
@@ -1165,6 +2921,149 @@ const DATA = {
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-up'>684% → 838%</span>",
             "<strong>CrowdStrike</strong> 1Y 모멘텀 <span class='em-down'>107% → 91%</span>",
             "<strong>Tokyo Electron</strong> 1Y 모멘텀 <span class='em-down'>152% → 130%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Fortinet",
+              "rank": 197,
+              "mc": 115.0,
+              "mom": 93,
+              "tk": "FTNT"
+            },
+            {
+              "k": "l_exit",
+              "name": "Arm Holdings",
+              "tk": "ARM"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 49,
+              "b": 41,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 64,
+              "b": 71,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 83,
+              "b": 80,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 97,
+              "b": 90,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 103,
+              "b": 106,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 147,
+              "b": 150,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 154,
+              "b": 168,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 362,
+              "b": 322,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 314,
+              "b": 352,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 187,
+              "b": 168,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Delta Electronics",
+              "a": 157,
+              "b": 87,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 206,
+              "b": 158,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Advantest",
+              "a": 181,
+              "b": 122,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "ASML",
+              "a": 128,
+              "b": 111,
+              "tk": "ASML"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 871,
+              "b": 193,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 684,
+              "b": 838,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "CrowdStrike",
+              "a": 107,
+              "b": 91,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_mom",
+              "name": "Tokyo Electron",
+              "a": 152,
+              "b": 130,
+              "tk": "8035.T"
+            }
           ]
         },
         {
@@ -1176,6 +3075,103 @@ const DATA = {
             "<strong>AI 소프트웨어 (2)</strong>: CrowdStrike, Fortinet",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                },
+                {
+                  "name": "Fortinet",
+                  "tk": "FTNT"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1184,6 +3180,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+838%</span>",
             "<strong>신규 중 최고 순위</strong>: Fortinet — 글로벌 197위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 838,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Fortinet",
+              "rank": 197,
+              "tk": "FTNT"
+            }
           ]
         },
         {
@@ -1198,9 +3210,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.34"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,343",
+            "date": "09/12",
+            "mult": "1.34"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-05",
+      "curr": "2026-09-12"
     },
     {
       "date": "2026.09.05",
@@ -1233,6 +3252,165 @@ const DATA = {
             "<strong>Seagate Technology</strong> 1Y 모멘텀 <span class='em-down'>381% → 362%</span>",
             "<strong>Sandisk</strong> 시총 <span class='em-up'>+17%</span> ($217B → $255B)",
             "<strong>KIOXIA Holdings Corporation</strong> 시총 <span class='em-up'>+17%</span> ($164B → $191B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Arm Holdings",
+              "rank": 62,
+              "mc": 269.0,
+              "mom": 86,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_exit",
+              "name": "Palo Alto Networks",
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 39,
+              "b": 42,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 56,
+              "b": 49,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 88,
+              "b": 64,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 94,
+              "b": 83,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 83,
+              "b": 89,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 100,
+              "b": 97,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 111,
+              "b": 103,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 136,
+              "b": 104,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 141,
+              "b": 147,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Advantest",
+              "a": 143,
+              "b": 152,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 157,
+              "b": 154,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 677,
+              "b": 871,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 177,
+              "b": 210,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 190,
+              "b": 206,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 180,
+              "b": 249,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 240,
+              "b": 314,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 819,
+              "b": 684,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 381,
+              "b": 362,
+              "tk": "STX"
+            },
+            {
+              "k": "mc_move",
+              "name": "Sandisk",
+              "pct": 17,
+              "old": 217.0,
+              "new": 255.0,
+              "tk": "SNDK"
+            },
+            {
+              "k": "mc_move",
+              "name": "KIOXIA Holdings Corporation",
+              "pct": 17,
+              "old": 164.0,
+              "new": 191.0,
+              "tk": "285A.T"
+            }
           ]
         },
         {
@@ -1245,6 +3423,110 @@ const DATA = {
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 소프트웨어 (1)</strong>: CrowdStrike",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1253,6 +3535,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: KIOXIA Holdings Corporation — 1Y <span class='em-up'>+871%</span>",
             "<strong>신규 중 최고 순위</strong>: Arm Holdings — 글로벌 62위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "KIOXIA Holdings Corporation",
+              "m": 871,
+              "tk": "285A.T"
+            },
+            {
+              "k": "pt_new",
+              "name": "Arm Holdings",
+              "rank": 62,
+              "tk": "ARM"
+            }
           ]
         },
         {
@@ -1267,9 +3565,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.35"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,350",
+            "date": "09/05",
+            "mult": "1.35"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-29",
+      "curr": "2026-09-05"
     },
     {
       "date": "2026.08.29",
@@ -1299,6 +3604,142 @@ const DATA = {
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-up'>408% → 819%</span>",
             "<strong>KIOXIA Holdings Corporation</strong> 1Y 모멘텀 <span class='em-up'>100% → 677%</span>",
             "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-down'>233% → 180%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Delta Electronics",
+              "rank": 157,
+              "mc": 150.0,
+              "mom": 149,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_exit",
+              "name": "Arm Holdings",
+              "tk": "ARM"
+            },
+            {
+              "k": "l_rank",
+              "name": "Palo Alto Networks",
+              "a": 54,
+              "b": 51,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 98,
+              "b": 83,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 79,
+              "b": 88,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 108,
+              "b": 94,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 88,
+              "b": 100,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 104,
+              "b": 111,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 113,
+              "b": 136,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 152,
+              "b": 141,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Advantest",
+              "a": 137,
+              "b": 143,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "ASML",
+              "a": 140,
+              "b": 122,
+              "tk": "ASML"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 208,
+              "b": 179,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 219,
+              "b": 190,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 450,
+              "b": 381,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Advantest",
+              "a": 206,
+              "b": 180,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 408,
+              "b": 819,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 100,
+              "b": 677,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 233,
+              "b": 180,
+              "tk": "MRVL"
+            }
           ]
         },
         {
@@ -1310,6 +3751,103 @@ const DATA = {
             "<strong>AI 소프트웨어 (2)</strong>: Palo Alto Networks, CrowdStrike",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1318,6 +3856,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+819%</span>",
             "<strong>신규 중 최고 순위</strong>: Delta Electronics — 글로벌 157위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 819,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Delta Electronics",
+              "rank": 157,
+              "tk": "2308.TW"
+            }
           ]
         },
         {
@@ -1332,9 +3886,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.37"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,375",
+            "date": "08/29",
+            "mult": "1.37"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-22",
+      "curr": "2026-08-29"
     },
     {
       "date": "2026.08.22",
@@ -1365,6 +3926,149 @@ const DATA = {
             "<strong>MediaTek</strong> 1Y 모멘텀 <span class='em-down'>185% → 166%</span>",
             "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-up'>181% → 233%</span>",
             "<strong>Palo Alto Networks</strong> 1Y 모멘텀 <span class='em-down'>121% → 95%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "ASML",
+              "rank": 22,
+              "mc": 677.0,
+              "mom": 140,
+              "tk": "ASML"
+            },
+            {
+              "k": "l_exit",
+              "name": "Delta Electronics",
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 35,
+              "b": 38,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 51,
+              "b": 57,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Arm Holdings",
+              "a": 56,
+              "b": 62,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 75,
+              "b": 79,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 98,
+              "b": 88,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "CrowdStrike",
+              "a": 85,
+              "b": 98,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 84,
+              "b": 104,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 91,
+              "b": 108,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 117,
+              "b": 113,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 132,
+              "b": 152,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 849,
+              "b": 100,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 525,
+              "b": 450,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 170,
+              "b": 208,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Arm Holdings",
+              "a": 99,
+              "b": 83,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_mom",
+              "name": "CrowdStrike",
+              "a": 104,
+              "b": 85,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 185,
+              "b": 166,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 181,
+              "b": 233,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Palo Alto Networks",
+              "a": 121,
+              "b": 95,
+              "tk": "PANW"
+            }
           ]
         },
         {
@@ -1377,6 +4081,110 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1385,6 +4193,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Seagate Technology — 1Y <span class='em-up'>+450%</span>",
             "<strong>신규 중 최고 순위</strong>: ASML — 글로벌 22위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Seagate Technology",
+              "m": 450,
+              "tk": "STX"
+            },
+            {
+              "k": "pt_new",
+              "name": "ASML",
+              "rank": 22,
+              "tk": "ASML"
+            }
           ]
         },
         {
@@ -1399,9 +4223,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.38"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,384",
+            "date": "08/22",
+            "mult": "1.38"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-15",
+      "curr": "2026-08-22"
     },
     {
       "date": "2026.08.15",
@@ -1431,6 +4262,145 @@ const DATA = {
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>879% → 416%</span>",
             "<strong>Sandisk</strong> 시총 <span class='em-up'>+35%</span> ($177B → $240B)",
             "<strong>Seagate Technology</strong> 시총 <span class='em-up'>+20%</span> ($184B → $221B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Delta Electronics",
+              "rank": 153,
+              "mc": 153.0,
+              "mom": 165,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "grad",
+              "name": "ASML",
+              "rank": 20,
+              "tk": "ASML"
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 31,
+              "b": 35,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 59,
+              "b": 51,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Palo Alto Networks",
+              "a": 56,
+              "b": 52,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Arm Holdings",
+              "a": 53,
+              "b": 56,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 119,
+              "b": 75,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "a": 115,
+              "b": 84,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 104,
+              "b": 91,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "KIOXIA Holdings Corporation",
+              "a": 133,
+              "b": 117,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Tokyo Electron",
+              "a": 144,
+              "b": 132,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_rank",
+              "name": "Advantest",
+              "a": 154,
+              "b": 135,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "a": 449,
+              "b": 525,
+              "tk": "STX"
+            },
+            {
+              "k": "l_mom",
+              "name": "Tokyo Electron",
+              "a": 142,
+              "b": 158,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 166,
+              "b": 185,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Applied Materials",
+              "a": 195,
+              "b": 170,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 879,
+              "b": 416,
+              "tk": "SNDK"
+            },
+            {
+              "k": "mc_move",
+              "name": "Sandisk",
+              "pct": 35,
+              "old": 177.0,
+              "new": 240.0,
+              "tk": "SNDK"
+            },
+            {
+              "k": "mc_move",
+              "name": "Seagate Technology",
+              "pct": 20,
+              "old": 184.0,
+              "new": 221.0,
+              "tk": "STX"
+            }
           ]
         },
         {
@@ -1443,6 +4413,110 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1452,6 +4526,31 @@ const DATA = {
             "<strong>가장 폭발적</strong>: KIOXIA Holdings Corporation — 1Y <span class='em-up'>+849%</span>",
             "<strong>신규 중 최고 순위</strong>: Delta Electronics — 글로벌 153위 데뷔",
             "<strong>졸업</strong>: ASML — TOP 20 진입"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "KIOXIA Holdings Corporation",
+              "m": 849,
+              "tk": "285A.T"
+            },
+            {
+              "k": "pt_new",
+              "name": "Delta Electronics",
+              "rank": 153,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "pt_grad",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1466,9 +4565,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.41"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,411",
+            "date": "08/15",
+            "mult": "1.41"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-08",
+      "curr": "2026-08-15"
     },
     {
       "date": "2026.08.08",
@@ -1498,6 +4604,150 @@ const DATA = {
             "<strong>Dell</strong> 1Y 모멘텀 <span class='em-up'>206% → 239%</span>",
             "<strong>Palo Alto Networks</strong> 1Y 모멘텀 <span class='em-up'>91% → 116%</span>",
             "<strong>Marvell Technology</strong> 시총 <span class='em-up'>+17%</span> ($168B → $196B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "ASML",
+              "rank": 21,
+              "mc": 669.0,
+              "mom": 144,
+              "tk": "ASML"
+            },
+            {
+              "k": "l_enter",
+              "name": "Arm Holdings",
+              "rank": 53,
+              "mc": 302.0,
+              "mom": 108,
+              "tk": "ARM"
+            },
+            {
+              "k": "l_enter",
+              "name": "CrowdStrike",
+              "rank": 87,
+              "mc": 218.0,
+              "mom": 102,
+              "tk": "CRWD"
+            },
+            {
+              "k": "l_enter",
+              "name": "MediaTek",
+              "rank": 104,
+              "mc": 193.0,
+              "mom": 166,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_enter",
+              "name": "Seagate Technology",
+              "rank": 115,
+              "mc": 184.0,
+              "mom": 449,
+              "tk": "STX"
+            },
+            {
+              "k": "l_enter",
+              "name": "KIOXIA Holdings Corporation",
+              "rank": 133,
+              "mc": 166.0,
+              "mom": 835,
+              "tk": "285A.T"
+            },
+            {
+              "k": "l_enter",
+              "name": "Tokyo Electron",
+              "rank": 144,
+              "mc": 157.0,
+              "mom": 142,
+              "tk": "8035.T"
+            },
+            {
+              "k": "l_enter",
+              "name": "Advantest",
+              "rank": 154,
+              "mc": 148.0,
+              "mom": 197,
+              "tk": "6857.T"
+            },
+            {
+              "k": "l_exit",
+              "name": "Intel",
+              "tk": "INTC"
+            },
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 40,
+              "b": 36,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Palo Alto Networks",
+              "a": 59,
+              "b": 56,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 63,
+              "b": 59,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 121,
+              "b": 99,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 111,
+              "b": 119,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 730,
+              "b": 879,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 133,
+              "b": 188,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 206,
+              "b": 239,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Palo Alto Networks",
+              "a": 91,
+              "b": 116,
+              "tk": "PANW"
+            },
+            {
+              "k": "mc_move",
+              "name": "Marvell Technology",
+              "pct": 17,
+              "old": 168.0,
+              "new": 196.0,
+              "tk": "MRVL"
+            }
           ]
         },
         {
@@ -1510,6 +4760,110 @@ const DATA = {
             "<strong>AI 칩 CPU IP (1)</strong>: Arm Holdings",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 14
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "ASML",
+                  "tk": "ASML"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Tokyo Electron",
+                  "tk": "8035.T"
+                },
+                {
+                  "name": "Advantest",
+                  "tk": "6857.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "KIOXIA Holdings Corporation",
+                  "tk": "285A.T"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 칩 CPU IP",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1518,6 +4872,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+879%</span>",
             "<strong>신규 중 최고 순위</strong>: ASML — 글로벌 21위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 879,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "ASML",
+              "rank": 21,
+              "tk": "ASML"
+            }
           ]
         },
         {
@@ -1532,9 +4902,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.42"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,416",
+            "date": "08/08",
+            "mult": "1.42"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-01",
+      "curr": "2026-08-08"
     },
     {
       "date": "2026.08.01",
@@ -1560,6 +4937,110 @@ const DATA = {
             "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-down'>162% → 133%</span>",
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-up'>316% → 730%</span>",
             "<strong>Sandisk</strong> 시총 <span class='em-down'>-15%</span> ($213B → $180B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Intel",
+              "rank": 28,
+              "mc": 455.0,
+              "mom": 356,
+              "tk": "INTC"
+            },
+            {
+              "k": "l_enter",
+              "name": "Palo Alto Networks",
+              "rank": 59,
+              "mc": 270.0,
+              "mom": 91,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_exit",
+              "name": "MediaTek",
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_exit",
+              "name": "Delta Electronics",
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_exit",
+              "name": "Cambricon Technologies",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Delta Electronics (Thailand)",
+              "tk": null
+            },
+            {
+              "k": "l_rank",
+              "name": "Applied Materials",
+              "a": 30,
+              "b": 33,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 36,
+              "b": 40,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 56,
+              "b": 63,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 81,
+              "b": 111,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 118,
+              "b": 121,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 241,
+              "b": 206,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 162,
+              "b": 133,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 316,
+              "b": 730,
+              "tk": "SNDK"
+            },
+            {
+              "k": "mc_move",
+              "name": "Sandisk",
+              "pct": -15,
+              "old": 213.0,
+              "new": 180.0,
+              "tk": "SNDK"
+            }
           ]
         },
         {
@@ -1571,6 +5052,75 @@ const DATA = {
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 테크 (1)</strong>: Sandisk",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 7
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Intel",
+                  "tk": "INTC"
+                },
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1579,6 +5129,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+730%</span>",
             "<strong>신규 중 최고 순위</strong>: Intel — 글로벌 28위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 730,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Intel",
+              "rank": 28,
+              "tk": "INTC"
+            }
           ]
         },
         {
@@ -1593,9 +5159,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.44"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,444",
+            "date": "08/01",
+            "mult": "1.44"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-25",
+      "curr": "2026-08-01"
     },
     {
       "date": "2026.07.25",
@@ -1617,6 +5190,82 @@ const DATA = {
             "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-up'>163% → 316%</span>",
             "<strong>Dell</strong> 1Y 모멘텀 <span class='em-up'>221% → 241%</span>",
             "<strong>MediaTek</strong> 1Y 모멘텀 <span class='em-up'>120% → 139%</span>"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Cambricon Technologies",
+              "rank": 196,
+              "mc": 114.0,
+              "mom": 116,
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Palo Alto Networks",
+              "tk": "PANW"
+            },
+            {
+              "k": "l_exit",
+              "name": "GE Vernova",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Seagate Technology",
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 66,
+              "b": 56,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 87,
+              "b": 81,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 125,
+              "b": 104,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 157,
+              "b": 149,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 163,
+              "b": 316,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 221,
+              "b": 241,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 120,
+              "b": 139,
+              "tk": "2454.TW"
+            }
           ]
         },
         {
@@ -1627,6 +5276,76 @@ const DATA = {
             "<strong>AI 테크 (3)</strong>: Sandisk, Delta Electronics, Delta Electronics (Thailand)",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 9
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Cambricon Technologies",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                },
+                {
+                  "name": "Delta Electronics (Thailand)",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1635,6 +5354,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+316%</span>",
             "<strong>신규 중 최고 순위</strong>: Cambricon Technologies — 글로벌 196위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 316,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Cambricon Technologies",
+              "rank": 196,
+              "tk": null
+            }
           ]
         },
         {
@@ -1649,9 +5384,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.46"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,461",
+            "date": "07/25",
+            "mult": "1.46"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-18",
+      "curr": "2026-07-25"
     },
     {
       "date": "2026.07.18",
@@ -1681,6 +5423,148 @@ const DATA = {
             "<strong>Lam Research</strong> 1Y 모멘텀 <span class='em-down'>247% → 211%</span>",
             "<strong>Sandisk</strong> 시총 <span class='em-down'>-29%</span> ($284B → $201B)",
             "<strong>Marvell Technology</strong> 시총 <span class='em-down'>-18%</span> ($206B → $169B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Applied Materials",
+              "rank": 30,
+              "mc": 421.0,
+              "mom": 176,
+              "tk": "AMAT"
+            },
+            {
+              "k": "l_enter",
+              "name": "Palo Alto Networks",
+              "rank": 53,
+              "mc": 292.0,
+              "mom": 83,
+              "tk": "PANW"
+            },
+            {
+              "k": "l_enter",
+              "name": "Seagate Technology",
+              "rank": 111,
+              "mc": 177.0,
+              "mom": 437,
+              "tk": "STX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Lam Research",
+              "a": 31,
+              "b": 34,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 59,
+              "b": 66,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "a": 56,
+              "b": 87,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 87,
+              "b": 120,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "a": 102,
+              "b": 125,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_rank",
+              "name": "Delta Electronics",
+              "a": 142,
+              "b": 157,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 222,
+              "b": 162,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "a": 981,
+              "b": 163,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "a": 155,
+              "b": 120,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Delta Electronics",
+              "a": 255,
+              "b": 217,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 241,
+              "b": 221,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Delta Electronics (Thailand)",
+              "a": 181,
+              "b": 119,
+              "tk": null
+            },
+            {
+              "k": "l_mom",
+              "name": "GE Vernova",
+              "a": 102,
+              "b": 86,
+              "tk": null
+            },
+            {
+              "k": "l_mom",
+              "name": "Lam Research",
+              "a": 247,
+              "b": 211,
+              "tk": "LRCX"
+            },
+            {
+              "k": "mc_move",
+              "name": "Sandisk",
+              "pct": -29,
+              "old": 284.0,
+              "new": 201.0,
+              "tk": "SNDK"
+            },
+            {
+              "k": "mc_move",
+              "name": "Marvell Technology",
+              "pct": -18,
+              "old": 206.0,
+              "new": 169.0,
+              "tk": "MRVL"
+            }
           ]
         },
         {
@@ -1693,6 +5577,98 @@ const DATA = {
             "<strong>AI 전력 인프라 (1)</strong>: GE Vernova",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 11
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                },
+                {
+                  "name": "Delta Electronics (Thailand)",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Applied Materials",
+                  "tk": "AMAT"
+                },
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "software",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 전력 인프라",
+              "tid": "power",
+              "names": [
+                {
+                  "name": "GE Vernova",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1701,6 +5677,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Seagate Technology — 1Y <span class='em-up'>+437%</span>",
             "<strong>신규 중 최고 순위</strong>: Applied Materials — 글로벌 30위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Seagate Technology",
+              "m": 437,
+              "tk": "STX"
+            },
+            {
+              "k": "pt_new",
+              "name": "Applied Materials",
+              "rank": 30,
+              "tk": "AMAT"
+            }
           ]
         },
         {
@@ -1715,9 +5707,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.49"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,485",
+            "date": "07/18",
+            "mult": "1.49"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-11",
+      "curr": "2026-07-18"
     },
     {
       "date": "2026.07.11",
@@ -1745,6 +5744,123 @@ const DATA = {
             "<strong>Dell</strong> 1Y 모멘텀 <span class='em-up'>62% → 241%</span>",
             "<strong>Marvell Technology</strong> 1Y 모멘텀 <span class='em-up'>87% → 222%</span>",
             "<strong>Marvell Technology</strong> 시총 <span class='em-down'>-19%</span> ($255B → $206B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Lam Research",
+              "rank": 31,
+              "mc": 438.0,
+              "mom": 247,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_enter",
+              "name": "Sandisk",
+              "rank": 56,
+              "mc": 284.0,
+              "mom": 981,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_enter",
+              "name": "MediaTek",
+              "rank": 102,
+              "mc": 195.0,
+              "mom": 155,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_enter",
+              "name": "Delta Electronics",
+              "rank": 142,
+              "mc": 152.0,
+              "mom": 255,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_enter",
+              "name": "Delta Electronics (Thailand)",
+              "rank": 196,
+              "mc": 117.0,
+              "mom": 181,
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Arm Holdings",
+              "tk": "ARM"
+            },
+            {
+              "k": "l_exit",
+              "name": "Palantir",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "SoftBank Group",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Arista Networks",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Vertiv Holdings",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Cambricon",
+              "tk": null
+            },
+            {
+              "k": "l_rank",
+              "name": "GE Vernova",
+              "a": 65,
+              "b": 55,
+              "tk": null
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 66,
+              "b": 87,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "GE Vernova",
+              "a": 145,
+              "b": 102,
+              "tk": null
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 62,
+              "b": 241,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 87,
+              "b": 222,
+              "tk": "MRVL"
+            },
+            {
+              "k": "mc_move",
+              "name": "Marvell Technology",
+              "pct": -19,
+              "old": 255.0,
+              "new": 206.0,
+              "tk": "MRVL"
+            }
           ]
         },
         {
@@ -1756,6 +5872,79 @@ const DATA = {
             "<strong>AI 전력 인프라 (1)</strong>: GE Vernova",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 8
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                },
+                {
+                  "name": "Delta Electronics (Thailand)",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 전력 인프라",
+              "tid": "power",
+              "names": [
+                {
+                  "name": "GE Vernova",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1764,6 +5953,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+981%</span>",
             "<strong>신규 중 최고 순위</strong>: Lam Research — 글로벌 31위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 981,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Lam Research",
+              "rank": 31,
+              "tk": "LRCX"
+            }
           ]
         },
         {
@@ -1778,9 +5983,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.50"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,505",
+            "date": "07/11",
+            "mult": "1.50"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-04",
+      "curr": "2026-07-11"
     },
     {
       "date": "2026.07.05",
@@ -1810,6 +6022,138 @@ const DATA = {
             "<strong>GE Vernova</strong> 1Y 모멘텀 <span class='em-down'>145% → 115%</span>",
             "<strong>Dell</strong> 1Y 모멘텀 <span class='em-up'>62% → 216%</span>",
             "<strong>Marvell Technology</strong> 시총 <span class='em-down'>-16%</span> ($255B → $215B)"
+          ],
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "l_enter",
+              "name": "Lam Research",
+              "rank": 31,
+              "mc": 439.0,
+              "mom": 256,
+              "tk": "LRCX"
+            },
+            {
+              "k": "l_enter",
+              "name": "Sandisk",
+              "rank": 68,
+              "mc": 258.0,
+              "mom": 660,
+              "tk": "SNDK"
+            },
+            {
+              "k": "l_enter",
+              "name": "MediaTek",
+              "rank": 85,
+              "mc": 210.0,
+              "mom": 199,
+              "tk": "2454.TW"
+            },
+            {
+              "k": "l_enter",
+              "name": "Delta Electronics",
+              "rank": 124,
+              "mc": 169.0,
+              "mom": 310,
+              "tk": "2308.TW"
+            },
+            {
+              "k": "l_enter",
+              "name": "Delta Electronics (Thailand)",
+              "rank": 195,
+              "mc": 119.0,
+              "mom": 180,
+              "tk": null
+            },
+            {
+              "k": "l_enter",
+              "name": "Infineon",
+              "rank": 200,
+              "mc": 115.0,
+              "mom": 104,
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Arm Holdings",
+              "tk": "ARM"
+            },
+            {
+              "k": "l_exit",
+              "name": "Palantir",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "SoftBank Group",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Arista Networks",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Vertiv Holdings",
+              "tk": null
+            },
+            {
+              "k": "l_exit",
+              "name": "Cambricon",
+              "tk": null
+            },
+            {
+              "k": "l_rank",
+              "name": "GE Vernova",
+              "a": 65,
+              "b": 54,
+              "tk": null
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "a": 60,
+              "b": 69,
+              "tk": "DELL"
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "a": 66,
+              "b": 82,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "Marvell Technology",
+              "a": 87,
+              "b": 227,
+              "tk": "MRVL"
+            },
+            {
+              "k": "l_mom",
+              "name": "GE Vernova",
+              "a": 145,
+              "b": 115,
+              "tk": null
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "a": 62,
+              "b": 216,
+              "tk": "DELL"
+            },
+            {
+              "k": "mc_move",
+              "name": "Marvell Technology",
+              "pct": -16,
+              "old": 255.0,
+              "new": 215.0,
+              "tk": "MRVL"
+            }
           ]
         },
         {
@@ -1821,6 +6165,83 @@ const DATA = {
             "<strong>AI 전력 인프라 (1)</strong>: GE Vernova",
             "<strong>AI 서버 OEM (1)</strong>: Dell",
             "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 9
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "semis",
+              "names": [
+                {
+                  "name": "Lam Research",
+                  "tk": "LRCX"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                },
+                {
+                  "name": "Infineon",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "tech",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Delta Electronics",
+                  "tk": "2308.TW"
+                },
+                {
+                  "name": "Delta Electronics (Thailand)",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 전력 인프라",
+              "tid": "power",
+              "names": [
+                {
+                  "name": "GE Vernova",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
           ]
         },
         {
@@ -1829,6 +6250,22 @@ const DATA = {
           "items": [
             "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+660%</span>",
             "<strong>신규 중 최고 순위</strong>: Lam Research — 글로벌 31위 데뷔"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "m": 660,
+              "tk": "SNDK"
+            },
+            {
+              "k": "pt_new",
+              "name": "Lam Research",
+              "rank": 31,
+              "tk": "LRCX"
+            }
           ]
         },
         {
@@ -1843,9 +6280,16 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.53"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,531",
+            "date": "07/05",
+            "mult": "1.53"
+          }
         }
-      ]
+      ],
+      "prev": "2026-06-28",
+      "curr": "2026-07-05"
     },
     {
       "date": "2026.06.03",
@@ -1858,6 +6302,22 @@ const DATA = {
             "<strong>Oracle</strong> — <span class='em-up'>$649B, 글로벌 19위</span>",
             "<strong>Micron</strong> — <span class='em-up'>$1.09T, 글로벌 13위</span>",
             "<strong>AMD</strong> — <span class='em-up'>$842B, 글로벌 17위</span>"
+          ],
+          "label_id": "grad_manual",
+          "label_p": {},
+          "events": [
+            {
+              "k": "raw",
+              "html": "<strong>Oracle</strong> — <span class='em-up'>$649B, 글로벌 19위</span>"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>Micron</strong> — <span class='em-up'>$1.09T, 글로벌 13위</span>"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>AMD</strong> — <span class='em-up'>$842B, 글로벌 17위</span>"
+            }
           ]
         },
         {
@@ -1866,6 +6326,18 @@ const DATA = {
           "items": [
             "<strong>Marvell</strong> — 6/2 NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (Computex 2026 키노트). NVIDIA $2B 직접 투자, 1일 <span class='em-up'>+41.84%</span> 폭등. AI 데이터센터 광 인터커넥트 핵심.",
             "<strong>Dell</strong> — 1일 <span class='em-up'>+32.76%</span> 폭등. AI 서버 공급망 핵심 파트너 (NVIDIA Blackwell 서버)."
+          ],
+          "label_id": "new_manual",
+          "label_p": {},
+          "events": [
+            {
+              "k": "raw",
+              "html": "<strong>Marvell</strong> — 6/2 NVIDIA CEO 젠슨 황 \"다음 조 단위 기업\" 공식 지목 (Computex 2026 키노트). NVIDIA $2B 직접 투자, 1일 <span class='em-up'>+41.84%</span> 폭등. AI 데이터센터 광 인터커넥트 핵심."
+            },
+            {
+              "k": "raw",
+              "html": "<strong>Dell</strong> — 1일 <span class='em-up'>+32.76%</span> 폭등. AI 서버 공급망 핵심 파트너 (NVIDIA Blackwell 서버)."
+            }
           ]
         },
         {
@@ -1876,6 +6348,76 @@ const DATA = {
             "<strong>AI 인프라 하드웨어 (3)</strong>: Dell, GE Vernova, Vertiv",
             "<strong>AI 소프트웨어 / 네트워킹 (2)</strong>: Palantir, Arista Networks",
             "<strong>AI 투자 / 지주 (1)</strong>: SoftBank"
+          ],
+          "label_id": "sector",
+          "label_p": {
+            "n": 9
+          },
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 칩 IP / 실리콘",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Arm Holdings",
+                  "tk": "ARM"
+                },
+                {
+                  "name": "Marvell",
+                  "tk": null
+                },
+                {
+                  "name": "Cambricon",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 인프라 하드웨어",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                },
+                {
+                  "name": "GE Vernova",
+                  "tk": null
+                },
+                {
+                  "name": "Vertiv",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어 / 네트워킹",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Palantir",
+                  "tk": null
+                },
+                {
+                  "name": "Arista Networks",
+                  "tk": null
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 투자 / 지주",
+              "tid": "",
+              "names": [
+                {
+                  "name": "SoftBank",
+                  "tk": null
+                }
+              ]
+            }
           ]
         },
         {
@@ -1885,6 +6427,22 @@ const DATA = {
             "<strong>가장 주목 (NEW)</strong>: Marvell — NVIDIA CEO가 공개적으로 \"$1T 갈 회사\"라고 호명한 첫 사례",
             "<strong>가장 폭발적 (NEW)</strong>: Dell — 1일 +33% 단발 급등, AI 서버 OEM 1위",
             "<strong>가장 안정적</strong>: Arm Holdings — 모든 AI 칩 CPU IP, SoftBank 88% 보유"
+          ],
+          "label_id": "points",
+          "label_p": {},
+          "events": [
+            {
+              "k": "raw",
+              "html": "<strong>가장 주목 (NEW)</strong>: Marvell — NVIDIA CEO가 공개적으로 \"$1T 갈 회사\"라고 호명한 첫 사례"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>가장 폭발적 (NEW)</strong>: Dell — 1일 +33% 단발 급등, AI 서버 OEM 1위"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>가장 안정적</strong>: Arm Holdings — 모든 AI 칩 CPU IP, SoftBank 88% 보유"
+            }
           ]
         },
         {
@@ -1904,7 +6462,12 @@ const DATA = {
               "k": "환산식",
               "v": "시총(조원) = 시총(USD bn) × 1.48"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,480",
+            "date": "6/3",
+            "mult": "1.48"
+          }
         }
       ]
     }
@@ -1974,31 +6537,33 @@ const DATA = {
 
 const timeline = document.getElementById('timeline');
 
-function renderBlock(block) {
+// M: 조각 표식기 — 사건 구조가 있는 기록은 TXI(조각 단위 원문 표식), 없는 옛 기록은 그대로(기록 전체를 TXB 로)
+function renderBlock(block, M) {
   if (!block) return '';
+  M = M || (h => h);
   if (block.type === 'items') {
     return `
       <div class="entry-block">
-        <div class="entry-block-label">${block.label || ''}</div>
+        <div class="entry-block-label">${M(block.label || '')}</div>
         <ul class="entry-items">
-          ${block.items.map(it => `<li>${it}</li>`).join('')}
+          ${block.items.map(it => `<li>${M(it)}</li>`).join('')}
         </ul>
       </div>`;
   }
   if (block.type === 'prose') {
     return `
       <div class="entry-block">
-        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
-        <p class="entry-prose">${block.text}</p>
+        ${block.label ? `<div class="entry-block-label">${M(block.label)}</div>` : ''}
+        <p class="entry-prose">${M(block.text)}</p>
       </div>`;
   }
   if (block.type === 'stats') {
     return `
       <div class="entry-block">
-        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
+        ${block.label ? `<div class="entry-block-label">${M(block.label)}</div>` : ''}
         <div class="entry-stat-row">
           ${block.items.map(it => `
-            <div><span class="entry-stat-label">${it.k}</span><span class="entry-stat-val">${it.v}</span></div>
+            <div><span class="entry-stat-label">${M(it.k)}</span><span class="entry-stat-val">${M(it.v)}</span></div>
           `).join('')}
         </div>
       </div>`;
@@ -2006,11 +6571,18 @@ function renderBlock(block) {
   return '';
 }
 
+// 사건·환율 상태가 실린 기록(단계 2 이후 + 2026-10-26 이관분) — 그 언어로 다시 그려졌다
+function structured(e) {
+  return !!(e.prev && e.curr) || (e.blocks || []).some(b => b && (b.events || b.fx || b.label_id));
+}
+
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
       <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
-      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
+      ${structured(e)
+        ? (e.period ? `<div class="entry-period">${TXI(e.period)}</div>` : '') + (e.blocks || []).map(b => renderBlock(b, TXI)).join('')
+        : TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(b => renderBlock(b)).join(''))}
     </div>
   `).join('');
 } else {

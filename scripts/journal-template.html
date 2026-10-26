@@ -639,6 +639,18 @@ function renderLogin(){
   if (bOut) bOut.onclick = () => signOut(auth);
 }
 
+// 자동 기록(시차 관측 일지)은 기록 순간 같은 상태로 만든 그 언어 문장(l10n)을 함께 싣는다 — 있으면 그것,
+// 없으면(사람 기록·옛 기록) 원문 그대로 + 언어 칩(UT). 태그도 기계 id 가 있으면 카탈로그 이름으로
+function noteText(i){
+  const v = i.l10n && i.l10n[UVX.lang];
+  return (UVX.lang !== 'ko' && v) ? esc(v) : UT(i.text);
+}
+function noteTags(i){
+  if (UVX.lang !== 'ko' && i.tag_ids && i.tag_ids.length && i.l10n && i.l10n[UVX.lang])
+    return i.tag_ids.map(id => id === 'parallax' ? esc(T('jn.tag.parallax')) : UT(id));
+  return (i.tags || []).map(UT);
+}
+
 async function loadList(){
   try {
     const snap = await getDocs(query(collection(db, 'judgments'), orderBy('created', 'desc'), limit(100)));
@@ -647,9 +659,9 @@ async function loadList(){
     html += items.map(i =>
       '<div class="nt-item">' +
         '<div class="nt-meta"><span>' + fmtWhen(i.created) + '</span>' +
-        (i.tags && i.tags.length ? '<span class="nt-tag">#' + i.tags.map(UT).join(' #') + '</span>' : '') +
+        (i.tags && i.tags.length ? '<span class="nt-tag">#' + noteTags(i).join(' #') + '</span>' : '') +
         (isAdmin() ? '<button class="nt-del" data-del="' + i.id + '">' + T('cm.del') + '</button>' : '') + '</div>' +
-        '<div class="nt-text">' + UT(i.text) + '</div>' +
+        '<div class="nt-text">' + noteText(i) + '</div>' +
       '</div>').join('') || '<div class="nt-count">' + T('jn.first') + '</div>';
     $('ntBody').innerHTML = html;
     document.querySelectorAll('.nt-del').forEach(b => b.onclick = async () => {

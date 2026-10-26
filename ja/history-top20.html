@@ -50,8 +50,14 @@ function md(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if
   var mo = +m[2], d = +m[3]; return L === 'en' ? MON.en[mo - 1] + ' ' + d : es ? d + '/' + mo : mo + '/' + d; }
 var HAN = /[\uac00-\ud7a3]/;
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식으로 감싼다. 화면 문구(chrome)에는 쓰지 않는다 */
-function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1">' + h + '<\/span>' : h; }
+/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식 + 작은 'KO' 꼬리표(title=번역 준비 중).
+   화면 문구(chrome)에는 쓰지 않는다. 마크업은 파이썬 판 i18n.pending_inline 과 같다(test_i18n 대조) */
+function KOT(){ return '<sup class="uvx-ko" title="' + esc(P) + '" aria-hidden="true">KO<\/sup>'; }
+function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + h + '<\/span>' + KOT() : h; }
+/* 이미 HTML 인 짧은 콘텐츠(변동 이력 한 줄 등) — 표식 밖에 한글이 남았을 때만 감싼다(이미 표식된 조각은 빼고 잰다) */
+function TXI(html){ var s = String(html == null ? '' : html);
+  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<\/span>/g, '').replace(/<[^>]*>/g, ''))) return s;
+  return '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + s + '<\/span>' + KOT(); }
 /* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
@@ -63,8 +69,8 @@ function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.tes
   return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
 /* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
 function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
-window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SKハイニックス", "005930.KS": "サムスン", "WMT": "ウォルマート", "XOM": "エクソンモービル"},
+window.T = T; window.TP = TP; window.TX = TX; window.TXI = TXI; window.TXB = TXB; window.UT = UT; window.PN = PN;
+window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SKハイニックス", "005930.KS": "サムスン", "WMT": "Walmart", "XOM": "ExxonMobil"},
   esc: esc, rates: R, ccy: CCY, intl: "ja-JP" };
 })();
 </script>
@@ -610,6 +616,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
+.uvx-ko{display:inline-block;margin-left:3px;padding:0 3px;font-size:9px;line-height:12px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px solid var(--line-strong);border-radius:3px;vertical-align:1px;cursor:help;white-space:nowrap;font-style:normal}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -704,618 +711,1914 @@ const DATA = {
   "entries": [
     {
       "date": "2026.10.24",
-      "period": "10.17 → 10.24 (주간)",
+      "period": "10.17 → 10.24(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[중국] <strong>BYD</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $111B</span>)",
-            "[중국] <strong>Zhongji Innolight</strong> TOP 20 이탈"
+            "[中国] <strong>BYD</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,110億ドル</span>)",
+            "[中国] <strong>Zhongji Innolight</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "BYD",
+              "rank": 20,
+              "mc": 111.0,
+              "tk": "002594.SZ"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "Zhongji Innolight",
+              "tk": "300308.SZ"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,324 (10/24 기준)"
+              "v": "1,324(10/24時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.32"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.32"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,324",
+            "date": "10/24",
+            "mult": "1.32"
+          }
         }
-      ]
+      ],
+      "prev": "2026-10-17",
+      "curr": "2026-10-24"
     },
     {
       "date": "2026.10.17",
-      "period": "10.10 → 10.17 (주간)",
+      "period": "10.10 → 10.17(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>Exxon Mobil</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $736B</span>)",
-            "<strong>SK하이닉스</strong> TOP 20 이탈",
-            "<strong>Walmart</strong> <span class='em-up'>19위 → 16위 상승</span> ($943B)",
-            "<strong>삼성전자</strong> 시총 <span class='em-down'>-18%</span> ($1.28T → $1.05T)",
-            "[미국] <strong>AbbVie</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $504B</span>)",
-            "[미국] <strong>Intel</strong> TOP 20 이탈",
-            "[한국] <strong>NAVER</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $20B</span>)",
-            "[한국] <strong>SK</strong> TOP 20 이탈",
-            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $81B</span>)",
-            "[일본] <strong>KIOXIA Holdings Corporation</strong> TOP 20 이탈",
-            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $177B</span>)",
-            "[유럽] <strong>Novo Nordisk</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $171B</span>)",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
-            "[유럽] <strong>ABB</strong> TOP 20 이탈",
-            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $115B</span>)",
-            "[중국] <strong>BYD</strong> TOP 20 이탈"
+            "<strong>Exxon Mobil</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、7,360億ドル</span>)",
+            "<strong>SKハイニックス</strong> TOP 20から脱落",
+            "<strong>Walmart</strong> <span class='em-up'>19位 → 16位に上昇</span>(9,430億ドル)",
+            "<strong>サムスン電子</strong> 時価総額 <span class='em-down'>-18%</span>(1.28兆ドル → 1.05兆ドル)",
+            "[米国] <strong>AbbVie</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、5,040億ドル</span>)",
+            "[米国] <strong>Intel</strong> TOP 20から脱落",
+            "[韓国] <strong>NAVER</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、200億ドル</span>)",
+            "[韓国] <strong>SK</strong> TOP 20から脱落",
+            "[日本] <strong>Mitsubishi Heavy Industries</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、810億ドル</span>)",
+            "[日本] <strong>KIOXIA Holdings Corporation</strong> TOP 20から脱落",
+            "[欧州] <strong>Airbus</strong> TOP 20に新規ランクイン(<span class='em-up'>18位、1,770億ドル</span>)",
+            "[欧州] <strong>Novo Nordisk</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,710億ドル</span>)",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20から脱落",
+            "[欧州] <strong>ABB</strong> TOP 20から脱落",
+            "[中国] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,150億ドル</span>)",
+            "[中国] <strong>BYD</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "Exxon Mobil",
+              "rank": 20,
+              "mc": 736.0,
+              "tk": "XOM"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "SK하이닉스",
+              "tk": "000660.KS"
+            },
+            {
+              "k": "rank_up",
+              "name": "Walmart",
+              "a": 19,
+              "b": 16,
+              "mc": 943.0,
+              "tk": "WMT"
+            },
+            {
+              "k": "mc_move",
+              "name": "삼성전자",
+              "pct": -18,
+              "old": 1280.0,
+              "new": 1050.0,
+              "tk": "005930.KS"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "AbbVie",
+              "rank": 20,
+              "mc": 504.0,
+              "tk": "ABBV"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Intel",
+              "tk": "INTC"
+            },
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "NAVER",
+              "rank": 20,
+              "mc": 20.0,
+              "tk": "035420.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "SK",
+              "tk": "034730.KS"
+            },
+            {
+              "k": "enter",
+              "region": "japan",
+              "name": "Mitsubishi Heavy Industries",
+              "rank": 19,
+              "mc": 81.0,
+              "tk": "7011.T"
+            },
+            {
+              "k": "exit",
+              "region": "japan",
+              "name": "KIOXIA Holdings Corporation",
+              "tk": "285A.T"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Airbus",
+              "rank": 18,
+              "mc": 177.0,
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Novo Nordisk",
+              "rank": 20,
+              "mc": 171.0,
+              "tk": "NVO"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "tk": "STX"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "ABB",
+              "tk": "ABBN.SW"
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "PDD Holdings (Pinduoduo)",
+              "rank": 20,
+              "mc": 115.0,
+              "tk": "PDD"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "BYD",
+              "tk": "002594.SZ"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,332 (10/17 기준)"
+              "v": "1,332(10/17時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.33"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.33"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,332",
+            "date": "10/17",
+            "mult": "1.33"
+          }
         }
-      ]
+      ],
+      "prev": "2026-10-10",
+      "curr": "2026-10-17"
     },
     {
       "date": "2026.10.10",
-      "period": "10.3 → 10.10 (주간)",
+      "period": "10.3 → 10.10(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>Visa</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $724B</span>)",
-            "<strong>ASML</strong> TOP 20 이탈",
-            "[일본] <strong>Japan Tobacco</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $81B</span>)",
-            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 이탈",
-            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $176B</span>)",
-            "[유럽] <strong>Schneider Electric</strong> TOP 20 이탈"
+            "<strong>Visa</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、7,240億ドル</span>)",
+            "<strong>ASML</strong> TOP 20から脱落",
+            "[日本] <strong>Japan Tobacco</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、810億ドル</span>)",
+            "[日本] <strong>Mitsubishi Heavy Industries</strong> TOP 20から脱落",
+            "[欧州] <strong>Prosus</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,760億ドル</span>)",
+            "[欧州] <strong>Schneider Electric</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "Visa",
+              "rank": 20,
+              "mc": 724.0,
+              "tk": "V"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "ASML",
+              "tk": "ASML"
+            },
+            {
+              "k": "enter",
+              "region": "japan",
+              "name": "Japan Tobacco",
+              "rank": 20,
+              "mc": 81.0,
+              "tk": "2914.T"
+            },
+            {
+              "k": "exit",
+              "region": "japan",
+              "name": "Mitsubishi Heavy Industries",
+              "tk": "7011.T"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Prosus",
+              "rank": 19,
+              "mc": 176.0,
+              "tk": "PRX.AS"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Schneider Electric",
+              "tk": "SU.PA"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,341 (10/10 기준)"
+              "v": "1,341(10/10時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.34"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.34"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,341",
+            "date": "10/10",
+            "mult": "1.34"
+          }
         }
-      ]
+      ],
+      "prev": "2026-10-03",
+      "curr": "2026-10-10"
     },
     {
       "date": "2026.10.03",
-      "period": "9.26 → 10.3 (주간)",
+      "period": "9.26 → 10.3(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>ASML</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $717B</span>)",
-            "<strong>Visa</strong> TOP 20 이탈",
-            "[유럽] <strong>ABB</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $179B</span>)",
-            "[유럽] <strong>Prosus</strong> TOP 20 이탈"
+            "<strong>ASML</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、7,170億ドル</span>)",
+            "<strong>Visa</strong> TOP 20から脱落",
+            "[欧州] <strong>ABB</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,790億ドル</span>)",
+            "[欧州] <strong>Prosus</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "ASML",
+              "rank": 20,
+              "mc": 717.0,
+              "tk": "ASML"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "Visa",
+              "tk": "V"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "ABB",
+              "rank": 19,
+              "mc": 179.0,
+              "tk": "ABBN.SW"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Prosus",
+              "tk": "PRX.AS"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,348 (10/03 기준)"
+              "v": "1,348(10/03時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.35"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.35"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,348",
+            "date": "10/03",
+            "mult": "1.35"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-26",
+      "curr": "2026-10-03"
     },
     {
       "date": "2026.09.26",
-      "period": "9.19 → 9.26 (주간)",
+      "period": "9.19 → 9.26(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[한국] <strong>SK</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $25B</span>)",
-            "[한국] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20 이탈",
-            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $180B</span>)",
-            "[유럽] <strong>Novo Nordisk</strong> TOP 20 이탈"
+            "[韓国] <strong>SK</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、250億ドル</span>)",
+            "[韓国] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20から脱落",
+            "[欧州] <strong>Prosus</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,800億ドル</span>)",
+            "[欧州] <strong>Novo Nordisk</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "SK",
+              "rank": 19,
+              "mc": 25.0,
+              "tk": "034730.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "LS ELECTRIC Co., Ltd.",
+              "tk": "010120.KS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Prosus",
+              "rank": 20,
+              "mc": 180.0,
+              "tk": "PRX.AS"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Novo Nordisk",
+              "tk": "NVO"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,355 (09/26 기준)"
+              "v": "1,355(09/26時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.36"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.36"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,355",
+            "date": "09/26",
+            "mult": "1.36"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-19",
+      "curr": "2026-09-26"
     },
     {
       "date": "2026.09.19",
-      "period": "9.12 → 9.19 (주간)",
+      "period": "9.12 → 9.19(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[한국] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $23B</span>)",
-            "[한국] <strong>SK</strong> TOP 20 이탈"
+            "[韓国] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、230億ドル</span>)",
+            "[韓国] <strong>SK</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "LS ELECTRIC Co., Ltd.",
+              "rank": 20,
+              "mc": 23.0,
+              "tk": "010120.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "SK",
+              "tk": "034730.KS"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,388 (09/19 기준)"
+              "v": "1,388(09/19時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.39"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.39"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,388",
+            "date": "09/19",
+            "mult": "1.39"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-12",
+      "curr": "2026-09-19"
     },
     {
       "date": "2026.09.12",
-      "period": "9.5 → 9.12 (주간)",
+      "period": "9.5 → 9.12(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[한국] <strong>SK</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $24B</span>)",
-            "[한국] <strong>NAVER</strong> TOP 20 이탈",
-            "[유럽] <strong>Schneider Electric</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $190B</span>)",
-            "[유럽] <strong>Prosus</strong> TOP 20 이탈"
+            "[韓国] <strong>SK</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、240億ドル</span>)",
+            "[韓国] <strong>NAVER</strong> TOP 20から脱落",
+            "[欧州] <strong>Schneider Electric</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,900億ドル</span>)",
+            "[欧州] <strong>Prosus</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "SK",
+              "rank": 20,
+              "mc": 24.0,
+              "tk": "034730.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "NAVER",
+              "tk": "035420.KS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Schneider Electric",
+              "rank": 19,
+              "mc": 190.0,
+              "tk": "SU.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Prosus",
+              "tk": "PRX.AS"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,343 (09/12 기준)"
+              "v": "1,343(09/12時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.34"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.34"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,343",
+            "date": "09/12",
+            "mult": "1.34"
+          }
         }
-      ]
+      ],
+      "prev": "2026-09-05",
+      "curr": "2026-09-12"
     },
     {
       "date": "2026.09.05",
-      "period": "8.29 → 9.5 (주간)",
+      "period": "8.29 → 9.5(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[유럽] <strong>TotalEnergies</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $196B</span>)",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $192B</span>)",
-            "[유럽] <strong>Schneider Electric</strong> TOP 20 이탈",
-            "[유럽] <strong>Hermès</strong> TOP 20 이탈",
-            "[홍콩] <strong>Hongkong Land</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $18B</span>)",
-            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 이탈"
+            "[欧州] <strong>TotalEnergies</strong> TOP 20に新規ランクイン(<span class='em-up'>18位、1,960億ドル</span>)",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,920億ドル</span>)",
+            "[欧州] <strong>Schneider Electric</strong> TOP 20から脱落",
+            "[欧州] <strong>Hermès</strong> TOP 20から脱落",
+            "[香港] <strong>Hongkong Land</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、180億ドル</span>)",
+            "[香港] <strong>Henderson Land Development</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "TotalEnergies",
+              "rank": 18,
+              "mc": 196.0,
+              "tk": "TTE"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "rank": 19,
+              "mc": 192.0,
+              "tk": "STX"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Schneider Electric",
+              "tk": "SU.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Hermès",
+              "tk": "RMS.PA"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Hongkong Land",
+              "rank": 19,
+              "mc": 18.0,
+              "tk": "H78.SI"
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "tk": "0012.HK"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,350 (09/05 기준)"
+              "v": "1,350(09/05時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.35"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.35"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,350",
+            "date": "09/05",
+            "mult": "1.35"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-29",
+      "curr": "2026-09-05"
     },
     {
       "date": "2026.08.29",
-      "period": "8.22 → 8.29 (주간)",
+      "period": "8.22 → 8.29(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[유럽] <strong>Hermès</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $194B</span>)",
-            "[유럽] <strong>TotalEnergies</strong> TOP 20 이탈",
-            "[중국] <strong>BYD</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $125B</span>)",
-            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 이탈"
+            "[欧州] <strong>Hermès</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,940億ドル</span>)",
+            "[欧州] <strong>TotalEnergies</strong> TOP 20から脱落",
+            "[中国] <strong>BYD</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,250億ドル</span>)",
+            "[中国] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Hermès",
+              "rank": 20,
+              "mc": 194.0,
+              "tk": "RMS.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "TotalEnergies",
+              "tk": "TTE"
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "BYD",
+              "rank": 20,
+              "mc": 125.0,
+              "tk": "002594.SZ"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "PDD Holdings (Pinduoduo)",
+              "tk": "PDD"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,375 (08/29 기준)"
+              "v": "1,375(08/29時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.37"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.37"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,375",
+            "date": "08/29",
+            "mult": "1.37"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-22",
+      "curr": "2026-08-29"
     },
     {
       "date": "2026.08.22",
-      "period": "8.15 → 8.22 (주간)",
+      "period": "8.15 → 8.22(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>Visa</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $693B</span>)",
-            "<strong>ASML</strong> TOP 20 이탈",
-            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $196B</span>)",
-            "[유럽] <strong>Allianz SE</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $195B</span>)",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
-            "[유럽] <strong>Airbus</strong> TOP 20 이탈",
-            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $19B</span>)",
-            "[홍콩] <strong>Hongkong Land</strong> TOP 20 이탈"
+            "<strong>Visa</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、6,930億ドル</span>)",
+            "<strong>ASML</strong> TOP 20から脱落",
+            "[欧州] <strong>Prosus</strong> TOP 20に新規ランクイン(<span class='em-up'>18位、1,960億ドル</span>)",
+            "[欧州] <strong>Allianz SE</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,950億ドル</span>)",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20から脱落",
+            "[欧州] <strong>Airbus</strong> TOP 20から脱落",
+            "[香港] <strong>Henderson Land Development</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、190億ドル</span>)",
+            "[香港] <strong>Hongkong Land</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "Visa",
+              "rank": 20,
+              "mc": 693.0,
+              "tk": "V"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "ASML",
+              "tk": "ASML"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Prosus",
+              "rank": 18,
+              "mc": 196.0,
+              "tk": "PRX.AS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Allianz SE",
+              "rank": 19,
+              "mc": 195.0,
+              "tk": "ALV.DE"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "tk": "STX"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Airbus",
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "rank": 20,
+              "mc": 19.0,
+              "tk": "0012.HK"
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Hongkong Land",
+              "tk": "H78.SI"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,384 (08/22 기준)"
+              "v": "1,384(08/22時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.38"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.38"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,384",
+            "date": "08/22",
+            "mult": "1.38"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-15",
+      "curr": "2026-08-22"
     },
     {
       "date": "2026.08.15",
-      "period": "8.8 → 8.15 (주간)",
+      "period": "8.8 → 8.15(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>ASML</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $708B</span>)",
-            "<strong>Visa</strong> TOP 20 이탈",
-            "<strong>삼성전자</strong> 시총 <span class='em-up'>+18%</span> ($1.08T → $1.27T)",
-            "<strong>SK하이닉스</strong> 시총 <span class='em-up'>+15%</span> ($716B → $825B)",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 신규 진입 (<span class='em-up'>14위, $221B</span>)",
-            "[유럽] <strong>TotalEnergies</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $196B</span>)",
-            "[유럽] <strong>Prosus</strong> TOP 20 이탈",
-            "[유럽] <strong>Hermès</strong> TOP 20 이탈"
+            "<strong>ASML</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、7,080億ドル</span>)",
+            "<strong>Visa</strong> TOP 20から脱落",
+            "<strong>サムスン電子</strong> 時価総額 <span class='em-up'>+18%</span>(1.08兆ドル → 1.27兆ドル)",
+            "<strong>SKハイニックス</strong> 時価総額 <span class='em-up'>+15%</span>(7,160億ドル → 8,250億ドル)",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20に新規ランクイン(<span class='em-up'>14位、2,210億ドル</span>)",
+            "[欧州] <strong>TotalEnergies</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,960億ドル</span>)",
+            "[欧州] <strong>Prosus</strong> TOP 20から脱落",
+            "[欧州] <strong>Hermès</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "ASML",
+              "rank": 20,
+              "mc": 708.0,
+              "tk": "ASML"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "Visa",
+              "tk": "V"
+            },
+            {
+              "k": "mc_move",
+              "name": "삼성전자",
+              "pct": 18,
+              "old": 1080.0,
+              "new": 1270.0,
+              "tk": "005930.KS"
+            },
+            {
+              "k": "mc_move",
+              "name": "SK하이닉스",
+              "pct": 15,
+              "old": 716.0,
+              "new": 825.0,
+              "tk": "000660.KS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "rank": 14,
+              "mc": 221.0,
+              "tk": "STX"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "TotalEnergies",
+              "rank": 20,
+              "mc": 196.0,
+              "tk": "TTE"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Prosus",
+              "tk": "PRX.AS"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Hermès",
+              "tk": "RMS.PA"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,411 (08/15 기준)"
+              "v": "1,411(08/15時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.41"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.41"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,411",
+            "date": "08/15",
+            "mult": "1.41"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-08",
+      "curr": "2026-08-15"
     },
     {
       "date": "2026.08.08",
-      "period": "8.1 → 8.8 (주간)",
+      "period": "8.1 → 8.8(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>SpaceX</strong> 시총 <span class='em-up'>+23%</span> ($1.43T → $1.75T)",
-            "<strong>SK하이닉스</strong> 시총 <span class='em-down'>-15%</span> ($847B → $716B)",
-            "[미국] <strong>Intel</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $513B</span>)",
-            "[미국] <strong>Cisco</strong> TOP 20 이탈",
-            "[한국] <strong>LG전자</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $24B</span>)",
-            "[한국] <strong>SK</strong> TOP 20 이탈",
-            "[일본] <strong>NTT (Nippon Telegraph & Telephone)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $82B</span>)",
-            "[일본] <strong>Japan Tobacco</strong> TOP 20 이탈",
-            "[유럽] <strong>Hermès</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $198B</span>)",
-            "[유럽] <strong>Schneider Electric</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $197B</span>)",
-            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $195B</span>)",
-            "[유럽] <strong>TotalEnergies</strong> TOP 20 이탈",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
-            "[유럽] <strong>Allianz SE</strong> TOP 20 이탈",
-            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $131B</span>)",
-            "[중국] <strong>BYD</strong> TOP 20 이탈",
-            "[홍콩] <strong>Hongkong Land</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $17B</span>)",
-            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 이탈"
+            "<strong>SpaceX</strong> 時価総額 <span class='em-up'>+23%</span>(1.43兆ドル → 1.75兆ドル)",
+            "<strong>SKハイニックス</strong> 時価総額 <span class='em-down'>-15%</span>(8,470億ドル → 7,160億ドル)",
+            "[米国] <strong>Intel</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、5,130億ドル</span>)",
+            "[米国] <strong>Cisco</strong> TOP 20から脱落",
+            "[韓国] <strong>LGエレクトロニクス</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、240億ドル</span>)",
+            "[韓国] <strong>SK</strong> TOP 20から脱落",
+            "[日本] <strong>NTT (Nippon Telegraph & Telephone)</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、820億ドル</span>)",
+            "[日本] <strong>Japan Tobacco</strong> TOP 20から脱落",
+            "[欧州] <strong>Hermès</strong> TOP 20に新規ランクイン(<span class='em-up'>18位、1,980億ドル</span>)",
+            "[欧州] <strong>Schneider Electric</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,970億ドル</span>)",
+            "[欧州] <strong>Airbus</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,950億ドル</span>)",
+            "[欧州] <strong>TotalEnergies</strong> TOP 20から脱落",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20から脱落",
+            "[欧州] <strong>Allianz SE</strong> TOP 20から脱落",
+            "[中国] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,310億ドル</span>)",
+            "[中国] <strong>BYD</strong> TOP 20から脱落",
+            "[香港] <strong>Hongkong Land</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、170億ドル</span>)",
+            "[香港] <strong>Henderson Land Development</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "mc_move",
+              "name": "SpaceX",
+              "pct": 23,
+              "old": 1430.0,
+              "new": 1750.0,
+              "tk": "SPCX"
+            },
+            {
+              "k": "mc_move",
+              "name": "SK하이닉스",
+              "pct": -15,
+              "old": 847.0,
+              "new": 716.0,
+              "tk": "000660.KS"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Intel",
+              "rank": 19,
+              "mc": 513.0,
+              "tk": "INTC"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Cisco",
+              "tk": "CSCO"
+            },
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "LG전자",
+              "rank": 19,
+              "mc": 24.0,
+              "tk": "066570.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "SK",
+              "tk": "034730.KS"
+            },
+            {
+              "k": "enter",
+              "region": "japan",
+              "name": "NTT (Nippon Telegraph & Telephone)",
+              "rank": 20,
+              "mc": 82.0,
+              "tk": "9432.T"
+            },
+            {
+              "k": "exit",
+              "region": "japan",
+              "name": "Japan Tobacco",
+              "tk": "2914.T"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Hermès",
+              "rank": 18,
+              "mc": 198.0,
+              "tk": "RMS.PA"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Schneider Electric",
+              "rank": 19,
+              "mc": 197.0,
+              "tk": "SU.PA"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Airbus",
+              "rank": 20,
+              "mc": 195.0,
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "TotalEnergies",
+              "tk": "TTE"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "tk": "STX"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Allianz SE",
+              "tk": "ALV.DE"
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "PDD Holdings (Pinduoduo)",
+              "rank": 20,
+              "mc": 131.0,
+              "tk": "PDD"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "BYD",
+              "tk": "002594.SZ"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Hongkong Land",
+              "rank": 20,
+              "mc": 17.0,
+              "tk": "H78.SI"
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "tk": "0012.HK"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,416 (08/08 기준)"
+              "v": "1,416(08/08時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.42"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.42"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,416",
+            "date": "08/08",
+            "mult": "1.42"
+          }
         }
-      ]
+      ],
+      "prev": "2026-08-01",
+      "curr": "2026-08-08"
     },
     {
       "date": "2026.08.01",
-      "period": "7.25 → 8.1 (주간)",
+      "period": "7.25 → 8.1(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>Microsoft</strong> 시총 <span class='em-up'>+22%</span> ($2.83T → $3.45T)",
-            "<strong>Amazon</strong> 시총 <span class='em-up'>+17%</span> ($2.50T → $2.92T)",
-            "[미국] <strong>Cisco</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $457B</span>)",
-            "[미국] <strong>Intel</strong> TOP 20 이탈",
-            "[일본] <strong>Japan Tobacco</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $80B</span>)",
-            "[일본] <strong>Shin-Etsu Chemical</strong> TOP 20 이탈",
-            "[유럽] <strong>Prosus</strong> TOP 20 신규 진입 (<span class='em-up'>17위, $201B</span>)",
-            "[유럽] <strong>Allianz SE</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $189B</span>)",
-            "[유럽] <strong>Hermès</strong> TOP 20 이탈",
-            "[유럽] <strong>Airbus</strong> TOP 20 이탈",
-            "[중국] <strong>CXMT</strong> TOP 20 신규 진입 (<span class='em-up'>1위, $567B</span>)",
-            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 이탈",
-            "[홍콩] <strong>Swire Properties</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $18B</span>)",
-            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 이탈"
+            "<strong>Microsoft</strong> 時価総額 <span class='em-up'>+22%</span>(2.83兆ドル → 3.45兆ドル)",
+            "<strong>Amazon</strong> 時価総額 <span class='em-up'>+17%</span>(2.50兆ドル → 2.92兆ドル)",
+            "[米国] <strong>Cisco</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、4,570億ドル</span>)",
+            "[米国] <strong>Intel</strong> TOP 20から脱落",
+            "[日本] <strong>Japan Tobacco</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、800億ドル</span>)",
+            "[日本] <strong>Shin-Etsu Chemical</strong> TOP 20から脱落",
+            "[欧州] <strong>Prosus</strong> TOP 20に新規ランクイン(<span class='em-up'>17位、2,010億ドル</span>)",
+            "[欧州] <strong>Allianz SE</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,890億ドル</span>)",
+            "[欧州] <strong>Hermès</strong> TOP 20から脱落",
+            "[欧州] <strong>Airbus</strong> TOP 20から脱落",
+            "[中国] <strong>CXMT</strong> TOP 20に新規ランクイン(<span class='em-up'>1位、5,670億ドル</span>)",
+            "[中国] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20から脱落",
+            "[香港] <strong>Swire Properties</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、180億ドル</span>)",
+            "[香港] <strong>Hong Kong and China Gas</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "mc_move",
+              "name": "Microsoft",
+              "pct": 22,
+              "old": 2830.0,
+              "new": 3450.0,
+              "tk": "MSFT"
+            },
+            {
+              "k": "mc_move",
+              "name": "Amazon",
+              "pct": 17,
+              "old": 2500.0,
+              "new": 2920.0,
+              "tk": "AMZN"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Cisco",
+              "rank": 20,
+              "mc": 457.0,
+              "tk": "CSCO"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Intel",
+              "tk": "INTC"
+            },
+            {
+              "k": "enter",
+              "region": "japan",
+              "name": "Japan Tobacco",
+              "rank": 19,
+              "mc": 80.0,
+              "tk": "2914.T"
+            },
+            {
+              "k": "exit",
+              "region": "japan",
+              "name": "Shin-Etsu Chemical",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Prosus",
+              "rank": 17,
+              "mc": 201.0,
+              "tk": "PRX.AS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Allianz SE",
+              "rank": 20,
+              "mc": 189.0,
+              "tk": "ALV.DE"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Hermès",
+              "tk": "RMS.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Airbus",
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "CXMT",
+              "rank": 1,
+              "mc": 567.0,
+              "tk": "688825.SS"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "PDD Holdings (Pinduoduo)",
+              "tk": "PDD"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Swire Properties",
+              "rank": 19,
+              "mc": 18.0,
+              "tk": "1972.HK"
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Hong Kong and China Gas",
+              "tk": null
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,444 (08/01 기준)"
+              "v": "1,444(08/01時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.44"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.44"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,444",
+            "date": "08/01",
+            "mult": "1.44"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-25",
+      "curr": "2026-08-01"
     },
     {
       "date": "2026.07.25",
-      "period": "7.18 → 7.25 (주간)",
+      "period": "7.18 → 7.25(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "[한국] <strong>NAVER</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $21B</span>)",
-            "[한국] <strong>LG전자</strong> TOP 20 이탈",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $191B</span>)",
-            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $184B</span>)",
-            "[유럽] <strong>Prosus</strong> TOP 20 이탈",
-            "[유럽] <strong>Allianz SE</strong> TOP 20 이탈",
-            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $17B</span>)",
-            "[홍콩] <strong>Swire Properties</strong> TOP 20 이탈"
+            "[韓国] <strong>NAVER</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、210億ドル</span>)",
+            "[韓国] <strong>LGエレクトロニクス</strong> TOP 20から脱落",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20に新規ランクイン(<span class='em-up'>18位、1,910億ドル</span>)",
+            "[欧州] <strong>Airbus</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,840億ドル</span>)",
+            "[欧州] <strong>Prosus</strong> TOP 20から脱落",
+            "[欧州] <strong>Allianz SE</strong> TOP 20から脱落",
+            "[香港] <strong>Hong Kong and China Gas</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、170億ドル</span>)",
+            "[香港] <strong>Swire Properties</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "NAVER",
+              "rank": 20,
+              "mc": 21.0,
+              "tk": "035420.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "LG전자",
+              "tk": "066570.KS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "rank": 18,
+              "mc": 191.0,
+              "tk": "STX"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Airbus",
+              "rank": 20,
+              "mc": 184.0,
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Prosus",
+              "tk": "PRX.AS"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Allianz SE",
+              "tk": "ALV.DE"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Hong Kong and China Gas",
+              "rank": 20,
+              "mc": 17.0,
+              "tk": null
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Swire Properties",
+              "tk": "1972.HK"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,461 (07/25 기준)"
+              "v": "1,461(07/25時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.46"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.46"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,461",
+            "date": "07/25",
+            "mult": "1.46"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-18",
+      "curr": "2026-07-25"
     },
     {
       "date": "2026.07.18",
-      "period": "7.11 → 7.18 (주간)",
+      "period": "7.11 → 7.18(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>AMD</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $808B</span>)",
-            "<strong>Johnson & Johnson</strong> TOP 20 이탈",
-            "<strong>SpaceX</strong> <span class='em-down'>7위 → 10위 하락</span>",
-            "[미국] <strong>AMD</strong> TOP 20 신규 진입 (<span class='em-up'>15위, $808B</span>)",
-            "[미국] <strong>Mastercard</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $480B</span>)",
-            "[미국] <strong>Applied Materials</strong> TOP 20 이탈",
-            "[미국] <strong>Cisco</strong> TOP 20 이탈",
-            "[유럽] <strong>ASML</strong> TOP 20 신규 진입 (<span class='em-up'>1위, $671B</span>)",
-            "[유럽] <strong>HSBC</strong> TOP 20 신규 진입 (<span class='em-up'>2위, $345B</span>)",
-            "[유럽] <strong>SAP</strong> TOP 20 신규 진입 (<span class='em-up'>18위, $187B</span>)",
-            "[유럽] <strong>Seagate Technology</strong> TOP 20 이탈",
-            "[유럽] <strong>ABB</strong> TOP 20 이탈",
-            "[유럽] <strong>Airbus</strong> TOP 20 이탈",
-            "[중국] <strong>Zijin Mining</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $111B</span>)",
-            "[중국] <strong>Cambricon Technologies</strong> TOP 20 이탈",
-            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $17B</span>)",
-            "[홍콩] <strong>Swire Properties</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $16B</span>)",
-            "[홍콩] <strong>Power Assets</strong> TOP 20 이탈",
-            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 이탈"
+            "<strong>AMD</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、8,080億ドル</span>)",
+            "<strong>Johnson & Johnson</strong> TOP 20から脱落",
+            "<strong>SpaceX</strong> <span class='em-down'>7位 → 10位に下落</span>",
+            "[米国] <strong>AMD</strong> TOP 20に新規ランクイン(<span class='em-up'>15位、8,080億ドル</span>)",
+            "[米国] <strong>Mastercard</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、4,800億ドル</span>)",
+            "[米国] <strong>Applied Materials</strong> TOP 20から脱落",
+            "[米国] <strong>Cisco</strong> TOP 20から脱落",
+            "[欧州] <strong>ASML</strong> TOP 20に新規ランクイン(<span class='em-up'>1位、6,710億ドル</span>)",
+            "[欧州] <strong>HSBC</strong> TOP 20に新規ランクイン(<span class='em-up'>2位、3,450億ドル</span>)",
+            "[欧州] <strong>SAP</strong> TOP 20に新規ランクイン(<span class='em-up'>18位、1,870億ドル</span>)",
+            "[欧州] <strong>Seagate Technology</strong> TOP 20から脱落",
+            "[欧州] <strong>ABB</strong> TOP 20から脱落",
+            "[欧州] <strong>Airbus</strong> TOP 20から脱落",
+            "[中国] <strong>Zijin Mining</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,110億ドル</span>)",
+            "[中国] <strong>Cambricon Technologies</strong> TOP 20から脱落",
+            "[香港] <strong>Henderson Land Development</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、170億ドル</span>)",
+            "[香港] <strong>Swire Properties</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、160億ドル</span>)",
+            "[香港] <strong>Power Assets</strong> TOP 20から脱落",
+            "[香港] <strong>Hong Kong and China Gas</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "AMD",
+              "rank": 19,
+              "mc": 808.0,
+              "tk": "AMD"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "Johnson & Johnson",
+              "tk": "JNJ"
+            },
+            {
+              "k": "rank_down",
+              "name": "SpaceX",
+              "a": 7,
+              "b": 10,
+              "tk": "SPCX"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "AMD",
+              "rank": 15,
+              "mc": 808.0,
+              "tk": "AMD"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Mastercard",
+              "rank": 19,
+              "mc": 480.0,
+              "tk": "MA"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Applied Materials",
+              "tk": "AMAT"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Cisco",
+              "tk": "CSCO"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "ASML",
+              "rank": 1,
+              "mc": 671.0,
+              "tk": "ASML"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "HSBC",
+              "rank": 2,
+              "mc": 345.0,
+              "tk": "HSBC"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "SAP",
+              "rank": 18,
+              "mc": 187.0,
+              "tk": "SAP"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Seagate Technology",
+              "tk": "STX"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "ABB",
+              "tk": "ABBN.SW"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Airbus",
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "Zijin Mining",
+              "rank": 20,
+              "mc": 111.0,
+              "tk": "601899.SS"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "Cambricon Technologies",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "rank": 19,
+              "mc": 17.0,
+              "tk": "0012.HK"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Swire Properties",
+              "rank": 20,
+              "mc": 16.0,
+              "tk": "1972.HK"
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Power Assets",
+              "tk": null
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Hong Kong and China Gas",
+              "tk": null
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,485 (07/18 기준)"
+              "v": "1,485(07/18時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.49"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.49"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,485",
+            "date": "07/18",
+            "mult": "1.49"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-11",
+      "curr": "2026-07-18"
     },
     {
       "date": "2026.07.11",
-      "period": "7.4 → 7.11 (주간)",
+      "period": "7.4 → 7.11(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>SK하이닉스</strong> <span class='em-down'>13위 → 16위 하락</span>",
-            "[미국] <strong>Cisco</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $478B</span>)",
-            "[미국] <strong>Mastercard</strong> TOP 20 이탈",
-            "[한국] <strong>하나금융지주</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $23B</span>)",
-            "[한국] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20 이탈",
-            "[유럽] <strong>TotalEnergies</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $174B</span>)",
-            "[유럽] <strong>Schneider Electric</strong> TOP 20 이탈",
-            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $16B</span>)",
-            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 이탈"
+            "<strong>SKハイニックス</strong> <span class='em-down'>13位 → 16位に下落</span>",
+            "[米国] <strong>Cisco</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、4,780億ドル</span>)",
+            "[米国] <strong>Mastercard</strong> TOP 20から脱落",
+            "[韓国] <strong>ハナ金融グループ</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、230億ドル</span>)",
+            "[韓国] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20から脱落",
+            "[欧州] <strong>TotalEnergies</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,740億ドル</span>)",
+            "[欧州] <strong>Schneider Electric</strong> TOP 20から脱落",
+            "[香港] <strong>Hong Kong and China Gas</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、160億ドル</span>)",
+            "[香港] <strong>Henderson Land Development</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "rank_down",
+              "name": "SK하이닉스",
+              "a": 13,
+              "b": 16,
+              "tk": "000660.KS"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Cisco",
+              "rank": 20,
+              "mc": 478.0,
+              "tk": "CSCO"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Mastercard",
+              "tk": "MA"
+            },
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "하나금융지주",
+              "rank": 19,
+              "mc": 23.0,
+              "tk": "086790.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "LS ELECTRIC Co., Ltd.",
+              "tk": "010120.KS"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "TotalEnergies",
+              "rank": 20,
+              "mc": 174.0,
+              "tk": "TTE"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "Schneider Electric",
+              "tk": "SU.PA"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Hong Kong and China Gas",
+              "rank": 20,
+              "mc": 16.0,
+              "tk": null
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "tk": "0012.HK"
+            }
           ]
         },
         {
           "type": "stats",
-          "label": "환율 · 환산",
+          "label": "為替 · 換算",
           "items": [
             {
               "k": "USD/KRW",
-              "v": "1,505 (07/11 기준)"
+              "v": "1,505(07/11時点)"
             },
             {
-              "k": "환산식",
-              "v": "시총(조원) = 시총(USD bn) × 1.50"
+              "k": "換算式",
+              "v": "時価総額(兆ウォン) = 時価総額(USD bn) × 1.50"
             }
-          ]
+          ],
+          "fx": {
+            "rate": "1,505",
+            "date": "07/11",
+            "mult": "1.50"
+          }
         }
-      ]
+      ],
+      "prev": "2026-07-04",
+      "curr": "2026-07-11"
     },
     {
       "date": "2026.07.04",
-      "period": "6.27 → 7.4 (주간)",
+      "period": "6.27 → 7.4(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>Johnson & Johnson</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $633B</span>)",
-            "<strong>Intel</strong> TOP 20 이탈",
-            "[미국] <strong>Mastercard</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $477B</span>)",
-            "[미국] <strong>Lam Research</strong> TOP 20 이탈",
-            "[한국] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $22B</span>)",
-            "[한국] <strong>HD현대일렉트릭</strong> TOP 20 이탈",
-            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $79B</span>)",
-            "[일본] <strong>Chugai Pharmaceutical</strong> TOP 20 이탈",
-            "[중국] <strong>BYD</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $119B</span>)",
-            "[중국] <strong>Eoptolink Technology</strong> TOP 20 이탈",
-            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $16B</span>)",
-            "[홍콩] <strong>Power Assets</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $16B</span>)",
-            "[홍콩] <strong>Kingboard Holdings</strong> TOP 20 이탈",
-            "[홍콩] <strong>Hong Kong and China Gas</strong> TOP 20 이탈"
+            "<strong>Johnson & Johnson</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、6,330億ドル</span>)",
+            "<strong>Intel</strong> TOP 20から脱落",
+            "[米国] <strong>Mastercard</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、4,770億ドル</span>)",
+            "[米国] <strong>Lam Research</strong> TOP 20から脱落",
+            "[韓国] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、220億ドル</span>)",
+            "[韓国] <strong>HD현대일렉트릭</strong> TOP 20から脱落",
+            "[日本] <strong>Mitsubishi Heavy Industries</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、790億ドル</span>)",
+            "[日本] <strong>Chugai Pharmaceutical</strong> TOP 20から脱落",
+            "[中国] <strong>BYD</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,190億ドル</span>)",
+            "[中国] <strong>Eoptolink Technology</strong> TOP 20から脱落",
+            "[香港] <strong>Henderson Land Development</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、160億ドル</span>)",
+            "[香港] <strong>Power Assets</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、160億ドル</span>)",
+            "[香港] <strong>Kingboard Holdings</strong> TOP 20から脱落",
+            "[香港] <strong>Hong Kong and China Gas</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "enter",
+              "region": null,
+              "name": "Johnson & Johnson",
+              "rank": 20,
+              "mc": 633.0,
+              "tk": "JNJ"
+            },
+            {
+              "k": "exit",
+              "region": null,
+              "name": "Intel",
+              "tk": "INTC"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Mastercard",
+              "rank": 20,
+              "mc": 477.0,
+              "tk": "MA"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Lam Research",
+              "tk": "LRCX"
+            },
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "LS ELECTRIC Co., Ltd.",
+              "rank": 20,
+              "mc": 22.0,
+              "tk": "010120.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "HD현대일렉트릭",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "japan",
+              "name": "Mitsubishi Heavy Industries",
+              "rank": 20,
+              "mc": 79.0,
+              "tk": "7011.T"
+            },
+            {
+              "k": "exit",
+              "region": "japan",
+              "name": "Chugai Pharmaceutical",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "BYD",
+              "rank": 19,
+              "mc": 119.0,
+              "tk": "002594.SZ"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "Eoptolink Technology",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "rank": 19,
+              "mc": 16.0,
+              "tk": "0012.HK"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Power Assets",
+              "rank": 20,
+              "mc": 16.0,
+              "tk": null
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Kingboard Holdings",
+              "tk": null
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Hong Kong and China Gas",
+              "tk": null
+            }
           ]
         }
-      ]
+      ],
+      "prev": "2026-06-27",
+      "curr": "2026-07-04"
     },
     {
       "date": "2026.06.27",
-      "period": "6.20 → 6.27 (주간)",
+      "period": "6.20 → 6.27(週間)",
       "auto": true,
       "blocks": [
         {
           "type": "items",
-          "label": "주간 변동 사항 (자동 감지)",
+          "label": "週間変動(自動検知)",
           "items": [
-            "<strong>SpaceX</strong> 시총 <span class='em-down'>-17%</span> ($2.44T → $2.02T)",
-            "[미국] <strong>Lam Research</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $474B</span>)",
-            "[미국] <strong>Oracle</strong> TOP 20 이탈",
-            "[한국] <strong>LG전자</strong> TOP 20 신규 진입 (<span class='em-up'>19위, $23B</span>)",
-            "[한국] <strong>한화오션</strong> TOP 20 이탈",
-            "[일본] <strong>Chugai Pharmaceutical</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $76B</span>)",
-            "[일본] <strong>Mitsubishi Heavy Industries</strong> TOP 20 이탈",
-            "[유럽] <strong>Airbus</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $172B</span>)",
-            "[유럽] <strong>TotalEnergies</strong> TOP 20 이탈",
-            "[중국] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $109B</span>)",
-            "[중국] <strong>BYD</strong> TOP 20 이탈"
+            "<strong>SpaceX</strong> 時価総額 <span class='em-down'>-17%</span>(2.44兆ドル → 2.02兆ドル)",
+            "[米国] <strong>Lam Research</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、4,740億ドル</span>)",
+            "[米国] <strong>Oracle</strong> TOP 20から脱落",
+            "[韓国] <strong>LGエレクトロニクス</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、230億ドル</span>)",
+            "[韓国] <strong>한화오션</strong> TOP 20から脱落",
+            "[日本] <strong>Chugai Pharmaceutical</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、760億ドル</span>)",
+            "[日本] <strong>Mitsubishi Heavy Industries</strong> TOP 20から脱落",
+            "[欧州] <strong>Airbus</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,720億ドル</span>)",
+            "[欧州] <strong>TotalEnergies</strong> TOP 20から脱落",
+            "[中国] <strong>PDD Holdings (Pinduoduo)</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,090億ドル</span>)",
+            "[中国] <strong>BYD</strong> TOP 20から脱落"
+          ],
+          "label_id": "weekly",
+          "label_p": {},
+          "events": [
+            {
+              "k": "mc_move",
+              "name": "SpaceX",
+              "pct": -17,
+              "old": 2440.0,
+              "new": 2020.0,
+              "tk": "SPCX"
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Lam Research",
+              "rank": 20,
+              "mc": 474.0,
+              "tk": "LRCX"
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "Oracle",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "korea",
+              "name": "LG전자",
+              "rank": 19,
+              "mc": 23.0,
+              "tk": "066570.KS"
+            },
+            {
+              "k": "exit",
+              "region": "korea",
+              "name": "한화오션",
+              "tk": null
+            },
+            {
+              "k": "enter",
+              "region": "japan",
+              "name": "Chugai Pharmaceutical",
+              "rank": 20,
+              "mc": 76.0,
+              "tk": null
+            },
+            {
+              "k": "exit",
+              "region": "japan",
+              "name": "Mitsubishi Heavy Industries",
+              "tk": "7011.T"
+            },
+            {
+              "k": "enter",
+              "region": "europe",
+              "name": "Airbus",
+              "rank": 20,
+              "mc": 172.0,
+              "tk": "AIR.PA"
+            },
+            {
+              "k": "exit",
+              "region": "europe",
+              "name": "TotalEnergies",
+              "tk": "TTE"
+            },
+            {
+              "k": "enter",
+              "region": "china",
+              "name": "PDD Holdings (Pinduoduo)",
+              "rank": 20,
+              "mc": 109.0,
+              "tk": "PDD"
+            },
+            {
+              "k": "exit",
+              "region": "china",
+              "name": "BYD",
+              "tk": "002594.SZ"
+            }
           ]
         }
-      ]
+      ],
+      "prev": "2026-06-20",
+      "curr": "2026-06-27"
     },
     {
       "date": "2026.06.03",
@@ -1323,7 +2626,7 @@ const DATA = {
       "blocks": [
         {
           "type": "items",
-          "label": "주요 변동 사항",
+          "label": "主な変動",
           "items": [
             "<strong>삼성전자 · SK하이닉스</strong> 글로벌 TOP 20 진입 (#11, #12) — 메모리 슈퍼사이클 가속",
             "<strong>Micron</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$1.09T, 13위</span>) — HBM 수혜",
@@ -1334,6 +2637,46 @@ const DATA = {
             "일본: SoftBank <span class='em-up'>+140% ($307B)</span> — Arm 보유분 가치 급등",
             "중국: CITIC Bank가 興業銀行(Industrial Bank)을 제치고 TOP 20 진입",
             "TSMC 글로벌 6위로 약진 (<span class='em-up'>$2.17T, +14%</span>) — Broadcom과 격차 좁힘"
+          ],
+          "label_id": "major",
+          "label_p": {},
+          "events": [
+            {
+              "k": "raw",
+              "html": "<strong>삼성전자 · SK하이닉스</strong> 글로벌 TOP 20 진입 (#11, #12) — 메모리 슈퍼사이클 가속"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>Micron</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$1.09T, 13위</span>) — HBM 수혜"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>AMD</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$842B, 17위</span>) — MI400 호조"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>Oracle</strong> 글로벌 TOP 20 신규 진입 (<span class='em-up'>$649B, 19위</span>) — OCI / Stargate"
+            },
+            {
+              "k": "raw",
+              "html": "<strong>Cisco</strong> 미국 TOP 20 복귀 (Costco 탈락) — AI 네트워킹"
+            },
+            {
+              "k": "raw",
+              "html": "유럽: ASML <span class='em-up'>+22% ($621B)</span>, Arm Holdings 두 배 ($377B) — AI 칩 IP 강세"
+            },
+            {
+              "k": "raw",
+              "html": "일본: SoftBank <span class='em-up'>+140% ($307B)</span> — Arm 보유분 가치 급등"
+            },
+            {
+              "k": "raw",
+              "html": "중국: CITIC Bank가 興業銀行(Industrial Bank)을 제치고 TOP 20 진입"
+            },
+            {
+              "k": "raw",
+              "html": "TSMC 글로벌 6위로 약진 (<span class='em-up'>$2.17T, +14%</span>) — Broadcom과 격차 좁힘"
+            }
           ]
         },
         {
@@ -1352,8 +2695,10 @@ const DATA = {
         },
         {
           "type": "prose",
-          "label": "데이터 보정 안내",
-          "text": "한국·일본·중국·홍콩 권역 일부 종목 시총은 companiesmarketcap.com의 country-page 자료를 사용. 동일 종목이 글로벌 페이지에서 다른 값을 보이는 경우(예: 삼성전자, SoftBank) 사유는 데이터 동기화 시점 차이로 추정됨."
+          "label": "データ補正のお知らせ",
+          "text": "한국·일본·중국·홍콩 권역 일부 종목 시총은 companiesmarketcap.com의 country-page 자료를 사용. 동일 종목이 글로벌 페이지에서 다른 값을 보이는 경우(예: 삼성전자, SoftBank) 사유는 데이터 동기화 시점 차이로 추정됨.",
+          "label_id": "data_note",
+          "label_p": {}
         }
       ]
     }
@@ -1423,31 +2768,33 @@ const DATA = {
 
 const timeline = document.getElementById('timeline');
 
-function renderBlock(block) {
+// M: 조각 표식기 — 사건 구조가 있는 기록은 TXI(조각 단위 원문 표식), 없는 옛 기록은 그대로(기록 전체를 TXB 로)
+function renderBlock(block, M) {
   if (!block) return '';
+  M = M || (h => h);
   if (block.type === 'items') {
     return `
       <div class="entry-block">
-        <div class="entry-block-label">${block.label || ''}</div>
+        <div class="entry-block-label">${M(block.label || '')}</div>
         <ul class="entry-items">
-          ${block.items.map(it => `<li>${it}</li>`).join('')}
+          ${block.items.map(it => `<li>${M(it)}</li>`).join('')}
         </ul>
       </div>`;
   }
   if (block.type === 'prose') {
     return `
       <div class="entry-block">
-        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
-        <p class="entry-prose">${block.text}</p>
+        ${block.label ? `<div class="entry-block-label">${M(block.label)}</div>` : ''}
+        <p class="entry-prose">${M(block.text)}</p>
       </div>`;
   }
   if (block.type === 'stats') {
     return `
       <div class="entry-block">
-        ${block.label ? `<div class="entry-block-label">${block.label}</div>` : ''}
+        ${block.label ? `<div class="entry-block-label">${M(block.label)}</div>` : ''}
         <div class="entry-stat-row">
           ${block.items.map(it => `
-            <div><span class="entry-stat-label">${it.k}</span><span class="entry-stat-val">${it.v}</span></div>
+            <div><span class="entry-stat-label">${M(it.k)}</span><span class="entry-stat-val">${M(it.v)}</span></div>
           `).join('')}
         </div>
       </div>`;
@@ -1455,11 +2802,18 @@ function renderBlock(block) {
   return '';
 }
 
+// 사건·환율 상태가 실린 기록(단계 2 이후 + 2026-10-26 이관분) — 그 언어로 다시 그려졌다
+function structured(e) {
+  return !!(e.prev && e.curr) || (e.blocks || []).some(b => b && (b.events || b.fx || b.label_id));
+}
+
 if (DATA.entries && DATA.entries.length > 0) {
   timeline.innerHTML = DATA.entries.map(e => `
     <div class="entry">
       <div class="entry-date">${e.date || ''}${e.auto ? '<span class="entry-auto-badge">' + T('lg.auto') + '</span>' : ''}</div>
-      ${TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(renderBlock).join(''))}
+      ${structured(e)
+        ? (e.period ? `<div class="entry-period">${TXI(e.period)}</div>` : '') + (e.blocks || []).map(b => renderBlock(b, TXI)).join('')
+        : TXB((e.period ? `<div class="entry-period">${e.period}</div>` : '') + (e.blocks || []).map(b => renderBlock(b)).join(''))}
     </div>
   `).join('');
 } else {

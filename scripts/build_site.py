@@ -208,7 +208,7 @@ def load_data(name, default=None):
     if LANG != i18n.DEFAULT:
         import i18n_content as IC
         for kind, spec in IC.SPECS.items():
-            if spec["file"] == name:
+            if spec["file"] == name and not spec.get("late"):
                 doc, _ = IC.apply(kind, LANG, doc)
     return doc
 
@@ -404,9 +404,18 @@ def history_view(data, page_key):
     except Exception:
         render = None
     if render:
-        data["entries"] = [render(e, LANG) if isinstance(e, dict) and e.get("events") else e
-                           for e in data.get("entries") or []]
+        data["entries"] = [render(e, LANG) if _hist_structured(e) else e for e in data.get("entries") or []]
     return data
+
+
+def _hist_structured(e):
+    """그 언어로 다시 그릴 수 있는 기록인가 — 사건·환율 상태는 **블록**에, 기간은 기록에 실린다.
+    (단계 2 에서 기록 단위 'events' 를 찾던 조건은 늘 거짓이라 새 기록도 다시 그려지지 않았다 — 2026-10-26)"""
+    if not isinstance(e, dict):
+        return False
+    return bool(e.get("prev") and e.get("curr")) or any(
+        isinstance(b, dict) and (b.get("events") is not None or b.get("fx") or b.get("label_id"))
+        for b in e.get("blocks") or [])
 
 
 def build_latent():
@@ -1015,13 +1024,12 @@ def build_observatory():
         except Exception as e:
             print(f"[warn] translations.json 읽기 실패(무시): {e}")
     # 시차 관측 — 측정층 산출물 (없어도 탭은 빈 상태로 뜬다)
+    # 사람 서술의 번역은 buffett_view 가 id 를 뽑은 뒤 끼운다(SPECS parallax · late)
     buffett = {}
-    bf_path = DATA_DIR / "buffett.json"
-    if bf_path.exists():
-        try:
-            buffett = json.loads(bf_path.read_text(encoding="utf-8"))
-        except Exception as e:
-            print(f"[warn] buffett.json 읽기 실패(무시): {e}")
+    try:
+        buffett = load_data("buffett.json", {}) or {}
+    except Exception as e:
+        print(f"[warn] buffett.json 읽기 실패(무시): {e}")
     # 레전드벤치마크 표시층 — 판단층(buffett_config.json)에서 **표시에 필요한 칸만** 뽑는다.
     # 측정층 산출물(buffett.json)에는 사람이 취재한 전환율·risk5 가 실리지 않는다.
     # 여기서 기계가 판정하지 않는다 — 사람이 적어 넣은 값을 그대로 나른다.
@@ -1115,10 +1123,8 @@ def columns_view(cols):
     return out
 
 
-# 판단층 분류(사람이 정한 한국어 이름) → 화면 이름 id. 화면 이름은 카탈로그(px.type.*)가 만든다.
-# 모르는 분류는 id 없이 원문 그대로 — 화면이 원문 표식을 단다(지어낸 번역으로 메우지 않는다)
-TYPE_ID = (("추정불가", "too_hard"), ("플라이트세이프티형", "flight"), ("통행료형", "toll"),
-           ("씨즈형", "sees"), ("시클리컬", "cyclical"), ("플로트형", "float"))
+# 판단층 분류 → 화면 이름 id 표는 i18n_content.TYPE_ID 한 곳(번역 명세와 같은 표).
+# 모르는 분류(수식어가 붙은 이름)는 id 없이 — 번역 캐시가 있으면 그 언어로, 없으면 원문 표식
 BASIS_ID = {"forward": "forward", "trailing": "trailing", "미취재": "uncovered",
             "too_hard": "too_hard", "unlisted": "unlisted", "float": "float"}
 
@@ -1127,6 +1133,7 @@ def buffett_view(buffett):
     """시차 관측·레전드 — 분류·바구니에 기계 id 를 붙이고 종목명을 그 언어로. 측정값은 그대로."""
     if not isinstance(buffett, dict):
         return buffett
+    import i18n_content as IC
     b = dict(buffett)
     items = []
     for x in b.get("items") or []:
@@ -1136,11 +1143,13 @@ def buffett_view(buffett):
         x = dict(x)
         ty = str(x.get("type") or "").strip()
         # 분류 이름과 **정확히 같을 때만** id — '씨즈형·고자본 혼합' 같은 사람의 수식어를 잘라내지 않는다
-        x["type_id"] = next((i for k, i in TYPE_ID if k == ty), "")
+        x["type_id"] = IC.type_id(ty)
         # 사업 확실성 ✕ 판정(F6)은 수식어가 붙어도 '추정불가'를 포함하면 참 — 표시 이름과 분리한다
         x["uncertain"] = "추정불가" in ty
         x["basis_id"] = BASIS_ID.get(x.get("basis"), "")
         x["name"] = i18n.stock_name(LANG, x.get("ticker"), x.get("name"))
+        # 판정용 id 를 원문에서 뽑은 **뒤** 사람 서술을 그 언어로(관문 통과 캐시만) — 번역이 판정을 바꾸지 않게
+        x = IC.apply_node("parallax", LANG, x.get("ticker"), x, IC.SPECS["parallax"])
         items.append(x)
     b["items"] = items
     return b
@@ -1955,6 +1964,7 @@ NAV_ACTIVE = {"history-top20.html": "index.html", "history-latent.html": "latent
 I18N_CSS = """<style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
+.uvx-ko{display:inline-block;margin-left:3px;padding:0 3px;font-size:9px;line-height:12px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px solid var(--line-strong);border-radius:3px;vertical-align:1px;cursor:help;white-space:nowrap;font-style:normal}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}

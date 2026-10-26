@@ -62,7 +62,20 @@ def _doc_date(doc):
     return ""
 
 
+# 판단층 분류(사람이 정한 한국어 이름) → 화면 이름 id. 화면 이름은 카탈로그(px.type.*)가 만든다.
+# **정확히 같을 때만** id — '씨즈형·고자본 혼합' 같은 사람의 수식어를 잘라내지 않는다(그런 이름은 번역 대상).
+# build_site.buffett_view 와 이 파일의 parallax 명세가 같은 표를 본다
+TYPE_ID = (("추정불가", "too_hard"), ("플라이트세이프티형", "flight"), ("통행료형", "toll"),
+           ("씨즈형", "sees"), ("시클리컬", "cyclical"), ("플로트형", "float"))
+
+
+def type_id(ty):
+    ty = str(ty or "").strip()
+    return next((i for k, i in TYPE_ID if k == ty), "")
+
+
 # kind → 명세. list: 항목 목록 경로('' = 문서 자체가 한 항목) · ko/en: 옮길 칸 · fact: 사실 모델
+# late: load_data 가 끼우지 않는다 — 빌드가 원문에서 기계 id 를 먼저 뽑은 뒤(buffett_view) 끼운다
 # date: 최신순 우선순위의 근거. 빈 날짜 = 정적 문서(메가트렌드) — 엔진이 오늘로 친다(늘 보이는 페이지)
 SPECS = {
     "column":     {"file": "columns.json", "list": "columns", "id": lambda x: _h(x.get("url"), x.get("title")),
@@ -98,6 +111,11 @@ SPECS = {
     "calendar":   {"file": "calendar.json", "list": "events", "id": lambda x: _h(x.get("date"), x.get("title")),
                    "date": lambda x, d: _date(x.get("date")), "ko": ("title",),
                    "keep": lambda x: x.get("type") != "earnings"},
+    # 시차 관측(F3, 2026-10-26) — 판단층 사람 서술: 왜(rationale) · EPS 취재 출처 · id 없는 혼합 유형 이름.
+    # 정확한 분류 이름(id 있음)은 카탈로그로 그린다 — 옮기지 않는다. 바구니(basis)는 기계 값이라 대상 아님
+    "parallax":   {"file": "buffett.json", "list": "items", "id": lambda x: str(x.get("ticker")),
+                   "date": lambda x, d: _doc_date(d), "ko": ("rationale", "eps_asof", "type"),
+                   "keep_field": lambda x, f: f != "type" or not type_id(x.get("type")), "late": True},
 }
 
 
@@ -245,6 +263,18 @@ def apply(kind, lang, doc, cache_dir=None):
 PROBE = {"ko": ("title", "md"), "md": ("md",), "fact": lambda x: True}
 # 동행 논제 원장(data/thesis/*.md, 판단층 — 읽기만) — build_site.thesis_node 가 항목을 준다
 THESIS = {"ko": ("one", "body"), "md": ("body",), "fact": lambda x: True}
+# 탐사 관제판의 행(F2, 2026-10-26) — 판단층 원장(agent-research/state)을 읽어 probe_cockpit 이 만든 행.
+# 엔진(probe_cockpit.cockpit_nodes)과 빌드(probe_cockpit.localize_rows)가 같은 행·같은 칸을 본다.
+# 상태값(달성·진행·대기 등)은 여기 없다 — 그건 기계 id + 카탈로그(규칙 8). 여기는 원장의 서술 문장뿐
+COCKPIT = {
+    # 마일스톤 표·상세: 이정표 문장 · 진척 사유 · 현재/목표 표기 · 의미(달성·미달) · 확인 방법 · 구성 지표
+    "probe_ms": {"ko": ("text", "reason", "cur", "tgt", "unit", "hit", "miss", "method",
+                        "parts.*.label", "parts.*.reason", "parts.*.unit")},
+    # ⑤ 트리거 카드·상세: 이름 · 예상 시점 표기 · 확인 방법 · 확인 기록 · 직전 결과
+    "probe_trig": {"ko": ("name", "expected", "check", "note", "prev")},
+    # ② 이번 회차에 바뀐 것
+    "probe_delta": {"ko": ("lines.*",)},
+}
 
 
 def apply_node(kind, lang, iid, node, spec, cache_dir=None):

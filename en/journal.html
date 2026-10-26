@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "en", M = {"ce.correction": "Correction", "ce.direct": "By the chief", "ce.fresh_tip": "Judgment layer updated in the last 7 days", "ce.full": "Full ledger", "ce.none": "No observation records on this route yet.", "ce.probe_html": "For the monthly full re-dissection, see <a href=\"{href}\">Data Observatory 🛰 Unmanned Probe<\/a>.", "ce.thesis": "Thesis ledger", "ce.thesis_short": "Thesis", "ce.thesis_wait": "Researching the thesis", "ce.toc": {"one": "{n} observation record", "other": "{n} observation records"}, "ce.unverifiable": "Not checkable against source", "ce.unverifiable_long": "Recorded before the number discipline — not checkable against source · the sources can no longer be opened, so the figures in the text could not be checked against the originals (rechecked {d}).", "ce.updated": "updated", "ce.v.down": "Weakened", "ce.v.flat": "Unchanged", "ce.v.hold": "Pending", "ce.v.up": "Strengthened", "ce.wait_body": "Once the thesis stands, its core hypotheses and falsification conditions will appear here.", "ce.wait_one": "We are researching a 10-year thesis. No essays until the thesis stands — a record without a thesis is just a scrapbook.", "cm.del": "Delete", "cm.logout": "Log out", "col.copied": "Copied", "col.copy_link": "Copy link", "col.copy_prompt": "Copy the text below (Ctrl+C):", "col.copy_text": "Copy text", "common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "ib.direct": "Direct post", "ib.err.direct": "A direct post needs body text (memo).", "ib.err.load": "Could not load the material list (check security rules).", "ib.err.need": "A link or a memo is required.", "ib.err.send": "Submit failed:", "ib.essay": "Essay", "ib.loading": "Loading your materials…", "ib.none_html": "<b>Nothing waiting<\/b> — everything has been written or judged.", "ib.note": "Written at the next launch (3 times a day) — not reflected immediately. Direct posts are published as-is, untouched by AI.", "ib.ph.memo": "Memo — angle and instructions for an essay, or the full text for a direct post", "ib.ph.title": "Title (optional — becomes the essay title when posted directly)", "ib.ph.url": "Link (optional)", "ib.send": "Submit material", "ib.title": "Material inbox", "ib.waiting": {"one": "{n} item waiting", "other": "{n} items waiting"}, "jn.count": {"one": "{n} record", "other": "{n} records"}, "jn.del_confirm": "Delete this record?", "jn.first": "Waiting for the first record.", "jn.load_fail": "Could not load the notes — please refresh in a moment.", "jn.login": "Chief login", "jn.ph.tags": "Tags (optional, comma-separated)", "jn.ph.text": "Today's thought — one line is enough", "jn.preparing": "Field Notes is getting ready.", "jn.readonly": "Read-only — only the observatory chief writes here", "jn.save": "Record", "jn.tab.notes": "One-line notes"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+var L = "en", M = {"ce.correction": "Correction", "ce.direct": "By the chief", "ce.fresh_tip": "Judgment layer updated in the last 7 days", "ce.full": "Full ledger", "ce.none": "No observation records on this route yet.", "ce.probe_html": "For the monthly full re-dissection, see <a href=\"{href}\">Data Observatory 🛰 Unmanned Probe<\/a>.", "ce.thesis": "Thesis ledger", "ce.thesis_short": "Thesis", "ce.thesis_wait": "Researching the thesis", "ce.toc": {"one": "{n} observation record", "other": "{n} observation records"}, "ce.unverifiable": "Not checkable against source", "ce.unverifiable_long": "Recorded before the number discipline — not checkable against source · the sources can no longer be opened, so the figures in the text could not be checked against the originals (rechecked {d}).", "ce.updated": "updated", "ce.v.down": "Weakened", "ce.v.flat": "Unchanged", "ce.v.hold": "Pending", "ce.v.up": "Strengthened", "ce.wait_body": "Once the thesis stands, its core hypotheses and falsification conditions will appear here.", "ce.wait_one": "We are researching a 10-year thesis. No essays until the thesis stands — a record without a thesis is just a scrapbook.", "cm.del": "Delete", "cm.logout": "Log out", "col.copied": "Copied", "col.copy_link": "Copy link", "col.copy_prompt": "Copy the text below (Ctrl+C):", "col.copy_text": "Copy text", "common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "ib.direct": "Direct post", "ib.err.direct": "A direct post needs body text (memo).", "ib.err.load": "Could not load the material list (check security rules).", "ib.err.need": "A link or a memo is required.", "ib.err.send": "Submit failed:", "ib.essay": "Essay", "ib.loading": "Loading your materials…", "ib.none_html": "<b>Nothing waiting<\/b> — everything has been written or judged.", "ib.note": "Written at the next launch (3 times a day) — not reflected immediately. Direct posts are published as-is, untouched by AI.", "ib.ph.memo": "Memo — angle and instructions for an essay, or the full text for a direct post", "ib.ph.title": "Title (optional — becomes the essay title when posted directly)", "ib.ph.url": "Link (optional)", "ib.send": "Submit material", "ib.title": "Material inbox", "ib.waiting": {"one": "{n} item waiting", "other": "{n} items waiting"}, "jn.count": {"one": "{n} record", "other": "{n} records"}, "jn.del_confirm": "Delete this record?", "jn.first": "Waiting for the first record.", "jn.load_fail": "Could not load the notes — please refresh in a moment.", "jn.login": "Chief login", "jn.ph.tags": "Tags (optional, comma-separated)", "jn.ph.text": "Today's thought — one line is enough", "jn.preparing": "Field Notes is getting ready.", "jn.readonly": "Read-only — only the observatory chief writes here", "jn.save": "Record", "jn.tab.notes": "One-line notes", "jn.tag.parallax": "Parallax"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "Translation in progress — Korean original", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -50,8 +50,14 @@ function md(iso){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); if
   var mo = +m[2], d = +m[3]; return L === 'en' ? MON.en[mo - 1] + ' ' + d : es ? d + '/' + mo : mo + '/' + d; }
 var HAN = /[\uac00-\ud7a3]/;
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식으로 감싼다. 화면 문구(chrome)에는 쓰지 않는다 */
-function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1">' + h + '<\/span>' : h; }
+/* 콘텐츠 문자열 — 번역이 아직 없는 원문(한국어)이면 lang=ko 표식 + 작은 'KO' 꼬리표(title=번역 준비 중).
+   화면 문구(chrome)에는 쓰지 않는다. 마크업은 파이썬 판 i18n.pending_inline 과 같다(test_i18n 대조) */
+function KOT(){ return '<sup class="uvx-ko" title="' + esc(P) + '" aria-hidden="true">KO<\/sup>'; }
+function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + h + '<\/span>' + KOT() : h; }
+/* 이미 HTML 인 짧은 콘텐츠(변동 이력 한 줄 등) — 표식 밖에 한글이 남았을 때만 감싼다(이미 표식된 조각은 빼고 잰다) */
+function TXI(html){ var s = String(html == null ? '' : html);
+  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<\/span>/g, '').replace(/<[^>]*>/g, ''))) return s;
+  return '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + s + '<\/span>' + KOT(); }
 /* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
 function TXB(html, tag){ tag = tag || 'div';
   if (ko || !HAN.test(String(html || '').replace(/<[^>]*>/g, ''))) return html;
@@ -63,7 +69,7 @@ function UT(s){ var str = String(s == null ? '' : s), h = esc(str), lg = HAN.tes
   return '<span lang="' + lg + '" data-uvx-user="1">' + h + '<\/span><sup class="uvx-ut">' + lg.toUpperCase() + '<\/sup>'; }
 /* 한국어 고유명사(언론사·매체 이름) — 옮기지 않는다. 번역 대기가 아니므로 표식은 lang 만 */
 function PN(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko">' + h + '<\/span>' : h; }
-window.T = T; window.TP = TP; window.TX = TX; window.TXB = TXB; window.UT = UT; window.PN = PN;
+window.T = T; window.TP = TP; window.TX = TX; window.TXI = TXI; window.TXB = TXB; window.UT = UT; window.PN = PN;
 window.UVX = { lang: L, T: T, num: num, mc: mc, bn: bn, local: local, pct: pct, dec: dec, date: date, md: md, short: {"000660.KS": "SK hynix", "005930.KS": "Samsung", "WMT": "Walmart", "XOM": "ExxonMobil"},
   esc: esc, rates: R, ccy: CCY, intl: "en-US" };
 })();
@@ -538,6 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
 .uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
+.uvx-ko{display:inline-block;margin-left:3px;padding:0 3px;font-size:9px;line-height:12px;font-weight:800;letter-spacing:.04em;color:var(--text-muted);border:1px solid var(--line-strong);border-radius:3px;vertical-align:1px;cursor:help;white-space:nowrap;font-style:normal}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -953,6 +960,18 @@ function renderLogin(){
   if (bOut) bOut.onclick = () => signOut(auth);
 }
 
+// 자동 기록(시차 관측 일지)은 기록 순간 같은 상태로 만든 그 언어 문장(l10n)을 함께 싣는다 — 있으면 그것,
+// 없으면(사람 기록·옛 기록) 원문 그대로 + 언어 칩(UT). 태그도 기계 id 가 있으면 카탈로그 이름으로
+function noteText(i){
+  const v = i.l10n && i.l10n[UVX.lang];
+  return (UVX.lang !== 'ko' && v) ? esc(v) : UT(i.text);
+}
+function noteTags(i){
+  if (UVX.lang !== 'ko' && i.tag_ids && i.tag_ids.length && i.l10n && i.l10n[UVX.lang])
+    return i.tag_ids.map(id => id === 'parallax' ? esc(T('jn.tag.parallax')) : UT(id));
+  return (i.tags || []).map(UT);
+}
+
 async function loadList(){
   try {
     const snap = await getDocs(query(collection(db, 'judgments'), orderBy('created', 'desc'), limit(100)));
@@ -961,9 +980,9 @@ async function loadList(){
     html += items.map(i =>
       '<div class="nt-item">' +
         '<div class="nt-meta"><span>' + fmtWhen(i.created) + '</span>' +
-        (i.tags && i.tags.length ? '<span class="nt-tag">#' + i.tags.map(UT).join(' #') + '</span>' : '') +
+        (i.tags && i.tags.length ? '<span class="nt-tag">#' + noteTags(i).join(' #') + '</span>' : '') +
         (isAdmin() ? '<button class="nt-del" data-del="' + i.id + '">' + T('cm.del') + '</button>' : '') + '</div>' +
-        '<div class="nt-text">' + UT(i.text) + '</div>' +
+        '<div class="nt-text">' + noteText(i) + '</div>' +
       '</div>').join('') || '<div class="nt-count">' + T('jn.first') + '</div>';
     $('ntBody').innerHTML = html;
     document.querySelectorAll('.nt-del').forEach(b => b.onclick = async () => {

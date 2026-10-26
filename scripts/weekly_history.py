@@ -139,6 +139,10 @@ def _nm(lang, ev):
 #    다국어 빌드(build_site.history_view)가 render_entry 로 같은 사건을 그 언어로 다시 그린다.
 def render_event(ev, lang="ko"):
     k = ev.get("k")
+    if k == "raw":
+        # 사건 구조로 읽지 못한 옛 기록(수기 서술 등, migrate_history_events) — 원문 그대로.
+        # 다른 언어 화면은 이 항목에만 원문 표식이 붙는다(history-template TXI)
+        return ev.get("html", "")
     nm = _nm(lang, ev)
     if k in ("enter", "exit"):
         pre = "" if ev.get("region") in (None, "earth") else \
@@ -174,12 +178,13 @@ def render_event(ev, lang="ko"):
         if ev.get("mom") is not None:
             facts.append(f"1Y {ev['mom']:+}%")
         fact = _t(lang, "hist.ev.facts", f=", ".join(facts)) if facts else ""
-        why = (_t(lang, "hist.ev.why_swap", who=ev["replacing"], n=ev.get("swap", "?")) if ev.get("replacing")
+        why = (_t(lang, "hist.ev.why_swap", who=_nm(lang, {"name": ev["replacing"]}), n=ev.get("swap", "?"))
+               if ev.get("replacing")
                else _t(lang, "hist.ev.why_in", n=ev.get("streak", "?")))
         return _t(lang, "hist.ev.t_in", name=nm, fact=fact, why=why, when=ev["when"])
     if k == "t_out":
         if ev.get("by"):
-            why = _t(lang, "hist.ev.why_replaced", who=ev["by"])
+            why = _t(lang, "hist.ev.why_replaced", who=_nm(lang, {"name": ev["by"]}))
         elif ev.get("carried"):
             why = _t(lang, "hist.ev.why_carried", n=ev["carried"])
         elif ev.get("out"):
@@ -192,7 +197,9 @@ def render_event(ev, lang="ko"):
         return " · ".join(_t(lang, "hist.watch." + p["w"], name=_nm(lang, p), a=p.get("a"), b=p.get("b"))
                           for p in ev.get("parts") or [])
     if k == "sector":
-        th = _t(lang, "latent.theme." + ev["tid"]) if ev.get("tid") and lang != "ko" else ev.get("theme", "")
+        import i18n
+        th = (_t(lang, "latent.theme." + ev["tid"]) if ev.get("tid") and lang != "ko"
+              else i18n.pending_inline(lang, ev.get("theme", "")))
         names = ", ".join(_nm(lang, x) for x in ev.get("names") or [])
         return _t(lang, "hist.ev.sector", theme=th, n=len(ev.get("names") or []), names=names)
     if k == "pt_hot":
@@ -209,6 +216,18 @@ def _block(label_id, events, lang="ko", **lp):
             "events": events, "items": [render_event(e, lang) for e in events]}
 
 
+def _fxn(lang, s, digits):
+    """저장된 환율 표기('1,384' · '1.38', ko 표기) → 그 언어 숫자 표기. ko 는 저장된 글자 그대로
+    (es 에서 '1,384' 는 소수로 읽힌다 — 같은 숫자를 다른 값으로 읽게 하면 안 된다, G2)."""
+    if lang == "ko":
+        return s
+    import i18n
+    try:
+        return i18n.num(lang, float(str(s).replace(",", "")), digits)
+    except ValueError:
+        return s
+
+
 def render_entry(entry, lang):
     """저장된 기록(사건 구조가 있는 것) → 그 언어로 다시 그린 사본. 사건이 없는 블록은 그대로."""
     e = dict(entry)
@@ -219,13 +238,13 @@ def render_entry(entry, lang):
         b = dict(b)
         if b.get("type") == "items" and b.get("events") is not None:
             b["items"] = [render_event(x, lang) for x in b["events"]]
-            if b.get("label_id"):
-                b["label"] = _t(lang, "hist.lbl." + b["label_id"], **(b.get("label_p") or {}))
         elif b.get("type") == "stats" and b.get("fx"):
             fx = b["fx"]
             b["label"] = _t(lang, "hist.lbl.fx")
-            b["items"] = [{"k": "USD/KRW", "v": _t(lang, "hist.fx.rate", r=fx["rate"], d=fx["date"])},
-                          {"k": _t(lang, "hist.fx.formula_k"), "v": _t(lang, "hist.fx.formula", m=fx["mult"])}]
+            b["items"] = [{"k": "USD/KRW", "v": _t(lang, "hist.fx.rate", r=_fxn(lang, fx["rate"], 0), d=fx["date"])},
+                          {"k": _t(lang, "hist.fx.formula_k"), "v": _t(lang, "hist.fx.formula", m=_fxn(lang, fx["mult"], 2))}]
+        if b.get("label_id") and b.get("type") != "stats":
+            b["label"] = _t(lang, "hist.lbl." + b["label_id"], **(b.get("label_p") or {}))
         blocks.append(b)
     e["blocks"] = blocks
     return e

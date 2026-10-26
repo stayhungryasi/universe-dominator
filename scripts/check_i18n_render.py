@@ -63,6 +63,24 @@ JS_OVERFLOW = r"""() => ({ sw: document.documentElement.scrollWidth, iw: window.
     return r.right > window.innerWidth + 1 && r.width > 0 && getComputedStyle(e).position !== 'fixed'
       && !e.closest('.site-nav-inner,.tabs-scroll,.obs-tabs,.ud-macro,.px-wrap,.pc-wrap,.ag-tw,.pc-segs,.map-chips,.pc-drawer,.solar-hero,.map-wrap'); })
     .slice(0, 5).map(e => e.tagName + '.' + String(e.className).slice(0, 40)) })"""
+# 원문 비중 — 본문(머리·메뉴·푸터 제외)의 보이는 글자 중 원문 표식(번역 준비 중) 안에 있는 몫.
+# '번역 준비 중' 꼬리표 자체는 세지 않는다. 공백은 세지 않는다
+JS_RATIO = r"""() => {
+  let all = 0, ko = 0;
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = w.nextNode())) {
+    const el = n.parentElement;
+    if (!el || el.closest('script,style,noscript,template,header,nav,footer,.site-header,.site-nav,.uvx-band,.uvx-pending,.uvx-ko')) continue;
+    if (!el.getClientRects().length) continue;
+    const cs = getComputedStyle(el);
+    if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+    const len = n.nodeValue.replace(/\s+/g, '').length;
+    all += len;
+    if (el.closest('[data-uvx-pending]')) ko += len;
+  }
+  return { all: all, ko: ko };
+}"""
 JS_COCKPIT = r"""() => { const c = document.querySelector('.pc-c5'); if (!c) return null;
   return { bottom: Math.round(c.getBoundingClientRect().bottom), ih: window.innerHeight }; }"""
 
@@ -85,6 +103,7 @@ def main():
     ap.add_argument("--langs", default=",".join(i18n.LANGS))
     ap.add_argument("--quick", action="store_true", help="데스크탑만·관측일지 생략")
     ap.add_argument("--out", default="")
+    ap.add_argument("--ratio", action="store_true", help="원문 비중만 잰다(데스크탑·라이트)")
     a = ap.parse_args()
     from playwright.sync_api import sync_playwright
 
@@ -95,12 +114,13 @@ def main():
     base = f"http://127.0.0.1:{srv.server_address[1]}/"
     bad, ran = [], 0
     report = {"checks": []}
-    vps = VIEWPORTS[:1] if a.quick else VIEWPORTS
+    vps = VIEWPORTS[:1] if (a.quick or a.ratio) else VIEWPORTS
+    ratios = []
     with sync_playwright() as p:
         b = p.chromium.launch()
         for lang in a.langs.split(","):
             for vpname, w, h in vps:
-                for theme in (("light", "dark") if vpname == "desktop" else ("light",)):
+                for theme in (("light", "dark") if vpname == "desktop" and not a.ratio else ("light",)):
                     ctx = b.new_context(viewport={"width": w, "height": h}, locale={"ko": "ko-KR", "en": "en-US", "es": "es-ES", "ja": "ja-JP"}[lang])
                     ctx.add_init_script("try{localStorage.setItem('ud-theme','" + theme + "');localStorage.setItem('uvx-band-off','1')}catch(e){}")
                     pg = ctx.new_page()
@@ -125,6 +145,10 @@ def main():
                             pg.wait_for_timeout(700)
                         ran += 1
                         rec = {"key": key}
+                        if a.ratio:
+                            r = pg.evaluate(JS_RATIO)
+                            ratios.append((lang, page + ("#" + tab if tab else ""), r["ko"], r["all"]))
+                            continue
                         ov = pg.evaluate(JS_OVERFLOW)
                         rec["overflow"] = ov
                         if ov["sw"] > ov["iw"] + 1:
@@ -147,7 +171,7 @@ def main():
                             pg.screenshot(path=str(shots / name), full_page=False)
                         report["checks"].append(rec)
                     # ④ 언어 전환기 — 같은 페이지·같은 해시
-                    if vpname == "desktop" and theme == "light":
+                    if vpname == "desktop" and theme == "light" and not a.ratio:
                         other = next(L for L in i18n.LANGS if L != lang)
                         pg.goto(base + i18n.subdir(lang) + "observatory.html#legend", wait_until="load")
                         pg.wait_for_timeout(500)
@@ -162,6 +186,12 @@ def main():
         b.close()
     srv.shutdown()
     report.update({"ran": ran, "violations": bad})
+    if a.ratio:
+        report["ratio"] = [{"lang": L, "page": pg_, "ko": k, "all": n} for L, pg_, k, n in ratios]
+        print("| 언어 | 페이지·탭 | 원문 글자 | 본문 글자 | 원문 비중 |")
+        print("|---|---|---|---|---|")
+        for L, pg_, k, n in ratios:
+            print(f"| {L} | {pg_} | {k:,} | {n:,} | {(100 * k / n if n else 0):.0f}% |")
     if a.out:
         Path(a.out).write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[렌더 검증] 실행 {ran}건 · 위반 {len(bad)}건")
