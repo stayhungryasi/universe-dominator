@@ -2,7 +2,7 @@
  "form4_30d": 1,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-10-26T18:24+09:00",
+  "fetched_at": "2026-10-27T01:22+09:00",
   "year": 2026,
   "year_count": 122,
   "starship_last": {
@@ -25,7 +25,7 @@
   "source": "Launch Library 2 (2.4.0)"
  },
  "engine": {
-  "checked_at": "2026-10-26T18:24+09:00",
+  "checked_at": "2026-10-27T01:22+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-10-26T01:35:58Z",
@@ -36,6 +36,26 @@
   "in_progress": false
  },
  "events": [
+  {
+   "date": "2026-10-26",
+   "form": "8-K",
+   "items": "8.01",
+   "title": "수시공시 — 기타 중요 사건",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+   "accn": "0001104659-26-118614",
+   "source": "SEC EDGAR",
+   "kind": "filing"
+  },
+  {
+   "id": "ir:https://ir.spacex.com/updates/releases-details/2026/SPACEX-SECURES-40-BILLION-IN-THE-LARGEST-GPU-FINANCING-EVER-2026-EnDqGhTAB3/default.aspx",
+   "date": "2026-10-26",
+   "form": "보도자료",
+   "items": "",
+   "title": "SPACEX SECURES $40 BILLION IN THE LARGEST GPU FINANCING EVER",
+   "kind": "ir",
+   "url": "https://ir.spacex.com/updates/releases-details/2026/SPACEX-SECURES-40-BILLION-IN-THE-LARGEST-GPU-FINANCING-EVER-2026-EnDqGhTAB3/default.aspx",
+   "source": "SpaceX IR"
+  },
   {
    "date": "2026-10-22",
    "form": "10-Q",
@@ -351,6 +371,7 @@
  ],
  "seen": [
   "0001104659-26-095936",
+  "0001104659-26-118614",
   "0001193125-26-352289",
   "0001213900-26-087780",
   "0001426012-26-000004",
@@ -373,6 +394,7 @@
   "ac897b9f-44d2-4ff4-8416-1a0a076e98a2",
   "ir:https://ir.spacex.com/files/content_files/SpaceX-Reports-Third-Quarter-2026-Results.pdf",
   "ir:https://ir.spacex.com/files/doc_financials/2026/q2/SpaceX-Reports-Second-Quarter-2026-Results.pdf",
+  "ir:https://ir.spacex.com/updates/releases-details/2026/SPACEX-SECURES-40-BILLION-IN-THE-LARGEST-GPU-FINANCING-EVER-2026-EnDqGhTAB3/default.aspx",
   "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Closing-of-Initial-Public-Offering-Including-Full-Exercise-of-Underwriters-Option-to-Purchase-Additional-Shares-2026-RgoR-Y1Vwh/default.aspx",
   "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Inaugural-Bond-Issuance-2026-VOzvzAjhMA/default.aspx",
   "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Launch-of-Initial-Public-Offering/default.aspx",
@@ -383,7 +405,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-26T18:24+09:00",
+ "generated_at": "2026-10-27T01:22+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -428,15 +450,5 @@
    "detected_at": "2026-10-26"
   }
  ],
- "dispatch_queue": [
-  {
-   "key": "q:2026-10-26:1",
-   "run_id": "40253461661",
-   "queued_at": "2026-10-26T10:34+09:00",
-   "state": "queued",
-   "trigger_id": "T5",
-   "name": "$400억 조달 확정 조건(8-K) — 금리·담보·만기·증자 포함 여부",
-   "reason": "트리거 1건"
-  }
- ]
+ "dispatch_queue": []
 }

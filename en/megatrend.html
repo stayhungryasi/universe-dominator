@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "lg.th.stock": "Stock", "mega.cat.rank": "Rank tracker", "mega.cat.themes": "6 megatrends", "mega.cat.throne": "The #1 over time", "mega.cat.top10": "TOP 10 over time", "mega.lg.out": "— outside the TOP 10", "mega.lg.r1": "#1", "mega.lg.r23": "#2–3", "mega.lg.r45": "#4–5 (Bold)", "mega.lg.r610": "#6–10 (Regular)", "mega.matrix.d": "Market caps at a glance. Use the arrows on either side to move through the years.", "mega.matrix.h": "Detailed matrix", "mega.next_year": "Next year", "mega.prev_year": "Previous year", "mega.rank": "Rank", "mega.rank.d": "TOP 10 rank changes for 18 key stocks — 20 years of rise and fall on one screen. Use the arrows on either side to move through the years.", "mega.rank.h": "Rank tracker for key stocks", "mega.runners": "#2–3:", "mega.themes.d": "From ever-larger market caps to the NVIDIA legend — not a simple ranking but a record of hegemony cycles.", "mega.themes.h": "6 megatrends from 20 years", "mega.throne.d": "Who ruled the universe for 20 years — the Throne passed from ExxonMobil and PetroChina to Apple and NVIDIA.", "mega.throne.h": "The #1 company over time", "mega.top10.aria": "Bump chart of TOP 10 rank changes, 2006-2026", "mega.top10.d": "20 years of rank changes in the global market-cap TOP 10. Tap a company name (legend) or a line to highlight just that path.", "mega.top10.h": "The TOP 10 over time (2006–2026)", "mega.top10.hint": "Tap again to clear the highlight · watch NVIDIA's climb"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "lg.th.stock": "Stock", "mega.cat.rank": "Rank tracker", "mega.cat.themes": "6 megatrends", "mega.cat.throne": "The #1 over time", "mega.cat.top10": "TOP 10 over time", "mega.lg.out": "— outside the TOP 10", "mega.lg.r1": "#1", "mega.lg.r23": "#2–3", "mega.lg.r45": "#4–5 (Bold)", "mega.lg.r610": "#6–10 (Regular)", "mega.matrix.d": "Market caps at a glance. Use the arrows on either side to move through the years.", "mega.matrix.h": "Detailed matrix", "mega.next_year": "Next year", "mega.prev_year": "Previous year", "mega.rank": "Rank", "mega.rank.d": "TOP 10 rank changes for 18 key stocks — 20 years of rise and fall on one screen. Use the arrows on either side to move through the years.", "mega.rank.h": "Rank tracker for key stocks", "mega.runners": "#2–3:", "mega.themes.d": "From ever-larger market caps to the NVIDIA legend — not a simple ranking but a record of hegemony cycles.", "mega.themes.h": "6 megatrends from 20 years", "mega.throne.d": "Who ruled the universe for 20 years — the Throne passed from ExxonMobil and PetroChina to Apple and NVIDIA.", "mega.throne.h": "The #1 company over time", "mega.top10.aria": "Bump chart of TOP 10 rank changes, 2006-2026", "mega.top10.d": "20 years of rank changes in the global market-cap TOP 10. Tap a company name (legend) or a line to highlight just that path.", "mega.top10.h": "The TOP 10 over time (2006–2026)", "mega.top10.hint": "Tap again to clear the highlight · watch NVIDIA's climb"}, R = {"EUR": 0.89381, "JPY": 157.45, "KRW": 1325.28, "MXN": 18.6155, "USD": 1}, P = "Translation in progress — Korean original", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -675,10 +675,10 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW exchange rate · Measured 18:09 · Source frankfurter · Live USD/KRW on Naver">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW exchange rate · Measured 01:05 · Source frankfurter · Live USD/KRW on Naver">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 18:09 · Source FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 18:09 · Source FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 18:09 · Source FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 18:09 · Source frankfurter">JPY <span class="ud-mv">156.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 01:05 · Source FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 01:05 · Source FRED API">10Y <span class="ud-mv">4.96%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 01:05 · Source FRED API">30Y <span class="ud-mv">5.29%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 01:05 · Source frankfurter">JPY <span class="ud-mv">157.4</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../megatrend.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/megatrend.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/megatrend.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/megatrend.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -711,7 +711,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
   </div>
   <p class="footer-source">2016–2025 PwC Global Top 100 / 2026 companiesmarketcap.com · as of May 24 each year</p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">About</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Terms</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacy</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Community Policy</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Investment Disclaimer</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contact</a></div>
-<div class="uvx-verify">Numbers verified: identical to the source · data as of 2026-10-26 18:08 KST</div>
+<div class="uvx-verify">Numbers verified: identical to the source · data as of 2026-10-27 01:05 KST</div>
 </footer>
 
 <script>
@@ -1007,154 +1007,154 @@ const DATA = {
       "winner": "ExxonMobil",
       "mc": "$447B",
       "runners": "General Electric, Microsoft",
-      "narrative": "고유가 시대 — 석유 공룡 ExxonMobil이 세계 정상"
+      "narrative": "The High Oil Price Era — Oil Giant ExxonMobil at the Top of the World"
     },
     {
       "year": "2007",
       "winner": "PetroChina",
       "mc": "$724B",
       "runners": "ExxonMobil, General Electric",
-      "narrative": "PetroChina 상하이 상장으로 사상 첫 시총 $1조 터치, 연말 1위 등극"
+      "narrative": "PetroChina touches $1 trillion market cap for first time via Shanghai listing, claims #1 year-end"
     },
     {
       "year": "2008",
       "winner": "ExxonMobil",
       "mc": "$406B",
       "runners": "PetroChina, Walmart",
-      "narrative": "금융위기 — 안전자산 석유로 자금 이동, ExxonMobil 왕좌 탈환"
+      "narrative": "Financial crisis — capital flows to safe-haven oil, ExxonMobil regains Throne"
     },
     {
       "year": "2009",
       "winner": "PetroChina",
       "mc": "$353B",
       "runners": "ExxonMobil, Microsoft",
-      "narrative": "중국 굴기 — 국유 에너지 기업 PetroChina 재등극"
+      "narrative": "China's rise — state-owned energy giant PetroChina reclaims top spot"
     },
     {
       "year": "2010",
       "winner": "ExxonMobil",
       "mc": "$369B",
       "runners": "PetroChina, Apple",
-      "narrative": "ExxonMobil의 마지막 정상, Apple이 3위로 부상하며 시대 교체 예고"
+      "narrative": "ExxonMobil's last peak, Apple rises to third and signals era change"
     },
     {
       "year": "2011",
       "winner": "ExxonMobil",
       "mc": "$406B",
       "runners": "Apple, PetroChina",
-      "narrative": "석유 시대 마지막 해 — Apple이 2위까지 추격"
+      "narrative": "Oil era's final year — Apple chases into second place"
     },
     {
       "year": "2012",
       "winner": "Apple",
       "mc": "$501B",
       "runners": "ExxonMobil, PetroChina",
-      "narrative": "스마트폰 혁명 — Apple이 ExxonMobil을 넘고 첫 1위, 테크 시대 개막"
+      "narrative": "Smartphone revolution — Apple surpasses ExxonMobil to claim first place, tech era begins"
     },
     {
       "year": "2013",
       "winner": "Apple",
       "mc": "$505B",
       "runners": "ExxonMobil, Microsoft",
-      "narrative": "Apple 시대 본격화, 석유 거인 퇴조·빅테크 재부상"
+      "narrative": "Apple era dawns, oil giants fade and big tech resurges"
     },
     {
       "year": "2014",
       "winner": "Apple",
       "mc": "$647B",
       "runners": "ExxonMobil, Microsoft",
-      "narrative": "Apple 독주 시작, 미국 빅테크 상위권 장악"
+      "narrative": "Apple's dominance begins, US big tech secures top spots"
     },
     {
       "year": "2015",
       "winner": "Apple",
       "mc": "$598B",
       "runners": "Alphabet, Microsoft",
-      "narrative": "빅테크 TOP 3 굳히기 — Apple·Alphabet·Microsoft 체제 정착"
+      "narrative": "Big Tech consolidates TOP 3 — Apple·Alphabet·Microsoft regime established"
     },
     {
       "year": "2016",
       "winner": "Apple",
       "mc": "$604B",
       "runners": "Alphabet, Microsoft",
-      "narrative": "스마트폰 시대 정점, Apple의 5년 연속 1위"
+      "narrative": "Peak smartphone era, Apple's five consecutive years at #1"
     },
     {
       "year": "2017",
       "winner": "Apple",
       "mc": "$754B",
       "runners": "Alphabet, Microsoft",
-      "narrative": "FAANG 부상, Amazon TOP 5 진입"
+      "narrative": "FAANG rises, Amazon enters TOP 5"
     },
     {
       "year": "2018",
       "winner": "Apple",
       "mc": "$851B",
       "runners": "Alphabet, Microsoft",
-      "narrative": "Apple 최초 시총 $1T 돌파 (8월)"
+      "narrative": "Apple breaks $1T market cap milestone for first time (August)"
     },
     {
       "year": "2019",
       "winner": "Microsoft",
       "mc": "$905B",
       "runners": "Apple, Amazon",
-      "narrative": "Microsoft, 클라우드(Azure)로 Apple 추월"
+      "narrative": "Microsoft overtakes Apple through cloud (Azure)"
     },
     {
       "year": "2020",
       "winner": "Saudi Aramco",
       "mc": "$1.60T",
       "runners": "Microsoft, Apple",
-      "narrative": "Aramco IPO 후 1위, 코로나 빅테크 랠리 시작"
+      "narrative": "Aramco takes #1 post-IPO, corona-era big tech rally begins"
     },
     {
       "year": "2021",
       "winner": "Apple",
       "mc": "$2.05T",
       "runners": "Saudi Aramco, Microsoft",
-      "narrative": "Apple 재탈환, Tesla 1년새 +565% (TOP 10 진입)"
+      "narrative": "Apple reclaims crown, Tesla surges +565% in one year (enters TOP 10)"
     },
     {
       "year": "2022",
       "winner": "Apple",
       "mc": "$2.85T",
       "runners": "Microsoft, Saudi Aramco",
-      "narrative": "Apple $2.85T 정점, 인플레이션·금리인상 본격화"
+      "narrative": "Apple peaks at $2.85T as inflation and rate hikes accelerate"
     },
     {
       "year": "2023",
       "winner": "Apple",
       "mc": "$2.61T",
       "runners": "Microsoft, Saudi Aramco",
-      "narrative": "Tech 10년만에 첫 YoY 하락, NVIDIA TOP 10 잔류"
+      "narrative": "Tech posts first YoY decline in 10 years, NVIDIA holds TOP 10"
     },
     {
       "year": "2024",
       "winner": "Microsoft",
       "mc": "$3.13T",
       "runners": "Apple, NVIDIA",
-      "narrative": "NVIDIA AI 혁명 → TOP 3 진입 (+225% YoY)"
+      "narrative": "NVIDIA AI revolution → enters TOP 3 (+225% YoY)"
     },
     {
       "year": "2025",
       "winner": "Apple",
       "mc": "$3.34T",
       "runners": "Microsoft, NVIDIA",
-      "narrative": "Apple 재탈환, Trillion Club 8개사 확대"
+      "narrative": "Apple reclaims crown, Trillion Club expands to 8 companies"
     },
     {
       "year": "2026",
       "winner": "NVIDIA",
       "mc": "$4.91T",
       "runners": "Alphabet, Apple",
-      "narrative": "NVIDIA 사상 첫 $4T+ 1위, AI 패권 굳히기"
+      "narrative": "NVIDIA makes history with $4T+ top spot, solidifying AI dominance"
     }
   ],
   "themes": [
     {
       "num": "1",
-      "title": "시총 거대화",
-      "subtitle": "단일 기업이 한 국가의 GDP를 능가하는 시대",
+      "title": "Market Cap Gigantism",
+      "subtitle": "The Era When a Single Company Exceeds One Nation's GDP",
       "stats": [
         {
           "k": "TOP 100 합계 (2015)",
@@ -1181,12 +1181,12 @@ const DATA = {
           "v": "$4,911B"
         }
       ],
-      "insight": "10년 만에 1위 기업 시총은 8배 성장. 단일 기업이 한 국가의 GDP를 능가하는 시대."
+      "insight": "The #1 company's market cap grew 8x in 10 years. A single company now exceeds one nation's GDP."
     },
     {
       "num": "2",
-      "title": "1위의 변천",
-      "subtitle": "패권 사이클: 모바일 → 클라우드 → 에너지 → AI",
+      "title": "The Change of #1",
+      "subtitle": "Hegemony Cycle: Mobile → Cloud → Energy → AI",
       "phases": [
         {
           "period": "2016~2018",
@@ -1224,12 +1224,12 @@ const DATA = {
           "theme": "AI 패권"
         }
       ],
-      "insight": "20년간 11번의 1위 교체 — 석유·금융에서 빅테크·AI로. 산업 사이클이 시총 1위 자리에 그대로 투영."
+      "insight": "11 changes of #1 rank over 20 years — from oil and finance to big tech and AI. Industry cycles are directly reflected in the #1 market-cap seat."
     },
     {
       "num": "3",
       "title": "Trillion-Dollar Club",
-      "subtitle": "조 단위가 더 이상 '특별'하지 않은 시대",
+      "subtitle": "The Era When Trillion-Dollar Valuations Are No Longer 'Special'",
       "phases": [
         {
           "period": "2018",
@@ -1257,12 +1257,12 @@ const DATA = {
           "members": "+ TSMC, Broadcom, Tesla 등"
         }
       ],
-      "insight": "8년 만에 12배. $1T이 새로운 빅테크 기준선이 됨."
+      "insight": "12x in 8 years. $1T becomes the new big tech baseline."
     },
     {
       "num": "4",
-      "title": "NVIDIA 신화",
-      "subtitle": "6년 만에 TOP 10 밖 → 1위로 도약",
+      "title": "NVIDIA Myth",
+      "subtitle": "From Outside TOP 10 to #1 in 6 Years",
       "stats": [
         {
           "k": "2016~2021",
@@ -1289,12 +1289,12 @@ const DATA = {
           "v": "1위 ($4.91T) — 사상 첫 $4T+"
         }
       ],
-      "insight": "AI 인프라 수요 폭증을 단일 기업이 가장 극적으로 흡수한 사례. 잠재지배자 → 우주지배자 변신의 교과서."
+      "insight": "The most dramatic case of a single company absorbing the surge in AI infrastructure demand. A textbook example of Contenders transforming into Sovereigns."
     },
     {
       "num": "5",
-      "title": "중국 기업의 부침",
-      "subtitle": "미중 패권경쟁의 자본시장 반영",
+      "title": "Rise and Fall of Chinese Enterprises",
+      "subtitle": "US-China Hegemonic Competition Reflected in Capital Markets",
       "phases": [
         {
           "period": "2017",
@@ -1317,12 +1317,12 @@ const DATA = {
           "theme": "+60% YoY"
         }
       ],
-      "insight": "지정학적 리스크가 시총 순위에 미치는 영향을 가장 또렷이 보여준 케이스."
+      "insight": "The clearest case showing how geopolitical risk impacts market-cap rankings."
     },
     {
       "num": "6",
-      "title": "에너지 패러다임 전환",
-      "subtitle": "Old Energy 후퇴, New Energy (AI 인프라) 부상",
+      "title": "Energy Paradigm Shift",
+      "subtitle": "Old Energy Retreat, New Energy (AI Infrastructure) Rise",
       "phases": [
         {
           "period": "2016",
@@ -1355,7 +1355,7 @@ const DATA = {
           "theme": "$1,754B"
         }
       ],
-      "insight": "에너지의 무게중심이 화석연료 → AI 데이터센터 전력으로 이동."
+      "insight": "The center of gravity in energy is shifting from fossil fuels to AI data center power."
     }
   ],
   "rank_stocks": [
@@ -1856,24 +1856,24 @@ const DATA = {
     ]
   },
   "meta": {
-    "fetched_date": "2026-10-26",
-    "usd_krw": 1324.45,
-    "fetched_at": "2026-10-26T18:08:38.196769+09:00",
+    "fetched_date": "2026-10-27",
+    "usd_krw": 1325.28,
+    "fetched_at": "2026-10-27T01:05:29.381053+09:00",
     "macro": {
       "usd_krw": {
-        "value": 1324.45,
-        "as_of": "2026-10-23",
+        "value": 1325.28,
+        "as_of": "2026-10-26",
         "source": "frankfurter",
-        "measured_at": "2026-10-26T18:09+09:00",
+        "measured_at": "2026-10-27T01:05+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "usd_jpy": {
-        "value": 156.8,
-        "as_of": "2026-10-23",
+        "value": 157.45,
+        "as_of": "2026-10-26",
         "source": "frankfurter",
-        "measured_at": "2026-10-26T18:09+09:00",
+        "measured_at": "2026-10-27T01:05+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1882,7 +1882,7 @@ const DATA = {
         "value": 4.96,
         "as_of": "2026-10-22",
         "source": "FRED API",
-        "measured_at": "2026-10-26T18:09+09:00",
+        "measured_at": "2026-10-27T01:05+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1891,7 +1891,7 @@ const DATA = {
         "value": 5.29,
         "as_of": "2026-10-22",
         "source": "FRED API",
-        "measured_at": "2026-10-26T18:09+09:00",
+        "measured_at": "2026-10-27T01:05+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1900,7 +1900,7 @@ const DATA = {
         "value": 107.89,
         "as_of": "2026-10-20",
         "source": "FRED API",
-        "measured_at": "2026-10-26T18:09+09:00",
+        "measured_at": "2026-10-27T01:05+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
