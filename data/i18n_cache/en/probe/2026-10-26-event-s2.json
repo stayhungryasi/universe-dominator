@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-26-event-s2",
+ "lang": "en",
+ "src_hash": "d029393f18ca",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. The Question the Off-Balance-Sheet Structure Raises for Milestone Definitions — Definition Fixed",
+  "md": "\nThe 'additional financing' in D-2027-1 has so far considered only debt and equity raises in the company's own name. Now that an SPV off-balance-sheet structure has been reported, **the definition must be fixed first** so the next issue can make a determination (Protocol item 2: if a definition is ambiguous, fix the definition first and record it in state). The definition fixed in this issue (source: `state.definitions.additional_financing`, 2026-10-26):\n\n- **Additional financing** = ① debt the company borrowed or issued directly + ② **amounts raised by off-balance-sheet vehicles for which the company bears payment obligations** such as lease payments, purchase commitments, or guarantees. Counted by economic substance, regardless of accounting consolidation.\n- **Equity raise** = issuance of dilutive securities such as common stock, convertible bonds, and convertible preferred stock. Includes structures where SPV equity is exchanged or converted into company shares.\n- **Rationale**: The meaning of the milestone is 'dependence on external funding and dilution.' If the company repays debt in exchange for GPU use, it is the same even if the SPV is the named party. A precedent is already in the filings — the three Valor equipment leases were designed as sale-and-leasebacks but, after audit, were recognized as 'failed sale-and-leasebacks' and booked as **consolidated debt of $12,897M** ([10-Q R65](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm), 2026-10-22; Bloomberg's republication states the same fact as \"about $13 billion in debt recognized\").\n- **Determination not yet made**: Whether the reported SPV falls under this definition will be judged only from the text of an 8-K or 10-K (source: `state.definitions.additional_financing.not_applied_yet`).\n\n**Proposed new rule ③ (not applied)**: \"If the off-balance-sheet vehicle for the $40 billion GPU financing is confirmed as recognized as consolidated debt in the 10-K (fiscal 2026) or a later 10-Q → Bear +5%p.\" Reason: if the off-balance-sheet design collapses, the premises for debt/EBITDA and credit rating change. Not reflected in this issue's numbers (source: `state.rule_proposals_not_applied`).\n\n---\n"
+ }
+}

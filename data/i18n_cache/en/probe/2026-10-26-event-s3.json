@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-26-event-s3",
+ "lang": "en",
+ "src_hash": "9d4de544f699",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Triggers — Expected vs Actual, Revised Expected Method",
+  "md": "\n| Trigger | Previous issue's expectation | Actual (10/26) | Verdict | Revised expected method |\n|---|---|---|---|---|\n| T5 $40 billion 8-K | 2026-10-26 ~ 11-06 (price finalized 'next week' + 4 business days for 8-K) | No 8-K. CEO's closing announcement (10/25) came first | **Wrong** — not the date, but the premise that 'an 8-K will necessarily appear' was wrong. An off-balance-sheet SPV may not be subject to Item 2.03 | Checkpoint **2026-10-31** (after the 10/29–30 deadline passes) ~ 11/06. If there is no 8-K by 11/06, switch to the 'not subject to 8-K' hypothesis and verify via **10-K off-balance-sheet notes and IR materials**. Three paths specified in the verification method field |\n\n(Source: `state.triggers_next_12m` previous value · Section 1 above)\n\n**One-line lesson**: When writing a trigger as \"if filing X appears,\" first state **whether that filing is legally required**. An off-balance-sheet structure changes the disclosure obligation itself — it was a design in which the trigger would never fire even if the event occurred.\n\n---\n"
+ }
+}

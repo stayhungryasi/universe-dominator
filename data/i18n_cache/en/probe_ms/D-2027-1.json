@@ -1,0 +1,22 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2027-1",
+ "lang": "en",
+ "src_hash": "77d0755d92bf",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Additional financing ≤ $50 billion AND no equity raise",
+  "reason": "Judgment year (2027) not yet arrived. 2026 reference: 9M debt issuance $51.8 billion, repayment $39.8 billion (10-Q R18), $40 billion debt issuance reported (not in 8-K — 2026-10-26 reconfirmed: latest EDGAR filings 10/22 S-8, 10-Q, latest 8-K 10/20. CEO 10/25 X post 'concluded' is statement not evidence. Bloomberg 10/23 reprint: off-balance SPV structure — awaiting 8-K/10-K source on definitions.additional_financing), Cursor is share acquisition not cash equity raise",
+  "hit": "Debt funded",
+  "miss": "Dilution plus probability reset if equity raise occurs",
+  "parts.0.label": "Additional financing scale",
+  "parts.1.label": "Equity raise",
+  "parts.0.reason": "Judgment year (2027) not yet arrived — 2026 financing reference only",
+  "parts.1.reason": "Judgment year (2027) not yet arrived",
+  "parts.0.unit": "billion dollars",
+  "parts.1.unit": "count"
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "B-2030-1",
+ "lang": "en",
+ "src_hash": "b84472f847a1",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Annual flights ≥ 100 AND Space operating profit turns positive",
+  "cur": "3 flights (2026 YTD) / 3Q26 Space operating income −$7M",
+  "tgt": "100 flights / profit",
+  "unit": "flights / $",
+  "hit": "Launch business self-sufficient",
+  "miss": "Connectivity continues subsidy if loss persists",
+  "method": "Annual results",
+  "parts.0.label": "Annual flights (2026 cumulative)",
+  "parts.1.label": "Space quarterly operating income",
+  "parts.0.unit": "flights",
+  "parts.1.unit": "million dollars"
+ }
+}

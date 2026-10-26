@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "E-2027-2",
+ "lang": "en",
+ "src_hash": "b37fc12ce096",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Annual collision avoidance maneuvers ≤ 500,000 AND satellite loss rate ≤ 2%",
+  "cur": "355,848 maneuvers (2025-06~2026-05, FCC semi-annual reports combined) / loss rate not disclosed",
+  "tgt": "500,000 / 2%",
+  "unit": "maneuvers / %",
+  "hit": "Orbital environment management possible",
+  "miss": "Regulatory and insurance costs spike if exceeded",
+  "method": "ESA Space Environment Report, company FCC filings",
+  "parts.0.label": "Collision avoidance maneuvers (annual)",
+  "parts.1.label": "Orbital loss rate",
+  "parts.1.reason": "Loss rate not disclosed",
+  "parts.0.unit": "maneuvers"
+ }
+}

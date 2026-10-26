@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2036-1",
+ "lang": "ja",
+ "src_hash": "aff2d924d586",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "純債務EBITDA 2倍以下 AND 自社株買入開始",
+  "cur": "純現金 / 3Q26自社株買入$0(9M $2,013M はIPO前再買入)",
+  "tgt": "2倍以下 / 買入開始",
+  "unit": "倍・$",
+  "hit": "成熟期進入",
+  "method": "年間実績",
+  "parts.0.label": "純債務/EBITDA",
+  "parts.1.label": "自社株買入(3Q26)",
+  "parts.0.reason": "純現金 — 比率数値未記録",
+  "parts.0.unit": "倍",
+  "parts.1.unit": "百万ドル"
+ }
+}

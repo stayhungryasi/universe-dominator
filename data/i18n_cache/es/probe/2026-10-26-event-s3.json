@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-26-event-s3",
+ "lang": "es",
+ "src_hash": "9d4de544f699",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Disparadores — previsto vs. real, corrección del método previsto",
+  "md": "\n| Disparador | Previsión de la edición anterior | Real (10/26) | Veredicto | Corrección del método previsto |\n|---|---|---|---|---|\n| T5 8-K de $40.000 millones | 2026-10-26 ~ 11-06 (fijación de precio \"la próxima semana\" + 4 días hábiles para el 8-K) | Sin 8-K. La declaración de cierre del CEO (10/25) llegó antes | **Erróneo** — lo erróneo no es la fecha, sino la premisa de que \"el 8-K saldrá necesariamente\". Si es un SPV fuera de balance, puede no estar sujeto al Item 2.03 | Punto de verificación **2026-10-31** (tras vencer el plazo del 10/29~30) ~ 11/06. Si no hay 8-K hasta el 11/06, se pasa a la hipótesis de 'no sujeto a 8-K' y se verifica mediante **la nota fuera de balance del 10-K y materiales de IR**. Los 3 caminos se indican en el campo de método de verificación |\n\n(Fuente: valor anterior de `state.triggers_next_12m` · sección 1 anterior)\n\n**Lección en una línea**: al redactar un disparador como \"si sale la divulgación X\", primero hay que anotar **si esa divulgación es legalmente obligatoria**. Una estructura fuera de balance cambia la propia obligación de divulgar: era un diseño en el que el disparador nunca sonaría aunque ocurriera el hecho.\n\n---\n"
+ }
+}

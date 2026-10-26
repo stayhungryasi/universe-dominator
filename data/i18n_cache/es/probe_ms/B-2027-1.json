@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "B-2027-1",
+ "lang": "es",
+ "src_hash": "e66b199d1343",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Inserción orbital + recuperación Ship (etapa superior) exitosa 1 vez o más",
+  "cur": "Inserción orbital 1 vez (Flight 14, 2026-09-28) / Recuperación Ship 0 veces",
+  "tgt": "Ambas 1 vez o más",
+  "unit": "veces",
+  "hit": "Condición necesaria para reutilización completa superada",
+  "miss": "Si falla, despliegue masivo Starlink V3 retrasado",
+  "method": "Licencia FAA·resultado de vuelo",
+  "parts.0.label": "Inserción orbital",
+  "parts.1.label": "Recuperación Ship",
+  "parts.0.unit": "veces",
+  "parts.1.unit": "veces"
+ }
+}

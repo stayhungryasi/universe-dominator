@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "B-2027-1",
+ "lang": "ja",
+ "src_hash": "e66b199d1343",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "軌道投入 + 上段(Ship)回収成功 1回以上",
+  "cur": "軌道投入 1回(Flight 14, 2026-09-28)/ Ship 回収 0回",
+  "tgt": "両方とも 1回以上",
+  "unit": "回",
+  "hit": "完全再利用の必要条件通過",
+  "miss": "失敗時は Starlink V3 大量配置遅延",
+  "method": "FAA ライセンス·飛行結果",
+  "parts.0.label": "軌道投入",
+  "parts.1.label": "Ship 回収",
+  "parts.0.unit": "回",
+  "parts.1.unit": "回"
+ }
+}

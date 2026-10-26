@@ -1,0 +1,21 @@
+{
+ "kind": "probe_ms",
+ "id": "C-2032-1",
+ "lang": "ja",
+ "src_hash": "4d9208ac0f7b",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "AI年間売上$1,500億以上、営業利益率20%以上",
+  "cur": "年換算$302億 / 5.7%",
+  "tgt": "$1,500億 / 20%",
+  "hit": "強気パス",
+  "miss": "未達時基本/弱気",
+  "method": "年間実績",
+  "parts.0.label": "AI年間売上(年換算)",
+  "parts.1.label": "AI営業利益率",
+  "parts.0.unit": "億ドル"
+ }
+}

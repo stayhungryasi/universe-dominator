@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-26-event-s6",
+ "lang": "ja",
+ "src_hash": "95296690fbfd",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. 次回(T5確認点 10/31 または月次 2026-11)までに直接確認すべきデータ3点",
+  "md": "\n1. **EDGAR 8-K**(10/29~30期限) — Item 2.03/1.01 と Ex.10/99 にあるトランシェ別の規模・金利・担保(チップの範囲)・満期・コール条件・転換/増資の要素。あればルール新設提案②を審議し、`definitions.additional_financing` で D-2027-1 を集計する([EDGAR 8-K 一覧](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=8-K&dateb=&owner=include&count=10))。\n2. **8-K がない場合の代替原文** — SpaceX IR のプレスリリース、Apollo・Atlas SP の告知、そして 4Q26 10-K(2027-02 推定)の簿外契約・リース注記。SPV が連結されるか(ルール新設提案③)はここで判定する([ir.spacex.com](https://ir.spacex.com/updates/default.aspx))。\n3. **Starlink 米国住宅向け公式料金 + Amazon Leo Vulcan LV-01(10/29)の結果** — T4 確認点 12/01 の準備。今回の範囲外のため手を加えていない(出典: 前回5節)。\n\n---\n\n### 付録: 今回確認した事実の要約(出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| SpaceX 8-K 最新提出日 | 2026-10-20 | [EDGAR 8-K](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=8-K&dateb=&owner=include&count=20), 2026-10-26 閲覧 |\n| SpaceX 全開示の最新提出日 | 2026-10-22(S-8 · 10-Q) | [EDGAR 全体](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=&dateb=&owner=include&count=20), 2026-10-26 閲覧 |\n| 基準株価 / 出来高 | $147.49(10/23 終値) / 1.106億株 | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-10-26 閲覧 |\n| 発行済株式数 | 135.81億株(2026-10-15) | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm), 2026-10-22 |\n| 報道金利(最下位 / チップ担保) | 約8.3% / 約7.75% | [Semafor](https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread), 2026-10-22 |\n| 報道トランシェ(劣後 / その他 / 追加) | 約$250~300億 / 約$100億 / 最大$50億 | Bloomberg 2026-10-23, [Investing.com 転載](https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497) |\n| 報道劣後金利の協議 | 8%台半ば → 再交渉 | 同上 |\n| SPV 運用 / 主導 / 参加検討 | Atlas SP / Goldman·Apollo / PIMCO | 同上 |\n| 失敗したセール・アンド・リースバックの連結負債 | $12,897M | [10-Q R65](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm), 2026-10-22 |\n| 6月社債の加重平均金利 | 5.855% | 同上 |\n| CEO 投稿 — 完了 / GPU 到着 | $400億 / 2027 1·2四半期 | [TechFlow](https://www.techflowpost.com/en-US/newsletter/141301), 2026-10-26 · [wccftech](https://wccftech.com/elon-musk-goes-ballistic-on-ai-neoclouds-says-they-will-see-guppy-level-death-as-spacex-raises-40-billion-for-gpus), 2026-10-25 |\n| FT 初期報道の内訳(銀行融資 / IG 債) | 約$100億 / 約$300億 | FT 2026-10-06, [Reuters 転載(Manila Times)](https://www.manilatimes.net/2026/10/08/business/foreign-business/spacex-seeks-40-billion-financing-led-by-apollo-to-buy-nvidia-chips/2441146), 2026-10-08 |\n| 米10年債 | 4.96% | FRED(DGS10) 2026-10-22, `data/latest.json` |"
+ }
+}

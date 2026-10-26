@@ -1,0 +1,19 @@
+{
+ "kind": "probe_ms",
+ "id": "A-2029-1",
+ "lang": "es",
+ "src_hash": "3fbc73756c35",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[6§text] 숫자: 원문에 없는 숫자 5000 million",
+  "[6§text] 숫자: 원문의 숫자가 빠짐 500억",
+  "[6§cur] 숫자: 원문에 없는 숫자 2100 million",
+  "[6§cur] 숫자: 원문의 숫자가 빠짐 210억",
+  "[6§tgt] 숫자: 원문에 없는 숫자 5000 million",
+  "[6§tgt] 숫자: 원문의 숫자가 빠짐 500억"
+ ]
+}

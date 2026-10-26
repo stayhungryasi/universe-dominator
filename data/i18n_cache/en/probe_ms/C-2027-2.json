@@ -1,0 +1,21 @@
+{
+ "kind": "probe_ms",
+ "id": "C-2027-2",
+ "lang": "en",
+ "src_hash": "3e4c39100f6a",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Revenue per GW ≥ $15.0 billion/year (9/30/2026 basis $6.3 billion)",
+  "cur": "$15.09 billion (Cursor excluded) / $16.52 billion (included) — one quarter met, two consecutive quarters achieves (early)",
+  "tgt": "$15.0 billion",
+  "unit": "$/GW/year",
+  "hit": "Payback period improves to within 3 years",
+  "miss": "Refutes \"sub-1-year payback\" claim if not achieved",
+  "method": "AI revenue ÷ nameplate GW",
+  "parts.0.label": "Revenue per GW (Cursor excluded)",
+  "parts.0.unit": "billion dollars/GW"
+ }
+}

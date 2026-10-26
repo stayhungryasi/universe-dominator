@@ -1,0 +1,22 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2028-1",
+ "lang": "ja",
+ "src_hash": "b6ff7568309b",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "純債務/調整EBITDA 3.0倍以下",
+  "cur": "純現金$510億(比率負数)",
+  "tgt": "3.0倍以下",
+  "unit": "倍",
+  "hit": "レバレッジ統制",
+  "miss": "超過時信用格付け圧力",
+  "method": "貸借対照表",
+  "parts.0.label": "純債務/調整EBITDA",
+  "parts.0.reason": "純現金$510億 — 比率が負数なので元々に数値が記載されていない(計算値未記録)",
+  "parts.0.unit": "倍"
+ }
+}

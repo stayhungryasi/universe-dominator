@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "E-2027-2",
+ "lang": "es",
+ "src_hash": "b37fc12ce096",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Maniobras de evasión de colisión anuales ≤ 500.000 Y tasa de pérdida orbital de satélites ≤ 2%",
+  "cur": "355.848 maniobras (2025-06~2026-05, suma de 2 informes semestrales FCC) / tasa de pérdida no publicada",
+  "tgt": "500.000 maniobras / 2%",
+  "unit": "maniobras·%",
+  "hit": "Gestión del entorno orbital viable",
+  "miss": "Si se excede, costos regulatorios y de seguros se disparan",
+  "method": "ESA Space Environment Report, informes FCC de la empresa",
+  "parts.0.label": "Maniobras de evasión de colisión (anuales)",
+  "parts.1.label": "Tasa de pérdida orbital",
+  "parts.1.reason": "Tasa de pérdida no publicada",
+  "parts.0.unit": "maniobras"
+ }
+}

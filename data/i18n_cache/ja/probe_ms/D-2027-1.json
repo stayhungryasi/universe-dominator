@@ -1,0 +1,22 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2027-1",
+ "lang": "ja",
+ "src_hash": "77d0755d92bf",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "追加調達$500億以下 AND 増資なし",
+  "reason": "判定年度(2027)未到来。2026参考: 9M債務調達$518億・返済$398億(10-Q R18)、$400億債務調達推進報道(8-K未公示 — 2026-10-26再確認: EDGAR最新公示10/22 S-8・10-Q、8-K最新10/20。CEO 10/25 X投稿「終結」は発言なので根拠でない。Bloomberg 10/23転載: SPV簿外構造 — definitions.additional_financing定義で計上か8-K/10-K原文待機中)、Cursorは株式取得で現金増資ではない",
+  "hit": "債務で対応",
+  "miss": "増資発生時希薄化 + 確率再算定",
+  "parts.0.label": "追加調達規模",
+  "parts.1.label": "増資",
+  "parts.0.reason": "判定年度(2027)未到来 — 2026調達は参考のみ",
+  "parts.1.reason": "判定年度(2027)未到来",
+  "parts.0.unit": "億ドル",
+  "parts.1.unit": "件"
+ }
+}

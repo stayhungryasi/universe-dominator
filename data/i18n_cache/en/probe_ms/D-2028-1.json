@@ -1,0 +1,22 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2028-1",
+ "lang": "en",
+ "src_hash": "b6ff7568309b",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Net debt/adjusted EBITDA ≤ 3.0x",
+  "cur": "Net cash $51.0 billion (ratio negative)",
+  "tgt": "≤ 3.0x",
+  "unit": "x",
+  "hit": "Leverage controlled",
+  "miss": "Credit rating pressure if exceeded",
+  "method": "Balance sheet",
+  "parts.0.label": "Net debt/adjusted EBITDA",
+  "parts.0.reason": "Net cash $51.0 billion — ratio negative so numeric value not in source (calculated value not recorded)",
+  "parts.0.unit": "x"
+ }
+}

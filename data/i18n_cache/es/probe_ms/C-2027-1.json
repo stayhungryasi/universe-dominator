@@ -1,0 +1,21 @@
+{
+ "kind": "probe_ms",
+ "id": "C-2027-1",
+ "lang": "es",
+ "src_hash": "d7ceb9602f0a",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Capacidad nominal ≥ 8 GW Y ingresos anuales de IA ≥ $40.000 millones",
+  "cur": "1,7 GW / Anualizado $30.200 millones",
+  "tgt": "8 GW / $40.000 millones",
+  "hit": "Trayectoria de 15 GW válida",
+  "miss": "Si es < 8 GW, objetivo de dirección −50%",
+  "method": "Tabla de IA en resultados",
+  "parts.0.label": "Cómputo nominal",
+  "parts.1.label": "Ingresos anuales de IA (anualizado)",
+  "parts.1.unit": "mil millones de dólares"
+ }
+}

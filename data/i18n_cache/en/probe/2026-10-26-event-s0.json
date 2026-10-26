@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-10-26-event-s0",
+ "lang": "en",
+ "src_hash": "cd6629bc119a",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-10-26 (KST) · issue id `2026-10-26-event` · mode **event** (incremental) · previous issue `2026-10-23-event` (3rd issue) · previous monthly issue `2026-10` (source: workflow-injected issue info · `state.run`)\n- **Reason**: The measurement layer detected that the checkpoint of trigger T5 (\"$40 billion financing confirmation condition (8-K)\") arrived on 2026-10-26 and fired (source: `data/spacex_watch.json` due list, 2026-10-26)\n- **Reference price**: $147.49 — close on Friday 2026-10-23. At the time of writing (KST morning), the US market had not opened on 10/26 ([stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), viewed 2026-10-26: latest row 10/23). +1.9% versus the previous issue's reference price of $144.75 (10/22) (formula: 147.49 ÷ 144.75 − 1)\n- **Scope**: Only what T5 touches — Axis D (financials), milestone D-2027-1, rule R3 and proposed new rule ②, trigger T5. T4 (Amazon Leo) is not a reason for this issue and its checkpoint remains 12/01. No full PHASE 1–4 recalculation is performed (source: `state.triggers_next_12m` · `prompts/monthly_run.md`).\n\n> **Conclusion first**: **There is still no 8-K.** As of 2026-10-26, SpaceX's latest EDGAR filings are the 10/22 S-8 and 10-Q, and the last 8-K was the 10/20 earnings filing. Instead, the CEO stated in an X post on 10/25 (US time) that the \"$40 billion GPU debt has closed,\" and Bloomberg (10/23) reported that this financing is an **off-balance-sheet structure through an SPV**. Management statements are not a basis for determination, so T5 is **unconfirmed**, and milestones, probabilities and fair value are **unchanged**. Three things changed — ① off-balance-sheet vehicles were included in the 'additional financing' definition ② proposed new rule ③ (Bear +5 if the off-balance-sheet vehicle is recognized as consolidated debt) was registered ③ the T5 verification path was widened from the single 8-K to three: 8-K, 10-K notes, and IR (source: Section 1 table below · Section 2 · Section 3 table).\n\n---\n"
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2036-1",
+ "lang": "en",
+ "src_hash": "aff2d924d586",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Net debt/EBITDA ≤ 2.0x AND share buybacks initiated",
+  "cur": "Net cash / 3Q26 share buyback $0 (9M $2,013M is pre-IPO repurchase)",
+  "tgt": "≤ 2.0x / buyback initiated",
+  "unit": "x / $",
+  "hit": "Maturity entry",
+  "method": "Annual results",
+  "parts.0.label": "Net debt/EBITDA",
+  "parts.1.label": "Share buybacks (3Q26)",
+  "parts.0.reason": "Net cash — ratio numeric value not recorded",
+  "parts.0.unit": "x",
+  "parts.1.unit": "million dollars"
+ }
+}

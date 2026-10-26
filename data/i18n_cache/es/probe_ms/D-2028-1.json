@@ -1,0 +1,22 @@
+{
+ "kind": "probe_ms",
+ "id": "D-2028-1",
+ "lang": "es",
+ "src_hash": "b6ff7568309b",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Deuda neta/EBITDA ajustado ≤ 3,0x",
+  "cur": "Efectivo neto $51.000 millones (ratio negativo)",
+  "tgt": "≤ 3,0x",
+  "unit": "múltiplos",
+  "hit": "Control del apalancamiento",
+  "miss": "Si se excede, presión en calificación crediticia",
+  "method": "Balance",
+  "parts.0.label": "Deuda neta/EBITDA ajustado",
+  "parts.0.reason": "Efectivo neto $51.000 millones — ratio es negativo, por lo que no hay valor numérico en el origen (cálculo no registrado)",
+  "parts.0.unit": "múltiplos"
+ }
+}

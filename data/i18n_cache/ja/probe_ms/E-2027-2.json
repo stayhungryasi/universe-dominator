@@ -1,0 +1,23 @@
+{
+ "kind": "probe_ms",
+ "id": "E-2027-2",
+ "lang": "ja",
+ "src_hash": "b37fc12ce096",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-26 18:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "年間衝突回避機動50万回以下 AND 軌道喪失衛星2%以下",
+  "cur": "355,848回(2025-06~2026-05、FCC半期報告2件合算) / 喪失率未公示",
+  "tgt": "50万回 / 2%",
+  "unit": "回・%",
+  "hit": "軌道環境管理可能",
+  "miss": "超過時規制・保険費用急増",
+  "method": "ESA Space Environment Report、会社FCC報告",
+  "parts.0.label": "衝突回避機動(年)",
+  "parts.1.label": "軌道喪失率",
+  "parts.1.reason": "喪失率未公示",
+  "parts.0.unit": "回"
+ }
+}

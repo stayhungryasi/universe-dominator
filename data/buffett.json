@@ -1,5 +1,5 @@
 {
- "generated_label": "2026-10-26 10:33",
+ "generated_label": "2026-10-26 18:23",
  "asof": "2026-09-03",
  "zones": {
   "explore": 0.6,
@@ -52,11 +52,15 @@
     "required_g": 0.163016,
     "required_g_prove": 0.085132,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 288.51,
     "edge_line": "pass",
@@ -100,11 +104,15 @@
     "required_g": 0.195385,
     "required_g_prove": 0.115334,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 140.73,
     "edge_line": "prove",
@@ -148,11 +156,15 @@
     "required_g": 0.164384,
     "required_g_prove": 0.086409,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 187.98,
     "edge_line": "prove",
@@ -196,11 +208,24 @@
     "required_g": 0.165997,
     "required_g_prove": 0.087914,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "감가상각 항목 미확보 — 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.c_missing",
+      {
+       "m": [
+        "dna"
+       ]
+      }
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 383.32,
     "edge_line": "prove",
@@ -244,11 +269,15 @@
     "required_g": 0.188023,
     "required_g_prove": 0.108465,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 75.64,
     "edge_line": "prove",
@@ -292,11 +321,19 @@
     "required_g": 0.149726,
     "required_g_prove": 0.072732,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
     "pass_price": 520.17,
     "edge_line": "pass",
@@ -340,11 +377,19 @@
     "required_g": 0.200333,
     "required_g_prove": 0.11995,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "유형자본 음수 — ROE 산출 불가(영업권·무형자산 > 자기자본)",
+    "roe_note_nc": [
+     [
+      "roe.tangible_negative"
+     ]
+    ],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 320.79,
     "edge_line": "pass",
@@ -372,28 +417,41 @@
     "rate10y": 4.96,
     "guard": false,
     "hold": null,
-    "eps_adj_ttm": -1.1,
+    "eps_adj_ttm": 0.23,
     "roe_tangible": -0.0238,
     "g_used": null,
     "price": 147.49,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": -0.007458,
-    "ey_minus_10y": -0.057058,
+    "ey": 0.001559,
+    "ey_minus_10y": -0.048041,
     "roe_minus_2x10y": -0.123,
     "coupon10y": null,
     "zone_buffett": "untested",
     "cause": "scale",
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
-    "required_g": null,
-    "required_g_prove": null,
+    "required_g": 0.57748,
+    "required_g_prove": 0.471841,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
+    "note_nc": [
+     [
+      "g_missing"
+     ]
+    ],
     "pass_price": null,
     "edge_line": null,
     "edge_margin": null,
@@ -407,7 +465,7 @@
    "fair_max": 13,
    "rationale": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계.",
    "eps_asof": null,
-   "price": 25.18,
+   "price": 25.66,
    "currency": "SAR",
    "pe": null,
    "gap": null,
@@ -420,13 +478,13 @@
     "rate10y": null,
     "guard": true,
     "hold": null,
-    "eps_adj_ttm": 1.69,
+    "eps_adj_ttm": 1.7,
     "roe_tangible": 0.2781,
     "g_used": null,
-    "price": 25.18,
+    "price": 25.66,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.067117,
+    "ey": 0.066251,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -436,14 +494,38 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
-   }
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.sa10"
+     ]
+    ]
+   },
+   "note_nc": [
+    [
+     "px.no_eps"
+    ]
+   ]
   },
   {
    "ticker": "META",
@@ -481,11 +563,19 @@
     "required_g": 0.126718,
     "required_g_prove": 0.051265,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "현금흐름표와 부호 불일치 — 확인 필요",
+    "conv_check_note_nc": [
+     [
+      "cash_mismatch"
+     ]
+    ],
     "roe_unadjusted": false,
     "pass_price": 679.36,
     "edge_line": "pass",
@@ -529,12 +619,30 @@
     "required_g": 0.54448,
     "required_g_prove": 0.441051,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "감가상각 항목 미확보 — 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.c_missing",
+      {
+       "m": [
+        "dna"
+       ]
+      }
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
+    "note_nc": [
+     [
+      "g_missing"
+     ]
+    ],
     "pass_price": null,
     "edge_line": null,
     "edge_margin": null,
@@ -577,13 +685,39 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "해외 공시 이익 미확보 — 12개월 조정이익 미확보",
+    "eps_note_nc": [
+     [
+      "eps.foreign_missing"
+     ]
+    ],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "eps.foreign_missing"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.ktb10"
+     ]
+    ]
    }
   },
   {
@@ -622,13 +756,25 @@
     "required_g": 0.057225,
     "required_g_prove": -0.013574,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -667,12 +813,36 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "투자평가손익 지배 — 자동 조정 무의미, 사람 취재 전용",
+    "eps_note_nc": [
+     [
+      "eps.float_skip"
+     ]
+    ],
     "eps_from_human": false,
     "roe_note": "12개월 이익 미확보 — ROE 산출 불가",
+    "roe_note_nc": [
+     [
+      "roe.income_missing"
+     ]
+    ],
     "roe_from_human": false,
     "conv_note": "투자평가손익 지배 — 사람 취재 전용",
+    "conv_note_nc": [
+     [
+      "conv.float_skip"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
+    "note_nc": [
+     [
+      "eps.float_skip"
+     ],
+     [
+      "g_missing"
+     ]
+    ],
     "pass_price": null,
     "edge_line": null,
     "edge_margin": null,
@@ -715,11 +885,15 @@
     "required_g": 0.201816,
     "required_g_prove": 0.121334,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 909.21,
     "edge_line": "prove",
@@ -763,13 +937,34 @@
     "required_g": 0.074571,
     "required_g_prove": 0.00261,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "캐펙스 항목 미확보 — 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.c_missing",
+      {
+       "m": [
+        "capex"
+       ]
+      }
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -808,11 +1003,15 @@
     "required_g": 0.200807,
     "required_g_prove": 0.120392,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 41.52,
     "edge_line": "prove",
@@ -856,11 +1055,15 @@
     "required_g": 0.369507,
     "required_g_prove": 0.277795,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
     "pass_price": 137.87,
     "edge_line": "prove",
@@ -875,10 +1078,10 @@
    "fair_max": 10,
    "rationale": "원문 명시 사례 — 증축 공사(캐펙스 20조) 없이는 월세 인상 불가, 10년치 상한.",
    "eps_asof": "2026-07 F&Guide 역산(개략)",
-   "price": 1287000.0,
+   "price": 1275000.0,
    "currency": "KRW",
-   "pe": 3.79,
-   "gap": 1.6418,
+   "pe": 3.75,
+   "gap": 1.6667,
    "basis": "forward",
    "note": "",
    "zoned": false,
@@ -891,7 +1094,7 @@
     "eps_adj_ttm": null,
     "roe_tangible": 0.6275,
     "g_used": null,
-    "price": 1287000.0,
+    "price": 1275000.0,
     "g_capped_from": null,
     "g_weak": false,
     "ey": null,
@@ -904,13 +1107,39 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "해외 공시 이익 미확보 — 12개월 조정이익 미확보",
+    "eps_note_nc": [
+     [
+      "eps.foreign_missing"
+     ]
+    ],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "eps.foreign_missing"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.ktb10"
+     ]
+    ]
    }
   },
   {
@@ -949,13 +1178,29 @@
     "required_g": 0.191255,
     "required_g_prove": 0.11148,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -994,13 +1239,25 @@
     "required_g": 0.177353,
     "required_g_prove": 0.098509,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -1039,13 +1296,25 @@
     "required_g": 0.182119,
     "required_g_prove": 0.102956,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -1084,13 +1353,29 @@
     "required_g": 0.142519,
     "required_g_prove": 0.066008,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "자기자본 음수 — ROE 산출 불가",
+    "roe_note_nc": [
+     [
+      "roe.equity_negative"
+     ]
+    ],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -1129,13 +1414,28 @@
     "required_g": 0.635869,
     "required_g_prove": 0.52632,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "div.low",
+      {
+       "p": "44"
+      }
+     ],
+     [
+      "zone_hold"
+     ]
+    ]
    }
   },
   {
@@ -1174,12 +1474,25 @@
     "required_g": 0.415381,
     "required_g_prove": 0.320597,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
+    "note_nc": [
+     [
+      "g_missing"
+     ]
+    ],
     "pass_price": null,
     "edge_line": null,
     "edge_margin": null,
@@ -1222,13 +1535,25 @@
     "required_g": 0.101449,
     "required_g_prove": 0.027689,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -1267,13 +1592,29 @@
     "required_g": 0.20986,
     "required_g_prove": 0.12884,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "유형자본 음수 — ROE 산출 불가(영업권·무형자산 > 자기자본)",
+    "roe_note_nc": [
+     [
+      "roe.tangible_negative"
+     ]
+    ],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -1312,12 +1653,42 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "공시 최신 분기 미확보(창이 2025Q3에 멈춤) — 12개월 조정이익 미확보",
+    "eps_note_nc": [
+     [
+      "eps.stale",
+      {
+       "p": "2025Q3"
+      }
+     ]
+    ],
     "eps_from_human": false,
     "roe_note": "12개월 이익 미확보 — ROE 산출 불가",
+    "roe_note_nc": [
+     [
+      "roe.income_missing"
+     ]
+    ],
     "roe_from_human": false,
     "conv_note": "12개월 이익 미확보 — 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.income_missing"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
+    "note_nc": [
+     [
+      "eps.stale",
+      {
+       "p": "2025Q3"
+      }
+     ],
+     [
+      "g_missing"
+     ]
+    ],
     "pass_price": null,
     "edge_line": null,
     "edge_margin": null,
@@ -1360,14 +1731,38 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
-   }
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.tw10"
+     ]
+    ]
+   },
+   "note_nc": [
+    [
+     "px.no_eps"
+    ]
+   ]
   },
   {
    "ticker": "MRVL",
@@ -1405,13 +1800,25 @@
     "required_g": 0.374008,
     "required_g_prove": 0.281995,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "",
+    "conv_note_nc": [],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "borderline": false
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ]
+    ]
    }
   },
   {
@@ -1421,7 +1828,7 @@
    "fair_max": 8,
    "rationale": "낸드 순수 사이클 — SNDK와 동일 상한.",
    "eps_asof": null,
-   "price": 12425.0,
+   "price": 12550.0,
    "currency": "JPY",
    "pe": null,
    "gap": null,
@@ -1434,13 +1841,13 @@
     "rate10y": null,
     "guard": true,
     "hold": null,
-    "eps_adj_ttm": 844.09,
+    "eps_adj_ttm": 833.5,
     "roe_tangible": 0.6902,
     "g_used": null,
-    "price": 12425.0,
+    "price": 12550.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.067935,
+    "ey": 0.066414,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1450,14 +1857,38 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
-   }
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.jgb10"
+     ]
+    ]
+   },
+   "note_nc": [
+    [
+     "px.no_eps"
+    ]
+   ]
   },
   {
    "ticker": "8035.T",
@@ -1466,7 +1897,7 @@
    "fair_max": 18,
    "rationale": "장비 과점 — LRCX·AMAT와 동일 구조.",
    "eps_asof": null,
-   "price": 9115.0,
+   "price": 9110.0,
    "currency": "JPY",
    "pe": null,
    "gap": null,
@@ -1482,10 +1913,10 @@
     "eps_adj_ttm": 270.91,
     "roe_tangible": 0.2951,
     "g_used": null,
-    "price": 9115.0,
+    "price": 9110.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.029721,
+    "ey": 0.029738,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1495,14 +1926,38 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
-   }
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.jgb10"
+     ]
+    ]
+   },
+   "note_nc": [
+    [
+     "px.no_eps"
+    ]
+   ]
   },
   {
    "ticker": "6857.T",
@@ -1511,7 +1966,7 @@
    "fair_max": 16,
    "rationale": "테스트 과점이나 AI 테스터 수요 사이클 진폭이 장비 3사보다 큼.",
    "eps_asof": null,
-   "price": 31590.0,
+   "price": 31070.0,
    "currency": "JPY",
    "pe": null,
    "gap": null,
@@ -1527,10 +1982,10 @@
     "eps_adj_ttm": 630.4,
     "roe_tangible": 0.4807,
     "g_used": null,
-    "price": 31590.0,
+    "price": 31070.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.019956,
+    "ey": 0.02029,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1540,14 +1995,38 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
-   }
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.jgb10"
+     ]
+    ]
+   },
+   "note_nc": [
+    [
+     "px.no_eps"
+    ]
+   ]
   },
   {
    "ticker": "2308.TW",
@@ -1569,13 +2048,13 @@
     "rate10y": null,
     "guard": true,
     "hold": null,
-    "eps_adj_ttm": 31.37,
+    "eps_adj_ttm": 30.12,
     "roe_tangible": 0.3518,
     "g_used": null,
     "price": 1560.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.020109,
+    "ey": 0.019308,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1585,14 +2064,38 @@
     "required_g": null,
     "required_g_prove": null,
     "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
     "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
     "conv_note": "해외 공시 — 현금흐름 미조립, 전환율 산출 불가",
+    "conv_note_nc": [
+     [
+      "conv.foreign"
+     ]
+    ],
     "conv_check_note": "",
+    "conv_check_note_nc": [],
     "roe_unadjusted": true,
-    "borderline": false
-   }
+    "borderline": false,
+    "note_nc": [
+     [
+      "guard_hold"
+     ],
+     [
+      "g_missing"
+     ],
+     [
+      "rate_unwired.tw10"
+     ]
+    ]
+   },
+   "note_nc": [
+    [
+     "px.no_eps"
+    ]
+   ]
   }
  ],
  "history": {
@@ -10033,7 +10536,7 @@
    },
    {
     "d": "10-26",
-    "gap": 1.6418,
+    "gap": 1.6667,
     "coupon10y": null,
     "zone_buffett": "untested"
    }
