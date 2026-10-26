@@ -388,7 +388,7 @@ def run_info(st, watch, vres, today, lang="ko"):
 
 
 def _plain(md):
-    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"", md or "")
+    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", md or "")
     return re.sub(r"[*_`>#]+", "", s).strip()
 
 
@@ -561,19 +561,40 @@ def toc_label(title):
     return (m.group(1) + " " + m.group(2)) if m else t
 
 
+def report_nodes(ar, axes):
+    """보고서 공개분의 절 → [(파일 stem, 절 번호, 보고 날짜, {"title", "md"})].
+
+    화면(report_bundle)과 번역 엔진(translate_content)이 **같은 절**을 본다 — 두 벌이면
+    번역한 절과 화면의 절이 갈라진다. '개요' 절 제목은 카탈로그(pc.rep.overview)가 맡는다(빈 제목).
+    """
+    from build_site import ko_axes
+    out = []
+    for f in ar.report_files():
+        body, _ = ar.sanitize(f.read_text(encoding="utf-8"))
+        m = re.search(r"(20\d{2})-(\d{2})(?:-(\d{2}))?", f.stem)
+        d = f"{m.group(1)}-{m.group(2)}-{m.group(3) or '01'}" if m else ""
+        for i, (title, md) in enumerate(split_sections(body)):
+            out.append((f.stem, i, d,
+                        {"title": "" if title == "개요" else ko_axes(title, axes), "md": ko_axes(md, axes)}))
+    return out
+
+
 def report_bundle(ar, axes, lang="ko"):
-    """보고서별 절 HTML(준법 필터 통과본) — PROBE_DATA 와 별도 덩어리."""
-    from build_site import report_title, ko_axes
+    """보고서별 절 HTML(준법 필터 통과본) — PROBE_DATA 와 별도 덩어리.
+    다른 언어는 번역 캐시(관문 통과·원문 해시 일치)가 있는 절만 그 언어로, 나머지는 원문(표식)."""
+    from build_site import report_title
+    import i18n_content as IC
+    nodes = {}
+    for stem, i, _, node in report_nodes(ar, axes):
+        nodes.setdefault(stem, []).append((i, IC.apply_node("probe", lang, f"{stem}-s{i}", node, IC.PROBE)))
     reps = []
     for f in ar.report_files():
-        body, info = ar.sanitize(f.read_text(encoding="utf-8"))
+        _, info = ar.sanitize(f.read_text(encoding="utf-8"))
         secs = []
-        for i, (title, md) in enumerate(split_sections(body)):
-            sid = f"s{i}"
-            if title == "개요":
-                title = L(lang, "pc.rep.overview")
-            secs.append({"id": sid, "title": ko_axes(title, axes), "toc": ko_axes(toc_label(title), axes),
-                         "html": ar.md_to_html(ko_axes(md, axes))})
+        for i, node in nodes.get(f.stem, []):
+            title = node["title"] or L(lang, "pc.rep.overview")
+            secs.append({"id": f"s{i}", "title": title, "toc": toc_label(title),
+                         "html": ar.md_to_html(node["md"])})
         reps.append({"id": f.stem, "title": report_title(f), "phase4Cut": info["phase4"],
                      "blocksCut": info["blocks"], "sections": secs})
     return reps

@@ -140,7 +140,7 @@ def _prev_snapshot_map(data):
 
 def build_main():
     """index.html — 우주지배자 메인 (TOP 20)"""
-    data = localize_latest(json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")))
+    data = localize_latest(load_data("latest.json"))
     template = (SCRIPTS_DIR / "template.html").read_text(encoding="utf-8")
     
     data_json = json.dumps(data, ensure_ascii=False, indent=2)
@@ -165,7 +165,7 @@ def build_main():
 
     # 오늘의 신호 3건 (ud-aurora-v1) — 필독 우선, 이후 추천수순 · 파일 없으면 우아한 저하
     try:
-        sig_all = json.loads((DATA_DIR / "signals.json").read_text(encoding="utf-8")).get("signals", [])
+        sig_all = load_data("signals.json", {}).get("signals", [])
         # 최신 수신순 3건 (RFC822/ISO 혼재 파싱 · 같은 시각이면 필독→추천수)
         from email.utils import parsedate_to_datetime as _p822
         from datetime import datetime as _dt
@@ -193,6 +193,25 @@ def build_main():
 
 
 # ── 데이터 현지화 — 빌드 시점에 그 언어로 심는다(화면은 받은 것을 그릴 뿐) ──────────
+def load_data(name, default=None):
+    """data/<name> → 문서. 다른 언어 빌드에서는 **번역 캐시**(단계 3)를 끼운 사본을 준다.
+
+    번역은 관문(숫자·용어·준법·마크업·링크)을 통과하고 원문 해시가 지금 원문과 같은 것만 들어간다
+    (i18n_content.apply). 없으면 원문 그대로 — 화면이 TX/TXB 로 '번역 준비 중' 표식을 단다.
+    콘텐츠 파일은 반드시 이 함수로 읽는다: 읽는 곳마다 따로 끼우면 페이지마다 번역이 갈라진다.
+    """
+    p = DATA_DIR / name
+    if not p.exists():
+        return default
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    if LANG != i18n.DEFAULT:
+        import i18n_content as IC
+        for kind, spec in IC.SPECS.items():
+            if spec["file"] == name:
+                doc, _ = IC.apply(kind, LANG, doc)
+    return doc
+
+
 def localize_latest(data):
     """latest.json 사본 → 지역 라벨(카탈로그) · 한국어 종목명(이름 사전). 숫자는 손대지 않는다(G2)."""
     data = json.loads(json.dumps(data))
@@ -394,7 +413,7 @@ def build_latent():
     template_path = SCRIPTS_DIR / "latent-template.html"
     if not template_path.exists():
         print(f"[skip] latent-template.html 없음"); return
-    data = localize_latest(json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")))
+    data = localize_latest(load_data("latest.json"))
     data["latent"] = latent_view(data.get("latent"))
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
@@ -409,7 +428,7 @@ def build_megatrend():
     data_path = DATA_DIR / "megatrend.json"
     if not template_path.exists() or not data_path.exists():
         print(f"[skip] megatrend 자원 없음"); return
-    data = json.loads(data_path.read_text(encoding="utf-8"))
+    data = load_data("megatrend.json")
     data["meta"] = _header_meta()
     template = template_path.read_text(encoding="utf-8")
     html = template.replace("{{DATA_JSON}}", json.dumps(data, ensure_ascii=False, indent=2))
@@ -448,20 +467,17 @@ def build_research():
     if not template_path.exists():
         print("[skip] research-template.html 없음"); return
     data_path = DATA_DIR / "research.json"
-    if data_path.exists():
-        rdata = json.loads(data_path.read_text(encoding="utf-8"))
-    else:
-        rdata = {"generated_label": "", "stocks": []}
+    rdata = load_data("research.json", {"generated_label": "", "stocks": []})
     cal_path = DATA_DIR / "calendar.json"
     rdata = research_view(rdata)
-    rdata["calendar"] = calendar_view(json.loads(cal_path.read_text(encoding="utf-8")) if cal_path.exists() else {"events": []})
+    rdata["calendar"] = calendar_view(load_data("calendar.json", {"events": []}))
     gurus_path = DATA_DIR / "gurus.json"
-    rdata["gurus"] = gurus_view(json.loads(gurus_path.read_text(encoding="utf-8")) if gurus_path.exists() else {"gurus": []})
+    rdata["gurus"] = gurus_view(load_data("gurus.json", {"gurus": []}))
     signals_path = DATA_DIR / "signals.json"
-    rdata["signals"] = signals_view(json.loads(signals_path.read_text(encoding="utf-8")) if signals_path.exists() else {"signals": []})
+    rdata["signals"] = signals_view(load_data("signals.json", {"signals": []}))
     # 🔬 필독 해부실 — 실패 기록(failures)은 내부용이므로 페이지에 싣지 않는다
     tr_path = DATA_DIR / "translations.json"
-    tr = json.loads(tr_path.read_text(encoding="utf-8")) if tr_path.exists() else {}
+    tr = load_data("translations.json", {})
     tr_items = tr.get("items", [])
     # 역방향 링크 {해부 id: 칼럼 영구 슬러그} — 같은 원문으로 쓴 칼럼이 있을 때만.
     # 칼럼이 없는 해부 글은 키가 없어 '칼럼 보기' 버튼이 아예 만들어지지 않는다.
@@ -928,9 +944,8 @@ def build_observatory():
     if not template_path.exists():
         print("[skip] observatory-template.html 없음"); return
     template = template_path.read_text(encoding="utf-8")
-    latest = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8"))
-    cols_path = DATA_DIR / "columns.json"
-    cols = json.loads(cols_path.read_text(encoding="utf-8")).get("columns", []) if cols_path.exists() else []
+    latest = load_data("latest.json")
+    cols = load_data("columns.json", {}).get("columns", [])
     meta = latest.get("meta", {})
     # ── 우주 지도 타일: 전 지역 고유 종목 + 전일 대비 시총 증감 ──
     # 국가 이름은 카탈로그(country.<국기 코드>) — 국기 이모지(지역 표시 문자 2개)에서 코드를 만든다
@@ -1137,10 +1152,7 @@ def build_pioneers():
         print("[skip] pioneers-template.html 없음"); return
     template = template_path.read_text(encoding="utf-8")
     data_path = DATA_DIR / "pioneers.json"
-    if data_path.exists():
-        pioneers = json.loads(data_path.read_text(encoding="utf-8"))
-    else:
-        pioneers = {"updated": "", "people": []}  # 첫 full 수집 전 — 빈 상태 렌더
+    pioneers = load_data("pioneers.json", {"updated": "", "people": []})  # 첫 full 수집 전 — 빈 상태 렌더
     pioneers = pioneers_view(pioneers)
     meta = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
     fetched_label = meta.get("fetched_date", "—").replace("-", ".")
@@ -1311,23 +1323,32 @@ def thesis_one_line(md):
     return (m2.group(1) if m2 else body[:160].rstrip() + "…")
 
 
+def thesis_node(t):
+    """논제 원장 → 번역 단위 {"one", "body"} — 화면과 번역 엔진이 같은 칸을 본다."""
+    if t.get("placeholder"):
+        return {"one": "", "body": ""}
+    return {"one": thesis_one_line(t["body"]), "body": t["body"]}
+
+
 def companion_data():
     """동행 관측 주입 데이터 — 회사(논제 스냅샷) + 발행 에세이 원장."""
     import companion_essays as ce
     src = DATA_DIR / "companion_sources.json"
     cfg = json.loads(src.read_text(encoding="utf-8")) if src.exists() else {"companies": []}
     companies = []
+    import i18n_content as IC
     for c in cfg.get("companies", []):
         t = ce.read_thesis(c["slug"])
+        # 논제 원장(판단층) — 다른 언어는 번역 캐시(관문 통과)가 있을 때만 그 언어로. 원장 파일은 읽기만
+        node = IC.apply_node("thesis", LANG, c["slug"], thesis_node(t), IC.THESIS)
         companies.append({
             "slug": c["slug"], "ko": c.get("ko", c["slug"]), "emoji": c.get("emoji", ""),
             "thesis": {"placeholder": t["placeholder"], "version": t["version"],
                        "updated": t["updated"],
-                       "one": "" if t["placeholder"] else thesis_one_line(t["body"]),
-                       "html": "" if t["placeholder"] else thesis_md_to_html(t["body"])},
+                       "one": node["one"],
+                       "html": "" if t["placeholder"] else thesis_md_to_html(node["body"])},
         })
-    ess = DATA_DIR / "essays.json"
-    doc = json.loads(ess.read_text(encoding="utf-8")) if ess.exists() else {}
+    doc = load_data("essays.json", {})
     # 철회된 에세이는 렌더하지 않는다(원장에는 남는다) — 대신 정정 줄을 싣는다
     essays = essays_view([e for e in doc.get("essays", []) if ce.is_public(e)])
     corrections = [c for c in doc.get("corrections", []) if isinstance(c, dict)]

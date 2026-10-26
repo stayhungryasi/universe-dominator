@@ -249,6 +249,21 @@ jobs:
           SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
         continue-on-error: true
 
+      # 🌐 콘텐츠 번역(4개 언어 관측소 단계 3) — build_site 앞에 둔다: 빌드가 data/i18n_cache 를 화면에 끼운다.
+      # 관문(숫자·용어·준법·마크업·링크) 통과분만 캐시에 'ok' 로 쌓이고, 못 넘으면 원문 + '번역 준비 중'.
+      # 회당 상한 I18N_CAP(요청 묶음 수, 기본 40) — 저장소 변수로 덮어쓴다. 실패 판정은 관제탑 judge_i18n 단독.
+      - name: Translate content (i18n)
+        id: i18n
+        if: env.FULL_RUN == 'true'
+        run: python scripts/translate_content.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          I18N_MODEL: ${{ vars.I18N_MODEL }}
+          I18N_MODEL_FACT: ${{ vars.I18N_MODEL_FACT }}
+          I18N_CAP: ${{ vars.I18N_CAP }}
+        timeout-minutes: 25
+        continue-on-error: true
+
       - name: Build all site pages
         run: python scripts/build_site.py
       
@@ -287,7 +302,7 @@ jobs:
           # 소장 DM 전용이고, 변수가 여기 있으면 언젠가 다시 폴백 경로가 생긴다.
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           SENTINEL_STEPS: >-
-            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }},spacex_watch=${{ steps.spacex_watch.outcome }}
+            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }},spacex_watch=${{ steps.spacex_watch.outcome }},i18n=${{ steps.i18n.outcome }}
         continue-on-error: true
 
       # 커밋 직전 관문 — 주입이 빠진 페이지가 하나라도 있으면 여기서 멈춘다.

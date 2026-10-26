@@ -2073,6 +2073,14 @@ console.log(JSON.stringify(cases.map(c => {
         if _a0:
             break
     check("sentinel: 조용한 발행처는 무경보(ok 7회)", _a0, [])
+    # 회귀 핵심(⑧ 번역): 관문 실패율 >30% 1회는 침묵, 2회 연속이면 언어 3행을 합산해 정확히 1건
+    _ist = {}
+    _irow = lambda ts: {"sources": {f"i18n:{_L}": {"kind": "i18n", "source": _L, "attempted": 10,
+                                                   "gate_failed": 5, "api_errors": 0, "ts": ts}
+                                    for _L in ("en", "es", "ja")}}
+    _i1, _ = _ps.judge_i18n(_irow("2026-10-26 10:00"), _ist, "2026-10-26")
+    _i2, _ = _ps.judge_i18n(_irow("2026-10-26 16:00"), _ist, "2026-10-26")
+    check("sentinel: 번역 관문 실패 2회 연속 → 정확히 1건", (len(_i1), len(_i2)), (0, 1))
     _a1, _ = _ps.judge_signals(_led("zero", 0), _names, _st, "2026-01-02", _ps.DEFAULTS)
     check("sentinel: 0건 1회는 침묵", _a1, [])
     _a2, _ = _ps.judge_signals(_led("zero", 0), _names, _st, "2026-01-02", _ps.DEFAULTS)
@@ -2767,7 +2775,7 @@ console.log(JSON.stringify(cases.map(c => {
         check("관제실: 렌더", f"{type(_ce).__name__}: {str(_ce)[:80]}", "ok")
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
                  "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit",
-                 "test_i18n"):
+                 "test_i18n", "test_translate"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)
@@ -2787,6 +2795,16 @@ console.log(JSON.stringify(cases.map(c => {
         except Exception as _e:
             _bad.append(f"{_f.name}: {str(_e)[:60]}")
     check("전 스크립트 컴파일 (문법 전수검사)", _bad, [])
+    # ── 2026-10-26 소스 속 제어 문자 0 — 파이썬이 코드를 써 넣을 때 '\1'·'\b' 가 제어 문자로 풀렸다
+    #    (정규식 치환 r"\1" → \x01 로 링크 글자가 사라짐 · r"\b" → 백스페이스로 단어 경계가 죽음).
+    #    컴파일도 node --check 도 통과하는 무증상 사고라 글자 단위로 센다(프로브 침묵 지뢰의 사촌)
+    _ctrl = []
+    for _f in sorted(list(Path(__file__).parent.glob("*.py")) + list(Path(__file__).parent.glob("*.html"))):
+        _t = _f.read_text(encoding="utf-8", errors="replace")
+        _n = sum(1 for _ch in _t if ord(_ch) < 32 and _ch not in "\n\r\t")
+        if _n:
+            _ctrl.append(f"{_f.name}: {_n}")
+    check("스크립트·템플릿 소스에 제어 문자 0", _ctrl, [])
 
     if FAILS:
         print(f"[자가진단] ❌ 실패 {len(FAILS)}건 — 수집을 중단합니다: {FAILS}",

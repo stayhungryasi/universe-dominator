@@ -561,6 +561,20 @@ class RunWiringTest(unittest.TestCase):
                 rc = ps.run()
         return rc, buf.getvalue(), state, send
 
+    def test_i18n_ledger_reaches_the_verdict(self):
+        """번역 원장 → judge_i18n → 판정 기록까지(배선). 두 회차 연속 실패율 초과면 경보 문구가 판정에 남는다."""
+        bad1 = i18n_rows("2026-10-26 10:00", en=(10, 9, 0))
+        bad2 = i18n_rows("2026-10-26 16:00", en=(10, 9, 0))
+        state = fresh_state()
+        for lg in (bad1, bad2):
+            reads = {"fetch_status.json": lg}
+            with mock.patch.object(ps, "read_json", side_effect=lambda p, d=None: reads.get(Path(p).name, d)),                     mock.patch.object(ps, "source_names", return_value=[]),                     mock.patch.object(ps, "load_state", return_value=state),                     mock.patch.object(ps, "save_state"),                     mock.patch.object(ps, "row_is_fresh", return_value=True),                     mock.patch.object(ps, "judge_buffett", return_value=([], None)),                     mock.patch.object(ps, "judge_snapshot", return_value=[]),                     mock.patch.object(ps, "judge_staleness", return_value=([], [])),                     mock.patch.object(ps, "judge_bots", return_value=([], [])),                     mock.patch.object(ps, "judge_materials", return_value=[]),                     mock.patch.object(ps, "send_telegram"):
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                    ps.run()
+        self.assertIn("번역 실패 9/10", buf.getvalue())
+        self.assertTrue(any("번역: 관문 실패율" in a for a in state["last_verdict"]["alerts"]))
+
     def test_ledger_reaches_the_signal_judge(self):
         """원장의 outcome 이 판정부까지 실제로 흘러가는지 — 로그에 근거가 찍힌다."""
         rc, log, state, send = self._run(ledger({"Google DeepMind": ("ok", 5)}))
@@ -664,6 +678,80 @@ class CoverageWiringTest(unittest.TestCase):
         state["coverage"] = {"roe_us": [17, 21], "at": "2026-08-20"}
         _, _, send = self._run(cov_doc(16), state)
         self.assertEqual(send.call_count, 0)
+
+
+def i18n_rows(ts, **langs):
+    """번역 원장 픽스처 — {언어: (시도, 관문 실패, API 실패)}."""
+    return {"sources": {f"i18n:{L}": {"kind": "i18n", "source": L, "outcome": "gate_fail" if g else "ok",
+                                      "items": a - g - e, "attempted": a, "gate_failed": g, "api_errors": e,
+                                      "reasons": {"숫자": g} if g else {}, "ts": ts}
+                        for L, (a, g, e) in langs.items()}}
+
+
+class I18nJudgeTest(unittest.TestCase):
+    """⑧ 번역 관문 — 실패율 >30% 2회 연속이면 정확히 1건(언어 합산), 7일 재알림, 회복 1회."""
+
+    def run_seq(self, seq):
+        st, outs = fresh_state(), []
+        for day, ts, rows in seq:
+            out, _ = ps.judge_i18n(rows, st, day)
+            outs.append([a["text"] for a in out])
+        return outs, st
+
+    def test_one_bad_run_is_silent_two_ring_exactly_once(self):
+        bad = dict(en=(10, 4, 0), es=(10, 5, 0), ja=(10, 4, 0))
+        outs, _ = self.run_seq([("2026-10-26", "2026-10-26 10:00", i18n_rows("2026-10-26 10:00", **bad)),
+                                ("2026-10-26", "2026-10-26 16:00", i18n_rows("2026-10-26 16:00", **bad)),
+                                ("2026-10-26", "2026-10-26 22:00", i18n_rows("2026-10-26 22:00", **bad))])
+        self.assertEqual(outs[0], [])
+        self.assertEqual(len(outs[1]), 1)            # 언어 3행이어도 1건
+        self.assertIn("관문 실패율 43%", outs[1][0])
+        self.assertEqual(outs[2], [])                # 같은 장애 — 7일 안에는 다시 울지 않는다
+
+    def test_realert_after_7_days_and_recover_once(self):
+        bad = dict(en=(10, 9, 0))
+        good = dict(en=(10, 0, 0))
+        seq = [("2026-10-20", "2026-10-20 10:00", i18n_rows("2026-10-20 10:00", **bad)),
+               ("2026-10-20", "2026-10-20 16:00", i18n_rows("2026-10-20 16:00", **bad)),
+               ("2026-10-27", "2026-10-27 10:00", i18n_rows("2026-10-27 10:00", **bad)),
+               ("2026-10-27", "2026-10-27 16:00", i18n_rows("2026-10-27 16:00", **good)),
+               ("2026-10-27", "2026-10-27 22:00", i18n_rows("2026-10-27 22:00", **good))]
+        outs, _ = self.run_seq(seq)
+        self.assertEqual(len(outs[1]), 1)
+        self.assertIn("미해결, 첫 경보 후 7일", outs[2][0])
+        self.assertEqual(len(outs[3]), 1)
+        self.assertIn("회복", outs[3][0])
+        self.assertEqual(outs[4], [])
+
+    def test_api_failures_count_and_idle_runs_do_not_break_streak(self):
+        api = dict(en=(5, 0, 5))
+        idle = dict(en=(0, 0, 0))
+        outs, _ = self.run_seq([("2026-10-26", "a", i18n_rows("2026-10-26 10:00", **api)),
+                                ("2026-10-26", "b", i18n_rows("2026-10-26 13:00", **idle)),
+                                ("2026-10-26", "c", i18n_rows("2026-10-26 16:00", **api))])
+        self.assertEqual([len(o) for o in outs], [0, 0, 1])
+
+    def test_same_ledger_row_is_not_counted_twice(self):
+        bad = i18n_rows("2026-10-26 10:00", en=(10, 9, 0))
+        outs, _ = self.run_seq([("2026-10-26", "x", bad), ("2026-10-26", "x", bad)])
+        self.assertEqual(outs, [[], []])
+
+    def test_engine_crash_counts_as_failed_run(self):
+        """엔진이 원장을 쓰기 전에 죽은 회차 — 지난 행이 '반복'으로 침묵하지 않고 실패 1회로 센다."""
+        st = fresh_state()
+        ok = i18n_rows("2026-10-26 10:00", en=(10, 0, 0))
+        a0, _ = ps.judge_i18n(ok, st, "2026-10-26")
+        a1, _ = ps.judge_i18n(ok, st, "2026-10-26", step="failure")
+        a2, _ = ps.judge_i18n(ok, st, "2026-10-26", step="failure")
+        self.assertEqual((len(a0), len(a1), len(a2)), (0, 0, 1))
+
+    def test_feeds_judge_ignores_i18n_rows(self):
+        st = fresh_state()
+        rows = i18n_rows("2026-08-21 10:00", en=(10, 9, 0))
+        rows["sources"]["i18n:en"]["outcome"] = "http_error"
+        out, seen = ps.judge_feeds(rows, st, TODAY, {})
+        out2, _ = ps.judge_feeds(rows, st, TODAY, {})
+        self.assertEqual((out, out2, st.get("feeds")), ([], [], {}))
 
 
 class ResilienceTest(unittest.TestCase):

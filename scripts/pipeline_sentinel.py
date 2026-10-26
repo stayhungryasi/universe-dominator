@@ -488,6 +488,8 @@ def judge_feeds(status, state, today, cfg):
             seen["stale"] += 1            # 카운터를 건드리지 않는다 — 같은 사실을 다시 세지 않게
             continue
         kind = s.get("kind", "")
+        if kind == "i18n":
+            continue                      # 번역 행은 judge_i18n 단독 관할(한 사건에 두 곳이 울지 않게)
         label = s.get("source", key)
         outcome = s.get("outcome", "")
         rec = recs.setdefault(key, {"err_streak": 0, "zero_streak": 0,
@@ -537,8 +539,65 @@ def judge_feeds(status, state, today, cfg):
                                  today, kind="recover"))
 
     # 원장에서 사라진 소스의 기록은 정리한다 (설정에서 뺀 소스가 유령으로 남지 않게)
-    for gone in [k for k in recs if k not in srcs]:
+    for gone in [k for k in recs if k not in srcs or (srcs.get(k) or {}).get("kind") == "i18n"]:
         recs.pop(gone, None)
+    return out, seen
+
+
+I18N_FAIL_RATE = 0.30     # 번역 관문 실패율 경보선(언어 합산)
+I18N_STREAK = 2           # 연속 회차
+
+
+def judge_i18n(status, state, today, step=None):
+    """⑧ 콘텐츠 번역(단계 3) — 관문 실패율이 30% 를 넘는 회차가 **2회 연속**이면 소장 DM 1건.
+
+    이 수치가 높으면 무엇이 잘못된 것인가(규칙 ①): 번역 모델·프롬프트·관문 중 하나가 어긋나
+    번역이 화면에 **못 나가고 있다**(다른 언어 화면이 원문 표식으로 남는다). 활동 지표가 아니라
+    품질 장애 지표다. 언어별 3행을 **합산해 한 건**으로 운다(정확히 1건 — 언어마다 울지 않게).
+    API 실패(키·요금·장애)도 '못 나감'이므로 실패로 센다. 시도 0(대기 없음)인 회차는 판정하지 않는다
+    — 연속을 끊지도 잇지도 않는다(조용한 날은 정상도 장애도 아니다).
+    미해결이면 7일마다 재알림(escalate), 회복 시 1회.
+    step: 워크플로 스텝 결과(SENTINEL_STEPS 의 i18n). 엔진이 원장을 쓰기 전에 죽으면 원장은 지난 행
+    그대로라 '반복'으로 침묵하게 된다(침묵하는 감시자) — 그 회차는 **전부 실패 1회**로 센다.
+    봇 실행 감시(judge_bots)에는 넣지 않는다: 같은 사건에 두 곳이 울지 않게 여기 단독 관할.
+    """
+    srcs = (status or {}).get("sources") or {}
+    rows = [r for r in srcs.values() if isinstance(r, dict) and r.get("kind") == "i18n" and row_is_fresh(r, today)]
+    rec = state.setdefault("i18n", {"streak": 0, "alerted": False})
+    tried = sum(int(r.get("attempted") or 0) for r in rows)
+    failed = sum(int(r.get("gate_failed") or 0) + int(r.get("api_errors") or 0) for r in rows)
+    seen = {"tried": tried, "failed": failed}
+    # 같은 행을 두 번 세지 않는다 — 번역 스텝이 원장을 못 쓰고 죽은 회차에 지난 행이 또 '연속'이 되지 않게
+    stamp = max((str(r.get("ts") or "") for r in rows), default="")
+    if (not rows or (stamp and stamp == rec.get("last_ts"))) and step == "failure":
+        tried, failed = 1, 1                # 엔진이 원장을 못 쓰고 죽었다 — 못 나간 회차
+        seen = {"tried": 1, "failed": 1, "crash": True}
+    elif stamp and stamp == rec.get("last_ts"):
+        seen["repeat"] = True
+        return [], seen
+    rec["last_ts"] = stamp or rec.get("last_ts")
+    if not tried:
+        return [], seen
+    rate = failed / tried
+    seen["rate"] = round(rate, 3)
+    out = []
+    if rate > I18N_FAIL_RATE:
+        rec["streak"] = int(rec.get("streak", 0)) + 1
+        if rec["streak"] >= I18N_STREAK:
+            tail = escalate(rec, "alerted", today)
+            if tail is not None:
+                top = {}
+                for r in rows:
+                    for k, v in (r.get("reasons") or {}).items():
+                        top[k] = top.get(k, 0) + int(v or 0)
+                why = ", ".join(f"{k} {v}" for k, v in sorted(top.items(), key=lambda kv: -kv[1])[:3])
+                out.append(alert("i18n-gate", f"번역: 관문 실패율 {rate:.0%}({failed}/{tried}) "
+                                              f"{rec['streak']}회 연속" + (f" — {why}" if why else "") + tail, today))
+    else:
+        rec["streak"] = 0
+        if clear(rec, "alerted"):
+            out.append(alert("i18n-recover", f"번역: 관문 통과율 회복 — 실패 {failed}/{tried} ✅", today,
+                             kind="recover"))
     return out, seen
 
 
@@ -750,13 +809,14 @@ def run():
     comp_state = read_json(DATA_DIR / "companion_state.json", {}) or {}
     mat_alerts = judge_materials(state, comp_state, today, cfg)
     feed_alerts, feed_seen = judge_feeds(feed_status, state, today, cfg)
+    i18n_alerts, i18n_seen = judge_i18n(feed_status, state, today, steps.get("i18n"))
     probe_alerts = judge_probe(read_json(HERE / "agent-research" / "state" / "spacex_state.json", {}),
                                read_json(DATA_DIR / "spacex_watch.json", {}), state, today)
 
     wd_alerts = judge_withdrawals(read_json(DATA_DIR / "essays.json", {}), today)
 
     alerts = (sig_alerts + buf_alerts + cov_alerts + snap_alerts + stale_alerts
-              + bot_alerts + mat_alerts + feed_alerts + probe_alerts + wd_alerts)
+              + bot_alerts + mat_alerts + feed_alerts + i18n_alerts + probe_alerts + wd_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(
@@ -775,8 +835,9 @@ def run():
     feed_part = (f" | 피드 ok {feed_seen['ok']}·0건 {feed_seen['zero']}·실패 {feed_seen['error']}"
                  + (f"·낡은 행 {feed_seen['stale']}(판정 제외)" if feed_seen.get("stale") else "")
                  if any(feed_seen.values()) else "")
+    i18n_part = (f" | 번역 실패 {i18n_seen['failed']}/{i18n_seen['tried']}" if i18n_seen.get("tried") else "")
     print(f"[정비] 판정 {today} {now.strftime('%H:%M')} — "
-          f"신호 {sig_part}{buf_part}{step_part}{comp_part}{feed_part}")
+          f"신호 {sig_part}{buf_part}{step_part}{comp_part}{feed_part}{i18n_part}")
     for n in sig_notes + stale_notes + bot_notes:
         print(f"[정비] 참고: {n}", file=sys.stderr)
 
