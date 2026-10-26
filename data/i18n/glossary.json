@@ -1,0 +1,39 @@
+{
+  "_status": "초안 — 대표님 확정 전 (2026-10-26 단계 0). 확정되면 _status 를 '확정 YYYY-MM-DD' 로 바꾼다.",
+  "_rule": "번역 프롬프트에 항상 주입한다. 산출물(en/es/ja)에서 ko 용어가 나오는 자리에 해당 언어 대응어가 아닌 다른 말을 쓰면 관문이 위반으로 본다. brand 는 전 언어 동일.",
+  "brand": {"ko": "UNIVERTRIX", "en": "UNIVERTRIX", "es": "UNIVERTRIX", "ja": "UNIVERTRIX"},
+  "terms": [
+    {"id": "sovereigns",   "ko": "우주지배자",       "en": "Sovereigns",               "es": "Soberanos",                 "ja": "宇宙の覇者"},
+    {"id": "contenders",   "ko": "잠재지배자",       "en": "Contenders",               "es": "Aspirantes",                "ja": "次代の覇者候補"},
+    {"id": "throne",       "ko": "왕좌",             "en": "Throne",                   "es": "Trono",                     "ja": "王座"},
+    {"id": "sun",          "ko": "태양",             "en": "Sun",                      "es": "Sol",                       "ja": "太陽"},
+    {"id": "megatrends",   "ko": "메가트렌드",       "en": "Megatrends",               "es": "Megatendencias",            "ja": "メガトレンド"},
+    {"id": "research",     "ko": "리서치",           "en": "Research",                 "es": "Investigación",             "ja": "リサーチ"},
+    {"id": "observatory",  "ko": "데이터 천문대",    "en": "Data Observatory",         "es": "Observatorio de Datos",     "ja": "データ天文台"},
+    {"id": "mission",      "ko": "관제센터",         "en": "Mission Control",          "es": "Control de Misión",         "ja": "管制センター"},
+    {"id": "fieldnotes",   "ko": "관측노트",         "en": "Field Notes",              "es": "Notas de Campo",            "ja": "観測ノート"},
+    {"id": "pioneers",     "ko": "개척자",           "en": "Pioneers",                 "es": "Pioneros",                  "ja": "開拓者"},
+    {"id": "solar",        "ko": "오늘의 태양계",    "en": "Today's Solar System",     "es": "Sistema Solar de Hoy",      "ja": "今日の太陽系"},
+    {"id": "map",          "ko": "우주 지도",        "en": "Universe Map",             "es": "Mapa del Universo",         "ja": "宇宙マップ"},
+    {"id": "logbook",      "ko": "관측일지",         "en": "Logbook",                  "es": "Bitácora",                  "ja": "観測日誌"},
+    {"id": "parallax",     "ko": "시차 관측",        "en": "Parallax",                 "es": "Paralaje",                  "ja": "視差観測"},
+    {"id": "legend",       "ko": "레전드벤치마크",   "en": "Legend Benchmark",         "es": "Benchmark de Leyendas",     "ja": "レジェンド・ベンチマーク"},
+    {"id": "probe",        "ko": "무인 탐사선",      "en": "Unmanned Probe",           "es": "Sonda No Tripulada",        "ja": "無人探査機"},
+    {"id": "signals",      "ko": "신호 관측소",      "en": "Signal Observatory",       "es": "Observatorio de Señales",   "ja": "シグナル観測所"},
+    {"id": "buffettzone",  "ko": "버핏존",           "en": "Buffett Zone",             "es": "Zona Buffett",              "ja": "バフェット・ゾーン"},
+    {"id": "zone_pass",    "ko": "통과",             "en": "Pass",                     "es": "Aprobado",                  "ja": "合格"},
+    {"id": "zone_prove",   "ko": "성장 입증 필요",   "en": "Needs Proof of Growth",    "es": "Requiere prueba de crecimiento", "ja": "成長の証明が必要"},
+    {"id": "zone_bond",    "ko": "국채 열위",        "en": "Bond-Inferior",            "es": "Inferior al bono",          "ja": "国債劣後"},
+    {"id": "zone_untested","ko": "미검정",           "en": "Untested",                 "es": "Sin evaluar",               "ja": "未検定"},
+    {"id": "dissect",      "ko": "필독 해부실",      "en": "Must-Read Dissection Lab", "es": "Sala de Disección",         "ja": "必読解剖室"},
+    {"id": "companion",    "ko": "동행 관측",        "en": "Companion Watch",          "es": "Observación Compañera",     "ja": "同行観測"},
+    {"id": "fair_band",    "ko": "가정 가치 밴드",   "en": "assumed value band",       "es": "banda de valor supuesto",   "ja": "仮定価値バンド"},
+    {"id": "owner_earn",   "ko": "오너어닝",         "en": "owner earnings",           "es": "beneficios del propietario","ja": "オーナー・アーニングス"},
+    {"id": "coupon10y",    "ko": "10년 원가쿠폰",    "en": "10-year cost coupon",      "es": "cupón de coste a 10 años",  "ja": "10年後の原価クーポン"}
+  ],
+  "_draft_notes": {
+    "zone_es_ja": "통과·성장 입증 필요·국채 열위·미검정의 es/ja 대응어는 제안안",
+    "logo_subtitle": "붓글씨 '우주지배자' 자리에 en 'Universe Sovereigns' · es 'Soberanos del Universo' · ja '宇宙の覇者' (Pretendard 경량 + 오로라 광 스윕) — 제안안",
+    "dissect_companion": "필독 해부실·동행 관측은 지시 초안에 없던 용어 — 제안안"
+  }
+}
