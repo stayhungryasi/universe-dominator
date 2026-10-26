@@ -56,7 +56,7 @@ function KOT(){ return '<sup class="uvx-ko" title="' + esc(P) + '" aria-hidden="
 function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + h + '<\/span>' + KOT() : h; }
 /* 이미 HTML 인 짧은 콘텐츠(변동 이력 한 줄 등) — 표식 밖에 한글이 남았을 때만 감싼다(이미 표식된 조각은 빼고 잰다) */
 function TXI(html){ var s = String(html == null ? '' : html);
-  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<\/span>/g, '').replace(/<[^>]*>/g, ''))) return s;
+  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<[/]span>/g, '').replace(/<[^>]*>/g, ''))) return s;
   return '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + s + '<\/span>' + KOT(); }
 /* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
 function TXB(html, tag){ tag = tag || 'div';
@@ -2395,7 +2395,7 @@ const DATA = {
             "[米国] <strong>Mastercard</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、4,770億ドル</span>)",
             "[米国] <strong>Lam Research</strong> TOP 20から脱落",
             "[韓国] <strong>LS ELECTRIC Co., Ltd.</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、220億ドル</span>)",
-            "[韓国] <strong>HD현대일렉트릭</strong> TOP 20から脱落",
+            "[韓国] <strong>HD現代エレクトリック</strong> TOP 20から脱落",
             "[日本] <strong>Mitsubishi Heavy Industries</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、790億ドル</span>)",
             "[日本] <strong>Chugai Pharmaceutical</strong> TOP 20から脱落",
             "[中国] <strong>BYD</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、1,190億ドル</span>)",
@@ -2525,7 +2525,7 @@ const DATA = {
             "[米国] <strong>Lam Research</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、4,740億ドル</span>)",
             "[米国] <strong>Oracle</strong> TOP 20から脱落",
             "[韓国] <strong>LGエレクトロニクス</strong> TOP 20に新規ランクイン(<span class='em-up'>19位、230億ドル</span>)",
-            "[韓国] <strong>한화오션</strong> TOP 20から脱落",
+            "[韓国] <strong>ハンファオーシャン</strong> TOP 20から脱落",
             "[日本] <strong>Chugai Pharmaceutical</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、760億ドル</span>)",
             "[日本] <strong>Mitsubishi Heavy Industries</strong> TOP 20から脱落",
             "[欧州] <strong>Airbus</strong> TOP 20に新規ランクイン(<span class='em-up'>20位、1,720億ドル</span>)",

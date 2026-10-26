@@ -56,7 +56,7 @@ function KOT(){ return '<sup class="uvx-ko" title="' + esc(P) + '" aria-hidden="
 function TX(s){ var h = esc(s); return (!ko && HAN.test(String(s || ''))) ? '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + h + '<\/span>' + KOT() : h; }
 /* 이미 HTML 인 짧은 콘텐츠(변동 이력 한 줄 등) — 표식 밖에 한글이 남았을 때만 감싼다(이미 표식된 조각은 빼고 잰다) */
 function TXI(html){ var s = String(html == null ? '' : html);
-  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<\/span>/g, '').replace(/<[^>]*>/g, ''))) return s;
+  if (ko || !HAN.test(s.replace(/<span lang="ko"[^>]*>[^<]*<[/]span>/g, '').replace(/<[^>]*>/g, ''))) return s;
   return '<span lang="ko" data-uvx-pending="1" title="' + esc(P) + '">' + s + '<\/span>' + KOT(); }
 /* 이미 HTML 인 콘텐츠 덩어리(칼럼 본문 등) — 원문이면 블록 표식 + '번역 준비 중' 한 줄 */
 function TXB(html, tag){ tag = tag || 'div';
@@ -2394,7 +2394,7 @@ const DATA = {
             "[United States] <strong>Mastercard</strong> enters the TOP 20 (<span class='em-up'>#20, $477B</span>)",
             "[United States] <strong>Lam Research</strong> leaves the TOP 20",
             "[Korea] <strong>LS ELECTRIC Co., Ltd.</strong> enters the TOP 20 (<span class='em-up'>#20, $22B</span>)",
-            "[Korea] <strong>HD현대일렉트릭</strong> leaves the TOP 20",
+            "[Korea] <strong>HD Hyundai Electric</strong> leaves the TOP 20",
             "[Japan] <strong>Mitsubishi Heavy Industries</strong> enters the TOP 20 (<span class='em-up'>#20, $79B</span>)",
             "[Japan] <strong>Chugai Pharmaceutical</strong> leaves the TOP 20",
             "[China] <strong>BYD</strong> enters the TOP 20 (<span class='em-up'>#19, $119B</span>)",
@@ -2524,7 +2524,7 @@ const DATA = {
             "[United States] <strong>Lam Research</strong> enters the TOP 20 (<span class='em-up'>#20, $474B</span>)",
             "[United States] <strong>Oracle</strong> leaves the TOP 20",
             "[Korea] <strong>LG Electronics</strong> enters the TOP 20 (<span class='em-up'>#19, $23B</span>)",
-            "[Korea] <strong>한화오션</strong> leaves the TOP 20",
+            "[Korea] <strong>Hanwha Ocean</strong> leaves the TOP 20",
             "[Japan] <strong>Chugai Pharmaceutical</strong> enters the TOP 20 (<span class='em-up'>#20, $76B</span>)",
             "[Japan] <strong>Mitsubishi Heavy Industries</strong> leaves the TOP 20",
             "[Europe] <strong>Airbus</strong> enters the TOP 20 (<span class='em-up'>#20, $172B</span>)",
