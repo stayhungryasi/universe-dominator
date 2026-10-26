@@ -1989,6 +1989,15 @@ function renderLegend(){
   parts.push('<span class="r-k">' + T('lg.hurdle') + '</span> <span class="r-bar">' +
     (bar == null ? '—' : UVX.dec(bar.toFixed(1)) + '%') + '</span>');
   html += '<div class="lg-rates">' + parts.join('<span class="r-sep">·</span>') + '</div>';
+  // 관측 위치 금리 렌즈(단계 4) — ko 한국 10년물 · ja 일본 10년물. 배선됐으면 참고값으로, 아니면 미배선을 밝힌다.
+  // 존 판정 자체는 모든 언어가 같은 기준(UST10)이다 — 렌즈는 보는 위치만 바꾸고 판정을 바꾸지 않는다.
+  const lensKey = ({ko: 'KTB10', ja: 'JGB10'})[UVX.lang];
+  if (lensKey) {
+    const lv = rates[lensKey];
+    html += '<div class="px-asof lg-lens">' + (lv != null
+      ? T('lg.lens.wired', {local: esc(lgRateName(lensKey)), v: UVX.dec(Number(lv).toFixed(2)) + '%', base: esc(lgRateName('UST10'))})
+      : T('lg.lens.unwired', {local: esc(lgRateName(lensKey)), base: esc(lgRateName('UST10'))})) + '</div>';
+  }
 
   // 판단층 기준일 = 사람 값·자동 값 중 최신 갱신일. 둘을 함께 적는다 — 자동이 매일
   // 갱신돼도 사람 취재가 오래됐으면 그 사실 역시 보여야 한다(자동에 사람 권위를 씌우지 않는다).

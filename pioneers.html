@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "pn.empty": "첫 관측 데이터를 기다리는 중입니다 — 다음 전체 수집 후 표시됩니다.", "pn.none3w": "최근 3주 내 포착된 신호가 없습니다.", "pn.updated": "마지막 관측: {d}"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "pn.empty": "첫 관측 데이터를 기다리는 중입니다 — 다음 전체 수집 후 표시됩니다.", "pn.none3w": "최근 3주 내 포착된 신호가 없습니다.", "pn.updated": "마지막 관측: {d}"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -420,6 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <meta property="og:url" content="https://univertrix.com/pioneers">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}

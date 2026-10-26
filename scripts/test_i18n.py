@@ -17,6 +17,7 @@ import shutil
 import subprocess
 import sys
 import unittest
+from unittest import mock
 from datetime import date
 from pathlib import Path
 
@@ -339,6 +340,41 @@ class OutputTest(unittest.TestCase):
             self.assertIsNotNone(m, (L, p))
             nulls = sorted(k for k, v in json.loads(m.group(1)).items() if v is None)
             self.assertEqual(nulls, [], (L, p))
+
+
+class LensTest(unittest.TestCase):
+    """단계 4 관측 위치 렌즈 — 상태(지역 목록·환율 원장)에서 만든다. 숫자는 바꾸지 않는다."""
+
+    def test_brightest_star_per_currency(self):
+        import build_site as bs
+        data = {"meta": {"macro": {"usd_krw": {"value": 1300.0, "as_of": "2026-10-23", "source": "frankfurter"}}},
+                "regions": {"earth": {"stocks": [{"ticker": "NVDA", "mc": 5000}, {"ticker": "005930.KS", "mc": 1000}]},
+                            "us": {"stocks": [{"ticker": "NVDA", "name": "NVIDIA", "mc": 5000}]},
+                            "korea": {"stocks": [{"ticker": "000660.KS", "name": "SK", "mc": 600},
+                                                 {"ticker": "005930.KS", "name": "Samsung", "mc": 1000}]},
+                            "europe": {"stocks": [{"ticker": "ASML", "name": "ASML", "mc": 600}]}}}
+        fx = {"date": "2026-10-23", "rates": {"EUR": 0.9, "MXN": 18.7}, "source": "ECB (frankfurter)"}
+        with mock.patch.object(bs, "fx_lens_doc", return_value=fx):
+            v = bs.lens_view(data)
+        self.assertEqual((v["star"]["KRW"]["name"], v["star"]["KRW"]["grank"]), ("Samsung", 2), "권역 최대 · 글로벌 순위")
+        self.assertEqual((v["star"]["EUR"]["name"], v["star"]["EUR"]["grank"]), ("ASML", None), "TOP 20 밖은 None")
+        self.assertEqual(v["star"]["MXN"], {"region": None}, "관측 권역 없는 통화")
+        self.assertIsNone(v["star"]["JPY"].get("name"), "데이터에 없는 권역")
+        self.assertEqual((v["asof"]["KRW"], v["asof"]["EUR"], v["src"]["KRW"]), ("2026-10-23", "2026-10-23", "ECB (frankfurter)"))
+
+    def test_runtime_rates_merge(self):
+        import build_site as bs
+        fx = {"date": "2026-10-23", "rates": {"EUR": 0.9, "MXN": 18.7, "KRW": 1999.0, "JPY": 150.0}}
+        meta = {"macro": {"usd_krw": {"value": 1300.0}}}
+        with mock.patch.object(bs, "fx_lens_doc", return_value=fx), mock.patch.object(bs, "_header_meta", return_value=meta):
+            r = bs.rates_for_runtime()
+        self.assertEqual(r, {"USD": 1, "KRW": 1300.0, "JPY": 150.0, "EUR": 0.9, "MXN": 18.7}, "헤더 지표 1순위 · 없으면 ECB")
+
+    def test_fx_parse(self):
+        import fetch_fx_lens as fx
+        self.assertEqual(fx.parse('{"date":"2026-10-23","rates":{"EUR":0.89,"MXN":18.7,"XXX":1,"JPY":-1}}'),
+                         {"date": "2026-10-23", "rates": {"EUR": 0.89, "MXN": 18.7}})
+        self.assertIsNone(fx.parse("<html>301</html>"))
 
 
 class MutationTest(unittest.TestCase):

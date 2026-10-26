@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ja", M = {"common.presence": "いま{n}人が宇宙を観測中", "latent.mc": "時価総額", "latent.rank": "{n}位", "latent.ret1y": "1年リターン", "latent.st.miss": "データ欠測 {a}/{b}", "latent.st.new": "編入{n}日目", "latent.st.out": "除外カウント {a}/{b}", "latent.star": "次の宇宙の覇者"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "翻訳準備中 — 韓国語の原文", U = {};
+var L = "ja", M = {"common.presence": "いま{n}人が宇宙を観測中", "latent.mc": "時価総額", "latent.rank": "{n}位", "latent.ret1y": "1年リターン", "latent.st.miss": "データ欠測 {a}/{b}", "latent.st.new": "編入{n}日目", "latent.st.out": "除外カウント {a}/{b}", "latent.star": "次の宇宙の覇者"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "翻訳準備中 — 韓国語の原文", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -504,6 +504,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -579,6 +580,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
   </div>
   <p class="footer-source">Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a></p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">サイト紹介</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">利用規約</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">プライバシーポリシー</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">コミュニティ運営方針</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">投資に関する注意・免責</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">お問い合わせ</a></div>
+<div class="uvx-verify">数字検証: 原文と同一 · データ基準 2026-10-26 10:17 KST</div>
 </footer>
 
 <script>

@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "lg.th.stock": "Stock", "mega.cat.rank": "Rank tracker", "mega.cat.themes": "6 megatrends", "mega.cat.throne": "The #1 over time", "mega.cat.top10": "TOP 10 over time", "mega.lg.out": "— outside the TOP 10", "mega.lg.r1": "#1", "mega.lg.r23": "#2–3", "mega.lg.r45": "#4–5 (Bold)", "mega.lg.r610": "#6–10 (Regular)", "mega.matrix.d": "Market caps at a glance. Use the arrows on either side to move through the years.", "mega.matrix.h": "Detailed matrix", "mega.next_year": "Next year", "mega.prev_year": "Previous year", "mega.rank": "Rank", "mega.rank.d": "TOP 10 rank changes for 18 key stocks — 20 years of rise and fall on one screen. Use the arrows on either side to move through the years.", "mega.rank.h": "Rank tracker for key stocks", "mega.runners": "#2–3:", "mega.themes.d": "From ever-larger market caps to the NVIDIA legend — not a simple ranking but a record of hegemony cycles.", "mega.themes.h": "6 megatrends from 20 years", "mega.throne.d": "Who ruled the universe for 20 years — the Throne passed from ExxonMobil and PetroChina to Apple and NVIDIA.", "mega.throne.h": "The #1 company over time", "mega.top10.aria": "Bump chart of TOP 10 rank changes, 2006-2026", "mega.top10.d": "20 years of rank changes in the global market-cap TOP 10. Tap a company name (legend) or a line to highlight just that path.", "mega.top10.h": "The TOP 10 over time (2006–2026)", "mega.top10.hint": "Tap again to clear the highlight · watch NVIDIA's climb"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "lg.th.stock": "Stock", "mega.cat.rank": "Rank tracker", "mega.cat.themes": "6 megatrends", "mega.cat.throne": "The #1 over time", "mega.cat.top10": "TOP 10 over time", "mega.lg.out": "— outside the TOP 10", "mega.lg.r1": "#1", "mega.lg.r23": "#2–3", "mega.lg.r45": "#4–5 (Bold)", "mega.lg.r610": "#6–10 (Regular)", "mega.matrix.d": "Market caps at a glance. Use the arrows on either side to move through the years.", "mega.matrix.h": "Detailed matrix", "mega.next_year": "Next year", "mega.prev_year": "Previous year", "mega.rank": "Rank", "mega.rank.d": "TOP 10 rank changes for 18 key stocks — 20 years of rise and fall on one screen. Use the arrows on either side to move through the years.", "mega.rank.h": "Rank tracker for key stocks", "mega.runners": "#2–3:", "mega.themes.d": "From ever-larger market caps to the NVIDIA legend — not a simple ranking but a record of hegemony cycles.", "mega.themes.h": "6 megatrends from 20 years", "mega.throne.d": "Who ruled the universe for 20 years — the Throne passed from ExxonMobil and PetroChina to Apple and NVIDIA.", "mega.throne.h": "The #1 company over time", "mega.top10.aria": "Bump chart of TOP 10 rank changes, 2006-2026", "mega.top10.d": "20 years of rank changes in the global market-cap TOP 10. Tap a company name (legend) or a line to highlight just that path.", "mega.top10.h": "The TOP 10 over time (2006–2026)", "mega.top10.hint": "Tap again to clear the highlight · watch NVIDIA's climb"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "Translation in progress — Korean original", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -631,6 +631,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <meta property="og:url" content="https://univertrix.com/en/megatrend">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -703,6 +704,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
   </div>
   <p class="footer-source">2016–2025 PwC Global Top 100 / 2026 companiesmarketcap.com · as of May 24 each year</p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">About</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Terms</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacy</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Community Policy</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Investment Disclaimer</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contact</a></div>
+<div class="uvx-verify">Numbers verified: identical to the source · data as of 2026-10-26 10:17 KST</div>
 </footer>
 
 <script>
@@ -1849,6 +1851,7 @@ const DATA = {
   "meta": {
     "fetched_date": "2026-10-26",
     "usd_krw": 1324.45,
+    "fetched_at": "2026-10-26T10:17:32.914670+09:00",
     "macro": {
       "usd_krw": {
         "value": 1324.45,

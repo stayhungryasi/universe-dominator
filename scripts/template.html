@@ -356,6 +356,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin-bottom: 4px;
 }
 
+/* 관측 위치 렌즈(단계 4) — 같은 우주를 어느 행성에서 보는가. 숫자는 같고 통화·기준 권역만 바뀐다 */
+.uvx-lens { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 4px 0 14px; font-size: 12.5px; color: var(--text-secondary); }
+.uvx-lens-star b { color: var(--text); font-weight: 800; }
+.uvx-ccy { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.uvx-ccy button { font: inherit; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 100px; border: 1px solid var(--line); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; }
+.uvx-ccy button.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+.uvx-lens-asof { font-size: 11px; color: var(--text-muted); }
+
 .section-title {
   font-size: 28px;
   font-weight: 800;
@@ -1126,6 +1134,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <a href="history-top20.html" class="history-btn">{{t:idx.history}} <span class="history-btn-arrow">→</span></a>
   </div>
   <p class="section-desc">{{t:idx.tabs_hint}}</p>
+  <div class="uvx-lens" id="uvxLens"><span class="uvx-lens-star" id="uvxStar"></span><span class="uvx-ccy" id="uvxCcy" role="group" aria-label="{{t:lens.ccy_aria}}"></span><span class="uvx-lens-asof" id="uvxAsof"></span></div>
   <div class="tabs-wrap">
     <div class="tabs-scroll">
       <div class="tabs" id="regionTabs"></div>
@@ -1189,6 +1198,32 @@ function toggleTheme() {
 
 const DATA = {{DATA_JSON}};
 const PREV = {{PREV_JSON}};  // 전일 스냅샷 (build_site 주입)
+const LENS = {{LENS_JSON}};  // 관측 위치 렌즈 — 통화별 가장 밝은 별 · 환율 기준일 (build_site 주입)
+(function(){
+  /* 통화 칩 — 고르면 저장하고 다시 그린다(서버·클라이언트 fetch 없음: 환율은 빌드가 심었다) */
+  var ORDER = ['KRW', 'USD', 'JPY', 'EUR', 'MXN'], R = UVX.rates || {}, cur = UVX.ccy;
+  var box = document.getElementById('uvxCcy');
+  if (box) {
+    box.innerHTML = ORDER.filter(function(c){ return R[c]; }).map(function(c){
+      return '<button type="button" data-ccy="' + c + '" class="' + (c === cur ? 'on' : '') + '" aria-pressed="' + (c === cur) + '">' + c + '</button>';
+    }).join('');
+    box.addEventListener('click', function(e){
+      var b = e.target.closest('[data-ccy]'); if (!b) return;
+      try { localStorage.setItem('uvx-ccy', b.getAttribute('data-ccy')); } catch (x) {}
+      location.reload();
+    });
+  }
+  var st = (LENS.star || {})[cur], el = document.getElementById('uvxStar');
+  if (el) {
+    if (st && st.name) {
+      var amt = UVX.local(st.mc) || UVX.mc(st.mc);
+      el.innerHTML = T('lens.star', {name: '<b>' + TX(st.name) + '</b>', region: UVX.esc(T('region.' + st.region)),
+        grank: UVX.esc(st.grank ? T('lens.grank', {n: st.grank}) : T('lens.out20')), mc: UVX.esc(amt)});
+    } else { el.textContent = T('lens.no_region'); }
+  }
+  var a = document.getElementById('uvxAsof'), d = (LENS.asof || {})[cur];
+  if (a) a.textContent = cur === 'USD' ? T('lens.asof_usd') : d ? T('lens.asof', {d: UVX.date(d), s: (LENS.src || {})[cur] || ''}) : '';
+})();
 
 const fmtMC = (mc) => UVX.mc(mc);   // 언어별 표기(i18n.py 와 같은 규칙)
 const USD_KRW = (DATA.meta && DATA.meta.usd_krw) || 1480;

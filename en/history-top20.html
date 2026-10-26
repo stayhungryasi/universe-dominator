@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "hist.empty": "No records yet.", "lg.auto": "Auto"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "hist.empty": "No records yet.", "lg.auto": "Auto"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "Translation in progress — Korean original", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -608,6 +608,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <meta property="og:url" content="https://univertrix.com/en/history-top20">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -677,6 +678,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a> · auto-updated daily at 08:00 KST
   </p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">About</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Terms</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacy</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Community Policy</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Investment Disclaimer</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contact</a></div>
+<div class="uvx-verify">Numbers verified: identical to the source · data as of 2026-10-26 10:17 KST</div>
 </footer>
 
 <script>
@@ -1358,6 +1360,7 @@ const DATA = {
   "meta": {
     "fetched_date": "2026-10-26",
     "usd_krw": 1324.45,
+    "fetched_at": "2026-10-26T10:17:32.914670+09:00",
     "macro": {
       "usd_krw": {
         "value": 1324.45,

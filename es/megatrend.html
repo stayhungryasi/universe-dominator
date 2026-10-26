@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "es", M = {"common.presence": {"one": "{n} persona observa el universo ahora", "other": "{n} personas observan el universo ahora"}, "lg.th.stock": "Valor", "mega.cat.rank": "Seguimiento de puestos", "mega.cat.themes": "6 megatendencias", "mega.cat.throne": "El N.º 1 en el tiempo", "mega.cat.top10": "El TOP 10 en el tiempo", "mega.lg.out": "— fuera del TOP 10", "mega.lg.r1": "N.º 1", "mega.lg.r23": "Puestos 2–3", "mega.lg.r45": "Puestos 4–5 (negrita)", "mega.lg.r610": "Puestos 6–10 (normal)", "mega.matrix.d": "Capitalizaciones de un vistazo. Usa las flechas laterales para pasar de año.", "mega.matrix.h": "Matriz detallada", "mega.next_year": "Año siguiente", "mega.prev_year": "Año anterior", "mega.rank": "Puesto", "mega.rank.d": "Cambios de puesto en el TOP 10 de 18 valores clave: 20 años de auge y caída en una pantalla. Usa las flechas laterales para pasar de año.", "mega.rank.h": "Seguimiento de puestos de valores clave", "mega.runners": "Puestos 2–3:", "mega.themes.d": "Desde las capitalizaciones gigantes hasta la leyenda de NVIDIA: no una simple clasificación, sino un registro de ciclos de hegemonía.", "mega.themes.h": "6 megatendencias de 20 años", "mega.throne.d": "Quién dominó el universo durante 20 años: el Trono pasó de ExxonMobil y PetroChina a Apple y NVIDIA.", "mega.throne.h": "La empresa N.º 1 en el tiempo", "mega.top10.aria": "Gráfico de cambios de puesto del TOP 10, 2006-2026", "mega.top10.d": "20 años de cambios de puesto en el TOP 10 mundial por capitalización. Toca un nombre (leyenda) o una línea para resaltar solo esa trayectoria.", "mega.top10.h": "El TOP 10 en el tiempo (2006–2026)", "mega.top10.hint": "Toca de nuevo para quitar el resaltado · fíjate en la subida de NVIDIA"}, R = {"JPY": 156.8, "KRW": 1324.45, "USD": 1}, P = "Traducción en preparación — original en coreano", U = {};
+var L = "es", M = {"common.presence": {"one": "{n} persona observa el universo ahora", "other": "{n} personas observan el universo ahora"}, "lg.th.stock": "Valor", "mega.cat.rank": "Seguimiento de puestos", "mega.cat.themes": "6 megatendencias", "mega.cat.throne": "El N.º 1 en el tiempo", "mega.cat.top10": "El TOP 10 en el tiempo", "mega.lg.out": "— fuera del TOP 10", "mega.lg.r1": "N.º 1", "mega.lg.r23": "Puestos 2–3", "mega.lg.r45": "Puestos 4–5 (negrita)", "mega.lg.r610": "Puestos 6–10 (normal)", "mega.matrix.d": "Capitalizaciones de un vistazo. Usa las flechas laterales para pasar de año.", "mega.matrix.h": "Matriz detallada", "mega.next_year": "Año siguiente", "mega.prev_year": "Año anterior", "mega.rank": "Puesto", "mega.rank.d": "Cambios de puesto en el TOP 10 de 18 valores clave: 20 años de auge y caída en una pantalla. Usa las flechas laterales para pasar de año.", "mega.rank.h": "Seguimiento de puestos de valores clave", "mega.runners": "Puestos 2–3:", "mega.themes.d": "Desde las capitalizaciones gigantes hasta la leyenda de NVIDIA: no una simple clasificación, sino un registro de ciclos de hegemonía.", "mega.themes.h": "6 megatendencias de 20 años", "mega.throne.d": "Quién dominó el universo durante 20 años: el Trono pasó de ExxonMobil y PetroChina a Apple y NVIDIA.", "mega.throne.h": "La empresa N.º 1 en el tiempo", "mega.top10.aria": "Gráfico de cambios de puesto del TOP 10, 2006-2026", "mega.top10.d": "20 años de cambios de puesto en el TOP 10 mundial por capitalización. Toca un nombre (leyenda) o una línea para resaltar solo esa trayectoria.", "mega.top10.h": "El TOP 10 en el tiempo (2006–2026)", "mega.top10.hint": "Toca de nuevo para quitar el resaltado · fíjate en la subida de NVIDIA"}, R = {"EUR": 0.89342, "JPY": 156.8, "KRW": 1324.45, "MXN": 18.7823, "USD": 1}, P = "Traducción en preparación — original en coreano", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -631,6 +631,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <meta property="og:url" content="https://univertrix.com/es/megatrend">
 <style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -703,6 +704,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
   </div>
   <p class="footer-source">2016–2025 PwC Global Top 100 / 2026 companiesmarketcap.com · a 24 de mayo de cada año</p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">Acerca de</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Términos</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacidad</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Normas de la Comunidad</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Aviso de Inversión</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contacto</a></div>
+<div class="uvx-verify">Cifras verificadas: idénticas al original · datos a 2026-10-26 10:17 KST</div>
 </footer>
 
 <script>
@@ -1849,6 +1851,7 @@ const DATA = {
   "meta": {
     "fetched_date": "2026-10-26",
     "usd_krw": 1324.45,
+    "fetched_at": "2026-10-26T10:17:32.914670+09:00",
     "macro": {
       "usd_krw": {
         "value": 1324.45,

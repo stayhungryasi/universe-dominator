@@ -106,7 +106,7 @@ def _header_meta():
     try:
         m = json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {})
         return {"fetched_date": m.get("fetched_date"), "usd_krw": m.get("usd_krw"),
-                "macro": m.get("macro") or {}}
+                "fetched_at": m.get("fetched_at"), "macro": m.get("macro") or {}}
     except Exception:
         return {}
 
@@ -157,6 +157,7 @@ def build_main():
     html = template
     html = html.replace("{{DATA_JSON}}", data_json)
     html = html.replace("{{PREV_JSON}}", json.dumps(_prev_snapshot_map(data), ensure_ascii=False))
+    html = html.replace("{{LENS_JSON}}", json.dumps(lens_view(data), ensure_ascii=False))
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{TOP1_NAME}}", top1_name)
     html = html.replace("{{TOP1_MC}}", i18n.mc(LANG, top1_mc))
@@ -1953,6 +1954,7 @@ NAV_ACTIVE = {"history-top20.html": "index.html", "history-latent.html": "latent
 
 I18N_CSS = """<style id="uvx-i18n-css">
 /* uvx-i18n — 언어 전환기 · 첫 방문 언어 안내 띠 · 원문(번역 준비 중) 표식. 기존 토큰만 쓴다 */
+.uvx-verify{margin-top:10px;font-size:11px;color:var(--text-muted);letter-spacing:.01em}
 .uvx-lang{position:relative;display:inline-flex;align-items:center;border-left:1px solid var(--line)}
 .uvx-lang>summary{list-style:none;cursor:pointer;padding:5px 11px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--text-secondary);white-space:nowrap}
 .uvx-lang>summary::-webkit-details-marker{display:none}
@@ -2047,15 +2049,71 @@ def relocate(html, lang):
     return _ASSET_REF.sub(lambda m: "../" + m.group(1) + "/", html)
 
 
+def fx_lens_doc():
+    """data/fx_lens.json(full 회차의 fetch_fx_lens) — ECB 기준 EUR·MXN(KRW·JPY 는 폴백)."""
+    p = DATA_DIR / "fx_lens.json"
+    try:
+        doc = json.loads(p.read_text(encoding="utf-8"))
+        return doc if isinstance(doc, dict) else {}
+    except Exception:
+        return {}
+
+
+def _pos(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0
+
+
 def rates_for_runtime():
-    """관측 위치 렌즈 환율 — 빌드 시점에 심는다(클라이언트 fetch 없음). 1 USD 당 현지 통화."""
+    """관측 위치 렌즈 환율 — 빌드 시점에 심는다(클라이언트 fetch 없음). 1 USD 당 현지 통화.
+    KRW·JPY 는 헤더 시장 지표가 1순위(화면이 이미 보여 주는 값과 같게), EUR·MXN 은 ECB(fx_lens)."""
     m = (_header_meta().get("macro") or {})
+    fx = (fx_lens_doc().get("rates") or {})
     r = {"USD": 1}
     for key, ccy in (("usd_krw", "KRW"), ("usd_jpy", "JPY")):
         v = (m.get(key) or {}).get("value")
-        if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
+        if _pos(v):
             r[ccy] = v
+        elif _pos(fx.get(ccy)):
+            r[ccy] = fx[ccy]
+    for ccy in ("EUR", "MXN"):
+        if _pos(fx.get(ccy)):
+            r[ccy] = fx[ccy]
     return r
+
+
+# 관측 위치 통화 → 그 통화의 권역(우주지배자 지역 목록). MXN 은 아직 관측 권역이 없다
+LENS_REGION = {"KRW": "korea", "JPY": "japan", "EUR": "europe", "USD": "us", "MXN": None}
+
+
+def lens_view(data):
+    """'당신의 행성에서 가장 밝은 별' + 환율 기준일 — 상태(지역 목록·환율 원장)에서 만든다.
+    data 는 그 언어로 현지화된 latest. 숫자(시총)는 손대지 않는다 — 화면이 통화로 바꿔 적는다."""
+    regions = data.get("regions") or {}
+    earth = [s.get("ticker") for s in (regions.get("earth") or {}).get("stocks", [])]
+    star = {}
+    for ccy, reg in LENS_REGION.items():
+        st = (regions.get(reg) or {}).get("stocks") if reg else None
+        if st:
+            s = max(st, key=lambda x: x.get("mc") or 0)
+            tk = s.get("ticker")
+            star[ccy] = {"name": s.get("name"), "ticker": tk, "mc": s.get("mc"), "region": reg,
+                         "grank": earth.index(tk) + 1 if tk in earth else None}
+        else:
+            star[ccy] = {"region": None}
+    m = (data.get("meta") or {}).get("macro") or {}
+    fx = fx_lens_doc()
+    asof, src = {}, {}
+    for key, ccy in (("usd_krw", "KRW"), ("usd_jpy", "JPY")):
+        if (m.get(key) or {}).get("as_of"):
+            asof[ccy], src[ccy] = m[key]["as_of"], m[key].get("source") or ""
+        elif fx.get("date"):
+            asof[ccy], src[ccy] = fx["date"], fx.get("source") or ""
+    for ccy in ("EUR", "MXN"):
+        if fx.get("date"):
+            asof[ccy], src[ccy] = fx["date"], fx.get("source") or ""
+    # 헤더 지표와 fx_lens 는 같은 원천(ECB 기준환율, frankfurter 경유) — 화면 이름을 하나로
+    src = {k: ("ECB (frankfurter)" if "frankfurter" in str(v).lower() else v) for k, v in src.items()}
+    return {"star": star, "asof": asof, "src": src}
 
 
 def inject_i18n():
@@ -2068,6 +2126,11 @@ def inject_i18n():
     rates = rates_for_runtime()
     band_langs = {L2: {"go": i18n.t(L2, "common.band_go"), "close": i18n.t(L2, "common.close")}
                   for L2 in i18n.LANGS}
+    # 숫자 검증 꼬리(단계 4, en·es·ja) — 이 화면의 숫자는 원문(ko)과 같은 데이터에서 나온다(G2).
+    # 기준 시각은 데이터 속 시각(fetched_at)으로 — 파일 mtime 이 아니다(CI 지뢰)
+    fa = str((_header_meta() or {}).get("fetched_at") or "")
+    verify = (f'<div class="uvx-verify">{html_mod.escape(i18n.t(LANG, "foot.verify", t=fa[:16].replace("T", " ")))}</div>'
+              if LANG != i18n.DEFAULT and fa else "")
     for name in pages:
         f = OUT_DIR / name
         if not f.exists():
@@ -2090,6 +2153,8 @@ def inject_i18n():
                             + I18N_CSS + "\n</head>", 1)
         html = html.replace("</body>", BAND_JS.replace("__LANGS__", json.dumps(band_langs, ensure_ascii=False))
                             + "\n</body>", 1)
+        if verify and "</footer>" in html:
+            html = html.replace("</footer>", verify + "\n</footer>", 1)
         html = relocate(html, LANG)
         # 런타임은 head 첫머리 — 페이지의 어떤 스크립트보다 먼저. 키는 완성된 페이지에서 센다
         rt = i18n.runtime_js(LANG, i18n.js_keys(html), rates)

@@ -249,6 +249,13 @@ jobs:
           SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
         continue-on-error: true
 
+      # 💱 관측 위치 렌즈 환율(단계 4) — ECB 기준 EUR·MXN(·KRW·JPY 폴백) → data/fx_lens.json.
+      # 빌드가 화면에 심는다(클라이언트 fetch 금지). 실패하면 기존 파일 유지 + 원장(kind=fx) → judge_feeds
+      - name: Fetch FX lens rates (ECB)
+        if: env.FULL_RUN == 'true'
+        run: python scripts/fetch_fx_lens.py
+        continue-on-error: true
+
       # 🌐 콘텐츠 번역(4개 언어 관측소 단계 3) — build_site 앞에 둔다: 빌드가 data/i18n_cache 를 화면에 끼운다.
       # 관문(숫자·용어·준법·마크업·링크) 통과분만 캐시에 'ok' 로 쌓이고, 못 넘으면 원문 + '번역 준비 중'.
       # 회당 상한 I18N_CAP(요청 묶음 수, 기본 40) — 저장소 변수로 덮어쓴다. 실패 판정은 관제탑 judge_i18n 단독.
