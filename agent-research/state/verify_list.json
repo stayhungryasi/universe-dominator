@@ -1,162 +1,124 @@
 {
-  "run_id": "2026-10-23-event",
-  "report_path": "reports/2026-10-23-event.md",
-  "generated_at": "2026-10-23T12:10+09:00",
-  "items": [
-    {
-      "claim": "SpaceX 8-K 최신 제출일(10/23 기준 — $400억 조달 8-K 없음)",
-      "value": "2026-10-20",
-      "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=8-K&dateb=&owner=include&count=10",
-      "source_date": "2026-10-23",
-      "where_in_report": "1절 표 '8-K 제출 여부'"
-    },
-    {
-      "claim": "SpaceX 회사채 가중평균 금리(%)",
-      "value": 5.855,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '10-Q 후속사건' · 부록"
-    },
-    {
-      "claim": "SpaceX 회사채 실효 금리(%)",
-      "value": 6.072,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '10-Q 후속사건' · 부록"
-    },
-    {
-      "claim": "SpaceX 회사채 표면금리 최저~최고(%)",
-      "value": "5.35~6.65",
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '10-Q 후속사건' · 부록"
-    },
-    {
-      "claim": "리볼버 한도($백만) / 9/30 차입",
-      "value": "5000 / 0",
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "부록 '리볼버 한도 / 차입'"
-    },
-    {
-      "claim": "실패한 세일앤리스백 의무 유동/비유동($백만)",
-      "value": "2181 / 10716",
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "부록 '실패한 세일앤리스백 의무'"
-    },
-    {
-      "claim": "특수관계자 부채 잔액($백만, 실패한 세일앤리스백 3건 합계)",
-      "value": 12897,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R26.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '10-Q 후속사건'"
-    },
-    {
-      "claim": "$400억 조달 최하위 트랜치 보도 금리(%)",
-      "value": 8.3,
-      "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '금리(보도)' · 부록"
-    },
-    {
-      "claim": "$400억 조달 칩 담보 트랜치 보도 금리(%)",
-      "value": 7.75,
-      "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '금리(보도)' · 부록"
-    },
-    {
-      "claim": "$400억 조달 총액($십억)",
-      "value": 40,
-      "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '규모·주선'"
-    },
-    {
-      "claim": "Amazon Leo 발사 위성 수(생산분 누계)",
-      "value": 396,
-      "source_url": "https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps",
-      "source_date": "2026-10-12",
-      "where_in_report": "2절 표 '위성' · 부록"
-    },
-    {
-      "claim": "Amazon Leo 생산분 발사 횟수",
-      "value": 14,
-      "source_url": "https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps",
-      "source_date": "2026-10-12",
-      "where_in_report": "2절 표 '위성' · 부록"
-    },
-    {
-      "claim": "Amazon Leo 폐기 위성 수",
-      "value": 4,
-      "source_url": "https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps",
-      "source_date": "2026-10-12",
-      "where_in_report": "2절 표 '위성' · 부록"
-    },
-    {
-      "claim": "Amazon Leo 다음 발사(Vulcan LV-01) 목표일",
-      "value": "2026-10-29",
-      "source_url": "https://en.wikipedia.org/wiki/List_of_Amazon_Leo_launches",
-      "source_date": "2026-10-23",
-      "where_in_report": "2절 표 '다음 발사' · 부록"
-    },
-    {
-      "claim": "Amazon Leo Vulcan LV-01 탑재 위성 수",
-      "value": 40,
-      "source_url": "https://en.wikipedia.org/wiki/List_of_Amazon_Leo_launches",
-      "source_date": "2026-10-23",
-      "where_in_report": "2절 표 '다음 발사' · 부록"
-    },
-    {
-      "claim": "Amazon Leo 마지막 발사일(LA-08, Atlas V)",
-      "value": "2026-07-02",
-      "source_url": "https://en.wikipedia.org/wiki/List_of_Amazon_Leo_launches",
-      "source_date": "2026-10-23",
-      "where_in_report": "2절 표 '위성'"
-    },
-    {
-      "claim": "Amazon Leo 생산 누계(번째 위성 완성)",
-      "value": 1000,
-      "source_url": "https://www.tokenpost.com/news/technology/28368",
-      "source_date": "2026-10-08",
-      "where_in_report": "2절 표 '생산' · 부록"
-    },
-    {
-      "claim": "FCC Amazon Leo 50% 이정표 면제 명령일",
-      "value": "2026-06-05",
-      "source_url": "https://docs.fcc.gov/public/attachments/DA-26-553A1.pdf",
-      "source_date": "2026-06-05",
-      "where_in_report": "2절 표 'FCC 50% 이정표' · 부록"
-    },
-    {
-      "claim": "FCC Amazon Leo 전체 배치(3,232기) 최종 기한",
-      "value": "2029-07-30",
-      "source_url": "https://docs.fcc.gov/public/attachments/DA-26-553A1.pdf",
-      "source_date": "2026-06-05",
-      "where_in_report": "2절 표 'FCC 50% 이정표' · 부록",
-      "note": "검증관 불일치 수정(2026-10-23): 위성 수 3,236 → 3,232. DA 26-553 ¶3 '... reducing the total number of authorized space stations from 3,236 to 3,232 satellites' · '... deploy 3,232 satellites by July 30, 2029' (.txt 사본 DA-26-553A1.txt)"
-    },
-    {
-      "claim": "기준 주가(10/22 종가, $)",
-      "value": 144.75,
-      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-      "source_date": "2026-10-22",
-      "where_in_report": "머리 '기준 주가' · 부록"
-    },
-    {
-      "claim": "10/22 거래량(주)",
-      "value": 196827082,
-      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-      "source_date": "2026-10-22",
-      "where_in_report": "부록 '기준 주가'"
-    },
-    {
-      "claim": "미국 10년물(%)",
-      "value": 5.13,
-      "source_url": "https://fred.stlouisfed.org/series/DGS10",
-      "source_date": "2026-10-21",
-      "where_in_report": "4절 '적정가치' · 부록"
-    }
-  ]
+ "run_id": "2026-10-26-event",
+ "items": [
+  {
+   "claim": "SpaceX 8-K 최신 제출일(2026-10-26 조회) — $400억 조달 8-K 없음",
+   "value": "2026-10-20",
+   "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=8-K&dateb=&owner=include&count=20",
+   "source_date": "2026-10-26",
+   "where_in_report": "1절 표 '8-K 제출 여부' 행 · 부록 1행"
+  },
+  {
+   "claim": "SpaceX 전체 공시 최신 제출일(S-8 · 10-Q)",
+   "value": "2026-10-22",
+   "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=&dateb=&owner=include&count=20",
+   "source_date": "2026-10-26",
+   "where_in_report": "1절 표 '8-K 제출 여부' 행 · 부록 2행"
+  },
+  {
+   "claim": "기준 주가 — 2026-10-23 종가(USD)",
+   "value": 147.49,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-23",
+   "where_in_report": "머리말 '기준 주가' · 4절 적정가치 · 부록 3행"
+  },
+  {
+   "claim": "2026-10-23 거래량(주)",
+   "value": 110617311,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-23",
+   "where_in_report": "부록 3행(1.106억주)"
+  },
+  {
+   "claim": "발행주식수(백만주, 2026-10-15 기준, 10-Q 표지)",
+   "value": 13581,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "4절 시가총액 산식 · 부록 4행"
+  },
+  {
+   "claim": "보도 금리 — 최하위 트랜치(%)",
+   "value": 8.3,
+   "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
+   "source_date": "2026-10-22",
+   "where_in_report": "1절 표 '금리(보도)' 행 · 부록 5행"
+  },
+  {
+   "claim": "보도 금리 — 칩 담보 트랜치(%)",
+   "value": 7.75,
+   "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
+   "source_date": "2026-10-22",
+   "where_in_report": "1절 표 '금리(보도)' 행 · 부록 5행"
+  },
+  {
+   "claim": "보도 트랜치 — 후순위 상한(십억 USD, 범위 25~30 의 상한)",
+   "value": 30,
+   "source_url": "https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497",
+   "source_date": "2026-10-23",
+   "where_in_report": "1절 표 '트랜치(보도)' 행 · 부록 6행"
+  },
+  {
+   "claim": "보도 트랜치 — 기타 트랜치 합계(십억 USD)",
+   "value": 10,
+   "source_url": "https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497",
+   "source_date": "2026-10-23",
+   "where_in_report": "1절 표 '트랜치(보도)' 행 · 부록 6행"
+  },
+  {
+   "claim": "보도 트랜치 — 추가 최대(십억 USD)",
+   "value": 5,
+   "source_url": "https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497",
+   "source_date": "2026-10-23",
+   "where_in_report": "1절 표 '트랜치(보도)' 행 · 부록 6행"
+  },
+  {
+   "claim": "실패한 세일앤리스백 의무 — 연결 부채 인식액(백만 USD, 유동 2,181 + 비유동 10,716)",
+   "value": 12897,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "2절 근거 문단 · 부록 9행"
+  },
+  {
+   "claim": "6월 회사채 가중평균 표면금리(%)",
+   "value": 5.855,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "부록 10행"
+  },
+  {
+   "claim": "CEO 게시 — 종결했다고 밝힌 부채 규모(십억 USD)",
+   "value": 40,
+   "source_url": "https://www.techflowpost.com/en-US/newsletter/141301",
+   "source_date": "2026-10-26",
+   "where_in_report": "1절 표 'CEO 발언' 행 · 부록 11행"
+  },
+  {
+   "claim": "FT 초기 보도 — 은행대출 분(십억 USD)",
+   "value": 10,
+   "source_url": "https://www.manilatimes.net/2026/10/08/business/foreign-business/spacex-seeks-40-billion-financing-led-by-apollo-to-buy-nvidia-chips/2441146",
+   "source_date": "2026-10-08",
+   "where_in_report": "5절 출처 복원 · 부록 12행"
+  },
+  {
+   "claim": "FT 초기 보도 — 투자등급 채권 분(십억 USD)",
+   "value": 30,
+   "source_url": "https://www.manilatimes.net/2026/10/08/business/foreign-business/spacex-seeks-40-billion-financing-led-by-apollo-to-buy-nvidia-chips/2441146",
+   "source_date": "2026-10-08",
+   "where_in_report": "5절 출처 복원 · 부록 12행"
+  },
+  {
+   "claim": "미국 10년물 국채수익률(%, 2026-10-22)",
+   "value": 4.96,
+   "source_url": "https://fred.stlouisfed.org/series/DGS10",
+   "source_date": "2026-10-22",
+   "where_in_report": "4절 무위험금리 메모 · 부록 13행"
+  },
+  {
+   "claim": "직전 회차 기준가(2026-10-22 종가, USD) — 변동률 산식의 분모",
+   "value": 144.75,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-22",
+   "where_in_report": "머리말 '기준 주가' 변동률 산식"
+  }
+ ]
 }
