@@ -1,124 +1,147 @@
 {
- "run_id": "2026-10-26-event",
- "items": [
-  {
-   "claim": "SpaceX 8-K 최신 제출일(2026-10-26 조회) — $400억 조달 8-K 없음",
-   "value": "2026-10-20",
-   "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=8-K&dateb=&owner=include&count=20",
-   "source_date": "2026-10-26",
-   "where_in_report": "1절 표 '8-K 제출 여부' 행 · 부록 1행"
-  },
-  {
-   "claim": "SpaceX 전체 공시 최신 제출일(S-8 · 10-Q)",
-   "value": "2026-10-22",
-   "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=&dateb=&owner=include&count=20",
-   "source_date": "2026-10-26",
-   "where_in_report": "1절 표 '8-K 제출 여부' 행 · 부록 2행"
-  },
-  {
-   "claim": "기준 주가 — 2026-10-23 종가(USD)",
-   "value": 147.49,
-   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-   "source_date": "2026-10-23",
-   "where_in_report": "머리말 '기준 주가' · 4절 적정가치 · 부록 3행"
-  },
-  {
-   "claim": "2026-10-23 거래량(주)",
-   "value": 110617311,
-   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-   "source_date": "2026-10-23",
-   "where_in_report": "부록 3행(1.106억주)"
-  },
-  {
-   "claim": "발행주식수(백만주, 2026-10-15 기준, 10-Q 표지)",
-   "value": 13581,
-   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
-   "source_date": "2026-10-22",
-   "where_in_report": "4절 시가총액 산식 · 부록 4행"
-  },
-  {
-   "claim": "보도 금리 — 최하위 트랜치(%)",
-   "value": 8.3,
-   "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
-   "source_date": "2026-10-22",
-   "where_in_report": "1절 표 '금리(보도)' 행 · 부록 5행"
-  },
-  {
-   "claim": "보도 금리 — 칩 담보 트랜치(%)",
-   "value": 7.75,
-   "source_url": "https://www.semafor.com/article/10/22/2026/spacex-40b-debt-deal-will-cost-it-as-ai-fears-spread",
-   "source_date": "2026-10-22",
-   "where_in_report": "1절 표 '금리(보도)' 행 · 부록 5행"
-  },
-  {
-   "claim": "보도 트랜치 — 후순위 상한(십억 USD, 범위 25~30 의 상한)",
-   "value": 30,
-   "source_url": "https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497",
-   "source_date": "2026-10-23",
-   "where_in_report": "1절 표 '트랜치(보도)' 행 · 부록 6행"
-  },
-  {
-   "claim": "보도 트랜치 — 기타 트랜치 합계(십억 USD)",
-   "value": 10,
-   "source_url": "https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497",
-   "source_date": "2026-10-23",
-   "where_in_report": "1절 표 '트랜치(보도)' 행 · 부록 6행"
-  },
-  {
-   "claim": "보도 트랜치 — 추가 최대(십억 USD)",
-   "value": 5,
-   "source_url": "https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497",
-   "source_date": "2026-10-23",
-   "where_in_report": "1절 표 '트랜치(보도)' 행 · 부록 6행"
-  },
-  {
-   "claim": "실패한 세일앤리스백 의무 — 연결 부채 인식액(백만 USD, 유동 2,181 + 비유동 10,716)",
-   "value": 12897,
-   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-   "source_date": "2026-10-22",
-   "where_in_report": "2절 근거 문단 · 부록 9행"
-  },
-  {
-   "claim": "6월 회사채 가중평균 표면금리(%)",
-   "value": 5.855,
-   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-   "source_date": "2026-10-22",
-   "where_in_report": "부록 10행"
-  },
-  {
-   "claim": "CEO 게시 — 종결했다고 밝힌 부채 규모(십억 USD)",
-   "value": 40,
-   "source_url": "https://www.techflowpost.com/en-US/newsletter/141301",
-   "source_date": "2026-10-26",
-   "where_in_report": "1절 표 'CEO 발언' 행 · 부록 11행"
-  },
-  {
-   "claim": "FT 초기 보도 — 은행대출 분(십억 USD)",
-   "value": 10,
-   "source_url": "https://www.manilatimes.net/2026/10/08/business/foreign-business/spacex-seeks-40-billion-financing-led-by-apollo-to-buy-nvidia-chips/2441146",
-   "source_date": "2026-10-08",
-   "where_in_report": "5절 출처 복원 · 부록 12행"
-  },
-  {
-   "claim": "FT 초기 보도 — 투자등급 채권 분(십억 USD)",
-   "value": 30,
-   "source_url": "https://www.manilatimes.net/2026/10/08/business/foreign-business/spacex-seeks-40-billion-financing-led-by-apollo-to-buy-nvidia-chips/2441146",
-   "source_date": "2026-10-08",
-   "where_in_report": "5절 출처 복원 · 부록 12행"
-  },
-  {
-   "claim": "미국 10년물 국채수익률(%, 2026-10-22)",
-   "value": 4.96,
-   "source_url": "https://fred.stlouisfed.org/series/DGS10",
-   "source_date": "2026-10-22",
-   "where_in_report": "4절 무위험금리 메모 · 부록 13행"
-  },
-  {
-   "claim": "직전 회차 기준가(2026-10-22 종가, USD) — 변동률 산식의 분모",
-   "value": 144.75,
-   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-   "source_date": "2026-10-22",
-   "where_in_report": "머리말 '기준 주가' 변동률 산식"
-  }
- ]
+  "run_id": "2026-10-27-event",
+  "prepared_at": "2026-10-27",
+  "note": "핵심 숫자 상위 20개 — 값 단위는 claim 에 명시. 산식으로 만든 파생값은 claim 에 산식을 적고 source_url 은 입력 원천",
+  "items": [
+    {
+      "claim": "8-K 사건일(확약서 체결일) — 2026년 10월 24일(값: 일)",
+      "value": 24,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "1절 표 '공시' 행 · 부록 1행"
+    },
+    {
+      "claim": "8-K 항목 번호 — Item 8.01 단독(Item 1.01·2.03·9.01 없음)",
+      "value": 8.01,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "1절 표 '공시' 행 · 부록 1행"
+    },
+    {
+      "claim": "마스터 금융리스 원금 합계 예상 — 약 $400억(값: 십억 달러)",
+      "value": 40,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "결론 · 1절 표 '규모' 행 · 부록"
+    },
+    {
+      "claim": "트랜치별 리스 스케줄 기간 상한 — 약 5.25년(하한 5년)",
+      "value": 5.25,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "1절 표 '만기' 행 · 부록"
+    },
+    {
+      "claim": "분기 임대료 중 원금 비율 — 트랜치 금융원가의 1/20(값: 0.05)",
+      "value": 0.05,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "1절 표 '임대료 산식' 행 · 부록"
+    },
+    {
+      "claim": "리스 스케줄 개시 예정 — 2027년 상반기(값: 연도)",
+      "value": 2027,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "1절 표 '일정' 행 · 3-1절"
+    },
+    {
+      "claim": "분기 원금 상환액(파생) — $400억 ÷ 20분기 = $20억/분기(값: 십억 달러)",
+      "value": 2.0,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "2절 표 '분기 원금 상환' 행"
+    },
+    {
+      "claim": "기준 주가 — 2026-10-26 종가(달러)",
+      "value": 146.9,
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-10-26",
+      "where_in_report": "머리 '기준 주가' · 4절 · 부록"
+    },
+    {
+      "claim": "2026-10-26 거래량(주)",
+      "value": 103918320,
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-10-26",
+      "where_in_report": "머리 '기준 주가' · 부록"
+    },
+    {
+      "claim": "직전 기준가 — 2026-10-23 종가(달러)",
+      "value": 147.49,
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-10-23",
+      "where_in_report": "머리 '기준 주가'"
+    },
+    {
+      "claim": "발행주식수 2026-10-15 기준(억주)",
+      "value": 135.81,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
+      "source_date": "2026-10-22",
+      "where_in_report": "4절 적정가치 · 부록"
+    },
+    {
+      "claim": "시가총액(파생) — 146.90 × 135.81억주 = $1,995십억(값: 십억 달러)",
+      "value": 1995,
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-10-26",
+      "where_in_report": "4절 적정가치"
+    },
+    {
+      "claim": "3Q26 분기 영업현금흐름(백만 달러)",
+      "value": 9631,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+      "source_date": "2026-10-20",
+      "where_in_report": "2절 표 '3Q26 영업현금흐름 연환산' 행 · 부록"
+    },
+    {
+      "claim": "3Q26 말 유동성(현금·현금성·시장성증권, 백만 달러)",
+      "value": 89855,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+      "source_date": "2026-10-20",
+      "where_in_report": "2절 표 '유동성 / 부채·금융리스' 행 · 부록"
+    },
+    {
+      "claim": "3Q26 말 부채·금융리스 합계(백만 달러)",
+      "value": 38844,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
+      "source_date": "2026-10-22",
+      "where_in_report": "2절 표 '유동성 / 부채·금융리스' 행 · 부록"
+    },
+    {
+      "claim": "특수관계자(Valor) 장비 리스 — 실패한 세일앤리스백 연결 부채(백만 달러)",
+      "value": 12897,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
+      "source_date": "2026-10-22",
+      "where_in_report": "1절 표 '회계 처리' 행 · 부록"
+    },
+    {
+      "claim": "3Q26 CAPEX(백만 달러)",
+      "value": 19593,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+      "source_date": "2026-10-20",
+      "where_in_report": "2절 '읽는 법' · 부록"
+    },
+    {
+      "claim": "3Q26 AI 부문 CAPEX(백만 달러)",
+      "value": 16444,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
+      "source_date": "2026-10-20",
+      "where_in_report": "2절 '읽는 법' · 부록"
+    },
+    {
+      "claim": "비취소 구매약정 2027년 분(백만 달러)",
+      "value": 25569,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
+      "source_date": "2026-10-22",
+      "where_in_report": "2절 표 '비취소 구매약정 2027' 행 · 부록"
+    },
+    {
+      "claim": "미국 10년물 국채 수익률 2026-10-23(%)",
+      "value": 5.0,
+      "source_url": "https://fred.stlouisfed.org/series/DGS10",
+      "source_date": "2026-10-23",
+      "where_in_report": "4절 무위험금리 메모 · 부록"
+    }
+  ]
 }
