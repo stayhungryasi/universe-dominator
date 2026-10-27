@@ -231,6 +231,22 @@ jobs:
           SPACEX_HEARTBEAT: "1"
         continue-on-error: true
 
+      # 📰 SpaceX 뉴스 감시관(2026-10-27, 지뢰 ⑳ G4) — 공시·발사가 아닌 사건(CEO 발언·신용등급·FAA/FCC·소송·
+      # 합병 협상·락업 보도)을 엔진으로 잇는다. 헤드라인을 모델이 분류하고 결정은 기계 규칙(1급 발행처 또는
+      # 발행처 2곳 이상 → 엔진 깨움, 1곳 → DM 만). 발사 대기열은 측정층 파일에 싣고 커밋 뒤 발사 스텝이 쏜다.
+      - name: SpaceX news sentinel
+        id: spacex_news
+        if: env.FULL_RUN == 'true'
+        run: python scripts/spacex_news.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SPACEX_NEWS_MODEL: ${{ vars.SPACEX_NEWS_MODEL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 뉴스 감시 DM 도 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        timeout-minutes: 8
+        continue-on-error: true
+
       # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진
       # build_site 앞에 둔다: essays.json 이 journal.html 에 주입되기 때문.
       # 논제 원장이 플레이스홀더인 회사는 수집조차 하지 않고 "관찰 대기" 로그만 남긴다.
@@ -311,7 +327,7 @@ jobs:
           # 소장 DM 전용이고, 변수가 여기 있으면 언젠가 다시 폴백 경로가 생긴다.
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           SENTINEL_STEPS: >-
-            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }},spacex_watch=${{ steps.spacex_watch.outcome }},i18n=${{ steps.i18n.outcome }}
+            parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }},spacex_watch=${{ steps.spacex_watch.outcome }},spacex_news=${{ steps.spacex_news.outcome }},i18n=${{ steps.i18n.outcome }}
         continue-on-error: true
 
       # 커밋 직전 관문 — 주입이 빠진 페이지가 하나라도 있으면 여기서 멈춘다.

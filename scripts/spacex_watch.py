@@ -970,6 +970,11 @@ def heartbeat_message(watch, hstate, st, now, status=None):
     hr = (watch or {}).get("hourly") or {}
     if hr.get("last_success_at"):
         lines.append(f"· 매시간 감시 마지막 성공: {hr['last_success_at'][:16].replace('T', ' ')}")
+    nr = (read_json(DATA_DIR / "spacex_news.json", {}) or {}).get("last_run") or {}
+    if nr:
+        lines.append(f"· 뉴스 감시관 마지막 판정 {nr.get('date')}: 헤드라인 {nr.get('judged', 0)}건 · 엔진 깨움 "
+                     f"{nr.get('wake', 0)} · 보도 단계 {nr.get('report', 0)}"
+                     + (" · ⚠️ 판정 모델 실패" if nr.get("model_ok") is False else ""))
     lines.append("· 이 점검이 내일 아침에 오지 않으면 감시가 멈춘 것입니다.")
     return "\n".join(lines)
 

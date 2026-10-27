@@ -64,7 +64,8 @@ DEFAULTS = {
     "stale_hours": {"calendar.json": 48, "gurus.json": 48, "columns.json": 72},
     # 실행 흔적을 감시할 봇 (SENTINEL_STEPS 키 → 사람이 읽을 이름)
     "bots": {"parallax_journal": "관측노트 봇", "community_notice": "관제탑 공지",
-             "companion_essays": "동행 관측 엔진", "spacex_watch": "SpaceX 측정층"},
+             "companion_essays": "동행 관측 엔진", "spacex_watch": "SpaceX 측정층",
+             "spacex_news": "SpaceX 뉴스 감시관"},
     # 소장이 던진 소재가 몇 회차 연속 잔존하면 경보할지 (full 기준)
     "materials_streak_limit": 2,
     # 피드 요청 실패(http_error/timeout)가 몇 회 연속이면 경보할지.
@@ -453,7 +454,8 @@ def judge_bots(cfg, today, step_outcomes, data_dir, now):
 
 _KIND_KO = {"signals": "신호", "companion": "동행", "rates": "금리",
             "research": "리서치", "scout": "취재", "finnhub_xbrl": "공시",
-            "latent": "잠재지배자", "macro": "시장지표", "spacex": "SpaceX 관측", "fx": "렌즈 환율"}
+            "latent": "잠재지배자", "macro": "시장지표", "spacex": "SpaceX 관측", "fx": "렌즈 환율",
+            "spacex_news": "SpaceX 뉴스"}
 
 
 def judge_feeds(status, state, today, cfg):
