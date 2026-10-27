@@ -596,6 +596,13 @@ class RunWiringTest(unittest.TestCase):
             evs, sub = sw.collect_sec_light(fc, [])
         self.assertEqual((evs, sw.SRC_OK.get("sec")), ([], False))
 
+    def test_stale_message_tells_missing_runs_from_failures(self):
+        """2026-10-27 실측: 매시 47분 예약 8회 중 1회만 실행 — '실패'와 '실행 없음'은 처방이 다르다."""
+        m = sw.hourly_stale_message({"hourly": {"runs_24h": 2, "ok_24h": 2}}, 9.0)
+        self.assertIn("실행 자체가 없었습니다", m)
+        m = sw.hourly_stale_message({"hourly": {"runs_24h": 22, "ok_24h": 3}}, 9.0)
+        self.assertIn("실패 원인", m)
+
     def test_heartbeat_shows_hourly_sources(self):
         msg = sw.heartbeat_message({}, {"src": {"sec": {"streak": 2}, "ll2": {"streak": 0}}}, {},
                                    datetime.fromisoformat("2026-10-27T08:47:00+09:00"))

@@ -143,10 +143,10 @@ class RunTest(unittest.TestCase):
 
     def test_chunked_judging_no_silent_backlog(self):
         """2026-10-27 첫 실전: 2일 창 441건. 상한 60 이면 이월이 쌓여 옛 헤드라인이 판정 없이 사라진다 →
-        묶음 60건씩 여러 번 호출, 회당 240건까지. 130건이면 3회 호출 · 이월 0."""
+        묶음(CHUNK)씩 여러 번 호출, 회당 240건까지. 130건이면 이월 0."""
         self._run([H(0, "old", "Reuters")])
         rc, dms, w, n, calls = self._run([H(0, "old", "Reuters")] + self._many(130, 1))
-        self.assertEqual((rc, calls), (0, 3))
+        self.assertEqual((rc, calls), (0, -(-130 // sn.CHUNK)))                # 묶음 수 = ⌈130 ÷ CHUNK⌉
         self.assertEqual((n["last_run"]["judged"], n["last_run"]["deferred"]), (130, 0))
         self.assertTrue(all(h["id"] in n["seen"] for h in self._many(130, 1)))
 
@@ -165,7 +165,7 @@ class RunTest(unittest.TestCase):
         rc, dms, w, n, calls = self._run(heads, judge_exc_after=1)
         self.assertEqual(rc, 1)
         judged = [h for h in heads if h["id"] in n["seen"]]
-        self.assertEqual((len(judged), n["last_run"]["deferred"]), (60, 40))   # 첫 묶음만 seen
+        self.assertEqual((len(judged), n["last_run"]["deferred"]), (sn.CHUNK, 100 - sn.CHUNK))   # 첫 묶음만 seen
 
     def test_cap_does_not_starve_last_query(self):
         """상한에 걸려도 뒤쪽 질의('경쟁')가 굶지 않는다 — run() 이 order_fresh 를 실제로 쓰는지(배선)."""
@@ -174,6 +174,25 @@ class RunTest(unittest.TestCase):
         rc, dms, w, n, calls = self._run(heads)
         comp = [h for h in heads if h["query"] == "경쟁" and h["id"] in n["seen"]]
         self.assertEqual(len(comp), 80)                                # 240 ÷ 3 질의
+
+    def test_failure_reason_in_ledger(self):
+        """18시 첫 판정 회차가 원인 모를 실패 — 실행 로그를 못 보면 원인도 못 본다 → 원장에 사유를 남긴다."""
+        self._run([H(0, "old", "Reuters")])
+        rc, dms, w, n, calls = self._run([H(0, "old", "Reuters"), H(1, "x", "P")], judge_exc=ValueError("응답 잘림"))
+        self.assertIn("응답 잘림", n["last_run"]["error"])
+
+    def test_truncated_response_is_failure(self):
+        class R:
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                # 잘렸는데도 앞부분만으로 JSON 이 닫혀 보이는 경우 — 가드가 없으면 남은 헤드라인이 '중대하지 않음'으로 조용히 사라진다
+                return {"stop_reason": "max_tokens",
+                        "content": [{"type": "text", "text": '{"items":[{"i":0,"material":true}]} {"i":1,"mat'}]}
+        with mock.patch("requests.post", return_value=R()):
+            with self.assertRaises(ValueError):
+                sn.judge("k", [dict(H(0, "t", "P"))], [], [])
 
     def test_order_interleaves_queries(self):
         heads = [dict(H(k, f"t{k}", "P"), query=q) for k, q in enumerate(["A", "A", "A", "B", "C"])]

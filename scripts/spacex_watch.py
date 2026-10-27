@@ -1258,7 +1258,9 @@ def heartbeat_message(watch, hstate, st, now, status=None):
         lines.append("· 측정 원천(최근 full): " + " · ".join(srcs[:6]))
     hr = (watch or {}).get("hourly") or {}
     if hr.get("last_success_at"):
-        lines.append(f"· 매시간 감시 마지막 성공: {hr['last_success_at'][:16].replace('T', ' ')}")
+        lines.append(f"· 매시간 감시 마지막 성공: {hr['last_success_at'][:16].replace('T', ' ')}"
+                     + (f" · 최근 24시간 실행 {hr['runs_24h']}회/24" if isinstance(hr.get("runs_24h"), int) else "")
+                     + (" ⚠️" if isinstance(hr.get("runs_24h"), int) and hr["runs_24h"] < 18 else ""))
     hsrc = (hstate or {}).get("src") or {}
     if hsrc:
         lines.append("· 매시간 원천: " + " · ".join(
@@ -1349,15 +1351,32 @@ def collect_hourly_runs(fc, watch, logs):
     tok = os.environ.get("GITHUB_TOKEN", "").strip()
     if tok:
         hdr["Authorization"] = "Bearer " + tok
-    url = f"https://api.github.com/repos/{repo}/actions/workflows/{HOURLY_WORKFLOW}/runs?per_page=10"
+    url = f"https://api.github.com/repos/{repo}/actions/workflows/{HOURLY_WORKFLOW}/runs?per_page=50"
     doc, oc, code = _get_json(fc, url, "매시간 감시 실행기록", hdr)
     if doc is None:
         return
     runs = doc.get("workflow_runs") or []
     ok = [r for r in runs if r.get("conclusion") == "success"]
+    cut = (datetime.now(timezone.utc) - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # 2026-10-27 실측: GitHub 예약(cron)이 매시 47분 8회 중 1회만 실행 — '실패'가 아니라 '실행 자체가 없음'.
+    # 둘을 가르려고 24시간 실행 횟수와 마지막 실행 시각(성패 무관)을 함께 잰다
     watch["hourly"] = {"checked_at": now_kst().isoformat(timespec="minutes"),
                        "last_success_at": (ok[0].get("updated_at") if ok else None),
-                       "last_conclusion": (runs[0].get("conclusion") if runs else None)}
+                       "last_run_at": (runs[0].get("created_at") if runs else None),
+                       "last_conclusion": (runs[0].get("conclusion") if runs else None),
+                       "runs_24h": sum(1 for r in runs if (r.get("created_at") or "") >= cut),
+                       "ok_24h": sum(1 for r in ok if (r.get("created_at") or "") >= cut)}
+
+
+def hourly_stale_message(watch, stale):
+    """실행이 없었는지(예약 누락) · 실행됐는데 실패했는지를 갈라 말한다 — 처방이 다르다."""
+    hr = (watch or {}).get("hourly") or {}
+    n, ok = hr.get("runs_24h"), hr.get("ok_24h")
+    head = f"⚠️ SpaceX 매시간 감시가 {stale:.0f}시간째 성공하지 못했습니다"
+    if isinstance(n, int) and n < 6:
+        return (head + f" — 최근 24시간 실행 {n}회(성공 {ok or 0}회)뿐입니다. 실행 자체가 없었습니다: GitHub 예약(cron)이 "
+                       "누락·지연되고 있습니다. 외부 스케줄러가 spacex-watch 를 매시간 깨워야 합니다.")
+    return head + f" — 최근 24시간 실행 {n if n is not None else '?'}회 중 성공 {ok or 0}회. Actions 의 spacex-watch 실행 기록(실패 원인)을 확인하세요."
 
 
 def _hourly_stale_h(watch, now):
@@ -1563,7 +1582,7 @@ def run(mode="daily"):
         # 감시자의 감시자 — 매시간 감시가 6시간 넘게 성공하지 못했으면 하루 한 번 DM
         stale = _hourly_stale_h(watch, now)
         if stale is not None and stale > HOURLY_STALE_H and watch.get("hourly_stale_alerted") != today:
-            send_dm(f"⚠️ SpaceX 매시간 감시가 {stale:.0f}시간째 성공하지 못했습니다 — Actions 의 spacex-watch 실행 기록을 확인하세요.")
+            send_dm(hourly_stale_message(watch, stale))
             watch["hourly_stale_alerted"] = today
         heartbeat()
         if DM_LOG:

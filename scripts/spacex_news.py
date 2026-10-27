@@ -49,7 +49,8 @@ KST = timezone(timedelta(hours=9))
 MODEL = os.environ.get("SPACEX_NEWS_MODEL", "").strip() or "claude-sonnet-5-5"
 MAX_HEADLINES = 240         # 회당 판정 상한 — 2026-10-27 첫 실전: 2일 창에 441건(하루 약 220건). 60 이면 이월이 쌓여
                             # 옛 헤드라인이 2일 창 밖으로 판정 없이 빠져나간다(조용한 누락)
-CHUNK = 60                  # 판정 호출 1회당 헤드라인 수
+CHUNK = 40                  # 판정 호출 1회당 헤드라인 수 — 2026-10-27 18시 첫 판정 회차가 60건 묶음에서 실패
+                            # (전 항목을 판정문으로 돌려받는 형식이라 응답이 길었다) → 중대한 것만 돌려받고 묶음도 줄인다
 WAKE_CAP_PER_DAY = 2        # 뉴스로 엔진을 깨우는 하루 상한(긴급은 상한 밖)
 CLUSTER_COOLDOWN_D = 7
 KEEP_SEEN = 1500
@@ -88,7 +89,8 @@ JUDGE_PROMPT = """너는 SpaceX(Space Exploration Technologies Corp., Nasdaq: SP
 - already_known: 아래 '이미 기록된 사건'과 같은 사건이면 true
 - claim_ko: 제목이 말하는 사실 한 문장(한국어). 제목에 없는 숫자·사실을 넣지 마라.
 출력은 JSON 하나만: {"items":[{"i":0,"material":true,"severity":"major","category":"자금·신용","triggers":["T5"],
-"cluster":"apollo-gpu-lease","already_known":false,"claim_ko":"..."}, ...]} — 모든 i 를 빠짐없이."""
+"cluster":"apollo-gpu-lease","already_known":false,"claim_ko":"..."}, ...]}
+— **material 이 true 인 헤드라인만** items 에 넣어라. 넣지 않은 i 는 '중대하지 않음'으로 친다. 하나도 없으면 {"items":[]}."""
 
 
 def now_kst():
@@ -260,15 +262,17 @@ def judge(api_key, headlines, triggers, known):
                          for h in headlines],
                "트리거": [{"id": t.get("id"), "이름": t.get("name")} for t in triggers if t.get("id")],
                "이미 기록된 사건": known[:60]}
-    body = {"model": MODEL, "max_tokens": 8000,
+    body = {"model": MODEL, "max_tokens": 6000,
             "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n\n" + json.dumps(payload, ensure_ascii=False)}]}
     r = requests.post("https://api.anthropic.com/v1/messages",
                       headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
                                "content-type": "application/json"},
-                      json=body, timeout=180)
+                      json=body, timeout=240)
     r.raise_for_status()
     data = r.json()
     use = data.get("usage") or {}
+    if data.get("stop_reason") == "max_tokens":
+        raise ValueError("응답 잘림(max_tokens) — 묶음을 줄여야 한다")
     text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
     text = re.sub(r"```(?:json)?", "", text).strip()
     doc = json.loads(text[text.find("{"): text.rfind("}") + 1])
@@ -308,7 +312,7 @@ def run():
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 
     wake, dm_only, ignored, model_ok, use = [], [], 0, True, {}
-    judged, calls = [], 0
+    judged, calls, err = [], 0, None
     if first:
         logs.append(f"기준선 회차 — 헤드라인 {len(heads)}건을 판정 없이 적재(첫 회차에 몰아 울리지 않게)")
         seen.update(h["id"] for h in heads)
@@ -324,8 +328,9 @@ def run():
                 v, u = judge(api_key, chunk, triggers, known)
             except Exception as e:
                 model_ok = False
+                err = f"{type(e).__name__}: {str(e)[:200]}"     # 원장에 남긴다 — 실행 로그를 못 볼 때도 원인이 보이게
                 fc.record("spacex_news", "판정 모델", "http_error", None, 0)
-                logs.append(f"판정 모델 실패 — {type(e).__name__}: {str(e)[:160]}")
+                logs.append(f"판정 모델 실패 — {err}")
                 break                                  # 나머지 묶음은 다음 회차에(seen 에 넣지 않는다)
             calls += 1
             verdicts += v
@@ -336,6 +341,7 @@ def run():
             fc.record("spacex_news", "판정 모델", "ok" if model_ok else "http_error", 200, len(verdicts))
             wakes_today = (state.get("wakes") or {}).get(today, 0)
             wake, dm_only, ignored = decide(judged, verdicts, wakes_today, state.get("cooldown") or {}, today)
+            ignored += max(0, len(judged) - len({v.get("i") for v in verdicts}))   # 생략 = 중대하지 않음
             seen.update(h["id"] for h in judged)       # 판정이 끝난 것만 seen — 실패하면 다음 회차에 다시
     fc.flush()
 
@@ -409,7 +415,7 @@ def run():
     state["last_run"] = {"date": today, "headlines": len(heads), "fresh": len(fresh), "judged": len(judged),
                          "deferred": deferred, "baseline": first, "calls": calls,
                          "wake": len(wake), "report": len(dm_only), "ignored": ignored,
-                         "model": MODEL, "model_ok": model_ok,
+                         "model": MODEL, "model_ok": model_ok, "error": err,
                          "tokens_in": use.get("input_tokens"), "tokens_out": use.get("output_tokens")}
     write_json(NEWS_PATH, state)
     print(f"[SpaceX 뉴스] 헤드라인 {len(heads)} · 새 {len(fresh)} · 판정 {len(judged)}(호출 {calls}) · 이월 {deferred} · "
