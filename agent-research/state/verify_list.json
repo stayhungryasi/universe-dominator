@@ -1,147 +1,118 @@
 {
-  "run_id": "2026-10-27-event",
-  "prepared_at": "2026-10-27",
-  "note": "핵심 숫자 상위 20개 — 값 단위는 claim 에 명시. 산식으로 만든 파생값은 claim 에 산식을 적고 source_url 은 입력 원천",
-  "items": [
-    {
-      "claim": "8-K 사건일(확약서 체결일) — 2026년 10월 24일(값: 일)",
-      "value": 24,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "1절 표 '공시' 행 · 부록 1행"
-    },
-    {
-      "claim": "8-K 항목 번호 — Item 8.01 단독(Item 1.01·2.03·9.01 없음)",
-      "value": 8.01,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "1절 표 '공시' 행 · 부록 1행"
-    },
-    {
-      "claim": "마스터 금융리스 원금 합계 예상 — 약 $400억(값: 십억 달러)",
-      "value": 40,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "결론 · 1절 표 '규모' 행 · 부록"
-    },
-    {
-      "claim": "트랜치별 리스 스케줄 기간 상한 — 약 5.25년(하한 5년)",
-      "value": 5.25,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "1절 표 '만기' 행 · 부록"
-    },
-    {
-      "claim": "분기 임대료 중 원금 비율 — 트랜치 금융원가의 1/20(값: 0.05)",
-      "value": 0.05,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "1절 표 '임대료 산식' 행 · 부록"
-    },
-    {
-      "claim": "리스 스케줄 개시 예정 — 2027년 상반기(값: 연도)",
-      "value": 2027,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "1절 표 '일정' 행 · 3-1절"
-    },
-    {
-      "claim": "분기 원금 상환액(파생) — $400억 ÷ 20분기 = $20억/분기(값: 십억 달러)",
-      "value": 2.0,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
-      "source_date": "2026-10-26",
-      "where_in_report": "2절 표 '분기 원금 상환' 행"
-    },
-    {
-      "claim": "기준 주가 — 2026-10-26 종가(달러)",
-      "value": 146.9,
-      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-      "source_date": "2026-10-26",
-      "where_in_report": "머리 '기준 주가' · 4절 · 부록"
-    },
-    {
-      "claim": "2026-10-26 거래량(주)",
-      "value": 103918320,
-      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-      "source_date": "2026-10-26",
-      "where_in_report": "머리 '기준 주가' · 부록"
-    },
-    {
-      "claim": "직전 기준가 — 2026-10-23 종가(달러)",
-      "value": 147.49,
-      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-      "source_date": "2026-10-23",
-      "where_in_report": "머리 '기준 주가'"
-    },
-    {
-      "claim": "발행주식수 2026-10-15 기준(억주)",
-      "value": 135.81,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "4절 적정가치 · 부록"
-    },
-    {
-      "claim": "시가총액(파생) — 146.90 × 135.81억주 = $1,995십억(값: 십억 달러)",
-      "value": 1995,
-      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
-      "source_date": "2026-10-26",
-      "where_in_report": "4절 적정가치"
-    },
-    {
-      "claim": "3Q26 분기 영업현금흐름(백만 달러)",
-      "value": 9631,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
-      "source_date": "2026-10-20",
-      "where_in_report": "2절 표 '3Q26 영업현금흐름 연환산' 행 · 부록"
-    },
-    {
-      "claim": "3Q26 말 유동성(현금·현금성·시장성증권, 백만 달러)",
-      "value": 89855,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
-      "source_date": "2026-10-20",
-      "where_in_report": "2절 표 '유동성 / 부채·금융리스' 행 · 부록"
-    },
-    {
-      "claim": "3Q26 말 부채·금융리스 합계(백만 달러)",
-      "value": 38844,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "2절 표 '유동성 / 부채·금융리스' 행 · 부록"
-    },
-    {
-      "claim": "특수관계자(Valor) 장비 리스 — 실패한 세일앤리스백 연결 부채(백만 달러)",
-      "value": 12897,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "1절 표 '회계 처리' 행 · 부록"
-    },
-    {
-      "claim": "3Q26 CAPEX(백만 달러)",
-      "value": 19593,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
-      "source_date": "2026-10-20",
-      "where_in_report": "2절 '읽는 법' · 부록"
-    },
-    {
-      "claim": "3Q26 AI 부문 CAPEX(백만 달러)",
-      "value": 16444,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm",
-      "source_date": "2026-10-20",
-      "where_in_report": "2절 '읽는 법' · 부록"
-    },
-    {
-      "claim": "비취소 구매약정 2027년 분(백만 달러)",
-      "value": 25569,
-      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
-      "source_date": "2026-10-22",
-      "where_in_report": "2절 표 '비취소 구매약정 2027' 행 · 부록"
-    },
-    {
-      "claim": "미국 10년물 국채 수익률 2026-10-23(%)",
-      "value": 5.0,
-      "source_url": "https://fred.stlouisfed.org/series/DGS10",
-      "source_date": "2026-10-23",
-      "where_in_report": "4절 무위험금리 메모 · 부록"
-    }
-  ]
+ "run_id": "2026-10-27-event-r2",
+ "generated_at": "2026-10-27",
+ "items": [
+  {
+   "claim": "기준 주가 — 2026-10-26 종가(USD)",
+   "value": 146.9,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-26",
+   "where_in_report": "머리글 '기준 주가' · 부록 표 '기준 주가 / 거래량'"
+  },
+  {
+   "claim": "2026-10-26 거래량(주)",
+   "value": 103184900,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-26",
+   "where_in_report": "머리글 '기준 주가'(1.032억주) · 부록 표"
+  },
+  {
+   "claim": "사건 전 종가 2026-10-15(USD) — 3절 주가 반응 산식 분자",
+   "value": 148.62,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-15",
+   "where_in_report": "3절 표 '주가 반응'"
+  },
+  {
+   "claim": "우크라이나 속도 제한 시작일(Reuters: '제한은 10월 13일부터')",
+   "value": "2026-10-13",
+   "source_url": "https://www.timeslive.co.za/news/world/2026-10-23-ukraine-says-starlink-speed-curbs-remain-despite-trump-assurance/",
+   "source_date": "2026-10-23",
+   "where_in_report": "1절 표 10/13 행 · 부록 표 '속도 제한 시작일'"
+  },
+  {
+   "claim": "제한 상한 — 시속 km(약 100mph)",
+   "value": 160,
+   "source_url": "https://gvwire.com/2026/10/24/starlink-in-ukraine-back-to-normal-after-week-of-throttling/",
+   "source_date": "2026-10-24",
+   "where_in_report": "1절 표 10/13 행 · 부록 표 '제한 상한'"
+  },
+  {
+   "claim": "복구 후 안정 속도 — 시속 km 초과(우크라이나 국방부 10/24)",
+   "value": 400,
+   "source_url": "https://gvwire.com/2026/10/24/starlink-in-ukraine-back-to-normal-after-week-of-throttling/",
+   "source_date": "2026-10-24",
+   "where_in_report": "1절 표 10/24 행 · 부록 표 '복구 후 안정 속도'"
+  },
+  {
+   "claim": "복구 공식 발표일(우크라이나 국방부·대통령)",
+   "value": "2026-10-24",
+   "source_url": "https://www.aljazeera.com/news/2026/10/24/ukraine-says-starlink-restored-as-attacks-continue-in-russia-and-ukraine",
+   "source_date": "2026-10-24",
+   "where_in_report": "1절 표 10/24 행 · 부록 표 '복구 발표일'"
+  },
+  {
+   "claim": "Reuters 10/15 단독 취재원 수 — 미 관리 2명 + 서방 관리 1명(합계)",
+   "value": 3,
+   "source_url": "https://www.internazionale.it/ultime-notizie-reuters/2026/10/16/exclusive-order-to-limit-starshield-for-ukraine-came-from-inside-white-house-sources-say",
+   "source_date": "2026-10-15",
+   "where_in_report": "1절 표 10/15 행 · 부록 표 'Reuters 10/15 취재원'"
+  },
+  {
+   "claim": "하원 DeLauro·McCollum 서한 — 국방장관 보고 기한(일)",
+   "value": 30,
+   "source_url": "https://www.legion.org/information-center/news/security/2026/october/lawmakers-call-for-investigation-into-source-of-starlink-disruptions-in-ukraine",
+   "source_date": "2026-10-22",
+   "where_in_report": "1절 표 10/19~22 행 · 4절 T7 · 부록 표 '의회 서한 보고 기한'"
+  },
+  {
+   "claim": "우크라이나 측 상용 Starlink 단말 속도 상한(km/h, Beskrestnov) — 하한 70",
+   "value": 70,
+   "source_url": "https://therecord.media/ukraine-disputes-musk-claims-of-starlink-misuse",
+   "source_date": "2026-10-26",
+   "where_in_report": "1절 표 10/24~26 행 · 5절 표"
+  },
+  {
+   "claim": "3Q26 Connectivity 매출(USD M)",
+   "value": 5248,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "3절 표 '3Q26 Connectivity 매출' · 부록 표"
+  },
+  {
+   "claim": "3Q26 Connectivity 소비자 매출(USD M)",
+   "value": 3121,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "3절 표 '3Q26 Connectivity 매출' · 부록 표"
+  },
+  {
+   "claim": "3Q26 Connectivity 기업·정부 매출(USD M)",
+   "value": 2127,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "3절 표 '3Q26 Connectivity 매출' · 3절 '읽는 법' · 부록 표"
+  },
+  {
+   "claim": "3Q26 연결 매출(USD M) — 3절 비중 산식 분모",
+   "value": 14575,
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R4.htm",
+   "source_date": "2026-10-22",
+   "where_in_report": "3절 표 '기업·정부 비중' 산식 · 부록 표 '3Q26 연결 매출'"
+  },
+  {
+   "claim": "EDGAR 최신 공시 — 8-K 제출일(본 사건 관련 공시 없음)",
+   "value": "2026-10-26",
+   "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001181412&type=&dateb=&owner=include&count=20",
+   "source_date": "2026-10-27",
+   "where_in_report": "1절 표 '공시' 행 · 부록 표 'EDGAR 최신 공시'"
+  },
+  {
+   "claim": "2026-10-21 종가(USD) — 3절 '실적 반응' 설명의 +7.8% 산식 입력",
+   "value": 159.31,
+   "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+   "source_date": "2026-10-21",
+   "where_in_report": "3절 표 '주가 반응'"
+  }
+ ]
 }
