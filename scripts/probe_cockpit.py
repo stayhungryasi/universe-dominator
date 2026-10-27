@@ -46,7 +46,7 @@ SRC_STATE_KO = {"ok": "정상", "zero": "새 글 없음", "decode_fail": "디코
                 "http_error": "요청 실패", "timeout": "응답 지연"}
 EVENT_KIND_KO = {"earnings": "실적", "contract": "계약", "financing": "조달", "report": "정기 공시",
                  "filing": "공시", "starship": "발사", "ir": "보도자료", "essay": "동행 에세이",
-                 "withdraw": "철회·정정"}
+                 "withdraw": "철회·정정", "insider": "내부자 거래", "launch": "발사", "launch_fail": "발사 실패"}
 PANELS = [("milestones", "이정표 매트릭스"), ("events", "사건"), ("fin", "재무·KPI"),
           ("scen", "시나리오·가치"), ("report", "보고서"), ("changelog", "변화 이력"),
           ("sources", "출처")]
@@ -274,7 +274,7 @@ def kpi_series(kpi_doc, st, lang="ko"):
             ("capex", "Capex", "capex_usd_m", "usd"), ("fcf", "분기 FCF", "fcf_usd_m", "usd"),
             ("cash", "현금", "cash_usd_m", "usd"), ("mkt", "유가증권", "marketable_securities_usd_m", "usd"),
             ("debt", "부채·리스", "debt_and_leases_usd_m", "usd")]
-    OPS = [("subs", "가입자", "subscribers_m", "man"), ("arpu", "ARPU", "arpu_usd", "arpu"),
+    OPS = [("subs", "소비자 가입자", "subscribers_m", "man"), ("arpu", "ARPU", "arpu_usd", "arpu"),
            ("gw", "명판 컴퓨트", "ai_nameplate_gw", "gw"), ("launch", "발사", "launches", "cnt"),
            ("conn", "Connectivity 매출", "rev_connectivity_usd_m", "usd"),
            ("si", "AI(SI) 매출", "rev_si_usd_m", "usd"), ("space", "Space 매출", "rev_space_usd_m", "usd")]
@@ -297,7 +297,8 @@ def kpi_series(kpi_doc, st, lang="ko"):
                                       + L(lang, "pc.how.s1_verify")}})
                 continue
             how = src.get("how") or src.get("note")
-            derived = bool(v is not None and (src.get("derived") or str(how or "").startswith("누적")))
+            # FCF 는 언제나 계산값(영업현금흐름 − Capex) — 공시 원문에 분기 FCF 줄이 없다(외부 검수 G6)
+            derived = bool(v is not None and (src.get("derived") or rid == "fcf" or str(how or "").startswith("누적")))
             cells.append({"v": v, "t": fmt_kind(v, kind, lang), "mk": L(lang, "pc.mk.calc") if derived else "",
                           "src": {"origin": "공시 자동", "originId": "auto", "originL": L(lang, "pc.o.auto_full"),
                                   "form": src.get("form"), "filed": src.get("filed"),
@@ -338,12 +339,25 @@ def fmt_kind(v, kind, lang="ko"):
     return str(v)
 
 
-TILES = [("revenue", "매출"), ("subs", "가입자"), ("arpu", "ARPU"), ("si", "AI(SI) 매출"),
+TILES = [("revenue", "매출"), ("subs", "소비자 가입자"), ("arpu", "ARPU"), ("si", "AI(SI) 매출"),
          ("gw", "명판 컴퓨트"), ("fcf", "분기 FCF")]
 
 
+def qshift(label, n):
+    """분기 라벨 이동 — '3Q26' 에서 n 분기 앞(음수=과거). 형식이 다르면 None."""
+    m = re.match(r"([1-4])Q(\d{2})$", label or "")
+    if not m:
+        return None
+    k = int(m.group(2)) * 4 + int(m.group(1)) - 1 + n
+    return f"{k % 4 + 1}Q{k // 4:02d}"
+
+
 def kpi_tiles(fin):
+    """KPI 타일 — 화살표는 **바로 앞 분기(QoQ)** 와만 비교한다. 그 분기가 비어 있으면 화살표를 그리지 않는다.
+    (2026-10-27 외부 검수 G6: '값이 있는 직전 점'과 비교하던 코드가 ARPU 는 QoQ, FCF 는 YoY 로 기준을 조용히 바꿨다)
+    전년 동기(YoY)는 양수끼리일 때만 % 로 따로 싣는다(음수 기준의 % 는 뜻이 뒤집힌다)."""
     rows = {r["id"]: r for r in fin["rows"]}
+    cols = fin["cols"]
     out = []
     for rid, label in TILES:
         r = rows.get(rid)
@@ -351,14 +365,19 @@ def kpi_tiles(fin):
             continue
         pts = [(i, c["v"]) for i, c in enumerate(r["cells"]) if isinstance(c["v"], (int, float))]
         last = pts[-1] if pts else None
-        prev = pts[-2] if len(pts) > 1 else None
-        if last and prev:
-            d = last[1] - prev[1]
-            dirn = "up" if d > 0 else ("down" if d < 0 else "flat")
-        else:
-            dirn = "flat"
+        by = {cols[i]: c["v"] for i, c in enumerate(r["cells"])}
+        dirn, yoy = "none", None
+        if last:
+            pv = by.get(qshift(cols[last[0]], -1))
+            if isinstance(pv, (int, float)):
+                d = last[1] - pv
+                dirn = "up" if d > 0 else ("down" if d < 0 else "flat")
+            yv = by.get(qshift(cols[last[0]], -4))
+            if isinstance(yv, (int, float)) and yv > 0 and last[1] > 0:
+                yoy = last[1] / yv - 1
         out.append({"id": rid, "label": r["label"], "value": r["cells"][last[0]]["t"] if last else "—",
-                    "q": fin["cols"][last[0]] if last else "", "dir": dirn, "origin": r["origin"],
+                    "q": cols[last[0]] if last else "", "dir": dirn, "yoy": yoy,
+                    "mk": (r["cells"][last[0]].get("mk") or "") if last else "", "origin": r["origin"],
                     "originId": r.get("originId", ""),
                     "series": [c["v"] if isinstance(c["v"], (int, float)) else None for c in r["cells"]]})
     return out
@@ -473,7 +492,7 @@ def event_rows(watch, essays_doc, today, triggers, lang="ko"):
             continue
         kind = e.get("kind") or "filing"
         rel_t = [t["id"] for t in triggers if trigger_kind(t["name"]) == kind]
-        rel_ax = {"starship": ["B"], "earnings": ["A", "C", "D"],
+        rel_ax = {"starship": ["B"], "launch_fail": ["B"], "earnings": ["A", "C", "D"],
                   "financing": ["D"], "contract": ["C", "D"]}.get(kind, [])
         out.append({"id": "ev-" + re.sub(r"[^0-9A-Za-z]", "", (e.get("accn") or e.get("id") or e.get("url") or ""))[-16:],
                     "date": e.get("date", ""), "kind": kind,
@@ -870,7 +889,7 @@ def spark(series, w=84, h=14):
     return f'<svg class="pc-spark" viewBox="0 0 {w} {h}" aria-hidden="true"><path d="{path}"/></svg>'
 
 
-ARROW = {"up": "↗", "down": "↘", "flat": "→"}
+ARROW = {"up": "↗", "down": "↘", "flat": "→", "none": ""}
 
 
 def cockpit_html(d, lang="ko"):
@@ -939,11 +958,15 @@ def cockpit_html(d, lang="ko"):
              f'<span class="pc-tag">{esc(L(lang, "pc.h3_tag"))}</span></h3>' + "".join(rows) + '</section>')
     tiles = []
     for t in d["tiles"]:
+        yoy = t.get("yoy")
+        yoy_html = ("" if yoy is None else
+                    f' <em class="pc-yoy">{esc(L(lang, "pc.yoy", p=("+" if yoy >= 0 else "−") + str(round(abs(yoy) * 100)) + "%"))}</em>')
+        tag = t.get("mk") or L(lang, "pc.o.disc" if t.get("originId") == "auto" else "pc.o.probe")
         tiles.append(f'<button class="pc-tile" type="button" data-pc-go="fin" data-pc-row="{esc(t["id"])}">'
                      f'<span class="pc-tile-l">{esc(t["label"])} <em>{esc(t["q"])}</em></span>'
-                     f'<span class="pc-tile-v">{esc(t["value"])} <i class="pc-{t["dir"]}">{ARROW[t["dir"]]}</i></span>'
-                     f'{spark(t["series"])}<span class="pc-tile-o">'
-                     f'{esc(L(lang, "pc.o.disc" if t.get("originId") == "auto" else "pc.o.probe"))}</span></button>')
+                     f'<span class="pc-tile-v">{esc(t["value"])} <i class="pc-{t["dir"]}" title="{esc(L(lang, "pc.qoq"))}">'
+                     f'{ARROW[t["dir"]]}</i>{yoy_html}</span>'
+                     f'{spark(t["series"])}<span class="pc-tile-o">{esc(tag)}</span></button>')
     h.append(f'<section class="pc-card pc-c4" aria-labelledby="pcH4"><h3 id="pcH4">{esc(L(lang, "pc.h4"))}'
              f'<span class="pc-tag">{esc(L(lang, "pc.h4_tag"))}</span></h3><div class="pc-tiles">{"".join(tiles)}</div>'
              f'<div class="pc-mark-row">{MARK}</div></section>')
