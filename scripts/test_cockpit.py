@@ -190,5 +190,45 @@ class DecisionsTest(unittest.TestCase):
         self.assertIsNone(dict(zip(pc.kpi_series(kpi, st)["cols"], rev["cells"]))["4Q25"]["v"])
 
 
+class BudgetTest(unittest.TestCase):
+    """2026-10-27: 같은 날 둘째 사건 보고서가 PROBE_DATA 를 407KB 로 밀어 selftest 실패 → 엔진 산출물 미게시.
+    보고서는 사건마다 늘어난다 — 예산을 넘으면 정해 둔 순서로 덜어낸다."""
+
+    def _data(self, ids, per=60_000):
+        search = [{"anchor": f"report/{r}:s0", "title": r, "text": "t", "full": "가" * (per // 3)} for r in ids]
+        return {"search": search, "sources": [{"claims": [{"text": "x"}] * 30, "n": 30}]}
+
+    def test_order_old_events_then_old_monthly(self):
+        ids = ["2026-09", "2026-10", "2026-10-23-event", "2026-10-26-event", "2026-10-27-event", "2026-10-27-event-r2"]
+        d = self._data(ids)
+        trimmed = pc.fit_budget(d, ids, budget=260_000)
+        self.assertEqual(trimmed[:2], ["full:2026-10-23-event", "full:2026-10-26-event"])
+        kept = {e["title"] for e in d["search"] if "full" in e}
+        self.assertTrue({"2026-10", "2026-10-27-event", "2026-10-27-event-r2"} <= kept)   # 최신 월간 + 최신 사건 2
+        self.assertLessEqual(len(json.dumps(d, ensure_ascii=False).encode()), 260_000 + 200)
+
+    def test_render_wired(self):
+        """render() 가 예산 맞추기를 실제로 거친다(배선) — 예산을 낮추면 덜어낸 기록이 데이터에 남고 상한 안이다."""
+        from unittest import mock
+        with mock.patch.object(pc, "PAYLOAD_BUDGET", 200 * 1024):
+            html, data, reps = pc.render(ar, today=date(2026, 10, 27))
+        self.assertIn("budget", data)
+        self.assertTrue(data["budget"]["trimmed"])
+
+    def test_under_budget_untouched(self):
+        ids = ["2026-10", "2026-10-27-event"]
+        d = self._data(ids, per=3000)
+        self.assertEqual(pc.fit_budget(d, ids), [])
+        self.assertNotIn("budget", d)
+
+    def test_claims_capped_but_count_kept(self):
+        ids = ["2026-10"]
+        d = self._data(ids, per=300)
+        d["sources"] = [{"claims": [{"text": "가" * 150}] * 40, "n": 40} for _ in range(30)]
+        pc.fit_budget(d, ids, budget=150_000)
+        self.assertTrue(all(len(x["claims"]) <= 12 for x in d["sources"]))
+        self.assertEqual(d["sources"][0]["n"], 40)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

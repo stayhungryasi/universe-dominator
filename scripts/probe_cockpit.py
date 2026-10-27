@@ -811,7 +811,56 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
         "feeds": srcs_state, "panels": [{"id": p, "ko": L(lang, "pc.panel." + p)} for p, _ in PANELS],
     }
     data["search"] = search_index(ms, events, reports, changelog, sources, triggers, lang)
+    fit_budget(data, [r["id"] for r in reports])
     return data, reports
+
+
+PAYLOAD_BUDGET = 380 * 1024     # 관제실 데이터 덩어리 예산(selftest 상한 400KB 아래 여유)
+KEEP_FULL_REPORTS = 2           # 본문 전체 검색을 늘 남기는 최신 보고서 수
+
+
+def _size(data):
+    return len(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+
+
+def fit_budget(data, report_ids, budget=None):
+    """예산을 넘으면 오래된 것부터 덜어낸다(2026-10-27: 같은 날 사건 회차 둘째 보고서가 407KB 로 상한을 넘겨
+    selftest 가 실패 → 엔진 산출물이 main 에 게시되지 못했다. 보고서는 사건마다 늘어나므로 고정 상한만으로는
+    언젠가 반드시 막힌다 — 덜어낼 순서를 정해 둔다).
+    ① 오래된 보고서의 검색 본문(full)  ② 출처별 주장 목록(12 → 6건, 개수 n 은 그대로)  ③ 변화 이력 검색 본문.
+    보고서·출처·제목·앞 300자 요약은 지우지 않는다(검색과 화면 링크는 그대로 산다)."""
+    budget = PAYLOAD_BUDGET if budget is None else budget
+    trimmed = []
+    if _size(data) <= budget:
+        return trimmed
+    monthly = sorted(r for r in report_ids if re.fullmatch(r"\d{4}-\d{2}", r))
+    events = sorted(r for r in report_ids if r not in monthly)
+    keep = set(events[-KEEP_FULL_REPORTS:]) | set(monthly[-1:])      # 최신 사건 2 + 최신 월간 1 은 늘 본문 검색
+    order = [r for r in events if r not in keep] + [r for r in monthly if r not in keep]   # 옛 사건부터, 월간은 나중
+    for rid in order:
+        hit = False
+        for e in data.get("search") or []:
+            if e.get("anchor", "").startswith(f"report/{rid}:") and "full" in e:
+                e.pop("full")
+                hit = True
+        if hit:
+            trimmed.append("full:" + rid)
+            if _size(data) <= budget:
+                break
+    for cap in (12, 6):
+        if _size(data) <= budget:
+            break
+        for src in data.get("sources") or []:
+            if len(src.get("claims") or []) > cap:
+                src["claims"] = src["claims"][:cap]
+        trimmed.append(f"claims:{cap}")
+    if _size(data) > budget:
+        for e in data.get("search") or []:
+            if e.get("anchor", "").startswith("changelog/"):
+                e.pop("full", None)
+        trimmed.append("full:changelog")
+    data["budget"] = {"bytes": _size(data), "limit": budget, "trimmed": trimmed}
+    return trimmed
 
 
 # ────────────────────────────────────────────────────────────────
