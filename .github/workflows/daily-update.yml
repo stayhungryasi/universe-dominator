@@ -247,6 +247,19 @@ jobs:
         timeout-minutes: 8
         continue-on-error: true
 
+      # 🧮 SpaceX 숫자 감사관(2중 검증, 2026-10-27) — 관제실 숫자를 판단층을 정답으로 쓰지 않고
+      # 최신 실적 8-K Ex.99.1 원문에서 다시 잰다(정확 일치·숫자 경계) + 교차 산식(부문 합·FCF·시가총액).
+      # 빌드 앞에 둔다: 관제실 상태줄에 '숫자 감사 n/n'. 불일치 → 소장 DM(같은 불일치 7일 재알림).
+      - name: SpaceX number audit
+        id: probe_audit
+        if: env.FULL_RUN == 'true'
+        run: python scripts/probe_audit.py
+        env:
+          SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
+
       # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진
       # build_site 앞에 둔다: essays.json 이 journal.html 에 주입되기 때문.
       # 논제 원장이 플레이스홀더인 회사는 수집조차 하지 않고 "관찰 대기" 로그만 남긴다.

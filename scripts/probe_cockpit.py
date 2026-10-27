@@ -383,7 +383,7 @@ def kpi_tiles(fin):
     return out
 
 
-def run_info(st, watch, vres, today, lang="ko"):
+def run_info(st, watch, vres, today, lang="ko", audit=None):
     run = st.get("run") or {}
     eng = ((watch or {}).get("engine") or {}).get("last_run") or {}
     try:
@@ -400,7 +400,21 @@ def run_info(st, watch, vres, today, lang="ko"):
                        else L(lang, "pc.run.none")) if eng else L(lang, "pc.run.none"),
             "engineOk": eng.get("conclusion") == "success", "engineDate": (eng.get("created_at") or "")[:10],
             "verify": [ok, checked], "next": sch.get("next", ""), "overdue": sch.get("overdue_days", 0),
-            "stale": sch.get("stale", False), "age": sch.get("age_days")}
+            "stale": sch.get("stale", False), "age": sch.get("age_days"),
+            "audit": audit_info(audit, today)}
+
+
+def audit_info(audit, today):
+    """2중 검증(숫자 감사관 probe_audit) 결과 — 3일 안의 감사만 화면에 싣는다(낡은 '통과'를 보이지 않게)."""
+    a = audit or {}
+    try:
+        d = datetime.fromisoformat(a.get("checked_at", "")).date()
+    except Exception:
+        return None
+    if (today - d).days > 3 or not a.get("n"):
+        return None
+    return {"ok": int(a.get("ok") or 0), "n": int(a.get("n") or 0), "bad": len(a.get("mismatch") or []),
+            "date": d.isoformat()}
 
 
 def _plain(md):
@@ -769,7 +783,7 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
                   and str(r.get("source", "")).startswith("spacex:")]
     data = {
         "v": 2, "today": today.isoformat(), "lang": lang,
-        "run": run_info(st, watch, vres, today, lang),
+        "run": run_info(st, watch, vres, today, lang, read_json(DATA_DIR / "spacex_audit.json", {})),
         "delta": delta,
         "price": {"v": mkt.get("price_usd"), "date": mkt.get("price_asof", ""), "src": mkt.get("price_source", "")},
         "band": {"lo": (val.get("fair_value_band_usd") or [None, None])[0],
@@ -907,6 +921,10 @@ def cockpit_html(d, lang="ko"):
     else:
         eng_txt = L(lang, "pc.eng.ok", e=r["engine"])
     v_ok, v_n = r["verify"]
+    au = r.get("audit")
+    audit_html = ("" if not au else
+                  L(lang, "pc.status.audit_bad_html", k=au["bad"]) if au["bad"] else
+                  L(lang, "pc.status.audit_html", ok=au["ok"], n=au["n"]))
     trig = (L(lang, "pc.status.trigger_html", name=C(lang, short_name(tr["name"])), when=esc(tr["when"]))
             if tr else "")
     h = [f'<div class="pc" id="pcRoot" data-pc-run="{esc(r["id"])}">']
@@ -915,7 +933,7 @@ def cockpit_html(d, lang="ko"):
              f'<span class="pc-status-t">'
              + L(lang, "pc.status.line_html", run=esc(r["id"]), date=md(r["date"]), eng=esc(eng_txt),
                  ok=v_ok, n=v_n, next=md(r["next"]))
-             + f'{trig}</span>'
+             + audit_html + f'{trig}</span>'
              f'<button class="pc-search-btn" id="pcSearchBtn" type="button" aria-label="{esc(L(lang, "pc.search.aria_btn"))}">'
              f'<span>{esc(L(lang, "pc.search.btn"))}</span><kbd>/</kbd></button></div>')
     h.append('<div class="pc-search" id="pcSearch" hidden><input id="pcQ" type="search" autocomplete="off" '
