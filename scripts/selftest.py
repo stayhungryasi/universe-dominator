@@ -2775,7 +2775,7 @@ console.log(JSON.stringify(cases.map(c => {
         check("관제실: 렌더", f"{type(_ce).__name__}: {str(_ce)[:80]}", "ok")
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
                  "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit",
-                 "test_i18n", "test_translate", "test_history_migration"):
+                 "test_i18n", "test_translate", "test_history_migration", "test_spacex_watch2"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)

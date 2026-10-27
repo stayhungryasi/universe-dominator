@@ -37,16 +37,18 @@ class FilingTest(unittest.TestCase):
         self.assertEqual(sw.event_kind("424B4", ""), "financing")
         self.assertEqual(sw.event_kind("10-Q", ""), "report")
 
-    def test_parse_filings_form4_counted_only(self):
+    def test_parse_filings_all_forms_insiders_apart(self):
+        """2026-10-27 개정: 모든 양식을 싣는다(S-8 = 기록). 내부자 양식(4·144)은 따로 — 상세는 원문 XML."""
         sub = {"filings": {"recent": {
             "form": ["8-K", "4", "10-Q", "S-8", "144"],
             "filingDate": ["2026-10-20", "2026-09-24", "2026-10-22", "2026-10-22", "2026-09-22"],
             "items": ["2.02,9.01", "", "", "", ""],
             "accessionNumber": ["0001-26-1", "0001-26-2", "0001-26-3", "0001-26-4", "0001-26-5"],
             "primaryDocument": ["a.htm", "b.xml", "c.htm", "d.htm", "e.xml"]}}}
-        ev, f4 = sw.parse_filings(sub)
-        self.assertEqual([e["form"] for e in ev], ["8-K", "10-Q"])     # S-8·144 는 감시 밖
-        self.assertEqual(len(f4), 1)
+        ev, ins = sw.parse_filings(sub)
+        self.assertEqual([e["form"] for e in ev], ["8-K", "10-Q", "S-8"])
+        self.assertEqual([e["grade"] for e in ev], ["major", "major", "record"])
+        self.assertEqual([r["form"] for r in ins], ["4", "144"])
         self.assertEqual(ev[0]["url"],
                          "https://www.sec.gov/Archives/edgar/data/1181412/0001261/a.htm")
 

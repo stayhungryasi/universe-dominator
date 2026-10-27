@@ -227,6 +227,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           # 트리거 DM 도 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+          # 하루 한 번 하트비트(매시간 감시가 먼저 보냈으면 생략) — 2026-10-27
+          SPACEX_HEARTBEAT: "1"
         continue-on-error: true
 
       # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진

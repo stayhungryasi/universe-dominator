@@ -1,0 +1,73 @@
+name: SpaceX Watch (hourly)
+
+# 🛰 매시간 SpaceX 감시 (2026-10-27, 외부 검수 G11)
+# 데일리 full 은 하루 3회(실측 KST 10:30·18:00·23:00 전후) — 밤사이 약 11시간이 비어 미국 장 마감 뒤 8-K 를
+# 5~6시간 늦게 잡았다. 이 워크플로는 공시 목록(SEC submissions)·내부자 원문·IR 보도자료만 가볍게 본다.
+#   · 새 사건 → 등급대로 소장 DM(공개 채널 폴백 없음) · 긴급·중요는 탐사 엔진 사건 모드를 **즉시** 발사
+#   · 하루 한 번(08시 이후 첫 회차) 하트비트 DM — 이 메시지가 안 오면 감시가 멈춘 것이다
+#   · 이 워크플로가 쓰는 파일은 data/spacex_hourly.json 하나뿐 — 데일리 파일을 쓰지 않아 커밋이 부딪히지 않는다
+#   · 바뀐 것이 없으면 커밋도 없다(매시간 Cloudflare 빌드가 생기지 않게 실행 시각은 파일에 쓰지 않는다)
+#   · 데일리가 이 워크플로의 마지막 성공을 GitHub API 로 확인한다(6시간 넘게 실패면 DM — 감시자의 감시자)
+
+on:
+  schedule:
+    - cron: '47 * * * *'      # 매시 47분(정각·데일리 17분과 겹치지 않게)
+  workflow_dispatch:
+
+concurrency:
+  group: spacex-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write   # data/spacex_hourly.json 커밋 + repository_dispatch(탐사 엔진 사건 모드)
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: SpaceX hourly watch
+        run: python scripts/spacex_watch.py --hourly
+        env:
+          SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 감시 DM 은 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+          SPACEX_HEARTBEAT: "1"
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/spacex_hourly.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 커밋 생략"
+            exit 0
+          fi
+          git commit -m "spacex hourly: $(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')"
+          for i in 1 2 3; do
+            if git push; then
+              echo "push 성공"
+              exit 0
+            fi
+            echo "push 거부 — 원격 변경 반영 후 재시도 ($i/3)"
+            git pull --rebase origin main || git rebase --abort
+            sleep $((i * 3))
+          done
+          echo "push 3회 실패" >&2
+          exit 1
