@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "f5b5226d0681",
  "lang": "es",
- "src_hash": "3aa32954031f",
+ "src_hash": "fea88c4d5012",
  "model": "claude-haiku-4-5",
- "at": "2026-10-27 11:31",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "SanDisk (NASDAQ:SNDK) se negocia actualmente a $1.260,93, con un precio objetivo de 24/7 Wall St. de $1.407,07, lo que sugiere un potencial de aumento del 11,59%.",
-  "summary_ko.1": "Los ingresos del cuarto trimestre fiscal fueron de $8.965 millones, un aumento del 371,6% interanual, y el EPS no-GAAP de $39,25 superó el consenso de $33,28, logrando la quinta falta de rendimiento consecutiva.",
-  "summary_ko.2": "Ha asegurado 8 contratos NBM con ingresos esperados mínimos de $93.900 millones y garantías financieras de $16.500 millones, y el precio objetivo de consenso implica un aumento de aproximadamente el 72%.",
-  "title": "SanDisk Stock Is Back on Wall Street's Radar. Here's Where I See It Going"
- }
+ "at": "2026-10-27 18:35",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[14§summary_ko.1] 숫자: 원문에 없는 숫자 10.8 billion",
+  "[14§summary_ko.1] 숫자: 원문의 숫자가 빠짐 10.8억"
+ ]
 }

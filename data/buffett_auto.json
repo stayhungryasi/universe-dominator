@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-27 11:21",
- "generated_at": "2026-10-27T11:21:21.407064+09:00",
+ "generated_label": "2026-10-27 18:22",
+ "generated_at": "2026-10-27T18:22:26.179900+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-27",
@@ -128,7 +128,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -146,7 +146,24 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "최강 소비자 프랜차이즈이나 성장 부진으로 $5조 밸류 정당화 위험; 신경영진 전환기에 방향성 불확실",
+   "_evidence": {
+    "franchise": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership",
+    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership"
+   }
   },
   "GOOG": {
    "as_of": "2026-10-27",
@@ -450,7 +467,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -468,29 +485,7 @@
      "period": "2025Q4",
      "end": "2025-11-02"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "AI 인프라 칩 수요 견조하고 거대 자본조달 성공(Anthropic $63B)하나, 1년간 횡보 후 50% 상승 여지 평가는 현 멀티플의 고가를 시사; 커스텀 칩 경쟁 심화 리스크 상존",
-   "_evidence": {
-    "franchise": "Broadcom partners with Wall Street giants for $63 billion Anthropic chip financing; CEO touts growth with AI labs",
-    "risk5": "Broadcom went nowhere for a year; Stock down after Q3 earnings despite beat; AI revenue growth pricing concerns raised",
-    "capalloc": "Q3 earnings beat reported; $63B financing secured with major financial partners"
-   }
+   ]
   },
   "SPCX": {
    "as_of": "2026-10-27",
@@ -530,7 +525,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.69
+    "value": 1.66
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -1138,7 +1133,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "HBM4 양산 진입으로 초단기 수익성 급증하나 메모리 사이클의 본질적 변동성 내재"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1150,7 +1150,32 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2026H1"
+   },
+   "notes": "AI 수요 급증 국면의 슈퍼사이클 중이나, 헤드라인 상 '주가 반토막 후 매수 개입' 신호로 순환성 정점 의심",
+   "_evidence": {
+    "franchise": "HBM4 대량 생산 진입, 구글·AI 고객층 독점적 공급처 지위; 메모리 업체 중 대체 불가능 기술 포지셔닝",
+    "risk5": "Q2 2026 영업마진 76%, 수익성 급등은 사이클 정점 신호 가능성; SK 회장 개인매수로 경영진 신뢰도 확인되나 메모리 산업 구조적 변동성은 불변",
+    "capalloc": "40조원 자사주 매입 완료, $26.5B 미국 공모 후 $28.6B 추가 매입 계획; 현금 창출 양호하고 희석 없음",
+    "owner_earnings": "영업마진 76% 달성(Q2 2026) 보고되나, '메모리 슈퍼사이클 쿨링' 헤드라인과 나스닥 상장 후 주가 급락 반복은 실질 이익의 지속성 의문 제기"
+   }
   },
   "ASML": {
    "as_of": "2026-10-27",
@@ -1831,7 +1856,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 260.94
+    "value": 270.9
    },
    "eps_status": null,
    "roe_tangible": 0.2951,
@@ -1864,7 +1889,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 605.65
+    "value": 630.38
    },
    "eps_status": null,
    "roe_tangible": 0.4807,
@@ -1945,5 +1970,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-27 11:22"
+ "scout_label": "2026-10-27 18:24"
 }

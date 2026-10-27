@@ -2,15 +2,17 @@
  "form4_30d": 1,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-10-27T09:37+09:00",
+  "fetched_at": "2026-10-27T18:26+09:00",
   "year": 2026,
-  "year_count": 122,
+  "year_count": 123,
   "starship_last": {
    "id": "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
    "date": "2026-09-28",
    "form": "발사",
    "items": "",
    "title": "Starship | Starlink Group 31-1 (Starship Flight 14) — 발사 성공",
+   "result": "Success",
+   "name": "Starship | Starlink Group 31-1 (Starship Flight 14)",
    "kind": "starship",
    "grade": "major",
    "url": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
@@ -23,10 +25,30 @@
    "status": "To Be Determined",
    "precision": "Quarter 4"
   },
-  "source": "Launch Library 2 (2.4.0)"
+  "source": "Launch Library 2 (2.4.0)",
+  "competitor_next": [
+   {
+    "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
+    "date": "2026-11-23",
+    "status": "To Be Determined",
+    "precision": "Day"
+   },
+   {
+    "name": "Vulcan VC6L | Amazon Leo (LV-01)",
+    "date": "2026-11-30",
+    "status": "To Be Determined",
+    "precision": "Month"
+   },
+   {
+    "name": "New Glenn | Amazon Leo (LN-01)",
+    "date": "2026-12-31",
+    "status": "To Be Determined",
+    "precision": "Year"
+   }
+  ]
  },
  "engine": {
-  "checked_at": "2026-10-27T11:24+09:00",
+  "checked_at": "2026-10-27T18:26+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-10-27T00:46:31Z",
@@ -149,6 +171,8 @@
    "form": "발사",
    "items": "",
    "title": "Starship | Starlink Group 31-1 (Starship Flight 14) — 발사 성공",
+   "result": "Success",
+   "name": "Starship | Starlink Group 31-1 (Starship Flight 14)",
    "kind": "starship",
    "grade": "major",
    "url": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
@@ -368,6 +392,8 @@
    "form": "발사",
    "items": "",
    "title": "Starship | Flight 13 — 발사 성공",
+   "result": "Success",
+   "name": "Starship | Flight 13",
    "kind": "starship",
    "grade": "major",
    "url": "https://ll.thespacedevs.com/2.4.0/launches/ac897b9f-44d2-4ff4-8416-1a0a076e98a2/",
@@ -1090,7 +1116,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-27T11:24+09:00",
+ "generated_at": "2026-10-27T18:25+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1161,24 +1187,24 @@
   }
  ],
  "hourly": {
-  "checked_at": "2026-10-27T11:24+09:00",
-  "last_success_at": "2026-10-27T00:58:29Z",
+  "checked_at": "2026-10-27T18:26+09:00",
+  "last_success_at": "2026-10-27T05:38:11Z",
   "last_conclusion": "success"
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",
  "facts": {
   "lockup": {
+   "v": 2,
    "accn": "0001628280-26-042639",
    "form": "424B4",
    "filed": "2026-06-12",
    "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026042639/spaceexplorationtechnologi.htm",
-   "fetched_at": "2026-10-27T11:24+09:00",
+   "fetched_at": "2026-10-27T18:26+09:00",
    "sentences": [
-    "In particular, subject to the expiration or waiver of any applicable lock-up period, parties to the Investors' Rights Agreement described in \"Certain Relationships and Related Person Transactions&#8212;",
+    "In particular, subject to the expiration or waiver of any applicable lock-up period, parties to the Investors' Rights Agreement described in \"Certain Relationships and Related Person Transactions— Investors' Rights Agreement\" will have the right, subject to certain exceptions and conditions, to require us to register approximately 9.2 billion shares of Class A common stock (including shares of Class A common stock issuable upon conversion of Class B common stock) under the Securities Act of 1933, as amended (the \"Securities Act\"), and they will have the right to participate in certain future registrations of securities by us.",
     "In addition, approximately 12.2 billion shares of Class A common stock (including shares of Class A common stock issuable upon conversion of Class B common stock) will generally be available for resale under Rule 144 starting 90 days after this offering, subject to lock-up restrictions described elsewhere in this prospectus.",
-    "As a result of the lock-up and market standoff agreements described below, and subject to such agreements and the provisions of Rules 144 and 701 under the Securities Act (including, with respect to shares held by affiliates, Rule 144 volume limitations), based on information available to the Company, these restricted securities will be available for sale in the public market as follows (assuming no exercise of outstanding stock options subsequent to March 31, 2026 and no settlement of RSUs and RSAs)&#58;",
-    "Earliest Date Available for Sale in the Public Market Approximate Number of Shares of Class A Common Stock The second full trading day on Nasdaq immediately following the First Earnings Release Date (as defined below) Up to 911.5 million shares of Class A common stock, representing the shares subject to the 180-day lock-up period released from restrictions under the lock-up and market standoff agreements on such date.",
+    "As a result of the lock-up and market standoff agreements described below, and subject to such agreements and the provisions of Rules 144 and 701 under the Securities Act (including, with respect to shares held by affiliates, Rule 144 volume limitations), based on information available to the Company, these restricted securities will be available for sale in the public market as follows (assuming no exercise of outstanding stock options subsequent to March 31, 2026 and no settlement of RSUs and RSAs): Earliest Date Available for Sale in the Public Market Approximate Number of Shares of Class A Common Stock The second full trading day on Nasdaq immediately following the First Earnings Release",
     "If the reported closing price of our Class A common stock on Nasdaq is at least 30% greater than the public offering price set forth on the cover page of this prospectus for at least five of the ten consecutive trading days ending on, and including, the First Earnings Release Date, the second full trading day immediately after the First Earnings Release Date Up to 455.8 million additional shares of Class A common stock (the \"Additional Release Shares\"), representing the shares subject to the 180-day lock-up period released from restrictions under the lock-up and market standoff agreements on such date.",
     "August 20, 2026 (70 th day after the date of this prospectus) Up to 319.0 million shares of Class A common stock, representing 7% of the shares subject to the 180-day lock-up period.",
     "Excludes shares held by \"affiliates\" as such term is defined in Rule 144 under the Securities Act. 259 Table of Contents September 9, 2026 (90 th day after the date of this prospectus) Up to 319.0 million shares of Class A common stock, representing 7% of the shares subject to the 180-day lock-up period.",
@@ -1194,22 +1220,17 @@
     "May 17, 2027 (340 th day after the date of this prospectus) Up to 176.0 million shares of Class A common stock, representing 10% of the shares subject to the extended lock-up period (other than Mr.",
     "June 12, 2027 (366 th day after the date of this prospectus) Up to 351.9 million shares of Class A common stock, representing 20% of the shares subject to the extended lock-up period (other than Mr.",
     "The second full trading day immediately following the public release of our quarterly financial results for the quarter ended June 30, 2027 Up to 351.9 million shares of Class A common stock, representing the remaining shares subject to the extended lock-up period.",
-    "Musk has agreed with the underwriters, that during a period of 366 days after the date of this prospectus, all of the shares owned by him are subject to the restrictions described in the paragraph below&#59; and certain shareholders 260 Table of Contents have agreed that, until the release of our financial results for the quarter ending June 30, 2027, certain shares owned by them are subject to the restrictions described in the paragraph below (subject to timed automatic releases described in the \"Underwriting&#8212;Lock-up Agreements\" section of this prospectus).",
-    "See the section titled \"Underwriting&#8212;Lock-up Agreements\" for more information about these Transfer restrictions and related releases and exceptions.",
+    "Musk has agreed with the underwriters, that during a period of 366 days after the date of this prospectus, all of the shares owned by him are subject to the restrictions described in the paragraph below; and certain shareholders 260 Table of Contents have agreed that, until the release of our financial results for the quarter ending June 30, 2027, certain shares owned by them are subject to the restrictions described in the paragraph below (subject to timed automatic releases described in the \"Underwriting—Lock-up Agreements\" section of this prospectus).",
     "Accordingly, shares of Class A common stock registered under such registration statement will be available for sale in the open market following the effective date, unless such shares are subject to vesting restrictions with us or the lock-up and market standoff restrictions described above. 262 Table of Contents MATERIAL U.S.",
-    "Lock-up Agreements We have agreed with the underwriters that during the period of 180 days after the date of this prospectus (the \"lock- up period\"), without the prior written consent of Goldman Sachs &#38;",
-    "(a) the shares sold in this offering, (b) the issuance by us of our common stock upon the exercise (including any net exercise) of an option or warrant, the vesting and settlement (including any net settlement) of restricted stock units or similar equity awards or the reclassification or conversion of a security, in each case outstanding on the date hereof and identified herein, (c) the grant or issuance by us, or exercise or settlement (in cash, shares of our common stock, or otherwise), of options, stock appreciation rights, restricted stock awards, restricted stock units, performance stock awards or any other type of equity award or arrangement to our employees, officers, directors, advis",
-    "The restrictions on Transfer of the lock-up securities do not apply to the&#58; a.",
-    "Transfer by the lock-up party of the lock-up securities&#58;",
-    "(i) as one or more bona fide gifts or charitable contributions, or for bona fide estate planning purposes, including without limitation to charitable organizations or educational institutions, (ii) upon death by will, testamentary document or intestate succession, (iii) if the lock-up party is a natural person, to any member of the lock-up party's immediate family, to other dependents or to any trust, partnership, limited liability company or other entity for the direct or indirect benefit of the lock- up party or the immediate family of the lock-up party or, if the lock-up party is a trust to a trustor, trustee or beneficiary of the trust or the estate of a trustor, trustee or beneficiary o",
-    "LLC on behalf of the underwriters&#59; provided that (A) in the case of clauses (a)(i), (ii), (iii), (iv), (v) and (vi) above, such transfer or distribution must not involve a disposition for value, (B) in the case of clauses (a)(i), (ii), (iii), (iv), (v), (vi), (vii) and (xv) above, it is a condition to the transfer or distribution that the donee, devisee, transferee or distributee, as the case may be, must sign and deliver a lock-up agreement for the balance of the applicable lock-up period (C) in the case of clauses (a)(ii), (iii), (iv), (v), and (vi) above, no filing by any party (including, without limitation, any donor, donee, devisee, transferor, transferee, distributor or distribute",
-    "(i) Transfer by the lock-up party of the lock-up securities pursuant to a bona fide third-party tender offer, merger, consolidation or other similar transaction that is approved by our board of directors and made to all our holders of capital stock involving a change of control, and (ii) entry into any lock-up, voting or similar agreement pursuant to which the lock-up party may agree to transfer, sell, tender or otherwise dispose of shares of common stock or such other securities convertible into or exercisable or exchangeable for common stock in connection with a transaction described in clause (i) above&#59; provided that in the event that such tender offer, merger, consolidation or other ",
-    "Transfer by the lock-up party of the lock-up securities to us in connection with (i) the conversion of our outstanding preferred stock into shares of common stock in connection with the consummation of this offering or (ii) the conversion, reclassification, redemption, exchange of any shares of any class of common stock or lock-up securities into shares of another class of common stock, provided that any such shares of common stock or lock-up securities received upon such conversion, reclassification, redemption or exchange pursuant to clause (i) or (ii) must be subject to the terms of a lock-up agreement&#59; and e. exercise of any option to purchase any lock-up securities pursuant to any o",
+    "Lock-up Agreements We have agreed with the underwriters that during the period of 180 days after the date of this prospectus (the \"lock- up period\"), without the prior written consent of Goldman Sachs & Co.",
+    "These restrictions do not apply to: (a) the shares sold in this offering, (b) the issuance by us of our common stock upon the exercise (including any net exercise) of an option or warrant, the vesting and settlement (including any net settlement) of restricted stock units or similar equity awards or the reclassification or conversion of a security, in each case outstanding on the date hereof and identified herein, (c) the grant or issuance by us, or exercise or settlement (in cash, shares of our common stock, or otherwise), of options, stock appreciation rights, restricted stock awards, restricted stock units, performance stock awards or any other type of equity award or arrangement to our e",
+    "Transfer by the lock-up party of the lock-up securities: (i) as one or more bona fide gifts or charitable contributions, or for bona fide estate planning purposes, including without limitation to charitable organizations or educational institutions, (ii) upon death by will, testamentary document or intestate succession, (iii) if the lock-up party is a natural person, to any member of the lock-up party's immediate family, to other dependents or to any trust, partnership, limited liability company or other entity for the direct or indirect benefit of the lock- up party or the immediate family of the lock-up party or, if the lock-up party is a trust to a trustor, trustee or beneficiary of the t",
+    "LLC on behalf of the underwriters; provided that (A) in the case of clauses (a)(i), (ii), (iii), (iv), (v) and (vi) above, such transfer or distribution must not involve a disposition for value, (B) in the case of clauses (a)(i), (ii), (iii), (iv), (v), (vi), (vii) and (xv) above, it is a condition to the transfer or distribution that the donee, devisee, transferee or distributee, as the case may be, must sign and deliver a lock-up agreement for the balance of the applicable lock-up period (C) in the case of clauses (a)(ii), (iii), (iv), (v), and (vi) above, no filing by any party (including, without limitation, any donor, donee, devisee, transferor, transferee, distributor or distributee) u",
     "Several of our shareholders have agreed with the underwriters that certain shares of our common stock owned by them are subject to the restrictions described above until the beginning of the second full trading day immediately following public release of our quarterly financial results for the quarter ended June 30, 2027 (such period of time, the \"extended lock-up period\"), subject to specified early release provisions described below.",
     "The shares subject to the extended lock-up period, together with the shares held by our founder (which are subject to a 366-day lock-up period), represent approximately 7.8 billion shares of common stock, or greater than 63% of our shares outstanding immediately prior to this offering.",
-    "For those shares subject to the extended lock-up period (which does not include shares held by our founder), there are automatic early releases from the restrictions on Transfer commencing in the first quarter of 2027 as follows&#58; a. on or after the second full trading day on Nasdaq immediately following the public release of our quarterly financial results (which for this purpose does not include \"flash\" numbers or preliminary, partial earnings) for the quarter ended December 31, 2026, up to 20% of the shares may be Transferred&#59; b. on or after March 18, 2027 (the date that is 280 days after the date of this prospectus), up to an additional 10% of the shares may be Transferred&#59; c.",
+    "For those shares subject to the extended lock-up period (which does not include shares held by our founder), there are automatic early releases from the restrictions on Transfer commencing in the first quarter of 2027 as follows: a. on or after the second full trading day on Nasdaq immediately following the public release of our quarterly financial results (which for this purpose does not include \"flash\" numbers or preliminary, partial earnings) for the quarter ended December 31, 2026, up to 20% of the shares may be Transferred; b. on or after March 18, 2027 (the date that is 280 days after the date of this prospectus), up to an additional 10% of the shares may be Transferred; c. on or after",
     "All other outstanding shares of our common stock are subject to the Transfer restrictions described above until immediately after the close of the trading day on the 180th day after the date of this prospectus (such period of time, the \"180-day lock-up period\"), subject to the early release provisions described below.",
-    "For those shares subject to the 180-day lock-up period, there are automatic early releases from the restrictions on Transfer commencing in the third quarter of 2026 as follows&#58; a. on or after the second full trading day on Nasdaq immediately following the public release of our quarterly financial results (which for this purpose does not include \"flash\" numbers or preliminary, partial earnings) for the quarter ended June 30, 2026 (such date, the \"First Earnings Release Date\"), up to 20% of the shares may be Transferred&#59; b. if the reported closing price of our Class A common stock on Nasdaq is at least 30% greater than the public offering price set forth on the cover page of this prosp"
+    "For those shares subject to the 180-day lock-up period, there are automatic early releases from the restrictions on Transfer commencing in the third quarter of 2026 as follows: a. on or after the second full trading day on Nasdaq immediately following the public release of our quarterly financial results (which for this purpose does not include \"flash\" numbers or preliminary, partial earnings) for the quarter ended June 30, 2026 (such date, the \"First Earnings Release Date\"), up to 20% of the shares may be Transferred; b. if the reported closing price of our Class A common stock on Nasdaq is at least 30% greater than the public offering price set forth on the cover page of this prospectus fo"
    ],
    "note": "원문 문장 그대로(기계 추출). 해석·판정은 탐사 엔진(판단층)이 한다."
   }
