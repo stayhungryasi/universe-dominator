@@ -840,7 +840,6 @@ def collect_ir(fc, logs):
     return out
 
 
-FACTS_PATH = DATA_DIR / "spacex_facts.json"
 LOCKUP_KEYS = ("lock-up", "lockup", "lock up")
 
 
@@ -870,10 +869,11 @@ def lockup_sentences(html, cap=40):
     return out
 
 
-def collect_prospectus_facts(fc, events, logs):
+def collect_prospectus_facts(fc, watch, events, logs):
     """O1(2026-10-27) — 최신 424B 설명서의 락업 문장을 기계가 원문 인용으로 확보한다(같은 공시는 다시 받지 않는다).
-    판단층은 '12/8 락업 약 40%, 미확인'으로 남아 있었다 — 원문은 측정층이 먼저 쥔다."""
-    facts = read_json(FACTS_PATH, {}) or {}
+    판단층은 '12/8 락업 약 40%, 미확인'으로 남아 있었다 — 원문은 측정층이 먼저 쥔다.
+    data/spacex_watch.json 의 facts.lockup 에 싣는다 — 탐사 엔진은 규약(monthly_run.md 0번)대로 이 파일을 읽는다."""
+    facts = watch.setdefault("facts", {})
     pros = [e for e in events if form_base(e.get("form")).startswith("424B") and e.get("url")]
     if not pros:
         return
@@ -892,7 +892,6 @@ def collect_prospectus_facts(fc, events, logs):
     facts["lockup"] = {"accn": p.get("accn"), "form": p.get("form"), "filed": p.get("date"), "source_url": p["url"],
                        "fetched_at": now_kst().isoformat(timespec="minutes"), "sentences": sents,
                        "note": "원문 문장 그대로(기계 추출). 해석·판정은 탐사 엔진(판단층)이 한다."}
-    write_json(FACTS_PATH, facts)
     logs.append(f"설명서 락업 문장 {len(sents)}개 확보({p.get('form')} {p.get('date')})")
 
 
@@ -1155,7 +1154,7 @@ def run(mode="daily"):
         collect_engine(fc, watch, logs)
         collect_hourly_runs(fc, watch, logs)
         try:
-            collect_prospectus_facts(fc, sec_events, logs)
+            collect_prospectus_facts(fc, watch, sec_events, logs)
         except Exception as e:                       # 부가 측정 — 실패해도 본 측정은 계속
             logs.append(f"설명서 락업 추출 실패({type(e).__name__}: {str(e)[:80]})")
         fc.flush()

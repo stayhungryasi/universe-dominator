@@ -162,21 +162,16 @@ class LockupTest(unittest.TestCase):
 
     def test_collect_once_per_accn(self):
         import feed_client as fc
-        saved = sw.FACTS_PATH
-        sw.FACTS_PATH = Path(tempfile.mkdtemp()) / "f.json"
+        watch = {}
         ev = [{"form": "424B4", "date": "2026-06-12", "accn": "P-1", "url": "https://x/p.htm"}]
-        try:
-            with mock.patch.object(sw, "sec_headers", return_value={"User-Agent": "t"}), \
-                    mock.patch.object(fc, "fetch", return_value=(self.PROSPECTUS, "ok", 200)) as f, \
-                    mock.patch.object(fc, "record"):
-                logs = []
-                sw.collect_prospectus_facts(fc, ev, logs)
-                sw.collect_prospectus_facts(fc, ev, logs)
-            self.assertEqual(f.call_count, 1)                          # 같은 공시는 다시 받지 않는다
-            doc = json.loads(sw.FACTS_PATH.read_text(encoding="utf-8"))
-            self.assertEqual((doc["lockup"]["accn"], len(doc["lockup"]["sentences"])), ("P-1", 2))
-        finally:
-            sw.FACTS_PATH = saved
+        with mock.patch.object(sw, "sec_headers", return_value={"User-Agent": "t"}), \
+                mock.patch.object(fc, "fetch", return_value=(self.PROSPECTUS, "ok", 200)) as f, \
+                mock.patch.object(fc, "record"):
+            logs = []
+            sw.collect_prospectus_facts(fc, watch, ev, logs)
+            sw.collect_prospectus_facts(fc, watch, ev, logs)
+        self.assertEqual(f.call_count, 1)                              # 같은 공시는 다시 받지 않는다
+        self.assertEqual((watch["facts"]["lockup"]["accn"], len(watch["facts"]["lockup"]["sentences"])), ("P-1", 2))
 
 
 class CockpitTileTest(unittest.TestCase):
@@ -216,16 +211,15 @@ class RunWiringTest(unittest.TestCase):
     """run() 을 실제로 돌린다 — 수집만 가짜. DM·대기열·due 를 '정확히' 센다."""
 
     def setUp(self):
-        self._saved = (sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH, sw.FACTS_PATH)
+        self._saved = (sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH)
         self.tmp = Path(tempfile.mkdtemp())
-        sw.FACTS_PATH = self.tmp / "f.json"
         sw.WATCH_PATH, sw.KPI_PATH = self.tmp / "w.json", self.tmp / "k.json"
         sw.STATE_PATH, sw.HOURLY_PATH = self.tmp / "s.json", self.tmp / "h.json"
         sw.STATE_PATH.write_text(json.dumps({"triggers_next_12m": [T5], "run": {"run_date": "2026-10-26"}}),
                                  encoding="utf-8")
 
     def tearDown(self):
-        sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH, sw.FACTS_PATH = self._saved
+        sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH = self._saved
 
     def _run(self, sub, mode="daily", texts=None, now="2026-10-27T09:30:00+09:00", dispatch_ok=True, env=None):
         import feed_client as fc

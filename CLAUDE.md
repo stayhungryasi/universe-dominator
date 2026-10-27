@@ -150,7 +150,7 @@
     | 발사 실패·부분 실패(전 기체, 최근 7일) | LL2 상태 4·7 | 긴급 | LaunchTest |
     | Starship 비행 | LL2 | 중요 | LaunchTest |
     | IR 보도자료 | RSS | 기록 | RunWiring |
-    | 설명서(424B) 락업 조건 | 원문 문장 기계 추출 → `data/spacex_facts.json`(같은 공시 1회, 해석은 엔진) | — | LockupTest |
+    | 설명서(424B) 락업 조건 | 원문 문장 기계 추출 → `data/spacex_watch.json` facts.lockup(엔진이 규약대로 읽는 파일 · 같은 공시 1회 · 해석은 엔진) | — | LockupTest |
     | 뉴스로만 오는 사건(CEO 발언·신용등급·FAA/FCC·소송·합병 협상·락업 보도) | `spacex_news.py`(daily full · 구글뉴스 질의 10종 · 모델은 분류만, 결정은 기계 규칙: 1급 발행처 또는 2곳 이상 → 엔진, 1곳 → DM 만 · 하루 깨움 2회 상한(긴급 예외) · 같은 묶음 7일 쿨다운) | 긴급/중요 | `test_spacex_news`(8건, 변이 5종) |
     | 경쟁 발사(Amazon Leo·New Glenn) | **미배선 — 다음 작업** | — | — |
   - 뉴스 감시관 원칙: 보도는 **판단 근거가 아니라 확인 대상** — 엔진을 깨울 뿐, 판단층에는 쓰지 않는다. 판정 모델이 실패하면 그 헤드라인은 seen 에 넣지 않고 다음 회차에 다시(침묵은 통과가 아니다) + DM. 원장 kind=spacex_news(질의별·판정 모델), 관제탑 봇 목록에 등재.
