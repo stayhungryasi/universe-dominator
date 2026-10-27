@@ -46,7 +46,8 @@ SRC_STATE_KO = {"ok": "정상", "zero": "새 글 없음", "decode_fail": "디코
                 "http_error": "요청 실패", "timeout": "응답 지연"}
 EVENT_KIND_KO = {"earnings": "실적", "contract": "계약", "financing": "조달", "report": "정기 공시",
                  "filing": "공시", "starship": "발사", "ir": "보도자료", "essay": "동행 에세이",
-                 "withdraw": "철회·정정", "insider": "내부자 거래", "launch": "발사", "launch_fail": "발사 실패"}
+                 "withdraw": "철회·정정", "insider": "내부자 거래", "launch": "발사", "launch_fail": "발사 실패",
+                 "competitor": "경쟁 발사"}
 PANELS = [("milestones", "이정표 매트릭스"), ("events", "사건"), ("fin", "재무·KPI"),
           ("scen", "시나리오·가치"), ("report", "보고서"), ("changelog", "변화 이력"),
           ("sources", "출처")]
@@ -497,22 +498,32 @@ def event_rows(watch, essays_doc, today, triggers, lang="ko"):
     out = []
     cut = (today - timedelta(days=90)).isoformat()
     try:
-        from spacex_watch import trigger_kind
+        from spacex_watch import trigger_kind, event_title
     except Exception:
         def trigger_kind(_):
             return None
+
+        def event_title(e, _lang):
+            return e.get("title", "")
     for e in (watch or {}).get("events") or []:
         if not isinstance(e, dict) or (e.get("date") or "") < cut:
             continue
         kind = e.get("kind") or "filing"
         rel_t = [t["id"] for t in triggers if trigger_kind(t["name"]) == kind]
         rel_ax = {"starship": ["B"], "launch_fail": ["B"], "earnings": ["A", "C", "D"],
-                  "financing": ["D"], "contract": ["C", "D"]}.get(kind, [])
+                  "financing": ["D"], "contract": ["C", "D"], "competitor": ["A", "E"]}.get(kind, [])
+        # 제목·양식 칸은 상태에서 그 언어로(기계가 만든 문장은 콘텐츠가 아니다) — 공시 양식 코드(8-K)는 그대로
+        src = e.get("source", "")
+        form = e.get("form", "")
+        if src == "Launch Library 2":
+            form = L(lang, "pc.kind.competitor" if kind == "competitor" else "pc.kind.launch")
+        elif src == "SpaceX IR":
+            form = L(lang, "pc.kind.ir")
         out.append({"id": "ev-" + re.sub(r"[^0-9A-Za-z]", "", (e.get("accn") or e.get("id") or e.get("url") or ""))[-16:],
                     "date": e.get("date", ""), "kind": kind,
                     "kindKo": L(lang, "pc.kind." + (kind if kind in EVENT_KIND_KO else "filing")),
-                    "title": e.get("title", ""), "url": e.get("url", ""), "source": e.get("source", ""),
-                    "form": e.get("form", ""), "axes": rel_ax, "triggers": rel_t})
+                    "title": event_title(e, lang), "url": e.get("url", ""), "source": src,
+                    "form": form, "axes": rel_ax, "triggers": rel_t})
     for e in (essays_doc or {}).get("essays") or []:
         if not isinstance(e, dict) or e.get("company") != "spacex" or (e.get("date") or "") < cut:
             continue

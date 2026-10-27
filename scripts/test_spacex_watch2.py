@@ -145,6 +145,123 @@ class LaunchTest(unittest.TestCase):
         self.assertEqual((ss["kind"], ss["grade"]), ("starship", "major"))
 
 
+def _ll2(name, net, abbrev, sid=None):
+    return {"id": sid or name + net, "name": name, "net": net, "status": {"abbrev": abbrev, "name": abbrev},
+            "net_precision": {"name": "Hour"}, "url": "https://ll/" + (sid or name)}
+
+
+class CompetitorLaunchTest(unittest.TestCase):
+    """지뢰 ⑳ 대응표의 마지막 빈 칸 — 경쟁 발사(Amazon Leo·New Glenn). 결과 확정 전에는 사건이 아니다."""
+
+    def test_competitor_event_grades(self):
+        ok = sw.competitor_event(_ll2("Vulcan VC6L | Amazon Leo (LV-01)", "2026-10-29T14:00:00Z", "Success"))
+        self.assertEqual((ok["kind"], ok["grade"]), ("competitor", "record"))
+        self.assertEqual(ok["title"], "[경쟁] Vulcan VC6L | Amazon Leo (LV-01) — 발사 성공")
+        bad = sw.competitor_event(_ll2("New Glenn | Blue Moon MK1", "2026-10-29T14:00:00Z", "Failure"))
+        self.assertEqual(bad["grade"], "major")                       # 실패 → 엔진을 깨운다
+        self.assertIsNone(sw.competitor_event(_ll2("Vulcan VC6L | Amazon Leo (LV-02)", "2026-11-20T00:00Z", "Go")))
+        self.assertIsNone(sw.competitor_event(_ll2("Falcon 9 | Starlink 10-1", "2026-10-26T00:00Z", "Success")))
+
+    def test_competitor_next_upcoming_only(self):
+        rows = [_ll2("Vulcan VC6L | Amazon Leo (LV-02)", "2026-11-20T00:00:00Z", "TBC"),
+                _ll2("Vulcan VC6L | Amazon Leo (LV-01)", "2026-10-29T14:00:00Z", "Go"),
+                _ll2("Atlas V 551 | Amazon Leo (LA-05)", "2026-10-25T00:00:00Z", "Success"),
+                _ll2("Ariane 64 | Galileo L14", "2026-11-01T00:00:00Z", "Go")]
+        nx = sw.competitor_next(rows, "2026-10-27T00:40:00Z")
+        self.assertEqual([x["name"] for x in nx], ["Vulcan VC6L | Amazon Leo (LV-01)", "Vulcan VC6L | Amazon Leo (LV-02)"])
+
+    def test_collect_launches_wiring(self):
+        """collect_launches 를 실제로 돌린다 — 비행 중 Starship 은 사건이 아니고(결과가 나오면 그때 운다),
+        지난 7일 경쟁 발사 결과는 사건, 다가오는 경쟁 발사는 competitor_next 로."""
+        import feed_client as fc
+        leo_done = _ll2("Atlas V 551 | Amazon Leo (LA-05)", "2026-10-25T00:00:00Z", "Success", "leo5")
+        leo_next = _ll2("Vulcan VC6L | Amazon Leo (LV-01)", "2026-10-29T14:00:00Z", "Go", "lv1")
+        ss_flying = _ll2("Starship | Flight 15", "2026-10-27T00:10:00Z", "In Flight", "f15")
+
+        def fake(fc_, url, label, headers=None):
+            if "search=Amazon%20Leo" in url:
+                return {"results": [leo_done, leo_next]}, "ok", 200
+            if "search=Starship" in url and "ordering=-net" in url:
+                return {"results": [ss_flying]}, "ok", 200
+            return {"results": [], "count": 0}, "ok", 200
+        watch = {}
+        with mock.patch.object(sw, "_get_json", side_effect=fake), mock.patch.object(fc, "record") as rec, \
+                mock.patch.object(sw, "now_kst", return_value=datetime.fromisoformat("2026-10-27T09:40:00+09:00")):
+            evs = sw.collect_launches(fc, watch, [])
+        self.assertEqual([(e["id"], e["kind"], e["grade"]) for e in evs], [("leo5", "competitor", "record")])
+        self.assertEqual([x["name"] for x in watch["launches"]["competitor_next"]], ["Vulcan VC6L | Amazon Leo (LV-01)"])
+        self.assertTrue(any(c.args[1] == "경쟁 발사(LL2)" and c.args[2] == "ok" for c in rec.call_args_list))
+
+    def test_competitor_query_failure_disables_cache(self):
+        import feed_client as fc
+
+        def fake(fc_, url, label, headers=None):
+            if "search=New%20Glenn" in url:
+                return None, "timeout", None
+            return {"results": [], "count": 0}, "ok", 200
+        watch = {}
+        with mock.patch.object(sw, "_get_json", side_effect=fake), mock.patch.object(fc, "record"):
+            sw.collect_launches(fc, watch, [])
+        self.assertFalse(watch["launches"]["ok"])                      # 다음 회차에 캐시 없이 다시
+
+
+class EventTitleTest(unittest.TestCase):
+    """사건 제목은 상태에서 그 언어로 — ko 는 저장 제목과 같은 렌더러(규칙 한 벌), en 은 한글 0."""
+
+    def test_8k_and_forms_en(self):
+        self.assertEqual(sw.filing_title("8-K", "2.02,9.01", "en"), "Current report — Results of operations")
+        self.assertEqual(sw.filing_title("8-K/A", "1.01", "en"),
+                         "Current report (amended) — Entry into a material agreement")
+        self.assertEqual(sw.filing_title("8-K", "6.05", "en"), "Current report — Item 6.05")
+        self.assertEqual(sw.filing_title("10-Q", "", "ja"), "四半期報告書")
+        self.assertEqual(sw.filing_title("EFFECT", "", "es"), "EFFECT")      # 표에 없는 양식은 양식 코드 그대로
+
+    def test_insider_en(self):
+        t = sw.insider_title("4", sw.parse_form4(FORM4_SALE), "en")
+        self.assertIn("Sold 342,170 shares", t)
+        self.assertIn("$52.5M", t)
+        self.assertIn("10b5-1 plan", t)
+        self.assertNotRegex(t, "[가-힣]")
+        es = sw.insider_title("4", sw.parse_form4(FORM4_SALE), "es")
+        self.assertIn("342.170", es)                                  # es 천 단위 마침표
+
+    def test_old_launch_title_rerendered(self):
+        old = {"id": "x", "source": "Launch Library 2", "kind": "starship",
+               "title": "Starship | Starlink Group 31-1 (Starship Flight 14) — 발사 성공"}
+        self.assertEqual(sw.event_title(old, "en"), "Starship | Starlink Group 31-1 (Starship Flight 14) — Launch success")
+        odd = dict(old, title="손으로 쓴 제목")                        # 되돌리지 못하면 저장 제목 그대로
+        self.assertEqual(sw.event_title(odd, "en"), "손으로 쓴 제목")
+
+    def test_repo_events_round_trip(self):
+        """저장소 실제 사건: ko 렌더 == 저장 제목(규칙 한 벌) · en/es/ja 렌더에 한글 0(기계가 만든 제목)."""
+        w = json.loads((Path(__file__).parent.parent / "data" / "spacex_watch.json").read_text(encoding="utf-8"))
+        n = 0
+        for e in w.get("events") or []:
+            if e.get("source") not in ("SEC EDGAR", "Launch Library 2"):
+                continue
+            n += 1
+            self.assertEqual(sw.event_title(e, "ko"), e["title"], e.get("accn") or e.get("id"))
+            for L in ("en", "es", "ja"):
+                t = sw.event_title(e, L)
+                self.assertNotRegex(t.replace(e.get("name") or "", ""), "[가-힣]", (L, t))
+        self.assertGreater(n, 10)
+
+    def test_cockpit_rows_wired(self):
+        """관제실 event_rows 가 렌더러를 실제로 쓴다(배선) — en 사건 목록의 기계 제목·양식 칸에 한글 0."""
+        import probe_cockpit as pc
+        from datetime import date as _date
+        w = {"events": [{"date": "2026-10-26", "form": "8-K", "items": "8.01", "accn": "A-1", "kind": "financing",
+                         "title": "수시공시 — 기타 중요 사건", "source": "SEC EDGAR", "url": "u"},
+                        {"date": "2026-10-25", "id": "leo5", "kind": "competitor", "form": "경쟁 발사",
+                         "title": "[경쟁] Atlas V 551 | Amazon Leo (LA-05) — 발사 성공", "name": "Atlas V 551 | Amazon Leo (LA-05)",
+                         "result": "Success", "source": "Launch Library 2", "url": "u2"}]}
+        rows = pc.event_rows(w, {}, _date(2026, 10, 27), [], "en")
+        self.assertEqual([r["title"] for r in rows], ["Current report — Other events",
+                                                      "[Competitor] Atlas V 551 | Amazon Leo (LA-05) — Launch success"])
+        self.assertEqual([r["form"] for r in rows], ["8-K", "Competitor launch"])
+        self.assertEqual(rows[1]["kindKo"], "Competitor launch")
+
+
 class LockupTest(unittest.TestCase):
     PROSPECTUS = ("<p>Our executive officers, directors and holders of substantially all of our capital stock have "
                   "agreed with the underwriters, subject to certain exceptions, not to sell any shares for 180 days "
@@ -221,7 +338,8 @@ class RunWiringTest(unittest.TestCase):
     def tearDown(self):
         sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH = self._saved
 
-    def _run(self, sub, mode="daily", texts=None, now="2026-10-27T09:30:00+09:00", dispatch_ok=True, env=None):
+    def _run(self, sub, mode="daily", texts=None, now="2026-10-27T09:30:00+09:00", dispatch_ok=True, env=None,
+             dm_ok=True):
         import feed_client as fc
         dms, fired = [], []
         texts = texts or {}
@@ -245,7 +363,7 @@ class RunWiringTest(unittest.TestCase):
                    mock.patch.object(fc, "fetch", side_effect=fake_fetch),
                    mock.patch.object(sw, "sec_headers", return_value={"User-Agent": "t"}),
                    mock.patch.object(sw, "now_kst", return_value=datetime.fromisoformat(now)),
-                   mock.patch.object(sw, "send_dm", side_effect=lambda t: dms.append(t) or True),
+                   mock.patch.object(sw, "send_dm", side_effect=lambda t: dms.append(t) or dm_ok),
                    mock.patch.object(sw, "_dispatch", side_effect=fake_dispatch),
                    mock.patch.object(sw.time, "sleep"),
                    mock.patch.dict("os.environ", env or {}, clear=False)]
@@ -389,6 +507,26 @@ class RunWiringTest(unittest.TestCase):
         self.assertIn("오지 않으면 감시가 멈춘 것", dms[0])
         dms, *_ = self._run(sub_of(self.BASE), env=env, now="2026-10-27T10:30:00+09:00")   # 데일리도 같은 날
         self.assertEqual(dms, [])
+
+    def test_heartbeat_failure_retries_next_hour(self):
+        """일일 점검 DM 이 실패하면 날짜를 찍지 않는다 — 다음 매시간 회차가 다시 보낸다(오지 않는 것이 경보)."""
+        self._baseline()
+        env = {"SPACEX_HEARTBEAT": "1"}
+        dms, _, _, h = self._run(sub_of(self.BASE), mode="hourly", env=env, now="2026-10-27T08:47:00+09:00",
+                                 dm_ok=False)
+        self.assertEqual(len(dms), 1)
+        self.assertNotEqual(h.get("heartbeat_date"), "2026-10-27")
+        dms, _, _, h = self._run(sub_of(self.BASE), mode="hourly", env=env, now="2026-10-27T09:47:00+09:00")
+        self.assertEqual(len(dms), 1)
+        self.assertEqual(h.get("heartbeat_date"), "2026-10-27")
+
+    def test_dm_log_records_unregistered(self):
+        """DM 결과는 산출물에 남는다 — '보냈다고 믿는 것'과 '보낸 것'을 가른다."""
+        sw.DM_LOG.clear()
+        with mock.patch.dict("os.environ", {"TELEGRAM_BOT_TOKEN": "", "TELEGRAM_ALERT_CHAT_ID": ""}):
+            self.assertFalse(sw.send_dm("🫀 점검\n둘째 줄"))
+        self.assertEqual((sw.DM_LOG[-1]["ok"], sw.DM_LOG[-1]["why"], sw.DM_LOG[-1]["head"]),
+                         (False, "unregistered", "🫀 점검"))
 
 
 if __name__ == "__main__":

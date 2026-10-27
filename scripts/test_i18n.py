@@ -26,10 +26,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 import i18n                     # noqa: E402
 import i18n_compliance as G     # noqa: E402
 import i18n_numbers as N        # noqa: E402
+import spacex_watch as _SW      # noqa: E402  (사건 제목 키 집합)
 
 ROOT = Path(__file__).parent.parent
 SCRIPTS = Path(__file__).parent
-CODE = ["template.html", "build_site.py", "probe_cockpit.py", "i18n.py", "weekly_history.py", "fetch_buffett.py"] +     sorted(p.name for p in SCRIPTS.glob("*-template.html"))
+CODE = ["template.html", "build_site.py", "probe_cockpit.py", "i18n.py", "weekly_history.py", "fetch_buffett.py", "spacex_watch.py"] +     sorted(p.name for p in SCRIPTS.glob("*-template.html"))
 # 동적으로 만드는 키 — 접두사 + 상태 id 전수(새 상태가 생기면 여기와 카탈로그에 함께 넣는다)
 DYNAMIC = {
     "px.type.": ("sees", "toll", "flight", "cyclical", "float", "too_hard"),
@@ -49,7 +50,13 @@ DYNAMIC = {
     "pc.st.": ("done", "early", "met", "prog", "miss", "wait"),
     "pc.st_short.": ("done", "early", "met", "prog", "miss", "wait"),
     "pc.kind.": ("earnings", "contract", "financing", "report", "filing", "starship", "ir", "essay", "withdraw",
-                 "insider", "launch", "launch_fail"),
+                 "insider", "launch", "launch_fail", "competitor"),
+    # SpaceX 사건 제목 — 공시 양식·8-K 항목·내부자 직함·발사 결과(spacex_watch.ITEM_IDS·FORM_IDS 와 같은 집합)
+    "pc.sec.item.": tuple(i.replace(".", "_") for i in _SW.ITEM_IDS),
+    "pc.sec.form.": tuple(_SW.form_key(f)[len("pc.sec.form."):]
+                          for f in _SW.FORM_IDS),
+    "pc.ins.role.": ("director", "officer", "ten_pct"),
+    "pc.launch.res.": ("success", "failure", "partial", "pending"),
     "pc.panel.": ("milestones", "events", "fin", "scen", "report", "changelog", "sources"),
     "pc.scen.": ("bull", "base", "bear"),
     "pc.run.": ("success", "failure", "cancelled", "timed_out", "none"),

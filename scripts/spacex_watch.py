@@ -87,30 +87,41 @@ INSIDER_MAJOR_PCT = 0.05        # 보유의 5% 이상 처분 → 중요
 INSIDER_FETCH_CAP = 8           # 회당 내부자 원문 상한(SEC 예의)
 TEXT_FETCH_CAP = 3              # 회당 8-K 본문 상한
 
-# 8-K 항목번호 → 화면 문구. 화면 문구는 상태(form·items)에서 생성한다(기계 키 노출 금지).
-ITEM_KO = {
-    "1.01": "중요 계약 체결", "1.02": "중요 계약 종료", "1.03": "파산·법정관리", "1.05": "중요 사이버보안 사고",
-    "2.01": "자산 취득·처분 완료", "2.02": "실적 발표", "2.03": "직접 금융채무 발생",
-    "2.04": "채무 가속·의무 촉발", "2.05": "구조조정", "2.06": "손상 인식",
-    "3.01": "상장 요건 미달 통지", "3.02": "미등록 증권 발행", "3.03": "주주 권리 변경",
-    "4.01": "감사인 변경", "4.02": "재무제표 신뢰 철회", "5.01": "지배권 변경",
-    "5.02": "임원·이사 변동", "5.03": "정관 변경", "5.07": "주주총회 결과", "5.08": "주주 추천 기한",
-    "7.01": "공정공시(Reg FD)", "8.01": "기타 중요 사건", "9.01": "재무제표·첨부",
-}
-FORM_KO = {
-    "10-Q": "분기보고서", "10-K": "연차보고서", "S-1": "증권신고서", "S-3": "일괄신고서",
-    "S-3ASR": "자동 일괄신고서", "SC 13D": "5% 이상 지분 보고(경영 참여)",
-    "SC 13G": "5% 이상 지분 보고(단순 투자)", "SCHEDULE 13D": "5% 이상 지분 보고(경영 참여)",
-    "SCHEDULE 13G": "5% 이상 지분 보고(단순 투자)",
-    "S-8": "임직원 주식보상 등록", "S-4": "합병 증권신고서", "425": "합병 관련 자료",
-    "FWP": "자유 서식 투자설명서", "DEF 14A": "주주총회 위임장", "PRE 14A": "주주총회 위임장(예비)",
-    "DEFA14A": "주주총회 추가 자료", "DEFM14A": "합병 주주총회 위임장",
-    "NT 10-Q": "분기보고서 지연 통지", "NT 10-K": "연차보고서 지연 통지",
-    "CORRESP": "SEC 서신(회사 답변)", "UPLOAD": "SEC 서신(검토 의견)", "8-A12B": "증권 상장 등록",
-    "3": "내부자 최초 보유 신고", "4": "내부자 거래 보고", "5": "내부자 연간 거래 보고",
-    "144": "매도 예정 신고", "SC TO-T": "공개매수", "SC TO-I": "자기 공개매수", "SC 14D9": "공개매수 의견",
-    "15-12B": "등록 말소", "25-NSE": "상장 폐지 통지", "D": "사모 발행 신고",
-}
+# 8-K 항목번호·양식 → 화면 문구. 화면 문구는 상태(form·items)에서 **그 언어의 카탈로그로** 만든다
+# (2026-10-27: en·es·ja 관제실 사건 목록에 '수시공시 — 실적 발표'가 원문 표식으로 남던 틈 — 기계가 만든
+#  문장은 콘텐츠가 아니다. ko 문장도 같은 렌더러가 ko 카탈로그(pc.sec.*)로 만든다 — 규칙이 두 벌이 되지 않게)
+ITEM_IDS = ("1.01", "1.02", "1.03", "1.05", "2.01", "2.02", "2.03", "2.04", "2.05", "2.06",
+            "3.01", "3.02", "3.03", "4.01", "4.02", "5.01", "5.02", "5.03", "5.07", "5.08",
+            "7.01", "8.01", "9.01")
+FORM_IDS = ("10-Q", "10-K", "S-1", "S-3", "S-3ASR", "SC 13D", "SC 13G", "SCHEDULE 13D", "SCHEDULE 13G",
+            "S-8", "S-4", "425", "FWP", "DEF 14A", "PRE 14A", "DEFA14A", "DEFM14A", "NT 10-Q", "NT 10-K",
+            "CORRESP", "UPLOAD", "8-A12B", "3", "4", "5", "144", "SC TO-T", "SC TO-I", "SC 14D9",
+            "15-12B", "25-NSE", "D")
+
+
+def item_key(i):
+    return "pc.sec.item." + i.replace(".", "_")
+
+
+def form_key(f):
+    return "pc.sec.form." + re.sub("[^a-z0-9]+", "_", f.lower()).strip("_")
+
+
+def _t(lang, key, **p):
+    import i18n
+    return i18n.t(lang, key, **p)
+
+
+def _n(lang, v, digits=0):
+    import i18n
+    return i18n.num(lang, v, digits)
+
+
+def form_name(form, lang="ko", default=None):
+    base = form_base(form)
+    if base in FORM_IDS:
+        return _t(lang, form_key(base))
+    return base if default is None else default
 
 # 8.01 등 항목만으로 성격을 모르는 8-K — 본문 핵심어로 사건 종류를 다시 정한다(트리거 대조용)
 TEXT_KIND = [("financing", r"finance lease|credit agreement|indenture|senior notes|notes due|term loan|"
@@ -155,17 +166,17 @@ def sec_headers():
 # 순수 함수 — 테스트가 직접 두드린다
 # ────────────────────────────────────────────────────────────────
 
-def filing_title(form, items):
-    """공시 제목 — 상태(form·items)에서 생성한다. 원문 영문 설명을 번역하지 않는다."""
+def filing_title(form, items, lang="ko"):
+    """공시 제목 — 상태(form·items)에서 그 언어로 생성한다. 원문 영문 설명을 번역하지 않는다."""
     base = form.split("/")[0]
-    amend = " 정정" if form.endswith("/A") else ""
+    amend = _t(lang, "pc.sec.amend") if form.endswith("/A") else ""
     if base == "8-K":
         its = [i.strip() for i in (items or "").split(",") if i.strip() and i.strip() != "9.01"]
-        names = [ITEM_KO.get(i, f"항목 {i}") for i in its]
-        return "수시공시" + amend + (" — " + " · ".join(names) if names else "")
+        names = [_t(lang, item_key(i)) if i in ITEM_IDS else _t(lang, "pc.sec.item_other", i=i) for i in its]
+        return _t(lang, "pc.sec.8k") + amend + (" — " + " · ".join(names) if names else "")
     if base.startswith("424B"):
-        return "증권 발행 설명서" + amend
-    return FORM_KO.get(base, base) + amend
+        return _t(lang, "pc.sec.424b") + amend
+    return form_name(base, lang) + amend
 
 
 def event_kind(form, items):
@@ -339,32 +350,44 @@ def insider_grade(form, info):
     return "record"
 
 
-def insider_title(form, info):
-    """화면·DM 문구 — 상태에서 생성(원문 영문을 옮기지 않는다)."""
+ROLE_IDS = {"이사": "director", "임원": "officer", "10% 주주": "ten_pct"}   # parse_form4 가 붙이는 우리 어휘(정확 일치)
+
+
+def _role(lang, r):
+    rid = ROLE_IDS.get(r)
+    return _t(lang, "pc.ins.role." + rid) if rid else r        # 원문 직함(officerTitle)은 원문 그대로
+
+
+def insider_title(form, info, lang="ko"):
+    """화면·DM 문구 — 상태에서 그 언어로 생성(원문 영문을 옮기지 않는다)."""
     base = form_base(form)
     if not info:
-        return FORM_KO.get(base, base) + " — 원문 해석 실패(링크 확인)"
-    who = ", ".join((o.get("name") or "?") + ("(" + "·".join(o["roles"]) + ")" if o.get("roles") else "")
+        return _t(lang, "pc.ins.fail", form=form_name(base, lang))
+    who = ", ".join((o.get("name") or "?") + ("(" + "·".join(_role(lang, r) for r in o["roles"]) + ")"
+                                              if o.get("roles") else "")
                     for o in info.get("owners") or []) or "?"
-    plan = " · 10b5-1 계획" if info.get("plan_10b5_1") else ""
+    plan = _t(lang, "pc.ins.plan") if info.get("plan_10b5_1") else ""
     if base == "144":
         sh = info.get("planned_shares")
         usd = info.get("planned_usd")
-        return (f"매도 예정 신고 — {who}"
-                + (f" {sh:,.0f}주" if sh else "") + (f" · 시가 약 ${usd / 1e6:,.1f}M" if usd else "") + plan)
+        return (_t(lang, "pc.ins.f144", who=who)
+                + (_t(lang, "pc.ins.shares", n=_n(lang, sh)) if sh else "")
+                + (_t(lang, "pc.ins.mv", m=_n(lang, usd / 1e6, 1)) if usd else "") + plan)
     parts = []
     if info.get("sold_shares"):
-        parts.append(f"매도 {info['sold_shares']:,.0f}주 · 약 ${info['sold_usd'] / 1e6:,.1f}M")
+        parts.append(_t(lang, "pc.ins.sold", n=_n(lang, info["sold_shares"]), m=_n(lang, info["sold_usd"] / 1e6, 1)))
     other = (info.get("disposed_shares") or 0) - (info.get("sold_shares") or 0)
     if other > 0:
-        parts.append(f"매도 외 처분 {other:,.0f}주(코드 {'·'.join(c for c in info.get('codes') or [] if c != 'S')})")
+        parts.append(_t(lang, "pc.ins.other", n=_n(lang, other),
+                        c="·".join(c for c in info.get("codes") or [] if c != "S")))
     if info.get("acquired_shares"):
-        parts.append(f"취득 {info['acquired_shares']:,.0f}주")
+        parts.append(_t(lang, "pc.ins.acq", n=_n(lang, info["acquired_shares"])))
     if info.get("pct_disposed"):
-        parts.append(f"보유의 {info['pct_disposed'] * 100:.1f}% 처분")
+        parts.append(_t(lang, "pc.ins.pct", p=_n(lang, info["pct_disposed"] * 100, 1)))
     if info.get("after") is not None:
-        parts.append(f"거래 후 보유 {info['after']:,.0f}주")
-    return f"{FORM_KO.get(base, '내부자 거래')} — {who}: " + (" · ".join(parts) or "거래 없음") + plan
+        parts.append(_t(lang, "pc.ins.after", n=_n(lang, info["after"])))
+    return _t(lang, "pc.ins.f4", form=form_name(base, lang, _t(lang, "pc.ins.generic")), who=who,
+              parts=" · ".join(parts) or _t(lang, "pc.ins.none")) + plan
 
 
 def insider_event(row, xml_text):
@@ -662,20 +685,101 @@ def merge_events(old, new):
     return out[:KEEP_EVENTS]
 
 
+LAUNCH_RES_ID = {"Success": "success", "Failure": "failure", "Partial Failure": "partial"}
+LAUNCH_FINAL = set(LAUNCH_RES_ID)      # 결과가 확정된 상태만 사건이 된다
+
+
+def launch_title(name, result, lang="ko", competitor=False):
+    res = _t(lang, "pc.launch.res." + LAUNCH_RES_ID.get(result or "", "pending"))
+    return _t(lang, "pc.launch.title_comp" if competitor else "pc.launch.title", name=name or "", res=res)
+
+
+def _launch_parts(e):
+    """옛 기록(name·result 칸이 없던 때)은 저장 제목을 ko 렌더러의 결과와 **정확히** 맞춰 되돌린다 — 못 맞추면 None."""
+    if e.get("result") is not None or e.get("name"):
+        return e.get("name") or "", e.get("result") or ""
+    t = e.get("title") or ""
+    comp = e.get("kind") == "competitor"
+    for res in list(LAUNCH_RES_ID) + [""]:
+        tail = launch_title("", res, "ko", comp)
+        head = tail.split(" — ")[0]        # '[경쟁] ' 또는 ''
+        suffix = " — " + tail.split(" — ", 1)[1]
+        if t.startswith(head) and t.endswith(suffix):
+            return t[len(head):len(t) - len(suffix)], res
+    return None
+
+
+def event_title(e, lang="ko"):
+    """관제실 사건 제목 — 상태에서 그 언어로. 원문 제목(보도자료 영문 등)은 그대로. 되돌리지 못하면 저장 제목."""
+    src, kind = e.get("source"), e.get("kind")
+    if src == "SEC EDGAR" and kind == "insider":
+        return insider_title(e.get("form") or "", e.get("insider"), lang)
+    if src == "SEC EDGAR" and e.get("form"):
+        return filing_title(e["form"], e.get("items") or "", lang)
+    if src == "Launch Library 2":
+        p = _launch_parts(e)
+        if p is not None:
+            return launch_title(p[0], p[1], lang, kind == "competitor")
+    return e.get("title") or ""
+
+
+def launch_status(row):
+    st = (row or {}).get("status") or {}
+    return st.get("abbrev") or st.get("name") or ""
+
+
+def launch_final(row):
+    """결과 확정 여부 — 비행 중(In Flight)·대기(Go/Hold/TBD)에 잰 발사를 사건으로 만들면 그 id 가 seen 에
+    들어가 정작 결과(성공·실패)가 나왔을 때 울지 않는다(2026-10-27 전수 점검에서 발견한 틈)."""
+    return launch_status(row) in LAUNCH_FINAL
+
+
 def launch_event(row, label):
     if not row:
         return None
-    st = (row.get("status") or {})
-    ok = st.get("abbrev") or st.get("name") or ""
-    res = {"Success": "발사 성공", "Failure": "발사 실패", "Partial Failure": "부분 실패"}.get(ok, "결과 미확정")
+    ok = launch_status(row)
     failed = ok in ("Failure", "Partial Failure")
     starship = "starship" in (row.get("name") or "").lower()
     return {"id": row.get("id"), "date": (row.get("net") or "")[:10], "form": "발사",
-            "items": "", "title": f"{row.get('name', '')} — {res}",
+            "items": "", "title": launch_title(row.get("name", ""), ok), "result": ok, "name": row.get("name", ""),
             "kind": "starship" if starship else ("launch_fail" if failed else "launch"),
             # 실패·부분 실패는 기체 불문 긴급(Falcon 실패 = 비행 중단·면허 조사로 이어진다), Starship 비행은 중요
             "grade": "urgent" if failed else ("major" if starship else "record"),
             "url": row.get("url") or "", "source": "Launch Library 2", "label": label}
+
+
+# 경쟁 발사(2026-10-27, 지뢰 ⑳ 대응표의 마지막 빈 칸) — Amazon Leo(어느 발사체든) · Blue Origin New Glenn.
+# LL2 이름은 '발사체 | 임무' 형식: 'Vulcan VC6L | Amazon Leo (LV-01)'. 개명 전 'Kuiper' 도 받는다.
+COMPETITOR_SEARCH = ("Amazon Leo", "Kuiper", "New Glenn")
+COMPETITOR_PAT = re.compile("Amazon Leo|Kuiper|New Glenn", re.I)
+
+
+def competitor_event(row):
+    """경쟁 발사 한 건 → 사건. 성공 = 기록(DM 한 줄 · 엔진은 다음 회차에 읽는다), 실패·부분 실패 = 중요(엔진 깨움 —
+    Amazon Leo 배치 일정이 T4 확인점을 움직인다). 결과 미확정은 사건이 아니다(launch_final)."""
+    if not row or not COMPETITOR_PAT.search(row.get("name") or "") or not launch_final(row):
+        return None
+    ok = launch_status(row)
+    failed = ok in ("Failure", "Partial Failure")
+    return {"id": row.get("id"), "date": (row.get("net") or "")[:10], "form": "경쟁 발사", "items": "",
+            "title": launch_title(row.get("name", ""), ok, "ko", True), "result": ok, "name": row.get("name", ""),
+            "kind": "competitor", "grade": "major" if failed else "record",
+            "url": row.get("url") or "", "source": "Launch Library 2", "label": "경쟁 발사"}
+
+
+def competitor_next(rows, now_iso):
+    """다가오는 경쟁 발사(최대 3) — 하트비트·관제실이 확인점으로 쓴다."""
+    out, seen = [], set()
+    for r in sorted(rows, key=lambda r: r.get("net") or ""):
+        if (r.get("net") or "") < now_iso or r.get("id") in seen or not COMPETITOR_PAT.search(r.get("name") or ""):
+            continue
+        if launch_final(r):
+            continue
+        seen.add(r.get("id"))
+        out.append({"name": r.get("name"), "date": (r.get("net") or "")[:10],
+                    "status": (r.get("status") or {}).get("name"),
+                    "precision": (r.get("net_precision") or {}).get("name")})
+    return out[:3]
 
 
 # ────────────────────────────────────────────────────────────────
@@ -795,7 +899,8 @@ def collect_launches(fc, watch, logs):
                           if nxt else None),
         "source": "Launch Library 2 (2.4.0)",
     }
-    evs = [e for e in (launch_event(r, "Starship") for r in (b.get("results") or [])) if e]
+    # 결과가 확정된 비행만 사건으로(launch_final) — 비행 중에 재면 결과가 나와도 울지 않는 틈
+    evs = [e for e in (launch_event(r, "Starship") for r in (b.get("results") or []) if launch_final(r)) if e]
     # 2026-10-27(G3): Starship 외 기체의 실패·부분 실패도 사건으로 — 최근 7일, LL2 상태 4(실패)·7(부분 실패)
     w0 = (now - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
     q4 = (f"{LL2}/launches/mini/?lsp__id={LL2_SPACEX_ID}&status__ids=4,7&net__gte={w0}"
@@ -808,6 +913,29 @@ def collect_launches(fc, watch, logs):
         known = {e["id"] for e in evs}
         evs += [e for e in (launch_event(r, "실패") for r in (d.get("results") or []))
                 if e and e["id"] not in known]
+    # 경쟁 발사 — 최근 7일 확정 결과 + 다가오는 3건. 질의 하나라도 실패하면 캐시를 쓰지 않는다(다음 회차에 다시)
+    rows, comp_ok = [], True
+    for term in COMPETITOR_SEARCH:
+        q = (f"{LL2}/launches/mini/?search={term.replace(' ', '%20')}&net__gte={w0}"
+             f"&ordering=net&limit=10")
+        r, oc5, c5 = _get_json(fc, q, "경쟁 발사(LL2)", hdr)
+        if r is None:
+            comp_ok = False
+            continue
+        rows += r.get("results") or []
+    hits = [r for r in rows if COMPETITOR_PAT.search(r.get("name") or "")]
+    if comp_ok:
+        fc.record("spacex", "경쟁 발사(LL2)", "ok" if hits else "zero", 200, len(hits))
+    else:
+        logs.append("LL2 경쟁 발사 조회 일부 실패 — 다음 회차에 다시(캐시 미사용)")
+        watch["launches"]["ok"] = False
+    known = {e["id"] for e in evs}
+    for r in rows:
+        e = competitor_event(r)
+        if e and e["id"] not in known and (r.get("net") or "") <= iso:
+            known.add(e["id"])
+            evs.append(e)
+    watch["launches"]["competitor_next"] = competitor_next(rows, iso)
     return evs
 
 
@@ -926,19 +1054,27 @@ def collect_engine(fc, watch, logs):
 # 알림 · 발사
 # ────────────────────────────────────────────────────────────────
 
+DM_LOG = []      # 이번 실행의 DM 결과 — 산출물(dm_log)에 남겨 '보냈다고 믿는 것'과 '보낸 것'을 가른다
+
+
 def send_dm(text):
-    """소장 DM 전용 — 미등록이면 로그로만(공개 채널 폴백 없음)."""
+    """소장 DM 전용 — 미등록이면 로그로만(공개 채널 폴백 없음). 결과는 DM_LOG 에 남는다."""
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat = os.environ.get("TELEGRAM_ALERT_CHAT_ID", "").strip()
+    head = (text or "").split("\n", 1)[0][:80]
+    at = now_kst().isoformat(timespec="minutes")
     if not token or not chat:
         print("[SpaceX] DM 수신처 미등록 — 발송 생략(공개 폴백 없음). 내용:\n" + text)
+        DM_LOG.append({"at": at, "ok": False, "why": "unregistered", "head": head})
         return False
     try:
         from send_telegram_briefing import send_telegram, esc
         send_telegram(token, chat, esc(text))
+        DM_LOG.append({"at": at, "ok": True, "head": head})
         return True
     except Exception as e:
         print(f"[SpaceX] DM 발송 실패: {e}", file=sys.stderr)
+        DM_LOG.append({"at": at, "ok": False, "why": type(e).__name__, "head": head})
         return False
 
 
@@ -995,7 +1131,7 @@ def heartbeat_message(watch, hstate, st, now, status=None):
     for e in evs.values():
         cnt[e.get("grade") or "record"] = cnt.get(e.get("grade") or "record", 0) + 1
         k = e.get("kind")
-        by["insider" if k == "insider" else "launch" if k in ("starship", "launch", "launch_fail")
+        by["insider" if k == "insider" else "launch" if k in ("starship", "launch", "launch_fail", "competitor")
            else "ir" if k == "ir" else "sec"] += 1
     wd = "월화수목금토일"[today.weekday()]
     lines = [f"🫀 SpaceX 관제 일일 점검 — {today.month}/{today.day}({wd})",
@@ -1016,6 +1152,20 @@ def heartbeat_message(watch, hstate, st, now, status=None):
     if upc:
         lines.append("· 다가오는 확인점: " + " · ".join(f"{tid} {d.month}/{d.day}(D-{(d - today).days})"
                                                 for d, tid, _ in upc[:3]))
+    lw = (watch or {}).get("launches") or {}
+    nx = [x for x in [lw.get("starship_next")] + list(lw.get("competitor_next") or []) if x and x.get("date")]
+    if nx:
+        def when(x):
+            p = x.get("precision") or ""
+            if p and p not in ("Second", "Minute", "Hour", "Day"):     # 'Quarter 4'·'Month' — 날짜는 자리표시자다
+                return f"{x['date'][:4]} {p.replace('Quarter ', 'Q')}" if p.startswith("Quarter") else f"{x['date'][:7]}(월 단위)"
+            return f"{int(x['date'][5:7])}/{int(x['date'][8:10])}"
+        stko = {"Go for Launch": "", "To Be Confirmed": "(미확정)", "To Be Determined": "(미정)", "On Hold": "(보류)"}
+        lines.append("· 다가오는 발사: " + " · ".join(
+            f"{x.get('name')} {when(x)}{stko.get(x.get('status') or '', '(' + (x.get('status') or '미정') + ')')}"
+            for x in nx[:4]))
+    elif "competitor_next" not in lw:
+        lines.append("· 다가오는 발사: 경쟁 발사 미측정(다음 full 회차부터)")
     srcs = []
     for r in ((status or {}).get("sources") or {}).values():
         if isinstance(r, dict) and r.get("kind") == "spacex":
@@ -1030,6 +1180,12 @@ def heartbeat_message(watch, hstate, st, now, status=None):
         lines.append(f"· 뉴스 감시관 마지막 판정 {nr.get('date')}: 헤드라인 {nr.get('judged', 0)}건 · 엔진 깨움 "
                      f"{nr.get('wake', 0)} · 보도 단계 {nr.get('report', 0)}"
                      + (" · ⚠️ 판정 모델 실패" if nr.get("model_ok") is False else ""))
+    au = read_json(DATA_DIR / "spacex_audit.json", {}) or {}
+    if au.get("n"):
+        lines.append(f"· 숫자 감사 {au.get('quarter', '')}: {au.get('ok', 0)}/{au.get('n')} 원문 일치"
+                     + (f" · ⚠️ 불일치 {len(au.get('mismatch') or [])}" if au.get("mismatch") else "")
+                     + (f" · 대조 불가 {len(au.get('unverifiable') or [])}" if au.get("unverifiable") else "")
+                     + f" ({(au.get('checked_at') or '')[:10]})")
     lines.append("· 이 점검이 내일 아침에 오지 않으면 감시가 멈춘 것입니다.")
     return "\n".join(lines)
 
@@ -1128,6 +1284,7 @@ def run(mode="daily"):
 
     데일리는 data/spacex_watch.json·spacex_kpi.json 을, 매시간은 data/spacex_hourly.json 만 쓴다.
     서로의 '이미 울린 사건'을 읽어 같은 사건으로 두 번 울지 않는다."""
+    DM_LOG.clear()
     import feed_client as fc
     hourly = mode == "hourly"
     now = now_kst()
@@ -1271,8 +1428,10 @@ def run(mode="daily"):
         """하루 한 번 · 08시 이후 첫 회차 · 워크플로가 SPACEX_HEARTBEAT=1 일 때만. 이번 회차 사건까지 합친 뒤 센다."""
         if os.environ.get("SPACEX_HEARTBEAT") == "1" and now.hour >= 8 and \
                 today not in (watch.get("heartbeat_date"), hstate.get("heartbeat_date")):
-            send_dm(heartbeat_message(watch, hstate, st, now, read_json(DATA_DIR / "fetch_status.json", {})))
-            (hstate if hourly else watch)["heartbeat_date"] = today     # DM 실패여도 같은 날 다시 시도하지 않는다
+            if send_dm(heartbeat_message(watch, hstate, st, now, read_json(DATA_DIR / "fetch_status.json", {}))):
+                (hstate if hourly else watch)["heartbeat_date"] = today
+            else:                    # 실패하면 날짜를 찍지 않는다 — 다음 회차(매시간)가 다시 보낸다
+                logs.append("일일 점검 DM 실패 — 다음 회차에 다시")
 
     if hourly:
         hstate["alerted"] = sorted((set(hstate.get("alerted") or []) |
@@ -1284,6 +1443,8 @@ def run(mode="daily"):
         if q_item:
             hstate["dispatches"] = ((hstate.get("dispatches") or []) + [q_item])[-20:]
         heartbeat()
+        if DM_LOG:                   # DM 을 보낸 회차만 기록한다(조용한 회차는 파일이 그대로 → 커밋 없음)
+            hstate["dm_log"] = ((hstate.get("dm_log") or []) + DM_LOG)[-20:]
         # 실행 시각은 쓰지 않는다 — 바뀐 것이 없으면 커밋도 없게(Cloudflare 빌드 낭비 방지)
         write_json(HOURLY_PATH, hstate)
     else:
@@ -1311,6 +1472,8 @@ def run(mode="daily"):
             send_dm(f"⚠️ SpaceX 매시간 감시가 {stale:.0f}시간째 성공하지 못했습니다 — Actions 의 spacex-watch 실행 기록을 확인하세요.")
             watch["hourly_stale_alerted"] = today
         heartbeat()
+        if DM_LOG:
+            watch["dm_log"] = ((watch.get("dm_log") or []) + DM_LOG)[-20:]
         write_json(WATCH_PATH, watch)
         write_json(KPI_PATH, kpi)
 
