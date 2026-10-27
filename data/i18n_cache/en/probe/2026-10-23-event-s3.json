@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-23-event-s3",
+ "lang": "en",
+ "src_hash": "3febe3a3c4df",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-27 11:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Triggers — Expected vs Actual, Revised Expectation Method",
+  "md": "\n| Trigger | October edition expectation | Actual (10/23) | Verdict | Revised expectation method |\n|---|---|---|---|---|\n| T4 Amazon Leo | 2026-4Q ~ 2027-1H | Not started. Next preceding event = Vulcan LV-01 on 10/29 | **Not wrong, but useless** — the start of the window became the launch date, so it fired with no event | Write it not as a window but as **a preceding event + confirmation lag**: one month after the first Vulcan launch (10/29) → recheck on **2026-12-01**, upper bound 2027-1H retained. 'Official pricing page posted' is specified as the confirmation method |\n| T5 $40 billion 8-K | 2026-4Q ~ 2027-1H | No 8-K. Press reports price set \"next week\" | Same problem — fired on the window start date | **2026-10-26 ~ 2026-11-06** (Semafor's \"next week\" pricing + the 4-business-day 8-K rule, estimated). The measurement layer separately detects 8-K 1.01/2.03 as a 'financing' type event, so the date is an auxiliary line |\n\n(Source: previous value of `state.triggers_next_12m` · Sections 1 and 2 above)\n\n**One-line lesson**: because **window expectations in quarterly or half-year units are read by the measurement layer as the window start date**, an edition opens even when there is no event. Trigger dates should be written as a single checkpoint: \"look after this date to find out.\" This edition paid that cost (one incremental edition with no event).\n\n---\n"
+ }
+}

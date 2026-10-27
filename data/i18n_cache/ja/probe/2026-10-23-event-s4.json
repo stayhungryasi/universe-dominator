@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-23-event-s4",
+ "lang": "ja",
+ "src_hash": "3dd805bb8560",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-27 11:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. 確率・マイルストーン・ルール・価値 — 影響",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。発動したルールなし(R1消尽、R2~R6待機)、ルール外の調整なし (出典: `state.probability_adjustment_rules`)。\n- **マイルストーン**: 29件の判定に変化なし(進行24 · 未判定5)。D-2027-1のprogress事由に今回の確認(8-Kなし・10-Qに後発事象なし)を追記した (出典: 1節の表)。\n- **適正価値**: 確率加重 $32 · バンド $32~$121 · 割引率 12.9% — **再算定せず**(eventモード、入力値の変化なし)。無リスク金利は5.13%(2026-10-21)のまま (出典: `data/latest.json meta.macro.ust10`、[FRED DGS10](https://fred.stlouisfed.org/series/DGS10))。\n- **ルール新設提案**: ①・②とも未反映のまま。②は8-K確定後に審議 (出典: `state.rule_proposals_not_applied`)。\n- **マイルストーン候補(経営陣発言)**: 追加なし — 今回の原典にSpaceX経営陣の発言なし。\n\n---\n"
+ }
+}

@@ -2,14 +2,14 @@
  "kind": "probe_trig",
  "id": "T5",
  "lang": "es",
- "src_hash": "1744b328ac6c",
+ "src_hash": "a9cb2655a9a5",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-10-27 11:31",
  "attempts": 2,
  "status": "failed",
  "fields": {},
  "reasons": [
-  "[1§note] 숫자: 원문에 없는 숫자 250000, 300000 million, 100000 million, 50000 million",
-  "[1§note] 숫자: 원문의 숫자가 빠짐 300억, 100억, 50억, 250"
+  "[check] 숫자: 원문의 숫자가 빠짐 255.7억",
+  "[prev] 숫자: 원문에 없는 숫자 4T"
  ]
 }

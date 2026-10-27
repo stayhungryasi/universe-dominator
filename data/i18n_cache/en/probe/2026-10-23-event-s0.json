@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-10-23-event-s0",
+ "lang": "en",
+ "src_hash": "b8c9100f6671",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-27 11:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-10-23 (KST) · edition id `2026-10-23-event` · mode **event** (incremental) · previous edition `2026-10` (2026-10-23, 2nd edition) (source: edition information injected by the workflow · `state.run`)\n- **Reason**: the measurement layer detected that the start date (2026-4Q) of the expected windows for trigger T4 (Amazon Leo US consumer commercial launch) and T5 (conditions for confirming the 8-K on the $40 billion financing) had arrived, and launched this edition (source: due list in `data/spacex_watch.json`, 2026-10-23)\n- **Reference share price**: $144.75 — the 2026-10-22 close, unchanged. At the time of writing this edition (KST morning), the 10/23 US market had not opened ([stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), retrieved 2026-10-23: latest row 10/22)\n- **Scope**: only what the two triggers touch — Axis D (financials) · Axis A competition (Amazon Leo), milestone D-2027-1, rule R5 and proposed new rule ②, triggers T4 and T5. A full PHASE 1–4 recalculation is not performed (monthly edition protocol) (source: `state.triggers_next_12m` · `state.probability_adjustment_rules`).\n\n> **Conclusion first**: for both triggers, **the expected date arrived but the event did not.** As of 10/23 there is no 8-K for the $40 billion financing (the latest filings are the 10/22 10-Q and S-8), and Amazon Leo has not announced US consumer pricing or launch regions. Probability, fair value and milestone judgments are **unchanged**. What changed are the expectation methods and dates of the two triggers, and the source downgrade of two numbers that the October edition had attributed to the Semafor 10/07 article.\n\n---\n"
+ }
+}

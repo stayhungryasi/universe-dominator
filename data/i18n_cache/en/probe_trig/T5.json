@@ -2,15 +2,17 @@
  "kind": "probe_trig",
  "id": "T5",
  "lang": "en",
- "src_hash": "1744b328ac6c",
+ "src_hash": "a9cb2655a9a5",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[1§note] 숫자: 원문에 없는 숫자 300 billion",
-  "[1§note] 숫자: 원문의 숫자가 빠짐 250",
-  "[1§prev] 숫자: 원문의 숫자가 빠짐 2.03"
- ]
+ "at": "2026-10-27 11:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "$40B GPU Master Finance Lease — Execution 8-K·Fixed Rate Confirmed(Remaining: Rate·Call Terms·Termination)",
+  "expected": "2027-01-07(Estimated: 8-K 10/26 'Expected to close before year-end' → Execution 8-K Item 1.01 4 business days → KST 1 day. If no execution 8-K by 12/31, record as 'Closing delayed' and defer Proposal ② review to 4Q26 10-K(Estimated 2027-02) lease note)",
+  "check": "① EDGAR 8-K Item 1.01/2.03·Ex.10 — Master finance lease execution date, fixed rate·tranches·prepayment(call)·purchase option·guarantees ② If no execution 8-K, 4Q26 10-K lease·non-cancellable commitment note(Overlap with 2027 commitment $25.57B, lease liability recognition method — Proposal ③ determination) ③ Measurement layer 'funding' event detection is primary, date is secondary. Always check voluntary disclosure channels(8.01·IR press release)",
+  "note": "2026-10-27 Confirmed(8-K Item 8.01, filed 2026-10-26, event date 10/24, no exhibits): Apollo Global Management operating entity and master finance lease binding commitment letter — Lessor purchases SpaceX-designated datacenter GPU pods·equipment and leases; tranche-wise lease schedule period approximately 5–5.25 years each; quarterly advance rent = tranche finance cost 1/20 + unpaid lease balance fixed interest rate + operating expenses; total principal approximately $40B; closing planned before year-end(conditional); lease commencement upon GPU delivery 1H 2027. Fixed rate confirmed at pricing prior to master lease execution(Not yet determined). No mention of collateral·guarantees·calls·conversion·warrants. IR press release 10/26: Nvidia Vera Rubin, Apollo·Goldman led(Goldman sole structurer), anchor BlackRock·GSAM·KKR advisory accounts. Difference from reporting: Bloomberg 10/23 'Private bonds 3 tranches·SPV off-balance-sheet' → Source text is 'lease schedule tranches·finance lease'. CEO 10/25 'closed' → Source text is commitment. Semafor 10/22 reported rates(8.3%·7.75%) remain undetermined / 2026-10-26 review(Full source text): No 8-K, CEO X post, Bloomberg SPV reporting / 2026-10-23 review: No 8-K, Apollo·Goldman co-arranged. October report '$10B loan + $30B bonds' split confirmed to original source FT 10/06. 'CDS 197.6bp' source unverified·Gokhshtein '$8.3B' not adopted, maintained",
+  "prev": "T5 Additional funding — Expected 2027-1H → Actual 2026-10-07 reporting(2 quarters ahead). Liquidity ÷ burn rate should have predicted 'funding 6 months before depletion' / 2026-10-23: Sounded without 8-K at '2026-4Q~' window start date — Corrected to confirmation point date / 2026-10-26: Expected '10/26~11/06 8-K' → Reported no 8-K same day, narrowed to '10/31~11/06(after 2.03 deadline)' / 2026-10-27: Actual 8-K 2026-10-26(US) Item 8.01 — 10/23 window(10/26~11/06) was correct, 10/26 narrowing was incorrect. Incorrect premises ① 'SPV off-balance-sheet = 8-K non-subject' → Company voluntarily discloses 8.01 next business day after execution regardless of obligation ② 'CEO closing declaration = execution' → It was commitment. Revision: Confirmation point is 'Expected date + 1 day(KST)' — KST morning session checks through prior US business day only; 1st detection is measurement layer event detection; does not assume 'may not appear' based on disclosure obligation",
+  "statusText": "Partially Confirmed(2026-10-27: Structure·size·maturity·equity component disclosed, fixed rate undetermined)"
+ }
 }

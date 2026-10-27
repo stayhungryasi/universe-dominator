@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-27 09:33",
- "generated_at": "2026-10-27T09:33:36.016342+09:00",
+ "generated_label": "2026-10-27 11:21",
+ "generated_at": "2026-10-27T11:21:21.407064+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-27",
@@ -128,7 +128,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -146,29 +146,7 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "최강 소비자 프랜차이즈이나 성장 정체로 프리미엄 밸류에이션 한계.",
-   "_evidence": {
-    "franchise": "Apple stock attracting investor attention; Tim Cook tenure showed record quarterly revenue exceeding all of fiscal 2011 revenue",
-    "risk5": "Q3 earnings beat estimates; earnings expected to grow; leadership transition to John Ternus underway",
-    "capalloc": "Tim Cook era demonstrated substantial cash generation capability"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-27",
@@ -452,11 +430,7 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9836,
@@ -497,23 +471,25 @@
    ],
    "franchise": {
     "need": "○",
-    "no_substitute": "○"
+    "no_substitute": "○",
+    "no_price_reg": "△"
    },
    "risk5": {
     "business_certainty": "△",
-    "price": "△"
+    "mgmt_ability": "○",
+    "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
-    "score": 1,
+    "debt_discipline": 1,
+    "score": 2,
     "period": "2026H1"
    },
-   "notes": "AI 수익 성장은 뚜렷하나 소프트웨어 부진과 가이던스 보수성으로 시장 기대와 괴리 발생",
+   "notes": "AI 인프라 칩 수요 견조하고 거대 자본조달 성공(Anthropic $63B)하나, 1년간 횡보 후 50% 상승 여지 평가는 현 멀티플의 고가를 시사; 커스텀 칩 경쟁 심화 리스크 상존",
    "_evidence": {
-    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; AI revenue doubles",
-    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; strong results 'not enough to keep investors happy'",
-    "capalloc": "Broadcom beats on earnings and guidance",
-    "owner_earnings": "earnings and revenues beat estimates but stock down 14% since last earnings report"
+    "franchise": "Broadcom partners with Wall Street giants for $63 billion Anthropic chip financing; CEO touts growth with AI labs",
+    "risk5": "Broadcom went nowhere for a year; Stock down after Q3 earnings despite beat; AI revenue growth pricing concerns raised",
+    "capalloc": "Q3 earnings beat reported; $63B financing secured with major financial partners"
    }
   },
   "SPCX": {
@@ -1162,12 +1138,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "HBM4 량산 진입과 76% 영업마진 달성으로 수익성 급증하나 시클리컬 산업의 사이클 정점 가능성"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1179,31 +1150,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "20조 캐펙스 완수 후 주주환원 재개 전략, 미국 상장으로 자본조달 완료(265억 달러)",
-   "_evidence": {
-    "franchise": "HBM4 mass production 진입으로 AI 수요 독점적 공급 가능, NVIDIA 주요 공급처",
-    "risk5": "Q2 earnings miss 발생으로 시장 기대치 상향 조정의 리스크, 반도체 사이클 정점 판단 어려움",
-    "capalloc": "$26.5B US ADR 상장으로 캐펙스 자금 확보, 나스닥 데뷔 후 주가 변동성(170달러 상장 후 하락장면)",
-    "owner_earnings": "Q2 2026 Revenue 79.3조 원(257% YoY), Operating Margin 76%로 순이익 창출력 급증 시점"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-10-27",
@@ -1998,5 +1945,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-27 09:35"
+ "scout_label": "2026-10-27 11:22"
 }

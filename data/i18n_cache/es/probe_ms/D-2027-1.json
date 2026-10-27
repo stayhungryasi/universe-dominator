@@ -2,16 +2,21 @@
  "kind": "probe_ms",
  "id": "D-2027-1",
  "lang": "es",
- "src_hash": "77d0755d92bf",
+ "src_hash": "22cc0e3683c8",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[10§text] 숫자: 원문에 없는 숫자 500 billion",
-  "[10§text] 숫자: 원문의 숫자가 빠짐 500억",
-  "[10§reason] 숫자: 원문에 없는 숫자 5180 billion, 3980 billion, 4000 billion",
-  "[10§reason] 숫자: 원문의 숫자가 빠짐 518억, 398억, 400억"
- ]
+ "at": "2026-10-27 11:31",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Financiación adicional ≤ 50.000 millones de dólares Y sin ampliación de capital",
+  "reason": "Año de resolución (2027) no llegado. Financiación prevista 2027 (fase de compromiso): 8-K 2026-10-26 (Item 8.01) — Compromiso de arrendamiento financiero maestro con entidad operativa Apollo de aproximadamente 40.000 millones de dólares (24/10), 5–5,25 años por tramo, pago anticipado trimestral (coste 1/20 + tipo fijo), previsto término antes de fin de año, inicio de arrendamiento 2027-1H → conforme a definitions.additional_financing.year_attribution se contabiliza como financiación 2027 (margen 10.000 millones de dólares). Sin elementos de ampliación de capital (8-K sin mención de acciones, conversión u opciones). Tipo fijo no determinado. Referencia 2026: deuda financiada 9M 51.800 millones de dólares, reembolso 39.800 millones de dólares (10-Q R18), Cursor es adquisición de acciones, no ampliación de capital en efectivo",
+  "hit": "Cubierto con deuda",
+  "miss": "Si se produce ampliación, dilución + recálculo de probabilidades",
+  "parts.0.label": "Volumen de financiación adicional (inicio previsto 2027, base compromiso)",
+  "parts.1.label": "Ampliación de capital (base 8-K)",
+  "parts.0.reason": "8-K 2026-10-26 importe principal total aproximadamente 40.000 millones de dólares — no formalizado (término previsto antes de fin de año), no iniciado (2027-1H). Resolución 2027",
+  "parts.1.reason": "8-K sin elementos de acciones, conversión u opciones — año de resolución (2027) no llegado",
+  "parts.0.unit": "cien millones de dólares",
+  "parts.1.unit": "operaciones"
+ }
 }
