@@ -840,6 +840,62 @@ def collect_ir(fc, logs):
     return out
 
 
+FACTS_PATH = DATA_DIR / "spacex_facts.json"
+LOCKUP_KEYS = ("lock-up", "lockup", "lock up")
+
+
+def lockup_sentences(html, cap=40):
+    """증권신고서·설명서 본문 → 락업 조건 문장(원문 그대로 인용). 숫자(기간·주식수·비율)가 든 문장만.
+
+    해석은 하지 않는다 — 기간·조기 해제 조건·대상·주식 수를 판단층(엔진)이 원문으로 읽게 한다(O1)."""
+    text = re.sub(r"<[^>]+>", " ", html or "")
+    text = re.sub(r"&nbsp;|&#160;", " ", text)
+    text = re.sub(r"&#8217;|&rsquo;", "'", text)
+    text = re.sub(r"&#822[01];|&[lr]dquo;", '"', text)
+    text = re.sub(r"&amp;", "&", text)
+    text = re.sub(r"\s+", " ", text)
+    out, seen = [], set()
+    for s in re.split(r"(?<=[.;])\s+(?=[A-Z(])", text):
+        low = s.lower()
+        if not any(k in low for k in LOCKUP_KEYS) or not re.search(r"\d", s):
+            continue
+        s = s.strip()[:700]
+        key = s[:160]
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(s)
+        if len(out) >= cap:
+            break
+    return out
+
+
+def collect_prospectus_facts(fc, events, logs):
+    """O1(2026-10-27) — 최신 424B 설명서의 락업 문장을 기계가 원문 인용으로 확보한다(같은 공시는 다시 받지 않는다).
+    판단층은 '12/8 락업 약 40%, 미확인'으로 남아 있었다 — 원문은 측정층이 먼저 쥔다."""
+    facts = read_json(FACTS_PATH, {}) or {}
+    pros = [e for e in events if form_base(e.get("form")).startswith("424B") and e.get("url")]
+    if not pros:
+        return
+    p = sorted(pros, key=lambda e: e.get("date") or "")[-1]
+    if (facts.get("lockup") or {}).get("accn") == p.get("accn"):
+        return
+    hdr = sec_headers()
+    if not hdr:
+        return
+    text, oc, code = fc.fetch(p["url"], "SEC 설명서 원문", "spacex", headers=hdr, timeout=120)
+    if text is None:
+        logs.append("설명서 원문 받기 실패 — 다음 회차에 다시")
+        return
+    sents = lockup_sentences(text)
+    fc.record("spacex", "SEC 설명서 원문", "ok" if sents else "zero", code, len(sents))
+    facts["lockup"] = {"accn": p.get("accn"), "form": p.get("form"), "filed": p.get("date"), "source_url": p["url"],
+                       "fetched_at": now_kst().isoformat(timespec="minutes"), "sentences": sents,
+                       "note": "원문 문장 그대로(기계 추출). 해석·판정은 탐사 엔진(판단층)이 한다."}
+    write_json(FACTS_PATH, facts)
+    logs.append(f"설명서 락업 문장 {len(sents)}개 확보({p.get('form')} {p.get('date')})")
+
+
 def collect_engine(fc, watch, logs):
     """월간 엔진 마지막 실행 결론 — GitHub API. 관제탑(E6)과 화면(D5)이 읽는다."""
     repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
@@ -1098,6 +1154,10 @@ def run(mode="daily"):
         ir_events = collect_ir(fc, logs)
         collect_engine(fc, watch, logs)
         collect_hourly_runs(fc, watch, logs)
+        try:
+            collect_prospectus_facts(fc, sec_events, logs)
+        except Exception as e:                       # 부가 측정 — 실패해도 본 측정은 계속
+            logs.append(f"설명서 락업 추출 실패({type(e).__name__}: {str(e)[:80]})")
         fc.flush()
     ins_rows = parse_filings(sub)[1] if sub else []
 
