@@ -149,15 +149,15 @@
     | 10-Q·10-K·424B·FWP·S-1/3/4·425·위임장·13D | 같음 | 중요 | GradeTest |
     | S-8·CORRESP/UPLOAD·13G·그 밖의 양식 | 같음 | 기록(DM 한 줄) | GradeTest·RunWiring |
     | 내부자 3·4·5·144 | 원문 XML(`parse_form4`·`parse_form144`) | 머스크·매도 $1억↑·보유 5%↑ 처분 → 중요 | InsiderTest |
-    | 발사 실패·부분 실패(전 기체, 최근 7일) | LL2 상태 4·7 | 긴급 | LaunchTest |
-    | Starship 비행 | LL2 | 중요 | LaunchTest |
+    | 발사 실패·부분 실패(전 기체, 최근 7일) | LL2 상태 4·7 — **매시간**(`collect_launches_light`, 질의 1회 · 최근 3일) + full | 긴급 | LaunchTest · `test_hourly_catches_night_launch_failure` |
+    | Starship 비행(결과 확정만) | LL2 — 매시간 + full | 중요 | LaunchTest · `test_collect_launches_light_filter` |
     | IR 보도자료 | RSS | 기록 | RunWiring |
     | 설명서(424B) 락업 조건 | 원문 문장 기계 추출 → `data/spacex_watch.json` facts.lockup(엔진이 규약대로 읽는 파일 · 같은 공시 1회 · 해석은 엔진) | — | LockupTest |
     | 뉴스로만 오는 사건(CEO 발언·신용등급·FAA/FCC·소송·합병 협상·락업 보도) | `spacex_news.py`(daily full · 구글뉴스 질의 10종 · 모델은 분류만, 결정은 기계 규칙: 1급 발행처 또는 2곳 이상 → 엔진, 1곳 → DM 만 · 하루 깨움 2회 상한(긴급 예외) · 같은 묶음 7일 쿨다운) | 긴급/중요 | `test_spacex_news`(8건, 변이 5종) |
     | 경쟁 발사(Amazon Leo·New Glenn, 개명 전 Kuiper) | LL2 이름 검색 3종(최근 7일 확정 결과 + 다가오는 3건 → 하트비트) · 질의 하나라도 실패면 캐시 미사용 | 실패·부분 실패 → 중요(엔진) · 성공 → 기록(DM 한 줄 · 엔진은 다음 회차에 읽는다 — 상용 개시·요금은 뉴스 감시관 '경쟁' 질의) | `test_spacex_watch2` CompetitorLaunchTest |
   - 2중 — 숫자 감사관 `probe_audit.py`(daily full, 빌드 앞): 판단층을 정답으로 쓰지 않고 최신 실적 8-K Ex.99.1 원문에서 관제실 숫자를 다시 잰다 — 기계값(XBRL 6종)·엔진 기입값(부문 매출 3·소비자 가입자·ARPU·GW·발사) **정확 일치 + 숫자 경계**, 교차 산식(부문 합=매출 · FCF=OCF−Capex · 시가총액=기준가×주식수) · 엔진 기준가와 일별 시가총액 10% 초과 괴리는 '대조 불가'로 표시. 원문을 못 받으면 '통과'가 아니라 '대조 불가'. 결과 `data/spacex_audit.json` → 관제실 상태줄 '숫자 감사 n/n'(3일 지난 감사는 숨김) · 불일치 DM(같은 불일치 7일 재알림). 테스트 `test_probe_audit`(7건, 변이 3종).
   - 뉴스 감시관 원칙: 보도는 **판단 근거가 아니라 확인 대상** — 엔진을 깨울 뿐, 판단층에는 쓰지 않는다. 판정 모델이 실패하면 그 헤드라인은 seen 에 넣지 않고 다음 회차에 다시(침묵은 통과가 아니다) + DM. 원장 kind=spacex_news(질의별·판정 모델), 관제탑 봇 목록에 등재.
-  - 테스트: `scripts/test_spacex_watch2.py`(36건 · G1 재현은 실제 accn 행으로 · 변이 17종 감지 확인: 8-K 등급 무력화·본문 재분류 끔·일반 깨움 삭제·매시간 즉시 발사 끔·하트비트 날짜 생략·이관 재판정 끔·내부자 실패 seen·매시간이 데일리 파일 씀·옛 화살표 + (같은 날 2차) 경쟁 결과확정 검사 삭제·Starship 결과확정 필터 삭제·관제실이 저장 제목 사용·점검 실패에도 날짜·경쟁 실패도 기록·제목 언어 무시·경쟁 질의 실패에도 캐시·경쟁 질의 삭제) · selftest 등재.
+  - 테스트: `scripts/test_spacex_watch2.py`(38건 · G1 재현은 실제 accn 행으로 · 변이 19종 감지 확인: 8-K 등급 무력화·본문 재분류 끔·일반 깨움 삭제·매시간 즉시 발사 끔·하트비트 날짜 생략·이관 재판정 끔·내부자 실패 seen·매시간이 데일리 파일 씀·옛 화살표 + (같은 날 2차) 경쟁 결과확정 검사 삭제·Starship 결과확정 필터 삭제·관제실이 저장 제목 사용·점검 실패에도 날짜·경쟁 실패도 기록·제목 언어 무시·경쟁 질의 실패에도 캐시·경쟁 질의 삭제·매시간 발사 수집 끔·매시간 실패 필터 삭제) · selftest 등재.
 
 ## 판단층 헌법 (2026-08-31 개정 — 기계가 채우고 사람이 덮어쓴다)
 - 판단층은 두 겹이다: `data/buffett_auto.json`(기계) + `data/buffett_config.json`의 `buffett` 블록(사람 **오버라이드 전용**)

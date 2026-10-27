@@ -939,6 +939,30 @@ def collect_launches(fc, watch, logs):
     return evs
 
 
+def collect_launches_light(fc, logs):
+    """매시간 감시용 — LL2 질의 1회(무료 한도 보호): 최근 3일 SpaceX 의 결과 확정 비행(성공 3·실패 4·부분 실패 7) 중
+    Starship 전부 + 실패·부분 실패 전부. 밤사이(18시 full → 08시 full, 약 14시간) 일어난 Starship 비행·발사 실패를
+    다음 아침이 아니라 1시간 안에 잡는다. 경쟁 발사·다가오는 발사·연간 집계는 데일리(full)가 맡는다."""
+    now = datetime.now(timezone.utc)
+    iso = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    w0 = (now - timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    hdr = {"User-Agent": "UNIVERTRIX spacex-watch (univertrix.com)"}
+    q = (f"{LL2}/launches/mini/?lsp__id={LL2_SPACEX_ID}&status__ids=3,4,7&net__gte={w0}"
+         f"&net__lte={iso}&ordering=-net&limit=25")
+    d, oc, code = _get_json(fc, q, "발사 기록(LL2·매시간)", hdr)
+    if d is None:
+        logs.append("LL2 매시간 조회 실패 — 다음 시간에 다시")
+        return []
+    out = []
+    for r in d.get("results") or []:
+        if not launch_final(r):
+            continue
+        starship = "starship" in (r.get("name") or "").lower()
+        if starship or launch_status(r) in ("Failure", "Partial Failure"):
+            out.append(launch_event(r, "Starship" if starship else "실패"))
+    return out
+
+
 def collect_ir(fc, logs):
     try:
         from fetch_signals import parse_rss
@@ -1280,7 +1304,7 @@ def _hourly_stale_h(watch, now):
 
 
 def run(mode="daily"):
-    """측정 한 회차. mode="daily"(full 회차: 공시·재무·발사·IR·엔진) | "hourly"(공시·IR 만, 즉시 발사).
+    """측정 한 회차. mode="daily"(full 회차: 공시·재무·발사·IR·엔진) | "hourly"(공시·IR·발사 결과, 즉시 발사).
 
     데일리는 data/spacex_watch.json·spacex_kpi.json 을, 매시간은 data/spacex_hourly.json 만 쓴다.
     서로의 '이미 울린 사건'을 읽어 같은 사건으로 두 번 울지 않는다."""
@@ -1302,7 +1326,7 @@ def run(mode="daily"):
 
     if hourly:
         sec_events, sub = collect_sec_light(fc, logs)
-        launch_events = []
+        launch_events = collect_launches_light(fc, logs)
         ir_events = collect_ir(fc, logs)
     else:
         sec_events, sub = collect_sec(fc, watch, kpi, logs)

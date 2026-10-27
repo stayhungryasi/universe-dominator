@@ -339,7 +339,7 @@ class RunWiringTest(unittest.TestCase):
         sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH = self._saved
 
     def _run(self, sub, mode="daily", texts=None, now="2026-10-27T09:30:00+09:00", dispatch_ok=True, env=None,
-             dm_ok=True):
+             dm_ok=True, launches=None):
         import feed_client as fc
         dms, fired = [], []
         texts = texts or {}
@@ -356,6 +356,7 @@ class RunWiringTest(unittest.TestCase):
         coll = "collect_sec_light" if mode == "hourly" else "collect_sec"
         patches = [mock.patch.object(sw, coll, return_value=(sw.parse_filings(sub)[0], sub)),
                    mock.patch.object(sw, "collect_launches", return_value=[]),
+                   mock.patch.object(sw, "collect_launches_light", return_value=list(launches or [])),
                    mock.patch.object(sw, "collect_ir", return_value=[]),
                    mock.patch.object(sw, "collect_engine"),
                    mock.patch.object(sw, "collect_hourly_runs"),
@@ -472,6 +473,31 @@ class RunWiringTest(unittest.TestCase):
         dms, fired, w, h2 = self._run(sub_of(rows))
         self.assertEqual(dms, [])
         self.assertEqual([d["grade"] for d in w["due"] if not d.get("baseline")], ["urgent"])
+
+    def test_hourly_catches_night_launch_failure(self):
+        """밤사이 발사 실패 — 매시간 감시가 1시간 안에 잡아 즉시 발사(옛: 다음 아침 full 까지 최대 14시간)."""
+        self._baseline()
+        fail = sw.launch_event(_ll2("Falcon 9 Block 5 | Starlink 12-9", "2026-10-27T13:00:00Z", "Failure", "f9x"), "실패")
+        dms, fired, w, h = self._run(sub_of(self.BASE), mode="hourly", launches=[fail],
+                                     now="2026-10-27T22:47:00+09:00")
+        self.assertEqual((len(dms), len(fired)), (1, 1))
+        self.assertTrue(dms[0].startswith("🚨"))
+        self.assertIn("f9x", h["alerted"])
+        dms, fired, w, h = self._run(sub_of(self.BASE), mode="hourly", launches=[fail],
+                                     now="2026-10-27T23:47:00+09:00")
+        self.assertEqual((dms, fired), ([], []))                      # 같은 실패로 두 번 울지 않는다
+
+    def test_collect_launches_light_filter(self):
+        import feed_client as fc
+        rows = [_ll2("Falcon 9 Block 5 | Starlink 12-8", "2026-10-27T01:00:00Z", "Success", "ok1"),
+                _ll2("Falcon 9 Block 5 | Starlink 12-9", "2026-10-27T03:00:00Z", "Failure", "bad1"),
+                _ll2("Starship | Flight 15", "2026-10-27T05:00:00Z", "Success", "ss15"),
+                _ll2("Starship | Flight 16", "2026-10-27T06:00:00Z", "In Flight", "ss16")]
+        with mock.patch.object(sw, "_get_json", return_value=({"results": rows}, "ok", 200)) as g:
+            evs = sw.collect_launches_light(fc, [])
+        self.assertEqual([(e["id"], e["grade"]) for e in evs], [("bad1", "urgent"), ("ss15", "major")])
+        self.assertEqual(g.call_count, 1)                             # 매시간 LL2 질의는 1회(무료 한도)
+        self.assertIn("status__ids=3,4,7", g.call_args.args[1])
 
     def test_hourly_never_writes_daily_files(self):
         """매시간 감시는 spacex_hourly.json 하나만 쓴다 — 데일리 파일을 쓰면 두 워크플로의 커밋이 충돌한다."""
