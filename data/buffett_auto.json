@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-27 18:22",
- "generated_at": "2026-10-27T18:22:26.179900+09:00",
+ "generated_label": "2026-10-27 19:14",
+ "generated_at": "2026-10-27T19:14:22.319099+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-27",
@@ -128,7 +128,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -146,24 +146,7 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "최강 소비자 프랜차이즈이나 성장 부진으로 $5조 밸류 정당화 위험; 신경영진 전환기에 방향성 불확실",
-   "_evidence": {
-    "franchise": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership",
-    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-10-27",
@@ -447,7 +430,11 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 칩 매출 성장 가시화하나 소프트웨어 부진과 가이던스 미변화로 신뢰성 훼손"
+    }
    },
    "conversion": {
     "value": 0.9836,
@@ -467,7 +454,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -485,7 +472,30 @@
      "period": "2025Q4",
      "end": "2025-11-02"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "debt_discipline": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "AI 인프라 수요 강하나 시장기대 미충족으로 연중 14% 하락, 커스텀칩 예측 불확실성 높음",
+   "_evidence": {
+    "franchise": "Broadcom partners with Wall Street giants to secure $63 billion financing for Anthropic chip procurement, demonstrating moat in AI chip market",
+    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; earnings beat insufficient to sustain stock gains",
+    "capalloc": "Broadcom partners with financial institutions for $63 billion chip financing facility, indicating leveraged capital structure expansion",
+    "owner_earnings": "Broadcom beats on earnings and guidance as AI revenue doubles, yet stock down 14% since last report suggesting earnings quality concerns"
+   }
   },
   "SPCX": {
    "as_of": "2026-10-27",
@@ -525,7 +535,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.66
+    "value": 1.69
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -1133,12 +1143,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "HBM4 양산 진입으로 초단기 수익성 급증하나 메모리 사이클의 본질적 변동성 내재"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1150,32 +1155,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "notes": "AI 수요 급증 국면의 슈퍼사이클 중이나, 헤드라인 상 '주가 반토막 후 매수 개입' 신호로 순환성 정점 의심",
-   "_evidence": {
-    "franchise": "HBM4 대량 생산 진입, 구글·AI 고객층 독점적 공급처 지위; 메모리 업체 중 대체 불가능 기술 포지셔닝",
-    "risk5": "Q2 2026 영업마진 76%, 수익성 급등은 사이클 정점 신호 가능성; SK 회장 개인매수로 경영진 신뢰도 확인되나 메모리 산업 구조적 변동성은 불변",
-    "capalloc": "40조원 자사주 매입 완료, $26.5B 미국 공모 후 $28.6B 추가 매입 계획; 현금 창출 양호하고 희석 없음",
-    "owner_earnings": "영업마진 76% 달성(Q2 2026) 보고되나, '메모리 슈퍼사이클 쿨링' 헤드라인과 나스닥 상장 후 주가 급락 반복은 실질 이익의 지속성 의문 제기"
-   }
+   "confidence": null
   },
   "ASML": {
    "as_of": "2026-10-27",
@@ -1521,7 +1501,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "기록적 수익 달성 후 주가 하락, 밸류에이션 정당성 논쟁 중"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1533,7 +1518,28 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "칩 설계 로열티의 최상급 프랜차이즈이나 시장이 일관되게 고평가 상태로 거래 중",
+   "_evidence": {
+    "franchise": "Arm's Trio of Multipliers Justify Its Sky High Valuation; 유형 통행료형 칩 설계 로열티 모델",
+    "risk5": "Record Revenue and a Guidance Beat, but the Stock Sold Off; Arm Earnings Preview: Can an AGI CPU Raise Rescue the Stock?",
+    "capalloc": "Record Revenue in Q1 FY2027; $2B Revenue Goal indicates cash generation capability",
+    "owner_earnings": "Arm Q1 FY2027 Earnings: Record Revenue and a Guidance Beat, but the Stock Sold Off; Arm Could Be 40% Undervalued As Earnings Near 보도로 밸류에이션 해석 분기중"
+   }
   },
   "SNDK": {
    "as_of": "2026-10-27",
@@ -1823,7 +1829,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 833.5
+    "value": 820.1
    },
    "eps_status": null,
    "roe_tangible": 0.6902,
@@ -1970,5 +1976,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-27 18:24"
+ "scout_label": "2026-10-27 19:15"
 }

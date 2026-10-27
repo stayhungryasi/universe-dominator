@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "e8f3df333644",
  "lang": "es",
- "src_hash": "89d5073dc70f",
+ "src_hash": "9d8bcbbcd8fe",
  "model": "claude-haiku-4-5",
- "at": "2026-10-27 18:35",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "JPMorgan Chase & Co. (NYSE:JPM) recibe un precio objetivo promedio de $368,10 de 28 analistas con calificación de «Compra agresiva», negociándose con una capitalización de mercado de $888,16 mil millones a un P/E de 14,02x.",
-  "summary_ko.1": "El EPS del tercer trimestre del 13 de octubre fue de $5,75, por debajo de la estimación de $5,94, pero registró ingresos de $50,17 mil millones (+8,1% interanual), margen neto del 21,85% y ROE del 18,48%.",
-  "title": "JPMorgan Chase & Co. (NYSE:JPM) tiene un precio objetivo promedio de $368,10"
- }
+ "at": "2026-10-27 19:29",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[2§summary_ko.1] 숫자: 원문에 없는 숫자 88816 billion",
+  "[2§summary_ko.1] 숫자: 원문의 숫자가 빠짐 888.16억"
+ ]
 }

@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "bb9f22c4255e",
  "lang": "es",
- "src_hash": "96e5173c1988",
+ "src_hash": "724174e47650",
  "model": "claude-haiku-4-5",
- "at": "2026-10-27 18:35",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "AXP logró EPS de Q3 de 4,68 dólares, superando en un 5% las estimaciones de consenso, con aumento del 13% interanual",
-  "summary_ko.1": "Ingresos trimestrales de 20.060 millones de dólares (aumento del 9% interanual), gasto en tarjetas de 454.000 millones de dólares (aumento del 8%), guía anual de EPS ajustado de 17,60 a 17,90 dólares elevada",
-  "title": "Visa, Mastercard o American Express: ¿cuál es la mejor acción de pago para comprar?"
- }
+ "at": "2026-10-27 19:29",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§summary_ko.1] 숫자: 원문에 없는 숫자 20060 million",
+  "[0§summary_ko.1] 숫자: 원문의 숫자가 빠짐 20.06억"
+ ]
 }

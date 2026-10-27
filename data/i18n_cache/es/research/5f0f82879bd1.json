@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "5f0f82879bd1",
  "lang": "es",
- "src_hash": "b8836690115b",
+ "src_hash": "cab3911d4fbc",
  "model": "claude-haiku-4-5",
- "at": "2026-10-27 18:35",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Samsung Electronics ha caído de su máximo de junio de 374.500 won a 204.500 won a mediados de octubre, mientras que los precios objetivos de los valores se han ampliado en el mismo período de 270.000 won (BNK Investment & Securities) a 670.000 won (Nomura Securities).",
-  "summary_ko.1": "Aunque la ganancia operativa del tercer trimestre de 2026 superó por primera vez 100 billones de won (con un margen de ganancia operativa de aproximadamente el 55%), la divergencia en las perspectivas de la persistencia de la escasez de memoria y el potencial de mejora de la producción en masa de HBM4 está generando disparidad en los precios objetivos."
- }
+ "at": "2026-10-27 19:29",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[18§summary_ko.0] 숫자: 원문에 없는 숫자 374500, 204500",
+  "[18§summary_ko.0] 숫자: 원문의 숫자가 빠짐 37만, 20만, 4,500"
+ ]
 }

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-23-event-s2",
+ "lang": "ja",
+ "src_hash": "cbc8d3839d22",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-27 19:29",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. T4 — Amazon Leo 米国消費者向け商用開始の地域・料金:観測結果",
+  "md": "\n| 項目 | 10月号の記録 | 今回の確認 | 出典等級 |\n|---|---|---|---|\n| 消費者料金 | 未公表 | **未公表** — 公式サイトに料金・開始地域・日付なし、端末3種(Nano ≤100Mbps · Pro ≤400Mbps · Ultra ≤1Gbps↓/400Mbps↑)のみ | ② [leo.amazon.com](https://leo.amazon.com/) 2026-10-23 閲覧 · [Wikipedia 総合](https://en.wikipedia.org/wiki/Amazon_Leo) |\n| 開始時期(会社発言) | \"年内開始を目標・日付未定\" | 変化なし — \"2026年内に初期サービス、北緯・南緯から赤道方向へ拡大\"(日付なし)。5月の\"2026年中盤\"→7月の\"今年中\"へすでに一度後ろ倒しされた | ⑤ [Light Reading 10/12](https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps) · [Light Reading 07/06](https://www.lightreading.com/satellite/amazon-leo-inches-toward-service-launch) |\n| 衛星 | 396基(10/12) | 変化なし — **打ち上げ396基(生産分14回)、4基廃棄 → 軌道上約392基**(算式:396 − 4)。7/2 Atlas V最後のミッション以降**打ち上げ0回** | ④ [Wikipedia 打ち上げ一覧](https://en.wikipedia.org/wiki/List_of_Amazon_Leo_launches) · ⑤ Light Reading 10/12 |\n| 次回打ち上げ | — | **Vulcan LV-01、2026-10-29目標、40基** — 初のVulcanミッション(\"数週間以内\"、10/8 Badyal) | ④ 同上 · ⑤ [Tokenpost 10/08](https://www.tokenpost.com/news/technology/28368) |\n| 生産 | — | 1,000機目の衛星が完成(10/8)、\"最初の27基に6か月 → 今は週27基\" | ⑤ Tokenpost 10/08 |\n| FCC 50%マイルストーン | \"1,616基の期限(7/30)未達\" | **訂正**:未達ではなく**免除(waiver)** — 2026-06-05のSpace Bureau命令DA 26-553が7/30の半数配備マイルストーンを条件付きで免除。条件:7/30以降に打ち上げた衛星はスペクトラム優先権が降格(50%到達時に回復)、最終3,232基(当初認可3,236基 → 軌道変更認可で3,232基に減少、2次報道は3,236と記すものが多い)の2029-07-30期限は不変 | ③ [FCC DA 26-553](https://docs.fcc.gov/public/attachments/DA-26-553A1.pdf)(原文.txtコピーの¶3・¶11で確認 — 検証担当の不一致修正時) · [Benton 06/08](https://www.benton.org/headlines/fcc-grants-kuipers-request-extend-or-waive-interim-milestone) |\n| 法人顧客 | — | ベータ運用中:JetBlue・Delta(契約)、AT&T(法人顧客接続) — 消費者・政府は未開始 | ⑤ Light Reading 07/06 |\n\n**判定**:T4は**未発生**。ルールR5(\"Kuiperが2027年末までに米国消費者向け料金プランを未発売 → 基本+5、弱気−5\")は判定時点が2027年末のため保留を維持。競合のタイムライン(10月号1-7 \"2027~2028年に実質的な脅威\")は変化なし — むしろ7月以降の打ち上げが止まった3か月が脅威の時点を後ろへ押す(推定)。10月号の競合表にあった\"FCC 1,616基期限未達\"という表現は**免除命令を反映していなかった**ため、上の表のとおり訂正する。\n\n**比較基準線の準備(T4発動時に使う物差し)**:10月号T4の判断変更条件は\"Starlink比20%以上の低価格\"。Starlinkの米国住宅向け料金は公式ページを今回確認できず(ページ本文未受信)、2次報道は2026-08時点で**100Mbps $55 · 200Mbps $85 · Max $130/月、キット$349または$0 + 月$10**(推定、住所別に異なり、混雑割増は別)([TechLoy](https://www.techloy.com/starlink-10-monthly-kit-fee-new-customers/), [SlashGear 2026-01](https://www.slashgear.com/2084684/cheapest-starlink-residential-plan-50-dollars))。公式確認は次回の課題。Amazon側の端末価格は\"$400未満\"という発言のみで、月額料金の推定は$55~65と$100~120に分かれており、**どちらも採用しない**([findcheapbroadband](https://findcheapbroadband.com/blog/amazon-leo-costs/), [utilitiesformyhome](https://utilitiesformyhome.com/providers/amazon-leo/) — 等級外、クロスチェック用)。\n\n---\n"
+ }
+}

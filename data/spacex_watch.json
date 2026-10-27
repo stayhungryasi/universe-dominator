@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-10-27T18:26+09:00",
+  "checked_at": "2026-10-27T19:17+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-10-27T00:46:31Z",
@@ -1116,7 +1116,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-27T18:25+09:00",
+ "generated_at": "2026-10-27T19:17+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1170,6 +1170,18 @@
    "detected_at": "2026-10-27",
    "grade": "major",
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm"
+  },
+  {
+   "key": "news:starlink-ukraine-outage:2026-10-27",
+   "trigger_id": null,
+   "name": "우크라이나에서 Starlink 서비스가 정상으로 돌아왔다.",
+   "reason": "보도 감지(fakti.bg·silicon uk)",
+   "event": "Starlink Services Return To Normal For Ukraine",
+   "event_date": "2026-10-27",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1LOUE2S2Q0Ti16ZUk0RTIxWnYwTlN6Q0lJR0N5Rl9ocW9JeE5ob2d5b1NnOG9FeWZpRzV0alFyZzByTUplRGV1WjVHaHdKODdDaER5YjFsQ2lxVmZkR09BdV9PbkZWcUJWNFpnWW13?oc=5",
+   "detected_at": "2026-10-27",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
@@ -1184,12 +1196,28 @@
    "urls": [
     "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm"
    ]
+  },
+  {
+   "key": "qn:2026-10-27:1917",
+   "run_id": "40485191039",
+   "queued_at": "2026-10-27T19:17+09:00",
+   "state": "queued",
+   "trigger_id": "",
+   "name": "우크라이나에서 Starlink 서비스가 정상으로 돌아왔다.",
+   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMibkFVX3lxTE1LOUE2S2Q0Ti16ZUk0RTIxWnYwTlN6Q0lJR0N5Rl9ocW9JeE5ob2d5b1NnOG9FeWZpRzV0alFyZzByTUplRGV1WjVHaHdKODdDaER5YjFsQ2lxVmZkR09BdV9PbkZWcUJWNFpnWW13?oc=5",
+    "https://news.google.com/rss/articles/CBMiswFBVV95cUxQYklUTF9tc2VrTFVSUW1ZYkpXMnNuUWpsN1pRYXFZSE9VVjVGLTlvQlZHY0VVLVJFODBfV2pwc0JnSmpfZU5GMmhVNFdKZlJ4YVc1S3puTXQ0dTZZa3lzX1locjhZbjFJSEpCYktrcUZFUkdHRmg0UDlxc3NtYTNMQm82LUg0TE9CaHFsSFI0U2hfQXVqNTRvVWd6RVAxVW1YSWdub2dZbUlROFJtUkdmMDZlUQ?oc=5"
+   ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-10-27T18:26+09:00",
+  "checked_at": "2026-10-27T19:17+09:00",
   "last_success_at": "2026-10-27T05:38:11Z",
-  "last_conclusion": "success"
+  "last_run_at": "2026-10-27T05:37:37Z",
+  "last_conclusion": "success",
+  "runs_24h": 4,
+  "ok_24h": 4
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",
