@@ -848,16 +848,56 @@ def collect_sec(fc, watch, kpi, logs):
     return events, sub
 
 
+SRC_OK = {}         # 이번 실행의 원천별 응답 성공 여부 — 매시간 감시가 연속 실패를 센다(track_sources)
+SRC_KO = {"sec": "SEC 공시목록", "ll2": "발사 기록(LL2)", "ir": "IR 보도자료"}
+HOURLY_SRC_ALERT = 3        # 매시간 원천 3회 연속 실패 → 소장 DM(7일 재알림) · 회복 1회
+
+
 def collect_sec_light(fc, logs):
     """매시간 감시용 — 공시 목록(submissions)만. 재무팩트·표지 주식수는 하루 3회 full 이 맡는다."""
     hdr = sec_headers()
     if not hdr:
         logs.append("SEC_USER_AGENT 미설정 — SEC 측정 생략")
+        SRC_OK["sec"] = False
         return [], None
     sub, oc, code = _get_json(fc, SEC_SUB, "SEC 공시목록", hdr)
     if sub is None:
+        SRC_OK["sec"] = False
         return [], None
-    return parse_filings(sub)[0], sub
+    evs = parse_filings(sub)[0]
+    SRC_OK["sec"] = bool(evs)               # 응답은 왔는데 공시 0건 = 형식 변화(⑰) — 실패로 센다
+    return evs, sub
+
+
+def track_sources(hstate, outcomes, today):
+    """매시간 원천의 연속 실패를 센다 → 보낼 DM 문장 목록. 정상이면 streak 0 그대로(파일 불변 → 커밋 없음).
+
+    매시간 잡이 '성공'으로 끝나도 SEC 가 계속 거절하면 아무것도 못 보는 침묵하는 감시자가 된다
+    (프로브 침묵 지뢰). 감시자의 감시자(_hourly_stale_h)는 잡의 성패만 보므로 원천은 여기서 센다."""
+    src = hstate.setdefault("src", {})
+    msgs = []
+    for k in sorted(outcomes):
+        r = dict(src.get(k) or {})
+        if outcomes[k]:
+            if r.get("alerted"):
+                msgs.append(f"✅ SpaceX 매시간 감시 — {SRC_KO.get(k, k)} 응답 회복 ({r.get('streak', 0)}회 연속 실패 뒤)")
+            src[k] = {"streak": 0}
+            continue
+        r["streak"] = int(r.get("streak") or 0) + 1
+        last = r.get("alerted")
+        stale = True
+        if last:
+            try:
+                stale = (datetime.strptime(today, "%Y-%m-%d") - datetime.strptime(last, "%Y-%m-%d")).days >= 7
+            except Exception:
+                stale = True
+        if r["streak"] >= HOURLY_SRC_ALERT and stale:
+            msgs.append(f"⚠️ SpaceX 매시간 감시 — {SRC_KO.get(k, k)} {r['streak']}회 연속 실패. "
+                        f"그동안 이 원천의 새 사건은 잡히지 않습니다(데일리 full 이 하루 3회 보완). "
+                        f"Actions 의 spacex-watch 실행 기록을 확인하세요.")
+            r["alerted"] = today
+        src[k] = r
+    return msgs
 
 
 def collect_launches(fc, watch, logs):
@@ -950,6 +990,7 @@ def collect_launches_light(fc, logs):
     q = (f"{LL2}/launches/mini/?lsp__id={LL2_SPACEX_ID}&status__ids=3,4,7&net__gte={w0}"
          f"&net__lte={iso}&ordering=-net&limit=25")
     d, oc, code = _get_json(fc, q, "발사 기록(LL2·매시간)", hdr)
+    SRC_OK["ll2"] = d is not None
     if d is None:
         logs.append("LL2 매시간 조회 실패 — 다음 시간에 다시")
         return []
@@ -972,8 +1013,10 @@ def collect_ir(fc, logs):
     text, oc, code = fc.fetch(IR_RSS, "IR 보도자료", "spacex",
                               headers={"User-Agent": "UNIVERTRIX spacex-watch (univertrix.com)"})
     if text is None:
+        SRC_OK["ir"] = False
         return []
     rows = parse_rss(text, "SpaceX IR")
+    SRC_OK["ir"] = bool(rows)               # 응답은 왔는데 0건 = 해석 실패 — 실패로 센다
     fc.record("spacex", "IR 보도자료", "ok" if rows else "zero", code, len(rows))
     from email.utils import parsedate_to_datetime
     out = []
@@ -1199,6 +1242,11 @@ def heartbeat_message(watch, hstate, st, now, status=None):
     hr = (watch or {}).get("hourly") or {}
     if hr.get("last_success_at"):
         lines.append(f"· 매시간 감시 마지막 성공: {hr['last_success_at'][:16].replace('T', ' ')}")
+    hsrc = (hstate or {}).get("src") or {}
+    if hsrc:
+        lines.append("· 매시간 원천: " + " · ".join(
+            f"{SRC_KO.get(k, k)} " + ("정상" if not (r or {}).get("streak") else f"⚠️ {r['streak']}회 연속 실패")
+            for k, r in sorted(hsrc.items())))
     nr = (read_json(DATA_DIR / "spacex_news.json", {}) or {}).get("last_run") or {}
     if nr:
         lines.append(f"· 뉴스 감시관 마지막 판정 {nr.get('date')}: 헤드라인 {nr.get('judged', 0)}건 · 엔진 깨움 "
@@ -1309,6 +1357,7 @@ def run(mode="daily"):
     데일리는 data/spacex_watch.json·spacex_kpi.json 을, 매시간은 data/spacex_hourly.json 만 쓴다.
     서로의 '이미 울린 사건'을 읽어 같은 사건으로 두 번 울지 않는다."""
     DM_LOG.clear()
+    SRC_OK.clear()
     import feed_client as fc
     hourly = mode == "hourly"
     now = now_kst()
@@ -1466,6 +1515,8 @@ def run(mode="daily"):
             hstate["events"] = merge_events(hstate.get("events"), fresh + ins_events)[:40]
         if q_item:
             hstate["dispatches"] = ((hstate.get("dispatches") or []) + [q_item])[-20:]
+        for m in track_sources(hstate, dict(SRC_OK), today):
+            send_dm(m)
         heartbeat()
         if DM_LOG:                   # DM 을 보낸 회차만 기록한다(조용한 회차는 파일이 그대로 → 커밋 없음)
             hstate["dm_log"] = ((hstate.get("dm_log") or []) + DM_LOG)[-20:]

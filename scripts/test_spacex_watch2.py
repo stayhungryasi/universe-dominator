@@ -339,7 +339,7 @@ class RunWiringTest(unittest.TestCase):
         sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH = self._saved
 
     def _run(self, sub, mode="daily", texts=None, now="2026-10-27T09:30:00+09:00", dispatch_ok=True, env=None,
-             dm_ok=True, launches=None):
+             dm_ok=True, launches=None, src=None):
         import feed_client as fc
         dms, fired = [], []
         texts = texts or {}
@@ -354,7 +354,14 @@ class RunWiringTest(unittest.TestCase):
             fired.append(q)
             return dispatch_ok, 204 if dispatch_ok else 403
         coll = "collect_sec_light" if mode == "hourly" else "collect_sec"
-        patches = [mock.patch.object(sw, coll, return_value=(sw.parse_filings(sub)[0], sub)),
+
+        def fake_sec(*_a, **_k):
+            if src is not None:                 # 원천 응답 결과를 흉내 낸다(track_sources 가 센다)
+                sw.SRC_OK.update(src)
+                if src.get("sec") is False:
+                    return [], None
+            return sw.parse_filings(sub)[0], sub
+        patches = [mock.patch.object(sw, coll, side_effect=fake_sec),
                    mock.patch.object(sw, "collect_launches", return_value=[]),
                    mock.patch.object(sw, "collect_launches_light", return_value=list(launches or [])),
                    mock.patch.object(sw, "collect_ir", return_value=[]),
@@ -498,6 +505,41 @@ class RunWiringTest(unittest.TestCase):
         self.assertEqual([(e["id"], e["grade"]) for e in evs], [("bad1", "urgent"), ("ss15", "major")])
         self.assertEqual(g.call_count, 1)                             # 매시간 LL2 질의는 1회(무료 한도)
         self.assertIn("status__ids=3,4,7", g.call_args.args[1])
+
+    def test_hourly_source_failure_alert_once_and_recover(self):
+        """매시간 원천(SEC)이 3회 연속 실패 → DM 1통(그 뒤 침묵) · 회복 1통. 정상일 땐 파일이 그대로(커밋 없음)."""
+        self._baseline()
+        ok = {"sec": True, "ll2": True, "ir": True}
+        self._run(sub_of(self.BASE), mode="hourly", src=ok, now="2026-10-27T10:47:00+09:00")
+        a = sw.HOURLY_PATH.read_text(encoding="utf-8")
+        self._run(sub_of(self.BASE), mode="hourly", src=ok, now="2026-10-27T11:47:00+09:00")
+        self.assertEqual(sw.HOURLY_PATH.read_text(encoding="utf-8"), a)          # 정상 → 불변
+        bad = dict(ok, sec=False)
+        got = []
+        for hh in (12, 13, 14, 15):
+            dms, _, _, h = self._run(sub_of(self.BASE), mode="hourly", src=bad, now=f"2026-10-27T{hh}:47:00+09:00")
+            got += dms
+        self.assertEqual(len(got), 1)
+        self.assertIn("SEC 공시목록 3회 연속 실패", got[0])
+        self.assertEqual(h["src"]["sec"]["streak"], 4)
+        dms, _, _, h = self._run(sub_of(self.BASE), mode="hourly", src=ok, now="2026-10-27T16:47:00+09:00")
+        self.assertEqual(len(dms), 1)
+        self.assertIn("응답 회복", dms[0])
+        self.assertEqual(h["src"]["sec"], {"streak": 0})
+
+    def test_hourly_sec_zero_filings_counts_as_failure(self):
+        """응답은 왔는데 공시 0건 = 형식 변화(⑰) — 조용한 날이 아니라 실패로 센다."""
+        import feed_client as fc
+        sw.SRC_OK.clear()
+        with mock.patch.object(sw, "sec_headers", return_value={"User-Agent": "t"}), \
+                mock.patch.object(sw, "_get_json", return_value=({"filings": {"recent": {}}}, "ok", 200)):
+            evs, sub = sw.collect_sec_light(fc, [])
+        self.assertEqual((evs, sw.SRC_OK.get("sec")), ([], False))
+
+    def test_heartbeat_shows_hourly_sources(self):
+        msg = sw.heartbeat_message({}, {"src": {"sec": {"streak": 2}, "ll2": {"streak": 0}}}, {},
+                                   datetime.fromisoformat("2026-10-27T08:47:00+09:00"))
+        self.assertIn("매시간 원천: 발사 기록(LL2) 정상 · SEC 공시목록 ⚠️ 2회 연속 실패", msg)
 
     def test_hourly_never_writes_daily_files(self):
         """매시간 감시는 spacex_hourly.json 하나만 쓴다 — 데일리 파일을 쓰면 두 워크플로의 커밋이 충돌한다."""
