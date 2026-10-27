@@ -602,12 +602,15 @@ def parse_trigger_date(s):
 
 TRIGGER_KIND = [("earnings", r"실적"), ("starship", r"Starship|스타십"),
                 # 2026-10-27: 엔진이 T5 이름을 '$400억 GPU 마스터 금융리스 — …'로 바꾸자 '조달'이 빠져 종류를 잃었다 → 리스·대출·금리
-                ("financing", r"조달|증자|채권|전환사채|리스|대출|금리"), ("contract", r"계약")]
+                ("financing", r"조달|증자|채권|전환사채|리스(?!크|트)|대출|금리"), ("contract", r"계약")]
 
 
 def trigger_kind(name):
+    """트리거 이름의 **머리말**(' — ' 앞)만 본다 — 2026-10-27: T7 '우크라이나 Starlink 제한 후속 — … 대체 조달 …'이
+    꼬리의 '조달' 때문에 조달 트리거로 읽혔다(그러면 SpaceX 조달 8-K 가 T7 사건 감지로 잘못 붙는다)."""
+    head = (name or "").split(" — ")[0]
     for k, pat in TRIGGER_KIND:
-        if re.search(pat, name or "", re.I):
+        if re.search(pat, head, re.I):
             return k
     return None
 

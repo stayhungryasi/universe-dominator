@@ -298,6 +298,18 @@ class ResidualCheckpointTest(unittest.TestCase):
         """엔진이 이름을 바꿔도(조달 → 금융리스) 종류를 잃지 않는다 — 대기로 돌아오면 조달 사건과 맞는다."""
         self.assertEqual(sw.trigger_kind(self.T5P["name"]), "financing")
 
+    def test_kind_reads_headline_only(self):
+        """꼬리 설명의 낱말로 종류를 정하지 않는다 — T7 의 '대체 조달'·'리스크'는 조달 트리거가 아니다."""
+        self.assertIsNone(sw.trigger_kind("우크라이나 Starlink 제한 후속 — ① 국방부 조사 ② 해외 정부 계약 이탈·대체 조달 공식 발표"))
+        self.assertIsNone(sw.trigger_kind("규제 리스크 점검"))
+        self.assertEqual(sw.trigger_kind("4Q26 실적 — GW당 연매출"), "earnings")
+        self.assertEqual(sw.trigger_kind("Starship Flight 15 — 부스터+Ship 동시 캡처 시도"), "starship")
+
+    def test_repo_triggers_kind(self):
+        st = json.loads((Path(__file__).parent.parent / "agent-research" / "state" / "spacex_state.json").read_text(encoding="utf-8"))
+        kinds = {t["id"]: sw.trigger_kind(t["name"]) for t in st.get("triggers_next_12m") or []}
+        self.assertNotEqual(kinds.get("T7"), "financing")
+
     def test_heartbeat_lists_residual(self):
         st = {"run": {"run_date": "2026-10-27"}, "triggers_next_12m": [self.T5P, self.DONE]}
         msg = sw.heartbeat_message({}, {}, st, datetime.fromisoformat("2026-10-28T08:47:00+09:00"))
