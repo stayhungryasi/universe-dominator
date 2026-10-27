@@ -2,7 +2,7 @@
  "form4_30d": 1,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-10-27T01:22+09:00",
+  "fetched_at": "2026-10-27T09:37+09:00",
   "year": 2026,
   "year_count": 122,
   "starship_last": {
@@ -12,6 +12,7 @@
    "items": "",
    "title": "Starship | Starlink Group 31-1 (Starship Flight 14) — 발사 성공",
    "kind": "starship",
+   "grade": "major",
    "url": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
    "source": "Launch Library 2",
    "label": "직전 Starship"
@@ -25,7 +26,7 @@
   "source": "Launch Library 2 (2.4.0)"
  },
  "engine": {
-  "checked_at": "2026-10-27T01:22+09:00",
+  "checked_at": "2026-10-27T09:37+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-10-26T01:35:58Z",
@@ -44,7 +45,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
    "accn": "0001104659-26-118614",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "financing",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/SPACEX-SECURES-40-BILLION-IN-THE-LARGEST-GPU-FINANCING-EVER-2026-EnDqGhTAB3/default.aspx",
@@ -58,13 +60,25 @@
   },
   {
    "date": "2026-10-22",
+   "form": "S-8",
+   "items": "",
+   "title": "임직원 주식보상 등록",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066903/spacex-cursorformsx8.htm",
+   "accn": "0001628280-26-066903",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-10-22",
    "form": "10-Q",
    "items": "",
    "title": "분기보고서",
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
    "accn": "0001628280-26-066880",
    "source": "SEC EDGAR",
-   "kind": "report"
+   "kind": "report",
+   "grade": "major"
   },
   {
    "date": "2026-10-20",
@@ -74,7 +88,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spcx-20261020.htm",
    "accn": "0001628280-26-066482",
    "source": "SEC EDGAR",
-   "kind": "earnings"
+   "kind": "earnings",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/files/content_files/SpaceX-Reports-Third-Quarter-2026-Results.pdf",
@@ -97,15 +112,136 @@
    "source": "SpaceX IR"
   },
   {
+   "date": "2026-09-30",
+   "form": "4/A",
+   "items": "",
+   "accn": "0001213900-26-105393",
+   "title": "내부자 거래 보고 — Gracias Antonio J.(이사): 매도 외 처분 42,790,223주(코드 J) · 보유의 8.5% 처분 · 거래 후 보유 460,624,307주 · 10b5-1 계획",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000121390026105393/xslF345X06/ownership.xml",
+   "source": "SEC EDGAR",
+   "kind": "insider",
+   "grade": "major",
+   "insider": {
+    "owners": [
+     {
+      "name": "Gracias Antonio J.",
+      "roles": [
+       "이사"
+      ]
+     }
+    ],
+    "sold_shares": 0,
+    "sold_usd": 0,
+    "disposed_shares": 42790223.0,
+    "acquired_shares": 0,
+    "codes": [
+     "J"
+    ],
+    "after": 460624307.0,
+    "pct_disposed": 0.08499997606346404,
+    "plan_10b5_1": true,
+    "n_tx": 1
+   }
+  },
+  {
    "id": "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
    "date": "2026-09-28",
    "form": "발사",
    "items": "",
    "title": "Starship | Starlink Group 31-1 (Starship Flight 14) — 발사 성공",
    "kind": "starship",
+   "grade": "major",
    "url": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
    "source": "Launch Library 2",
    "label": "Starship"
+  },
+  {
+   "date": "2026-09-24",
+   "form": "4",
+   "items": "",
+   "accn": "0001628280-26-063378",
+   "title": "내부자 거래 보고 — Shotwell Gwynne(이사·President and COO): 매도 342,170주 · 약 $52.5M · 취득 555,480주 · 보유의 12.2% 처분 · 거래 후 보유 2,472,035주 · 10b5-1 계획",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026063378/xslF345X06/wk-form4_1790280657.xml",
+   "source": "SEC EDGAR",
+   "kind": "insider",
+   "grade": "major",
+   "insider": {
+    "owners": [
+     {
+      "name": "Shotwell Gwynne",
+      "roles": [
+       "이사",
+       "President and COO"
+      ]
+     }
+    ],
+    "sold_shares": 342170.0,
+    "sold_usd": 52546492.515700005,
+    "disposed_shares": 342170.0,
+    "acquired_shares": 555480.0,
+    "codes": [
+     "M",
+     "S"
+    ],
+    "after": 2472035.0,
+    "pct_disposed": 0.12158673586323669,
+    "plan_10b5_1": true,
+    "n_tx": 10
+   }
+  },
+  {
+   "date": "2026-09-22",
+   "form": "144",
+   "items": "",
+   "accn": "0001950047-26-009740",
+   "title": "매도 예정 신고 — Gwynne Shotwell 342,170주 · 시가 약 $52.0M",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000195004726009740/xsl144X01/primary_doc.xml",
+   "source": "SEC EDGAR",
+   "kind": "insider",
+   "grade": "record",
+   "insider": {
+    "owners": [
+     {
+      "name": "Gwynne Shotwell",
+      "roles": []
+     }
+    ],
+    "planned_shares": 342170.0,
+    "planned_usd": 51958514.5,
+    "plan_10b5_1": false
+   }
+  },
+  {
+   "date": "2026-09-15",
+   "form": "4",
+   "items": "",
+   "accn": "0001213900-26-100186",
+   "title": "내부자 거래 보고 — Gracias Antonio J.(이사): 매도 외 처분 42,790,223주(코드 J) · 보유의 8.5% 처분 · 거래 후 보유 460,624,307주 · 10b5-1 계획",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000121390026100186/xslF345X06/ownership.xml",
+   "source": "SEC EDGAR",
+   "kind": "insider",
+   "grade": "major",
+   "insider": {
+    "owners": [
+     {
+      "name": "Gracias Antonio J.",
+      "roles": [
+       "이사"
+      ]
+     }
+    ],
+    "sold_shares": 0,
+    "sold_usd": 0,
+    "disposed_shares": 42790223.0,
+    "acquired_shares": 0,
+    "codes": [
+     "J"
+    ],
+    "after": 460624307.0,
+    "pct_disposed": 0.08499997606346404,
+    "plan_10b5_1": true,
+    "n_tx": 1
+   }
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Participate-in-the-Goldman-Sachs-Communacopia-and-Technology-Conference-2026-hMRDqGksMV/default.aspx",
@@ -125,7 +261,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000142601226000004/xslSCHEDULE_13G_X02/primary_doc.xml",
    "accn": "0001426012-26-000004",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "record"
   },
   {
    "date": "2026-08-14",
@@ -135,7 +272,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000119312526352289/xslSCHEDULE_13G_X02/primary_doc.xml",
    "accn": "0001193125-26-352289",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "record"
   },
   {
    "date": "2026-08-14",
@@ -145,7 +283,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026056945/spcx-20260814.htm",
    "accn": "0001628280-26-056945",
    "source": "SEC EDGAR",
-   "kind": "financing"
+   "kind": "financing",
+   "grade": "major"
   },
   {
    "date": "2026-08-13",
@@ -155,7 +294,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926095936/xslSCHEDULE_13G_X02/primary_doc.xml",
    "accn": "0001104659-26-095936",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "record"
   },
   {
    "date": "2026-08-11",
@@ -165,7 +305,30 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000121390026087780/xslSCHEDULE_13G_X02/primary_doc.xml",
    "accn": "0001213900-26-087780",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-08-04",
+   "form": "S-8",
+   "items": "",
+   "title": "임직원 주식보상 등록",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026052715/spacex-formsx8xmeshoptical.htm",
+   "accn": "0001628280-26-052715",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-08-04",
+   "form": "S-8",
+   "items": "",
+   "title": "임직원 주식보상 등록",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026052712/spacex-formsx8xresalesx8.htm",
+   "accn": "0001628280-26-052712",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
   },
   {
    "date": "2026-08-04",
@@ -175,7 +338,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026052535/spcx-20260630.htm",
    "accn": "0001628280-26-052535",
    "source": "SEC EDGAR",
-   "kind": "report"
+   "kind": "report",
+   "grade": "major"
   },
   {
    "date": "2026-08-04",
@@ -185,7 +349,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026052515/spcx-20260804.htm",
    "accn": "0001628280-26-052515",
    "source": "SEC EDGAR",
-   "kind": "earnings"
+   "kind": "earnings",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/files/doc_financials/2026/q2/SpaceX-Reports-Second-Quarter-2026-Results.pdf",
@@ -204,6 +369,7 @@
    "items": "",
    "title": "Starship | Flight 13 — 발사 성공",
    "kind": "starship",
+   "grade": "major",
    "url": "https://ll.thespacedevs.com/2.4.0/launches/ac897b9f-44d2-4ff4-8416-1a0a076e98a2/",
    "source": "Launch Library 2",
    "label": "Starship"
@@ -226,7 +392,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026045763/spcx-closing8xkjune2026.htm",
    "accn": "0001628280-26-045763",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "major"
   },
   {
    "date": "2026-06-23",
@@ -236,7 +403,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026044955/spcx-pricing8xk.htm",
    "accn": "0001628280-26-044955",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-Announces-Pricing-of-25-Billion-Inaugural-Bond-Issuance-2026-33VwNgsx3O/default.aspx",
@@ -256,7 +424,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026044489/spcx8-kxlaunchseniornotes.htm",
    "accn": "0001628280-26-044489",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Inaugural-Bond-Issuance-2026-VOzvzAjhMA/default.aspx",
@@ -276,7 +445,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043865/spaceexplorationtechnologi.htm",
    "accn": "0001628280-26-043865",
    "source": "SEC EDGAR",
-   "kind": "filing"
+   "kind": "filing",
+   "grade": "major"
   },
   {
    "date": "2026-06-16",
@@ -286,7 +456,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043411/spaceexplorationtechnologi.htm",
    "accn": "0001628280-26-043411",
    "source": "SEC EDGAR",
-   "kind": "contract"
+   "kind": "contract",
+   "grade": "major"
   },
   {
    "date": "2026-06-15",
@@ -296,7 +467,8 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026043288/spaceexplorationtechnologi.htm",
    "accn": "0001628280-26-043288",
    "source": "SEC EDGAR",
-   "kind": "financing"
+   "kind": "financing",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Closing-of-Initial-Public-Offering-Including-Full-Exercise-of-Underwriters-Option-to-Purchase-Additional-Shares-2026-RgoR-Y1Vwh/default.aspx",
@@ -310,13 +482,47 @@
   },
   {
    "date": "2026-06-12",
+   "form": "S-8",
+   "items": "",
+   "title": "임직원 주식보상 등록",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026042832/spaceexplorationtechnologi.htm",
+   "accn": "0001628280-26-042832",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-12",
    "form": "424B4",
    "items": "",
    "title": "증권 발행 설명서",
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026042639/spaceexplorationtechnologi.htm",
    "accn": "0001628280-26-042639",
    "source": "SEC EDGAR",
-   "kind": "financing"
+   "kind": "financing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-11",
+   "form": "EFFECT",
+   "items": ",,",
+   "title": "EFFECT",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/999999999526001968/xslEFFECTX01/primary_doc.xml",
+   "accn": "9999999995-26-001968",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-11",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026042466/spaceexplorationtechnologi.htm",
+   "accn": "0001628280-26-042466",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Pricing-of-Initial-Public-Offering/default.aspx",
@@ -327,6 +533,138 @@
    "kind": "ir",
    "url": "https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Pricing-of-Initial-Public-Offering/default.aspx",
    "source": "SpaceX IR"
+  },
+  {
+   "date": "2026-06-10",
+   "form": "CERT",
+   "items": "",
+   "title": "CERT",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000087679626000014/SPCX_8A_Cert_0001181412.pdf",
+   "accn": "0000876796-26-000014",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-10",
+   "form": "CERT",
+   "items": "",
+   "title": "CERT",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000135445726000562/SPCX_8A_Cert_0001181412.pdf",
+   "accn": "0001354457-26-000562",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-10",
+   "form": "8-A12B",
+   "items": "",
+   "title": "증권 상장 등록",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026042109/spaceexplorationtechnologi.htm",
+   "accn": "0001628280-26-042109",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-10",
+   "form": "8-A12B",
+   "items": "",
+   "title": "증권 상장 등록",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026042107/spaceexplorationtechnologi.htm",
+   "accn": "0001628280-26-042107",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-09",
+   "form": "CORRESP",
+   "items": "",
+   "title": "SEC 서신(회사 답변)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026041808/filename1.htm",
+   "accn": "0001628280-26-041808",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-09",
+   "form": "CORRESP",
+   "items": "",
+   "title": "SEC 서신(회사 답변)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026041806/filename1.htm",
+   "accn": "0001628280-26-041806",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-09",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026041761/fwp_cfointerview.htm",
+   "accn": "0001628280-26-041761",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-08",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026041365/eu_interviewtranscript06.htm",
+   "accn": "0001628280-26-041365",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-05",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026041150/spacexagreementfwp.htm",
+   "accn": "0001628280-26-041150",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-05",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026041013/japanfwp_06042026.htm",
+   "accn": "0001628280-26-041013",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-04",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026040874/spacexukfwp.htm",
+   "accn": "0001628280-26-040874",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-04",
+   "form": "FWP",
+   "items": "",
+   "title": "자유 서식 투자설명서",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026040610/spacexfwp.htm",
+   "accn": "0001628280-26-040610",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
   },
   {
    "id": "ir:https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Launch-of-Initial-Public-Offering/default.aspx",
@@ -340,13 +678,47 @@
   },
   {
    "date": "2026-06-03",
+   "form": "CORRESP",
+   "items": "",
+   "title": "SEC 서신(회사 답변)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026040379/filename1.htm",
+   "accn": "0001628280-26-040379",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-03",
    "form": "S-1/A",
    "items": "",
    "title": "증권신고서 정정",
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026040364/spaceexplorationtechnologib.htm",
    "accn": "0001628280-26-040364",
    "source": "SEC EDGAR",
-   "kind": "financing"
+   "kind": "financing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-06-02",
+   "form": "UPLOAD",
+   "items": "",
+   "title": "SEC 서신(검토 의견)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000000000026005581/filename1.pdf",
+   "accn": "0000000000-26-005581",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-06-01",
+   "form": "CORRESP",
+   "items": "",
+   "title": "SEC 서신(회사 답변)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026039278/filename1.htm",
+   "accn": "0001628280-26-039278",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
   },
   {
    "date": "2026-06-01",
@@ -356,7 +728,30 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026039276/spaceexplorationtechnologi.htm",
    "accn": "0001628280-26-039276",
    "source": "SEC EDGAR",
-   "kind": "financing"
+   "kind": "financing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-05-29",
+   "form": "UPLOAD",
+   "items": "",
+   "title": "SEC 서신(검토 의견)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000000000026005505/filename1.pdf",
+   "accn": "0000000000-26-005505",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-05-20",
+   "form": "CORRESP",
+   "items": "",
+   "title": "SEC 서신(회사 답변)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026036964/filename1.htm",
+   "accn": "0001628280-26-036964",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
   },
   {
    "date": "2026-05-20",
@@ -366,31 +761,321 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm",
    "accn": "0001628280-26-036936",
    "source": "SEC EDGAR",
-   "kind": "financing"
+   "kind": "financing",
+   "grade": "major"
+  },
+  {
+   "date": "2026-05-19",
+   "form": "UPLOAD",
+   "items": "",
+   "title": "SEC 서신(검토 의견)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000000000026005119/filename1.pdf",
+   "accn": "0000000000-26-005119",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-05-07",
+   "form": "DRSLTR",
+   "items": "",
+   "title": "DRSLTR",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162827926000584/filename1.htm",
+   "accn": "0001628279-26-000584",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-05-07",
+   "form": "DRS/A",
+   "items": "",
+   "title": "DRS 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162827926000583/filename1.htm",
+   "accn": "0001628279-26-000583",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-04-24",
+   "form": "UPLOAD",
+   "items": "",
+   "title": "SEC 서신(검토 의견)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000000000026004247/filename1.pdf",
+   "accn": "0000000000-26-004247",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2026-03-30",
+   "form": "DRS",
+   "items": "",
+   "title": "DRS",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026021860/filename1.htm",
+   "accn": "0001628280-26-021860",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2022-08-05",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141222000003/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-22-000003",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2022-06-30",
+   "form": "D/A",
+   "items": "06b",
+   "title": "사모 발행 신고 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141222000002/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-22-000002",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2022-06-13",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141222000001/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-22-000001",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2021-12-29",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141221000004/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-21-000004",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2021-11-15",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141221000003/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-21-000003",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2021-04-14",
+   "form": "D/A",
+   "items": "06b",
+   "title": "사모 발행 신고 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141221000002/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-21-000002",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2021-02-23",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141221000001/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-21-000001",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2020-08-18",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141220000003/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-20-000003",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2020-05-26",
+   "form": "D/A",
+   "items": "06b",
+   "title": "사모 발행 신고 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141220000002/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-20-000002",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2020-03-13",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141220000001/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-20-000001",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2019-07-09",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000005/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-19-000005",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2019-05-24",
+   "form": "D/A",
+   "items": "06b",
+   "title": "사모 발행 신고 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000004/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-19-000004",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2019-05-24",
+   "form": "D/A",
+   "items": "06b",
+   "title": "사모 발행 신고 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000003/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-19-000003",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2019-04-17",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000002/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-19-000002",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
+  {
+   "date": "2019-01-03",
+   "form": "D",
+   "items": "06b",
+   "title": "사모 발행 신고",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000001/xslFormDX01/primary_doc.xml",
+   "accn": "0001181412-19-000001",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
   }
  ],
  "seen": [
+  "0000000000-26-004247",
+  "0000000000-26-005119",
+  "0000000000-26-005505",
+  "0000000000-26-005581",
+  "0000876796-26-000014",
   "0001104659-26-095936",
   "0001104659-26-118614",
+  "0001181412-09-000003",
+  "0001181412-10-000001",
+  "0001181412-15-000001",
+  "0001181412-17-000001",
+  "0001181412-17-000002",
+  "0001181412-18-000001",
+  "0001181412-19-000001",
+  "0001181412-19-000002",
+  "0001181412-19-000003",
+  "0001181412-19-000004",
+  "0001181412-19-000005",
+  "0001181412-20-000001",
+  "0001181412-20-000002",
+  "0001181412-20-000003",
+  "0001181412-21-000001",
+  "0001181412-21-000002",
+  "0001181412-21-000003",
+  "0001181412-21-000004",
+  "0001181412-22-000001",
+  "0001181412-22-000002",
+  "0001181412-22-000003",
   "0001193125-26-352289",
   "0001213900-26-087780",
+  "0001213900-26-100186",
+  "0001213900-26-105393",
+  "0001354457-26-000562",
   "0001426012-26-000004",
+  "0001628279-26-000583",
+  "0001628279-26-000584",
+  "0001628280-26-021860",
   "0001628280-26-036936",
+  "0001628280-26-036964",
   "0001628280-26-039276",
+  "0001628280-26-039278",
   "0001628280-26-040364",
+  "0001628280-26-040379",
+  "0001628280-26-040610",
+  "0001628280-26-040874",
+  "0001628280-26-041013",
+  "0001628280-26-041150",
+  "0001628280-26-041365",
+  "0001628280-26-041761",
+  "0001628280-26-041806",
+  "0001628280-26-041808",
+  "0001628280-26-042107",
+  "0001628280-26-042109",
+  "0001628280-26-042466",
+  "0001628280-26-042628",
+  "0001628280-26-042629",
+  "0001628280-26-042630",
+  "0001628280-26-042631",
+  "0001628280-26-042632",
+  "0001628280-26-042633",
+  "0001628280-26-042634",
+  "0001628280-26-042635",
+  "0001628280-26-042636",
   "0001628280-26-042639",
+  "0001628280-26-042832",
   "0001628280-26-043288",
   "0001628280-26-043411",
   "0001628280-26-043865",
+  "0001628280-26-044069",
+  "0001628280-26-044455",
   "0001628280-26-044489",
   "0001628280-26-044955",
   "0001628280-26-045763",
   "0001628280-26-052515",
   "0001628280-26-052535",
+  "0001628280-26-052712",
+  "0001628280-26-052715",
   "0001628280-26-056945",
+  "0001628280-26-063378",
   "0001628280-26-066482",
   "0001628280-26-066880",
+  "0001628280-26-066903",
+  "0001950047-26-009740",
   "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
+  "9999999995-26-001968",
+  "9999999997-02-047442",
+  "9999999997-02-062386",
+  "9999999997-05-011871",
+  "9999999997-07-012379",
+  "9999999997-08-034955",
   "ac897b9f-44d2-4ff4-8416-1a0a076e98a2",
   "ir:https://ir.spacex.com/files/content_files/SpaceX-Reports-Third-Quarter-2026-Results.pdf",
   "ir:https://ir.spacex.com/files/doc_financials/2026/q2/SpaceX-Reports-Second-Quarter-2026-Results.pdf",
@@ -405,7 +1090,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-27T01:22+09:00",
+ "generated_at": "2026-10-27T09:37+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -448,7 +1133,38 @@
    "reason": "예상일 도래",
    "expected": "2026-10-26 ~ 2026-11-06(추정: Semafor 10/22 '다음 주 가격 확정' + 8-K 4영업일)",
    "detected_at": "2026-10-26"
+  },
+  {
+   "key": "T5:event:0001104659-26-118614",
+   "trigger_id": "T5",
+   "name": "$400억 조달 확정 조건(8-K) — 금리·담보·만기·증자 포함 여부",
+   "reason": "사건 감지",
+   "event": "수시공시 — 기타 중요 사건",
+   "event_date": "2026-10-26",
+   "detected_at": "2026-10-27",
+   "grade": "major",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm"
   }
  ],
- "dispatch_queue": []
+ "dispatch_queue": [
+  {
+   "key": "q:2026-10-27:0937:1",
+   "run_id": "40425689848",
+   "queued_at": "2026-10-27T09:37+09:00",
+   "state": "queued",
+   "trigger_id": "T5",
+   "name": "$400억 조달 확정 조건(8-K) — 금리·담보·만기·증자 포함 여부",
+   "reason": "트리거·중요 사건 1건",
+   "urls": [
+    "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm"
+   ]
+  }
+ ],
+ "hourly": {
+  "checked_at": "2026-10-27T09:37+09:00",
+  "last_success_at": null,
+  "last_conclusion": null
+ },
+ "schema": 2,
+ "heartbeat_date": "2026-10-27"
 }

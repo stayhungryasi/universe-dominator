@@ -1,0 +1,23 @@
+{
+ "kind": "dissect",
+ "id": "11e92edf73fb",
+ "lang": "en",
+ "src_hash": "435d0570e443",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-27 09:46",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Emergency security release announcement",
+  "sections.1.h": "Vulnerability response methods and limitations",
+  "sections.2.h": "PHP 8.2 support end-of-life schedule",
+  "sections.3.h": "Download and changelog review",
+  "sections.4.h": "Community response",
+  "sections.0.ko": "The PHP development team has immediately released version 8.2.35, which is purely a security update. It addresses two critical vulnerabilities (CVE-2026-109618, CVE-2026-109619) that allow remote code execution without authentication. All users running PHP 8.2 are strongly advised to update immediately.",
+  "sections.1.ko": "There is no complete workaround for this vulnerability, and updating is the only safe option, as explicitly stated. The security advisory documentation provides more detailed information.",
+  "sections.2.ko": "PHP 8.2 reaches end-of-life on December 31, 2026, after which no security patches will be provided. Users should begin planning to upgrade to a new version with continued support.",
+  "sections.3.ko": "The source code for PHP 8.2.35 is available from the official download page, with Windows source and binaries also available at the same location. Version changes are recorded in the official ChangeLog for reference.",
+  "sections.4.ko": "The GitHub release page shows active engagement from the developer community. With 21 likes, 14 cheers, 23 hearts, and 35 rocket emojis, it demonstrates that many developers are viewing this security update positively.",
+  "caveat": "The source text contains the main announcements from the official GitHub release page. The actual CVE numbers and detailed vulnerability information can be verified by referring to the official security advisory."
+ }
+}

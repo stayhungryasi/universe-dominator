@@ -1,0 +1,20 @@
+{
+ "kind": "dissect",
+ "id": "30e2978fb647",
+ "lang": "es",
+ "src_hash": "8e67b04b13eb",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-27 09:46",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "El muro del análisis inverso de firmware: código cifrado y necesidad de acceso físico",
+  "sections.1.h": "Acceso root exitoso y descubrimiento de amplias funciones de seguimiento y vigilancia",
+  "sections.2.h": "Samsung TV como opción de ahorro de costes y alternativa de seguridad",
+  "sections.0.ko": "Un hacker intentó analizar inversamente el firmware del Samsung TV, pero el progreso se bloqueó debido al cifrado AES. Al no poder acceder a las claves de cifrado almacenadas en el firmware, finalmente tuvo que desmontar el dispositivo y acceder a través de interfaces de depuración física como UART y JTAG. Esto demuestra cómo los electrodomésticos de consumo como los televisores inteligentes están protegidos por barreras de seguridad robustas y cuánta intervención técnica profunda es necesaria para eludir esas barreras.",
+  "sections.1.ko": "Tras alcanzar el shell root a través del acceso físico, el hacker descubrió que el Samsung TV tenía una cantidad sorprendente de funciones de recopilación de datos y control integradas. Incluía reconocimiento automático de contenido (ACR), seguimiento de ubicación geográfica, mapeo de red, servicio de publicidad dirigida, cuatro sistemas DRM diferentes, construcción de perfiles de usuario y otras amplias funciones de telemetría. Estas funciones parecían registrar y transmitir continuamente el comportamiento del usuario, la ubicación y los hábitos de visualización en segundo plano, independientemente de la operación superficial del dispositivo.",
+  "sections.2.ko": "El autor señala que anteriormente compraba televisores LG OLED aprovechando el acceso root, pero ahora que los Samsung OLED son más baratos mientras mantienen el mismo acceso root disponible, la relación calidad-precio ha mejorado. Esto significa que para usuarios que desean acceso root, se presenta una oportunidad de reducir costes mientras se mantiene control total del dispositivo.",
+  "caveat": "El texto original es solo un caso de experimentación individual y no incluye el proceso de reproducción técnica específica ni la posición oficial de Samsung, por lo que es necesario verificar si existen vulnerabilidades idénticas en todos los modelos de Samsung TV.",
+  "title": "Shell root en Samsung TV"
+ }
+}

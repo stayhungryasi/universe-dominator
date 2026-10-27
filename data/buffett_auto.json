@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-27 01:18",
- "generated_at": "2026-10-27T01:18:55.271161+09:00",
+ "generated_label": "2026-10-27 09:33",
+ "generated_at": "2026-10-27T09:33:36.016342+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-27",
@@ -35,11 +35,7 @@
     },
     "fcf_ttm": 127006000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "초고 성장이 지속되나 고객 이탈 리스크로 영구성 불확실"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9783,
@@ -59,7 +55,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -77,27 +73,7 @@
      "period": "2026Q3",
      "end": "2025-10-26"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H2"
-   },
-   "notes": "AI 수요 폭발이 실적을 견인하나, 대형 고객의 자체칩 전환이 사업 내구성을 근본적으로 위협하는 구조적 문제",
-   "_evidence": {
-    "franchise": "대형 세입자 전원이 자체칩으로 이탈 예고",
-    "risk5": "Apollo finds no broad AI payoff 시사 + Growth Could Slow to 20% 전망",
-    "capalloc": "data center revenue up 75% / $400 billion in value added after earnings",
-    "owner_earnings": "고객 이탈 예고로 10년 뒤 수익 모델 불확실"
-   }
+   ]
   },
   "AAPL": {
    "as_of": "2026-10-27",
@@ -152,7 +128,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -170,7 +146,29 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "notes": "최강 소비자 프랜차이즈이나 성장 정체로 프리미엄 밸류에이션 한계.",
+   "_evidence": {
+    "franchise": "Apple stock attracting investor attention; Tim Cook tenure showed record quarterly revenue exceeding all of fiscal 2011 revenue",
+    "risk5": "Q3 earnings beat estimates; earnings expected to grow; leadership transition to John Ternus underway",
+    "capalloc": "Tim Cook era demonstrated substantial cash generation capability"
+   }
   },
   "GOOG": {
    "as_of": "2026-10-27",
@@ -274,11 +272,7 @@
     },
     "fcf_ttm": 66987000000.0,
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
-    "ai_view": {
-     "display": "B",
-     "reason": "Azure 성장과 $255-260B 캐펙스 부담의 모순적 신호"
-    }
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
    },
    "conversion": null,
    "conversion_status": {
@@ -299,7 +293,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 46건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -317,31 +311,7 @@
      "period": "2026Q1",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "씨즈형 기업의 캐펙스 폭증(30%대→50%대 임박)이 자유현금흐름 투명성을 훼손하는 중.",
-   "_evidence": {
-    "franchise": "전환비용의 제왕으로서 엔터프라이즈 소프트웨어 에코시스템 장악 입증됨 (Azure 40% 성장)",
-    "risk5": "Azure 모멘텀 강세이나 FY2027 캐펙스 $255-260B 전망으로 인한 실적 불확실성 증가 (Moomoo 'AI Narrative Tests')",
-    "capalloc": "자발적 감원 프로그램 시행으로 비용 효율화 시도하나 동시에 대규모 캐펙스 확대 진행 중",
-    "owner_earnings": "공시 매출 $87.7B 예상이나 캐펙스 스케일링으로 인한 실제 주주귀속이익 추정의 신뢰성 저하"
-   }
+   ]
   },
   "AMZN": {
    "as_of": "2026-10-27",
@@ -485,7 +455,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "B",
-     "reason": "AI 수익 폭증(221%) 대비 주가 정체로 성장이 밸류에이션에 반영되지 않은 상태"
+     "reason": ""
     }
    },
    "conversion": {
@@ -527,26 +497,23 @@
    ],
    "franchise": {
     "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
+    "no_substitute": "○"
    },
    "risk5": {
     "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
+    "price": "△"
    },
    "capalloc": {
     "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
+    "score": 1,
     "period": "2026H1"
    },
-   "notes": "AI 칩 공급 병목 심화 시 고성장 지속성 불확실; 단기 기술 사이클 의존도 높음",
+   "notes": "AI 수익 성장은 뚜렷하나 소프트웨어 부진과 가이던스 보수성으로 시장 기대와 괴리 발생",
    "_evidence": {
-    "franchise": "AI chip supply shortage bottleneck concern; custom AI chip coupon 10년 추정범위 ±30% 초과로 장기 예측불가",
-    "risk5": "Broadcom's AI Revenue Is Tripling, but the Stock Has Lagged suggests growth dependency on AI spending cycle; What Does Broadcom (AVGO) Face As AI Chip Supply Turns Into A Bottleneck",
-    "capalloc": "Strong earnings view with AI labs growth traction; buyback activity indicated by analyst target 50% upside",
-    "owner_earnings": "Broadcom delivers strong earnings view; AI Revenue Surges 221% But is Growth Becoming Too Dependent on AI Spending"
+    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; AI revenue doubles",
+    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; strong results 'not enough to keep investors happy'",
+    "capalloc": "Broadcom beats on earnings and guidance",
+    "owner_earnings": "earnings and revenues beat estimates but stock down 14% since last earnings report"
    }
   },
   "SPCX": {
@@ -601,12 +568,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "유가 사이클 종속성으로 인한 이익 예측 불가능성"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -618,31 +580,7 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "Q1 2026 이익 25% 증가에도 불구하고 구조적 현금흐름 위기 내재; 가스 사업부 독립 추진($100B 밸류에이션)은 다각화 신호",
-   "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher - 수요의 구조적 필요성 확인",
-    "risk5": "Oil market may not normalize until 2027, Saudi Aramco CEO warns + Aramco's Record Profits Hide a Growing Cash Flow Crisis - 유가 변동성과 현금흐름 불일치",
-    "capalloc": "Saudi Aramco Q1 2026 earnings beat forecasts amid disruptions + Aramco signs agreements, MoU worth $3.7bn with French companies - 현금 강화 및 자본 규율 입증",
-    "owner_earnings": "Aramco's Record Profits Hide a Growing Cash Flow Crisis - 회계이익과 실질 현금창출의 괴리"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-10-27",
@@ -700,7 +638,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -718,32 +656,7 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "✕",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "no_dilution": 0,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "40억 네트워크 효과 보유하나 슈퍼인텔리전스 캐펙스 규율 부재로 자본배분 리스크 심화",
-   "_evidence": {
-    "franchise": "40억 네트워크 효과",
-    "risk5": "Meta Plans up to $95 Billion in Financing to Power Its Big AI Push 및 Meta Stock Has Dropped the Day After 3 Straight Earnings Reports",
-    "capalloc": "Meta Launches $35 Billion Stock, Preferred Offerings; Plans Potential $60 Billion ATM Stock Offering - 대규모 희석적 자본조달"
-   }
+   ]
   },
   "TSLA": {
    "as_of": "2026-10-27",
@@ -1190,11 +1103,7 @@
     },
     "fcf_ttm": 8403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "50% 수익 성장과 데이터센터 매출 2배 성장에도 불구하고 주가 하락, 밸류에이션 불확실성"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.8351,
@@ -1214,7 +1123,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1232,28 +1141,7 @@
      "period": "2025Q3",
      "end": "2025-09-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "NVDA 동일 로직 적용 시 AI 칩 10년 쿠폰 범위 초과; Meta $35B 인수 가능성은 단기 수급 이슈일 뿐 장기 경제적 해자 재평가 필요",
-   "_evidence": {
-    "franchise": "AI infrastructure builds in Europe and India; data center sales doubled; EPYC 경쟁력 입증",
-    "risk5": "Supply warning deepens AI selloff; After 137% run, priced for perfection concerns; red flags cited by multiple analysts",
-    "capalloc": "Revenue climbs 50% signals cash generation capability",
-    "owner_earnings": "AMD's revenue climbs 50% and data center sales doubled, but the stock is down"
-   }
+   ]
   },
   "000660.KS": {
    "as_of": "2026-10-27",
@@ -1274,7 +1162,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "HBM4 량산 진입과 76% 영업마진 달성으로 수익성 급증하나 시클리컬 산업의 사이클 정점 가능성"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1286,7 +1179,31 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "20조 캐펙스 완수 후 주주환원 재개 전략, 미국 상장으로 자본조달 완료(265억 달러)",
+   "_evidence": {
+    "franchise": "HBM4 mass production 진입으로 AI 수요 독점적 공급 가능, NVIDIA 주요 공급처",
+    "risk5": "Q2 earnings miss 발생으로 시장 기대치 상향 조정의 리스크, 반도체 사이클 정점 판단 어려움",
+    "capalloc": "$26.5B US ADR 상장으로 캐펙스 자금 확보, 나스닥 데뷔 후 주가 변동성(170달러 상장 후 하락장면)",
+    "owner_earnings": "Q2 2026 Revenue 79.3조 원(257% YoY), Operating Margin 76%로 순이익 창출력 급증 시점"
+   }
   },
   "ASML": {
    "as_of": "2026-10-27",
@@ -1967,7 +1884,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 270.91
+    "value": 260.94
    },
    "eps_status": null,
    "roe_tangible": 0.2951,
@@ -2000,7 +1917,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 630.4
+    "value": 605.65
    },
    "eps_status": null,
    "roe_tangible": 0.4807,
@@ -2081,5 +1998,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-27 01:20"
+ "scout_label": "2026-10-27 09:35"
 }

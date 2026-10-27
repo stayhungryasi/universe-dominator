@@ -1,0 +1,19 @@
+{
+ "kind": "dissect",
+ "id": "30e2978fb647",
+ "lang": "en",
+ "src_hash": "b13518423889",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-27 09:46",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "The wall of firmware reverse engineering: encrypted code and the need for physical access",
+  "sections.1.h": "Root access achieved and extensive tracking and surveillance functions discovered",
+  "sections.2.h": "Samsung TV as a cost-saving and security alternative option",
+  "sections.0.ko": "A hacker attempted to reverse-engineer the firmware of a Samsung TV but was blocked by AES encryption. Unable to access the encryption keys stored in the firmware, he ultimately had to disassemble the device and gain access through physical debugging interfaces such as UART and JTAG. This demonstrates how robustly consumer appliances like smart TVs are protected by security barriers and how much deep technical intervention is required to circumvent those barriers.",
+  "sections.1.ko": "After reaching the root shell through physical access, the hacker discovered that the Samsung TV contained a surprisingly extensive array of data collection and control functions. These included Automatic Content Recognition (ACR), geolocation tracking, network mapping, targeted advertising services, four different DRM systems, user profile building, and extensive telemetry capabilities. These functions appear to continuously record and transmit user behavior, location, and viewing habits in the background, regardless of the device's surface operation.",
+  "sections.2.ko": "The author notes that while he previously purchased LG OLED TVs to leverage root access, Samsung OLED TVs now offer better value for money as they are cheaper while providing the same root access capabilities. For users seeking root access, this creates an opportunity to reduce costs while maintaining complete control over the device.",
+  "caveat": "The source text is merely a case study of one individual's experiment and does not include specific technical reproduction procedures or Samsung's official position, so verification is needed to determine whether identical vulnerabilities exist across all Samsung TV models."
+ }
+}
