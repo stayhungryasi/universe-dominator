@@ -917,7 +917,8 @@ def collect_launches(fc, watch, logs):
         age_h = (now_kst() - datetime.fromisoformat(prev.get("fetched_at", ""))).total_seconds() / 3600
     except Exception:
         age_h = None
-    if age_h is not None and age_h < LL2_CACHE_H and prev.get("ok"):
+    # 경쟁 발사를 한 번도 잰 적 없는 캐시(2026-10-27 배포 직후)는 쓰지 않는다 — 6시간 캐시가 첫 측정을 막았다
+    if age_h is not None and age_h < LL2_CACHE_H and prev.get("ok") and "competitor_next" in prev:
         fc.record("spacex", "발사 기록(LL2)", "ok", 200, prev.get("year_count") or 0)
         logs.append(f"LL2 캐시 사용({age_h:.1f}h 전 성공 측정) — 무료 한도 보호")
         return []
@@ -1046,17 +1047,19 @@ def collect_ir(fc, logs):
 
 
 LOCKUP_KEYS = ("lock-up", "lockup", "lock up")
+LOCKUP_V = 2                     # 추출 규칙 판 — 2: 엔티티 전부 풀기
 
 
 def lockup_sentences(html, cap=40):
     """증권신고서·설명서 본문 → 락업 조건 문장(원문 그대로 인용). 숫자(기간·주식수·비율)가 든 문장만.
 
     해석은 하지 않는다 — 기간·조기 해제 조건·대상·주식 수를 판단층(엔진)이 원문으로 읽게 한다(O1)."""
+    import html as _html
     text = re.sub(r"<[^>]+>", " ", html or "")
-    text = re.sub(r"&nbsp;|&#160;", " ", text)
-    text = re.sub(r"&#8217;|&rsquo;", "'", text)
-    text = re.sub(r"&#822[01];|&[lr]dquo;", '"', text)
-    text = re.sub(r"&amp;", "&", text)
+    # 엔티티 전부 풀기(2026-10-27 첫 실전: '&#8212;' 가 그대로 남았다) — 따옴표·공백은 평문 기호로
+    text = _html.unescape(text)
+    for a_, b_ in (("\u2019", "'"), ("\u2018", "'"), ("\u201c", '"'), ("\u201d", '"'), ("\xa0", " ")):
+        text = text.replace(a_, b_)
     text = re.sub(r"\s+", " ", text)
     out, seen = [], set()
     for s in re.split(r"(?<=[.;])\s+(?=[A-Z(])", text):
@@ -1083,8 +1086,9 @@ def collect_prospectus_facts(fc, watch, events, logs):
     if not pros:
         return
     p = sorted(pros, key=lambda e: e.get("date") or "")[-1]
-    if (facts.get("lockup") or {}).get("accn") == p.get("accn"):
-        return
+    if (facts.get("lockup") or {}).get("accn") == p.get("accn") and \
+            (facts.get("lockup") or {}).get("v") == LOCKUP_V:
+        return                       # 같은 공시·같은 추출 규칙이면 다시 받지 않는다(규칙이 바뀌면 한 번 다시)
     hdr = sec_headers()
     if not hdr:
         return
@@ -1094,7 +1098,8 @@ def collect_prospectus_facts(fc, watch, events, logs):
         return
     sents = lockup_sentences(text)
     fc.record("spacex", "SEC 설명서 원문", "ok" if sents else "zero", code, len(sents))
-    facts["lockup"] = {"accn": p.get("accn"), "form": p.get("form"), "filed": p.get("date"), "source_url": p["url"],
+    facts["lockup"] = {"v": LOCKUP_V, "accn": p.get("accn"), "form": p.get("form"), "filed": p.get("date"),
+                       "source_url": p["url"],
                        "fetched_at": now_kst().isoformat(timespec="minutes"), "sentences": sents,
                        "note": "원문 문장 그대로(기계 추출). 해석·판정은 탐사 엔진(판단층)이 한다."}
     logs.append(f"설명서 락업 문장 {len(sents)}개 확보({p.get('form')} {p.get('date')})")
@@ -1261,8 +1266,10 @@ def heartbeat_message(watch, hstate, st, now, status=None):
             for k, r in sorted(hsrc.items())))
     nr = (read_json(DATA_DIR / "spacex_news.json", {}) or {}).get("last_run") or {}
     if nr:
-        lines.append(f"· 뉴스 감시관 마지막 판정 {nr.get('date')}: 헤드라인 {nr.get('judged', 0)}건 · 엔진 깨움 "
-                     f"{nr.get('wake', 0)} · 보도 단계 {nr.get('report', 0)}"
+        lines.append(f"· 뉴스 감시관 마지막 판정 {nr.get('date')}: "
+                     + (f"기준선 적재 {nr.get('headlines', 0)}건" if nr.get("baseline") else
+                        f"헤드라인 {nr.get('judged', 0)}건 · 엔진 깨움 {nr.get('wake', 0)} · 보도 단계 {nr.get('report', 0)}")
+                     + (f" · ⚠️ 이월 {nr['deferred']}건" if nr.get("deferred") else "")
                      + (" · ⚠️ 판정 모델 실패" if nr.get("model_ok") is False else ""))
     au = read_json(DATA_DIR / "spacex_audit.json", {}) or {}
     if au.get("n"):

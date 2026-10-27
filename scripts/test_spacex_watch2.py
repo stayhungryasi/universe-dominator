@@ -192,6 +192,21 @@ class CompetitorLaunchTest(unittest.TestCase):
         self.assertEqual([x["name"] for x in watch["launches"]["competitor_next"]], ["Vulcan VC6L | Amazon Leo (LV-01)"])
         self.assertTrue(any(c.args[1] == "경쟁 발사(LL2)" and c.args[2] == "ok" for c in rec.call_args_list))
 
+    def test_cache_without_competitor_measures_now(self):
+        """배포 직후: 6시간 캐시가 남아 있어도 경쟁 발사를 한 번도 잰 적 없으면 지금 잰다(첫 실전에서 캐시가 막았다)."""
+        import feed_client as fc
+        watch = {"launches": {"ok": True, "fetched_at": "2026-10-27T09:37+09:00", "year_count": 122}}
+        with mock.patch.object(sw, "_get_json", return_value=({"results": [], "count": 0}, "ok", 200)) as g, \
+                mock.patch.object(fc, "record"), \
+                mock.patch.object(sw, "now_kst", return_value=datetime.fromisoformat("2026-10-27T11:20:00+09:00")):
+            sw.collect_launches(fc, watch, [])
+        self.assertGreater(g.call_count, 0)
+        self.assertIn("competitor_next", watch["launches"])
+        with mock.patch.object(sw, "_get_json") as g2, mock.patch.object(fc, "record"), \
+                mock.patch.object(sw, "now_kst", return_value=datetime.fromisoformat("2026-10-27T12:20:00+09:00")):
+            sw.collect_launches(fc, watch, [])
+        self.assertEqual(g2.call_count, 0)                            # 이제는 캐시를 쓴다
+
     def test_competitor_query_failure_disables_cache(self):
         import feed_client as fc
 
@@ -304,6 +319,23 @@ class LockupTest(unittest.TestCase):
         self.assertIn("180 days", out[0])
         self.assertIn('"lock-up period"', out[0])
         self.assertIn("25% of the shares", out[1])
+
+    def test_entities_fully_decoded(self):
+        """2026-10-27 첫 실전: '&#8212;' 가 원문 인용에 그대로 남았다 — 엔티티는 전부 푼다."""
+        out = sw.lockup_sentences("<p>Holders agreed to a lock-up of 180 days&#8212;subject to release of 25%&nbsp;early.</p>")
+        self.assertEqual(out, ["Holders agreed to a lock-up of 180 days\u2014subject to release of 25% early."])
+
+    def test_rule_change_refetches_once(self):
+        import feed_client as fc
+        watch = {"facts": {"lockup": {"accn": "P-1", "sentences": ["old"]}}}      # 옛 규칙(판 표시 없음)
+        ev = [{"form": "424B4", "date": "2026-06-12", "accn": "P-1", "url": "https://x/p.htm"}]
+        with mock.patch.object(sw, "sec_headers", return_value={"User-Agent": "t"}), \
+                mock.patch.object(fc, "fetch", return_value=(self.PROSPECTUS, "ok", 200)) as f, \
+                mock.patch.object(fc, "record"):
+            sw.collect_prospectus_facts(fc, watch, ev, [])
+            sw.collect_prospectus_facts(fc, watch, ev, [])
+        self.assertEqual(f.call_count, 1)
+        self.assertEqual(watch["facts"]["lockup"]["v"], sw.LOCKUP_V)
 
     def test_collect_once_per_accn(self):
         import feed_client as fc

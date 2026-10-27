@@ -76,14 +76,19 @@ class RunTest(unittest.TestCase):
     def tearDown(self):
         sn.NEWS_PATH, sn.WATCH_PATH, sn.STATE_PATH = self._saved
 
-    def _run(self, heads, verdicts=None, judge_exc=None, key="k"):
+    def _run(self, heads, verdicts=None, judge_exc=None, key="k", judge_exc_after=None):
         import feed_client as fc
         dms = []
 
         def fake_judge(api_key, batch, triggers, known):
             if judge_exc:
                 raise judge_exc
-            return [v for v in (verdicts or []) if v["i"] < len(batch)], {"input_tokens": 10, "output_tokens": 5}
+            if judge_exc_after is not None and fake_judge.n >= judge_exc_after:
+                raise RuntimeError("500")
+            fake_judge.n += 1
+            ids = {h["i"] for h in batch}
+            return [v for v in (verdicts or []) if v["i"] in ids], {"input_tokens": 10, "output_tokens": 5}
+        fake_judge.n = 0
         with mock.patch.object(sn, "collect", return_value=[dict(h) for h in heads]), \
                 mock.patch.object(sn, "judge", side_effect=fake_judge) as j, \
                 mock.patch.object(fc, "flush"), mock.patch.object(fc, "record"), \
@@ -130,6 +135,49 @@ class RunTest(unittest.TestCase):
         self.assertEqual(w["dispatch_queue"], [])
         self.assertEqual(len(dms), 1)
         self.assertIn("보도 단계", dms[0])
+
+
+    def _many(self, n, start=0, day="2026-10-27"):
+        return [dict(H(start + k, f"SpaceX headline number {start + k}", "Pub" + str(k % 7), date=day),
+                     query=("규제·안전", "Starship", "경쟁")[k % 3]) for k in range(n)]
+
+    def test_chunked_judging_no_silent_backlog(self):
+        """2026-10-27 첫 실전: 2일 창 441건. 상한 60 이면 이월이 쌓여 옛 헤드라인이 판정 없이 사라진다 →
+        묶음 60건씩 여러 번 호출, 회당 240건까지. 130건이면 3회 호출 · 이월 0."""
+        self._run([H(0, "old", "Reuters")])
+        rc, dms, w, n, calls = self._run([H(0, "old", "Reuters")] + self._many(130, 1))
+        self.assertEqual((rc, calls), (0, 3))
+        self.assertEqual((n["last_run"]["judged"], n["last_run"]["deferred"]), (130, 0))
+        self.assertTrue(all(h["id"] in n["seen"] for h in self._many(130, 1)))
+
+    def test_overflow_alerts_after_two_runs(self):
+        self._run([H(0, "old", "Reuters")])
+        rc, dms, *_ = self._run(self._many(300, 1))
+        self.assertEqual(dms, [])                                     # 1회 이월은 조용히(로그·원장)
+        rc, dms, w, n, calls = self._run(self._many(300, 1) + self._many(300, 1000))
+        self.assertEqual(len(dms), 1)
+        self.assertIn("처리 한도를 넘었습니다", dms[0])
+        self.assertEqual(n["last_run"]["judged"], sn.MAX_HEADLINES)
+
+    def test_partial_chunk_failure_keeps_rest_unseen(self):
+        self._run([H(0, "old", "Reuters")])
+        heads = self._many(100, 1)
+        rc, dms, w, n, calls = self._run(heads, judge_exc_after=1)
+        self.assertEqual(rc, 1)
+        judged = [h for h in heads if h["id"] in n["seen"]]
+        self.assertEqual((len(judged), n["last_run"]["deferred"]), (60, 40))   # 첫 묶음만 seen
+
+    def test_cap_does_not_starve_last_query(self):
+        """상한에 걸려도 뒤쪽 질의('경쟁')가 굶지 않는다 — run() 이 order_fresh 를 실제로 쓰는지(배선)."""
+        self._run([H(0, "old", "Reuters")])
+        heads = [dict(H(k + 1, f"h{k}", "P"), query=("A", "B", "경쟁")[k // 100]) for k in range(300)]
+        rc, dms, w, n, calls = self._run(heads)
+        comp = [h for h in heads if h["query"] == "경쟁" and h["id"] in n["seen"]]
+        self.assertEqual(len(comp), 80)                                # 240 ÷ 3 질의
+
+    def test_order_interleaves_queries(self):
+        heads = [dict(H(k, f"t{k}", "P"), query=q) for k, q in enumerate(["A", "A", "A", "B", "C"])]
+        self.assertEqual([h["query"] for h in sn.order_fresh(heads)], ["A", "B", "C", "A", "A"])
 
 
 if __name__ == "__main__":

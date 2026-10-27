@@ -47,7 +47,9 @@ STATE_PATH = HERE / "agent-research" / "state" / "spacex_state.json"   # 읽기 
 KST = timezone(timedelta(hours=9))
 
 MODEL = os.environ.get("SPACEX_NEWS_MODEL", "").strip() or "claude-sonnet-5-5"
-MAX_HEADLINES = 60          # 판정 1회당 헤드라인 상한(최신순)
+MAX_HEADLINES = 240         # 회당 판정 상한 — 2026-10-27 첫 실전: 2일 창에 441건(하루 약 220건). 60 이면 이월이 쌓여
+                            # 옛 헤드라인이 2일 창 밖으로 판정 없이 빠져나간다(조용한 누락)
+CHUNK = 60                  # 판정 호출 1회당 헤드라인 수
 WAKE_CAP_PER_DAY = 2        # 뉴스로 엔진을 깨우는 하루 상한(긴급은 상한 밖)
 CLUSTER_COOLDOWN_D = 7
 KEEP_SEEN = 1500
@@ -233,6 +235,25 @@ def collect(fc, logs):
     return uniq
 
 
+def order_fresh(fresh):
+    """판정 순서 — 날짜 최신순, 같은 날 안에서는 질의(사건 유형)별로 번갈아. 상한에 걸려도 한 유형이 굶지 않게
+    (질의 순서대로 쌓으면 뒤쪽 '경쟁'·'CEO 발언'이 늘 잘린다)."""
+    by_day = {}
+    for h in fresh:
+        by_day.setdefault(h.get("date") or "", []).append(h)
+    out = []
+    for day in sorted(by_day, reverse=True):
+        lanes = {}
+        for h in by_day[day]:
+            lanes.setdefault(h.get("query") or "", []).append(h)
+        qs = list(lanes)
+        while any(lanes[q] for q in qs):
+            for q in qs:
+                if lanes[q]:
+                    out.append(lanes[q].pop(0))
+    return out
+
+
 def judge(api_key, headlines, triggers, known):
     import requests
     payload = {"헤드라인": [{"i": h["i"], "제목": h["title"], "발행처": h["publisher"], "날짜": h["date"]}
@@ -280,13 +301,14 @@ def run():
     heads = collect(fc, logs)
     seen = set(state.get("seen") or [])
     first = not seen
-    fresh = [h for h in heads if h["id"] not in seen]
+    fresh = order_fresh([h for h in heads if h["id"] not in seen])
     batch = fresh[:MAX_HEADLINES]
     for i, h in enumerate(batch):
         h["i"] = i
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 
     wake, dm_only, ignored, model_ok, use = [], [], 0, True, {}
+    judged, calls = [], 0
     if first:
         logs.append(f"기준선 회차 — 헤드라인 {len(heads)}건을 판정 없이 적재(첫 회차에 몰아 울리지 않게)")
         seen.update(h["id"] for h in heads)
@@ -294,28 +316,58 @@ def run():
         logs.append("ANTHROPIC_API_KEY 없음 — 판정 생략(헤드라인은 다음 회차로 미룬다)")
         model_ok = None
     elif batch:
-        try:
-            verdicts, use = judge(api_key, batch, triggers, known_events(watch, state, today))
-            fc.record("spacex_news", "판정 모델", "ok", 200, len(verdicts))
+        verdicts = []
+        known = known_events(watch, state, today)
+        for k in range(0, len(batch), CHUNK):
+            chunk = batch[k:k + CHUNK]
+            try:
+                v, u = judge(api_key, chunk, triggers, known)
+            except Exception as e:
+                model_ok = False
+                fc.record("spacex_news", "판정 모델", "http_error", None, 0)
+                logs.append(f"판정 모델 실패 — {type(e).__name__}: {str(e)[:160]}")
+                break                                  # 나머지 묶음은 다음 회차에(seen 에 넣지 않는다)
+            calls += 1
+            verdicts += v
+            judged += chunk
+            for key in ("input_tokens", "output_tokens"):
+                use[key] = (use.get(key) or 0) + int((u or {}).get(key) or 0)
+        if judged:
+            fc.record("spacex_news", "판정 모델", "ok" if model_ok else "http_error", 200, len(verdicts))
             wakes_today = (state.get("wakes") or {}).get(today, 0)
-            wake, dm_only, ignored = decide(batch, verdicts, wakes_today, state.get("cooldown") or {}, today)
-            seen.update(h["id"] for h in batch)        # 판정이 끝난 것만 seen — 실패하면 다음 회차에 다시
-        except Exception as e:
-            model_ok = False
-            fc.record("spacex_news", "판정 모델", "http_error", None, 0)
-            logs.append(f"판정 모델 실패 — {type(e).__name__}: {str(e)[:160]}")
+            wake, dm_only, ignored = decide(judged, verdicts, wakes_today, state.get("cooldown") or {}, today)
+            seen.update(h["id"] for h in judged)       # 판정이 끝난 것만 seen — 실패하면 다음 회차에 다시
     fc.flush()
 
-    if wake or dm_only or model_ok is False:
+    # 이월 감시 — 처리 한도를 넘어 미판정이 2회 연속 남으면 DM(한 번) · 해소되면 한 번
+    deferred = 0 if first else len(fresh) - len(judged)
+    streak = int(state.get("deferred_streak") or 0)
+    streak = streak + 1 if deferred > 0 else 0
+    over_msg = None
+    if streak == 2:
+        over_msg = (f"⚠️ SpaceX 뉴스 감시관 — 처리 한도를 넘었습니다: 미판정 {deferred}건이 2회 연속 이월"
+                    f"(회당 상한 {MAX_HEADLINES}). 2일 창을 벗어난 헤드라인은 판정 없이 사라집니다 — 상한을 올리거나 질의를 좁혀야 합니다.")
+        state["deferred_alerted"] = today
+    elif streak == 0 and state.get("deferred_alerted"):
+        over_msg = "✅ SpaceX 뉴스 감시관 — 이월 해소(미판정 0건)"
+        state.pop("deferred_alerted", None)
+    state["deferred_streak"] = streak
+
+    if wake or dm_only or model_ok is False or over_msg:
         try:
             from spacex_watch import send_dm
         except Exception:
             send_dm = None
-        msg = news_message(wake, dm_only, len(batch), model_ok is not False)
-        if send_dm:
-            send_dm(msg)
-        else:
-            print(msg)
+        out = []
+        if wake or dm_only or model_ok is False:
+            out.append(news_message(wake, dm_only, len(judged), model_ok is not False))
+        if over_msg:
+            out.append(over_msg)
+        for msg in out:
+            if send_dm:
+                send_dm(msg)
+            else:
+                print(msg)
 
     if wake:
         # 측정층 파일에 due·발사 대기열을 싣는다 — 커밋 뒤 'Dispatch SpaceX probe' 스텝이 쏜다
@@ -354,13 +406,14 @@ def run():
                         "urls": [h.get("url") for h in c["items"][:3]]})
     state["decisions"] = dec[-80:]
     state["seen"] = sorted(seen)[-KEEP_SEEN:]
-    state["last_run"] = {"date": today, "headlines": len(heads), "fresh": len(fresh), "judged": len(batch),
+    state["last_run"] = {"date": today, "headlines": len(heads), "fresh": len(fresh), "judged": len(judged),
+                         "deferred": deferred, "baseline": first, "calls": calls,
                          "wake": len(wake), "report": len(dm_only), "ignored": ignored,
                          "model": MODEL, "model_ok": model_ok,
                          "tokens_in": use.get("input_tokens"), "tokens_out": use.get("output_tokens")}
     write_json(NEWS_PATH, state)
-    print(f"[SpaceX 뉴스] 헤드라인 {len(heads)} · 새 {len(fresh)} · 판정 {len(batch)} · 깨움 {len(wake)} · "
-          f"보도 단계 {len(dm_only)} · 무시 {ignored}")
+    print(f"[SpaceX 뉴스] 헤드라인 {len(heads)} · 새 {len(fresh)} · 판정 {len(judged)}(호출 {calls}) · 이월 {deferred} · "
+          f"깨움 {len(wake)} · 보도 단계 {len(dm_only)} · 무시 {ignored}")
     for n in logs:
         print(f"[SpaceX 뉴스] 참고: {n}", file=sys.stderr)
     return 1 if model_ok is False else 0
