@@ -2272,7 +2272,7 @@ const PC = (function(){
       '<h4>' + T('pc.d.triggers') + '</h4><p>' + ((e.triggers || []).map(t => '<button type="button" class="pc-f" data-pc-open="triggers" data-pc-id="' + H(t) + '">' + H(t) + '</button>').join(' ') || '—') + '</p>';
   }
   function dTrigger(t){
-    return '<p><b style="color:var(--text)">' + H(t.id) + ' ' + C(t.name) + '</b></p><p>' + H(t.when) + ' · ' + C(t.statusL || t.status) + '</p><h4>' + T('pc.d.expected') + '</h4><p>' + C(t.expected) + '</p>' +
+    return '<p><b style="color:var(--text)">' + H(t.id) + ' ' + C(t.name) + '</b></p><p>' + H(t.when) + ' · ' + C(t.statusL || t.statusText || t.status) + '</p><h4>' + T('pc.d.expected') + '</h4><p>' + C(t.expected) + '</p>' +
       (t.check ? '<h4>' + T('pc.d.method') + '</h4><p>' + C(t.check) + '</p>' : '') + (t.note ? '<h4>' + T('pc.d.checklog') + '</h4><p>' + C(t.note) + '</p>' : '') + (t.prev ? '<h4>' + T('pc.d.prev') + '</h4><p>' + C(t.prev) + '</p>' : '');
   }
   function dFin(key){
