@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-09-s4",
+ "lang": "en",
+ "src_hash": "ffad423e5d3c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 00:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "PHASE 5 — Rerun Rules (Monthly)",
+  "md": "\n1. **State file**: Scenario probabilities, milestone verdicts, fair value, and trigger status are stored in `state/spacex_state.json`. This issue's values become the baseline.\n2. **Rerun order**: ① load the state file → ② write \"what changed since last month\" (if nothing changed, write \"No change\") → ③ adjust probabilities and fair value based on **only what changed** → ④ update the milestone scorecard → ⑤ publish `reports/YYYY-MM.md` → ⑥ accumulate the delta in `reports/changelog.md`.\n3. **Scorecard**: Record each milestone as `Achieved / Missed / Undetermined`. **If three consecutive misses occur on the same axis, discard that axis's premise and fully recalculate the three scenarios.**\n4. **Probability adjustments use only the pre-committed rules of PHASE 3.** No new rules are created after the fact to shift probabilities. If a rule must change, that fact itself is recorded in the changelog.\n5. **Musk's statements are recorded only as \"milestone candidates\" and are not used as a basis for judgment.** In this issue as well, statements such as \"$1 trillion revenue in 2030\", \"one launch per day within a year\", and \"the heat shield is solved\" were all placed only in the milestone candidate list and not reflected in scenario figures. **Only actually observed figures are the basis.**\n6. **Correction principle**: If a figure from a previous issue is found to be wrong, it is explicitly corrected at the start of the next issue, and the effect of that correction on probabilities is recorded separately.\n\n---\n"
+ }
+}

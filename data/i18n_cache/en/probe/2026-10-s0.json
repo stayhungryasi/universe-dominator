@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-10-s0",
+ "lang": "en",
+ "src_hash": "e89ee5e3fc10",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 00:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-10-23 (KST) · issue id `2026-10` · previous issue `2026-09` (2026-09-02)\n- **Reference share price**: $144.75 (close on 2026-10-22, −9.14% from the previous day) / shares outstanding 13.581 billion (Class A 8.247 billion + Class B 5.335 billion, 2026-10-15) / market cap approx. $1.97 trillion ([stockanalysis price](https://stockanalysis.com/stocks/spcx/history/), [10-Q cover](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm))\n- **Previous state file**: `state/spacex_state.json` (Issue 1, 2026-09-02). This issue catches up with two major events: **3Q26 results (announced 2026-10-20, quarterly report 2026-10-22)** and **Starship Flight 14 (2026-09-28)** (source: measurement-layer event list in `data/spacex_watch.json`).\n- **Source priority**: ① SEC primary documents (8-K Ex.99.1 · 10-Q notes) ② earnings call transcripts ③ regulators ④ launch records ⑤ top-tier press reports. Management statements are entered only in the 'milestone candidates' table and were not used in verdicts.\n\n> **2 corrections to previous-issue figures**\n> 1. The September issue's reference price \"$142.23 (9/2)\" was the figure shown on the price page at the time; the same site's daily history now shows the 9/2 close as **$140.71** ([stockanalysis history](https://stockanalysis.com/stocks/spcx/history/)). The 1.1% difference does not affect probability or value calculations, so the state file's reference price is left unchanged and only noted here.\n> 2. The September issue stated the backlog as \"$47.5 billion\". The 10-Q discloses the 2026-09-30 backlog as **$62.959 billion** — this is quarter-over-quarter growth rather than a correction, but we note that the September figure was the value from the 2Q results materials ([10-Q revenue note](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm)).\n\n---\n"
+ }
+}

@@ -1,13 +1,13 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-10-27",
+ "date": "2026-10-28",
  "members": {
   "LRCX": {
    "name": "Lam Research",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 3,
+   "streak_out": 4,
    "carried_days": 0,
    "rank": 52
   },
@@ -15,7 +15,7 @@
    "name": "Applied Materials",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 3,
+   "streak_out": 4,
    "carried_days": 0,
    "rank": 49
   },
@@ -25,7 +25,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 53
+   "rank": 47
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -49,7 +49,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 105
+   "rank": 100
   },
   "MRVL": {
    "name": "Marvell Technology",
@@ -57,7 +57,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 84
+   "rank": 80
   },
   "STX": {
    "name": "Seagate Technology",
@@ -65,7 +65,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 145
+   "rank": 137
   },
   "6857.T": {
    "name": "Advantest",
@@ -81,7 +81,7 @@
    "streak_in": 8,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 163
+   "rank": 160
   },
   "000660.KS": {
    "name": "SK Hynix",
@@ -100,7 +100,20 @@
    "rank": 26
   }
  },
- "candidates": {},
+ "candidates": {
+  "PANW": {
+   "streak_in": 1,
+   "swap_streak": 0,
+   "name": "Palo Alto Networks",
+   "rank": 44
+  },
+  "TXN": {
+   "streak_in": 1,
+   "swap_streak": 0,
+   "name": "Texas Instruments",
+   "rank": 57
+  }
+ },
  "transitions": [
   {
    "date": "2026-10-05",
@@ -217,17 +230,17 @@
     "name": "Lam Research",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 2,
+    "streak_out": 3,
     "carried_days": 0,
-    "rank": 53
+    "rank": 52
    },
    "AMAT": {
     "name": "Applied Materials",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 2,
+    "streak_out": 3,
     "carried_days": 0,
-    "rank": 50
+    "rank": 49
    },
    "DELL": {
     "name": "Dell",
@@ -235,7 +248,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 52
+    "rank": 53
    },
    "2454.TW": {
     "name": "MediaTek",
@@ -243,7 +256,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 92
+    "rank": 95
    },
    "CRWD": {
     "name": "CrowdStrike",
@@ -251,7 +264,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 60
+    "rank": 59
    },
    "SNDK": {
     "name": "Sandisk",
@@ -259,7 +272,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 107
+    "rank": 105
    },
    "MRVL": {
     "name": "Marvell Technology",
@@ -267,7 +280,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 85
+    "rank": 84
    },
    "STX": {
     "name": "Seagate Technology",
@@ -281,9 +294,9 @@
     "name": "Advantest",
     "joined": "2026-10-05",
     "streak_in": 7,
-    "streak_out": 1,
+    "streak_out": 0,
     "carried_days": 0,
-    "rank": 150
+    "rank": 135
    },
    "FTNT": {
     "name": "Fortinet",
@@ -291,7 +304,7 @@
     "streak_in": 8,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 166
+    "rank": 163
    },
    "000660.KS": {
     "name": "SK Hynix",
@@ -307,19 +320,12 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 27
+    "rank": 26
    }
   },
-  "candidates": {
-   "EQNR": {
-    "streak_in": 2,
-    "swap_streak": 0,
-    "name": "Equinor",
-    "rank": 194
-   }
-  }
+  "candidates": {}
  },
- "generated_at": "2026-10-27T19:02:12.554615+09:00",
+ "generated_at": "2026-10-28T00:19:50.521291+09:00",
  "limits": {
   "in": 3,
   "out": 5,

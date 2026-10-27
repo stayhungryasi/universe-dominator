@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-27-event-r2-s3",
+ "lang": "en",
+ "src_hash": "d33d8ed33f59",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 00:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Scale — What Is at Stake (Disclosed Figures Only)",
+  "md": "\n| Item | Value | Basis |\n|---|---|---|\n| 3Q26 Connectivity revenue | **$5,248M** = Consumer $3,121M + Enterprise/Government $2,127M | ① [10-Q Note 3 Revenue (R12)](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm), 2026-10-22 |\n| Enterprise/Government share | **40.5%** of Connectivity · **14.6%** of consolidated revenue | Formula: 2,127 ÷ 5,248 · 2,127 ÷ 14,575 (10-Q R12) |\n| Government/military revenue alone | **Not disclosed** — only the combined Enterprise/Government figure | 10-Q R12 (above) · `state.milestones[A-2032-1].progress_reason` |\n| Ukraine-related revenue and terminal count | **Not disclosed** — none of the reports read this cycle gives a terminal count or contract value (Reuters: the Department of Defense spends \"billions of dollars\" on Starlink and Starshield — a total-amount expression) | Reuters 10/15 (above) · [Time 10/26](https://time.com/article/2026/10/26/ukraine-s-satellite-disruption-exposes-a-central-risk-of-modern-warfare/) |\n| Geopolitical/government-restriction language in the 10-Q risk factors | **Not reviewed** — this cycle's tool read only the first 93,000 characters of the 10-Q body (financial statements and notes); the Item 1A text is out of range. The 424B4 did not open because it exceeded the size limit | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · [424B4](https://www.sec.gov/Archives/edgar/data/1181412/000162828026042639/spaceexplorationtechnologi.htm) — item to check next cycle |\n| Share price reaction | **Cannot be separated** — the restriction period (10/13–24) overlaps with 3Q earnings (announced 10/20 → 10/21 +7.8%, 10/22 −9.1%). The closing prices before and after the event, $148.62 (10/15) → $146.90 (10/26), −1.2% (formula: 146.90 ÷ 148.62 − 1), include the earnings reaction | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), accessed 2026-10-27 |\n\n**How to read this**: There is no direct loss that can be measured in numbers (Ukraine revenue not disclosed, no contract terminations). What is at stake is **the political trust behind Enterprise/Government revenue of $2,127M per quarter (annualized $8.5 billion, formula: 2,127 × 4)** — this event confirmed, through top-tier reporting and government announcements, that \"service can be cut off by a political decision,\" and that is the premise of the \"overseas government contract departures\" that the September issue cited as the meaning of missing E-2027-3. Contract departures themselves have not yet been observed (source: the table above · `reports/2026-09.md`).\n\n---\n"
+ }
+}
