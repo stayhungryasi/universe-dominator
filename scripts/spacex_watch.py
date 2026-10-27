@@ -601,7 +601,8 @@ def parse_trigger_date(s):
 
 
 TRIGGER_KIND = [("earnings", r"실적"), ("starship", r"Starship|스타십"),
-                ("financing", r"조달|증자|채권|전환사채"), ("contract", r"계약")]
+                # 2026-10-27: 엔진이 T5 이름을 '$400억 GPU 마스터 금융리스 — …'로 바꾸자 '조달'이 빠져 종류를 잃었다 → 리스·대출·금리
+                ("financing", r"조달|증자|채권|전환사채|리스|대출|금리"), ("contract", r"계약")]
 
 
 def trigger_kind(name):
@@ -609,6 +610,14 @@ def trigger_kind(name):
         if re.search(pat, name or "", re.I):
             return k
     return None
+
+
+def open_checkpoint(t, written_on):
+    """'대기'가 아닌 트리거(엔진이 '부분 확인(…)' 처럼 자유 문장으로 적는다)라도 엔진이 **작성 이후의 날짜**를
+    예상일로 다시 걸었으면 그 날짜는 살아 있는 확인점이다 — 2026-10-27: T5 가 '부분 확인'으로 바뀌며 잔여 확인점
+    2027-01-07 을 걸었는데 '대기'만 보던 판정이 그 날짜를 영영 울리지 않을 뻔했다. 상태 문장은 읽지 않는다(날짜만)."""
+    d = parse_trigger_date((t or {}).get("expected_date"))
+    return bool(d and written_on and d.isoformat() > written_on)
 
 
 def judge_triggers(triggers, new_events, today, already, written_on=None):
@@ -621,10 +630,11 @@ def judge_triggers(triggers, new_events, today, already, written_on=None):
     """
     out = []
     for t in triggers or []:
-        if (t.get("status") or "대기") != "대기":
-            continue
+        pending = (t.get("status") or "대기") == "대기"
+        if not pending and not open_checkpoint(t, written_on):
+            continue                 # 닫힌 트리거 — 사건은 ④(긴급·중요)가 따로 깨운다
         tid, name = t.get("id", ""), t.get("name", "")
-        k = trigger_kind(name)
+        k = trigger_kind(name) if pending else None      # 잔여 확인점은 날짜로만 운다
         for ev in new_events:
             if k and ev.get("kind") == k:
                 key = f"{tid}:event:{ev.get('accn') or ev.get('id') or ev.get('date')}"
@@ -1209,16 +1219,18 @@ def heartbeat_message(watch, hstate, st, now, status=None):
         lines.append(f"· 탐사 엔진 마지막 실행: {(eng.get('created_at') or '')[:10]} "
                      f"{'사건 모드' if eng.get('event') == 'repository_dispatch' else '정기·수동'} · {eng.get('conclusion') or '?'}")
     upc = []
+    wr = (((st or {}).get("run") or {}).get("run_date") or "")[:10] or None
     for t in (st or {}).get("triggers_next_12m") or []:
-        if (t.get("status") or "대기") != "대기":
+        pending = (t.get("status") or "대기") == "대기"
+        if not pending and not open_checkpoint(t, wr):
             continue
         d = parse_trigger_date(t.get("expected_date"))
         if d and d >= today:
-            upc.append((d, t.get("id", ""), t.get("name", "")))
+            upc.append((d, t.get("id", ""), "" if pending else " 잔여"))
     upc.sort()
     if upc:
-        lines.append("· 다가오는 확인점: " + " · ".join(f"{tid} {d.month}/{d.day}(D-{(d - today).days})"
-                                                for d, tid, _ in upc[:3]))
+        lines.append("· 다가오는 확인점: " + " · ".join(f"{tid} {d.month}/{d.day}(D-{(d - today).days}{tag})"
+                                                for d, tid, tag in upc[:3]))
     lw = (watch or {}).get("launches") or {}
     nx = [x for x in [lw.get("starship_next")] + list(lw.get("competitor_next") or []) if x and x.get("date")]
     if nx:

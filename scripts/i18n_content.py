@@ -270,8 +270,8 @@ COCKPIT = {
     # 마일스톤 표·상세: 이정표 문장 · 진척 사유 · 현재/목표 표기 · 의미(달성·미달) · 확인 방법 · 구성 지표
     "probe_ms": {"ko": ("text", "reason", "cur", "tgt", "unit", "hit", "miss", "method",
                         "parts.*.label", "parts.*.reason", "parts.*.unit")},
-    # ⑤ 트리거 카드·상세: 이름 · 예상 시점 표기 · 확인 방법 · 확인 기록 · 직전 결과
-    "probe_trig": {"ko": ("name", "expected", "check", "note", "prev")},
+    # ⑤ 트리거 카드·상세: 이름 · 예상 시점 표기 · 확인 방법 · 확인 기록 · 직전 결과 · 자유 문장 상태('부분 확인(…)')
+    "probe_trig": {"ko": ("name", "expected", "check", "note", "prev", "statusText")},
     # ② 이번 회차에 바뀐 것
     "probe_delta": {"ko": ("lines.*",)},
 }

@@ -262,6 +262,34 @@ class EventTitleTest(unittest.TestCase):
         self.assertEqual(rows[1]["kindKo"], "Competitor launch")
 
 
+class ResidualCheckpointTest(unittest.TestCase):
+    """2026-10-27 사건 회차: T5 가 '부분 확인(…)'으로 바뀌며 잔여 확인점 2027-01-07 을 걸었다 — 날짜로는 운다."""
+    T5P = {"id": "T5", "status": "부분 확인(2026-10-27: 구조·규모·만기·증자 요소 공시됨, 고정금리 미정)",
+           "name": "$400억 GPU 마스터 금융리스 — 체결 8-K·고정금리 확정(잔여: 금리·콜 조건·종결)",
+           "expected_date": "2027-01-07(추정: …)"}
+    DONE = {"id": "T9", "status": "발동(2026-10-01)", "name": "옛 조달 트리거", "expected_date": "2026-10-01"}
+
+    def test_date_wakes_residual_checkpoint(self):
+        self.assertEqual(sw.judge_triggers([self.T5P], [], "2026-12-01", set(), written_on="2026-10-27"), [])
+        due = sw.judge_triggers([self.T5P], [], "2027-01-07", set(), written_on="2026-10-27")
+        self.assertEqual([(d["key"], d["reason"]) for d in due], [("T5:date:2027-01-07", "예상일 도래")])
+
+    def test_residual_does_not_event_match_and_closed_is_silent(self):
+        ev = {"kind": "financing", "accn": "X-9", "title": "t", "date": "2026-11-02", "grade": "major"}
+        due = sw.judge_triggers([self.T5P, self.DONE], [ev], "2026-11-02", set(), written_on="2026-10-27")
+        self.assertEqual([d["key"] for d in due], ["major:X-9"])      # 사건은 ④가 한 번만 — T5 사건 감지 아님
+
+    def test_renamed_t5_still_financing(self):
+        """엔진이 이름을 바꿔도(조달 → 금융리스) 종류를 잃지 않는다 — 대기로 돌아오면 조달 사건과 맞는다."""
+        self.assertEqual(sw.trigger_kind(self.T5P["name"]), "financing")
+
+    def test_heartbeat_lists_residual(self):
+        st = {"run": {"run_date": "2026-10-27"}, "triggers_next_12m": [self.T5P, self.DONE]}
+        msg = sw.heartbeat_message({}, {}, st, datetime.fromisoformat("2026-10-28T08:47:00+09:00"))
+        self.assertIn("T5 1/7(D-71 잔여)", msg)
+        self.assertNotIn("T9", msg)
+
+
 class LockupTest(unittest.TestCase):
     PROSPECTUS = ("<p>Our executive officers, directors and holders of substantially all of our capital stock have "
                   "agreed with the underwriters, subject to certain exceptions, not to sell any shares for 180 days "

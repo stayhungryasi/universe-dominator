@@ -486,7 +486,9 @@ def trigger_rows(st, today, lang="ko"):
         st_raw = t.get("status", "대기")
         st_id = TRIGGER_STATUS_ID.get(st_raw)
         out.append({"id": t.get("id", ""), "name": t.get("name", ""), "expected": t.get("expected_date", ""),
-                    "status": st_raw, "statusL": L(lang, "pc.tst." + st_id) if st_id else st_raw,
+                    "status": st_raw, "statusL": L(lang, "pc.tst." + st_id) if st_id else "",
+                    # 엔진이 자유 문장으로 적은 상태('부분 확인(…)')는 콘텐츠 — 번역 칸(i18n_content COCKPIT probe_trig)
+                    "statusText": "" if st_id else st_raw,
                     "when": when, "dday": dday,
                     "sort": d.isoformat() if d else "9999", "check": t.get("check", ""),
                     "note": t.get("note", ""), "prev": t.get("prev", "")})
