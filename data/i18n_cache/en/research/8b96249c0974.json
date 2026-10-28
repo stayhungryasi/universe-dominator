@@ -2,14 +2,16 @@
  "kind": "research",
  "id": "8b96249c0974",
  "lang": "en",
- "src_hash": "e65f622b7938",
+ "src_hash": "71d1b6346f82",
  "model": "claude-haiku-4-5",
- "at": "2026-10-28 19:13",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Advantest Corp (TYO:6857) achieved 1H net profit increase of 117% to JPY 36.81 billion ($2.33 billion) as semiconductor test equipment demand surged with increasing AI demand.",
-  "summary_ko.1": "The company raised FY2027 revenue guidance from JPY 1.714 trillion to JPY 1.863 trillion, and net profit from JPY 66.0 billion to JPY 74.15 billion.",
-  "summary_ko.2": "The semiconductor market in 2026 is expected to achieve strong growth centered on AI applications, with the semiconductor tester market forecast to reach historical highs."
- }
+ "at": "2026-10-29 01:26",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[7§summary_ko.0] 숫자: 원문에 없는 숫자 23.3 billion",
+  "[7§summary_ko.0] 숫자: 원문의 숫자가 빠짐 23.3억",
+  "[7§summary_ko.1] 숫자: 원문에 없는 숫자 1,863.0 billion, 1,714.0 billion, 967.0 billion, 846.0 billion, 741.5 billion, 660.0 billion",
+  "[7§summary_ko.1] 숫자: 원문의 숫자가 빠짐 1,863.0조, 1,714.0조, 967.0억, 846.0억, 741.5억, 660.0억"
+ ]
 }

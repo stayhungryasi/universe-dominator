@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "lg.th.stock": "종목", "mega.cat.rank": "순위 추적", "mega.cat.themes": "6대 메가트렌드", "mega.cat.throne": "1위 변천", "mega.cat.top10": "TOP 10 변천사", "mega.lg.out": "— TOP 10 밖", "mega.lg.r1": "1위", "mega.lg.r23": "2~3위", "mega.lg.r45": "4~5위 (Bold)", "mega.lg.r610": "6~10위 (Regular)", "mega.matrix.d": "시가총액 수치까지 한눈에. 양옆 화살표로 연도를 넘겨보세요.", "mega.matrix.h": "상세 매트릭스", "mega.next_year": "다음 연도", "mega.prev_year": "이전 연도", "mega.rank": "순위", "mega.rank.d": "18개 핵심 종목의 TOP 10 내 순위 변동 — 20년의 흥망성쇠를 한 화면에. 양옆 화살표로 연도를 넘겨보세요.", "mega.rank.h": "핵심 종목 순위 추적", "mega.runners": "2~3위:", "mega.themes.d": "시총 거대화부터 NVIDIA 신화까지 — 단순 순위표가 아닌 패권 사이클의 기록.", "mega.themes.h": "20년이 들려주는 6가지 메가트렌드", "mega.throne.d": "누가 20년간 우주를 지배했나 — ExxonMobil·PetroChina에서 Apple, NVIDIA로 이어진 왕좌 이동.", "mega.throne.h": "1위 기업 변천사", "mega.top10.aria": "TOP 10 순위 변화 범프 차트 2006-2026", "mega.top10.d": "20년간 글로벌 시가총액 TOP 10의 순위 변화. 종목명(범례)이나 선을 탭하면 해당 흐름만 강조됩니다.", "mega.top10.h": "TOP 10 변천사 (2006~2026)", "mega.top10.hint": "다시 탭하면 강조가 해제됩니다 · NVIDIA의 상승 곡선을 주목하세요"}, R = {"EUR": 0.89686, "JPY": 157.82, "KRW": 1327.75, "MXN": 18.6368, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "lg.th.stock": "종목", "mega.cat.rank": "순위 추적", "mega.cat.themes": "6대 메가트렌드", "mega.cat.throne": "1위 변천", "mega.cat.top10": "TOP 10 변천사", "mega.lg.out": "— TOP 10 밖", "mega.lg.r1": "1위", "mega.lg.r23": "2~3위", "mega.lg.r45": "4~5위 (Bold)", "mega.lg.r610": "6~10위 (Regular)", "mega.matrix.d": "시가총액 수치까지 한눈에. 양옆 화살표로 연도를 넘겨보세요.", "mega.matrix.h": "상세 매트릭스", "mega.next_year": "다음 연도", "mega.prev_year": "이전 연도", "mega.rank": "순위", "mega.rank.d": "18개 핵심 종목의 TOP 10 내 순위 변동 — 20년의 흥망성쇠를 한 화면에. 양옆 화살표로 연도를 넘겨보세요.", "mega.rank.h": "핵심 종목 순위 추적", "mega.runners": "2~3위:", "mega.themes.d": "시총 거대화부터 NVIDIA 신화까지 — 단순 순위표가 아닌 패권 사이클의 기록.", "mega.themes.h": "20년이 들려주는 6가지 메가트렌드", "mega.throne.d": "누가 20년간 우주를 지배했나 — ExxonMobil·PetroChina에서 Apple, NVIDIA로 이어진 왕좌 이동.", "mega.throne.h": "1위 기업 변천사", "mega.top10.aria": "TOP 10 순위 변화 범프 차트 2006-2026", "mega.top10.d": "20년간 글로벌 시가총액 TOP 10의 순위 변화. 종목명(범례)이나 선을 탭하면 해당 흐름만 강조됩니다.", "mega.top10.h": "TOP 10 변천사 (2006~2026)", "mega.top10.hint": "다시 탭하면 강조가 해제됩니다 · NVIDIA의 상승 곡선을 주목하세요"}, R = {"EUR": 0.89823, "JPY": 157.96, "KRW": 1340.47, "MXN": 18.6311, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -675,10 +675,10 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 18:49 · 출처 frankfurter · 네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 00:59 · 출처 frankfurter · 네이버 실시간 환율 보기">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 18:49 · 출처 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 18:49 · 출처 FRED API">10Y <span class="ud-mv">5.00%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 18:49 · 출처 FRED API">30Y <span class="ud-mv">5.31%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 18:49 · 출처 frankfurter">JPY <span class="ud-mv">157.8</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 00:59 · 출처 FRED API">WTI <span class="ud-mv">$108</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 00:59 · 출처 FRED API">10Y <span class="ud-mv">5.00%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 00:59 · 출처 FRED API">30Y <span class="ud-mv">5.31%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 00:59 · 출처 frankfurter">JPY <span class="ud-mv">158.0</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <details class="uvx-lang"><summary aria-label="언어">KO</summary><div class="uvx-lang-menu"><a href="megatrend.html" hreflang="ko" lang="ko" aria-current="true">한국어<small>KO</small></a><a href="en/megatrend.html" hreflang="en" lang="en">English<small>EN</small></a><a href="es/megatrend.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="ja/megatrend.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -1855,24 +1855,24 @@ const DATA = {
     ]
   },
   "meta": {
-    "fetched_date": "2026-10-28",
-    "usd_krw": 1327.75,
-    "fetched_at": "2026-10-28T18:49:31.745470+09:00",
+    "fetched_date": "2026-10-29",
+    "usd_krw": 1340.47,
+    "fetched_at": "2026-10-29T00:59:02.780746+09:00",
     "macro": {
       "usd_krw": {
-        "value": 1327.75,
-        "as_of": "2026-10-27",
+        "value": 1340.47,
+        "as_of": "2026-10-28",
         "source": "frankfurter",
-        "measured_at": "2026-10-28T18:49+09:00",
+        "measured_at": "2026-10-29T00:59+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "usd_jpy": {
-        "value": 157.82,
-        "as_of": "2026-10-27",
+        "value": 157.96,
+        "as_of": "2026-10-28",
         "source": "frankfurter",
-        "measured_at": "2026-10-28T18:49+09:00",
+        "measured_at": "2026-10-29T00:59+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1881,7 +1881,7 @@ const DATA = {
         "value": 5.0,
         "as_of": "2026-10-26",
         "source": "FRED API",
-        "measured_at": "2026-10-28T18:49+09:00",
+        "measured_at": "2026-10-29T00:59+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1890,7 +1890,7 @@ const DATA = {
         "value": 5.31,
         "as_of": "2026-10-26",
         "source": "FRED API",
-        "measured_at": "2026-10-28T18:49+09:00",
+        "measured_at": "2026-10-29T00:59+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -1899,7 +1899,7 @@ const DATA = {
         "value": 107.89,
         "as_of": "2026-10-20",
         "source": "FRED API",
-        "measured_at": "2026-10-28T18:49+09:00",
+        "measured_at": "2026-10-29T00:59+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null

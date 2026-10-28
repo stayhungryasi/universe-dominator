@@ -1,0 +1,31 @@
+{
+ "kind": "dissect",
+ "id": "068ca2c5cfac",
+ "lang": "en",
+ "src_hash": "7ce660fba706",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-29 01:26",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Scale and significance of major update",
+  "sections.1.h": "Six security vulnerabilities patched",
+  "sections.2.h": "macOS 27 support and compatibility improvements",
+  "sections.3.h": "Full implementation of Kitty graphics protocol",
+  "sections.4.h": "Memory optimization and resource management",
+  "sections.5.h": "Concrete performance gains",
+  "sections.6.h": "GTK platform rendering redesign",
+  "sections.7.h": "Clipboard protocol and split pane improvements",
+  "sections.8.h": "Enhanced terminal emulation standards compliance",
+  "sections.0.ko": "Ghostty 1.4 is a major release launched on October 27, 2026, created through 2,889 commits by 172 contributors over 7 months. This version includes performance and memory optimization, 100% complete implementation of the Kitty graphics protocol (the first outside of Kitty itself), improved SSH integration, and more. The development team invested over 16 hours in writing release notes alone, and disclosed that as a nonprofit project, donations are used directly for contributor compensation.",
+  "sections.1.ko": "This update addressed multiple security flaws. Issues include paste protection failing to handle carriage returns as line breaks, crashes or file deletion risks from malicious Kitty graphics commands, the possibility of closing entire windows through tmux control mode, memory corruption from screen clearing, and potential remote code execution in zsh shell integration. macOS-specific issues included vulnerabilities in handling OSC 8 hyperlinks and filename control characters. The author noted that CVE numbers were requested but have not yet been assigned.",
+  "sections.2.ko": "Ghostty 1.4 supports the new macOS 27 (Golden Gate) while maintaining full backward compatibility with macOS 13 (Ventura). Key improvements include title bar tab layout fixes, improved native tab bar visualization through glass style, resolution of terminal top obstruction in reduced transparency settings, and fixing double-open bugs in new window shortcuts. Ghostty 1.3.1 also works on macOS 27, but visual issues such as gray tab bars remain.",
+  "sections.3.ko": "Ghostty began supporting animation and relative placement, the last major features of the Kitty graphics protocol. Animated images like animated GIFs now play as moving frames instead of still frames, with frame transmission, compositing, and playback control all functioning. Relative placement allows child images to move along with parent image movement. The development team performed completeness checks against both the specification and Kitty itself, fixing dozens of behavioral differences including image scrolling, ID retransmission, and error response handling. Image data parsing became approximately 16 times faster through SIMD, and Ghostty became the first terminal outside of Kitty to achieve 100% specification compliance.",
+  "sections.4.ko": "A feature was added that transparently compresses invisible scrollback, reducing physical memory usage by 70–90%. Compression operates only when the terminal is idle and decompresses instantly when needed, so performance impact is negligible. Through this, the default scrollback limit increased from 10MB to 50MB while using less memory than older versions. Initial memory usage for new terminals decreased from 128KiB to 16KiB, and scrollback deletion returns memory to the OS. Hidden tabs release GPU resources; GPU memory for 20 hidden tabs decreased from 385MiB to 18MiB, but tabs reconstruct within 1 millisecond when displayed.",
+  "sections.5.ko": "Through discovery that PTY reads on macOS are limited by the kernel to approximately 1KiB, threaded separate reads and parallel parsing increased I/O throughput by 25–55%. In VT parser benchmarks, pure ASCII processing improved 5.7 times from 128MB/s to 725MB/s, and CJK text 3.4 times faster. Real terminal history processing of 2.6GB improved by approximately 25%. Output of 150MB files shortened from 1.5 seconds to 566 milliseconds. Terminal resize improved 6 times, rendering lock holding 2.7–11 times, and clipboard copying, searching, app startup time, and OSC 52 clipboard parsing each improved 1.5–30 times.",
+  "sections.6.ko": "The GTK version switched to a new rendering pipeline using EGL in an independent thread instead of GtkGLArea. Each frame is exported as DMABUF and passed to GTK, reducing screen flickering through triple buffering and removing OpenGL calls from the main thread. The most notable improvement is that text no longer blurs in fractional scaling environments. At fractional scales such as 125% or 150%, rendering is precise, with each pixel matching exactly one pixel on screen. This feature requires the system EGL library; on drivers that do not support DMABUF export, frame copying via CPU is used as a fallback.",
+  "sections.7.ko": "Ghostty 1.4 fully implemented the Kitty clipboard protocol (OSC 5522) on macOS and GTK. While the existing OSC 52 handles only plain text, this protocol supports various formats such as images and HTML and enables selection among multiple formats. The paste event mode allows format information to be known in advance, enabling terminal programs to read only desired formats. Clipboard access follows existing permission settings; reads request permission checking by default, and a 64MB limit setting was also added. On GTK, split panes can now be repositioned by dragging and moved to other tabs or windows. The drag-handle setting controls whether the handle is displayed.",
+  "sections.8.ko": "This version includes dozens of core emulation improvements, such as running Thomas Dickey's terminal standards compliance test esctest against the Ghostty terminal core. The original ends here without specifying all concrete improvements, but suggests that standards compliance testing has been adopted and extensive bug fixes have been performed.",
+  "caveat": "As the original ends in an incomplete state, specific details of terminal emulation improvements and conclusions should be verified directly in the original release notes."
+ }
+}

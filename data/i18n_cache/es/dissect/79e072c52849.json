@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "79e072c52849",
+ "lang": "es",
+ "src_hash": "89bd818fa90d",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-29 01:26",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "La posición de DeepInfer y su importancia en la divulgación pública",
+  "sections.1.h": "Pila de tecnología de kernel optimizada",
+  "sections.2.h": "Validación dinámica y aceleración de descodificación",
+  "sections.3.h": "Eficiencia de memoria y garantía de reproducibilidad",
+  "sections.4.h": "Generación de salida estructurada",
+  "sections.5.h": "Programación asincrónica y soporte multiplataforma",
+  "sections.6.h": "Instalación y criterios de referencia",
+  "sections.7.h": "Ecosistema de código abierto y procedencia tecnológica",
+  "sections.0.ko": "DeepSeek ha divulgado como código abierto el marco de inferencia central que impulsa sus grandes servicios de producción. Esta divulgación significa proporcionar a la comunidad de desarrolladores capacidades de inferencia sin conexión que contienen funciones clave necesarias para la prestación a escala. Con la divulgación de la última tecnología de inferencia de una empresa china en el ecosistema mundial de IA, se espera que disminuyan las barreras de entrada para los desarrolladores.",
+  "sections.1.ko": "DeepInfer incorpora varios niveles de kernels personalizados, incluyendo FlashMLA, DeepGEMM, DeepEP, TileKernels y DeepSelect. Cada uno está diseñado para acelerar diferentes etapas de cálculo: mecanismos de atención del modelo, operaciones matriciales, codificación, teselado de memoria y selección de tokens, respectivamente. Esta optimización multicapa mejora directamente la velocidad de procesamiento y la eficiencia en entornos de inferencia a gran escala.",
+  "sections.2.ko": "A través de DSpark y capacidades de programación basadas en confiabilidad, acelera la descodificación con tokens de borrador y optimiza las tareas de validación mediante estimación de confiabilidad. Los usuarios pueden ajustar la longitud máxima de borrador (valor predeterminado de 5) a través de variables de entorno, lo que puede mejorar significativamente el rendimiento de inferencia. Este enfoque es una estrategia en la que el modelo generativo adivina rápidamente varios tokens pero valida con precisión solo cuando es necesario.",
+  "sections.3.ko": "La capacidad de reproducción acotada de Decoder SWA reduce la carga de trabajo de prefill del decodificador a un rango limitado, disminuyendo el uso de memoria. Simultáneamente, la capacidad de inferencia invariante por lote (basada en NVIDIA) mantiene resultados de modelo idénticos independientemente de las diferentes configuraciones de lotes, y la capacidad de muestreo determinista garantiza una salida consistente para las mismas entradas y parámetros. Este diseño respalda la previsibilidad y reproducibilidad esenciales en entornos de producción.",
+  "sections.4.ko": "Proporciona capacidad de salida estructurada que puede restringir el proceso de generación mediante expresiones regulares, esquemas JSON y gramáticas EBNF. Los desarrolladores pueden pasar información de esquema a SamplingParams para forzar al modelo a generar respuestas en formato especificado. Esta capacidad es muy útil en entornos de aplicación práctica que requieren datos estructurados, como respuestas de API, extracción de datos y flujos de trabajo automatizados.",
+  "sections.5.ko": "La capacidad de programación asincrónica aumenta el rendimiento general solapando la programación de lotes de CPU y la ejecución de dispositivos, y está habilitada de forma predeterminada. DeepInfer está diseñado para soportar no solo GPU de NVIDIA sino también la plataforma Ascend, y los usuarios pueden seleccionar el tipo de acelerador mediante variables de entorno. Sin embargo, la versión actualmente divulgada no incluye algunas características necesarias para un servicio de inferencia completo, como la separación de prefill y descodificación y el equilibrio de carga entre réplicas paralelas de datos.",
+  "sections.6.ko": "DeepInfer se puede compilar en un entorno Python 3.12, y el punto de control predeterminado se descarga automáticamente de la memoria caché de Hugging Face en la primera ejecución. Los valores de referencia se midieron bajo condiciones de 4 GPU SM100 en la etapa de prefill y 64 GPU en la etapa de descodificación, evaluando el rendimiento dentro de un único dominio de escala. Se estima que esta configuración de hardware a gran escala refleja condiciones de implementación reales en entornos de producción.",
+  "sections.7.ko": "DeepInfer se divulga bajo la Licencia Apache 2.0, fue desarrollado sobre la base de vLLM e inspirado en SGLang y TensorRT-LLM. Los autores expresan su gratitud a los equipos de desarrollo de estos proyectos de código abierto, lo que demuestra la actitud de DeepSeek de reconocer la relación de colaboración con la comunidad mundial de código abierto. Esta especificación transparente de procedencia hace que el proceso de desarrollo de la tecnología DeepSeek y sus relaciones de influencia sean trazables.",
+  "caveat": "Dado que este material es documentación técnica del repositorio de GitHub, los números de rendimiento reales están limitados a entornos de hardware y conjuntos de datos específicos y no constituyen una garantía de rendimiento para entornos de producción generales.",
+  "title": "DeepSeek acaba de divulgar como código abierto su motor de inferencia"
+ }
+}

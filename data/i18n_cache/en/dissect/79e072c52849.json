@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "79e072c52849",
+ "lang": "en",
+ "src_hash": "739b69c1f4cb",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-29 01:26",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "DeepInfer's Position and Public Significance",
+  "sections.1.h": "Optimized Kernel Technology Stack",
+  "sections.2.h": "Dynamic Verification and Decoding Acceleration",
+  "sections.3.h": "Memory Efficiency and Reproducibility Assurance",
+  "sections.4.h": "Structured Output Generation",
+  "sections.5.h": "Asynchronous Scheduling and Platform Support",
+  "sections.6.h": "Installation and Benchmark Baseline",
+  "sections.7.h": "Open Source Ecosystem and Technical Origins",
+  "sections.0.ko": "DeepSeek has open-sourced the core inference framework that powers its large-scale production services. This release provides the developer community with offline inference capabilities that include essential features needed for scaled serving. With the public disclosure of China's latest inference technology in the global AI ecosystem, the developer entry barrier is expected to lower.",
+  "sections.1.ko": "DeepInfer is equipped with multiple layers of custom kernels including FlashMLA, DeepGEMM, DeepEP, TileKernels, and DeepSelect. These are each designed to accelerate various computational stages: model attention mechanisms, matrix operations, encoding, memory tiling, and token selection. This multi-layer optimization directly enhances processing speed and efficiency in large-scale inference environments.",
+  "sections.2.ko": "Through DSpark and confidence-based scheduling, decoding is accelerated using draft tokens, and validation work is optimized through confidence estimation. Users can adjust the maximum draft length (default 5) via environment variables, which can significantly improve inference throughput. This approach employs a strategy where generative models rapidly speculate multiple tokens but perform precision verification only when necessary.",
+  "sections.3.ko": "The Decoder SWA Bounded Replay feature reduces decoder prefill workload to a bounded range, lowering memory usage. Simultaneously, batch-invariant inference (NVIDIA baseline) maintains identical model results regardless of batch composition, while deterministic sampling ensures consistent output for identical inputs and parameters. This design supports the predictability and reproducibility essential in production environments.",
+  "sections.4.ko": "Structured output capabilities constrain generation using regular expressions, JSON schemas, and EBNF grammars. Developers can pass schema information to SamplingParams to force the model to generate responses conforming to specified formats. This feature is highly useful in real-world deployment scenarios requiring structured data, such as API responses, data extraction, and automated workflows.",
+  "sections.5.ko": "Asynchronous scheduling overlaps CPU batch scheduling and device execution to increase overall throughput and is enabled by default. DeepInfer is designed to support not only NVIDIA GPUs but also Ascend platforms, with users able to select accelerator type via environment variables. However, the currently released version does not include certain features necessary for complete inference services, such as prefill-decode separation and load balancing across data parallel replicas.",
+  "sections.6.ko": "DeepInfer can be built in a Python 3.12 environment, with default checkpoints automatically downloaded from Hugging Face cache on first run. Benchmarks were measured under conditions using 4 SM100 GPUs during the prefill stage and 64 GPUs during the decode stage, with performance evaluated within a single scalable domain each. This large-scale hardware configuration is estimated to reflect actual deployment conditions in production environments.",
+  "sections.7.ko": "DeepInfer is released under Apache License 2.0, developed based on vLLM and inspired by SGLang and TensorRT-LLM. The authors acknowledge the development teams of these open-source projects, demonstrating DeepSeek's recognition of collaborative relationships with the global open-source community. This transparent source attribution makes DeepSeek's technology development process and influence relationships traceable.",
+  "caveat": "This material is technical documentation from a GitHub repository, so actual performance figures are limited to specific hardware environments and datasets and do not constitute performance guarantees in general production environments."
+ }
+}
