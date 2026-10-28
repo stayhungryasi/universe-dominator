@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s3",
+ "lang": "ja",
+ "src_hash": "f89547eba878",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 同じ月の鏡の事件 — SpaceXのFCC D2D認可(DA 26-1078、10/6)を誰も数えていなかった",
+  "md": "\nGlobalstar承認の記事が「今月初めにFCCがSpaceXの15,000基のD2Dコンステレーションを認可した」と書いており、取材中に**SpaceX自身の規制上の事件**が明らかになった。測定層(開示・IR・打ち上げ監視 — 10/27からニュース監視)にも、10/23の月次回にも**ない**。事件後の1次ソース(FCC命令原文)を開いて記録する。\n\n| 項目 | 内容 | 出典 |\n|---|---|---|\n| 命令 | **DA 26-1078 \"Authorization and Order\" — Space Exploration Holdings, LLC, SpaceX NGSO MSS System**(GN Docket 25-340 · SAT-LOA-20250916-00282 · SAT-AMD-20251125-00339 · コールサイン S00735)、採択・公開 **2026-10-06**、宇宙局 + 無線局 | ① 規制当局原文 [DA 26-1078](https://docs.fcc.gov/public/attachments/DA-26-1078A1.txt)、2026-10-06 |\n| 規模 | **15,000基**、VLEO 9軌道面(26° 335km ~ 96.87° 326km) | 同上 |\n| 認可(条件付き) | 米国内のSCS(通信事業者スペクトラム補完カバレッジ)・MSS、2000–2020MHz MSS下り免除、AWS-3非ペア(1695–1710MHz)SCS上り免除、Ka 18.6–18.8GHz下り · V 51.4–52.4GHz上り · Wバンド上り(非干渉条件)、EPFD一部免除 | 同上 |\n| 保留 | 米国内の2020–2025MHz MSS上り、20.2–21.2 · 30.0–31.0GHz(連邦使用)、米国外の1429–2690MHz広域D2D MSS | 同上 |\n| **核心条件** | 条件3: 2GHz MSS/AWS-4 · AWS-H · AWS-3バンドは**「SpaceX-EchoStar取引の第2段階クロージングまで運用開始禁止」**(クロージング後30日以内に通知)。条件4: それまではEchoStar・信託の同意のもと、非保護・非干渉の試験のみ。第2段階クロージングは**2027-11-30前後の予定**(報道) | 同上 · ⑥ [Via Satellite 10/07](https://www.satellitetoday.com/connectivity/2026/10/07/fcc-grants-spacex-approval-for-15000-direct-to-device-satellites-in-mss-spectrum/) |\n| 期限 | 保証金(surety bond)**2026-11-04** · 50%打ち上げ **2032-10-07** · 全数 **2035-10-07** · 免許期間15年(最初のD2D衛星の軌道到達日を起点)· 条件付き認可の拒否可能期間は公開日から30日(沈黙 = 受諾) | DA 26-1078(上記) |\n| 経営陣の発言(候補) | Shotwell: 第2世代Starlink Mobile衛星を「来年(2027)」に打ち上げ開始、サービスは「来年末」、「今より100倍」 — **判定根拠ではない** | Via Satellite 10/07(上記) → `musk_statements_as_milestone_candidates_only` |\n\n**A-2028-1(「加入者3,000万 AND Starlink Mobile(D2C)売上の別途開示 $30億」)に与える意味**: 規制面の扉は開いたが、**2GHz MSS(EchoStarスペクトラム)の運用は2027-11-30前後以降**に縛られた。2028年の判定年にD2C売上$30億が出るには、① 2027年末以前はSCS(通信事業者スペクトラム、T-Mobile型)・海外D2Cで、② 2028年の1年間は2GHz MSSで — どちらの経路が売上行に計上されるかが焦点である。今回の回は**状態を変えない**(進行維持、測定不能の理由は同一)— 売上開示がないためである。ただし**12/1前に1次ソースの記録が2件追加されたこと**(DA 26-1078 · EchoStar第2段階日程)をprogressには記さず、`open_questions`とT8に掛けておく (出典: `state.milestones[A-2028-1]` · 上の表)。\n\n**監視の空白の記録**: 10/6のSpaceX D2D認可は**会社の8-Kの対象ではなくIRプレスリリースもない**ため、開示・IR監視では捕捉されない種類である。ニュース監視官は10/27から稼働した。FCC ICFS(衛星免許システム)・EDOCSは測定層が見ていないソースである — 測定層の担当分として登録する (出典: `data/spacex_watch.json` events(10/6の項目なし) · `CLAUDE.md` ⑳ 検知対応表)。\n\n---\n"
+ }
+}

@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-10-28 11:35",
- "generated_at": "2026-10-28T11:35:46.481720+09:00",
+ "generated_label": "2026-10-28 19:02",
+ "generated_at": "2026-10-28T19:02:20.603877+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-10-28",
@@ -38,7 +38,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "B",
-     "reason": "수익 성장은 급속이나 하드웨어 의존도 심화로 지속성 의문"
+     "reason": "현재 하드웨어 의존도 높지만 소프트웨어 확대(Meta 투자, Muse 플랫폼)로 장기 수익성 구조 전환 시도 중"
     }
    },
    "conversion": {
@@ -80,26 +80,24 @@
    ],
    "franchise": {
     "need": "○",
-    "no_substitute": "✕",
-    "no_price_reg": "△"
+    "no_substitute": "△",
+    "no_price_reg": "✕"
    },
    "risk5": {
     "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
+    "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "score": 2,
-    "period": "2025H2"
+    "score": 2
    },
-   "notes": "핵심 고객군의 자체칩 전환 예고는 10년 사업 모델 불확실성을 제기하는 구조적 위험",
+   "notes": "대형 고객 자체칩 이탈 예고는 10년 내 사업 모델의 근본적 위협이나, 현재는 압도적 시장 지위와 적극적 포트폴리오 다각화로 단기-중기 실적은 견고함",
    "_evidence": {
-    "franchise": "Large tenants signaling exit to custom chips undermines long-term competitive moat despite current dominant position",
-    "risk5": "Business model transition risk from hardware dependency; management execution proven but customer retention uncertain",
-    "capalloc": "Nvidia adds $400B+ in value post-earnings; investing $3B in Meta equity suggests capital deployment beyond buyback",
-    "owner_earnings": "More than doubled revenue yet multiple below history; free cash flow sustainability questionable if customer concentration shifts to in-house solutions"
+    "franchise": "AI 칩 시장 독점적 지위, 대형 세입자(Google, Meta, Amazon) 전원이 자체칩 개발 진행 중으로 치환 불가능성 약화",
+    "risk5": "주요 고객의 자체칩 이탈 예고로 장기 사업 확실성 저하; 수익성 구조 전환 미완성",
+    "capalloc": "Meta 투자 $3B, 추가 소프트웨어 사업 확대로 현금 배분 진행 중; 하드웨어 매출 기반 강화로 현금 창출 능력 입증",
+    "owner_earnings": "Nvidia to invest $3 billion in Meta, expand partnership on Muse; 소프트웨어 사업 확대로 하드웨어 의존도 감소 전략"
    }
   },
   "AAPL": {
@@ -135,7 +133,11 @@
     },
     "fcf_ttm": 136683000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "서비스 부문 성과 부진과 메모리 부족 경고로 성장 모멘텀 약화"
+    }
    },
    "conversion": {
     "value": 1.0239,
@@ -155,7 +157,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -173,7 +175,31 @@
      "period": "2025Q4",
      "end": "2025-09-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "프리미엄 소비자 프랜차이즈이나 iPhone 출하 우려와 성장 정체로 상한가 28배 근처에서 재평가 위험",
+   "_evidence": {
+    "franchise": "Apple's largest-ever stock buyback under Tim Cook; consumer franchise strength evident in sustained investor attention",
+    "risk5": "Cook warns of memory shortage impact; Loop Capital lowers price target on iPhone shipment concerns; services revenue misses Q3 2026",
+    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback; stock slides nearly 10% suggesting capital allocation scrutiny",
+    "owner_earnings": "Apple Q3 2026 earnings beat estimates but services revenue misses; Cook warns of memory shortage impact"
+   }
   },
   "GOOG": {
    "as_of": "2026-10-28",
@@ -457,11 +483,7 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 칩 수요 강세 vs 소프트웨어 부문 약세, 올해 AI칩 포레캐스트 미변화로 가시성 제한"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9836,
@@ -481,7 +503,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -499,31 +521,7 @@
      "period": "2025Q4",
      "end": "2025-11-02"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "AI 인프라 필수재 지위 확보하나 경쟁사 IP리스크(Anthropic IPO 등)와 주가 고평가 구간에서 near-term 모멘텀 약화",
-   "_evidence": {
-    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; AI chip에 대한 고객사 의존도 심화",
-    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; 소프트웨어 부문 약세와 AI칩 가이던스 미상향이 실적 불만족 유발",
-    "capalloc": "Broadcom Inc. (AVGO) Q3 Earnings and Revenues Beat Estimates; 실적 비트 기반 배당/자사주 프로그램 유지 추정",
-    "owner_earnings": "Broadcom (AVGO) Eyes Huge AI Revenue Growth, Is The Stock Getting Too Pricey; AI 성장성 vs 현재 밸류에이션 갭 심화"
-   }
+   ]
   },
   "SPCX": {
    "as_of": "2026-10-28",
@@ -968,7 +966,11 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "Q3 earnings miss로 dealmaking·bond trading 모멘텀 약화, 사이클 변동성 반영 필요"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -986,7 +988,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1004,7 +1006,29 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026Q3"
+   },
+   "notes": "시클리컬 금융기관으로서 현재 수익 사이클 하강국면; JPM Coin 등 구조적 성장 옵션 있으나 멀티플 할인 정당화",
+   "_evidence": {
+    "franchise": "Google, Anthropic IPO 리드역할 등 투자은행 지위; core banking 수요 항상성",
+    "risk5": "Q3 earnings miss 및 dealmaking 모멘텀 감소로 business_certainty △; 사이클 상승 시점 불명확",
+    "capalloc": "Q3에도 현금흐름 양수 유지, buyback 진행",
+    "owner_earnings": "advisory assets $1.4B 손실, bond trading 둔화로 reported earnings 신뢰도 저하"
+   }
   },
   "WMT": {
    "as_of": "2026-10-28",
@@ -1171,7 +1195,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": ""
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1183,7 +1212,31 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "HBM4 대량생산 진입으로 견인되는 AI 수요 사이클 중 고마진 실현 중이나, 반도체 산업의 구조적 과잉공급 리스크와 메모리 가격 규제 불가능성이 장기 프랜차이즈 가치를 제약.",
+   "_evidence": {
+    "franchise": "AI 수요 급증으로 HBM4 독점적 공급 지위(Google, Nvidia 고객), 10년치 캐펙스 투자 없이는 경쟁 지위 유지 불가능",
+    "risk5": "Q2 어닝 미스 후 주가 9.6% 하락, 메모리 산업 구조적 베어마켓 진입(Micron, Samsung, SK Hynix 동반 낙폭), 가격 규제 회피 불가능한 시클리컬 산업 특성",
+    "capalloc": "$26.5B 나스닥 상장 조달, 276% YoY 수익 성장 중 현금 창출 증명, ADR 공개가 $149에서 $170 개장으로 자본 강화 달성",
+    "owner_earnings": "Q2 운영마진 76% 달성으로 현재 단기 소유자 이익 최대화 중이나, 사이클 정점 판단 어려움"
+   }
   },
   "ASML": {
    "as_of": "2026-10-28",
@@ -1529,7 +1582,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "실적 베트 달성하나 주가 변동성 크고 밸류에이션 정당성 논쟁 중"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1541,7 +1599,28 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중"
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2027Q1"
+   },
+   "notes": "로열티 통행료 모델의 우수성 vs 천정 근처 밸류에이션의 불일치; AI 수요 이야기에 의존한 성장 시나리오",
+   "_evidence": {
+    "franchise": "칩 설계의 로열티 통행료—유형은 최상급이나 시장가가 정당선 위에서 사는 게 일상인 종목",
+    "risk5": "Arm shares dive after hours despite forecasts above estimates; Arm Holdings Has Fallen 28% in the Past Month—불확실한 실적 반응 패턴",
+    "capalloc": "Record Revenue and AI Growth; Arm Holdings (ARM) Soars 17% on Ambitious $2B Revenue Goal",
+    "owner_earnings": "Arm Holdings beats Q1 estimates, but shares tumble—이익 달성과 주가 반응의 괴리"
+   }
   },
   "SNDK": {
    "as_of": "2026-10-28",
@@ -1831,7 +1910,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 820.1
+    "value": 833.49
    },
    "eps_status": null,
    "roe_tangible": 0.6902,
@@ -1864,7 +1943,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 279.23
+    "value": 270.91
    },
    "eps_status": null,
    "roe_tangible": 0.2951,
@@ -1897,7 +1976,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 686.99
+    "value": 630.41
    },
    "eps_status": null,
    "roe_tangible": 0.4807,
@@ -1978,5 +2057,5 @@
    ]
   }
  ],
- "scout_label": "2026-10-28 11:37"
+ "scout_label": "2026-10-28 19:03"
 }

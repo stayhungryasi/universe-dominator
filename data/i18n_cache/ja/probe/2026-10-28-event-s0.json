@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s0",
+ "lang": "ja",
+ "src_hash": "05923f5d264e",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **作成基準日**: 2026-10-28 (KST) · 回次 id `2026-10-28-event` · モード **event**(増分) · 直前回次 `2026-10-27-event-r2`(6回次) · 直前の月次回次 `2026-10` (出典: ワークフロー注入の回次情報 · `_probe/context.json`)\n- **理由**: ニュース監視官が 2026-10-28 の \"Amazon's $11.5 billion Globalstar deal gets FCC approval\"(advanced television · businessline · fierce network) と \"Amazon's Leo Gets FCC Clearance To Buy Globalstar\"(citinewsroom · finimize など) の報道2件を検知し、**T4(Amazon Leo 米国消費者向け商用開始の地域・料金)** に結び付けて起動 — 報道は**判断の根拠ではなく確認の対象**である (出典: `data/spacex_watch.json` due `news:amazon-globalstar-fcc:2026-10-28` · `news:amazon-leo-globalstar-fcc:2026-10-28`, 2026-10-28 11:39 KST)\n- **基準株価**: $148.58 — 2026-10-27(火) 終値、出来高 9,586万株。直前回次の基準価格 $146.90(10/26) 比 +1.1%(算式: 148.58 ÷ 146.90 − 1) ([stockanalysis 日次履歴](https://stockanalysis.com/stocks/spcx/history/), 2026-10-28 閲覧: 最新行 10/27)\n- **範囲**: この出来事が関わるものだけ — トリガー **T4**(判定: 該当なし)、競争タイムラインの **D2D(衛星-携帯電話)軸**、マイルストーン **A-2028-1**(Starlink Mobile 別途開示)の背景事実、トリガー **T8** の新設。同じ取材で明らかになった **SpaceX 自身の FCC D2D 認可(10/6, DA 26-1078)** も併せて記録する。軸 B~D・確率・適正価値の再算定は行わない (出典: `prompts/monthly_run.md` · `state.triggers_next_12m`)。\n\n> **結論から**: 報道は**事実である** — FCC 宇宙局(Space Bureau)・技術局・国際局が 2026-10-27 に **DA 26-1160**(GN Docket 26-134) で Globalstar の免許・認可を Amazon に移転する申請を**承認**した(採択・公開ともに 10/27、条件: 1999/2004 LoA の遵守維持、Yippy の反対請願を棄却)。しかし、これは **T4 が問う出来事ではない。** T4 は「Amazon Leo 米国**消費者向け商用開始の地域・料金**」であり、今回の承認は **D2D(衛星-携帯電話)スペクトラム約 25MHz と Globalstar 衛星・Apple 契約の取得許可**である — 消費者向けブロードバンドの料金・地域は**依然として未公表**(leo.amazon.com 10/28 確認、価格なし)。したがって **T4 の判定変化なし · ルール R5 不発動 · マイルストーン29件の判定変化なし · 確率 25/50/25 · 価値 $32 変化なし**。変わったのは ① 競争タイムラインに **D2D 軸ができた** — Amazon は Globalstar(衛星約 24基・Apple 20% 出資、2027年クロージング予定)で参入し、2028年から独自の D2D 5,105基を打ち上げる ② 同じ月に **SpaceX も FCC D2D 認可(15,000基、VLEO、DA 26-1078、10/6)** を受けたが、**測定層も10月号もこれを捉えられなかった** — 2GHz MSS の運用は EchoStar 第2段階のクロージング(2027-11-30 予定)以降に縛られているという条件が A-2028-1 の背景となる ③ トリガー **T8(D2D 競争)** を新設、T4 は Vulcan LV-01 が11月にずれ込んだ事実を反映して想定される進み方を修正した (出典: 下記1~6節)。\n\n---\n"
+ }
+}

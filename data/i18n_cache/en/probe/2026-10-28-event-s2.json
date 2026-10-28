@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s2",
+ "lang": "en",
+ "src_hash": "190ff8642033",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. Is This Event T4? — No",
+  "md": "\n| Item | What T4 asks | This event | Verdict |\n|---|---|---|---|\n| Target service | Amazon Leo **US consumer broadband** (home antenna · monthly fee) | Approval of acquisition of **D2D (satellite-to-phone)** spectrum, satellites and Apple contract | Different service |\n| Check items (`check`) | leo.amazon.com pricing and region listing · Vulcan LV-01 result · Starlink US residential pricing | All three **unchanged** — on 10/28 leo.amazon.com shows no price, region or start date; LV-01 not launched | Not met |\n| Rule R5 | \"Kuiper has not launched a US consumer commercial plan by end of 2027 → Base +5 / Bear −5\" | Plan **still unlaunched** — judgment year is end of 2027 | Pending |\n| Where to record | — | Competitive timeline **D2D axis** (1-7) · background for milestone A-2028-1 · new T8 | Reflected in this issue |\n\n(Source: `state.triggers_next_12m[T4]` · [leo.amazon.com](https://leo.amazon.com/) accessed 2026-10-28 · `state.probability_adjustment_rules[R5]`)\n\n**Note on the news watcher's classification**: The watcher linked this report to T4 under the name \"Amazon Leo\". T4's heading is the start of commercial consumer service and pricing, and approval of a D2D acquisition does not fall within that definition — **the event is real, but the trigger link was loose.** Classification rules (query terms and trigger mapping) are the measurement layer's responsibility, so they are listed here only as an open item. The judgment layer will **set up T8 separately** to create a place for the watcher to attach D2D events, so that they do not come to T4 again (source: `data/spacex_watch.json` due item `trigger_id: \"T4\"` · Section 6).\n\n---\n"
+ }
+}

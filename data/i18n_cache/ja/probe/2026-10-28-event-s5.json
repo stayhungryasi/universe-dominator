@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s5",
+ "lang": "ja",
+ "src_hash": "20ac1aff7531",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. 確率・マイルストーン・価値 — 変更なし、価格のみ更新",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変更なし**。R5(Kuiper 消費者向け料金プラン 2027年末)は判定年が未到来で、他の規則はこの事案と無関係。規則外の調整は禁止 (出典: `state.probability_adjustment_rules` · `prompts/monthly_run.md` 2項)。\n- **マイルストーン**: 29件の判定に変化なし(進行 23 · 未判定 5 · 未達 1)。A-2028-1 は3節の理由により進行を維持 (出典: `state.scorecard`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定しない**(event モード)。価格依存の算術値のみ更新: 時価総額 $2,018十億(算式: 148.58 × 135.81億株)、バンド中心比 −56%(算式: 66 ÷ 148.58 − 1)、AI 内在価値 $1,476十億(算式: 2,018 − Connectivity 350 − Space 141 − 純現金 51)、年換算 AI 売上倍率 49(算式: 1,476 ÷ 30.24) · 契約 ARR 倍率 57(算式: 1,476 ÷ 26) · 年換算調整後 EBITDA 倍率 75(算式: 1,476 ÷ 19.81) (出典: `state.valuation` · [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-10-28)。\n- **無リスク金利メモ**: 米国10年債 5.00%(2026-10-26, FRED, `data/latest.json meta.macro.ust10`) — 10/23 の値と同じ、次回の月次回の入力 (出典: `data/latest.json`)。\n\n---\n"
+ }
+}

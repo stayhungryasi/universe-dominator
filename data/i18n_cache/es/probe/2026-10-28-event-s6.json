@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s6",
+ "lang": "es",
+ "src_hash": "a5f0880544be",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Disparadores",
+  "md": "\n- **Revisión de T4 (registro de pronóstico errado)**: la edición del 23/10 fijó \"Vulcan LV-01 29/10 + un mes = 01/12\", pero LV-01 se retrasó a **noviembre (LL2 en escala mensual, NET 30/11)** y Ariane 64 LE-04 quedó fijado antes, el **23/11** (New Glenn LN-01 es de escala anual, 2026). Como la premisa (29/10) era errónea, se corrige el método de pronóstico: la declaración de Amazon de \"servicio inicial dentro de 2026\" (Light Reading 12/10 · la FCC a Reuters: \"preparando el servicio comercial para fin de año\") es el límite superior, por lo que se **mantiene el punto de control del 01/12 (resultados de LV-01 y LE-04 + publicación de tarifas)** y se añade un **segundo punto de control el 04-01-2027** (fórmula: vencimiento de la declaración el 31/12 + día hábil estadounidense + 1 día KST). Las tarifas y regiones no estaban publicadas al 28/10 (fuente: `data/spacex_watch.json launches.competitor_next`, 28-10-2026 11:39 KST · [Light Reading 10/12](https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps) · [Reuters 10/27](https://ca.investing.com/news/stock-market-news/us-agency-approves-amazon-leos-115-billion-acquisition-of-globalstar-4906870) · [leo.amazon.com](https://leo.amazon.com/)).\n- **T8 nuevo — \"Puntos de control regulatorios y de transacciones de Amazon Leo y SpaceX D2D (satélite-teléfono)\"**: ① Plazo para solicitar reconsideración de DA 26-1160 — adopción 27/10 + 30 días = 26/11 → punto de control **27-11-2026 (KST)**: si hay o no solicitud de reconsideración (Yippy) ② Plazo de aceptación condicional de DA 26-1078 — publicación 6/10 + 30 días = 5/11 (silencio = aceptación), fianza 4/11 → verificar presentación en ICFS ③ Si se concede o no la solicitud de Amazon D2D de 5.105 satélites ④ 8-K de cierre de Globalstar (Item 2.01, previsto para 2027) · adquisición por Apple del 20 % de participación ⑤ Cierre de la fase 2 de EchoStar (en torno al 30-11-2027) → notificación del inicio de operación de SpaceX en 2GHz MSS ⑥ Reunión pública de la FCC del 29/10 — resultado de la votación sobre la propuesta de abrir unos 500 MHz adicionales para D2D y la propuesta de subasta de 1675–95/2020–2025 MHz. No se antepone 'adquisiciones·contratos·resultados·Starship' al nombre (regla de clasificación por tipo de la capa de medición) (fuente: tablas de las secciones 1 y 3 · [advanced-television 10/28](https://www.advanced-television.com/2026/10/28/fcc-oks-amazon-leos-globalstar-acquisition/) · `scripts/spacex_watch.py trigger_kind`).\n- **T5·T7**: sin cambios — punto de control restante de T5 el 07-01-2027, T7 el 19/11 (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s6",
+ "lang": "ja",
+ "src_hash": "a5f0880544be",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. トリガー",
+  "md": "\n- **T4 点検(予想外れの記録)**: 10/23 の回次は「Vulcan LV-01 10/29 + 1か月 = 12/01」と見ていたが、LV-01 は **11月(LL2 の月単位、NET 11/30)** にずれ込み、Ariane 64 LE-04 が **11/23** に先に設定されている(New Glenn LN-01 は 2026 年の年単位)。前提(10/29)が誤っていたため、予想の方法を改める — Amazon の「2026年内の初期サービス」という公言(Light Reading 10/12 · FCC が Reuters に「年末までに商用サービスを準備中」)が上限であるため、**確認点 12/01 を維持(LV-01・LE-04 の結果 + 料金掲載)** し、**2次確認点 2027-01-04**(算式: 12/31 の公言期限満了 + 米国営業日 + KST 1日)を追加する。料金・地域は 10/28 時点で未公表 (出典: `data/spacex_watch.json launches.competitor_next`、2026-10-28 11:39 KST · [Light Reading 10/12](https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps) · [Reuters 10/27](https://ca.investing.com/news/stock-market-news/us-agency-approves-amazon-leos-115-billion-acquisition-of-globalstar-4906870) · [leo.amazon.com](https://leo.amazon.com/))。\n- **T8 新設 — 「Amazon Leo・SpaceX D2D(衛星-携帯電話)規制・取引の確認点」**: ① DA 26-1160 の再審請求期限 — 採択 10/27 + 30日 = 11/26 → 確認点 **2026-11-27(KST)**: 再審請求の有無(Yippy) ② DA 26-1078 の条件付き受諾期限 — 公開 10/6 + 30日 = 11/5(沈黙 = 受諾)、保証金 11/4 → ICFS 提出の確認 ③ Amazon D2D 5,105基の申請の許可可否 ④ Globalstar 完了の 8-K(Item 2.01、2027 年予定) · Apple の 20% 持分取得 ⑤ EchoStar 第2段階の完了(2027-11-30 前後) → SpaceX 2GHz MSS 運用開始の通知 ⑥ FCC 10/29 公開会議 — D2D 向けに約 500MHz を追加開放する提案・1675–95/2020–2025MHz のオークション提案の採決結果。名称の冒頭に「調達・契約・実績・Starship」を置かない(測定層の種類分類ルール) (出典: 1節・3節の表 · [advanced-television 10/28](https://www.advanced-television.com/2026/10/28/fcc-oks-amazon-leos-globalstar-acquisition/) · `scripts/spacex_watch.py trigger_kind`)。\n- **T5・T7**: 変化なし — T5 の残る確認点 2027-01-07、T7 11/19 (出典: `state.triggers_next_12m`)。\n\n---\n"
+ }
+}

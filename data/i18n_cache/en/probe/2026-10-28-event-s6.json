@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s6",
+ "lang": "en",
+ "src_hash": "a5f0880544be",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Triggers",
+  "md": "\n- **T4 check (record of a missed forecast)**: The 10/23 edition set \"Vulcan LV-01 10/29 + one month = 12/01\", but LV-01 has slipped to **November (LL2 monthly granularity, NET 11/30)**, and Ariane 64 LE-04 is now scheduled earlier, on **11/23** (New Glenn LN-01 is listed only at the 2026 annual level). Because the premise (10/29) was wrong, the forecasting method is revised. Amazon's public statement of \"initial service within 2026\" (Light Reading 10/12 · the FCC told Reuters \"preparing for commercial service by year-end\") is the upper bound, so a **second checkpoint of 2027-01-04** (formula: 12/31 statement expiry + one US business day + 1 day KST) is added to the **12/01 checkpoint, which is kept (LV-01 and LE-04 results + pricing publication)**. Pricing and regions are unannounced as of 10/28 (Source: `data/spacex_watch.json launches.competitor_next`, 2026-10-28 11:39 KST · [Light Reading 10/12](https://lightreading.com/satellite/amazon-leo-still-tracking-for-2026-service-launch-as-satellite-production-ramps) · [Reuters 10/27](https://ca.investing.com/news/stock-market-news/us-agency-approves-amazon-leos-115-billion-acquisition-of-globalstar-4906870) · [leo.amazon.com](https://leo.amazon.com/)).\n- **T8 new: \"Amazon Leo · SpaceX D2D (satellite-to-phone) regulatory and deal checkpoints\"**: ① Deadline for petitions for reconsideration of DA 26-1160: adopted 10/27 + 30 days = 11/26 → checkpoint **2026-11-27 (KST)**: whether a petition is filed (Yippy) ② Deadline for conditional acceptance of DA 26-1078: published 10/6 + 30 days = 11/5 (silence = acceptance), deposit 11/4 → confirm ICFS filing ③ Whether Amazon's D2D application for 5,105 satellites is granted ④ Globalstar closing 8-K (Item 2.01, expected 2027) · Apple's acquisition of a 20% stake ⑤ EchoStar phase 2 closing (around 2027-11-30) → notice of SpaceX 2GHz MSS operation start ⑥ FCC 10/29 open meeting: vote results on the proposal to open about 500MHz more for D2D and the proposal to auction 1675–95/2020–2025MHz. The name prefix does not use 'procurement, contract, earnings, Starship' (measurement-layer type classification rule) (Source: Sections 1 and 3 tables · [advanced-television 10/28](https://www.advanced-television.com/2026/10/28/fcc-oks-amazon-leos-globalstar-acquisition/) · `scripts/spacex_watch.py trigger_kind`).\n- **T5 · T7**: No change. T5 remaining checkpoint 2027-01-07, T7 11/19 (Source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

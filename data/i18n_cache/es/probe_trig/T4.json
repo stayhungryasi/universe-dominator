@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T4",
  "lang": "es",
- "src_hash": "02e9a4eb4216",
+ "src_hash": "69786ab557c3",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 1,
+ "at": "2026-10-28 19:13",
+ "attempts": 2,
  "status": "ok",
  "fields": {
-  "name": "Amazon Leo — Inicio comercial de consumo estadounidense: Región y Tarifa",
-  "expected": "2026-12-01 (estimado: Vulcan LV-01 10/29 + un mes — punto de verificación de promesa pública de Amazon 'servicio inicial en 2026') ~ 2027-1H",
-  "check": "Publicación de página oficial de tarifa y región en leo.amazon.com · Resultado Vulcan LV-01 (40 satélites) · Tarifa oficial residencial de Starlink en EE.UU. (denominador comparativo)",
-  "note": "Verificación 2026-10-23: Tarifa y región no anunciadas. Lanzamientos 396 satélites (14 vuelos)·4 desechados, 0 lanzamientos desde 7/2. Satélite número 1.000 completado (10/8). Hito FCC del 50% es exención condicional 2026-06-05 (DA 26-553). Solo beta empresarial operado (JetBlue·Delta·AT&T)",
-  "prev": "T4 — esperado '2026-4Q ~ 2027-1H' → sin evento el 2026-10-23 en fecha de inicio de intervalo. Intervalo esperado se lee como fecha de inicio en capa de medición — cambiado a 'evento anterior + retraso de verificación' en una sola fecha"
+  "name": "Amazon Leo inicio comercial consumidor EE.UU. región·tarifa",
+  "expected": "2026-12-01(mantener punto confirmación: Ariane 64 LE-04 11/23 · Vulcan LV-01 noviembre (LL2 unidad mensual) resultado + publicación tarifa — 2º punto confirmación 2027-01-04 = declaración Amazon 'servicio inicial dentro 2026' vencimiento 12/31 + día hábil EE.UU. + 1 día KST) ~ 2027-1H",
+  "check": "leo.amazon.com página oficial tarifa·región divulgación · Ariane 64 LE-04 (11/23)·Vulcan LV-01 (noviembre) resultado · Starlink tarifa oficial residencial EE.UU. (denominador comparación) · evento D2D (satélite-teléfono móvil) es T8 — T4 solo banda ancha consumidor",
+  "note": "2026-10-28 verificación: tarifa·región no publicadas (leo.amazon.com sin precio·fecha inicio). siguiente lanzamiento LL2 — Ariane 64 LE-04 2026-11-23 (unidad día) · Vulcan LV-01 2026-11 (unidad mes, NET 11/30) · New Glenn LN-01 2026 (unidad año). FCC a Reuters 'Amazon preparando inicio servicio comercial hasta fin 2026'. aprobación FCC adquisición Globalstar (DA 26-1160, 10/27) es autorización adquisición D2D — no evento T4, separado T8 / 2026-10-23 verificación: tarifa·región no publicadas. lanzamientos 396 satélites (14 misiones)·4 retirados, 0 misiones desde 7/2. satélite 1.000 completado (10/8). hito 50% FCC es exención condicional 2026-06-05 (DA 26-553). solo beta empresarial (JetBlue·Delta·AT&T) operando",
+  "prev": "T4 — expectativa '2026-4Q ~ 2027-1H' → sin evento en fecha inicio intervalo 2026-10-23. expectativa intervalo se lee desde capa medición como fecha inicio — cambiar por 'evento precedente + confirmación retrasada' / 2026-10-28: premisa 'Vulcan LV-01 10/29' de ronda 10/23 incorrecta (LL2 noviembre, unidad mes) — mantener punto confirmación 12/01 pero cambiar fundamento de 'lanzamiento + un mes' a 'resultado LE-04·LV-01 + publicación tarifa', añadir 2º punto confirmación 2027-01-04 por criterio vencimiento declaración (12/31). monitor noticias conectó evento D2D (aprobación Globalstar) como T4 — fue evento diferente a definición trigger, ronda suscripción abierta."
  }
 }

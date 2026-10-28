@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T4",
  "lang": "en",
- "src_hash": "02e9a4eb4216",
+ "src_hash": "69786ab557c3",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-10-28 19:13",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Amazon Leo US Consumer Commercial Launch Region & Pricing",
-  "expected": "2026-12-01 (estimated: Vulcan LV-01 10/29 + one month — Amazon 'service within 2026' commitment verification point) ~ 2027-1H",
-  "check": "leo.amazon.com official pricing·region page posting · Vulcan LV-01 result (40 units) · Starlink US residential official pricing (comparison denominator)",
-  "note": "2026-10-23 check: pricing·region not announced. Launches 396 units (14 flights)·4 units deorbited, 0 launches since 7/2. 1,000th satellite completed (10/8). FCC 50% milestone conditional waiver 2026-06-05 (DA 26-553). Enterprise beta (JetBlue·Delta·AT&T) only operational",
-  "prev": "T4 — expected '2026-4Q ~ 2027-1H' → 2026-10-23 interval start date triggered without event. Interval forecast read as start date in measurement layer — changed 'leading event + confirmation delay' to single date"
+  "name": "Amazon Leo U.S. Consumer Commercial Launch Region·Pricing",
+  "expected": "2026-12-01 (checkpoints maintained: Ariane 64 LE-04 11/23 · Vulcan LV-01 November (LL2 monthly unit) result + pricing posted — 2nd checkpoint 2027-01-04 = Amazon's 'initial service by end of 2026' commitment expiration 12/31 + U.S. business day + KST 1 day) ~ 2027-1H",
+  "check": "leo.amazon.com official pricing·region page posting status · Ariane 64 LE-04 (11/23)·Vulcan LV-01 (November) result · Starlink U.S. residential official pricing (comparison baseline) · D2D (satellite-to-phone) events route to T8 — T4 is consumer broadband only",
+  "note": "2026-10-28 check: Pricing·region not announced (leo.amazon.com no price·launch date). Next launch after LL2 — Ariane 64 LE-04 2026-11-23 (day unit) · Vulcan LV-01 2026-11 (month unit, NET 11/30) · New Glenn LN-01 2026 (year unit). FCC tells Reuters 'Amazon preparing commercial service launch by end of 2026'. Globalstar acquisition FCC approval (DA 26-1160, 10/27) is D2D acquisition authorization — not T4 case, separated to T8 / 2026-10-23 check: Pricing·region not announced. Launches 396 units (14 missions)·4 units disposed, 0 launches since 7/2. 1,000th satellite completed (10/8). FCC 50% milestone conditional waiver 2026-06-05 (DA 26-553). Enterprise beta (JetBlue·Delta·AT&T) operations only",
+  "prev": "T4 — predicted '2026-4Q ~ 2027-1H' → no event at interval start on 2026-10-23. Interval prediction reads as start date in measurement layer — converted to one date 'leading event + verification delay' / 2026-10-28: prior cycle's premise 'Vulcan LV-01 10/29' was incorrect (LL2 November, month unit) — checkpoint 12/01 maintained but rationale changed from 'launch + one month' to 'LE-04·LV-01 result + pricing posted', and 2nd checkpoint 2027-01-04 added based on commitment expiration (12/31). News monitor connected Globalstar approval (D2D event) to T4, opening event cycle — was different event from trigger definition"
  }
 }

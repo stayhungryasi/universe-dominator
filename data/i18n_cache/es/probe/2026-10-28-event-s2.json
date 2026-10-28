@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-10-28-event-s2",
+ "lang": "es",
+ "src_hash": "190ff8642033",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-10-28 19:13",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. ¿Es este caso T4? — No",
+  "md": "\n| Elemento | Lo que pregunta T4 | Este caso | Veredicto |\n|---|---|---|---|\n| Servicio objetivo | Amazon Leo **banda ancha de consumo en EE. UU.** (antena doméstica·tarifa mensual) | Autorización de adquisición de espectro·satélites·contrato con Apple **D2D (satélite-móvil)** | Servicio distinto |\n| Elementos de verificación (`check`) | tarifa y regiones publicadas en leo.amazon.com · resultado de Vulcan LV-01 · tarifa residencial de Starlink en EE. UU. | Los tres **sin cambios** — el 28/10 leo.amazon.com no muestra precio, región ni fecha de inicio, LV-01 sin lanzar | No cumplido |\n| Regla R5 | \"Si Kuiper no lanza una tarifa comercial de consumo en EE. UU. a finales de 2027 → base +5 / bajista −5\" | Tarifa **sin lanzar** — año de evaluación: finales de 2027 | Se mantiene en espera |\n| Dónde registrarlo | — | **Eje D2D** del calendario competitivo (1-7) · contexto hito A-2028-1 · nuevo T8 | Reflejado en esta edición |\n\n(fuente: `state.triggers_next_12m[T4]` · [leo.amazon.com](https://leo.amazon.com/) consultado el 2026-10-28 · `state.probability_adjustment_rules[R5]`)\n\n**Registro sobre la clasificación del vigilante de noticias**: el vigilante vinculó esta noticia a T4 por el nombre \"Amazon Leo\". El encabezado de T4 es el inicio comercial y la tarifa de consumo, y la autorización de adquisición D2D no entra en esa definición — **el caso es real, pero el vínculo con el disparador fue laxo.** Las reglas de clasificación (términos de consulta·mapeo de disparadores) corresponden a la capa de medición, por lo que aquí solo se registran como pendiente. La capa de juicio crea **T8 por separado** para que los casos D2D no vuelvan a T4 y el vigilante tenga dónde vincularlos (fuente: elemento due de `data/spacex_watch.json` `trigger_id: \"T4\"` · sección 6).\n\n---\n"
+ }
+}
