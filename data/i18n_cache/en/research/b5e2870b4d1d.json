@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "b5e2870b4d1d",
  "lang": "en",
- "src_hash": "22c4eeba9470",
+ "src_hash": "439ccf4bcd4c",
  "model": "claude-haiku-4-5",
- "at": "2026-10-28 00:44",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "SpaceX recorded Q3 revenue of $14.6 billion, beating expectations by $1.7 billion. JPMorgan Chase more than doubled its target price from $240 to $500, implying 63% upside from current valuation of approximately $2 trillion.",
-  "summary_ko.1": "Citigroup initiated '90-day upside catalyst watch' on SpaceX with a target price of $240. CEO Musk projects adding over 10GW of AI computing capacity by 2027 and achieving annual recurring revenue of $500B–$1T."
- }
+ "at": "2026-10-28 11:48",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[3§summary_ko.1] 숫자: 원문에 없는 숫자 33.0",
+  "[3§summary_ko.1] 숫자: 원문의 숫자가 빠짐 330"
+ ]
 }

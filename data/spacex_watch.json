@@ -2,7 +2,7 @@
  "form4_30d": 1,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-10-28T00:36+09:00",
+  "fetched_at": "2026-10-28T11:39+09:00",
   "year": 2026,
   "year_count": 123,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-10-28T00:37+09:00",
+  "checked_at": "2026-10-28T11:39+09:00",
   "last_run": {
    "conclusion": "failure",
    "created_at": "2026-10-27T10:29:54Z",
@@ -1116,7 +1116,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-28T00:36+09:00",
+ "generated_at": "2026-10-28T11:39+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1182,16 +1182,56 @@
    "detected_at": "2026-10-27",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:amazon-globalstar-fcc:2026-10-28",
+   "trigger_id": "T4",
+   "name": "Amazon의 115억 달러 규모 Globalstar 인수가 FCC 승인을 받았다.",
+   "reason": "보도 감지(advanced television·businessline·fierce network)",
+   "event": "Amazon’s $11.5 billion Globalstar deal gets FCC approval",
+   "event_date": "2026-10-28",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQNEZ6XzJNdldSREgwTVB6NmJOdk9UU0NjaUpVVnh5amI0MVZyaXMyYkdkUUNtMG82WHdRVzd6b0Z3ODVHSTlFLWl0SFlNZWpvTllJVTFSSzVzYjJvamVHVkc3Q0FrakxfaFlfRXRrVk5CbjlwLXlKcFdaR3dHYUs0MlAwV3lWejdMY1M1OGFmRG93SDhWQ09BTDFiYmozV1NLTDlTV2NzRXdnSXhzQW5QOTMtOWJXY0JyaGpRVS1kOTM0NUtHS1FCSkRBd3JQZXVweUJZRHJQQlJITUo2alpDcUFtT3VoZWo3R1FJ0gHyAUFVX3lxTE1sbjkzMWFWV05kVUNQbGQwMmFySHgtMFczOXdkdHk4MHVpcC1EUW1obnlpams1NG1VQVl1YUFtelFBam9hRnNGSHdlSzRIWFl6UzZaMXVlcHpEcHExMlpabDctU3NDY3NTQ2hrSG5icUtzYTlqaDgzN29vQjlDN3Y2Z2ZxbW0xRnZNRmFxR1NjSnUydUF3ZWJaY1FKMXdIcno5SmtRWG1wWGZ1VUg3S2xBdjA3dVVvc251UF9Hd3BoVEpHZUFaSmtib0xBSVdiendqQm1lNmFvTEJlSnFSOHNUdUQtQ2p2dEtCbHN4VEdTVFVn?oc=5",
+   "detected_at": "2026-10-28",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:amazon-leo-globalstar-fcc:2026-10-28",
+   "trigger_id": null,
+   "name": "Amazon Leo가 Globalstar 인수에 대해 FCC의 승인을 받았다.",
+   "reason": "보도 감지(citinewsroom.com·finimize·latest news from azerbaijan)",
+   "event": "Amazon’s Leo Gets FCC Clearance To Buy Globalstar",
+   "event_date": "2026-10-28",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQaHhKWENvbGV4VDRfU3JnWnRQa0ZQUzBCY3V3dUpGRDctYzZaejRWYVpGTlF5QnNtMkE1S1Zrakd4U0NxaVlOQnVBX0VRX3BQdVREeEVndnpZVktuSS03WS1YNXdEYzJiYy1nZDFBX1NKWUFDVTJNTUQwVG5va3AzVmxhQQ?oc=5",
+   "detected_at": "2026-10-28",
+   "grade": "major",
+   "source": "news"
   }
  ],
- "dispatch_queue": [],
+ "dispatch_queue": [
+  {
+   "key": "qn:2026-10-28:1139",
+   "run_id": "40620507845",
+   "queued_at": "2026-10-28T11:39+09:00",
+   "state": "queued",
+   "trigger_id": "T4",
+   "name": "Amazon의 115억 달러 규모 Globalstar 인수가 FCC 승인을 받았다. · Amazon Leo가 Globalstar 인수에 대해 FCC의 승인을 받았다.",
+   "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQNEZ6XzJNdldSREgwTVB6NmJOdk9UU0NjaUpVVnh5amI0MVZyaXMyYkdkUUNtMG82WHdRVzd6b0Z3ODVHSTlFLWl0SFlNZWpvTllJVTFSSzVzYjJvamVHVkc3Q0FrakxfaFlfRXRrVk5CbjlwLXlKcFdaR3dHYUs0MlAwV3lWejdMY1M1OGFmRG93SDhWQ09BTDFiYmozV1NLTDlTV2NzRXdnSXhzQW5QOTMtOWJXY0JyaGpRVS1kOTM0NUtHS1FCSkRBd3JQZXVweUJZRHJQQlJITUo2alpDcUFtT3VoZWo3R1FJ0gHyAUFVX3lxTE1sbjkzMWFWV05kVUNQbGQwMmFySHgtMFczOXdkdHk4MHVpcC1EUW1obnlpams1NG1VQVl1YUFtelFBam9hRnNGSHdlSzRIWFl6UzZaMXVlcHpEcHExMlpabDctU3NDY3NTQ2hrSG5icUtzYTlqaDgzN29vQjlDN3Y2Z2ZxbW0xRnZNRmFxR1NjSnUydUF3ZWJaY1FKMXdIcno5SmtRWG1wWGZ1VUg3S2xBdjA3dVVvc251UF9Hd3BoVEpHZUFaSmtib0xBSVdiendqQm1lNmFvTEJlSnFSOHNUdUQtQ2p2dEtCbHN4VEdTVFVn?oc=5",
+    "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNU2pZY3J4T2Fvd0hub09FM2RkaHJQc21pOWRWal80cHpZMXN2RS1La2M2WmpVY1hnbzlnUHNBZG5rQ3hWTFZPdmh0cmFPMHVHV0ttRlhzXzZ2SVdFOTd5ZU42YWFTblZtQnRPQUZNcENPSWJUeEF2TE5JRFFXaUdCRlZmLUFCT1JhT0wxWGpKNlZXYnowUG52dlBqc1JYS2EwcE1PS3gwVzhhYWZ4RkJURTh0LWl6SWxEOVIzT3RXbG1EZw?oc=5",
+    "https://news.google.com/rss/articles/CBMigwFBVV95cUxQaHhKWENvbGV4VDRfU3JnWnRQa0ZQUzBCY3V3dUpGRDctYzZaejRWYVpGTlF5QnNtMkE1S1Zrakd4U0NxaVlOQnVBX0VRX3BQdVREeEVndnpZVktuSS03WS1YNXdEYzJiYy1nZDFBX1NKWUFDVTJNTUQwVG5va3AzVmxhQQ?oc=5",
+    "https://news.google.com/rss/articles/CBMimgFBVV95cUxQMlBTX0MzM2lFU0VxUWVySUVEQUprLTZZWmRScDBTY0hPdUlMaVNudzJOVFBKM2phMEdyYWNmanpFcjJhaC00TkdmY1p6ZHhJOHM3MmphMHFpT1BmRXZKU0lvdkNWajFSQi1hY1d2b240eE9PRjRYZmlxVDhiVWh3WUU2aUllcnJvRFZHNm5lbnRxT3lsV1hsQUR3?oc=5"
+   ]
+  }
+ ],
  "hourly": {
-  "checked_at": "2026-10-28T00:37+09:00",
-  "last_success_at": "2026-10-27T15:30:50Z",
-  "last_run_at": "2026-10-27T15:30:21Z",
+  "checked_at": "2026-10-28T11:39+09:00",
+  "last_success_at": "2026-10-28T02:30:50Z",
+  "last_run_at": "2026-10-28T02:30:19Z",
   "last_conclusion": "success",
-  "runs_24h": 21,
-  "ok_24h": 21
+  "runs_24h": 50,
+  "ok_24h": 50
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",
