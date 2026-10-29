@@ -1,41 +1,42 @@
 {
- "run_id": "2026-10-28-event",
- "checked": 24,
- "match": 24,
- "rounding": 0,
- "mismatch": [],
- "unverifiable": [],
- "verified_at": "2026-10-28T12:05+09:00",
- "detail": [
-  {"claim": "기준 주가 — 2026-10-27 종가(USD)", "value": 148.58, "source_value": 148.58, "result": "match", "report": "머리글·5절·부록 148.58 동일"},
-  {"claim": "2026-10-27 거래량(주)", "value": 95860531, "source_value": 95860531, "result": "match", "report": "머리글·부록 '9,586만주' = 95,860,531 반올림 표기"},
-  {"claim": "직전 회차 기준가 2026-10-26 종가(USD)", "value": 146.9, "source_value": 146.90, "result": "match", "report": "머리글 +1.1% = 148.58/146.90−1 = 1.14% 재현"},
-  {"claim": "FCC DA 26-1160 채택·공개일", "value": "2026-10-27", "source_value": "adopted 2026-10-27 / released 2026-10-27", "result": "match"},
-  {"claim": "거래 가치 — DA 26-1160(USD 십억)", "value": 11.57, "source_value": 11.57, "result": "match", "report": "원문 ¶4 '$11.57 billion'"},
-  {"claim": "Apple 의 Globalstar 지분(%) — DA 26-1160", "value": 20, "source_value": 20, "result": "match", "report": "원문 ¶18"},
-  {"claim": "DA 26-1160 재심 청구 기한(일)", "value": 30, "source_value": 30, "result": "match", "report": "원문 ¶32 'within thirty days of the date of adoption'"},
-  {"claim": "Globalstar 주당 현금 대가(USD)", "value": 90.0, "source_value": 90.00, "result": "match"},
-  {"claim": "Globalstar 주당 주식 대가(Amazon 주식 수)", "value": 0.321, "source_value": 0.3210, "result": "match"},
-  {"claim": "현금 선택 상한(%)", "value": 40, "source_value": 40, "result": "match"},
-  {"claim": "마일스톤 미달 시 대가 하향 상한(USD 백만)", "value": 110, "source_value": 110, "result": "match"},
-  {"claim": "Amazon Leo 자체 D2D 배치 개시 연도 — 8-K Ex.99.1", "value": 2028, "source_value": 2028, "result": "match"},
-  {"claim": "FCC 보도자료 승인 스펙트럼(MHz)", "value": 25, "source_value": "approximately 25 megahertz", "result": "match"},
-  {"claim": "Amazon Leo 자체 D2D 신청 최대 위성 수", "value": 5105, "source_value": 5105, "result": "match", "report": "SpaceQ 2026-07-29 · 배치 개시 2028 동일"},
-  {"claim": "Globalstar C-3 운용 위성 수", "value": 48, "source_value": 48, "result": "match", "note": "원문은 '48 satellites, 12 orbital planes × 4' — 예비 6기·'운용' 구분은 이 원문에 없음(verify_list 값 48 자체는 일치)"},
-  {"claim": "FCC DA 26-1078 채택·공개일", "value": "2026-10-06", "source_value": "adopted 2026-10-06 / released 2026-10-06", "result": "match"},
-  {"claim": "SpaceX D2D 허가 위성 수 — DA 26-1078", "value": 15000, "source_value": 15000, "result": "match"},
-  {"claim": "SpaceX D2D 50% 발사 기한", "value": "2032-10-07", "source_value": "2032-10-07", "result": "match", "report": "조건 17(b)"},
-  {"claim": "SpaceX D2D 전량 발사·운용 기한", "value": "2035-10-07", "source_value": "2035-10-07", "result": "match", "report": "조건 17(b)"},
-  {"claim": "SpaceX D2D 보증금 기한 — 조건 17a", "value": "2026-11-04", "source_value": "2026-11-04", "result": "match"},
-  {"claim": "EchoStar 거래 2단계 종결 예정일", "value": "2027-11-30", "source_value": "on or about November 30, 2027", "result": "match", "note": "DA 26-1078 원문에는 날짜 없음 — Via Satellite 10/07 보도가 유일 출처(보고서도 '보도'로 표기)"},
-  {"claim": "Amazon Leo 궤도 배치 위성 수(10/12)", "value": 396, "source_value": 396, "result": "match", "report": "14회 발사·4기 폐기도 원문 일치"},
-  {"claim": "Starlink 운용 위성 수 — Reuters", "value": 11000, "source_value": "more than 11,000", "result": "match"},
-  {"claim": "Apple 의 2024년 Globalstar 투자액(USD 십억)", "value": 1.5, "source_value": "about $1.5 billion", "result": "match"},
-  {"claim": "미국 10년물 금리(%, 2026-10-26)", "value": 5.0, "source_value": 5.00, "result": "match", "report": "FRED DGS10 2026-10-26 = 5.00 · data/latest.json meta.macro.ust10 = 5.0(as_of 2026-10-26)"}
- ],
- "notes": [
-  "모든 source_url 이 직접 열렸다(fcc.gov 명령 원문 2건 포함). 원천 재탐색 불필요.",
-  "DA 26-1078 원문은 11.6만 자 중 10만 자까지 읽었다 — 조건 17(a)(b)·채택일·15,000기는 그 범위 안에서 확인.",
-  "보고서 본문 숫자가 verify_list 와 다른 곳 없음. 산식 재현: +1.1%(148.58/146.90−1) · 9,586만주 · 11/26(10/27+30일) 일치."
- ]
+  "run_id": "2026-10-29-event",
+  "checked": 15,
+  "match": 15,
+  "rounding": 0,
+  "mismatch": [],
+  "unverifiable": [],
+  "notes": [
+    {
+      "claim": "Blumenthal 요구 SpaceX 관계자 브리핑 기한",
+      "value": "2026-11-12",
+      "note": "source_url(Kyiv Independent 10/23)은 열렸으나 11/5 만 적고 11/12 브리핑 기한은 없다. 같은 사실을 Reuters 전재(wsau.com 2026-10-22 'US Democratic senator probes Ukraine's loss of Starshield service')에서 확인 — 'November 12 for a briefing by SpaceX officials'. 값은 일치, 출처 교체 권고."
+    },
+    {
+      "claim": "하원 DeLauro·McCollum 서한의 국방장관 보고 기한(일)",
+      "value": 30,
+      "note": "American Legion 10/22 원문은 'within the next thirty days' 로 30일 일치. 서한 일자는 원문에 '월요일' 로만 적혀 있어 10/19 는 추론값(검증 대상 아님)."
+    },
+    {
+      "claim": "발행주식수(억주, 2026-10-15 기준)",
+      "value": 135.81,
+      "note": "10-Q 표지: Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 주 → 135.81억주, 산식 결과 일치."
+    },
+    {
+      "claim": "보고서 본문 대조",
+      "note": "머리글·1~5절·부록의 해당 위치 숫자 15개 모두 verify_list 와 같다. 머리글 −2.3% 는 145.23÷148.58−1 = −2.25% 로 산식 일치."
+    }
+  ],
+  "sources_opened": {
+    "stockanalysis.com/stocks/spcx/history": "열림 — 10/28 종가 145.23 · 거래량 98,705,833 · 10/27 종가 148.58",
+    "foreign.senate.gov 10/15 보도자료": "열림 — 서명 9인 · 11/1 · 63mph · 100mph · 10/12~14",
+    "eutoday.net": "열림 — 감찰관 서한 10/27",
+    "legion.org 10/22": "열림 — 30일",
+    "kyivindependent.com 10/23": "열림 — 11/5 (11/12 는 미기재, Reuters 전재로 보완)",
+    "sfstandard.com 10/23": "열림 — 14일",
+    "pravda.com.ua 10/24": "열림 — 400km/h 초과",
+    "sec.gov R12.htm": "열림 — Enterprise & Government 3M 2026 = 2,127",
+    "sec.gov spcx-20260930.htm": "열림 — 2026-10-15 기준 Class A 8,246,541,218 · Class B 5,334,522,491",
+    "fred.stlouisfed.org DGS10": "열림 — 2026-10-27 = 4.99"
+  },
+  "verified_at": "2026-10-29T20:05+09:00"
 }
