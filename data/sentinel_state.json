@@ -157,17 +157,21 @@
    "sentinel:probe-fail:2026-10-28"
   ],
   "2026-10-29": [
-   "sentinel:bot:spacex_news:2026-10-29"
+   "sentinel:bot:spacex_news:2026-10-29",
+   "sentinel:feed:spacex_news:판정 모델:2026-10-29",
+   "sentinel:probe-fail:2026-10-29"
   ]
  },
  "last_verdict": {
-  "at": "2026-10-29 01:27",
+  "at": "2026-10-29 11:57",
   "ok": false,
   "alerts": [
-   "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)"
+   "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)",
+   "SpaceX 뉴스 판정 모델: HTTP 200 2회 연속",
+   "SpaceX 월간 엔진: 마지막 실행 실패(2026-10-28) — https://github.com/stayhungryasi/universe-dominator/actions/runs/40726172624"
   ]
  },
- "last_run": "2026-10-29 01:27",
+ "last_run": "2026-10-29 11:57",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -1215,10 +1219,12 @@
    "zero_alerted": false
   },
   "spacex_news:판정 모델": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
-   "zero_alerted": false
+   "err_alerted": true,
+   "zero_alerted": false,
+   "err_alerted_first": "2026-10-29",
+   "err_alerted_last": "2026-10-29"
   }
  },
  "coverage": {
@@ -1230,11 +1236,13 @@
  },
  "probe": {
   "stale": false,
-  "fail_alerted": false
+  "fail_alerted": true,
+  "fail_alerted_first": "2026-10-29",
+  "fail_alerted_last": "2026-10-29"
  },
  "i18n": {
   "streak": 0,
   "alerted": false,
-  "last_ts": "2026-10-29 01:26"
+  "last_ts": "2026-10-29 11:57"
  }
 }

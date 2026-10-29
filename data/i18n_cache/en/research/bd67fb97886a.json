@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "bd67fb97886a",
  "lang": "en",
- "src_hash": "0e2c07e48b1d",
+ "src_hash": "ca1cb2488a82",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 01:26",
+ "at": "2026-10-29 11:57",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Meta recognized $9.89B in legal settlement provisions in Q3 (maximum total $18.59B), though operating performance excluding this is positive.",
-  "summary_ko.1": "Q3 achieved key milestones including launch of AI model 'Muse' and 'Muse Wonder'; Q4 revenue guidance of $73–76B.",
-  "summary_ko.2": "Raised 2026 capital expenditure guidance from $130–145B to $135–145B, with Reality Labs losses expected to narrow to $18–19B range."
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.1] 숫자: 원문에 없는 숫자 17.5, 1.8",
+  "[17§summary_ko.1] 숫자: 원문의 숫자가 빠짐 175, 18"
+ ]
 }

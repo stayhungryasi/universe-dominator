@@ -2,16 +2,14 @@
  "kind": "research",
  "id": "8b96249c0974",
  "lang": "en",
- "src_hash": "71d1b6346f82",
+ "src_hash": "2aa235538df2",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 01:26",
+ "at": "2026-10-29 11:57",
  "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[7§summary_ko.0] 숫자: 원문에 없는 숫자 23.3 billion",
-  "[7§summary_ko.0] 숫자: 원문의 숫자가 빠짐 23.3억",
-  "[7§summary_ko.1] 숫자: 원문에 없는 숫자 1,863.0 billion, 1,714.0 billion, 967.0 billion, 846.0 billion, 741.5 billion, 660.0 billion",
-  "[7§summary_ko.1] 숫자: 원문의 숫자가 빠짐 1,863.0조, 1,714.0조, 967.0억, 846.0억, 741.5억, 660.0억"
- ]
+ "status": "ok",
+ "fields": {
+  "summary_ko.0": "Advantest Corp (TYO:6857) recorded first-half net profit of JPY 368.1 billion ($2.33 billion), a 117% year-over-year increase, and raised full-year earnings guidance.",
+  "summary_ko.1": "The company revised upward its revenue guidance for the fiscal year ending March 2027 from JPY 1.714 trillion to JPY 1.863 trillion, and net profit from JPY 660 billion to JPY 741.5 billion.",
+  "summary_ko.2": "The semiconductor tester market is expected to reach record-high levels due to increased production of AI-related high-performance chips and growing data center investments."
+ }
 }

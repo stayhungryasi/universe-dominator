@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "5f0f82879bd1",
  "lang": "es",
- "src_hash": "9c64c2b5a382",
+ "src_hash": "638fa3da7d3b",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 01:26",
+ "at": "2026-10-29 11:57",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "El precio de las acciones de Samsung Electronics se ajustó desde el máximo de 374.500 wones en junio hasta los 200.000 wones a mediados de octubre (mínimo intradiario de 204.500 wones), actualmente en los 210.000 wones buscando dirección",
-  "summary_ko.1": "Los resultados provisionales del tercer trimestre de 2026 muestran ingresos de aproximadamente 195 billones de wones, beneficios operativos de 107,4 billones de wones (margen operativo del 55%), con beneficios operativos trimestrales superando los 100 billones de wones por primera vez en la historia; los precios objetivo de los analistas varían entre 270.000-670.000 wones",
-  "summary_ko.2": "El consenso conservador (BNK 270.000 wones) expresa preocupación por debilitamiento de la demanda de memoria y exceso de oferta, mientras que el consenso optimista (Nomura 670.000 wones, KB 600.000 wones) se enfoca en la expansión de rentabilidad de HBM4 y recuperación de rendimiento de fundición"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[4§summary_ko.0] 숫자: 원문에 없는 숫자 374500",
+  "[4§summary_ko.0] 숫자: 원문의 숫자가 빠짐 37만, 4,500"
+ ]
 }

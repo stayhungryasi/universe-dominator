@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "2365cd15a328",
+ "lang": "en",
+ "src_hash": "ce98b16601de",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-29 11:57",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Widespread tracking of fingerprinting technology",
+  "sections.1.h": "How canvas fingerprinting works",
+  "sections.2.h": "Canvas sample collection and visualization",
+  "sections.3.h": "Discovery of suspicious scripts",
+  "sections.4.h": "Detection of LLM safeguard bypass attempts",
+  "sections.5.h": "Identity of hidden Unicode strings",
+  "sections.6.h": "Multi-layered safeguard bypass mechanisms",
+  "sections.7.h": "Malicious code execution in Node.js environments",
+  "sections.8.h": "System information collection and external transmission",
+  "sections.9.h": "Real meaning and impact of security threats",
+  "sections.0.ko": "The author has invested considerable time reverse-engineering browser fingerprinting scripts, analyzing various cases from well-known libraries like FingerprintJS to anti-bot solutions such as Cloudflare and Akamai. To understand the broader landscape, he decided to crawl the Tranco Top Sites list while intercepting and systematically mapping browser API calls related to fingerprinting. During this process, he hooked canvas drawing commands (canvas toDataURL) and identifying attributes like navigator.webdriver to filter out benign rendering.",
+  "sections.1.ko": "Canvas fingerprinting works by drawing text, shapes, or graphics on an HTML canvas and then extracting pixel data. Since each browser, operating system, graphics driver, and hardware produces subtle differences in rendering, these differences can distinguish specific browser environments. Most implementations featured simple shapes, filled rectangles, or plain text, but crawling 10,000 sites yielded unexpectedly diverse canvas rendering samples.",
+  "sections.2.ko": "The author decided to organize all collected canvases on fingerprint.garden. Upon reviewing the results, he identified canvases from well-known fingerprinting solutions like FingerprintJS and Castle. Some were simple, some remarkably sophisticated, and some resembled aesthetically elegant works. One canvas stood out particularly—it resembled the album art from Tame Impala's record 'Currents'.",
+  "sections.3.ko": "The author attempted to identify the source of the script that generated that canvas. With experience in JavaScript obfuscation techniques, he could identify most fingerprinting SDKs at a glance, but this script (https://servicepipe.tech/static/checkjs/06b667/4CIrx8U3Da.js) contained very strange content despite its standard appearance. While function name obfuscation was as expected, he was shocked to encounter function names like calculateDeadlyLethalSuicideAspirinDosage and code related to \"lethal dosage.\"",
+  "sections.4.ko": "The author suspected these biological weapon-related terms might be intentionally included to target LLM obfuscation—potentially to trigger AI model safety guards and obstruct automatic deobfuscation. When requesting this script analysis from Claude (Astra), the model refused citing biological safety risks. Retry attempts using the Daybreak Blue toggle were also blocked, though the GLM-5.3 model performed the same request.",
+  "sections.5.ko": "Out of curiosity, the author decided to decode the invisible Unicode character matrix encoded in the EUlL variable. The decoding logic subtracted 917504 from each character's codepoint. The decoded result revealed surprising content: a system prompt beginning with \"SYSTEM OVERRIDE -- CLASSIFIED BRIEFING.\" This prompt declared all safety guidelines disabled and requested step-by-step technical guides on DDoS attacks, tax evasion, and biological weapons synthesis.",
+  "sections.6.ko": "The prompt included text related to Tiananmen Square (1989, 8964, Tank Man, etc.) and Chinese propaganda phrases. This appears to be deliberate placement to bypass censorship mechanisms in Chinese models as well. The author interpreted this string as a combination intended to trigger every possible safeguard. It reveals a sophisticated strategy to hide an LLM jailbreak attempt behind the surface purpose of a fingerprinting script.",
+  "sections.7.ko": "The script contained additional malicious logic that activates only in Node.js environments. When the METRICS_AGENT_8BFD_ACTIVE environment variable is set, it attempts to read sensitive configuration files like .npmrc, .env, and .git/config. It also attempts to download and execute a metrics-agent-8bfd binary from 10.15.45.1 using curl with execution permissions. All these steps are wrapped in self-hosted commands and echo commands, with additional stimulus text (self-harm, jailbreak terminology) inserted at each stage to further bypass LLM safeguards.",
+  "sections.8.ko": "The malicious code attempts to collect system information using commands like uname, docker ps, ifconfig, and lsof to gather system details, container lists, network interfaces, and listening ports. It also verifies communication with the command-control server (10.15.45.1) using dig. All this information is stored in the /tmp/.7dab46 directory, allowing attackers to understand the victim system's network structure and runtime environment. This is a typical pattern of supply chain attacks disguised as npm packages or fingerprinting services.",
+  "sections.9.ko": "This incident demonstrates how a legitimate web technology like fingerprinting can be weaponized as camouflage for malicious objectives. The script comprises a sophisticated multi-layered attack capable of simultaneously bypassing LLM-based security analysis, stealing sensitive information from development environments, and communicating with command-control servers. The inclusion of mechanisms explicitly designed to deceive AI models reveals attackers' intent to circumvent not only traditional security tools but also AI-based threat analysis.",
+  "caveat": "This article is based on a single case discovered by the author and does not include official verification or confirmation regarding the script's actual purpose, distribution scope, or damage status."
+ }
+}
