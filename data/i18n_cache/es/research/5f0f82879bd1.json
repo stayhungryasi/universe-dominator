@@ -2,14 +2,16 @@
  "kind": "research",
  "id": "5f0f82879bd1",
  "lang": "es",
- "src_hash": "638fa3da7d3b",
+ "src_hash": "d792ff24e4fb",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 11:57",
+ "at": "2026-10-29 19:36",
  "attempts": 2,
  "status": "failed",
  "fields": {},
  "reasons": [
-  "[4§summary_ko.0] 숫자: 원문에 없는 숫자 374500",
-  "[4§summary_ko.0] 숫자: 원문의 숫자가 빠짐 37만, 4,500"
+  "[9§summary_ko.0] 숫자: 원문에 없는 숫자 374500, 204500, 232000",
+  "[9§summary_ko.0] 숫자: 원문의 숫자가 빠짐 37만, 20만, 23만, 4,500, 2,000",
+  "[9§summary_ko.1] 숫자: 원문에 없는 숫자 195 trillion, 2532 billion, 107 trillion, 4405 billion",
+  "[9§summary_ko.1] 숫자: 원문의 숫자가 빠짐 195조 2,532억, 107조 4,405억"
  ]
 }

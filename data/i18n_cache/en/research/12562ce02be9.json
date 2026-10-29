@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "12562ce02be9",
  "lang": "en",
- "src_hash": "1a5e4a0498f5",
+ "src_hash": "dcb684eec093",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 11:57",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "TSMC Q3 2026 revenue increased 41.2% year-over-year, net income increased 68.7%, and ADR earnings per share recorded $4.60",
-  "summary_ko.1": "TSMC's operating margin expanded 810bp to 58.7% year-over-year, high-performance computing (HPC) accounted for 68% of Q3 revenue, up 22% from previous quarter",
-  "summary_ko.2": "TSMC raised 2026 revenue growth rate to 44%, 2-nanometer technology accounted for 8% of Q3 wafer revenue, and annual production capacity in 2027 is expected to more than double"
- }
+ "at": "2026-10-29 19:36",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[10§summary_ko.0] 숫자: 원문에 없는 숫자 54.3 billion",
+  "[10§summary_ko.0] 숫자: 원문의 숫자가 빠짐 54.3억"
+ ]
 }

@@ -1,0 +1,27 @@
+{
+ "kind": "dissect",
+ "id": "8c17f1f1ac30",
+ "lang": "en",
+ "src_hash": "183529431207",
+ "model": "claude-haiku-4-5",
+ "at": "2026-10-29 19:36",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Surging code merges become a bottleneck in development",
+  "sections.1.h": "Git's distributed design doesn't fit ultra-large monorepos",
+  "sections.2.h": "Design philosophy: always-online agent-centric source control",
+  "sections.3.h": "Change units and derived data structures",
+  "sections.4.h": "Horizontally scalable server architecture",
+  "sections.5.h": "Efficient client protocol: differences from Git",
+  "sections.6.h": "Migration significance and expected ripple effects",
+  "sections.0.ko": "At Anthropic, code merges increased more than 12-fold from 2,500 per day in May 2026 to over 30,000 by September. Behind this sharp growth is that Claude performs research iteration, complex program optimization, and new service construction at speeds far exceeding human capability. Coding itself is no longer the bottleneck; rather, development infrastructure like source control, build, and CI—designed for human scale—has become the bottleneck.",
+  "sections.1.ko": "Anthropic's monorepo main branch history alone is approximately 100GB, and compressed working copies exceed 25GB. With CI alone performing 25 million code checkouts daily, naive Git traffic reaches 600PB per day. Git was originally optimized for distributed offline work, but when operated centrally at Anthropic's extreme scale, complex workarounds like shallow cloning, sparse checkout, and internal Git mirroring are required. These workarounds showed diminishing returns as merge velocity increased, with management burden surging.",
+  "sections.2.ko": "Anthropic thought in reverse. If nearly all of its clients work always-online like agents and jobs, what design is appropriate instead of Git, which assumes offline distributed work? Drawing on examples like Google's Piper and Meta's Sapling, Anthropic designed its own version control system called Scion. Five core principles are: always-online client, client-server asymmetry, source control queries exposed via API, horizontal scalability, and lock-free fast commits.",
+  "sections.3.ko": "In Scion, 'changeset'—an entry in the write-ahead log—serves as the unit of work. Like Git commits, it records changes, but instead of tree pointers, it stores lists of changed files and content-addressed compressed file pointers. Changesets are generated server-side and immediately accessible everywhere. Since changesets alone cannot quickly answer who last edited a line or which commits affected a file, derived data structures like file blame, path history, and commit graph skip lists are dynamically computed. This mechanism makes it easy to add new derived data types, compute only what's needed, and optimize without affecting clients.",
+  "sections.4.ko": "A small cluster of Scion servers provides all source control APIs: changeset queries, diff computation, merge-base finding, and blob fetching. Because all data is content-addressed, once stored it never changes, and all servers can cache without coordination. Servers thus function as a horizontally scalable massive cache with minimal coordination, simultaneously computing derived data dynamically and recording results to Spanner. This architecture eliminated the need for CI jobs and tools to maintain local repositories.",
+  "sections.5.ko": "Scion's scn client fundamentally differs from Git's fetch protocol. Git negotiates what the client already has, while Scion focuses only on the trees and blobs the client wants. Starting from the root tree, it recursively requests trees not in local storage, then handles blobs the same way. Since all requests target immutable specific objects, any cache can answer, and the architecture resembles traditional layered caching. Sparse or virtual checkout requires no special support—clients simply don't request trees they don't need. This design requires far less CPU than Git servers while scaling better.",
+  "sections.6.ko": "Anthropic completed a full monorepo migration from Git to Scion in five months, while simultaneously building its code review platform Antique, code search, advanced source control IAM systems, and bulk-reviewed code integration methods. Currently, few companies experience 30,000+ merges daily at Anthropic's scale, but as AI coding tools become ubiquitous, other companies will likely soon face similar bottlenecks. This article was published to share such anticipatory experience and lessons learned.",
+  "caveat": "The source text is incomplete (the last sentence is unfinished) and is written as data from a future point in time based on 2026, so confirming actual implementation status or current operational state requires reference to the full original text and official technical documentation."
+ }
+}

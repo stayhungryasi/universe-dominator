@@ -2,7 +2,7 @@
  "form4_30d": 1,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-10-29T11:46+09:00",
+  "fetched_at": "2026-10-29T19:25+09:00",
   "year": 2026,
   "year_count": 123,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-10-29T11:46+09:00",
+  "checked_at": "2026-10-29T19:25+09:00",
   "last_run": {
    "conclusion": "failure",
    "created_at": "2026-10-28T16:27:40Z",
@@ -1116,7 +1116,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-29T11:46+09:00",
+ "generated_at": "2026-10-29T19:25+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1218,6 +1218,18 @@
    "detected_at": "2026-10-29",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:pentagon-ig-ukraine-refusal:2026-10-29",
+   "trigger_id": "T7",
+   "name": "미 국방부(감찰관)가 우크라이나 대상 Starlink·Starshield 제한에 대한 조사를 거부했다.",
+   "reason": "보도 감지(boston herald·eu today·laodong.vn)",
+   "event": "Pentagon Refuses to Investigate Starlink and Starshield Restrictions on Ukraine",
+   "event_date": "2026-10-29",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSHFyNGV0czd6WmRtcW05UWxIUjNpR215dmRiZEZ5QnFsLWJpZHI5Y0xmZkJYSVVXRG9FNVZoNXpTdHprZF9VNmo1S2VGc3B0VkhGRGlTSWVwUUFoQ0VkVHRTak1YNmRoTFFvOTZRQ3FDd0lNcWgwc282MC05VmlKTHRpT2VBYzZtRXo1LW5qT0l5ZndUUko5bm43Tk40MUwwTGlHaGNpZEx4Mk05ZTNvWA?oc=5",
+   "detected_at": "2026-10-29",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
@@ -1233,12 +1245,25 @@
     "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUTlzSm5MX0Z2RlBLa1M4VnJ5ZDlkQ0d0OWZMM0pEa21nd1lTODZDMlRPWlFVRFpWQjVoYlU2bUZYalhVclN2X2I3T1BDbVpNRUVhVkpjcExXeEgtZlJqeGVhZ0l6b2hRanZpbW41aDQ3d0d5RkdmaWhsdHV2Qk44QmR6R2FmNUpqdUZMek9ZSzhzUi0wQ0dTSmtXRFc1RTRnb1JyN0I4TmZnbW1zZlA1OFln?oc=5",
     "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNbld6OUlGUjhYY2VnbXRLMTBmS1FmSTVsR1pRWFJLWnY4WmY0WDB0U0ZtVDNNT256TmxIT0ppQWJOMUFxTEN5eEg4T09MNHNiSE9VYTRsVDJKdXFnVU85MGlIazZxbEdjdGp5UlVHelJ5dkozYm5RNElyOWlCYnlGTlJCbGhkZ0NvZi1vYlBtbXJBSWVjbi16d3lkVHNXdllUZ2s4T3hxWng5S1I1NVRpb3h2U1ZacVFaclRWRWd4SnhXSUE?oc=5"
    ]
+  },
+  {
+   "key": "qn:2026-10-29:1925",
+   "run_id": "40855205587",
+   "queued_at": "2026-10-29T19:25+09:00",
+   "state": "queued",
+   "trigger_id": "T7",
+   "name": "미 국방부(감찰관)가 우크라이나 대상 Starlink·Starshield 제한에 대한 조사를 거부했다.",
+   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSHFyNGV0czd6WmRtcW05UWxIUjNpR215dmRiZEZ5QnFsLWJpZHI5Y0xmZkJYSVVXRG9FNVZoNXpTdHprZF9VNmo1S2VGc3B0VkhGRGlTSWVwUUFoQ0VkVHRTak1YNmRoTFFvOTZRQ3FDd0lNcWgwc282MC05VmlKTHRpT2VBYzZtRXo1LW5qT0l5ZndUUko5bm43Tk40MUwwTGlHaGNpZEx4Mk05ZTNvWA?oc=5",
+    "https://news.google.com/rss/articles/CBMid0FVX3lxTE5jZ3lfendqcVpqRk5PaXNyZ0dFWmZyc2Vic1VWdDJjbU5jc3gwOEY5dDhGRGNHRWpNMWxseU9LN0g0OS1yWmJMdl93MC1JQnNLdFFLaHIxNWszMy12bUNzT3kwbEFsa2hMRDRIaGJTX3NJYjUwbjMw?oc=5"
+   ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-10-29T11:46+09:00",
-  "last_success_at": "2026-10-29T02:45:44Z",
-  "last_run_at": "2026-10-29T02:45:11Z",
+  "checked_at": "2026-10-29T19:25+09:00",
+  "last_success_at": "2026-10-29T10:15:41Z",
+  "last_run_at": "2026-10-29T10:15:11Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

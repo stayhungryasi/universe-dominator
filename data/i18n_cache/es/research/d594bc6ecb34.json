@@ -2,15 +2,16 @@
  "kind": "research",
  "id": "d594bc6ecb34",
  "lang": "es",
- "src_hash": "fadb9424b9c7",
+ "src_hash": "adeb0f6ace9e",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 11:57",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Intel (INTC) se prepara para divulgar resultados de Q3, con una caída superior al 20% en el último mes, mientras que Micron (MU) bajó un 10%, AMD (AMD) un 10% y Nvidia (NVDA) un 3%, reflejando una debilidad generalizada en el sector de semiconductores",
-  "summary_ko.1": "El consenso de Q3 proyecta un EPS de $0,40 y ingresos de $16.500 millones, un aumento significativo respecto al EPS de $0,23 e ingresos de $13.600 millones del mismo período del año anterior",
-  "summary_ko.2": "Con SK Hynix (SKHY) presentando resultados sólidos (aumento de ingresos del 328%, aumento de beneficio operativo del 632%), las preocupaciones sobre el sector de IA se mitigan, mientras que se espera que los ingresos del negocio de fundición de Intel alcancen $6.100 millones, un aumento del 44% interanual",
-  "title": "Intel reporta resultados de Q3 mientras las acciones de semiconductores continúan rebotando"
- }
+ "at": "2026-10-29 19:36",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[1§summary_ko.0] 숫자: 원문에 없는 숫자 16500 million, 8800 million, 6600 million",
+  "[1§summary_ko.0] 숫자: 원문의 숫자가 빠짐 16.5억, 8.8억, 6.6억",
+  "[1§summary_ko.1] 숫자: 원문에 없는 숫자 78700 million, 6100 million",
+  "[1§summary_ko.1] 숫자: 원문의 숫자가 빠짐 78.7억, 6.1억"
+ ]
 }
