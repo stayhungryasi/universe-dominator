@@ -272,14 +272,35 @@ def order_fresh(fresh):
     return out
 
 
+# 판정 제출 도구 — 응답을 도구 입력(JSON 객체)으로 강제한다. 2026-11-03 복구 회차: 자유 텍스트 JSON 이 한 번 깨져
+# (JSONDecodeError) 482건 중 80건만 판정하고 멈췄다. 도구 입력은 API 가 JSON 으로 돌려주므로 해석 오류가 없다.
+REPORT_TOOL = {
+    "name": "report",
+    "description": "헤드라인 판정 결과를 제출한다 — material 이 true 인 헤드라인만 items 에 넣는다.",
+    "input_schema": {
+        "type": "object",
+        "properties": {"items": {"type": "array", "items": {
+            "type": "object",
+            "properties": {
+                "i": {"type": "integer"}, "material": {"type": "boolean"},
+                "severity": {"type": "string", "enum": ["urgent", "major", "minor"]},
+                "category": {"type": "string"}, "triggers": {"type": "array", "items": {"type": "string"}},
+                "cluster": {"type": "string"}, "already_known": {"type": "boolean"}, "claim_ko": {"type": "string"}},
+            "required": ["i", "material", "severity", "category", "triggers", "cluster", "already_known", "claim_ko"]}}},
+        "required": ["items"]},
+}
+
+
 def judge(api_key, headlines, triggers, known):
     import requests
     payload = {"헤드라인": [{"i": h["i"], "제목": h["title"], "발행처": h["publisher"], "날짜": h["date"]}
                          for h in headlines],
                "트리거": [{"id": t.get("id"), "이름": t.get("name")} for t in triggers if t.get("id")],
                "이미 기록된 사건": known[:60]}
-    body = {"model": MODEL, "max_tokens": 6000,
-            "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n\n" + json.dumps(payload, ensure_ascii=False)}]}
+    body = {"model": MODEL, "max_tokens": 6000, "tools": [REPORT_TOOL],
+            "tool_choice": {"type": "tool", "name": "report"},
+            "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n(제출은 report 도구로.)\n\n"
+                          + json.dumps(payload, ensure_ascii=False)}]}
     r = requests.post("https://api.anthropic.com/v1/messages",
                       headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
                                "content-type": "application/json"},
@@ -289,10 +310,14 @@ def judge(api_key, headlines, triggers, known):
     use = data.get("usage") or {}
     if data.get("stop_reason") == "max_tokens":
         raise ValueError("응답 잘림(max_tokens) — 묶음을 줄여야 한다")
-    text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
-    text = re.sub(r"```(?:json)?", "", text).strip()
-    doc = json.loads(text[text.find("{"): text.rfind("}") + 1])
-    items = doc.get("items")
+    tool = next((b for b in data.get("content", []) if b.get("type") == "tool_use" and b.get("name") == "report"), None)
+    if tool is not None:
+        doc = tool.get("input") or {}
+    else:                                    # 도구를 안 쓴 응답 — 예전처럼 본문에서 JSON 을 꺼낸다
+        text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
+        text = re.sub(r"```(?:json)?", "", text).strip()
+        doc = json.loads(text[text.find("{"): text.rfind("}") + 1])
+    items = doc.get("items") if isinstance(doc, dict) else None
     if not isinstance(items, list):
         raise ValueError("판정 응답에 items 목록이 없다")
     return items, use
@@ -340,10 +365,27 @@ def run():
     elif batch:
         verdicts = []
         known = known_events(watch, state, today)
-        for k in range(0, len(batch), CHUNK):
-            chunk = batch[k:k + CHUNK]
+        # 응답 내용 오류(ValueError — 해석 실패·잘림)는 그 묶음을 반으로 나눠 한 번 더 — 한 묶음이 깨졌다고 나머지
+        # 묶음까지 멈추지 않는다. 호출 자체의 실패(HTTP·연결)는 계통 장애라 거기서 멈춘다(다음 회차에 다시).
+        pending = [batch[k:k + CHUNK] for k in range(0, len(batch), CHUNK)]
+        retried = set()
+        while pending:
+            chunk = pending.pop(0)
             try:
                 v, u = judge(api_key, chunk, triggers, known)
+            except ValueError as e:
+                err = f"{type(e).__name__}: {str(e)[:200]}"
+                key0 = chunk[0]["i"]
+                if key0 not in retried and len(chunk) > 1:
+                    half = len(chunk) // 2
+                    retried.update({chunk[0]["i"], chunk[half]["i"]})
+                    pending[:0] = [chunk[:half], chunk[half:]]
+                    logs.append(f"판정 응답 오류 — 묶음 {len(chunk)}건을 반으로 나눠 재시도({err})")
+                    continue
+                model_ok = False
+                fc.record("spacex_news", "판정 모델", "http_error", None, 0)
+                logs.append(f"판정 모델 실패(묶음 {len(chunk)}건은 다음 회차로) — {err}")
+                continue
             except Exception as e:
                 model_ok = False
                 err = f"{type(e).__name__}: {str(e)[:200]}"     # 원장에 남긴다 — 실행 로그를 못 볼 때도 원인이 보이게

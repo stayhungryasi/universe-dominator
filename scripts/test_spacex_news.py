@@ -194,6 +194,52 @@ class RunTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 sn.judge("k", [dict(H(0, "t", "P"))], [], [])
 
+    def test_structured_output_via_tool(self):
+        """2026-11-03 복구 회차: 자유 텍스트 JSON 이 깨져(JSONDecodeError) 482건 중 80건에서 멈췄다 → 도구 입력으로 강제."""
+        sent = {}
+
+        class R:
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return {"stop_reason": "tool_use", "usage": {"input_tokens": 1, "output_tokens": 1},
+                        "content": [{"type": "tool_use", "name": "report",
+                                     "input": {"items": [{"i": 0, "material": True, "claim_ko": '따옴표 "가" 든 문장'}]}}]}
+
+        def post(url, headers=None, json=None, timeout=None):
+            sent.update(json)
+            return R()
+        with mock.patch("requests.post", side_effect=post):
+            items, _ = sn.judge("k", [dict(H(0, "t", "P"), i=0)], [], [])
+        self.assertEqual(items[0]["claim_ko"], '따옴표 "가" 든 문장')
+        self.assertEqual(sent["tool_choice"], {"type": "tool", "name": "report"})
+        self.assertEqual(sent["tools"][0]["name"], "report")
+
+    def test_broken_chunk_split_retry_others_continue(self):
+        """한 묶음의 응답이 깨지면 반으로 나눠 다시 — 나머지 묶음은 멈추지 않는다. 계속 깨지는 반쪽만 다음 회차로."""
+        import feed_client as fc
+        self._run([H(0, "old", "Reuters")])
+        heads = self._many(100, 1)
+        bad = {5}                                        # i=5 가 든 묶음은 늘 깨진다
+
+        def fake_judge(api_key, batch, triggers, known):
+            if bad & {h["i"] for h in batch}:
+                raise ValueError("Expecting ',' delimiter")
+            return [], {}
+        with mock.patch.object(sn, "collect", return_value=[dict(h) for h in heads]), \
+                mock.patch.object(sn, "judge", side_effect=fake_judge) as j, \
+                mock.patch.object(fc, "flush"), mock.patch.object(fc, "record"), \
+                mock.patch("spacex_watch.send_dm", side_effect=lambda t: True), \
+                mock.patch.object(sn, "now_kst", return_value=datetime.fromisoformat("2026-10-27T10:30:00+09:00")), \
+                mock.patch.dict("os.environ", {"ANTHROPIC_API_KEY": "k", "GITHUB_RUN_ID": "77"}):
+            sn.run()
+        n = json.loads(sn.NEWS_PATH.read_text(encoding="utf-8"))
+        # 첫 묶음(0~39) → 반(0~19 실패 · 20~39 성공) · 나머지 묶음 전부 성공 → 20건만 이월
+        self.assertEqual((n["last_run"]["judged"], n["last_run"]["deferred"]), (80, 20))
+        self.assertIn("delimiter", n["last_run"]["error"])
+        self.assertEqual(j.call_count, 5)                   # 3묶음 + 반쪽 2
+
     def test_window_widens_after_gap(self):
         """2026-11-03: 데일리가 5일 멈추는 동안 2일 창 밖으로 밀린 보도는 다시 볼 길이 없었다 — 공백만큼 창을 넓힌다."""
         self.assertEqual(sn.window_days({"window_end": "2026-11-03"}, "2026-11-03"), 2)
