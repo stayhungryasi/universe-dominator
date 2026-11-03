@@ -1198,6 +1198,7 @@ function toggleTheme() {
 
 const DATA = {{DATA_JSON}};
 const PREV = {{PREV_JSON}};  // 전일 스냅샷 (build_site 주입)
+const PREV_BASE = {{PREV_BASE_JSON}};  // 증감 기준일 — 바로 전날이면 '' (관측 공백 뒤에는 그 날짜)
 const LENS = {{LENS_JSON}};  // 관측 위치 렌즈 — 통화별 가장 밝은 별 · 환율 기준일 (build_site 주입)
 (function(){
   /* 통화 칩 — 고르면 저장하고 다시 그린다(서버·클라이언트 fetch 없음: 환율은 빌드가 심었다) */
@@ -1391,7 +1392,7 @@ function switchRegion(key) {
       const cls = pct > 0.05 ? 'dup' : pct < -0.05 ? 'ddown' : 'dkeep';
       mcHtml = `<span class="d-mc ${cls}">${pct >= 0 ? '+' : ''}${UVX.dec(pct.toFixed(1))}%</span>`;
     }
-    return `<div class="stock-delta" title="${T('idx.vs_prev')}">${rankHtml}${mcHtml}</div>`;
+    return `<div class="stock-delta" title="${PREV_BASE ? T('idx.vs_date', {d: UVX.md(PREV_BASE)}) : T('idx.vs_prev')}">${rankHtml}${mcHtml}</div>`;
   };
   stockList.innerHTML = stocks.map((s, i) => {
     const mc = s.mc !== undefined ? s.mc : s[3];

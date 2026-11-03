@@ -77,19 +77,27 @@ def macro_line(meta):
 
 
 def load_prev_earth(today_str):
-    """어제 스냅샷의 지구 리스트 (전일 시총·순위 비교용)"""
-    if not SNAP_DIR.exists():
-        return []
-    for s in sorted(SNAP_DIR.glob("*.json"), reverse=True):
-        if today_str in s.name:
-            continue
-        try:
-            prev = json.loads(s.read_text(encoding="utf-8"))
-            rows = prev.get("regions", {}).get("earth", [])
-            return rows if isinstance(rows, list) else rows.get("stocks", [])
-        except Exception:
-            continue
-    return []
+    """직전 스냅샷의 지구 리스트 + 기준일 → (rows, base). base 는 바로 전날이면 '', 관측 공백 뒤면 그 날짜.
+
+    고르는 규칙은 화면과 같은 build_site.prev_snapshot 하나(2026-11-03: 5일 정지 뒤 첫 회차가 10/29 대비 증감을
+    '어제'로 공개 채널에 낼 뻔했다 — 기준일이 전날이 아니면 증감 옆에 기준일을 밝힌다).
+    """
+    import build_site as bs
+    f, d, gap = bs.prev_snapshot(today_str)
+    if f is None:
+        return [], ""
+    try:
+        prev = json.loads(f.read_text(encoding="utf-8"))
+        rows = prev.get("regions", {}).get("earth", [])
+        rows = rows if isinstance(rows, list) else rows.get("stocks", [])
+    except Exception:
+        return [], ""
+    return rows, (d if gap != 1 else "")
+
+
+def base_md(base):
+    """기준일 '2026-10-29' → '10.29' (머리줄 날짜와 같은 표기)."""
+    return f"{int(base[5:7]):02d}.{int(base[8:10]):02d}" if base and len(base) >= 10 else ""
 
 
 def build_briefing():
@@ -103,10 +111,11 @@ def build_briefing():
 
     # ── 👑 우주지배자 TOP 5 (순위 변동 + 전일 증감 + 왕좌 격차) ──
     earth = latest["regions"]["earth"]["stocks"]
-    prev_earth = load_prev_earth(today)
+    prev_earth, base = load_prev_earth(today)
+    bmd = base_md(base)
     prev_mc = {r["ticker"]: r["mc"] for r in prev_earth if r.get("ticker") and r.get("mc")}
     prev_rank = {r["ticker"]: i for i, r in enumerate(prev_earth, 1) if r.get("ticker")}
-    lines.append("👑 <b>우주지배자 TOP 5</b>")
+    lines.append("👑 <b>우주지배자 TOP 5</b>" + (f" (순위·증감 {bmd} 대비)" if bmd and prev_mc else ""))
     for i, s in enumerate(earth[:5], 1):
         pr = prev_rank.get(s["ticker"])
         move = ""
@@ -127,7 +136,8 @@ def build_briefing():
         if (earth[0]["ticker"] in prev_mc and earth[1]["ticker"] in prev_mc):
             prev_gap = prev_mc[earth[0]["ticker"]] - prev_mc[earth[1]["ticker"]]
             if abs(gap - prev_gap) >= 5:
-                trend = " — 어제보다 좁혀짐 🔥" if gap < prev_gap else " — 어제보다 벌어짐"
+                when = f"{bmd}보다" if bmd else "어제보다"
+                trend = f" — {when} 좁혀짐 🔥" if gap < prev_gap else f" — {when} 벌어짐"
         lines.append(f"왕좌 격차: {fmt_mc(gap)}{trend}")
     lines.append("")
 
@@ -146,7 +156,7 @@ def build_briefing():
                 parts.append(f"가장 뜨거운 별 {esc(hot[0]['name'])} 🔺{hot[1]:.1f}%")
             if cold[1] <= -0.3:
                 parts.append(f"가장 식은 별 {esc(cold[0]['name'])} 🔻{abs(cold[1]):.1f}%")
-            lines.append("🔥 <b>오늘의 별</b> (TOP 20)")
+            lines.append("🔥 <b>오늘의 별</b> (TOP 20" + (f" · {bmd} 대비)" if bmd else ")"))
             lines.append(" · ".join(parts))
             lines.append("")
 

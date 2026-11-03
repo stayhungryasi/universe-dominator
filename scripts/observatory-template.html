@@ -1424,7 +1424,7 @@ function renderMap(){
       tip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 230) + 'px';
       tip.style.top = (e.clientY - rect.top + 14) + 'px';
       tip.innerHTML = '<b>' + TX(n) + '</b> ' + esc(f) + '<br>' + UVX.mc(+mc) +
-        (chg !== '' ? '<br>' + T('map.vs_prev') + ' ' + (chg > 0 ? '+' : '') + UVX.dec(chg) + '%' : '<br>' + T('map.no_prev'));
+        (chg !== '' ? '<br>' + (DATA.chgBase ? T('map.vs_date', {d: UVX.md(DATA.chgBase)}) : T('map.vs_prev')) + ' ' + (chg > 0 ? '+' : '') + UVX.dec(chg) + '%' : '<br>' + T('map.no_prev'));
     } else tip.style.display = 'none';
   });
   wrap.addEventListener('mouseleave', () => tip.style.display = 'none');

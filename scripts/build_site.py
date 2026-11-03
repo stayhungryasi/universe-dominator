@@ -111,15 +111,38 @@ def _header_meta():
         return {}
 
 
+def prev_snapshot(cur_date):
+    """오늘(cur_date) 이전 가장 최근 스냅샷 → (경로, 날짜, 공백 일수) — 없으면 (None, None, None).
+
+    화면(TOP 20 증감·우주 지도)과 아침 브리핑이 같이 쓴다(규칙 한 벌). 공백 일수가 1 이 아니면 그 증감은
+    '전일 대비'가 아니다 — 2026-11-03: 데일리가 5일 멈췄다 풀린 첫 회차가 10/29 대비 증감을 '전일'·'어제'로
+    공개 채널에 낼 뻔했다. 부르는 쪽은 prev_base() 로 기준일을 밝힌다.
+    """
+    from datetime import date as _date
+    cur_date = (cur_date or "")[:10]
+    prev_file = None
+    for f in sorted((DATA_DIR / "snapshots").glob("????-??-??.json")):
+        if not cur_date or f.stem < cur_date:
+            prev_file = f
+    if prev_file is None:
+        return None, None, None
+    try:
+        gap = (_date.fromisoformat(cur_date) - _date.fromisoformat(prev_file.stem)).days
+    except Exception:
+        gap = None
+    return prev_file, prev_file.stem, gap
+
+
+def prev_base(cur_date):
+    """증감의 기준일 — 바로 전날이면 ''(화면은 '전일 대비'), 공백이 있으면 그 날짜(화면은 'M/D 대비')."""
+    _, d, gap = prev_snapshot(cur_date)
+    return d if d and gap != 1 else ""
+
+
 def _prev_snapshot_map(data):
     """오늘 이전 가장 최근 스냅샷 → {region: {TICKER: {r, mc}}} (없으면 빈 맵 — 우아한 저하)"""
     try:
-        cur_date = (data.get("meta", {}).get("fetched_date") or "")[:10]
-        snaps = sorted((DATA_DIR / "snapshots").glob("????-??-??.json"))
-        prev_file = None
-        for f in snaps:
-            if not cur_date or f.stem < cur_date:
-                prev_file = f
+        prev_file, _, _ = prev_snapshot(data.get("meta", {}).get("fetched_date"))
         if prev_file is None:
             return {}
         sd = json.loads(prev_file.read_text(encoding="utf-8"))
@@ -157,6 +180,7 @@ def build_main():
     html = template
     html = html.replace("{{DATA_JSON}}", data_json)
     html = html.replace("{{PREV_JSON}}", json.dumps(_prev_snapshot_map(data), ensure_ascii=False))
+    html = html.replace("{{PREV_BASE_JSON}}", json.dumps(prev_base(data.get("meta", {}).get("fetched_date"))))
     html = html.replace("{{LENS_JSON}}", json.dumps(lens_view(data), ensure_ascii=False))
     html = html.replace("{{FETCHED_DATE}}", fetched_label)
     html = html.replace("{{TOP1_NAME}}", top1_name)
@@ -965,25 +989,20 @@ def build_observatory():
         key = "country." + code
         return i18n.t(LANG, key) if code and key in i18n.catalog(i18n.DEFAULT) else i18n.t(LANG, "country.other")
     prev_mc = {}
-    snap_dir = DATA_DIR / "snapshots"
-    today = meta.get("fetched_date", "")
-    if snap_dir.exists():
-        for s in sorted(snap_dir.glob("*.json"), reverse=True):
-            if today and today in s.name:
-                continue
-            try:
-                prev = json.loads(s.read_text(encoding="utf-8"))
-                for reg in prev.get("regions", {}).values():
-                    rows = reg if isinstance(reg, list) else reg.get("stocks", [])
-                    for r in rows:
-                        if r.get("ticker") and r.get("mc"):
-                            prev_mc.setdefault(r["ticker"], r["mc"])
-                for r in prev.get("latent", []):
+    prev_file, _, _ = prev_snapshot(meta.get("fetched_date", ""))
+    if prev_file is not None:
+        try:
+            prev = json.loads(prev_file.read_text(encoding="utf-8"))
+            for reg in prev.get("regions", {}).values():
+                rows = reg if isinstance(reg, list) else reg.get("stocks", [])
+                for r in rows:
                     if r.get("ticker") and r.get("mc"):
                         prev_mc.setdefault(r["ticker"], r["mc"])
-                break
-            except Exception:
-                continue
+            for r in prev.get("latent", []):
+                if r.get("ticker") and r.get("mc"):
+                    prev_mc.setdefault(r["ticker"], r["mc"])
+        except Exception as e:
+            print(f"[warn] 지도 증감 기준 스냅샷 읽기 실패(무시): {e}")
     earth_set = {s.get("ticker") for s in latest.get("regions", {}).get("earth", {}).get("stocks", [])}
     latent_rows = latest.get("latent", [])
     latent_set = {x.get("ticker") for x in latent_rows}
@@ -1069,6 +1088,7 @@ def build_observatory():
         "fetched": meta.get("fetched_date", ""),
         "columns": columns_view(cols),
         "tiles": tiles,
+        "chgBase": prev_base(meta.get("fetched_date", "")),
         "dissected": dissected,
         "buffett": buffett_view(buffett),
         "legend": legend,
