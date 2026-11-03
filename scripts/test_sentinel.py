@@ -531,6 +531,32 @@ class FeedJudgeTest(unittest.TestCase):
         self.assertEqual((a, seen), ([], {"error": 0, "zero": 0, "ok": 0, "stale": 0}))
 
 
+class AutoAxisTest(unittest.TestCase):
+    """레전드 자동층 축 0 — 급감이 아니라 0 자체를 장애로(2026-11-03: 전망 성장률 두 달 0/34 무경보)."""
+
+    def test_zero_axis_alerts_realerts_and_recovers(self):
+        state = fresh_state()
+        dead = {"coverage": {"g_forward": [0, 33], "g_cagr3y": [14, 33], "eps": [24, 33]}}
+        days = [ps.judge_auto_axes(dead, state, f"2026-11-{d:02d}") for d in (3, 4, 10)]
+        self.assertEqual([len(a) for a in days], [1, 0, 1])                  # 첫날 · 침묵 · 7일 재알림
+        self.assertIn("전망 성장률 0/33", days[0][0]["text"])
+        ok = {"coverage": {"g_forward": [20, 33], "g_cagr3y": [14, 33], "eps": [24, 33]}}
+        r = ps.judge_auto_axes(ok, state, "2026-11-11")
+        self.assertEqual([x["kind"] for x in r], ["recover"])
+        self.assertEqual(ps.judge_auto_axes(ok, state, "2026-11-12"), [])
+
+    def test_small_or_missing_coverage_is_silent(self):
+        state = fresh_state()
+        self.assertEqual(ps.judge_auto_axes({"coverage": {"g_forward": [0, 3]}}, state, "2026-11-03"), [])
+        self.assertEqual(ps.judge_auto_axes({}, state, "2026-11-03"), [])
+        self.assertEqual(ps.judge_auto_axes(None, state, "2026-11-03"), [])
+
+    def test_wired_into_run(self):
+        src = Path(ps.__file__).read_text(encoding="utf-8")
+        self.assertIn('judge_auto_axes(read_json(DATA_DIR / "buffett_auto.json"', src)
+        self.assertIn("+ axis_alerts)", src)
+
+
 class RunWiringTest(unittest.TestCase):
     """run() 배선 — 판정부가 아무리 옳아도 **원장이 거기 닿지 않으면 무의미하다.**
 

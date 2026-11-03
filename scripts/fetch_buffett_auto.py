@@ -483,6 +483,79 @@ def _attach_annual(reports, annual):
     return out
 
 
+def _d(x):
+    try:
+        return datetime.strptime(str(x)[:10], "%Y-%m-%d")
+    except (TypeError, ValueError):
+        return None
+
+
+def date_labels(reports, annual):
+    """보고마다 **기간으로** 정한 (회계연도, 분기) → {id(보고): (연, 분기)}. 정할 수 없는 보고는 빠진다.
+
+    회계연도 = 연간 보고(10-K)의 [시작, 종료] 구간, 이름은 **종료일의 연도**(원천의 정상 규약과 같다 —
+    NVDA 2027Q2 = 2026-07-26 종료, WMT·MU·MSFT 도 같다). 마지막 연간 보고 뒤의 진행 중인 회계연도는
+    1년씩 앞으로 늘려 잡는다. 분기 = 회계연도 시작부터 그 보고 종료일까지의 경과(약 91일 단위).
+    """
+    spans = []
+    for r in annual or []:
+        s0, e0 = _d((r or {}).get("startDate")), _d((r or {}).get("endDate"))
+        if s0 and e0 and 330 <= (e0 - s0).days <= 400:
+            spans.append((s0, e0))
+    if not spans:
+        return {}
+    spans = sorted(set(spans), key=lambda x: x[1])
+    s_last, e_last = spans[-1]
+    for _ in range(3):                                   # 진행 중인 회계연도(아직 10-K 없음)
+        s_next = e_last + timedelta(days=1)
+        e_next = s_next + timedelta(days=(e_last - s_last).days)
+        spans.append((s_next, e_next))
+        s_last, e_last = s_next, e_next
+    out = {}
+    for r in reports or []:
+        e = _d((r or {}).get("endDate"))
+        if e is None:
+            continue
+        for s0, e0 in spans:
+            if s0 - timedelta(days=7) <= e <= e0 + timedelta(days=7):
+                q = int(round((e - s0).days / 91.3))
+                out[id(r)] = (e0.year, min(4, max(1, q)))
+                break
+    return out
+
+
+def relabel_by_dates(reports):
+    """원천 라벨이 기간과 어긋난 회사만 **기간으로 정한 라벨**로 통째로 바꾼다 → (새 목록, 바꾼 기록).
+
+    2026-10-22 F7 진단 · 2026-11-03 수리: CRWD(1월 결산)의 FY2026 1분기 10-Q(2025-02-01~04-30)가 `2025Q1` 로
+    실려 진짜 FY2025 Q1 과 충돌했다 — 같은 라벨의 '수정 공시'로 취급돼 한쪽이 버려지고 누적 차분 사슬이
+    끊겨 창이 2024-10-31(2025Q3)에 2년째 멈춰 있었다. 분기는 라벨이 아니라 **기간이 정의한다**(방지선은 정의로).
+    원천 라벨이 기간과 전부 맞으면(정상 회사 전부) 아무것도 바꾸지 않는다 — 고치는 범위는 어긋난 회사뿐이다.
+    한 건이라도 어긋나면 그 회사의 분기·연간 보고 라벨을 모두 기간 라벨로 맞춘다(섞어 쓰면 사슬이 또 끊긴다).
+    """
+    annual = list(getattr(reports, "annual", None) or [])
+    lab = date_labels(reports, annual)
+    if not lab:
+        return reports, []
+    changes = []
+    for r in reports or []:
+        new = lab.get(id(r))
+        old = ((r or {}).get("year"), (r or {}).get("quarter"))
+        if new and new != old:
+            changes.append(f"{old[0]}Q{old[1]}→{new[0]}Q{new[1]}(종료 {str(r.get('endDate'))[:10]})")
+    if not changes:
+        return reports, []
+    fixed = []
+    for r in reports:
+        new = lab.get(id(r))
+        fixed.append(dict(r, year=new[0], quarter=new[1]) if new else r)
+    ann = []
+    for r in annual:
+        e = _d((r or {}).get("endDate"))
+        ann.append(dict(r, year=e.year) if e else r)
+    return _attach_annual(fixed, ann), changes
+
+
 # TTM 이 이 일수보다 오래된 분기에서 끝나면 폐기한다. 270일 ≒ 3분기 —
 # 결산 지연·결번을 한 분기 더 봐주고도 '작년 것' 은 통과하지 못하는 눈금이다.
 STALE_TTM_DAYS = 270
@@ -1139,11 +1212,46 @@ def vet_forward_growth(g, source):
     return g, source, ""
 
 
+def auto_coverage(items):
+    """자동층 축별 측정 수 → {축: [측정, 대상]}. 대상 = 플로트형(사람 취재 전용)을 뺀 전 종목."""
+    tgt = [b for b in (items or {}).values()
+           if isinstance(b, dict) and (b.get("conversion_status") or {}).get("state") != "float_skip"]
+    n = len(tgt)
+    return {"g_forward": [sum(1 for b in tgt if b.get("g_forward") is not None), n],
+            "g_cagr3y": [sum(1 for b in tgt if b.get("g_cagr3y") is not None), n],
+            "eps": [sum(1 for b in tgt if b.get("eps_adj_ttm") is not None), n]}
+
+
+def growth_from_estimate_table(rows):
+    """yfinance earnings_estimate(기간별 행) → 2개 회계연도 CAGR | None. **순수 함수**.
+
+    rows: {"0y": {"avg": 올해 추정, "yearAgoEps": 작년 실적}, "+1y": {"avg": 내년 추정}}
+    작년 실적 → 내년 추정의 2년 CAGR(실적이 없거나 0 이하면 올해 추정 → 내년 추정 1년).
+    Finnhub 경로(연간 EPS 추정 CAGR)와 같은 뜻의 무료 원천이다 — 2026-11-03: yfinance 장기 성장률(+5y)은
+    원천이 값을 내지 않아(NaN) 첫 실행부터 34종 전부 비어 있었고, Finnhub 추정은 무료 키로 막혀 있었다.
+    """
+    def num(x):
+        v = to_num(x)
+        return v if v is not None and v == v else None      # NaN 은 값이 아니다(2026-09-02)
+    cur, nxt = (rows or {}).get("0y") or {}, (rows or {}).get("+1y") or {}
+    e1 = num(nxt.get("avg"))
+    if e1 is None or e1 <= 0:
+        return None
+    e_prev = num(cur.get("yearAgoEps"))
+    if e_prev is not None and e_prev > 0:
+        return cagr(e_prev, e1, 2.0)
+    e0 = num(cur.get("avg"))
+    if e0 is not None and e0 > 0:
+        return cagr(e0, e1, 1.0)
+    return None
+
+
 def fetch_forward_growth(ticker, key):
     """전망 성장률 → (값, 출처). 없으면 (None, 사유).
 
-    1순위 yfinance 장기 성장률(+5y/LTG) · 2순위 Finnhub 연간 EPS 추정 2개년 CAGR.
+    1순위 yfinance 장기 성장률(+5y/LTG) · 2순위 yfinance 연간 EPS 추정 CAGR · 3순위 Finnhub 연간 EPS 추정 CAGR.
     """
+    why = []
     try:
         import yfinance
         tbl = yfinance.Ticker(ticker).growth_estimates
@@ -1153,18 +1261,32 @@ def fetch_forward_growth(ticker, key):
             v = ltg_from_growth_table(pairs)
             if v is not None:
                 return v, "yfinance 장기 성장률"
+        why.append("yfinance 장기 없음")
     except Exception as e:
         print(f"[자동취재] {ticker} yfinance 전망 실패 ({type(e).__name__})", file=sys.stderr)
+        why.append(f"yfinance 장기 실패({type(e).__name__})")
+    try:
+        import yfinance
+        tbl = yfinance.Ticker(ticker).earnings_estimate
+        if tbl is not None and len(tbl):
+            rows = {str(idx): {c: tbl.loc[idx, c] for c in tbl.columns} for idx in tbl.index}
+            v = growth_from_estimate_table(rows)
+            if v is not None:
+                return v, "yfinance 연간 EPS 추정 CAGR"
+        why.append("yfinance 연간 추정 없음")
+    except Exception as e:
+        print(f"[자동취재] {ticker} yfinance 연간 추정 실패 ({type(e).__name__})", file=sys.stderr)
+        why.append(f"yfinance 연간 추정 실패({type(e).__name__})")
 
     if not key:
-        return None, "전망 없음(yfinance 미확보 · Finnhub 키 없음)"
+        return None, "전망 없음(" + " · ".join(why + ["Finnhub 키 없음"]) + ")"
     try:
         r = requests.get("https://finnhub.io/api/v1/stock/eps-estimate"
                          f"?symbol={ticker}&freq=annual&token={key}",
                          headers=UA, timeout=20)
         time.sleep(1.1)
         if r.status_code != 200:
-            return None, f"Finnhub 추정 HTTP {r.status_code}"
+            return None, " · ".join(why + [f"Finnhub 추정 HTTP {r.status_code}"])
         v = growth_from_annual_estimates((r.json() or {}).get("data") or [])
         if v is not None:
             return v, "Finnhub 연간 추정 CAGR"
@@ -1193,6 +1315,7 @@ def fetch_foreign_eps(ticker):
 
 
 STALE_DISCARDED = []          # 이번 회차 신선도 폐기 목록 (DM 묶음·산출물에 실린다)
+LABEL_FIXED = []              # 이번 회차 원천 분기 라벨 교정 목록(F7 — 산출물에 실린다)
 
 
 def build_block(c, key, now):
@@ -1246,6 +1369,8 @@ def build_block(c, key, now):
         gf, gf_src, gf_note = vet_forward_growth(gf, gf_src)
         block["g_forward"] = round(gf, 4) if gf is not None else None
         block["g_forward_source"] = gf_src if gf is not None else None
+        if gf is None:                           # 왜 없는가를 남긴다 — 두 달 침묵의 재발 방지(2026-11-03)
+            block["g_forward_status"] = gf_note or gf_src or "전망 성장률 미확보"
         if gf_note:
             block["notes"] = " · ".join(x for x in (block.get("notes"), gf_note) if x)
         return block, ("ok" if eps is not None else "zero")
@@ -1268,6 +1393,12 @@ def build_block(c, key, now):
             continue
         annual, _ao, _ac = fetch_reports(ticker, key, "annual", query=q)   # Q4 복원용
         reports = _attach_annual(reports, annual)
+        reports, fixes = relabel_by_dates(reports)
+        if fixes:
+            # 원천 라벨이 기간과 어긋났다 — 기간 라벨로 맞춘 사실을 남긴다(침묵하는 교정은 없다)
+            print(f"[자동취재] {ticker}: 원천 분기 라벨 {len(fixes)}건을 기간으로 교정 — "
+                  + " · ".join(fixes[:6]), file=sys.stderr)
+            LABEL_FIXED.append({"ticker": ticker, "n": len(fixes), "sample": fixes[:6]})
         eps, method, nq = eps_adj_ttm_from(reports)
         win = getattr(eps_adj_ttm_from, "last_window", None) if eps is not None else None
         r.update(reports=reports, eps=eps, method=method, win=win,
@@ -1388,6 +1519,8 @@ def build_block(c, key, now):
     gf, gf_src, gf_note = vet_forward_growth(gf, gf_src)
     block["g_forward"] = round(gf, 4) if gf is not None else None
     block["g_forward_source"] = gf_src if gf is not None else None
+    if gf is None:                               # 왜 없는가를 남긴다 — 두 달 침묵의 재발 방지(2026-11-03)
+        block["g_forward_status"] = gf_note or gf_src or "전망 성장률 미확보"
     if gf_note:
         block["notes"] = " · ".join(x for x in (block.get("notes"), gf_note) if x)
     if gf is None:
@@ -1406,6 +1539,7 @@ def main():
 
     now = datetime.now(KST)
     STALE_DISCARDED.clear()
+    LABEL_FIXED.clear()
     items, n_ok = {}, 0
     for c in cfg.get("items", []):
         tk = c.get("ticker", "")
@@ -1425,7 +1559,12 @@ def main():
               f" · {block.get('method') or '미산출'}")
 
     payload = {"generated_label": now.strftime("%Y-%m-%d %H:%M"),
-               "generated_at": now.isoformat(), "items": items}
+               "generated_at": now.isoformat(), "items": items,
+               # 자동층 축별 커버리지 — 관제탑(judge_auto_axes)이 **0 인 축**을 본다(2026-11-03: 전망 성장률이
+               # 2026-09-02 첫 실행부터 34종 전부 빈칸이었는데 두 달 동안 아무도 세지 않았다)
+               "coverage": auto_coverage(items)}
+    if LABEL_FIXED:
+        payload["label_fixed"] = list(LABEL_FIXED)
     # 폐기는 조용히 하지 않는다 — 산출물에 남기고, buffett_scout 가 DM 묶음에 싣는다.
     if STALE_DISCARDED:
         payload["stale_discarded"] = list(STALE_DISCARDED)

@@ -365,6 +365,41 @@ def judge_coverage(buf, state, today):
     return out, cur
 
 
+AUTO_AXES = {"g_forward": "전망 성장률", "g_cagr3y": "과거 3년 성장률", "eps": "조정 EPS"}
+AUTO_AXIS_MIN = 5          # 대상이 이보다 적으면(시험 데이터·축소 운영) 판정하지 않는다
+
+
+def judge_auto_axes(auto_doc, state, today):
+    """레전드 자동층 축이 **0** 이면 경보 — 7일 재알림 · 측정 재개 1회(2026-11-03).
+
+    이 수치가 0 이면 무엇이 잘못된 것인가(규칙 ①): 34종 전부의 전망 성장률이 동시에 없을 수는 없다 —
+    원천이 값을 내지 않거나 수집 경로가 끊긴 것이다. 실제로 자동 전망 성장률은 2026-09-02 첫 실행부터
+    두 달 동안 0/34 였다(원천 NaN · 유료 엔드포인트). judge_coverage 는 '직전 회차의 절반 이하로 급감'만
+    봐서 처음부터 0 인 축은 영원히 울지 않는다 — 급감이 아니라 **0 자체**를 장애로 센다.
+    """
+    cov = (auto_doc or {}).get("coverage") if isinstance(auto_doc, dict) else None
+    if not isinstance(cov, dict):
+        return []
+    rec = state.setdefault("auto_axes", {})
+    out = []
+    for k, name in AUTO_AXES.items():
+        v = cov.get(k)
+        if not (isinstance(v, list) and len(v) == 2 and all(isinstance(x, int) for x in v)):
+            continue
+        m, n = v
+        flag = "zero_" + k
+        if n >= AUTO_AXIS_MIN and m == 0:
+            tail = escalate(rec, flag, today)
+            if tail is not None:
+                out.append(alert("auto-axis-" + k,
+                                 f"레전드 자동층: {name} 0/{n} — 전 종목 빈칸(원천·수집 경로 끊김 의심, "
+                                 f"buffett_auto.json 의 사유 칸 확인){tail}", today))
+        elif m > 0 and clear(rec, flag):
+            out.append(alert("auto-axis-" + k + "-recover", f"레전드 자동층: {name} 측정 재개 {m}/{n} ✅",
+                             today, kind="recover"))
+    return out
+
+
 def judge_snapshot(snap_dir, today):
     """③ 오늘 날짜 스냅샷 부재 → 경보 (시총 수집이 통째로 실패한 신호)."""
     if (Path(snap_dir) / f"{today}.json").exists():
@@ -823,9 +858,11 @@ def run():
                                read_json(DATA_DIR / "spacex_watch.json", {}), state, today)
 
     wd_alerts = judge_withdrawals(read_json(DATA_DIR / "essays.json", {}), today)
+    axis_alerts = judge_auto_axes(read_json(DATA_DIR / "buffett_auto.json", {}), state, today)
 
     alerts = (sig_alerts + buf_alerts + cov_alerts + snap_alerts + stale_alerts
-              + bot_alerts + mat_alerts + feed_alerts + i18n_alerts + probe_alerts + wd_alerts)
+              + bot_alerts + mat_alerts + feed_alerts + i18n_alerts + probe_alerts + wd_alerts
+              + axis_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(
