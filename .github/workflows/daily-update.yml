@@ -446,7 +446,8 @@ jobs:
             MSG="🚨 UNIVERTRIX 데일리 수집 중단 — selftest 실패(직전 연속 실패 ${N}회 + 이번)
           · 실패: ${DETAIL:-실패 목록 없음(실행 기록 확인)}
           · selftest 가 풀릴 때까지 매 회차 수집·빌드·커밋이 멈춥니다(사이트·관제실 정지).
-          · Claude 세션에 '데일리 selftest 실패 수리'라고 요청하세요.
+          · 자가 수리 에이전트가 원인을 찾아 수리안을 만듭니다(보통 30분 안에 DM — 링크에서 Merge).
+          · 수리 실패 DM 이 오면 Claude 세션에 '데일리 selftest 실패 수리'라고 요청하세요.
           $RUN_URL"
           fi
           API="https://api.telegram.org/bot$TG_TOKEN/sendMessage"

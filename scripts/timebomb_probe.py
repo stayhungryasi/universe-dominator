@@ -149,8 +149,24 @@ def run(force=False, offsets=OFFSETS, selftest=None, send=None):
     return 0
 
 
+def at_date(date_str, selftest=None):
+    """`--at YYYY-MM-DD` — 시계만 그 날(정오 KST)로 옮겨 selftest 를 한 번 돌린다(자가 수리 에이전트의 검증용).
+    실패·판정 불가면 1, 통과면 0."""
+    dest = datetime.strptime(date_str, "%Y-%m-%d").replace(hour=12, tzinfo=KST)
+    fails, err = run_at(dest, selftest)
+    if err:
+        print(f"[시한폭탄] {date_str}: 판정 불가 — {err}")
+        return 1
+    for f in fails:
+        print(f"[시한폭탄] {date_str}: {f.get('label')} → {str(f.get('got', ''))[:300]}")
+    print(f"[시한폭탄] {date_str}: " + (f"실패 {len(fails)}건" if fails else "전부 통과"))
+    return 1 if fails else 0
+
+
 def main():
     sys.path.insert(0, str(Path(__file__).parent))
+    if "--at" in sys.argv:
+        return at_date(sys.argv[sys.argv.index("--at") + 1])
     try:
         return run(force="--force" in sys.argv)
     except Exception as e:

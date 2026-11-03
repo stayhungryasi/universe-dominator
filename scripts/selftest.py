@@ -2795,7 +2795,7 @@ console.log(JSON.stringify(cases.map(c => {
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
                  "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit",
                  "test_i18n", "test_translate", "test_history_migration", "test_spacex_watch2",
-                 "test_spacex_news", "test_probe_audit", "test_timebomb", "test_snapshot_gap", "test_calendar", "test_legend_auto"):
+                 "test_spacex_news", "test_probe_audit", "test_timebomb", "test_snapshot_gap", "test_calendar", "test_legend_auto", "test_self_repair"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)

@@ -1,0 +1,124 @@
+name: Self Repair (selftest)
+
+# 자가 수리 에이전트 (2026-11-03) — selftest 가 데일리를 세우면(now) 또는 시한폭탄 조기경보가 미래 실패를
+# 찾으면(future) Claude 가 원인을 찾아 수리안을 만든다. 실제 사고: 시계에 기댄 테스트 하나로 데일리가 5일·14회
+# 멈췄는데, 사람이 Claude 세션을 열기 전까지 아무것도 고쳐지지 않았다 — 수동 단계는 결함이다.
+#   · 수리안은 기계가 검사한다: selftest 통과 · 금지 구역(.github·agent-research·사람 오버라이드·수집 데이터) 무손상 ·
+#     테스트·단언 수 감소 없음 · skip 추가 없음 — 하나라도 어기면 버리고 소장 DM 으로 사람을 부른다
+#   · 기본은 repair/ 브랜치 + PR(사람이 Merge). 저장소 변수 REPAIR_MERGE=auto 이면 검사 줄을 건드리지 않은
+#     수리만 main 에 바로 넣는다
+#   · 같은 실패(서명)는 한 번만 — repair/<모드>-<서명> 브랜치가 있으면 건너뛴다
+on:
+  workflow_run:
+    workflows: ["Daily Universe Dominator Update"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'now: 오늘 selftest 실패 수리 / future: 조기경보가 찾은 미래 실패를 미리 수리'
+        type: choice
+        default: now
+        options: [now, future]
+
+concurrency:
+  group: self-repair
+  cancel-in-progress: false
+
+permissions:
+  contents: write          # repair/ 브랜치 푸시(REPAIR_MERGE=auto 면 main)
+  pull-requests: write     # 수리안 PR (저장소 설정 'Actions 의 PR 생성 허용'이 꺼져 있으면 비교 링크로)
+  actions: read            # 데일리 실행의 selftest 단계 결과 조회
+
+jobs:
+  repair:
+    # 취소된 데일리(cancel-in-progress)는 대상이 아니다
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GITHUB_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ github.token }}
+      REPAIR_MODEL: ${{ vars.REPAIR_MODEL || 'best' }}
+      REPAIR_BUDGET: ${{ vars.REPAIR_BUDGET_USD || '15' }}
+      REPAIR_MERGE: ${{ vars.REPAIR_MERGE || 'pr' }}
+      # 수리 도구 — 셸은 selftest·단위 테스트·컴파일·시간 이동 selftest·git 조회만(네트워크 도구 없음)
+      REPAIR_TOOLS: 'Read,Write,Edit,Grep,Glob,Bash'
+      REPAIR_ALLOW: 'Read,Write,Edit,Grep,Glob,Bash(python scripts/selftest.py),Bash(python scripts/selftest.py *),Bash(python scripts/test_*),Bash(python -m py_compile *),Bash(python scripts/timebomb_probe.py --at *),Bash(git diff*),Bash(git status*),Bash(git log*),Bash(git show*)'
+      # 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 50
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Plan (now · future · none)
+        id: plan
+        run: python scripts/self_repair.py plan
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          WR_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          WR_RUN_ID: ${{ github.event.workflow_run.id }}
+          INPUT_MODE: ${{ inputs.mode }}
+
+      - name: Reproduce the failure
+        id: repro
+        if: steps.plan.outputs.mode != 'none'
+        run: python scripts/self_repair.py reproduce
+
+      - uses: actions/setup-node@v7
+        if: steps.repro.outputs.proceed == 'true'
+        with:
+          node-version: '22'
+
+      - name: Install Claude Code + baseline inventory + prompt
+        if: steps.repro.outputs.proceed == 'true'
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --version
+          python scripts/self_repair.py inventory _repair/before.json
+          python scripts/self_repair.py prompt
+
+      - name: Repair (Claude Code headless)
+        id: agent
+        if: steps.repro.outputs.proceed == 'true'
+        run: |
+          claude -p "$(cat _repair/prompt.md)" \
+            --model "$REPAIR_MODEL" --max-turns 120 --max-budget-usd "$REPAIR_BUDGET" \
+            --tools "$REPAIR_TOOLS" --allowedTools "$REPAIR_ALLOW" \
+            --output-format json > _repair/agent.json
+          python -c "import json;d=json.load(open('_repair/agent.json'));print('수리 종료:',d.get('subtype'),'· 비용',d.get('total_cost_usd'),'· 턴',d.get('num_turns'))"
+        continue-on-error: true
+
+      - name: Guard (selftest · forbidden paths · no weakened tests)
+        id: guard
+        if: steps.repro.outputs.proceed == 'true'
+        run: python scripts/self_repair.py guard _repair/before.json
+
+      - name: Publish repair (PR, or main when REPAIR_MERGE=auto)
+        if: steps.repro.outputs.proceed == 'true' && steps.guard.outputs.ok == 'true'
+        run: python scripts/self_repair.py publish
+
+      - name: Call a human (repair failed)
+        if: ${{ !cancelled() && steps.repro.outputs.proceed == 'true' && steps.guard.outputs.ok != 'true' }}
+        run: python scripts/self_repair.py notify-fail
+
+      - name: Keep repair artifacts
+        if: ${{ always() && steps.repro.outputs.proceed == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: self-repair-${{ github.run_id }}
+          path: _repair/
+          retention-days: 30
