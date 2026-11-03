@@ -854,12 +854,69 @@ def fit_budget(data, report_ids, budget=None):
             if len(src.get("claims") or []) > cap:
                 src["claims"] = src["claims"][:cap]
         trimmed.append(f"claims:{cap}")
-    if _size(data) > budget:
+    # 2026-11-03: 11월 월간 보고서가 들어오자 ①~③을 다 덜어도 434KB — 보고서·출처가 쌓일수록 '덜어낼 것'도
+    # 끝까지 정해 둬야 한다. 아래는 옛 보고서(최신 사건 2 + 최신 월간 1 밖)부터, 화면 링크는 남기고 검색 군살만 뺀다.
+    old = set(order)
+
+    def _is_old_rep(e):
+        a_ = e.get("anchor", "")
+        return a_.startswith("report/") and a_[7:].split(":")[0] in old
+
+    def s_changelog():
         for e in data.get("search") or []:
             if e.get("anchor", "").startswith("changelog/"):
                 e.pop("full", None)
-        trimmed.append("full:changelog")
-    data["budget"] = {"bytes": _size(data), "limit": budget, "trimmed": trimmed}
+
+    def s_claims3():
+        for src in data.get("sources") or []:
+            src["claims"] = [dict(c, text=(c.get("text") or "")[:90]) for c in (src.get("claims") or [])[:3]]
+
+    def s_old_text():
+        for e in data.get("search") or []:
+            if _is_old_rep(e):
+                e["text"] = (e.get("text") or "")[:80]
+
+    def s_old_sections():
+        seen, out = set(), []
+        for e in data.get("search") or []:
+            if _is_old_rep(e):
+                rid = e["anchor"][7:].split(":")[0]
+                if rid in seen:
+                    continue                 # 옛 보고서는 첫 절 하나만 검색 입구로 남긴다
+                seen.add(rid)
+            out.append(e)
+        data["search"] = out
+
+    def _old_claim(c):
+        w = c.get("where") or ""
+        return any(k in w for k in old) and not any(k in w for k in keep)
+
+    def s_old_claims():
+        for src in data.get("sources") or []:
+            # 옛 보고서만 인용한 주장은 뺀다 — 이정표·KPI·사건·최신 보고서가 인용한 주장은 남는다(개수 n 은 그대로)
+            src["claims"] = [c for c in src.get("claims") or [] if not _old_claim(c)]
+
+    def s_old_sources():
+        gone = {src.get("id") for src in data.get("sources") or [] if not src.get("claims")}
+        data["search"] = [e for e in data.get("search") or []
+                          if not (e.get("anchor", "").startswith("sources/") and e["anchor"][8:] in gone)]
+
+    def s_old_search():
+        data["search"] = [e for e in data.get("search") or [] if not _is_old_rep(e)]
+
+    def s_old_rows():
+        data["sources"] = [src for src in data.get("sources") or [] if src.get("claims")]
+
+    # 마지막 두 단계까지 가면 옛 보고서는 검색에서 빠지고 보고서 목록·본문으로만 읽힌다(화면에서 사라지지는 않는다)
+    for name, step in (("full:changelog", s_changelog), ("claims:3", s_claims3), ("text:old", s_old_text),
+                       ("sections:old", s_old_sections), ("claims:old", s_old_claims),
+                       ("sources:old", s_old_sources), ("search:old", s_old_search), ("rows:old", s_old_rows)):
+        if _size(data) <= budget:
+            break
+        step()
+        trimmed.append(name)
+    over = _size(data) > budget
+    data["budget"] = {"bytes": _size(data), "limit": budget, "trimmed": trimmed, "over": over}
     return trimmed
 
 

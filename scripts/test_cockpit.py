@@ -207,6 +207,26 @@ class BudgetTest(unittest.TestCase):
         self.assertTrue({"2026-10", "2026-10-27-event", "2026-10-27-event-r2"} <= kept)   # 최신 월간 + 최신 사건 2
         self.assertLessEqual(len(json.dumps(d, ensure_ascii=False).encode()), 260_000 + 200)
 
+    def test_floor_does_not_grow_with_old_reports(self):
+        """2026-11-03: 11월 월간이 들어오자 ①~③을 다 덜어도 434KB — 덜어낼 순서를 끝까지 정해 둔다.
+        옛 보고서가 아무리 쌓여도 마지막 단계까지 가면 검색·출처에 옛 보고서 몫이 남지 않아야 한다(바닥이 고정)."""
+        def mk(n_old):
+            ids = [f"2026-0{1 + i % 8}-{10 + i:02d}-event" for i in range(n_old)] + ["2026-11", "2026-11-02-event", "2026-11-03-event"]
+            search, sources = [], []
+            for r in ids:
+                search += [{"anchor": f"report/{r}:s{k}", "title": r, "text": "가" * 200, "full": "나" * 900} for k in range(10)]
+                sources += [{"id": f"{r}-{k}", "url": f"https://x/{r}/{k}", "n": 1,
+                             "claims": [{"where": f"보고서 {r} · 절", "text": "다" * 120}]} for k in range(10)]
+            search += [{"anchor": f"sources/{x['id']}", "title": x["url"], "text": "t"} for x in sources]
+            return {"search": search, "sources": sources}, ids
+        sizes = []
+        for n in (10, 40):
+            d, ids = mk(n)
+            pc.fit_budget(d, ids, budget=1)
+            sizes.append(len(json.dumps(d, ensure_ascii=False).encode()))
+            self.assertFalse(any("event" in e["anchor"] and not any(k in e["anchor"] for k in ids[-3:]) for e in d["search"]))
+        self.assertLess(abs(sizes[1] - sizes[0]), 2000)                # 옛 보고서 10 → 40 이어도 바닥은 그대로
+
     def test_render_wired(self):
         """render() 가 예산 맞추기를 실제로 거친다(배선) — 예산을 낮추면 덜어낸 기록이 데이터에 남고 상한 안이다."""
         from unittest import mock
