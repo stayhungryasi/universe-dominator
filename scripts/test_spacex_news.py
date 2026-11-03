@@ -217,7 +217,7 @@ class RunTest(unittest.TestCase):
         with mock.patch("requests.post", side_effect=post):
             items, _ = sn.judge("k", [dict(H(0, "t", "P"), i=0)], [], [])
         self.assertEqual(items[0]["claim_ko"], '따옴표 "가" 든 문장')
-        self.assertEqual(sent["tool_choice"], {"type": "tool", "name": "report"})
+        self.assertEqual(sent["tool_choice"], {"type": "auto"})          # 강제(tool·any)는 모델이 400 으로 거절(실측)
         self.assertEqual(sent["tools"][0]["name"], "report")
 
     def test_tool_rejected_falls_back_to_text(self):

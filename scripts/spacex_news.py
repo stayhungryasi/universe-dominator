@@ -272,7 +272,7 @@ def order_fresh(fresh):
     return out
 
 
-# 판정 제출 도구 — 응답을 도구 입력(JSON 객체)으로 강제한다. 2026-11-03 복구 회차: 자유 텍스트 JSON 이 한 번 깨져
+# 판정 제출 도구 — 응답을 도구 입력(JSON 객체)으로 받는다(강제는 모델이 거절 — tool_choice auto). 2026-11-03 복구 회차: 자유 텍스트 JSON 이 한 번 깨져
 # (JSONDecodeError) 482건 중 80건만 판정하고 멈췄다. 도구 입력은 API 가 JSON 으로 돌려주므로 해석 오류가 없다.
 REPORT_TOOL = {
     "name": "report",
@@ -306,7 +306,9 @@ def judge(api_key, headlines, triggers, known):
              "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n\n" + text_in}]}
     body = plain if TOOL_ERRORS else \
         {"model": MODEL, "max_tokens": 6000, "tools": [REPORT_TOOL],
-         "tool_choice": {"type": "tool", "name": "report"},
+         # 강제(tool·any)는 이 모델이 받지 않는다 — 2026-11-03 실측 400 "tool_choice: type tool and any are not supported
+         # for this model". auto + 지시문으로 도구를 쓰게 하고, 본문 JSON 은 폴백으로 남긴다
+         "tool_choice": {"type": "auto"},
          "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n(제출은 report 도구로.)\n\n" + text_in}]}
     r = requests.post("https://api.anthropic.com/v1/messages", headers=hdr, json=body, timeout=240)
     if r.status_code == 400 and body is not plain:
