@@ -8,6 +8,8 @@
 
 막으려는 것 한 문장: **오늘은 통과하지만 며칠 뒤 저절로 실패할 테스트가 그날 파이프라인을 세우는 것.**
 그래서 selftest 를 시계만 미래로 옮겨(+3·+14·+45일) 돌려 보고, 실패하면 **그날이 오기 전에** 소장 DM 으로 알린다.
++0일은 '다음 회차 관문 미리보기'다 — 이 스텝은 빌드 뒤·커밋 앞에 돌므로, 이번 회차 산출물(데이터·HTML)이
+다음 회차 selftest 를 세우는지를 커밋 전에 본다(시계가 아니라 산출물이 원인인 정지).
 오늘의 수집은 막지 않는다(비차단) — 막으면 시한폭탄이 터지기 45일 전부터 파이프라인이 서 버린다.
 
 · 하루 한 번(같은 날 두 번째 full 회차부터는 건너뜀) · 같은 실패는 7일마다 재알림 · 해소되면 1회 알림
@@ -30,7 +32,7 @@ except Exception:
 HERE = Path(__file__).parent.parent
 STATE_PATH = HERE / "data" / "timebomb_state.json"
 KST = timezone(timedelta(hours=9))
-OFFSETS = (3, 14, 45)
+OFFSETS = (0, 3, 14, 45)
 REALERT_DAYS = 7
 
 # 자식 프로세스 — 시계만 옮겨 selftest 를 그대로 돌린다(같은 코드·같은 데이터)
@@ -95,8 +97,13 @@ def signature(found):
 
 def message(found):
     first = min(found, key=lambda x: x["offset"])
-    lines = [f"⏰ UNIVERTRIX 시한폭탄 조기경보 — 오늘은 통과하지만 {first['date']}(+{first['offset']}일)부터 selftest 가 실패합니다",
-             "· 그날이 오면 데일리 수집·빌드·커밋이 멈춥니다(2026-10-29 실제 사고: 5일 정지)."]
+    if first["offset"] == 0:
+        lines = ["⚠️ UNIVERTRIX 다음 회차 정지 예고 — 이번 회차 산출물로 selftest 가 실패합니다",
+                 "· 이번 회차는 커밋합니다(데이터 보존). 수리 전까지 다음 데일리부터 수집·빌드·커밋이 멈춥니다."]
+    else:
+        lines = [f"⏰ UNIVERTRIX 시한폭탄 조기경보 — 오늘은 통과하지만 {first['date']}(+{first['offset']}일)부터 "
+                 "selftest 가 실패합니다",
+                 "· 그날이 오면 데일리 수집·빌드·커밋이 멈춥니다(2026-10-29 실제 사고: 5일 정지)."]
     for x in sorted(found, key=lambda x: x["offset"]):
         if x["error"]:
             lines.append(f"· +{x['offset']}일: 판정 불가 — {x['error']}")

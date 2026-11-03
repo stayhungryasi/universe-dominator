@@ -329,6 +329,7 @@ jobs:
       # ⏰ 시한폭탄 조기경보 — selftest 를 미래 날짜(+3·+14·+45일)로 미리 돌려, 며칠 뒤 저절로 실패할 테스트를
       # 그날 전에 소장 DM 으로 알린다(2026-10-29 실제 사고: 실제 시계에 기댄 테스트가 데일리를 5일 세웠다).
       # 비차단 — 오늘의 수집은 막지 않는다. 하루 한 번(같은 날 두 번째 회차부터 건너뜀).
+      # +0일 = 다음 회차 관문 미리보기 — 빌드 뒤·커밋 앞이라 이번 산출물이 다음 selftest 를 세우는지 커밋 전에 본다.
       - name: Timebomb early warning (future-dated selftest)
         if: env.FULL_RUN == 'true'
         run: python scripts/timebomb_probe.py

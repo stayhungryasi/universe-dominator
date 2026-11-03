@@ -47,6 +47,18 @@ class TimebombTest(unittest.TestCase):
         self.assertIn("2026-11-24(+14일)", tb.message(found))
         self.assertIn("test_launch_wiring", tb.message(found))
 
+    def test_output_failure_is_next_run_warning(self):
+        """+0일 = 다음 회차 관문 미리보기 — 시계와 무관하게 실패하면 '다음 회차 정지 예고'로 운다."""
+        bad = self.tmp / "out.py"
+        bad.write_text("import os,json;open(os.environ['SELFTEST_FAILS_OUT'],'w').write(json.dumps("
+                       "{'fails':['산출물'],'detail':[{'label':'산출물 예산','got':'407KB'}]}))\n", encoding="utf-8")
+        found = tb.probe((0, 3), datetime(2026, 11, 10, 9, 0, tzinfo=KST), bad)
+        self.assertEqual([x["offset"] for x in found], [0, 3])
+        msg = tb.message(found)
+        self.assertIn("다음 회차 정지 예고", msg)
+        self.assertNotIn("시한폭탄", msg.splitlines()[0])
+        self.assertIn(0, tb.OFFSETS)
+
     def test_clock_really_moves(self):
         """시계가 정말 옮겨지는가 — 오늘 날짜로는 통과해야 한다(가짜 selftest 는 실제 시계를 읽는다)."""
         fails, err = tb.run_at(datetime(2026, 11, 1, tzinfo=KST), self.fake)
