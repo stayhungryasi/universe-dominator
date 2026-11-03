@@ -2,15 +2,16 @@
  "kind": "research",
  "id": "6f3fb43589eb",
  "lang": "es",
- "src_hash": "8c0a9b52f74d",
+ "src_hash": "02debe527408",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 18:18",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "SNDK subió un 5,79% impulsado por el entusiasmo de la IA, recibiendo una calificación de compra con confianza del 90% y un objetivo de precio de 1.459 dólares (con potencial de aumento del 6%)",
-  "summary_ko.1": "El contrato del nuevo modelo de negocio (NBM) de SNDK tiene ingresos mínimos esperados de 93.900 millones de dólares (con margen de ganancia neta de aproximadamente el 80%), y el objetivo de precio en el escenario alcista es de 2.409 dólares",
-  "summary_ko.2": "Los ingresos del cuarto trimestre del año fiscal fueron de 8.965 millones de dólares (aumento del 372% interanual), logrando 6 trimestres consecutivos de superar expectativas, con un aumento de precio de acciones acumulado del 481,53% en lo que va del año",
-  "title": "SanDisk vuelve a estar en el punto de mira. Aquí es donde veo que se dirige el precio de las acciones de SNDK a continuación"
- }
+ "at": "2026-11-03 20:24",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[10§summary_ko.1] 숫자: 원문에 없는 숫자 939 billion",
+  "[10§summary_ko.1] 숫자: 원문의 숫자가 빠짐 939억",
+  "[10§summary_ko.2] 숫자: 원문에 없는 숫자 896.5 billion",
+  "[10§summary_ko.2] 숫자: 원문의 숫자가 빠짐 896.5억"
+ ]
 }

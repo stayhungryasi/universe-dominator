@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "dc56dadc29ca",
  "lang": "es",
- "src_hash": "886b12959aab",
+ "src_hash": "fe0295cbd383",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 18:18",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Amazon (AMZN) subió entre un 2% y 5,6% el lunes por la mañana, con Helena Wang de Phillip Securities elevando el precio objetivo de $320 a $330 e incrementando la calificación de Acumular a Comprar",
-  "summary_ko.1": "La 'visibilidad de demanda sólida' de los servicios en la nube AWS y las ofertas de IA son la base de la elevación, compensando la caída de la semana anterior causada por los gastos de capital planeados de 220.000 millones de dólares para 2026 y planes de gastos adicionales para 2027",
-  "title": "Por qué las acciones de Amazon se dispararon el lunes por la mañana"
- }
+ "at": "2026-11-03 20:24",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[19§summary_ko.1] 숫자: 원문에 없는 숫자 42 billion",
+  "[19§summary_ko.1] 숫자: 원문의 숫자가 빠짐 42억"
+ ]
 }

@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "7c906065f42b",
  "lang": "es",
- "src_hash": "747bb1c84ac4",
+ "src_hash": "0831b4a90c0a",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 17:48",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Applied Materials (AMAT) mostró un crecimiento de EPS ajustado del 41% e ingresos DRAM (incluida memoria de ancho de banda alto) del 52%, pero cayó un 29,2% en octubre reflejando ajuste de valoración.",
-  "summary_ko.1": "El precio actual de la acción es de 390,09 dólares, capitalización de mercado de 309.570 millones de dólares, cayó un 28,06% mensual pero sube un 64,10% anual (rango de 52 semanas: 203,40-739,67 dólares).",
-  "summary_ko.2": "Los analistas han revisado al alza las perspectivas de ganancias para 2026, pero la presión a corto plazo continúa por liquidaciones de ETF generalizadas en octubre y volatilidad del sector de chips.",
-  "title": "Applied Materials (AMAT) cae a pesar del aumento de EPS y estimaciones de analistas más altas"
- }
+ "at": "2026-11-03 20:24",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[9§summary_ko.0] 숫자: 원문에 없는 숫자 309.57 billion",
+  "[9§summary_ko.0] 숫자: 원문의 숫자가 빠짐 309.57억"
+ ]
 }

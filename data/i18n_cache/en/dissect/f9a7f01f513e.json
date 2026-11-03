@@ -1,0 +1,31 @@
+{
+ "kind": "dissect",
+ "id": "f9a7f01f513e",
+ "lang": "en",
+ "src_hash": "ed4f11807f46",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-03 20:24",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Whistle Model: Basic Specifications and Use Cases",
+  "sections.1.h": "Key Features: Three Voice Processing Tasks",
+  "sections.2.h": "Model Architecture: From Frontend to Decoding",
+  "sections.3.h": "Performance Comparison: Major Benchmark Results",
+  "sections.4.h": "Layer Depth Selection and Silence Detection",
+  "sections.5.h": "Integrated Use: Combination Method with Needle",
+  "sections.6.h": "Python API and Command-Line Interface",
+  "sections.7.h": "Deployment Platforms and API Surface",
+  "sections.8.h": "Configuration and Validation Methods",
+  "sections.0.ko": "Whistle, released by Cactus Compute, is a speech recognition model delivered as a single 16.9MB file that runs independently in low-resource environments such as mobile, wearable, robotic, smart home, automotive, and microcontroller devices. It supports 7 languages: English, German, French, Spanish, Italian, Dutch, and Polish, with approximately 11ms latency to first token generation. When combined with the Needle text model loaded on the same C++ engine, a single binary can convert voice input directly into tool calls, simplifying multimodal AI usage.",
+  "sections.1.ko": "Whistle provides three core capabilities processed entirely on-device. First is Transcription, which converts 16kHz mono audio up to 30 seconds at a time into text, with automatic language detection or manual specification. Second is word timestamps, which extracts the start time, end time, and confidence for each word from the decoder attention mechanism. Third is speech embedding, which provides encoder output as embeddings one row per 80ms frame, useful for extracting semantic features of speech without transcription.",
+  "sections.2.ko": "The frontend frames 16kHz audio with 25ms windows and 10ms hop intervals, converting to 80 log-mel bins and limiting to the 250–3500Hz band. A 128-channel convolutional stem downsamples 3 times, generating a final 375 frames (1 frame per 80ms). The encoder consists of 8 simple attention blocks shared with Needle and is non-causal, accessing all speech simultaneously. The decoder comprises 8 ladder-shaped simple attention blocks, with gated cross-attention at each layer to read encoder output and perform engram lookup. Finally, 5-beam search identifies optimal candidates, and keyword biasing can increase probability for specific phrases.",
+  "sections.3.ko": "Whistle outperforms OpenAI's Whisper base model on LibriSpeech test-clean and test-other, SPGISpeech, Earnings-22, and FLEURS averages. However, the Whisper base model (145.3MB) leads on TED-LIUM, AMI, and MLS averages, with considerable model size difference. In terms of execution speed, on Apple M4 Pro CPU, Whistle's first token generation time varies by clip length: 5.9ms for 5-second clips, 11.1ms for 10-second clips, and 36.3ms for 30-second clips. Whisper pads all inputs to 30 seconds, showing consistent first token time regardless of clip length.",
+  "sections.4.ko": "Whistle trained all depths from 2 to 8 layers as independent models during training, allowing decoder depth selection at load time via the --audio-depth flag. This enables dynamic trade-off adjustment between accuracy and speed. The encoder always runs all 8 layers. The model also measures the audio level range of a clip before decoding begins, returning blank transcription and empty language for silence below the threshold, then skipping beam search entry.",
+  "sections.5.ko": "The Needle engine's needle_load function loads models stored in .cact files, allowing the same binary to run audio-only, text-only, or both combined. When processing audio alone, use the needle --model whistle.cact --audio clip.wav command; when processing both audio and tool calls, load both models, transcribe audio, then pass the result to tool interpretation. The returned result is a single JSON object containing function call, confidence, transcription text, and language.",
+  "sections.6.ko": "Whistle's capabilities are also accessible through the Python needle library, with needle.transcribe() function providing transcription text directly. Key parameters include word_timestamps=True to add start time, end time, and confidence for each word; a keywords list to increase probability for specific phrases; and a language parameter to bypass language detection. From the command line, needle whistle playground transcribes microphone input in real time, or needle whistle compare performs parallel comparison of Whistle, Whisper, and Moonshine performance on identical clips.",
+  "sections.7.ko": "The Needle engine is pre-built and distributed for 17 target platforms: macOS, Linux, Android, iOS, watchOS, Windows on ARM, RISC-V, MIPS, web browsers, and WASI components. Each folder contains a needle binary, libneedle.a static library, and needle.h header, capable of loading any .cact file. The C API consists of only three functions—needle_load, needle_transcribe, needle_embed—minimizing interface complexity. Model weights are hosted on Hugging Face, and engine source code and platform folders are publicly available in the Cactus-Compute/needle3 repository on GitHub.",
+  "sections.8.ko": "The engine does not read environment variables; all behavior is controlled by compiled defaults or explicit flags. Floating-point samples in 16kHz WAV or raw format require only the base installation, but other sample rates or microphone capture require the [mic] extra option to install soxr and sounddevice libraries. Word error rate evaluation was performed on 86,174 utterances using Whisper normalization, and test data leakage was verified as absent by comparing audio checksums and speaker IDs.",
+  "caveat": "In benchmark comparisons, figures for Whisper and Moonshine are those published by the authors, and some datasets are unreported or use different subsets, so differences from direct evaluation under identical conditions may exist."
+ }
+}

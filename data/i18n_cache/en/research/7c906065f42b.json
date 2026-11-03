@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "7c906065f42b",
  "lang": "en",
- "src_hash": "b2f562fc3f3b",
+ "src_hash": "f555dea209e2",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 17:48",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Applied Materials (AMAT) adjusted EPS up 41%, DRAM revenue (including high-bandwidth memory) up 52%, but fell 29.2% in October reflecting valuation adjustment",
-  "summary_ko.1": "Current stock price of $390.09 with market cap of $309.57 billion declined 28.06% monthly yet up 64.10% annually (52-week range: $203.40-$739.67)",
-  "summary_ko.2": "Analysts raised 2026 outlook but near-term weakness persists due to October broad-based ETF liquidations and chip sector volatility"
- }
+ "at": "2026-11-03 20:24",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[16§summary_ko.0] 숫자: 원문에 없는 숫자 309.57 billion",
+  "[16§summary_ko.0] 숫자: 원문의 숫자가 빠짐 309.57억"
+ ]
 }

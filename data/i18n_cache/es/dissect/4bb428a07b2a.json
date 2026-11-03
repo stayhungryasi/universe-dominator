@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "4bb428a07b2a",
+ "lang": "es",
+ "src_hash": "41624df27fdc",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-03 20:24",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Introducción de nuevo producto y objetivos de diseño",
+  "sections.1.h": "Reducción de precios y mejoras en el ecosistema",
+  "sections.2.h": "Rendimiento de referencia y comparación de capacidades",
+  "sections.3.h": "Configuración de rendimiento ajustable y equilibrio coste-capacidad",
+  "sections.4.h": "Casos de uso reales de clientes y validación",
+  "sections.5.h": "Estrategia de precios y escenarios de uso",
+  "sections.6.h": "Alineación de seguridad y normas regulatorias",
+  "sections.7.h": "Disponibilidad de plataforma y mejoras adicionales",
+  "sections.0.ko": "Anthropic ha lanzado Claude Haiku 5.5, que es el modelo más económico, rápido y capaz de la serie Haiku existente. Este modelo está optimizado para tareas repetitivas y en volumen como resúmenes, consultas de bases de datos y clasificación, y es adecuado para ser utilizado como subagente junto con modelos más grandes o para tareas donde la velocidad es crítica, como soporte al cliente en tiempo real. Puede operarse con un coste aproximadamente 75% inferior en promedio en comparación con Haiku 4.5 anterior.",
+  "sections.1.ko": "Con el lanzamiento de Haiku 5.5, Anthropic ha implementado mejoras que aumentan el valor de toda su línea de modelos. Ha reducido el precio de lectura de caché de Claude Sonnet 5.5 a la mitad, logrando una reducción de costes de aproximadamente el 20% en la mayoría de las tareas de agente. También ha introducido nuevos créditos mensuales de API para suscriptores de Claude Max y Team, diseñados para apoyar el desarrollo de nuevos agentes y aplicaciones en la plataforma Claude.",
+  "sections.2.ko": "Haiku 5.5 supera significativamente a la generación anterior en diversos puntos de referencia, incluyendo tareas de conocimiento, uso de ordenador, razonamiento y codificación. Por ejemplo, registró un 72,4% en la evaluación de uso de ordenador OSWorld (Haiku 4.5 obtuvo 15,7%), y en la evaluación de tareas de conocimiento GDPval-AA también fue muy superior con 1620 puntos en comparación con 735 puntos de Haiku 4.5. La característica clave es que esta mejora de rendimiento también proporciona eficiencia de costes simultáneamente.",
+  "sections.3.ko": "Haiku 5.5 es el primero de la serie Haiku en ofrecer configuración de esfuerzo ajustable. Los usuarios pueden elegir entre optimización de costes u optimización de inteligencia, de la misma manera que otros modelos Claude. Los gráficos presentados muestran el cambio de rendimiento con cada nivel de esfuerzo en tres puntos de referencia, revelando una relación de equilibrio claro donde la configuración baja es muy económica y la configuración alta mejora las capacidades.",
+  "sections.4.ko": "Varios clientes han compartido resultados de pruebas iniciales, que son consistentes con los indicadores de rendimiento oficiales. Una empresa que opera el producto AI Teammates informó de una reducción del 30% en la latencia de finalización de tareas y un razonamiento hasta 2,5 veces más rápido por turno de agente. HubSpot logró una puntuación del 92,8% en la evaluación de tareas de CRM, y los usuarios de Box AI informaron de que Haiku 5.5 redujo la latencia a la mitad en comparación con el modelo anterior mientras obtenía una puntuación 11 puntos más alta. Esta retroalimentación respalda la superioridad práctica de Haiku 5.5 en el procesamiento de solicitudes en volumen.",
+  "sections.5.ko": "El precio de Haiku 5.5 se ha fijado muy bajo para solicitudes de menos de 100.000 tokens, lo que corresponde a aproximadamente el 90% de las solicitudes de modelos Haiku anteriores. Según la tabla, es de $0,10 por token de entrada y $0,50 por token de salida, significativamente más barato que Sonnet u Opus. Esta fijación de precios es particularmente adecuada para tareas repetitivas de alcance limitado como resúmenes, tareas de subagente y búsquedas rápidas, lo que implica que los modelos más grandes siguen siendo necesarios para tareas de agente multietapas más complejas.",
+  "sections.6.ko": "Haiku 5.5 mostró una mejora general significativa en las evaluaciones de alineación en comparación con Haiku 4.5, con una reducción sustancial de casos de comportamiento desalineado e intención cooperativa más baja hacia el mal uso. Las salvaguardas de ciberseguridad son más restrictivas que Haiku 4.5 pero menos restrictivas que otros modelos lanzados recientemente, permitiendo trabajo defensivo pero bloqueando pruebas de penetración. Las salvaguardas biológicas se aplican de la misma manera que los modelos Sonnet y Opus, bloqueando solicitudes con potencial de daño.",
+  "sections.7.ko": "Haiku 5.5 está disponible inmediatamente en todas las principales plataformas en la nube incluyendo AWS, Google Cloud y Microsoft Azure, así como en la plataforma Claude. Junto con esto, se está realizando una mejora adicional reduciendo el precio de lectura de caché de Sonnet 5.5 de $0,20 a $0,10, lo que reduce el coste de las tareas de agente en aproximadamente el 20%. Para desarrolladores, los SDK de Python y TypeScript también se han actualizado con soporte beta para funcionalidades de uso de ordenador y uso de navegador, donde la velocidad y el punto de precio de Haiku 5.5 son particularmente ventajosos.",
+  "caveat": "Dado que el rendimiento de referencia y los casos de clientes provienen de materiales publicados por Anthropic, es necesario verificar las diferencias de rendimiento reales en entornos de producción mediante evaluaciones independientes de terceros o comparaciones directas con otros modelos.",
+  "title": "Claude Haiku 5.5"
+ }
+}

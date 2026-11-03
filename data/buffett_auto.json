@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-03 18:02",
- "generated_at": "2026-11-03T18:02:34.242446+09:00",
+ "generated_label": "2026-11-03 20:12",
+ "generated_at": "2026-11-03T20:12:22.091484+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-03",
@@ -516,7 +516,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.68
+    "value": 1.69
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -860,11 +860,7 @@
     },
     "fcf_ttm": 19660900000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "매출 급증 중이나 특허절벽 리스크로 인한 수익지속성 불확실"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.6815,
@@ -881,7 +877,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 51건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -901,26 +897,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(43%) — 취재 필요",
-   "notes": "플라이트세이프티형이나 임대차 계약 만기(특허절벽)가 명확한 제약. 현재 주가는 비만치료제 성장성을 과도히 선반영한 것으로 판단됨.",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1
-   },
-   "_evidence": {
-    "franchise": "dramatic obesity market expansion; weight-loss shot demand soars",
-    "risk5": "patent cliff embedded in lease; softer growth ahead despite explosive earnings; 68% annual return creates valuation concern",
-    "capalloc": "raised revenue outlook as weight-loss shot demand soars",
-    "owner_earnings": "explosive earnings beat but patent expiration creates earnings sustainability uncertainty"
-   }
+   "notes": "전망치 이상(43%) — 취재 필요"
   },
   "JPM": {
    "as_of": "2026-11-03",
@@ -950,11 +927,7 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
-    "ai_view": {
-     "display": "B",
-     "reason": "Q3 earnings miss 후 경제 불확실성에도 NII 전망 상향, 멀티플 재평가 필요"
-    }
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
    },
    "conversion": null,
    "conversion_status": {
@@ -972,7 +945,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -990,33 +963,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "Dimon의 '표면 아래 경제력 변화' 경고로 사이클 리스크 부각; 레버리지 구조상 정확한 멀티플 적용 필수",
-   "_evidence": {
-    "franchise": "금융시스템의 필수 중개기능, 대체 불가능한 시장지위",
-    "risk5": "Q3 earnings miss 동시에 경제 'increasingly complex' 경고, 금리·신용 사이클 노출",
-    "capalloc": "NII outlook raise로 현금 창출력 재평가, buyback 지속 중",
-    "owner_earnings": "Earnings miss 속 guidance raise는 기저 사업 vs 회계 변동성 분리 필요"
-   }
+   ]
   },
   "WMT": {
    "as_of": "2026-11-03",
@@ -1510,8 +1457,8 @@
     "adj_ni": 307000000.0
    },
    "g_cagr3y": null,
-   "g_forward": -0.2413,
-   "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
+   "g_forward": null,
+   "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 41건",
    "confidence": "중",
@@ -1532,7 +1479,9 @@
      "period": "2026Q1",
      "end": "2025-10-31"
     }
-   ]
+   ],
+   "g_forward_status": "전망치 이상(-24%) — 취재 필요",
+   "notes": "전망치 이상(-24%) — 취재 필요"
   },
   "ARM": {
    "as_of": "2026-11-03",
@@ -1600,11 +1549,7 @@
     },
     "fcf_ttm": 17365000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "C",
-     "reason": ""
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9986,
@@ -1624,7 +1569,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 13건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -1644,22 +1589,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(101%) — 취재 필요",
-   "notes": "NAND 순수 사이클로 예측 불가능성이 극단적이며, Q1 어닝 비트에도 불구하고 주가 하락과 '이상한 움직임' 평가로 시장이 미래 확실성을 의심 중.",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "_evidence": {
-    "franchise": "SanDisk Tops Q1 estimates and guides higher; 스토리지 수요 강세.",
-    "capalloc": "8-for-1 stock split 발표 및 Q1 이후 주가 상승 모멘텀.",
-    "owner_earnings": "NAND 메모리 사이클의 예측 불가능성으로 어닝 가시성 최악 수준."
-   }
+   "notes": "전망치 이상(101%) — 취재 필요"
   },
   "STX": {
    "as_of": "2026-11-03",
@@ -1792,7 +1722,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 23건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1810,21 +1740,7 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "notes": "SaaS 기업으로 고객 수요는 실재하나, GAAP 측정 가치의 신뢰도가 낮고 현재 가격 대비 마진 분석 근거 부족",
-   "_evidence": {
-    "franchise": "사이버보안 관리 플랫폼으로 고객 전환비용 높음",
-    "risk5": "엔터프라이즈 소프트웨어 시장의 경기민감성과 경쟁 강화 리스크; GAAP 이익이 아닌 구독 모델 구조로 인한 측정 불확실성"
-   }
+   ]
   },
   "2454.TW": {
    "as_of": "2026-11-03",
@@ -1845,12 +1761,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "기록적 EPS 달성 후 영업현금흐름 악화로 수익의 질 저하"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1862,30 +1773,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": "중",
    "g_forward_status": "전망치 이상(54%) — 취재 필요",
-   "notes": "AI 가속기 수요 주도 성장 중이나 모바일 사이클 의존성과 재고 일수 급증(127일)이 수익성 지속성에 대한 우려 제시",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "score": 0,
-    "period": "2026Q3"
-   },
-   "_evidence": {
-    "franchise": "AI 가속기 수요 강세와 ASIC 매출 배증으로 핵심 경쟁력 입증",
-    "risk5": "Record Q3 EPS 달성 직후 Operating Cash Flow Turns Negative 기록; 모바일 사이클 종속성 명시",
-    "capalloc": "Operating Cash Flow Turns Negative 보도",
-    "owner_earnings": "Record Q3 EPS of NT$17.5 but Inventory Days Soar to 127"
-   }
+   "notes": "전망치 이상(54%) — 취재 필요"
   },
   "MRVL": {
    "as_of": "2026-11-03",
@@ -2051,12 +1941,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 수요 사이클 상승국이나 밸류에이션 과열 신호 동시 존재"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -2068,28 +1953,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": "중",
    "g_forward_status": "전망치 이상(61%) — 취재 필요",
-   "notes": "시클리컬 특성상 AI 수요 진폭이 테스트 장비 3사보다 크며 최근 강한 실적 이후 밸류에이션 재평가 국면",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI chip demand drives earnings outlook upgrade, Alphabet lifts capex past ¥33 trillion sparking surge in Advantest",
-    "risk5": "Earnings power faces rich valuation, valuation check as shares pause after strong run, semiconductor rout from TSMC earnings, stock price volatility despite firm growth expectations",
-    "capalloc": "Convertible bond issue for long term growth plans, strong earnings results lifting index",
-    "owner_earnings": "FY2026 2Q earnings results show profit surge from AI demand but valuation concerns emerge post-rally"
-   }
+   "notes": "전망치 이상(61%) — 취재 필요"
   },
   "2308.TW": {
    "as_of": "2026-11-03",
@@ -2129,7 +1995,7 @@
  },
  "coverage": {
   "g_forward": [
-   12,
+   11,
    33
   ],
   "g_cagr3y": [
@@ -2185,5 +2051,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-03 18:03"
+ "scout_label": "2026-11-03 20:13"
 }

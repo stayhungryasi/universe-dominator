@@ -2,14 +2,16 @@
  "kind": "research",
  "id": "6f3fb43589eb",
  "lang": "en",
- "src_hash": "4b90c17e320f",
+ "src_hash": "5924a88c8ac6",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 18:18",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "SNDK rose 5.79% on AI enthusiasm and received a 90% confidence buy rating with a $1,459 price target (approximately 6% upside).",
-  "summary_ko.1": "SNDK's new business model (NBM) contracts hold a minimum expected revenue of $93.9 billion (approximately 80% net margin), with a bull-case price target of $2,409.",
-  "summary_ko.2": "Fiscal Q4 revenue of $8,965 million (372% year-over-year growth) achieved six consecutive quarters of earnings beats, with year-to-date stock price up 481.53%."
- }
+ "at": "2026-11-03 20:24",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.1] 숫자: 원문의 숫자가 빠짐 481.53",
+  "[17§summary_ko.1] 준법: 원문에 없는 권고 표현(매매·비중·목표가) — New Business Model (NBM) contract minimum projected revenue of $93.9 billion with approximately 80% gross margin basis d",
+  "[17§summary_ko.2] 숫자: 원문에 없는 숫자 896.5 billion",
+  "[17§summary_ko.2] 숫자: 원문의 숫자가 빠짐 896.5억"
+ ]
 }

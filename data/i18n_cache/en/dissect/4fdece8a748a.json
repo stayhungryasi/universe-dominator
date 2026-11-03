@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "4fdece8a748a",
+ "lang": "en",
+ "src_hash": "6ba0e8336d1c",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-03 20:24",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "DeepSeek's Capabilities Through User Experience",
+  "sections.1.h": "Why the Industry Is Not Sounding the Alarm",
+  "sections.2.h": "Model Performance Ceiling Lowers",
+  "sections.3.h": "Cost Revolution Changes Development Methodology",
+  "sections.4.h": "Strategy of Selective Advanced Model Augmentation",
+  "sections.5.h": "Core of Technical Innovation: Cache Optimization",
+  "sections.6.h": "Distorted Values in the Technology Industry",
+  "sections.7.h": "Economics and Future of Self-Hosting",
+  "sections.0.ko": "After approximately one month of intensive use of DeepSeek 4.1 Flash across multiple projects, the author evaluates this model as having no material difference from existing top-performing models. This means that conversation quality, task quality, and processing speed are all at equivalent levels—to the point where it is impossible to clearly distinguish which model is being used during actual work. While the author's assessment is based on subjective usage experience rather than official benchmarks, this evaluation suggests that Chinese models have caught up with frontier models from Anthropic and OpenAI.",
+  "sections.1.ko": "The core question the author raises is that frontier labs are either failing to detect or ignoring geopolitical crisis signals. As Chinese distilled models narrow the 1–2 month technology gap and develop identical task-handling capabilities, industry leaders' response is lukewarm. The author emphasizes that developers' practical choice—maximum value for cost—is a more important factor than debates over technology origin or data ownership.",
+  "sections.2.ko": "The observation is that current-generation language models have reached the level of performing automated high-quality work, making continued pursuit of the latest models an excessive investment. While new capabilities stand out in benchmarks, real-world use cases are relatively simple and repetitive. The diagnosis is that an era has arrived where performance competition no longer directly translates into business value.",
+  "sections.3.ko": "The author explains that with a $10 monthly OpenCode Go subscription enabling nearly unlimited use of DeepSeek, their development methodology has fundamentally changed. Work like exploratory tasks and automated testing, which were previously approached cautiously due to API costs, can now be executed without hesitation. The expected cost per single session typically does not exceed $1. This demonstrates how dramatically the price structure has changed, not just model performance.",
+  "sections.4.ko": "The author states that while primarily using DeepSeek 4.1 Flash for complex planning and research, they additionally call other models such as Claude 5.5 or GLM only for critical tasks or final code reviews. When selecting advanced models, the reason is not pure performance difference but reviewing the problem from diverse perspectives. This suggests that the methodology itself for quality assurance has changed, not just cost-efficiency.",
+  "sections.5.ko": "The author explains that DeepSeek's achievement of reducing KV cache by approximately 437× compared to the previous V1 model is the key technical breakthrough that enables the above economics. GPU memory-stored cache was a major factor in long-session costs; this optimization allows sessions lasting all day to remain within $1. It also means reduced power and water consumption from an environmental perspective, and the author notes that Claude 5.5 has similarly achieved efficiency through the same approach.",
+  "sections.6.ko": "The author criticizes the technology industry's distorted perception that paying the highest price is evidence of the highest quality. FAANG companies are dominated by a culture pursuing the most expensive models while disregarding ethics, environmental impact, and economic efficiency. The author points out that some users maintain excessive setups load-balancing multiple Claude Max subscriptions. This reveals a structural problem where market choice overlooks superior alternatives.",
+  "sections.7.ko": "The author judges that the current economics of DeepSeek 4.1 Flash are so favorable that self-hosting aimed at cost savings cannot recoup investment. However, if privacy protection is a primary concern, such cache optimization technology will soon transfer to local environments. While self-hosting is technically possible today, it is not practical, the author explains. This reflects a perspective that long-term privacy-focused user demand will be addressed through technological evolution.",
+  "caveat": "This article is based on an individual developer's subjective usage experience. Since the author has explicitly stated their position of already owning premium subscriptions (Claude, Cursor, etc.), consideration should be given not only to the cost-reduction perspective but also to technology choice preferences and stakeholder interests."
+ }
+}
