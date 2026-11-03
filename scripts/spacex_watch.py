@@ -925,7 +925,7 @@ def collect_launches(fc, watch, logs):
         fc.record("spacex", "발사 기록(LL2)", "ok", 200, prev.get("year_count") or 0)
         logs.append(f"LL2 캐시 사용({age_h:.1f}h 전 성공 측정) — 무료 한도 보호")
         return []
-    now = datetime.now(timezone.utc)
+    now = now_kst().astimezone(timezone.utc)      # 시계는 now_kst 하나(테스트가 고정할 수 있게 — 2026-10-29 시한폭탄)
     iso = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     y0 = f"{now.year}-01-01T00:00:00Z"
     hdr = {"User-Agent": "UNIVERTRIX spacex-watch (univertrix.com)"}
@@ -997,7 +997,7 @@ def collect_launches_light(fc, logs):
     """매시간 감시용 — LL2 질의 1회(무료 한도 보호): 최근 3일 SpaceX 의 결과 확정 비행(성공 3·실패 4·부분 실패 7) 중
     Starship 전부 + 실패·부분 실패 전부. 밤사이(18시 full → 08시 full, 약 14시간) 일어난 Starship 비행·발사 실패를
     다음 아침이 아니라 1시간 안에 잡는다. 경쟁 발사·다가오는 발사·연간 집계는 데일리(full)가 맡는다."""
-    now = datetime.now(timezone.utc)
+    now = now_kst().astimezone(timezone.utc)      # 시계는 now_kst 하나(테스트가 고정할 수 있게 — 2026-10-29 시한폭탄)
     iso = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     w0 = (now - timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
     hdr = {"User-Agent": "UNIVERTRIX spacex-watch (univertrix.com)"}
@@ -1360,7 +1360,7 @@ def collect_hourly_runs(fc, watch, logs):
         return
     runs = doc.get("workflow_runs") or []
     ok = [r for r in runs if r.get("conclusion") == "success"]
-    cut = (datetime.now(timezone.utc) - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    cut = (now_kst().astimezone(timezone.utc) - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
     # 2026-10-27 실측: GitHub 예약(cron)이 매시 47분 8회 중 1회만 실행 — '실패'가 아니라 '실행 자체가 없음'.
     # 둘을 가르려고 24시간 실행 횟수와 마지막 실행 시각(성패 무관)을 함께 잰다
     watch["hourly"] = {"checked_at": now_kst().isoformat(timespec="minutes"),

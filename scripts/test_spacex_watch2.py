@@ -220,6 +220,17 @@ class CompetitorLaunchTest(unittest.TestCase):
         self.assertFalse(watch["launches"]["ok"])                      # 다음 회차에 캐시 없이 다시
 
 
+class ClockTest(unittest.TestCase):
+    """2026-10-29 시한폭탄: collect_launches 가 실제 시계(datetime.now)를 직접 읽어 테스트의 고정 시각이 먹지 않았다 —
+    고정 날짜(10/29 발사)가 지나자 selftest 가 실패해 데일리 파이프라인이 5일(14회) 멈췄다.
+    측정층의 시계는 now_kst 하나뿐이어야 한다(테스트가 고정할 수 있는 단 하나의 입구)."""
+
+    def test_single_clock(self):
+        src = (Path(__file__).parent / "spacex_watch.py").read_text(encoding="utf-8")
+        reads = [ln.strip() for ln in src.splitlines() if "datetime.now(" in ln]
+        self.assertEqual(reads, ["return datetime.now(KST)"])
+
+
 class EventTitleTest(unittest.TestCase):
     """사건 제목은 상태에서 그 언어로 — ko 는 저장 제목과 같은 렌더러(규칙 한 벌), en 은 한글 0."""
 
