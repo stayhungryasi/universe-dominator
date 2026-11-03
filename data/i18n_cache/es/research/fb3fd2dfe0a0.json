@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "fb3fd2dfe0a0",
  "lang": "es",
- "src_hash": "677694603c68",
+ "src_hash": "9a9db859ceee",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 17:48",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Berkshire Hathaway (BRKA +2,33%, BRKB +2,51%) superó al índice S&P 500 en los 6 años desde 2000 en que el índice cayó, con una rentabilidad promedio inferior al 1% en 6 años en comparación con una caída del índice de aproximadamente el 17%.",
-  "summary_ko.1": "Warren Buffett invirtió 14.500 millones de dólares en valores de renta fija de alto rendimiento siguiendo una política de mantenimiento de liquidez durante la crisis financiera de 2008, aunque el precio de las acciones ese año aún cayó un 31,8%.",
-  "title": "Así fue el desempeño de las acciones de Berkshire Hathaway de Warren Buffett en cada año de caída del S&P 500 desde 2000"
- }
+ "at": "2026-11-03 18:18",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[8§summary_ko.1] 숫자: 원문에 없는 숫자 14500 million",
+  "[8§summary_ko.1] 숫자: 원문의 숫자가 빠짐 144.5억"
+ ]
 }

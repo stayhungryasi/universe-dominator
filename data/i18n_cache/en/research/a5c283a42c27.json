@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "a5c283a42c27",
  "lang": "en",
- "src_hash": "9f69a8f4f9c8",
+ "src_hash": "513e56030cb4",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 17:48",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "CrowdStrike (NASDAQ:CRWD) received Buy upgrade from Deutsche Bank with target price of $300 but declined 2.69% to trade at $243.69.",
-  "summary_ko.1": "Annual recurring revenue (ARR) of $5.84B up 25%, free cash flow margin of 25.7%, and next quarter ARR guidance of 5.9% sequential growth with AI security demand transition as key focus."
- }
+ "at": "2026-11-03 18:18",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.1] 숫자: 원문에 없는 숫자 6.1844, 6.1884 billion",
+  "[17§summary_ko.1] 숫자: 원문의 숫자가 빠짐 618.84억, 618.44"
+ ]
 }

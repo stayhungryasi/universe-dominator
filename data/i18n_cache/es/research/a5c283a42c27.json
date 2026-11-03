@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "a5c283a42c27",
  "lang": "es",
- "src_hash": "8ffbeec4430b",
+ "src_hash": "e7ab9d50d00a",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 17:48",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "CrowdStrike (NASDAQ:CRWD) fue mejorada a Compra por Deutsche Bank con un precio objetivo de 300 dólares, pero cayó un 2,69% y cotiza a 243,69 dólares.",
-  "summary_ko.1": "Los ingresos anuales recurrentes (ARR) de 5.840 millones de dólares crecen un 25%, el margen de flujo de caja libre es del 25,7%, la orientación de ARR para el próximo trimestre muestra un crecimiento neto secuencial del 5,9%, siendo la conversión de demanda de seguridad de IA la cuestión clave.",
-  "title": "Las acciones de CrowdStrike caen un 2,7% con una mejora que pone a prueba la conversión de ingresos de seguridad de IA"
- }
+ "at": "2026-11-03 18:18",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[1§summary_ko.1] 숫자: 원문에 없는 숫자 618.84 billion",
+  "[1§summary_ko.1] 숫자: 원문의 숫자가 빠짐 618.84억"
+ ]
 }
