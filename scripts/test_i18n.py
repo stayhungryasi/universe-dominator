@@ -59,7 +59,7 @@ DYNAMIC = {
     "pc.launch.res.": ("success", "failure", "partial", "pending"),
     "pc.panel.": ("milestones", "events", "fin", "scen", "report", "changelog", "sources"),
     "pc.scen.": ("bull", "base", "bear"),
-    "pc.run.": ("success", "failure", "cancelled", "timed_out", "none"),
+    "pc.run.": ("success", "failure", "cancelled", "timed_out", "none", "superseded"),
     "pc.src_state.": ("ok", "zero", "decode_fail", "http_error", "timeout", "none"),
     "pc.axis.": ("A", "B", "C", "D", "E"),
     "pc.row.": ("revenue", "op", "ni", "ocf", "capex", "fcf", "cash", "mkt", "debt", "subs", "arpu", "gw",

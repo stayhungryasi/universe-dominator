@@ -384,9 +384,32 @@ def kpi_tiles(fin):
     return out
 
 
+def engine_outcome(eng, run_date):
+    """엔진 마지막 실행 결론 → success · failure · cancelled · timed_out · superseded · none (화면·관제탑 공용).
+
+    실패한 실행이라도 그 실행일(KST) 이후의 관측이 판단층에 게시돼 있으면 'superseded'(보류 후 게시) —
+    관문에 보류된 산출물이 수리 뒤 게시됐거나 다음 회차가 덮었다. 판단층이 낡지 않았는데 '엔진 실패'를
+    다음 회차까지 계속 띄우면 멈춘 사이트처럼 보이고 관제탑은 7일마다 헛경보를 낸다(2026-11-03: 11/01 월간이
+    무관한 selftest 고장으로 보류 → 11/03 게시 뒤에도 '엔진 실패'). 판정은 날짜 대조 한 가지뿐이다.
+    """
+    eng = eng or {}
+    c = eng.get("conclusion")
+    if c not in RUN_KO:
+        return "none"
+    if c != "success" and run_date:
+        try:
+            d = datetime.fromisoformat(str(eng.get("created_at")).replace("Z", "+00:00")).astimezone(KST).date()
+        except Exception:
+            d = None
+        if d is not None and str(run_date)[:10] >= d.isoformat():
+            return "superseded"
+    return c
+
+
 def run_info(st, watch, vres, today, lang="ko", audit=None):
     run = st.get("run") or {}
     eng = ((watch or {}).get("engine") or {}).get("last_run") or {}
+    outcome = engine_outcome(eng, run.get("run_date"))
     try:
         from build_site import probe_schedule
         sch = probe_schedule(run.get("run_date"), st.get("triggers_next_12m"), today)
@@ -397,9 +420,8 @@ def run_info(st, watch, vres, today, lang="ko", audit=None):
     return {"id": run.get("run_id", ""), "date": run.get("run_date", ""), "mode": run.get("mode", ""),
             "number": run.get("run_number"), "prev": run.get("previous_run_id"),
             "summary": [s for s in run.get("summary") or [] if isinstance(s, str)],
-            "engine": (L(lang, "pc.run." + eng.get("conclusion")) if eng.get("conclusion") in RUN_KO
-                       else L(lang, "pc.run.none")) if eng else L(lang, "pc.run.none"),
-            "engineOk": eng.get("conclusion") == "success", "engineDate": (eng.get("created_at") or "")[:10],
+            "engine": L(lang, "pc.run." + outcome),
+            "engineOk": outcome in ("success", "superseded"), "engineDate": (eng.get("created_at") or "")[:10],
             "verify": [ok, checked], "next": sch.get("next", ""), "overdue": sch.get("overdue_days", 0),
             "stale": sch.get("stale", False), "age": sch.get("age_days"),
             "audit": audit_info(audit, today)}

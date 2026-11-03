@@ -232,6 +232,20 @@ class WatchdogTest(unittest.TestCase):
         self.assertEqual([x["kind"] for x in r], ["recover"])
 
 
+    def test_engine_failure_resolved_by_late_publish(self):
+        """11/01 월간이 무관한 selftest 고장으로 보류 → 11/03 게시. 게시 뒤에는 헛경보 대신 해소 1회(2026-11-03)."""
+        watch = {"engine": {"last_run": {"conclusion": "failure", "created_at": "2026-11-01T05:57:42Z",
+                                         "url": "https://github.com/x/runs/2"}}}
+        state = {}
+        a = ps.judge_probe({"run": {"run_date": "2026-10-28"}}, watch, state, "2026-11-01")
+        self.assertEqual([x["sig"].split(":")[1] for x in a], ["probe-fail"])
+        b = ps.judge_probe({"run": {"run_date": "2026-11-01"}}, watch, state, "2026-11-03")
+        self.assertEqual([x["kind"] for x in b], ["recover"])
+        self.assertIn("보류됐던 관측 게시", b[0]["text"])
+        c = ps.judge_probe({"run": {"run_date": "2026-11-01"}}, watch, state, "2026-11-10")
+        self.assertEqual(c, [])                                        # 7일 뒤에도 헛경보 없음
+
+
 class WorkflowWiringTest(unittest.TestCase):
     """spacex-probe.yml 이 헌법대로 묶여 있는가 — 도구 제한·관문·DM 전용."""
 

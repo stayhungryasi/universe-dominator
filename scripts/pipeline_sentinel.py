@@ -629,16 +629,23 @@ def judge_probe(st_doc, watch_doc, state, today):
         out.append(alert("probe-stale-recover", f"SpaceX 탐사선: 관측 재개({run_date}) ✅",
                          today, kind="recover"))
     eng = ((watch_doc or {}).get("engine") or {}).get("last_run") or {}
-    if eng.get("conclusion") == "failure":
+    # 실패 뒤 그 날짜 이후 관측이 게시됐으면(보류 후 게시) 해결로 본다 — 판정은 화면과 같은 함수 하나(2026-11-03)
+    try:
+        from probe_cockpit import engine_outcome
+        outcome = engine_outcome(eng, run_date)
+    except Exception:
+        outcome = eng.get("conclusion")
+    if outcome == "failure":
         tail = escalate(rec, "fail_alerted", today)
         if tail is not None:
             out.append(alert("probe-fail",
                              f"SpaceX 월간 엔진: 마지막 실행 실패"
                              f"({(eng.get('created_at') or '')[:10]}){tail} — {eng.get('url', '')}",
                              today))
-    elif eng.get("conclusion") == "success" and clear(rec, "fail_alerted"):
-        out.append(alert("probe-fail-recover", "SpaceX 월간 엔진: 실행 성공 ✅", today,
-                         kind="recover"))
+    elif outcome in ("success", "superseded") and clear(rec, "fail_alerted"):
+        out.append(alert("probe-fail-recover",
+                         "SpaceX 월간 엔진: 실행 성공 ✅" if outcome == "success" else
+                         f"SpaceX 월간 엔진: 보류됐던 관측 게시 확인({run_date}) ✅", today, kind="recover"))
     return out
 
 

@@ -250,5 +250,34 @@ class BudgetTest(unittest.TestCase):
         self.assertEqual(d["sources"][0]["n"], 40)
 
 
+class EngineOutcomeTest(unittest.TestCase):
+    """엔진 상태 — 실패 뒤 그 날짜 이후 관측이 게시됐으면 '보류 후 게시'(2026-11-03, 11/01 월간 보류 → 11/03 게시)."""
+
+    def test_outcomes(self):
+        f = {"conclusion": "failure", "created_at": "2026-11-01T05:57:42Z"}
+        self.assertEqual(pc.engine_outcome(f, "2026-10-28"), "failure")
+        self.assertEqual(pc.engine_outcome(f, "2026-11-01"), "superseded")
+        self.assertEqual(pc.engine_outcome(f, None), "failure")
+        self.assertEqual(pc.engine_outcome({"conclusion": "success", "created_at": "x"}, "2020-01-01"), "success")
+        self.assertEqual(pc.engine_outcome({}, "2026-11-01"), "none")
+        self.assertEqual(pc.engine_outcome({"conclusion": "action_required"}, "2026-11-01"), "none")
+
+    def test_kst_date_boundary(self):
+        late = {"conclusion": "failure", "created_at": "2026-11-01T15:30:00Z"}     # KST 11/02 00:30
+        self.assertEqual(pc.engine_outcome(late, "2026-11-01"), "failure")
+        early = {"conclusion": "failure", "created_at": "2026-10-31T16:00:00Z"}    # KST 11/01 01:00
+        self.assertEqual(pc.engine_outcome(early, "2026-11-01"), "superseded")
+
+    def test_run_info_wired(self):
+        watch = {"engine": {"last_run": {"conclusion": "failure", "created_at": "2026-11-01T05:57:42Z"}}}
+        r = pc.run_info({"run": {"run_id": "2026-11", "run_date": "2026-11-01"}}, watch, {}, date(2026, 11, 3))
+        self.assertEqual((r["engine"], r["engineOk"]), ("보류 후 게시", True))
+        r = pc.run_info({"run": {"run_id": "2026-10-28-event", "run_date": "2026-10-28"}}, watch, {},
+                        date(2026, 11, 3))
+        self.assertEqual((r["engine"], r["engineOk"]), ("실패", False))
+        r = pc.run_info({"run": {"run_date": "2026-11-01"}}, watch, {}, date(2026, 11, 3), lang="en")
+        self.assertEqual(r["engine"], "held, then published")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
