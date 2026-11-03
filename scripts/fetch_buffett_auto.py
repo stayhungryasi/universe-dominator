@@ -1152,6 +1152,9 @@ LTG_LABELS = ("+5y", "5y", "ltg", "longterm", "long term", "next 5 years")
 # 아니라 소원이다. 넘으면 채택하지 않고 **취재로 넘긴다**(0 이나 상한값으로
 # 깎지 않는다 — 못 믿을 값을 그럴듯한 값으로 바꾸면 오류가 더 안 보인다).
 G_FORWARD_MAX = 0.40
+# 아래쪽도 같다(2026-11-03): 연간 추정 경로 첫 실전에서 PANW 가 −24% 로 나왔다(분할·GAAP/비GAAP 기준 섞임 의심 —
+# 컨센서스가 2년 뒤 이익을 실적보다 24%/년 낮게 볼 회사가 아니다). 단기 급락률도 10년 가정 자리에 앉히지 않는다.
+G_FORWARD_MIN = -0.20
 
 
 def ltg_from_growth_table(pairs):
@@ -1207,7 +1210,7 @@ def vet_forward_growth(g, source):
     """
     if g is None:
         return None, source, ""
-    if g > G_FORWARD_MAX:
+    if g > G_FORWARD_MAX or g < G_FORWARD_MIN:
         return None, None, f"전망치 이상({g * 100:.0f}%) — 취재 필요"
     return g, source, ""
 

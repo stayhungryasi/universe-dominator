@@ -109,6 +109,12 @@ class ForwardGrowthTest(unittest.TestCase):
         self.assertIsNone(fa.growth_from_estimate_table({"0y": {"avg": 2.0}, "+1y": {"avg": float("nan")}}))
         self.assertIsNone(fa.growth_from_estimate_table({}))
 
+    def test_vet_drops_both_tails(self):
+        self.assertEqual(fa.vet_forward_growth(0.14, "s")[:2], (0.14, "s"))
+        self.assertIsNone(fa.vet_forward_growth(0.83, "s")[0])          # NVDA 꼴 반등률
+        self.assertIsNone(fa.vet_forward_growth(-0.24, "s")[0])         # PANW 꼴 기준 섞임
+        self.assertIn("-24%", fa.vet_forward_growth(-0.24, "s")[2])
+
     def test_falls_back_when_ltg_is_nan(self):
         """2026-09-02 실측: 장기 성장률 행이 NaN — 연간 추정으로 넘어간다(Finnhub 키 없이도)."""
         import pandas as pd
