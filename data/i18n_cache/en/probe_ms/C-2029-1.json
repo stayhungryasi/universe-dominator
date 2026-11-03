@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "C-2029-1",
  "lang": "en",
- "src_hash": "f45071ae7cfc",
+ "src_hash": "1df85f580a64",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Top 2 customers revenue share ≤ 50%",
-  "cur": "51.1% (consolidated revenue basis, Customer B 34.5% + Customer A 16.6%) — first disclosure",
-  "tgt": "≤ 50%",
+  "text": "Top 2 customer revenue concentration 50% or less",
+  "cur": "51.1% (consolidated revenue basis; Customer B 34.5% + Customer A 16.6%) — first disclosure. 2026-11 addition: Customer B = Anthropic (Bloomberg 10/29, source attribution — not confirmed by company); Anthropic public filing states maximum $120.5 billion through 2029, approximately $3.1 billion monthly from December, 90-day termination option available from 2027 early (report). Google also has 90-day termination option after 2026-12-31 (TechCrunch 06/05) → both top 2 customers hold termination rights in 2027-1H",
+  "tgt": "50% or less",
   "hit": "Demand diversification",
-  "miss": "Contract cliff risk at expiration (2029) if exceeded",
+  "miss": "Contract expiry (2029) cliff risk if exceeded",
   "method": "10-K customer concentration footnote",
-  "parts.0.label": "Top 2 customers revenue share"
+  "parts.0.label": "Top 2 customer revenue concentration"
  }
 }

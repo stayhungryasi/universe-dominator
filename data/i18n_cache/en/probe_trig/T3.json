@@ -2,14 +2,17 @@
  "kind": "probe_trig",
  "id": "T3",
  "lang": "en",
- "src_hash": "164f5a99a1b5",
+ "src_hash": "8a717acbd3b9",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Starship Flight 15 — Booster+Ship Simultaneous Capture Attempt",
-  "expected": "2026-4Q (Launch Library TBD, FAA license amendment unpublished)",
-  "prev": "T3 Flight 14 Ship capture attempt — expected 4Q26 → actual 9/28 flight, no capture attempt (orbital insertion was goal). Forecast linking flight number to capture was wrong"
+  "name": "Starship Flight 15 — Booster+Ship simultaneous catch attempt",
+  "expected": "2026-11-08 ~ 11-30 (FAA internal plan date approximately 11/8 report · LL2 NET 2026-11 monthly unit, updated 10/28) → checkpoint 2026-12-01 (KST)",
+  "check": "① FAA Starship license page — launch site return (RTLS) and booster+ship simultaneous tower catch license amendment issued ② LL2 flight result (measurement layer phase 1 — Starship result confirmed event, auto-detected) ③ Ship catch success → R2 activation + B-2027-1 overall fulfillment ④ Flight 14 early engine shutdown follow-up (Ship 42 Raptor re-certification) official record",
+  "note": "2026-11-01: TechTimes 10/30 — B22·Ship 42 static fire complete, remaining is FAA license amendment. Musk 10/10 '4~6 weeks' comment (→ 11/7~21) is candidate slate only",
+  "prev": "T3 Flight 14 Ship catch attempt — expected 4Q26 → actual 9/28 flight, no catch attempt (orbital insertion was the goal). prediction tying flight number to catch was incorrect",
+  "statusText": "Awaiting (2026-11-01: static fire complete — B22 33 engines ~15 seconds on 10/25 · Ship 42 single ~60 seconds on 10/27, 6 engines on 10/28, FAA license amendment not yet issued)"
  }
 }

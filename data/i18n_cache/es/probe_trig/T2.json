@@ -2,12 +2,15 @@
  "kind": "probe_trig",
  "id": "T2",
  "lang": "es",
- "src_hash": "83b4a79f1e36",
+ "src_hash": "bdb5da59dd42",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "30 días post-desbloqueo 12/8: Volumen de operaciones y precio"
+  "name": "Liberación de lock-up 12/8 (vencimiento a 180 días, máximo 797,6 millones de acciones = 5,9%) volumen de negociación durante 30 días y precio de acción",
+  "check": "tabla de liberación 424B4: máximo 12/8 797,6M (condición de precio de agosto 455,8M no cumplida → el mayor) · volumen diario vs promedio de 90 días (día de liberación 10/22 197 millones de acciones · 10/30 123 millones de acciones como referencia) · próximo volumen lock-up extendido 20% (351,9M) después de resultados 4Q26 → 3/18 176,0M → 351,9M después de resultados 1Q27 → 5/17 176,0M → 6/12 351,9M + participación de Musk (366 días) → 351,9M después de resultados 2Q27",
+  "note": "corrección 2026-11-01: 'aproximadamente 40% (informado)' de edición de octubre fue incorrecto — el texto original 424B4 especifica el volumen 12/8 como 'máximo 328,4M (si el volumen condicional de agosto se hubiera liberado) u 797,6M (si no)'. La condición de agosto (precio de colocación +30% = cierre de $175,50 o superior en 5 de 10 días de negociación) no fue cumplida (cierre de ventana $108,27~$125,33 — StockAlarm segunda fuente) → 797,6M. El 28% (máximo 1.300 millones de acciones) ya fue liberado 10/22 con −9,1% ese día·197 millones de acciones. Lock-up extendido + Musk = aproximadamente 7.800 millones de acciones (más del 63% de acciones anteriores a cotización)",
+  "prev": "T2 — estimación de volumen de octubre 'aproximadamente 40%' incorrecta (dependencia de informes). Corrección: volumen de lock-up se documenta solo por tabla de liberación 424B4"
  }
 }

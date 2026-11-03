@@ -4,11 +4,17 @@
  "lang": "en",
  "src_hash": "6f139aa6733b",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[4§parts.0.unit] 숫자: 원문에 없는 숫자 100M"
- ]
+ "at": "2026-11-03 16:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Government and military revenue $20.0 billion or more",
+  "reason": "Government and military revenue not separately disclosed — only combined enterprise and government $2.127B/quarter (annualized $8.5B) disclosed. Will not use proxy indicator; awaiting 10-K disclosure",
+  "hit": "Non-cyclical revenue secured",
+  "miss": "Political risk materialization",
+  "method": "DoD and Space Force contract disclosure",
+  "parts.0.label": "Government and military revenue",
+  "parts.0.reason": "Government and military revenue not separately disclosed (only enterprise and government combined disclosed)",
+  "parts.0.unit": "billions USD"
+ }
 }

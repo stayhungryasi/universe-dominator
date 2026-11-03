@@ -1,10 +1,10 @@
 {
- "form4_30d": 1,
+ "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-10-29T19:25+09:00",
+  "fetched_at": "2026-11-03T16:30+09:00",
   "year": 2026,
-  "year_count": 123,
+  "year_count": 124,
   "starship_last": {
    "id": "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
    "date": "2026-09-28",
@@ -48,13 +48,13 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-10-29T19:25+09:00",
+  "checked_at": "2026-11-03T16:30+09:00",
   "last_run": {
    "conclusion": "failure",
-   "created_at": "2026-10-28T16:27:40Z",
-   "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/40726172624",
-   "run_id": 40726172624
+   "created_at": "2026-11-01T05:57:42Z",
+   "event": "schedule",
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/41278894087",
+   "run_id": 41278894087
   },
   "in_progress": false
  },
@@ -1116,7 +1116,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-10-29T19:25+09:00",
+ "generated_at": "2026-11-03T16:30+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1230,43 +1230,56 @@
    "detected_at": "2026-10-29",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:naacp-xai-lawsuit:2026-11-03",
+   "trigger_id": null,
+   "name": "연방 법원이 SpaceX(xAI 데이터센터)를 상대로 한 NAACP 소송을 기각해 달라는 요청을 받아들이지 않았다.",
+   "reason": "보도 감지(democracy now!·tom's hardware·truthout)",
+   "event": "Federal Court Refuses to Dismiss NAACP Lawsuit Against Elon Musk’s SpaceX",
+   "event_date": "2026-11-03",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNekMxVnhUcURxZEpzVnppY2pzMFhKSUN6RHBDTGFKZUR6QkR1OG4xTTVFakpJeEJ3aks2VzBFSzVQSXA4VWtKZkF5R3pXVl9BbkFQLURjeVNXZURCQ1JTUm16QkNsOXdwN0lNOGZMaGp2WEdMOW5iVkNfMFg3Y0xibnotNWFYdTVKajVEU2hNcFAzRWpfRno0ZWlZdktXVkpRWTh1cVhtdUxZY2h0bWgzVExpdnVQdU01MENJU0RB?oc=5",
+   "detected_at": "2026-11-03",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:boost-mobile-talks:2026-11-03",
+   "trigger_id": null,
+   "name": "SpaceX가 미국 이동통신사들에 맞서기 위해 Boost Mobile 네트워크를 인수하거나 임대하는 방안을 협의 중이다.",
+   "reason": "보도 감지(gsmarena.com·kucoin)",
+   "event": "SpaceX is in talks to acquire or lease the Boost Mobile network to challenge U.S. carriers.",
+   "event_date": "2026-11-02",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNUW1VQ0Vtdmg2dVhwUk5uVUNnMXdEa1J3aENtZkF3WmJPME1qeXlKbHcycktOV1hJQW45U0gzTE9yUzQ2YnBvQWpPMU5hS3l1TjJuWXZqMllfVkJvLW1TS2lKeUdhaWRTTVdqQzM2VXBRakxYdzljV0xrVXNZVzVwci1ja1E5Z0UxY2pBMkJRb09FSHlVZFNOZWFwV01vTXF6Yk9hOHZlMmhEdmdIQWpqVlhnUExPZw?oc=5",
+   "detected_at": "2026-11-03",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-10-29:0116",
-   "run_id": "40721302863",
-   "queued_at": "2026-10-29T01:16+09:00",
+   "key": "qn:2026-11-03:1630",
+   "run_id": "41594953571",
+   "queued_at": "2026-11-03T16:30+09:00",
    "state": "queued",
    "trigger_id": "",
-   "name": "스페이스포트 관련 소송과 부채 우려 속에 SpaceX 주가가 하락했다.",
-   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "name": "연방 법원이 SpaceX(xAI 데이터센터)를 상대로 한 NAACP 소송을 기각해 달라는 요청을 받아들이지 않았다. · SpaceX가 미국 이동통신사들에 맞서기 위해 Boost Mobile 네트워크를 인수하거나 임대하는 방안을 협의 중이다.",
+   "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUTlzSm5MX0Z2RlBLa1M4VnJ5ZDlkQ0d0OWZMM0pEa21nd1lTODZDMlRPWlFVRFpWQjVoYlU2bUZYalhVclN2X2I3T1BDbVpNRUVhVkpjcExXeEgtZlJqeGVhZ0l6b2hRanZpbW41aDQ3d0d5RkdmaWhsdHV2Qk44QmR6R2FmNUpqdUZMek9ZSzhzUi0wQ0dTSmtXRFc1RTRnb1JyN0I4TmZnbW1zZlA1OFln?oc=5",
-    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNbld6OUlGUjhYY2VnbXRLMTBmS1FmSTVsR1pRWFJLWnY4WmY0WDB0U0ZtVDNNT256TmxIT0ppQWJOMUFxTEN5eEg4T09MNHNiSE9VYTRsVDJKdXFnVU85MGlIazZxbEdjdGp5UlVHelJ5dkozYm5RNElyOWlCYnlGTlJCbGhkZ0NvZi1vYlBtbXJBSWVjbi16d3lkVHNXdllUZ2s4T3hxWng5S1I1NVRpb3h2U1ZacVFaclRWRWd4SnhXSUE?oc=5"
-   ]
-  },
-  {
-   "key": "qn:2026-10-29:1925",
-   "run_id": "40855205587",
-   "queued_at": "2026-10-29T19:25+09:00",
-   "state": "queued",
-   "trigger_id": "T7",
-   "name": "미 국방부(감찰관)가 우크라이나 대상 Starlink·Starshield 제한에 대한 조사를 거부했다.",
-   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
-   "urls": [
-    "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSHFyNGV0czd6WmRtcW05UWxIUjNpR215dmRiZEZ5QnFsLWJpZHI5Y0xmZkJYSVVXRG9FNVZoNXpTdHprZF9VNmo1S2VGc3B0VkhGRGlTSWVwUUFoQ0VkVHRTak1YNmRoTFFvOTZRQ3FDd0lNcWgwc282MC05VmlKTHRpT2VBYzZtRXo1LW5qT0l5ZndUUko5bm43Tk40MUwwTGlHaGNpZEx4Mk05ZTNvWA?oc=5",
-    "https://news.google.com/rss/articles/CBMid0FVX3lxTE5jZ3lfendqcVpqRk5PaXNyZ0dFWmZyc2Vic1VWdDJjbU5jc3gwOEY5dDhGRGNHRWpNMWxseU9LN0g0OS1yWmJMdl93MC1JQnNLdFFLaHIxNWszMy12bUNzT3kwbEFsa2hMRDRIaGJTX3NJYjUwbjMw?oc=5"
+    "https://news.google.com/rss/articles/CBMivgFBVV95cUxNekMxVnhUcURxZEpzVnppY2pzMFhKSUN6RHBDTGFKZUR6QkR1OG4xTTVFakpJeEJ3aks2VzBFSzVQSXA4VWtKZkF5R3pXVl9BbkFQLURjeVNXZURCQ1JTUm16QkNsOXdwN0lNOGZMaGp2WEdMOW5iVkNfMFg3Y0xibnotNWFYdTVKajVEU2hNcFAzRWpfRno0ZWlZdktXVkpRWTh1cVhtdUxZY2h0bWgzVExpdnVQdU01MENJU0RB?oc=5",
+    "https://news.google.com/rss/articles/CBMirwFBVV95cUxPRjY4VDg4aU9yX2FMNVNvMjRJMXp0aThaSU1iMGF1d0J5cWw5elhvWTFfNm00OGJVc0dWb0dhR0FUYlhCckhpaHIwczdqd2pHM2RKWmxhMFBnRk9MejBfZ3BSZ2RzY09lUmhuMndHRENZMU9iMzZUN3hoNUIzdS1BMjViVTQ1ZjVYMFhCQkhaaU5LNUJjTzdkdG85RWVtb1pnZnc5Y1pIM0M3U3l4Q09F?oc=5",
+    "https://news.google.com/rss/articles/CBMitgFBVV95cUxNUW1VQ0Vtdmg2dVhwUk5uVUNnMXdEa1J3aENtZkF3WmJPME1qeXlKbHcycktOV1hJQW45U0gzTE9yUzQ2YnBvQWpPMU5hS3l1TjJuWXZqMllfVkJvLW1TS2lKeUdhaWRTTVdqQzM2VXBRakxYdzljV0xrVXNZVzVwci1ja1E5Z0UxY2pBMkJRb09FSHlVZFNOZWFwV01vTXF6Yk9hOHZlMmhEdmdIQWpqVlhnUExPZw?oc=5",
+    "https://news.google.com/rss/articles/CBMivwFBVV95cUxNMEtGUVJzOW9fSUI1bldBcVBiSExpamxDb2FrZW1lRUUteDQ1Sm52bzUwT053QVNlQkl2SUpLQ2VoS2VpdlRHYXhWejlFS1M2bVVUajdDVVNQLTlGS2FjV2RzMFVCZW9FelVJQ25ETlYwem1Lek5CNTI0c3FyTWVDWC1RaWF1b3F4WmlEeXlIYjF5TU9lcmdhYmhLY3J3Vk84Qk5KYTBJVEJkRWUyOTBxakRpWktDdWl1UFVNaUY2a9IBuwFBVV95cUxNbk9hWmhwQTM4b0tCc2dDdXpWZnZxbnIxQldzbVJhbThxSmZlYWlmbElIMTFrSWU3ZUF5enN0RTAyZEs1NHJ5aEgyVGRPazJzZFAxVXlKbnBfaS1oTHMtU21POFBwTWRPTmM1djkwclFua2lhV3hJSHJzRGNEU3RuOUltQlN2MF9CU3FYeHRSU1dQQXZXTkFRYm9HUFdfQjJmUEd4SktHajlzNmJNV3ZQMFVtWTQwWHBjcGlZ?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-10-29T19:25+09:00",
-  "last_success_at": "2026-10-29T10:15:41Z",
-  "last_run_at": "2026-10-29T10:15:11Z",
-  "last_conclusion": "success",
+  "checked_at": "2026-11-03T16:30+09:00",
+  "last_success_at": "2026-11-03T07:16:36Z",
+  "last_run_at": "2026-11-03T07:30:20Z",
+  "last_conclusion": null,
   "runs_24h": 50,
-  "ok_24h": 50
+  "ok_24h": 49
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",

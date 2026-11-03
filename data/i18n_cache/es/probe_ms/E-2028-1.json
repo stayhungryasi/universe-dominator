@@ -2,19 +2,19 @@
  "kind": "probe_ms",
  "id": "E-2028-1",
  "lang": "es",
- "src_hash": "0388637cb8c5",
+ "src_hash": "ad86e0773199",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Mantenimiento de autorizaciones en los 5 principales mercados exteriores (India, Indonesia, Brasil, UE, Japón)",
-  "reason": "Conflicto de reportes sobre aprobación final en India (2026-06 Bloomberg vs negación de la empresa), los otros 4 países no confirmados en esta ronda",
+  "text": "Mantener autorizaciones en 5 principales mercados extranjeros (India, Indonesia, Brasil, UE, Japón)",
+  "reason": "2026-11: India — posee autorización de DoT (2025-06) e autorización de IN-SPACe (2025-07, 5 años), servicios comerciales no iniciados por falta de asignación de espectro y cumplimiento de requisitos de seguridad (noticia de 2026-10) → se confirma 'mantener autorizaciones' en 1 país. Indonesia, Brasil, UE y Japón no confirmados en esta ronda — no se registra la medición parcial (1/5) para evitar malinterpretación como 'pérdida en 4 países'. Tras verificar documentos originales de reguladores de los 4 países en la siguiente ronda, se convertirá en 'en progreso'",
   "hit": "Asegurar TAM",
-  "miss": "Si se cancela, desplazamiento a la baja del eje A",
-  "method": "Organismos reguladores de cada país",
-  "parts.0.label": "Mantenimiento de autorizaciones en los 5 principales mercados exteriores",
-  "parts.0.reason": "Conflicto de reportes sobre aprobación final en India, otros 4 países no confirmados en esta ronda",
-  "parts.0.unit": "unidades"
+  "miss": "Si se cancela, revisión a la baja del eje A",
+  "method": "Reguladores nacionales",
+  "parts.0.label": "Mantener autorizaciones en 5 principales mercados extranjeros",
+  "parts.0.reason": "Solo confirmado India (posee autorización 2025, servicios comerciales no iniciados, Inc42 2025-07-09) — resto de 4 países no confirmado, por lo que no se registra medición parcial",
+  "parts.0.unit": "países"
  }
 }

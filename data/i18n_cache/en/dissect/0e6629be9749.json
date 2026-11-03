@@ -1,0 +1,27 @@
+{
+ "kind": "dissect",
+ "id": "0e6629be9749",
+ "lang": "en",
+ "src_hash": "105bbed3da71",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-03 16:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Critical kernel vulnerability neglected since 2016",
+  "sections.1.h": "Contrasting response speeds of Debian and Ubuntu",
+  "sections.2.h": "Ubuntu's gap between promise and reality highlighted",
+  "sections.3.h": "Criticism of hollow corporate marketing language",
+  "sections.4.h": "Server migration decision and complete loss of trust",
+  "sections.5.h": "Service disruption due to emergency response",
+  "sections.6.h": "Paradox of volunteer communities and corporate distributions",
+  "sections.0.ko": "CVE-2026-98432, a critical-level flaw with CVSS 9.8 discovered in the Linux kernel's TCP code, has existed since 2016, meaning nearly every Linux server worldwide carries it. This vulnerability allows remote attacks, and AI company Anthropic has already constructed a working exploit that achieves root privilege escalation. This means an attacker can gain complete control of the target server.",
+  "sections.1.ko": "Debian deployed a patch for this vulnerability on October 16. However, Ubuntu has still not provided a patch more than two weeks later, with all supported versions including LTS releases remaining flagged as vulnerable. This indicates that appropriate measures were not taken even when security updates were critically needed.",
+  "sections.2.ko": "Ubuntu's official website promises 'timely patches for critical vulnerabilities.' Yet nine days have passed since the CVSS 9.8 assessment, and six days since a working root exploit was disclosed, and still no patch has been deployed. The author sharply criticizes this gap between the pledge and reality.",
+  "sections.3.ko": "The author points out that marketing expressions used by Ubuntu—such as 'timely,' 'enterprise-grade,' 'production-level,' 'enterprise resilience,' 'developer velocity,' and 'build with confidence with Ubuntu'—are hollow rhetoric unsupported by actual action. The author criticizes that while Canonical's marketing team writes these promises, they are not honored in security execution.",
+  "sections.4.ko": "The author has completely lost trust in Ubuntu and decided to migrate all servers from Ubuntu to another operating system. On desktop, Ubuntu was already not preferred, but on servers it was used because it was the default choice of most VPS providers and was considered a stable LTS distribution. However, this security response failure has completely broken that trust.",
+  "sections.5.ko": "Upon learning of this vulnerability, the author lacked sufficient time to migrate services and data, so all servers running Ubuntu had to be urgently taken offline. While this is a temporary measure against security threats, it ultimately sacrifices service availability itself—an extreme measure.",
+  "sections.6.ko": "The paradox the author highlights is that distributions run by volunteers—Debian, Arch, Alpine—have already deployed patches, yet Ubuntu, created by commercial company Canonical which sells security subscription services, still has not provided patches. This suggests that company size or profitability does not necessarily correlate with security response performance. The author's reference point is November 2, 2026, 14:48 UTC.",
+  "caveat": "As this text strongly reflects the author's personal experience and emotions, it is recommended to verify the full context of Ubuntu's official position and technical background at the original source."
+ }
+}

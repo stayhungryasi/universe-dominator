@@ -4,12 +4,21 @@
  "lang": "en",
  "src_hash": "4e72920854b2",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[7§parts.0.unit] 숫자: 원문에 없는 숫자 10K",
-  "[7§parts.1.unit] 숫자: 원문에 없는 숫자 100M"
- ]
+ "at": "2026-11-03 16:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Subscribers 30.0 million or more; Starlink Mobile (D2C) revenue separately disclosed $3.0 billion or more",
+  "cur": "13.6 million / D2C separately disclosed not available (monthly active users 22.0 million per call remarks)",
+  "tgt": "30.0 million / $3.0 billion",
+  "unit": "millions, USD",
+  "hit": "Telecom operator transition successful",
+  "miss": "Narrative fails if D2C not even separately disclosed",
+  "method": "Results segment table",
+  "parts.0.label": "Consumer subscribers",
+  "parts.1.label": "D2C revenue (separately disclosed)",
+  "parts.1.reason": "D2C revenue not separately disclosed (monthly active users 22.0 million per call remarks)",
+  "parts.0.unit": "millions",
+  "parts.1.unit": "billions USD"
+ }
 }

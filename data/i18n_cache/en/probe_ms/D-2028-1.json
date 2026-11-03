@@ -2,21 +2,21 @@
  "kind": "probe_ms",
  "id": "D-2028-1",
  "lang": "en",
- "src_hash": "b6ff7568309b",
+ "src_hash": "609e7aa1aad4",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Net debt/adjusted EBITDA ≤ 3.0x",
-  "cur": "Net cash $51.0 billion (ratio negative)",
-  "tgt": "≤ 3.0x",
-  "unit": "x",
+  "text": "Net debt/adjusted EBITDA 3.0x or less",
+  "cur": "Net cash $51.0 billion (ratio negative) — note: Fitch 10/28 EBITDA leverage forecast ~1.5x end-2026 → ~1.0x 2027 (excluding leases, per Fitch)",
+  "tgt": "3.0x or less",
+  "unit": "times",
   "hit": "Leverage controlled",
   "miss": "Credit rating pressure if exceeded",
   "method": "Balance sheet",
   "parts.0.label": "Net debt/adjusted EBITDA",
-  "parts.0.reason": "Net cash $51.0 billion — ratio negative so numeric value not in source (calculated value not recorded)",
-  "parts.0.unit": "x"
+  "parts.0.reason": "Net cash $51.0 billion — ratio is negative, so no figure stated in source (calculated value not recorded)",
+  "parts.0.unit": "times"
  }
 }

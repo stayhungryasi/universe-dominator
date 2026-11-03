@@ -4,11 +4,18 @@
  "lang": "en",
  "src_hash": "3fbc73756c35",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[6§parts.0.unit] 숫자: 원문에 없는 숫자 100M"
- ]
+ "at": "2026-11-03 16:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Connectivity annual revenue $50.0 billion or more, operating margin 40% or higher",
+  "cur": "Annualized $21.0 billion / 45.1%",
+  "tgt": "$50.0 billion / 40%",
+  "hit": "Global telecom operator status",
+  "miss": "Kuiper pressure if margin falls below 35%",
+  "method": "Annual results",
+  "parts.0.label": "Connectivity annual revenue (annualized)",
+  "parts.1.label": "Operating margin",
+  "parts.0.unit": "billions USD"
+ }
 }

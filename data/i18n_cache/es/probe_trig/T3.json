@@ -2,14 +2,17 @@
  "kind": "probe_trig",
  "id": "T3",
  "lang": "es",
- "src_hash": "164f5a99a1b5",
+ "src_hash": "8a717acbd3b9",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Vuelo Starship 15 — Intento de captura simultánea Booster+Ship",
-  "expected": "2026-4Q (Launch Library TBD, modificación de licencia FAA no publicada)",
-  "prev": "T3 Vuelo 14 captura Ship — esperado 4Q26 → vuelo real 9/28, sin intento de captura (objetivo era inyección orbital). Pronóstico que vinculaba número de vuelo y captura fue incorrecto"
+  "name": "Vuelo Starship 15 — Intento de captura simultánea de propulsor+Ship",
+  "expected": "2026-11-08 ~ 11-30 (plan interno FAA aproximadamente 11/8 informado · LL2 NET 2026-11 unidad mensual, actualizado 10/28) → punto de verificación 2026-12-01 (KST)",
+  "check": "① página de licencia FAA Starship — retorno a sitio de lanzamiento (RTLS)·captura simultánea de propulsor+Ship en torre incluida en modificación de licencia emitida ② resultado de vuelo LL2 (capa de medición 1ª — resultado Starship confirmado como evento de detección automática) ③ captura de Ship exitosa → activación R2 + cumplimiento general B-2027-1 ④ registro oficial de seguimiento de apagado temprano del motor de Flight 14 (recertificación Raptor de Ship 42)",
+  "note": "2026-11-01: TechTimes 10/30 — encendido estático completado B22·Ship 42, lo que queda es modificación de licencia FAA. Declaración de Musk 10/10 'dentro de 4-6 semanas' (→ 11/7~21) solo en tabla de candidatos",
+  "prev": "T3 Flight 14 intento de captura de Ship — estimado 4Q26 → vuelo real 9/28, sin intento de captura (objetivo era inyección orbital). La estimación que vinculaba número de vuelo con captura fue incorrecta",
+  "statusText": "En espera (2026-11-01: encendido estático completado — B22 33 motores aproximadamente 15 segundos 10/25 · Ship 42 un solo motor 10/27·6 motores aproximadamente 60 segundos 10/28, modificación de licencia FAA no emitida)"
  }
 }

@@ -2,19 +2,19 @@
  "kind": "probe_ms",
  "id": "E-2028-1",
  "lang": "en",
- "src_hash": "0388637cb8c5",
+ "src_hash": "ad86e0773199",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Maintenance of regulatory approvals in 5 major overseas markets (India, Indonesia, Brazil, EU, Japan)",
-  "reason": "Conflicting reports on India final approval (2026-06 Bloomberg vs. company denial); remaining 4 countries not confirmed this round",
+  "text": "Maintain licensing in 5 key overseas markets (India, Indonesia, Brazil, EU, Japan)",
+  "reason": "2026-11: India — holds DoT approval (2025-06) and IN-SPACe approval (2025-07, 5-year term); commercial service not launched due to unresolved spectrum allocation and security requirements (2026-10 report) → 1 country confirmed for 'licensing maintained'. Indonesia, Brazil, EU, and Japan not confirmed this round — partial measurement (1/5) could be misread as '4 countries lost', so not recorded. Next round: confirm 4-country regulators' source documents, then convert to 'in progress'",
   "hit": "TAM secured",
-  "miss": "Axis A downward if cancelled",
-  "method": "Regulatory authorities by country",
-  "parts.0.label": "Maintenance of regulatory approvals in 5 major overseas markets",
-  "parts.0.reason": "India final approval reports conflicting; remaining 4 countries not confirmed this round",
-  "parts.0.unit": "count"
+  "miss": "Axis A downside if cancelled",
+  "method": "Each country's regulator",
+  "parts.0.label": "5 key overseas markets licensing maintained",
+  "parts.0.reason": "Only 1 country confirmed — India (holds 2025 approval, commercial not launched, Inc42 2025-07-09) — remaining 4 countries not confirmed, so partial measurement not recorded",
+  "parts.0.unit": "countries"
  }
 }

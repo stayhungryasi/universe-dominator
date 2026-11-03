@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "3c51f6aa7437",
+ "lang": "en",
+ "src_hash": "2485a4904968",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-03 16:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Core Findings in Weight Space Programming",
+  "sections.1.h": "Qwen Model Math Performance Dramatically Improved",
+  "sections.2.h": "Game-Playing Network Zero-Shot Generation",
+  "sections.3.h": "Experiment 1: Game Training History Reverse Inference",
+  "sections.4.h": "Experiments 2-3: Multimodal Weight Interpretation",
+  "sections.5.h": "Improving Network Behavior Through Weight Modification",
+  "sections.6.h": "Optimization Paradigm Shift: Past and Future",
+  "sections.7.h": "Why This Is Possible: Comparison with Humans",
+  "sections.0.ko": "The latest large language model, Astra, has demonstrated the remarkable ability to read and write neural network weights in raw form. This means it can identify or modify hidden properties of weights purely through natural language instructions, without gradients or backpropagation. This suggests the potential to fundamentally transform neural network optimization paradigms that have so far relied only on fixed algorithms like symbolic optimizers.",
+  "sections.1.ko": "Astra's case of improving the Qwen 3.5-0.8B model to specialize in mathematics demonstrates the real-world effectiveness of this technology. By editing just 0.016% of model weights to fix inference loop problems, performance on the MATH-500 benchmark jumped from 7.9% to 48.1%. More impressively, this modification also improved instruction-following (IFEval) performance by 3x, demonstrating a 'generalization' effect where improvement in one capability automatically enhances others.",
+  "sections.2.ko": "Astra was able to write neural network weights capable of playing games from scratch without environmental feedback. Small game networks played better than models trained with PPO for 100 million steps. This means LLMs can go beyond merely analyzing existing weights—they can leverage their own reasoning abilities to understand what computations a network must perform and construct weights accordingly.",
+  "sections.3.ko": "Astra was presented with weights from four policy networks trained on four games (Breakout, Pong, Pac-Man, Freeway) in the same architecture (MLP 500-32-32-5) as text. Without being told the game names, it correctly identified which game each network was trained for. This suggests that Astra can read the pattern distributions in weights, particularly how input layer weights reflect game structure (e.g., Breakout's paddle).",
+  "sections.4.ko": "Astra correctly identified generation targets (circles, triangles, squares) from only the weights of a diffusion model (DDPM), and precisely identified training languages (Python, romanized Japanese, English) using only intermediate layer weights with input/output layers removed from a language model. Particularly on a small transformer (7.16M parameters), it could even locate specific attention mechanisms like copying heads. This shows that LLMs are actually reasoning about the geometric and structural properties of weights, not merely performing simple computational verification.",
+  "sections.5.ko": "Astra can diagnose behavioral failures in already-trained networks and directly edit weights to fix them. Purely through LLM reasoning—without gradient descent or retraining—it determines which parts of the weights are problematic and how to modify them. This presents a new alternative to traditional symbolic optimizers and custom training networks.",
+  "sections.6.ko": "For decades, neural network weights have been optimized by simple symbolic optimizers like Adam and Muon. Recently, LLMs began being applied to text artifacts (prompts, programs) and hyperparameter optimization. Now, as it becomes proven that LLMs can directly understand and manipulate network weights themselves, reasoning-based optimization is expanding into the domain of differentiable neural networks. This signifies not merely a technical advance but a fundamental shift in how model optimization works.",
+  "sections.7.ko": "Asking a typical person to build a neural network that plays Go or predict the behavior of given weights is nearly impossible. However, current large language models can sufficiently grasp the structure inherent in weight space to read and write weights aligned with objectives expressed in natural language. This demonstrates that LLMs possess the capability to understand the continuous space of weights much like programming code, and while the reason this became possible is not explicitly explained, it is proven by experimental results.",
+  "caveat": "The source text represents early-stage research results, and the reproducibility of the Qwen improvement case and generalizability to other model families may not have been independently validated. Please refer to the source paper alongside the key figures and claims presented here."
+ }
+}

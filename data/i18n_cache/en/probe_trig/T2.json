@@ -2,12 +2,15 @@
  "kind": "probe_trig",
  "id": "T2",
  "lang": "en",
- "src_hash": "83b4a79f1e36",
+ "src_hash": "bdb5da59dd42",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "12/8 Lockup Release Post-30-Day Volume·Price"
+  "name": "12/8 lockup release (180-day maturity, maximum 797.6M shares = 5.9%) followed by 30-day trading volume and share price",
+  "check": "424B4 release table: 12/8 maximum 797.6M (August price-conditional 455.8M not met → larger amount) · daily trading volume vs 90-day average (10/22 release date 197M shares · 10/30 123M shares reference) · next tranches are 4Q26 results followed by extended lockup 20% (351.9M) → 3/18 176.0M → 1Q27 results followed by 351.9M → 5/17 176.0M → 6/12 351.9M + Musk holdings (366 days) → 2Q27 results followed by 351.9M",
+  "note": "2026-11-01 correction: October issue 'approximately 40% (reported)' was incorrect — 424B4 original text defines 12/8 tranches as 'maximum 328.4M (if August conditional tranche unlocks) or 797.6M (otherwise)'. August condition (offer price +30% = $175.50 or higher closing price on 5 of 10 trading days) not met (window closing price $108.27~$125.33 — StockAlarm second source) → 797.6M. 28% (maximum 1.3B shares) already released on 10/22, that day −9.1%·197M shares. Extended lockup + Musk = approximately 7.8B shares (exceeding 63% of pre-IPO shares)",
+  "prev": "T2 — October issue volume forecast 'approximately 40%' incorrect (news-dependent). Correction: lockup tranches documented by 424B4 release table only"
  }
 }

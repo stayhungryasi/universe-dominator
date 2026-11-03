@@ -4,12 +4,18 @@
  "lang": "en",
  "src_hash": "06ace80624fa",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[19§cur] 숫자: 원문에 없는 숫자 10.8B",
-  "[19§cur] 숫자: 원문의 숫자가 빠짐 10.8억"
- ]
+ "status": "ok",
+ "fields": {
+  "text": "Space R&D ÷ flight count ≤$100M per mission",
+  "cur": "$1.08B per mission (9M26 Space R&D $3,231M ÷ 3 missions)",
+  "tgt": "$100M per mission",
+  "unit": "$/mission",
+  "hit": "Cost curve decline confirmed",
+  "miss": "\"99% reduction\" narrative collapses if target missed",
+  "method": "Actual Space table",
+  "parts.0.label": "Space R&D ÷ flight",
+  "parts.0.unit": "$B per mission"
+ }
 }

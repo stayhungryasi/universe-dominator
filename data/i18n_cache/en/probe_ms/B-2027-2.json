@@ -2,19 +2,19 @@
  "kind": "probe_ms",
  "id": "B-2027-2",
  "lang": "en",
- "src_hash": "cd9a94a91251",
+ "src_hash": "f6e66f66a554",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-03 16:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Annual Starship flights 12+ times",
-  "cur": "2026: 3 flights (5/22·7/24·9/28) — reference prior to 2027 judgment",
-  "unit": "times/year",
+  "text": "Annual Starship flights 12 or more",
+  "cur": "2026: 3 flights (5/22, 7/24, 9/28) — Flight 15 static fire completed (B22 10/25, Ship 42 10/28); FAA license modification (booster return and simultaneous catch) not yet issued; LL2 NET 2026-11 (monthly scope) → 2026 maximum 4 flights — reference before 2027 judgment",
+  "unit": "flights/year",
   "hit": "Cadence secured",
-  "miss": "Below 6 flights = −50% vs. target",
-  "method": "Launch record",
+  "miss": "−50% vs. target if below 6 flights",
+  "method": "Flight records",
   "parts.0.label": "Annual Starship flights (2026 reference)",
-  "parts.0.unit": "times/year"
+  "parts.0.unit": "flights/year"
  }
 }

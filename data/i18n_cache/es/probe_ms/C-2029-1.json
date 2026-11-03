@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "C-2029-1",
  "lang": "es",
- "src_hash": "f45071ae7cfc",
+ "src_hash": "1df85f580a64",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
- "attempts": 1,
+ "at": "2026-11-03 16:41",
+ "attempts": 2,
  "status": "ok",
  "fields": {
-  "text": "Concentración de ingresos de los 2 principales clientes ≤ 50%",
-  "cur": "51,1% (base de ingresos consolidados, cliente B 34,5% + cliente A 16,6%) — primera divulgación",
-  "tgt": "≤ 50%",
-  "hit": "Diversificación de demanda",
-  "miss": "Si se excede, riesgo de acantilado por vencimiento de contrato (2029)",
-  "method": "Nota de concentración de clientes en 10-K",
-  "parts.0.label": "Concentración de ingresos de los 2 principales clientes"
+  "text": "Ingresos de los 2 principales clientes 50% o menos",
+  "cur": "51,1 % (base ingresos consolidados, cliente B 34,5 % + cliente A 16,6 %) — primera divulgación. Adición 11/2026: cliente B = Anthropic (Bloomberg 10/29, cita de fuente — no confirmado por la empresa), según documentos de oferta pública de Anthropic hasta $120.5 mil millones hasta 2029, aproximadamente $3.1 mil millones mensuales desde diciembre, opción de rescisión con 90 días de notificación desde inicios 2027 (según informes). Google también con opción de rescisión 90 días después de 2026-12-31 (TechCrunch 06/05) → ambos 2 principales clientes con opción de rescisión 2027-1H",
+  "tgt": "50% o menos",
+  "hit": "diversificación de demanda",
+  "miss": "si se supera, riesgo de acantilado al vencimiento del contrato (2029)",
+  "method": "nota de concentración de clientes 10-K",
+  "parts.0.label": "Ingresos de los 2 principales clientes"
  }
 }
