@@ -209,6 +209,34 @@ def earnings_targets():
     return out[:EARNINGS_TARGET_MAX]
 
 
+_MON = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+_MON_FULL = ["january", "february", "march", "april", "may", "june", "july", "august", "september",
+             "october", "november", "december"]
+
+
+def stated_in_titles(dstr, headlines):
+    """추출한 날짜가 그 종목 헤드라인 **제목**에 실제로 쓰여 있는가(발행 시각 머리말 '[Mon, 03 Nov 2026]'은 제외).
+
+    막으려는 것 한 문장: 헤드라인에 없는 날짜가 실적 발표일로 실리는 것. 2026-11-03 실측: 10/28 경 이미 실적을
+    낸 Microsoft 가 '11/3 실적 발표'로 공개 브리핑 'D-0' 에 실렸다 — 그날 발행된 기사의 발행 시각을 발표일로 읽은
+    것으로 보인다. 프롬프트의 '명시된 경우만'은 검사가 아니다 → 제목 글자로 대조한다(⑱ 숫자 규율과 같은 원리).
+    """
+    import re as _re
+    try:
+        y, m, d = (int(x) for x in dstr.split("-"))
+    except Exception:
+        return False
+    mon = f"(?:{_MON_FULL[m - 1]}|{_MON[m - 1]}{'|sept' if m == 9 else ''})\\.?"
+    day = f"0?{d}(?:st|nd|rd|th)?"
+    pats = [rf"\b{mon}\s+{day}\b", rf"\b{day}\s+{mon}\b", rf"(?<![\d/]){m:d}/0?{d}(?![\d/])|(?<![\d/])0{m}/0?{d}(?![\d/])",
+            rf"0?{m}월\s*0?{d}일", rf"{y}-{m:02d}-{d:02d}"]
+    for h in headlines or []:
+        t = _re.sub(r"^\[[^\]]*\]\s*", "", h or "").lower()
+        if any(_re.search(p, t) for p in pats):
+            return True
+    return False
+
+
 def fetch_earnings_via_news():
     """종목별 '실적 발표일' 뉴스 검색 → Claude 가 날짜 추출. Finnhub 무관 커버리지."""
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
@@ -254,12 +282,18 @@ def fetch_earnings_via_news():
     except Exception as e:
         print(f"  [실적검색] 실패(무시): {e}", file=sys.stderr)
         return []
-    out = []
+    out, dropped = [], []
+    heads_of = {c["stock"]: c["headlines"] for c in corpus}
     for x in rows:
         if isinstance(x, dict) and in_horizon(x.get("date", "")) and x.get("stock"):
+            if not stated_in_titles(x["date"], heads_of.get(x["stock"])):
+                dropped.append(f"{x['stock']} {x['date']}")
+                continue
             note = f" · {x['note']}" if x.get("note") else ""
             out.append({"date": x["date"], "type": "earnings",
                         "title": f"{x['stock']} 실적 발표{note}"})
+    if dropped:
+        print(f"  [실적검색] 제목에 없는 날짜 {len(dropped)}건 버림: {', '.join(dropped[:8])}")
     print(f"  [실적검색] {len(out)}건 확정 추출")
     return out
 
