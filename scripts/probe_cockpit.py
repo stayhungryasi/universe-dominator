@@ -387,8 +387,8 @@ def kpi_tiles(fin):
 def engine_outcome(eng, run_date):
     """엔진 마지막 실행 결론 → success · failure · cancelled · timed_out · superseded · none (화면·관제탑 공용).
 
-    실패한 실행이라도 그 실행일(KST) 이후의 관측이 판단층에 게시돼 있으면 'superseded'(보류 후 게시) —
-    관문에 보류된 산출물이 수리 뒤 게시됐거나 다음 회차가 덮었다. 판단층이 낡지 않았는데 '엔진 실패'를
+    실패한 실행이라도 그 실행일(KST)의 관측이 판단층에 게시돼 있으면 'superseded'(보류 후 게시 — 관문에 보류된
+    산출물이 수리 뒤 게시됐다), 그보다 뒤 날짜의 관측이 있으면 'success'(그 뒤 회차가 새 관측을 냈다). 판단층이 낡지 않았는데 '엔진 실패'를
     다음 회차까지 계속 띄우면 멈춘 사이트처럼 보이고 관제탑은 7일마다 헛경보를 낸다(2026-11-03: 11/01 월간이
     무관한 selftest 고장으로 보류 → 11/03 게시 뒤에도 '엔진 실패'). 판정은 날짜 대조 한 가지뿐이다.
     """
@@ -402,7 +402,8 @@ def engine_outcome(eng, run_date):
         except Exception:
             d = None
         if d is not None and str(run_date)[:10] >= d.isoformat():
-            return "superseded"
+            # 같은 날 = 그 실행의 산출물이 늦게 게시됐다(보류 후 게시) · 더 뒤 날짜 = 그 뒤 회차가 새 관측을 냈다(정상)
+            return "superseded" if str(run_date)[:10] == d.isoformat() else "success"
     return c
 
 

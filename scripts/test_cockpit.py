@@ -257,6 +257,7 @@ class EngineOutcomeTest(unittest.TestCase):
         f = {"conclusion": "failure", "created_at": "2026-11-01T05:57:42Z"}
         self.assertEqual(pc.engine_outcome(f, "2026-10-28"), "failure")
         self.assertEqual(pc.engine_outcome(f, "2026-11-01"), "superseded")
+        self.assertEqual(pc.engine_outcome(f, "2026-11-03"), "success")       # 11/03 사건 회차가 그 뒤 새 관측을 냈다
         self.assertEqual(pc.engine_outcome(f, None), "failure")
         self.assertEqual(pc.engine_outcome({"conclusion": "success", "created_at": "x"}, "2020-01-01"), "success")
         self.assertEqual(pc.engine_outcome({}, "2026-11-01"), "none")

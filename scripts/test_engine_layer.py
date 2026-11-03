@@ -244,6 +244,8 @@ class WatchdogTest(unittest.TestCase):
         self.assertIn("보류됐던 관측 게시", b[0]["text"])
         c = ps.judge_probe({"run": {"run_date": "2026-11-01"}}, watch, state, "2026-11-10")
         self.assertEqual(c, [])                                        # 7일 뒤에도 헛경보 없음
+        d = ps.judge_probe({"run": {"run_date": "2026-11-03"}}, watch, state, "2026-11-11")
+        self.assertEqual(d, [])                                        # 그 뒤 회차도 조용(해소는 한 번)
 
 
 class WorkflowWiringTest(unittest.TestCase):
