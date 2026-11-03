@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-03-event-s5",
+ "lang": "en",
+ "src_hash": "342e340619fd",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-03 17:48",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers",
+  "md": "\n- **T9 newly added — \"Starlink Mobile terrestrial network — Boost Mobile/EchoStar deal checkpoints\"**: ① SpaceX 8-K Item 1.01 (acquisition or network access agreement) or EchoStar (CIK 1415404) 8-K ② FCC license transfer application (ULS/ICFS) and HSR filing ③ AT&T and T-Mobile consent to or objection against the MVNO contract (reported; subject to confirmation) ④ final closing 8-K for the existing spectrum deal (prepayment $856M → transfer to intangible assets, 10-Q R58) ⑤ EchoStar-related commitments note in the 4Q26 10-K. Expected date: because the report describes 'preliminary talks', **no date is estimated** — the checkpoints are the next monthly issue **2026-12-01** (KST) and the 10-K (estimated 2027-02). The name prefix does not use 'financing, contract, earnings, Starship' (source: table in Section 2 · `scripts/spacex_watch.py trigger_kind`).\n- **T10 newly added — \"Colossus gas turbine Clean Air Act lawsuit — preliminary injunction, interlocutory appeal, and MDEQ permit checkpoints\"**: ① ruling on the preliminary injunction (motion filed 5/6) — an order to halt operations would directly affect Colossus 2 power and nameplate GW ② SpaceXAI interlocutory appeal (§1292(b)) or filing of an answer ③ MDEQ permanent turbine permit text (number covered and issue date — 27 vs 41 unconfirmed) ④ 4Q26 10-K legal proceedings note (changes in reserve by case, risk factors) ⑤ additional filings by the U.S. government (intervening party). Expected date: court schedule not public — checkpoint **2026-12-01** (monthly) → 10-K. Measurement-layer share: court records (PACER/CourtListener) are not the source for any of the four monitors (source: table in Section 1 · [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm)).\n- **T3, T4, T5, T7, T8**: no change — T7 ⓓ (11/5) and ⓔ (11/6) and T8 ② (deposit 11/4 · acceptance 11/5) have **not yet arrived** as of this issue (KST 11/3 = U.S. 11/2). The T8 check states explicitly 'Boost/EchoStar terrestrial network deal goes to T9' (source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

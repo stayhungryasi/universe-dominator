@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-03-event-s3",
+ "lang": "ja",
+ "src_hash": "02eb3024bc96",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-03 17:48",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 確率・マイルストーン・価値 — 変化なし、価格のみ更新",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。R1 消化済み · R2~R6 条件未到来。両方の出来事とも規則上の条件に該当しない。規則外の調整は禁止 (出典: `state.probability_adjustment_rules` · `prompts/monthly_run.md` 2項)。\n- **マイルストーン**: 29件の判定に変化なし(進行 23 · 未判定 5 · 未達 1)。A-2028-1・C-2027-1 は背景事実のみ記録(1-1・2-1 節)。すべて `status_history` に今回分の行を追加 (出典: `state.scorecard` · `state.milestones`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定しない**(event モード)。価格依存の算術値のみ更新: 時価総額 **$1,852十億**(算式: 136.37 × 135.81億株)、EV $1,801十億(算式: 1,852 − 純現金 51)、バンド中心比 **−52%**(算式: 66 ÷ 136.37 − 1)、AI 内在価値 **$1,310十億**(算式: 1,852 − Connectivity 350 − Space 141 − 純現金 51; 前回 $1,288十億比 +1.7%)、年換算 AI 売上倍率 43(算式: 1,310 ÷ 30.24) · 契約 ARR 倍率 50(算式: 1,310 ÷ 26) · 年換算調整後 EBITDA 倍率 66(算式: 1,310 ÷ 19.81) (出典: `state.valuation` · [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-03 閲覧 · [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm))。\n- **無リスク金利メモ**: 米10年債 **4.94%**(2026-10-30、FRED、`data/latest.json meta.macro.ust10`) — 11月号の入力 4.99%(10/27)から −5bp。次回月次回の入力(割引率の再算定は月次回の役割) (出典: `data/latest.json` · [FRED DGS10](https://fred.stlouisfed.org/series/DGS10))。\n- **価格反応**: 11/2 +1.22% — 同日の Boost 報道と 10/30 の判決報道が重なり分離不可。原因は特定しない (出典: [stockanalysis](https://stockanalysis.com/stocks/spcx/history/))。\n\n---\n"
+ }
+}

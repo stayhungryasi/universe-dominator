@@ -95,18 +95,19 @@
   ],
   "2026-11-03": [
    "sentinel:bot:spacex_news:2026-11-03",
+   "sentinel:feed:spacex_news:판정 모델:2026-11-03",
    "sentinel:probe-fail-recover:2026-11-03"
   ]
  },
  "last_verdict": {
-  "at": "2026-11-03 16:42",
+  "at": "2026-11-03 17:48",
   "ok": false,
   "alerts": [
    "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)",
-   "SpaceX 월간 엔진: 보류됐던 관측 게시 확인(2026-11-01) ✅"
+   "SpaceX 뉴스 판정 모델: 요청 실패 2회 연속"
   ]
  },
- "last_run": "2026-11-03 16:42",
+ "last_run": "2026-11-03 17:48",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -167,7 +168,7 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 0,
+   "err_streak": 1,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
@@ -1154,10 +1155,12 @@
    "zero_alerted": false
   },
   "spacex_news:판정 모델": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
-   "zero_alerted": false
+   "err_alerted": true,
+   "zero_alerted": false,
+   "err_alerted_first": "2026-11-03",
+   "err_alerted_last": "2026-11-03"
   },
   "research:TXN": {
    "err_streak": 0,
@@ -1168,7 +1171,7 @@
  },
  "coverage": {
   "roe_us": [
-   21,
+   22,
    25
   ],
   "at": "2026-11-03"
@@ -1180,6 +1183,11 @@
  "i18n": {
   "streak": 0,
   "alerted": false,
-  "last_ts": "2026-11-03 16:41"
+  "last_ts": "2026-11-03 17:48"
+ },
+ "auto_axes": {
+  "zero_g_forward": false,
+  "zero_g_cagr3y": false,
+  "zero_eps": false
  }
 }

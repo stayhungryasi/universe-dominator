@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-03-event-s5",
+ "lang": "ja",
+ "src_hash": "342e340619fd",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-03 17:48",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. トリガー",
+  "md": "\n- **T9 新設 — \"Starlink Mobile 地上網 — Boost Mobile/EchoStar 取引の確認点\"**: ① SpaceX 8-K Item 1.01(買収・網アクセス契約)または EchoStar(CIK 1415404)8-K ② FCC 免許移転申請(ULS/ICFS)・HSR 届出 ③ AT&T・T-Mobile の MVNO 契約への同意・異議(報道は確認対象) ④ 既存スペクトラム取引の最終完了 8-K(前払い $856M → 無形資産への振替、10-Q R58) ⑤ 4Q26 10-K の EchoStar 関連の約定注記。予定日: 報道が '予備協議' であるため**日付は推定しない** — 確認点は次の月次回**2026-12-01**(KST)と 10-K(2027-02 推定)。名称の頭に '調達・契約・業績・Starship' を置かない (出典: 2節の表 · `scripts/spacex_watch.py trigger_kind`)。\n- **T10 新設 — \"Colossus ガスタービン Clean Air Act 訴訟 — 予備的差止命令・中間控訴・MDEQ 許可の確認点\"**: ① 予備的差止命令(5/6 申立て)の判断 — 運転停止命令が出た場合、Colossus 2 の電力・ネームプレート GW に直接影響 ② SpaceXAI 側の中間控訴(§1292(b))または答弁書の提出 ③ MDEQ 恒久タービン許可の原文(対象数・発給日 — 27 vs 41 は未確認) ④ 4Q26 10-K 法的手続の注記(引当金の個別変化・リスク要因) ⑤ 米国政府(介入当事者)の追加申立て。予定日: 裁判所の日程は非公開 — 確認点は**2026-12-01**(月次)→ 10-K。測定層の持ち分: 裁判所記録(PACER/CourtListener)は四つの監視のいずれの源泉でもない (出典: 1節の表 · [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm))。\n- **T3・T4・T5・T7・T8**: 変化なし — T7 ⓓ(11/5)・ⓔ(11/6)と T8 ②(保証金 11/4・受諾 11/5)は今回の基準では**未到来**(KST 11/3 = 米国 11/2)。T8 の check に 'Boost/EchoStar 地上網取引は T9 へ' と明記 (出典: `state.triggers_next_12m`)。\n\n---\n"
+ }
+}

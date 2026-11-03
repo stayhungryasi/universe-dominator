@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T8",
  "lang": "es",
- "src_hash": "eaa6f9aa44c0",
+ "src_hash": "587fcea68f29",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "name": "Amazon Leo·SpaceX D2D(satélite-teléfono móvil) regulación·puntos de verificación de transacción — ① DA 26-1160 solicitud de reconsideración ② DA 26-1078 aceptación condicional·depósito en garantía ③ Amazon D2D 5.105 satélites autorización ④ Globalstar conclusión 8-K·Apple participación del 20% ⑤ EchoStar fase 2 conclusión → SpaceX operación 2GHz MSS inicio ⑥ FCC D2D 482MHz NPRM plazo de comentarios·subasta reglas 1675–1695/2020–2025MHz",
-  "expected": "2026-11-27(estimado: DA 26-1160 plazo solicitud reconsideración = adopción 10/27 + 30 días = 11/26 + 1 día KST) ~ 2027-1H(conclusión Globalstar 8-K Item 2.01 — 8-K 'conclusión prevista 2027')",
-  "check": "① FCC EDOCS·ECFS GN Docket 26-134 — presentación peticiones reconsideración(Yippy etc.) ② FCC ICFS S00735 — DA 26-1078 depósito en garantía(11/4)·aceptación(público 10/6 + 30 días = 11/5, silencio = aceptación)·objeción SpaceX ③ solicitud Amazon Leo D2D(máximo 5.105 satélites, 2026-07) orden autorización ④ Globalstar(CIK 1366868) 8-K Item 2.01 conclusión · divulgación adquisición participación Apple ⑤ SpaceX notificación FCC dentro de 30 días tras conclusión fase 2 EchoStar(condición 3 DA 26-1078) — previsto alrededor de 2027-11-30 ⑥ FCC acta reunión pública 10/29(propuesta apertura D2D aproximadamente 500MHz · propuesta subasta 1675–95/2020–2025MHz). Prensa es objetivo verificación, determinación sólo por órdenes FCC·divulgaciones SEC originales. Encabezamiento nombre sin adquisición·contrato·rendimiento·Starship(clasificación tipo capa medición)",
-  "note": "Creado 2026-10-28. Contexto: FCC DA 26-1160(2026-10-27) aprobación transferencia Globalstar→Amazon($11,57 mil millones, aproximadamente 25MHz MSS, condiciones conformidad LoA, Yippy denegado) + DA 26-1078(2026-10-06) autorización SpaceX D2D 15.000 satélites VLEO(operación 2GHz MSS tras conclusión fase 2 EchoStar · 50% 2032-10-07 · totalidad 2035-10-07). Ambos eventos fuera del tipo capa medición(divulgación·IR·lanzamiento) — FCC ICFS·EDOCS no es origen capa medición(sin resolver). Inicio despliegue D2D Amazon propio 2028(Globalstar 8-K 2026-04-14 · SpaceQ 07-29). Hechos antecedentes A-2028-1(divulgación separada ingresos D2C $3 mil millones)",
-  "statusText": "Confirmación parcial(2026-11-01: ⑥ FCC reunión pública 10/29 — D2D(SCS) NPRM adicional máximo 482MHz unánime(GN Docket 26-281·23-65, registro federal después 60 días comentarios) + progresión subasta unánime 1675–1695/2020–2025MHz(reglas no finalizadas). Solicitud inclusión banda NextNav SpaceX sin procesar. ②·① plazos 11/4~5·11/26 no llegados)"
- }
+ "at": "2026-11-03 17:48",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[check] 숫자: 원문에 없는 숫자 1695",
+  "[check] 숫자: 원문의 숫자가 빠짐 95",
+  "[note] 숫자: 원문에 없는 숫자 11.57 trillion, 3 trillion",
+  "[note] 숫자: 원문의 숫자가 빠짐 30억, 11.57B"
+ ]
 }

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-s5",
+ "lang": "ja",
+ "src_hash": "c99067c1fd9f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-03 17:48",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "PHASE 5 — 再実行規則(毎月) — 今回の適用記録",
+  "md": "\n1. 状態ファイルを先に読み、デルタ(0節)から書いた。変わったものだけを根拠に確率(発動なし)・適正価値(割引率 12.9% → 12.7%、$32 不変)を扱った (出典: 0-3・4-1)。\n2. マイルストーン29件すべてに 2026-11 の判定行を追加した(進行 23 · 未判定 5 · 未達 1 — 変化なし)。数値の進捗は新四半期の開示がないため10月号の値を維持し、背景事実のみ更新 (出典: PHASE 2)。\n3. 規則新設の提案⑤(主要顧客の解約通知の開示)を登録し、数値には反映しなかった。提案③は Fitch のコメントにより前提がさらに弱まったことを記録 (出典: 0-3・1-5)。\n4. 経営陣・政府の発言(マスク 10/10「4~6週間以内に Flight 15」、10/21・10/24 の X 投稿、CFO の回収期間)は候補表のみ — 判定には使わなかった (出典: `state.musk_statements_as_milestone_candidates_only` · [TechTimes 10/30](https://www.techtimes.com/articles/329778/20261030/spacex-finishes-starship-flight-15-static-fire-first-ship-catch-attempt-awaits-faa.htm))。\n5. 10月号の訂正1件(ロックアップ「40%」)を冒頭に明記した。10/29 の未掲載回の取材は一次情報源で再確認して取り込んだ。\n6. **S-1 四半期財務の記入(規約7項)**: `data/spacex_kpi.json` の 4Q25・4Q24 の欠損(売上・営業利益・純利益・営業キャッシュフロー・CAPEX)を S-1/424B4 原文で埋めようとしたが、424B4 本文がツールの容量(10MB)を超えて開けず、EDGAR 全文検索に \"three months ended December 31, 2025\" の語句がなく、四半期表がないことを確認した。**FY2025 − 9M2025 の算式も FY2025 原文の値を読めず適用不可 → 空欄のままにする(推定禁止)**。次回は S-1 の F ページだけを別に開く経路(EDGAR 文書分割照会)を試す ([EDGAR 全文検索](https://efts.sec.gov/LATEST/search-index?q=%22three%20months%20ended%20December%2031%2C%202025%22&ciks=0001181412&forms=424B4,S-1,S-1/A) · `data/spacex_kpi.json`)。\n\n---\n"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-s5",
+ "lang": "es",
+ "src_hash": "c99067c1fd9f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-03 17:48",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "PHASE 5 — Reglas de reejecución (mensual) — Registro de aplicación en esta edición",
+  "md": "\n1. Se leyó primero el archivo de estado y se escribió empezando por el delta (sección 0). Solo con lo que cambió se trataron la probabilidad (sin activación) y el valor razonable (tasa de descuento 12,9% → 12,7%, $32 sin cambios) (fuente: 0-3·4-1).\n2. Se añadió a los 29 hitos una línea de dictamen de 2026-11 (en curso 23 · sin dictamen 5 · incumplido 1 — sin cambios). Al no haber nueva divulgación trimestral, el avance numérico mantiene los valores de la edición de octubre y solo se actualizan los hechos de contexto (fuente: PHASE 2).\n3. Se registró la propuesta de nueva regla ⑤ (divulgación de aviso de resolución de un cliente principal) y no se reflejó en los números. En la propuesta ③ se anotó que el comentario de Fitch debilitó aún más su premisa (fuente: 0-3·1-5).\n4. Las declaraciones de directivos y del gobierno (Musk 10/10 \"Flight 15 en 4~6 semanas\", publicaciones en X del 10/21 y 10/24, periodo de recuperación del CFO) solo figuran en la tabla de candidatos; no se usaron en ningún dictamen (fuente: `state.musk_statements_as_milestone_candidates_only` · [TechTimes 10/30](https://www.techtimes.com/articles/329778/20261030/spacex-finishes-starship-flight-15-static-fire-first-ship-catch-attempt-awaits-faa.htm)).\n5. Se indicó al inicio una corrección de la edición de octubre (el \"40%\" del lock-up). La cobertura de la edición no publicada del 10/29 se volvió a verificar en la fuente primaria y se incorporó.\n6. **Registro de datos financieros trimestrales del S-1 (apartado 7 del protocolo)**: se intentó completar con el texto original del S-1/424B4 los datos ausentes de 4Q25 y 4Q24 (ingresos · resultado operativo · beneficio neto · flujo de caja operativo · CAPEX) de `data/spacex_kpi.json`, pero el cuerpo del 424B4 superó la capacidad de la herramienta (10MB) y no se abrió, y la búsqueda de texto completo de EDGAR no contiene la frase \"three months ended December 31, 2025\", con lo que se confirmó que no hay tabla trimestral. **La fórmula FY2025 − 9M2025 tampoco es aplicable porque no se pudo leer el valor original de FY2025 → se deja en blanco (prohibido estimar)**. La próxima edición intentará abrir por separado solo las páginas F del S-1 (consulta de EDGAR por división del documento) ([búsqueda de texto completo de EDGAR](https://efts.sec.gov/LATEST/search-index?q=%22three%20months%20ended%20December%2031%2C%202025%22&ciks=0001181412&forms=424B4,S-1,S-1/A) · `data/spacex_kpi.json`).\n\n---\n"
+ }
+}

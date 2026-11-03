@@ -51,7 +51,7 @@
   "SPCX": "untested",
   "2222.SR": "untested",
   "META": "pass",
-  "TSLA": "untested",
+  "TSLA": "bond_inferior",
   "005930.KS": "untested",
   "MU": "untested",
   "BRK-B": "untested",
@@ -88,7 +88,7 @@
    "SPCX": "untested",
    "2222.SR": "untested",
    "META": "pass",
-   "TSLA": "untested",
+   "TSLA": "bond_inferior",
    "005930.KS": "untested",
    "MU": "untested",
    "BRK-B": "untested",
@@ -189,6 +189,13 @@
     "rate10y": 4.94,
     "eps_adj_ttm": 3.3134,
     "g_used": 0.2,
+    "guard": false
+   },
+   "TSLA": {
+    "price": 403.82,
+    "rate10y": 4.94,
+    "eps_adj_ttm": 0.7171,
+    "g_used": -0.3823,
     "guard": false
    }
   },

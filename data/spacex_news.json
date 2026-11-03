@@ -1585,23 +1585,23 @@
  ],
  "last_run": {
   "date": "2026-11-03",
-  "headlines": 482,
-  "fresh": 295,
-  "judged": 80,
-  "deferred": 215,
+  "headlines": 450,
+  "fresh": 226,
+  "judged": 0,
+  "deferred": 226,
   "baseline": false,
-  "calls": 2,
+  "calls": 0,
   "window_days": 7,
-  "wake": 2,
+  "wake": 0,
   "report": 0,
-  "ignored": 75,
+  "ignored": 0,
   "model": "claude-sonnet-5-5",
   "model_ok": false,
-  "error": "JSONDecodeError: Expecting ',' delimiter: line 7 column 8 (char 987)",
-  "tokens_in": 11603,
-  "tokens_out": 5603
+  "error": "HTTPError: 400 Client Error: Bad Request for url: https://api.anthropic.com/v1/messages",
+  "tokens_in": null,
+  "tokens_out": null
  },
- "deferred_streak": 1,
+ "deferred_streak": 2,
  "cooldown": {
   "starlink-ukraine-outage": "2026-10-27",
   "amazon-globalstar-fcc": "2026-10-28",
@@ -1616,5 +1616,6 @@
   "2026-10-28": 2,
   "2026-10-29": 2,
   "2026-11-03": 2
- }
+ },
+ "deferred_alerted": "2026-11-03"
 }

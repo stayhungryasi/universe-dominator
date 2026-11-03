@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "c027d75ab851",
  "lang": "es",
- "src_hash": "a26b23e8217e",
+ "src_hash": "9016b1e35564",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
+ "at": "2026-11-03 17:48",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "La acción de Intel se desploma un 45% en octubre, la debilidad del mercado de PC genera perspectivas de ventas del cuarto trimestre por debajo de 1.700 millones de dólares",
-  "summary_ko.1": "Fracaso en la adquisición de clientes para el negocio de fundición, falla competitiva frente a TSMC de Taiwán a pesar de inversiones de 108.000 millones de dólares durante años",
-  "summary_ko.2": "Las ventas de centros de datos crecen un 78% (7.300 millones de dólares), pero la escasez de suministro obliga a convertir la fábrica de Oregon de producción de chips avanzados 18A a producción del antiguo Intel 3",
-  "title": "Intel foundry push faces critical test after stock's 45% plunge in October"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[19§summary_ko.0] 숫자: 원문에 없는 숫자 15000",
+  "[19§summary_ko.0] 숫자: 원문의 숫자가 빠짐 150"
+ ]
 }

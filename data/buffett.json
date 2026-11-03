@@ -1,5 +1,5 @@
 {
- "generated_label": "2026-11-03 16:29",
+ "generated_label": "2026-11-03 17:39",
  "asof": "2026-09-03",
  "zones": {
   "explore": 0.6,
@@ -47,7 +47,7 @@
     "roe_minus_2x10y": 1.1682,
     "coupon10y": 0.212461,
     "zone_buffett": "pass",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.157546,
     "required_g_prove": 0.080029,
@@ -99,7 +99,7 @@
     "roe_minus_2x10y": 1.3538,
     "coupon10y": 0.061895,
     "zone_buffett": "bond_inferior",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.19163,
     "required_g_prove": 0.111831,
@@ -151,7 +151,7 @@
     "roe_minus_2x10y": 0.2324,
     "coupon10y": 0.1006,
     "zone_buffett": "prove_growth",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.148649,
     "required_g_prove": 0.071728,
@@ -203,7 +203,7 @@
     "roe_minus_2x10y": 0.4242,
     "coupon10y": 0.117999,
     "zone_buffett": "prove_growth",
-    "cause": "scale",
+    "cause": null,
     "note": "",
     "required_g": 0.156047,
     "required_g_prove": 0.07863,
@@ -264,7 +264,7 @@
     "roe_minus_2x10y": 0.1071,
     "coupon10y": 0.050927,
     "zone_buffett": "bond_inferior",
-    "cause": "scale",
+    "cause": null,
     "note": "",
     "required_g": 0.17393,
     "required_g_prove": 0.095316,
@@ -316,7 +316,7 @@
     "roe_minus_2x10y": 0.2624,
     "coupon10y": 0.194167,
     "zone_buffett": "pass",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.143682,
     "required_g_prove": 0.067093,
@@ -372,7 +372,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": 0.148134,
     "zone_buffett": "prove_growth",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.200053,
     "required_g_prove": 0.119689,
@@ -428,7 +428,7 @@
     "roe_minus_2x10y": -0.1226,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": null,
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "required_g": 0.56453,
     "required_g_prove": 0.459758,
@@ -465,7 +465,7 @@
    "fair_max": 13,
    "rationale": "유가 사이클이 쿠폰을 결정 — 예측 가능성 구조적 한계.",
    "eps_asof": null,
-   "price": 26.06,
+   "price": 26.04,
    "currency": "SAR",
    "pe": null,
    "gap": null,
@@ -481,10 +481,10 @@
     "eps_adj_ttm": 1.68,
     "roe_tangible": 0.2781,
     "g_used": null,
-    "price": 26.06,
+    "price": 26.04,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.064467,
+    "ey": 0.064516,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -558,7 +558,7 @@
     "roe_minus_2x10y": 0.2877,
     "coupon10y": 0.166613,
     "zone_buffett": "pass",
-    "cause": "rate",
+    "cause": null,
     "note": "",
     "required_g": 0.119809,
     "required_g_prove": 0.044818,
@@ -605,17 +605,17 @@
     "hold": null,
     "eps_adj_ttm": 0.7171,
     "roe_tangible": 0.0309,
-    "g_used": null,
+    "g_used": -0.3823,
     "price": 403.82,
     "g_capped_from": null,
     "g_weak": false,
     "ey": 0.001776,
     "ey_minus_10y": -0.047624,
     "roe_minus_2x10y": -0.0679,
-    "coupon10y": null,
-    "zone_buffett": "untested",
-    "cause": "rate",
-    "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
+    "coupon10y": 1.4e-05,
+    "zone_buffett": "bond_inferior",
+    "cause": "scale",
+    "note": "",
     "required_g": 0.556487,
     "required_g_prove": 0.452254,
     "eps_note": "",
@@ -638,14 +638,9 @@
     "conv_check_note": "",
     "conv_check_note_nc": [],
     "roe_unadjusted": false,
-    "note_nc": [
-     [
-      "g_missing"
-     ]
-    ],
-    "pass_price": null,
-    "edge_line": null,
-    "edge_margin": null,
+    "pass_price": 0.04,
+    "edge_line": "prove",
+    "edge_margin": 5159.0071,
     "borderline": false
    }
   },
@@ -808,7 +803,7 @@
     "roe_minus_2x10y": null,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": null,
     "note": "투자평가손익 지배 — 자동 조정 무의미, 사람 취재 전용 · 성장률 가정 미확보(3y CAGR·전망 중 결측)",
     "required_g": null,
     "required_g_prove": null,
@@ -880,7 +875,7 @@
     "roe_minus_2x10y": 1.8609,
     "coupon10y": 0.098382,
     "zone_buffett": "prove_growth",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.210596,
     "required_g_prove": 0.129526,
@@ -923,17 +918,17 @@
     "hold": null,
     "eps_adj_ttm": 24.0348,
     "roe_tangible": 0.1795,
-    "g_used": null,
+    "g_used": 0.108,
     "price": 340.58,
     "g_capped_from": null,
     "g_weak": false,
     "ey": 0.07057,
     "ey_minus_10y": 0.02117,
     "roe_minus_2x10y": 0.0807,
-    "coupon10y": null,
+    "coupon10y": 0.196797,
     "zone_buffett": "untested",
     "cause": null,
-    "note": "시클리컬 정점 가드 — 존 판정 보류 · 성장률 가정 미확보(3y CAGR·전망 중 결측)",
+    "note": "시클리컬 정점 가드 — 쿠폰 참고, 존 판정 보류",
     "required_g": 0.077017,
     "required_g_prove": 0.004893,
     "eps_note": "",
@@ -959,10 +954,7 @@
     "borderline": false,
     "note_nc": [
      [
-      "guard_hold"
-     ],
-     [
-      "g_missing"
+      "guard_ref"
      ]
     ]
    }
@@ -998,7 +990,7 @@
     "roe_minus_2x10y": 0.2238,
     "coupon10y": 0.048388,
     "zone_buffett": "bond_inferior",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.207911,
     "required_g_prove": 0.127021,
@@ -1050,7 +1042,7 @@
     "roe_minus_2x10y": 0.1603,
     "coupon10y": 0.043946,
     "zone_buffett": "bond_inferior",
-    "cause": "price",
+    "cause": null,
     "note": "",
     "required_g": 0.355109,
     "required_g_prove": 0.264361,
@@ -1458,21 +1450,21 @@
     "rate10y": 4.94,
     "guard": false,
     "hold": null,
-    "eps_adj_ttm": 0.93,
+    "eps_adj_ttm": 0.97,
     "roe_tangible": 0.1538,
     "g_used": null,
     "price": 196.79,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.004726,
-    "ey_minus_10y": -0.044674,
+    "ey": 0.004929,
+    "ey_minus_10y": -0.044471,
     "roe_minus_2x10y": 0.055,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
+    "cause": "scale",
     "note": "성장률 가정 미확보(3y CAGR·전망 중 결측)",
-    "required_g": 0.411357,
-    "required_g_prove": 0.316842,
+    "required_g": 0.405426,
+    "required_g_prove": 0.311309,
     "eps_note": "",
     "eps_note_nc": [],
     "eps_from_human": false,
@@ -1636,63 +1628,46 @@
     "market": "UST10",
     "rate10y": 4.94,
     "guard": false,
-    "hold": null,
-    "eps_adj_ttm": null,
-    "roe_tangible": null,
+    "hold": "nonop_distortion",
+    "eps_adj_ttm": 0.0255,
+    "roe_tangible": 0.009,
     "g_used": null,
     "price": 241.81,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": null,
-    "ey_minus_10y": null,
-    "roe_minus_2x10y": null,
+    "ey": 0.000105,
+    "ey_minus_10y": -0.049295,
+    "roe_minus_2x10y": -0.0898,
     "coupon10y": null,
     "zone_buffett": "untested",
-    "cause": "price",
-    "note": "공시 최신 분기 미확보(창이 2025Q3에 멈춤) — 12개월 조정이익 미확보 · 성장률 가정 미확보(3y CAGR·전망 중 결측)",
-    "required_g": null,
-    "required_g_prove": null,
-    "eps_note": "공시 최신 분기 미확보(창이 2025Q3에 멈춤) — 12개월 조정이익 미확보",
-    "eps_note_nc": [
-     [
-      "eps.stale",
-      {
-       "p": "2025Q3"
-      }
-     ]
-    ],
+    "cause": null,
+    "note": "비영업 손익 왜곡 의심 — 조정이익이 영업이익 기준과 부호가 반대 · 존 판정 보류",
+    "required_g": 1.064326,
+    "required_g_prove": 0.926084,
+    "eps_note": "",
+    "eps_note_nc": [],
     "eps_from_human": false,
-    "roe_note": "12개월 이익 미확보 — ROE 산출 불가",
-    "roe_note_nc": [
-     [
-      "roe.income_missing"
-     ]
-    ],
+    "roe_note": "",
+    "roe_note_nc": [],
     "roe_from_human": false,
-    "conv_note": "12개월 이익 미확보 — 전환율 산출 불가",
-    "conv_note_nc": [
+    "conv_note": "",
+    "conv_note_nc": [],
+    "conv_check_note": "현금흐름표와 부호 불일치 — 확인 필요",
+    "conv_check_note_nc": [
      [
-      "conv.income_missing"
+      "cash_mismatch"
      ]
     ],
-    "conv_check_note": "",
-    "conv_check_note_nc": [],
     "roe_unadjusted": false,
+    "borderline": false,
     "note_nc": [
      [
-      "eps.stale",
-      {
-       "p": "2025Q3"
-      }
+      "div.sign"
      ],
      [
-      "g_missing"
+      "zone_hold"
      ]
-    ],
-    "pass_price": null,
-    "edge_line": null,
-    "edge_margin": null,
-    "borderline": false
+    ]
    }
   },
   {
@@ -1715,13 +1690,13 @@
     "rate10y": null,
     "guard": true,
     "hold": null,
-    "eps_adj_ttm": 61.41,
+    "eps_adj_ttm": 60.56,
     "roe_tangible": 0.2958,
     "g_used": null,
     "price": 3675.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.01671,
+    "ey": 0.016479,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -1841,13 +1816,13 @@
     "rate10y": null,
     "guard": true,
     "hold": null,
-    "eps_adj_ttm": 702.01,
+    "eps_adj_ttm": 833.49,
     "roe_tangible": 0.6902,
     "g_used": null,
     "price": 11345.0,
     "g_capped_from": null,
     "g_weak": false,
-    "ey": 0.061878,
+    "ey": 0.073468,
     "ey_minus_10y": null,
     "roe_minus_2x10y": null,
     "coupon10y": null,
@@ -5929,7 +5904,7 @@
    {
     "d": "11-03",
     "gap": -0.0093,
-    "coupon10y": null,
+    "coupon10y": 0.196797,
     "zone_buffett": "untested"
    }
   ],
@@ -11048,11 +11023,11 @@
  },
  "coverage": {
   "roe_us": [
-   21,
+   22,
    25
   ],
   "eps_us": [
-   24,
+   25,
    25
   ]
  }

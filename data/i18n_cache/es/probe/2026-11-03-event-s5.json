@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-03-event-s5",
+ "lang": "es",
+ "src_hash": "342e340619fd",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-03 17:48",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores",
+  "md": "\n- **T9 nuevo — \"Red terrestre de Starlink Mobile — punto de confirmación del acuerdo Boost Mobile/EchoStar\"**: ① 8-K Item 1.01 de SpaceX (contrato de adquisición o acceso a la red) o 8-K de EchoStar (CIK 1415404) ② solicitud de transferencia de licencias de la FCC (ULS/ICFS) · notificación HSR ③ consentimiento u objeción de AT&T y T-Mobile al contrato MVNO (la prensa lo señala como objeto de confirmación) ④ 8-K de cierre definitivo de la operación de espectro existente (anticipo de $856M → transferencia a activos intangibles, 10-Q R58) ⑤ nota de compromisos relacionados con EchoStar en el 10-K del 4T26. Fecha prevista: como la prensa habla de 'conversaciones preliminares', **no se estima fecha** — los puntos de confirmación son la próxima edición mensual, **2026-12-01** (KST), y el 10-K (estimado 2027-02). No se pone 'financiación·contrato·resultados·Starship' como prefijo del nombre (fuente: tabla de la sección 2 · `scripts/spacex_watch.py trigger_kind`).\n- **T10 nuevo — \"Demanda de la Clean Air Act por las turbinas de gas de Colossus — punto de confirmación de medida cautelar, apelación interlocutoria y permiso de MDEQ\"**: ① decisión sobre la medida cautelar (solicitada el 6/5) — si ordena detener la operación, afecta directamente a la energía y a los GW de placa de Colossus 2 ② apelación interlocutoria (§1292(b)) o presentación de contestación por parte de SpaceXAI ③ texto original del permiso permanente de turbinas de MDEQ (número de unidades y fecha de emisión — 27 vs 41 sin confirmar) ④ nota de procedimientos legales del 10-K del 4T26 (variación de la provisión por caso · factores de riesgo) ⑤ nueva solicitud del gobierno de EE. UU. (parte interviniente). Fecha prevista: calendario judicial no publicado — punto de confirmación **2026-12-01** (mensual) → 10-K. Parte de la capa de medición: los registros judiciales (PACER/CourtListener) no son fuente de ninguno de los cuatro monitoreos (fuente: tabla de la sección 1 · [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm)).\n- **T3·T4·T5·T7·T8**: sin cambios — T7 ⓓ (5/11) y ⓔ (6/11) y T8 ② (depósito 4/11 · aceptación 5/11) **aún no llegan** en esta edición (KST 3/11 = EE. UU. 2/11). En el check de T8 se indica expresamente 'el acuerdo de red terrestre Boost/EchoStar va a T9' (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
+}
