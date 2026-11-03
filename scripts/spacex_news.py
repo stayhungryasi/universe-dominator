@@ -291,21 +291,31 @@ REPORT_TOOL = {
 }
 
 
+TOOL_ERRORS = []             # 도구 강제 요청이 거절된 사유(원장 last_run.tool_error)
+
+
 def judge(api_key, headlines, triggers, known):
     import requests
     payload = {"헤드라인": [{"i": h["i"], "제목": h["title"], "발행처": h["publisher"], "날짜": h["date"]}
                          for h in headlines],
                "트리거": [{"id": t.get("id"), "이름": t.get("name")} for t in triggers if t.get("id")],
                "이미 기록된 사건": known[:60]}
-    body = {"model": MODEL, "max_tokens": 6000, "tools": [REPORT_TOOL],
-            "tool_choice": {"type": "tool", "name": "report"},
-            "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n(제출은 report 도구로.)\n\n"
-                          + json.dumps(payload, ensure_ascii=False)}]}
-    r = requests.post("https://api.anthropic.com/v1/messages",
-                      headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
-                               "content-type": "application/json"},
-                      json=body, timeout=240)
-    r.raise_for_status()
+    text_in = json.dumps(payload, ensure_ascii=False)
+    hdr = {"x-api-key": api_key, "anthropic-version": "2023-06-01", "content-type": "application/json"}
+    plain = {"model": MODEL, "max_tokens": 6000,
+             "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n\n" + text_in}]}
+    body = plain if TOOL_ERRORS else \
+        {"model": MODEL, "max_tokens": 6000, "tools": [REPORT_TOOL],
+         "tool_choice": {"type": "tool", "name": "report"},
+         "messages": [{"role": "user", "content": JUDGE_PROMPT + "\n(제출은 report 도구로.)\n\n" + text_in}]}
+    r = requests.post("https://api.anthropic.com/v1/messages", headers=hdr, json=body, timeout=240)
+    if r.status_code == 400 and body is not plain:
+        # 2026-11-03 첫 실전: 도구 강제 요청이 400 으로 거절됐다(226건 판정 0). 거절 사유를 남기고 도구 없는 예전 형식으로
+        # 한 번 더 — 형식 개선이 판정 자체를 세우지 않게(침묵은 통과가 아니다: 사유는 원장 tool_error 에 남는다)
+        TOOL_ERRORS.append(f"400 {(r.text or '')[:300]}")     # 같은 회차의 다음 묶음부터는 도구 없이
+        r = requests.post("https://api.anthropic.com/v1/messages", headers=hdr, json=plain, timeout=240)
+    if r.status_code >= 400:
+        raise RuntimeError(f"HTTP {r.status_code} — {(r.text or '')[:300]}")
     data = r.json()
     use = data.get("usage") or {}
     if data.get("stop_reason") == "max_tokens":
@@ -478,6 +488,7 @@ def run():
                          "deferred": deferred, "baseline": first, "calls": calls, "window_days": wdays,
                          "wake": len(wake), "report": len(dm_only), "ignored": ignored,
                          "model": MODEL, "model_ok": model_ok, "error": err,
+                         "tool_error": (TOOL_ERRORS[0] if TOOL_ERRORS else None),
                          "tokens_in": use.get("input_tokens"), "tokens_out": use.get("output_tokens")}
     write_json(NEWS_PATH, state)
     print(f"[SpaceX 뉴스] 헤드라인 {len(heads)} · 새 {len(fresh)} · 판정 {len(judged)}(호출 {calls}) · 이월 {deferred} · "

@@ -183,6 +183,8 @@ class RunTest(unittest.TestCase):
 
     def test_truncated_response_is_failure(self):
         class R:
+            status_code, text = 200, ""
+
             def raise_for_status(self):
                 pass
 
@@ -199,6 +201,8 @@ class RunTest(unittest.TestCase):
         sent = {}
 
         class R:
+            status_code, text = 200, ""
+
             def raise_for_status(self):
                 pass
 
@@ -215,6 +219,38 @@ class RunTest(unittest.TestCase):
         self.assertEqual(items[0]["claim_ko"], '따옴표 "가" 든 문장')
         self.assertEqual(sent["tool_choice"], {"type": "tool", "name": "report"})
         self.assertEqual(sent["tools"][0]["name"], "report")
+
+    def test_tool_rejected_falls_back_to_text(self):
+        """2026-11-03 첫 실전: 도구 강제 요청이 400 — 사유를 남기고 도구 없는 형식으로 한 번 더(판정이 서지 않게)."""
+        sent = []
+
+        class Bad:
+            status_code, text = 400, '{"error":{"message":"tool_choice not supported"}}'
+
+        class Good:
+            status_code, text = 200, ""
+
+            def json(self):
+                return {"stop_reason": "end_turn", "content": [{"type": "text", "text": '{"items":[{"i":0,"material":true}]}'}]}
+
+        def post(url, headers=None, json=None, timeout=None):
+            sent.append(json)
+            return Bad() if "tools" in json else Good()
+        sn.TOOL_ERRORS.clear()
+        with mock.patch("requests.post", side_effect=post):
+            items, _ = sn.judge("k", [dict(H(0, "t", "P"), i=0)], [], [])
+        self.assertEqual(items[0]["i"], 0)
+        self.assertEqual(["tools" in b for b in sent], [True, False])
+        self.assertIn("tool_choice not supported", sn.TOOL_ERRORS[0])
+        sn.TOOL_ERRORS.clear()
+
+    def test_http_error_carries_reason(self):
+        class Bad:
+            status_code, text = 529, "overloaded"
+        with mock.patch("requests.post", return_value=Bad()):
+            with self.assertRaises(RuntimeError) as cm:
+                sn.judge("k", [dict(H(0, "t", "P"), i=0)], [], [])
+        self.assertIn("overloaded", str(cm.exception))
 
     def test_broken_chunk_split_retry_others_continue(self):
         """한 묶음의 응답이 깨지면 반으로 나눠 다시 — 나머지 묶음은 멈추지 않는다. 계속 깨지는 반쪽만 다음 회차로."""
