@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "d415ea4b04f9",
  "lang": "ja",
- "src_hash": "3b3cf87137fb",
+ "src_hash": "b43114567292",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 20:24",
+ "at": "2026-11-04 02:26",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Microsoft(MSFT)は第1四半期の売上高92.3億ドル(前年比19%増)、営業利益45.9億ドル(21%増)で実績を上回り、Azureは48%成長。",
-  "summary_ko.1": "MicrosoftのAgents and Infra部門の未認識収益(RPO)が677億ドルで前年比73%増加しAI需要の強さを実証し、人工知能が製品に取って代わらないことを示唆。",
-  "title": "Microsoft Just Revealed a $677 Billion Reason to Buy Its Stock"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[3§summary_ko.2] 숫자: 원문에 없는 숫자 677억",
+  "[3§summary_ko.2] 숫자: 원문의 숫자가 빠짐 6,770억"
+ ]
 }

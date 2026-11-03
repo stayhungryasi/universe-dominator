@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "latent.mc": "Market cap", "latent.rank": "Rank {n}", "latent.ret1y": "1-year return", "latent.st.miss": "Missing data {a}/{b}", "latent.st.new": {"one": "Day {n} in the list", "other": "Day {n} in the list"}, "latent.st.out": "Exit count {a}/{b}", "latent.star": "Next Sovereign"}, R = {"EUR": 0.89158, "JPY": 157.9, "KRW": 1342.9, "MXN": 18.7197, "USD": 1}, P = "Translation in progress — Korean original", U = {};
+var L = "en", M = {"common.presence": {"one": "{n} person observing the universe now", "other": "{n} people observing the universe now"}, "latent.mc": "Market cap", "latent.rank": "Rank {n}", "latent.ret1y": "1-year return", "latent.st.miss": "Missing data {a}/{b}", "latent.st.new": {"one": "Day {n} in the list", "other": "Day {n} in the list"}, "latent.st.out": "Exit count {a}/{b}", "latent.star": "Next Sovereign"}, R = {"EUR": 0.89453, "JPY": 158.29, "KRW": 1344.59, "MXN": 18.5974, "USD": 1}, P = "Translation in progress — Korean original", U = {};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -547,10 +547,10 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW exchange rate · Measured 20:01 · Source frankfurter · Live USD/KRW on Naver">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW exchange rate · Measured 02:00 · Source frankfurter · Live USD/KRW on Naver">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 20:01 · Source FRED API">WTI <span class="ud-mv">$103</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 20:01 · Source FRED API">10Y <span class="ud-mv">4.94%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 20:01 · Source FRED API">30Y <span class="ud-mv">5.31%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 20:01 · Source frankfurter">JPY <span class="ud-mv">157.9</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI crude spot · previous close · Measured 02:00 · Source FRED API">WTI <span class="ud-mv">$103</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="US 10-year Treasury yield · Measured 02:00 · Source FRED API">10Y <span class="ud-mv">4.94%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="US 30-year Treasury yield · Measured 02:00 · Source FRED API">30Y <span class="ud-mv">5.31%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY exchange rate · Measured 02:00 · Source frankfurter">JPY <span class="ud-mv">158.3</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <details class="uvx-lang"><summary aria-label="Language">EN</summary><div class="uvx-lang-menu"><a href="../latent.html" hreflang="ko" lang="ko">한국어<small>KO</small></a><a href="../en/latent.html" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a><a href="../es/latent.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="../ja/latent.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -586,7 +586,7 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
   </div>
   <p class="footer-source">Source: <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" class="footer-link">companiesmarketcap.com</a></p>
 <div class="uv-policy-links" style="margin-top:10px;font-size:12px;"><a href="about.html" style="color:inherit;margin:0 7px">About</a>·<a href="policies.html#terms" style="color:inherit;margin:0 7px">Terms</a>·<a href="policies.html#privacy" style="color:inherit;margin:0 7px">Privacy</a>·<a href="policies.html#community" style="color:inherit;margin:0 7px">Community Policy</a>·<a href="policies.html#disclaimer" style="color:inherit;margin:0 7px">Investment Disclaimer</a>·<a href="policies.html#contact" style="color:inherit;margin:0 7px">Contact</a></div>
-<div class="uvx-verify">Numbers verified: identical to the source · data as of 2026-11-03 20:00 KST</div>
+<div class="uvx-verify">Numbers verified: identical to the source · data as of 2026-11-04 02:00 KST</div>
 </footer>
 
 <script>
@@ -607,94 +607,94 @@ const DATA = {
       "subtitle": "Global",
       "stocks": [
         {
-          "name": "Apple",
-          "ticker": "AAPL",
-          "flag": "🇺🇸",
-          "mc": 4937.0,
-          "desc": "Premium devices and services"
-        },
-        {
           "name": "NVIDIA",
           "ticker": "NVDA",
           "flag": "🇺🇸",
-          "mc": 4879.0,
+          "mc": 5037.0,
           "desc": "AI accelerator hegemon"
+        },
+        {
+          "name": "Apple",
+          "ticker": "AAPL",
+          "flag": "🇺🇸",
+          "mc": 4834.0,
+          "desc": "Premium devices and services"
         },
         {
           "name": "Microsoft",
           "ticker": "MSFT",
           "flag": "🇺🇸",
-          "mc": 3765.0,
+          "mc": 3833.0,
           "desc": "Enterprise + Azure cloud"
         },
         {
           "name": "Alphabet (Google)",
           "ticker": "GOOG",
           "flag": "🇺🇸",
-          "mc": 3418.0,
+          "mc": 3420.0,
           "desc": "Search·advertising + Gemini AI"
         },
         {
           "name": "Amazon",
           "ticker": "AMZN",
           "flag": "🇺🇸",
-          "mc": 2656.0,
+          "mc": 2684.0,
           "desc": "E-commerce + AWS cloud"
         },
         {
           "name": "TSMC",
           "ticker": "TSM",
           "flag": "🇹🇼",
-          "mc": 2067.0,
+          "mc": 2114.0,
           "desc": "World #1 foundry"
         },
         {
           "name": "SpaceX",
           "ticker": "SPCX",
           "flag": "🇺🇸",
-          "mc": 1852.0,
+          "mc": 1919.0,
           "desc": "Reusable rockets + Starlink — space infrastructure Sovereign"
         },
         {
           "name": "Saudi Aramco",
           "ticker": "2222.SR",
           "flag": "🇸🇦",
-          "mc": 1681.0,
+          "mc": 1687.0,
           "desc": "World's largest oil company"
-        },
-        {
-          "name": "Tesla",
-          "ticker": "TSLA",
-          "flag": "🇺🇸",
-          "mc": 1596.0,
-          "desc": "EV·autonomous driving·robotics"
         },
         {
           "name": "Meta Platforms (Facebook)",
           "ticker": "META",
           "flag": "🇺🇸",
-          "mc": 1551.0,
+          "mc": 1588.0,
           "desc": "Global #1 SNS·advertising"
         },
         {
           "name": "Broadcom",
           "ticker": "AVGO",
           "flag": "🇺🇸",
-          "mc": 1538.0,
+          "mc": 1587.0,
           "desc": "Telecom and AI semiconductor giant"
+        },
+        {
+          "name": "Tesla",
+          "ticker": "TSLA",
+          "flag": "🇺🇸",
+          "mc": 1576.0,
+          "desc": "EV·autonomous driving·robotics"
         },
         {
           "name": "Eli Lilly",
           "ticker": "LLY",
           "flag": "🇺🇸",
-          "mc": 1256.0,
+          "mc": 1267.0,
           "desc": "GLP-1 obesity drug US leader"
         },
         {
           "name": "Berkshire Hathaway",
           "ticker": "BRK-B",
           "flag": "🇺🇸",
-          "mc": 1190.0,
+          "mc": 1193.0,
           "desc": "Warren Buffett's investment empire"
         },
         {
@@ -708,36 +708,36 @@ const DATA = {
           "name": "Walmart",
           "ticker": "WMT",
           "flag": "🇺🇸",
-          "mc": 1013.0,
+          "mc": 994.25,
           "desc": "US #1 retail distribution"
         },
         {
           "name": "Micron Technology",
           "ticker": "MU",
           "flag": "🇺🇸",
-          "mc": 943.14,
+          "mc": 968.18,
           "desc": "US largest memory semiconductor"
         },
         {
           "name": "JPMorgan Chase",
           "ticker": "JPM",
           "flag": "🇺🇸",
-          "mc": 904.44,
+          "mc": 892.89,
           "desc": "US largest bank"
-        },
-        {
-          "name": "Visa",
-          "ticker": "V",
-          "flag": "🇺🇸",
-          "mc": 795.28,
-          "desc": "Global payment network #1"
         },
         {
           "name": "AMD",
           "ticker": "AMD",
           "flag": "🇺🇸",
-          "mc": 762.1,
+          "mc": 801.12,
           "desc": "CPU and GPU challenger"
+        },
+        {
+          "name": "Visa",
+          "ticker": "V",
+          "flag": "🇺🇸",
+          "mc": 788.3,
+          "desc": "Global payment network #1"
         },
         {
           "name": "SK hynix",
@@ -753,24 +753,24 @@ const DATA = {
       "subtitle": "United States",
       "stocks": [
         {
-          "name": "Apple",
-          "ticker": "AAPL",
-          "flag": "🇺🇸",
-          "mc": 4937.0,
-          "desc": "Premium devices and services"
-        },
-        {
           "name": "NVIDIA",
           "ticker": "NVDA",
           "flag": "🇺🇸",
-          "mc": 4879.0,
+          "mc": 5035.0,
           "desc": "AI accelerator hegemon"
+        },
+        {
+          "name": "Apple",
+          "ticker": "AAPL",
+          "flag": "🇺🇸",
+          "mc": 4834.0,
+          "desc": "Premium devices and services"
         },
         {
           "name": "Microsoft",
           "ticker": "MSFT",
           "flag": "🇺🇸",
-          "mc": 3765.0,
+          "mc": 3832.0,
           "desc": "Enterprise + Azure cloud"
         },
         {
@@ -784,112 +784,112 @@ const DATA = {
           "name": "Amazon",
           "ticker": "AMZN",
           "flag": "🇺🇸",
-          "mc": 2656.0,
+          "mc": 2683.0,
           "desc": "E-commerce + AWS cloud"
         },
         {
           "name": "SpaceX",
           "ticker": "SPCX",
           "flag": "🇺🇸",
-          "mc": 1852.0,
+          "mc": 1919.0,
           "desc": "Reusable rockets + Starlink — space infrastructure Sovereign"
-        },
-        {
-          "name": "Tesla",
-          "ticker": "TSLA",
-          "flag": "🇺🇸",
-          "mc": 1596.0,
-          "desc": "EV·autonomous driving·robotics"
         },
         {
           "name": "Meta Platforms (Facebook)",
           "ticker": "META",
           "flag": "🇺🇸",
-          "mc": 1551.0,
+          "mc": 1588.0,
           "desc": "Global #1 SNS·advertising"
         },
         {
           "name": "Broadcom",
           "ticker": "AVGO",
           "flag": "🇺🇸",
-          "mc": 1538.0,
+          "mc": 1586.0,
           "desc": "Telecom and AI semiconductor giant"
+        },
+        {
+          "name": "Tesla",
+          "ticker": "TSLA",
+          "flag": "🇺🇸",
+          "mc": 1576.0,
+          "desc": "EV·autonomous driving·robotics"
         },
         {
           "name": "Eli Lilly",
           "ticker": "LLY",
           "flag": "🇺🇸",
-          "mc": 1256.0,
+          "mc": 1266.0,
           "desc": "GLP-1 obesity drug US leader"
         },
         {
           "name": "Berkshire Hathaway",
           "ticker": "BRK-B",
           "flag": "🇺🇸",
-          "mc": 1190.0,
+          "mc": 1193.0,
           "desc": "Warren Buffett's investment empire"
         },
         {
           "name": "Walmart",
           "ticker": "WMT",
           "flag": "🇺🇸",
-          "mc": 1013.0,
+          "mc": 994.25,
           "desc": "US #1 retail distribution"
         },
         {
           "name": "Micron Technology",
           "ticker": "MU",
           "flag": "🇺🇸",
-          "mc": 943.14,
+          "mc": 967.66,
           "desc": "US largest memory semiconductor"
         },
         {
           "name": "JPMorgan Chase",
           "ticker": "JPM",
           "flag": "🇺🇸",
-          "mc": 904.44,
+          "mc": 892.99,
           "desc": "US largest bank"
-        },
-        {
-          "name": "Visa",
-          "ticker": "V",
-          "flag": "🇺🇸",
-          "mc": 795.28,
-          "desc": "Global payment network #1"
         },
         {
           "name": "AMD",
           "ticker": "AMD",
           "flag": "🇺🇸",
-          "mc": 762.1,
+          "mc": 800.28,
           "desc": "CPU and GPU challenger"
+        },
+        {
+          "name": "Visa",
+          "ticker": "V",
+          "flag": "🇺🇸",
+          "mc": 788.28,
+          "desc": "Global payment network #1"
         },
         {
           "name": "Exxon Mobil",
           "ticker": "XOM",
           "flag": "🇺🇸",
-          "mc": 732.87,
+          "mc": 727.46,
           "desc": "US largest oil major"
         },
         {
           "name": "Johnson & Johnson",
           "ticker": "JNJ",
           "flag": "🇺🇸",
-          "mc": 651.32,
+          "mc": 645.46,
           "desc": "Global healthcare giant"
         },
         {
           "name": "Mastercard",
           "ticker": "MA",
           "flag": "🇺🇸",
-          "mc": 573.32,
+          "mc": 564.84,
           "desc": "Global payment network #2"
         },
         {
           "name": "AbbVie",
           "ticker": "ABBV",
           "flag": "🇺🇸",
-          "mc": 510.41,
+          "mc": 509.74,
           "desc": "Global pharma Big 5"
         }
       ]
@@ -944,7 +944,7 @@ const DATA = {
           "name": "KB Financial Group",
           "ticker": "KB",
           "flag": "🇰🇷",
-          "mc": 38.84,
+          "mc": 38.56,
           "desc": "Domestic #1 financial holding"
         },
         {
@@ -972,7 +972,7 @@ const DATA = {
           "name": "Shinhan Financial Group",
           "ticker": "SHG",
           "flag": "🇰🇷",
-          "mc": 29.76,
+          "mc": 29.38,
           "desc": "Domestic #2 financial holding"
         },
         {
@@ -1048,14 +1048,14 @@ const DATA = {
           "name": "Mitsubishi UFJ Financial",
           "ticker": "MUFG",
           "flag": "🇯🇵",
-          "mc": 241.43,
+          "mc": 238.84,
           "desc": "Japan's largest financial group"
         },
         {
           "name": "Toyota",
           "ticker": "TM",
           "flag": "🇯🇵",
-          "mc": 230.64,
+          "mc": 230.01,
           "desc": "World sales #1 automaker"
         },
         {
@@ -1083,14 +1083,14 @@ const DATA = {
           "name": "Sumitomo Mitsui Financial Group",
           "ticker": "SMFG",
           "flag": "🇯🇵",
-          "mc": 150.59,
+          "mc": 149.93,
           "desc": "Japan's 3 megabanks"
         },
         {
           "name": "Sony",
           "ticker": "SONY",
           "flag": "🇯🇵",
-          "mc": 148.97,
+          "mc": 148.85,
           "desc": "Gaming·image sensor·entertainment"
         },
         {
@@ -1118,7 +1118,7 @@ const DATA = {
           "name": "Mizuho Financial Group",
           "ticker": "MFG",
           "flag": "🇯🇵",
-          "mc": 116.01,
+          "mc": 115.2,
           "desc": "Japan's Big 3 megabank"
         },
         {
@@ -1160,7 +1160,7 @@ const DATA = {
           "name": "NTT (Nippon Telegraph & Telephone)",
           "ticker": "9432.T",
           "flag": "🇯🇵",
-          "mc": 89.34,
+          "mc": 89.16,
           "desc": "Japan's largest telecom (NTT)"
         },
         {
@@ -1194,140 +1194,140 @@ const DATA = {
           "name": "ASML",
           "ticker": "ASML",
           "flag": "🇳🇱",
-          "mc": 588.2,
+          "mc": 600.95,
           "desc": "Global monopoly in lithography equipment"
         },
         {
           "name": "Roche",
           "ticker": "RO.SW",
           "flag": "🇨🇭",
-          "mc": 392.79,
+          "mc": 385.63,
           "desc": "Global pharma & diagnostics giant"
         },
         {
           "name": "Novartis",
           "ticker": "NVS",
           "flag": "🇨🇭",
-          "mc": 305.05,
+          "mc": 302.31,
           "desc": "Swiss pharma Big 3"
         },
         {
           "name": "Shell",
           "ticker": "SHEL",
           "flag": "🇬🇧",
-          "mc": 297.91,
+          "mc": 296.02,
           "desc": "European oil major (Shell)"
         },
         {
           "name": "HSBC",
           "ticker": "HSBC",
           "flag": "🇬🇧",
-          "mc": 293.8,
+          "mc": 288.77,
           "desc": "Global big bank"
         },
         {
           "name": "AstraZeneca",
           "ticker": "AZN",
           "flag": "🇬🇧",
-          "mc": 289.36,
+          "mc": 286.03,
           "desc": "UK pharma big 3"
         },
         {
           "name": "SAP",
           "ticker": "SAP",
           "flag": "🇩🇪",
-          "mc": 269.64,
+          "mc": 266.77,
           "desc": ""
         },
         {
           "name": "Nestlé",
           "ticker": "NESN.SW",
           "flag": "🇨🇭",
-          "mc": 263.78,
+          "mc": 263.37,
           "desc": "World's largest food (Nestlé)"
         },
         {
           "name": "L'Oréal",
           "ticker": "OR.PA",
           "flag": "🇫🇷",
-          "mc": 260.21,
+          "mc": 259.22,
           "desc": "World's largest cosmetics (L'Oréal)"
         },
         {
           "name": "Linde",
           "ticker": "LIN",
           "flag": "🇺🇸",
-          "mc": 238.59,
+          "mc": 236.4,
           "desc": "Global #1 industrial gas"
         },
         {
           "name": "Siemens",
           "ticker": "SIE.DE",
           "flag": "🇩🇪",
-          "mc": 229.47,
+          "mc": 231.57,
           "desc": "Industrial automation giant (Siemens)"
         },
         {
           "name": "LVMH",
           "ticker": "MC.PA",
           "flag": "🇫🇷",
-          "mc": 221.0,
+          "mc": 222.33,
           "desc": "Luxury conglomerate #1 (LVMH)"
         },
         {
           "name": "Arm Holdings",
           "ticker": "ARM",
           "flag": "🇬🇧",
-          "mc": 210.17,
+          "mc": 216.6,
           "desc": "AI chip CPU IP"
         },
         {
           "name": "TotalEnergies",
           "ticker": "TTE",
           "flag": "🇺🇸",
-          "mc": 204.33,
+          "mc": 204.23,
           "desc": "French energy major"
         },
         {
           "name": "Inditex",
           "ticker": "ITX.MC",
           "flag": "🇪🇸",
-          "mc": 198.96,
+          "mc": 196.37,
           "desc": "Zara parent company (Inditex)"
         },
         {
           "name": "Allianz SE",
           "ticker": "ALV.DE",
           "flag": "🇩🇪",
-          "mc": 187.93,
+          "mc": 187.85,
           "desc": "Europe's largest insurance group"
         },
         {
           "name": "Novo Nordisk",
           "ticker": "NVO",
           "flag": "🇩🇰",
-          "mc": 178.41,
+          "mc": 178.52,
           "desc": "Global #1 GLP-1 obesity drug"
-        },
-        {
-          "name": "Airbus",
-          "ticker": "AIR.PA",
-          "flag": "🇫🇷",
-          "mc": 171.31,
-          "desc": "Global No. 1 commercial aircraft manufacturer"
         },
         {
           "name": "Prosus",
           "ticker": "PRX.AS",
           "flag": "🇳🇱",
-          "mc": 170.07,
+          "mc": 173.11,
           "desc": "Naspers subsidiary (Prosus)"
+        },
+        {
+          "name": "Airbus",
+          "ticker": "AIR.PA",
+          "flag": "🇫🇷",
+          "mc": 171.37,
+          "desc": "Global No. 1 commercial aircraft manufacturer"
         },
         {
           "name": "Iberdrola",
           "ticker": "IBE.MC",
           "flag": "🇪🇸",
-          "mc": 166.38,
+          "mc": 165.49,
           "desc": ""
         }
       ]
@@ -1340,7 +1340,7 @@ const DATA = {
           "name": "TSMC",
           "ticker": "TSM",
           "flag": "🇹🇼",
-          "mc": 2067.0,
+          "mc": 2113.0,
           "desc": "World #1 foundry"
         },
         {
@@ -1368,7 +1368,7 @@ const DATA = {
           "name": "ASE Group",
           "ticker": "ASX",
           "flag": "🇹🇼",
-          "mc": 86.47,
+          "mc": 87.3,
           "desc": "Global No. 1 in semiconductor backend (OSAT)"
         },
         {
@@ -1417,7 +1417,7 @@ const DATA = {
           "name": "United Microelectronics",
           "ticker": "UMC",
           "flag": "🇹🇼",
-          "mc": 41.1,
+          "mc": 41.56,
           "desc": "Mature-process foundry leader"
         },
         {
@@ -1431,7 +1431,7 @@ const DATA = {
           "name": "Chunghwa Telecom",
           "ticker": "CHT",
           "flag": "🇹🇼",
-          "mc": 37.94,
+          "mc": 37.82,
           "desc": "Taiwan telecom #1 China Telecom"
         },
         {
@@ -1493,7 +1493,7 @@ const DATA = {
           "name": "Tencent",
           "ticker": "TCEHY",
           "flag": "🇨🇳",
-          "mc": 454.35,
+          "mc": 456.61,
           "desc": "WeChat + gaming empire"
         },
         {
@@ -1532,18 +1532,18 @@ const DATA = {
           "desc": "China's luxury baijiu (Moutai)"
         },
         {
-          "name": "Alibaba",
-          "ticker": "BABA",
-          "flag": "🇨🇳",
-          "mc": 252.5,
-          "desc": "E-commerce + cloud"
-        },
-        {
           "name": "PetroChina",
           "ticker": "0857.HK",
           "flag": "🇨🇳",
           "mc": 250.06,
           "desc": "China's largest oil company (PetroChina)"
+        },
+        {
+          "name": "Alibaba",
+          "ticker": "BABA",
+          "flag": "🇨🇳",
+          "mc": 248.87,
+          "desc": "E-commerce + cloud"
         },
         {
           "name": "China Mobile",
@@ -1602,18 +1602,18 @@ const DATA = {
           "desc": "Foxconn China subsidiary"
         },
         {
-          "name": "PDD Holdings (Pinduoduo)",
-          "ticker": "PDD",
-          "flag": "🇨🇳",
-          "mc": 116.26,
-          "desc": "Ultra-low-cost commerce (Pinduoduo·Temu)"
-        },
-        {
           "name": "BYD",
           "ticker": "002594.SZ",
           "flag": "🇨🇳",
           "mc": 116.03,
           "desc": "World No. 1 EV (BYD)"
+        },
+        {
+          "name": "PDD Holdings (Pinduoduo)",
+          "ticker": "PDD",
+          "flag": "🇨🇳",
+          "mc": 113.88,
+          "desc": "Ultra-low-cost commerce (Pinduoduo·Temu)"
         },
         {
           "name": "Bank of Communications",
@@ -1774,13 +1774,13 @@ const DATA = {
   "watch100": [
     {
       "rank": 1,
-      "ticker": "AAPL",
-      "name": "Apple"
+      "ticker": "NVDA",
+      "name": "NVIDIA"
     },
     {
       "rank": 2,
-      "ticker": "NVDA",
-      "name": "NVIDIA"
+      "ticker": "AAPL",
+      "name": "Apple"
     },
     {
       "rank": 3,
@@ -1814,18 +1814,18 @@ const DATA = {
     },
     {
       "rank": 9,
-      "ticker": "TSLA",
-      "name": "Tesla"
-    },
-    {
-      "rank": 10,
       "ticker": "META",
       "name": "Meta Platforms (Facebook)"
     },
     {
-      "rank": 11,
+      "rank": 10,
       "ticker": "AVGO",
       "name": "Broadcom"
+    },
+    {
+      "rank": 11,
+      "ticker": "TSLA",
+      "name": "Tesla"
     },
     {
       "rank": 12,
@@ -1859,13 +1859,13 @@ const DATA = {
     },
     {
       "rank": 18,
-      "ticker": "V",
-      "name": "Visa"
+      "ticker": "AMD",
+      "name": "AMD"
     },
     {
       "rank": 19,
-      "ticker": "AMD",
-      "name": "AMD"
+      "ticker": "V",
+      "name": "Visa"
     },
     {
       "rank": 20,
@@ -1904,13 +1904,13 @@ const DATA = {
     },
     {
       "rank": 27,
-      "ticker": "COST",
-      "name": "Costco"
+      "ticker": "TCEHY",
+      "name": "Tencent"
     },
     {
       "rank": 28,
-      "ticker": "TCEHY",
-      "name": "Tencent"
+      "ticker": "COST",
+      "name": "Costco"
     },
     {
       "rank": 29,
@@ -1924,13 +1924,13 @@ const DATA = {
     },
     {
       "rank": 31,
-      "ticker": "KO",
-      "name": "Coca-Cola"
+      "ticker": "688825.SS",
+      "name": "CXMT"
     },
     {
       "rank": 32,
-      "ticker": "688825.SS",
-      "name": "CXMT"
+      "ticker": "KO",
+      "name": "Coca-Cola"
     },
     {
       "rank": 33,
@@ -1949,23 +1949,23 @@ const DATA = {
     },
     {
       "rank": 36,
-      "ticker": "PG",
-      "name": "Procter & Gamble"
-    },
-    {
-      "rank": 37,
-      "ticker": "MRK",
-      "name": "Merck"
-    },
-    {
-      "rank": 38,
       "ticker": "ORCL",
       "name": "Oracle"
     },
     {
-      "rank": 39,
+      "rank": 37,
+      "ticker": "PG",
+      "name": "Procter & Gamble"
+    },
+    {
+      "rank": 38,
       "ticker": "UNH",
       "name": "UnitedHealth"
+    },
+    {
+      "rank": 39,
+      "ticker": "MRK",
+      "name": "Merck"
     },
     {
       "rank": 40,
@@ -1979,18 +1979,18 @@ const DATA = {
     },
     {
       "rank": 42,
-      "ticker": "HD",
-      "name": "Home Depot"
-    },
-    {
-      "rank": 43,
       "ticker": "601988.SS",
       "name": "Bank of China"
     },
     {
-      "rank": 44,
+      "rank": 43,
       "ticker": "GE",
       "name": "General Electric"
+    },
+    {
+      "rank": 44,
+      "ticker": "HD",
+      "name": "Home Depot"
     },
     {
       "rank": 45,
@@ -2004,63 +2004,63 @@ const DATA = {
     },
     {
       "rank": 47,
-      "ticker": "NVS",
-      "name": "Novartis"
-    },
-    {
-      "rank": 48,
-      "ticker": "SHEL",
-      "name": "Shell"
-    },
-    {
-      "rank": 49,
       "ticker": "AMAT",
       "name": "Applied Materials"
     },
     {
+      "rank": 48,
+      "ticker": "NVS",
+      "name": "Novartis"
+    },
+    {
+      "rank": 49,
+      "ticker": "SHEL",
+      "name": "Shell"
+    },
+    {
       "rank": 50,
-      "ticker": "HSBC",
-      "name": "HSBC"
-    },
-    {
-      "rank": 51,
-      "ticker": "MS",
-      "name": "Morgan Stanley"
-    },
-    {
-      "rank": 52,
-      "ticker": "AZN",
-      "name": "AstraZeneca"
-    },
-    {
-      "rank": 53,
       "ticker": "PANW",
       "name": "Palo Alto Networks"
     },
     {
-      "rank": 54,
+      "rank": 51,
       "ticker": "LRCX",
       "name": "Lam Research"
     },
     {
-      "rank": 55,
-      "ticker": "RY",
-      "name": "Royal Bank Of Canada"
+      "rank": 52,
+      "ticker": "MS",
+      "name": "Morgan Stanley"
     },
     {
-      "rank": 56,
+      "rank": 53,
+      "ticker": "HSBC",
+      "name": "HSBC"
+    },
+    {
+      "rank": 54,
+      "ticker": "TXN",
+      "name": "Texas Instruments"
+    },
+    {
+      "rank": 55,
       "ticker": "CAT",
       "name": "Caterpillar"
     },
     {
+      "rank": 56,
+      "ticker": "AZN",
+      "name": "AstraZeneca"
+    },
+    {
       "rank": 57,
-      "ticker": "600519.SS",
-      "name": "Kweichow Moutai"
+      "ticker": "RY",
+      "name": "Royal Bank Of Canada"
     },
     {
       "rank": 58,
-      "ticker": "TXN",
-      "name": "Texas Instruments"
+      "ticker": "600519.SS",
+      "name": "Kweichow Moutai"
     },
     {
       "rank": 59,
@@ -2084,68 +2084,68 @@ const DATA = {
     },
     {
       "rank": 63,
-      "ticker": "OR.PA",
-      "name": "L'Oréal"
-    },
-    {
-      "rank": 64,
       "ticker": "NFLX",
       "name": "Netflix"
     },
     {
-      "rank": 65,
-      "ticker": "WFC",
-      "name": "Wells Fargo"
-    },
-    {
-      "rank": 66,
-      "ticker": "TMO",
-      "name": "Thermo Fisher Scientific"
-    },
-    {
-      "rank": 67,
-      "ticker": "BABA",
-      "name": "Alibaba"
-    },
-    {
-      "rank": 68,
-      "ticker": "AMGN",
-      "name": "Amgen"
-    },
-    {
-      "rank": 69,
-      "ticker": "0857.HK",
-      "name": "PetroChina"
-    },
-    {
-      "rank": 70,
+      "rank": 64,
       "ticker": "DELL",
       "name": "Dell"
     },
     {
-      "rank": 71,
+      "rank": 65,
+      "ticker": "TMO",
+      "name": "Thermo Fisher Scientific"
+    },
+    {
+      "rank": 66,
+      "ticker": "OR.PA",
+      "name": "L'Oréal"
+    },
+    {
+      "rank": 67,
+      "ticker": "WFC",
+      "name": "Wells Fargo"
+    },
+    {
+      "rank": 68,
       "ticker": "CRWD",
       "name": "CrowdStrike"
     },
     {
+      "rank": 69,
+      "ticker": "AMGN",
+      "name": "Amgen"
+    },
+    {
+      "rank": 70,
+      "ticker": "0857.HK",
+      "name": "PetroChina"
+    },
+    {
+      "rank": 71,
+      "ticker": "BABA",
+      "name": "Alibaba"
+    },
+    {
       "rank": 72,
+      "ticker": "GEV",
+      "name": "GE Vernova"
+    },
+    {
+      "rank": 73,
       "ticker": "MUFG",
       "name": "Mitsubishi UFJ Financial"
     },
     {
-      "rank": 73,
+      "rank": 74,
       "ticker": "IBM",
       "name": "IBM"
     },
     {
-      "rank": 74,
+      "rank": 75,
       "ticker": "LIN",
       "name": "Linde"
-    },
-    {
-      "rank": 75,
-      "ticker": "TM",
-      "name": "Toyota"
     },
     {
       "rank": 76,
@@ -2154,8 +2154,8 @@ const DATA = {
     },
     {
       "rank": 77,
-      "ticker": "GEV",
-      "name": "GE Vernova"
+      "ticker": "TM",
+      "name": "Toyota"
     },
     {
       "rank": 78,
@@ -2174,58 +2174,58 @@ const DATA = {
     },
     {
       "rank": 81,
-      "ticker": "GILD",
-      "name": "Gilead Sciences"
-    },
-    {
-      "rank": 82,
       "ticker": "ARM",
       "name": "Arm Holdings"
     },
     {
-      "rank": 83,
+      "rank": 82,
       "ticker": "ANET",
       "name": "Arista Networks"
     },
     {
+      "rank": 83,
+      "ticker": "GILD",
+      "name": "Gilead Sciences"
+    },
+    {
       "rank": 84,
-      "ticker": "TTE",
-      "name": "TotalEnergies"
-    },
-    {
-      "rank": 85,
-      "ticker": "TD",
-      "name": "Toronto Dominion Bank"
-    },
-    {
-      "rank": 86,
-      "ticker": "C",
-      "name": "Citigroup"
-    },
-    {
-      "rank": 87,
-      "ticker": "BHP",
-      "name": "BHP Group"
-    },
-    {
-      "rank": 88,
-      "ticker": "IHC.AE",
-      "name": "International Holding Company"
-    },
-    {
-      "rank": 89,
-      "ticker": "SHOP",
-      "name": "Shopify"
-    },
-    {
-      "rank": 90,
       "ticker": "ADI",
       "name": "Analog Devices"
     },
     {
-      "rank": 91,
+      "rank": 85,
+      "ticker": "APH",
+      "name": "Amphenol"
+    },
+    {
+      "rank": 86,
+      "ticker": "TTE",
+      "name": "TotalEnergies"
+    },
+    {
+      "rank": 87,
       "ticker": "KLAC",
       "name": "KLA"
+    },
+    {
+      "rank": 88,
+      "ticker": "TD",
+      "name": "Toronto Dominion Bank"
+    },
+    {
+      "rank": 89,
+      "ticker": "IHC.AE",
+      "name": "International Holding Company"
+    },
+    {
+      "rank": 90,
+      "ticker": "C",
+      "name": "Citigroup"
+    },
+    {
+      "rank": 91,
+      "ticker": "BHP",
+      "name": "BHP Group"
     },
     {
       "rank": 92,
@@ -2234,23 +2234,23 @@ const DATA = {
     },
     {
       "rank": 93,
-      "ticker": "APH",
-      "name": "Amphenol"
-    },
-    {
-      "rank": 94,
       "ticker": "CBA.AX",
       "name": "Commonwealth Bank"
     },
     {
-      "rank": 95,
+      "rank": 94,
       "ticker": "DIS",
       "name": "Walt Disney"
     },
     {
-      "rank": 96,
+      "rank": 95,
       "ticker": "ABT",
       "name": "Abbott Laboratories"
+    },
+    {
+      "rank": 96,
+      "ticker": "BLK",
+      "name": "BlackRock"
     },
     {
       "rank": 97,
@@ -2259,41 +2259,41 @@ const DATA = {
     },
     {
       "rank": 98,
-      "ticker": "BLK",
-      "name": "BlackRock"
+      "ticker": "SHOP",
+      "name": "Shopify"
     },
     {
       "rank": 99,
-      "ticker": "MCD",
-      "name": "McDonald"
+      "ticker": "ALV.DE",
+      "name": "Allianz SE"
     },
     {
       "rank": 100,
-      "ticker": "ALV.DE",
-      "name": "Allianz SE"
+      "ticker": "RELIANCE.NS",
+      "name": "Reliance Industries"
     }
   ],
   "meta": {
-    "fetched_at": "2026-11-03T20:00:37.336990+09:00",
-    "fetched_date": "2026-11-03",
-    "usd_krw": 1342.9,
+    "fetched_at": "2026-11-04T02:00:06.943363+09:00",
+    "fetched_date": "2026-11-04",
+    "usd_krw": 1344.59,
     "errors": [],
     "warnings": [],
     "macro": {
       "usd_krw": {
-        "value": 1342.9,
-        "as_of": "2026-11-02",
+        "value": 1344.59,
+        "as_of": "2026-11-03",
         "source": "frankfurter",
-        "measured_at": "2026-11-03T20:01+09:00",
+        "measured_at": "2026-11-04T02:00+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "usd_jpy": {
-        "value": 157.9,
-        "as_of": "2026-11-02",
+        "value": 158.29,
+        "as_of": "2026-11-03",
         "source": "frankfurter",
-        "measured_at": "2026-11-03T20:01+09:00",
+        "measured_at": "2026-11-04T02:00+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -2302,7 +2302,7 @@ const DATA = {
         "value": 4.94,
         "as_of": "2026-10-30",
         "source": "FRED API",
-        "measured_at": "2026-11-03T20:01+09:00",
+        "measured_at": "2026-11-04T02:00+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -2311,7 +2311,7 @@ const DATA = {
         "value": 5.31,
         "as_of": "2026-10-30",
         "source": "FRED API",
-        "measured_at": "2026-11-03T20:01+09:00",
+        "measured_at": "2026-11-04T02:00+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -2320,7 +2320,7 @@ const DATA = {
         "value": 103.37,
         "as_of": "2026-10-27",
         "source": "FRED API",
-        "measured_at": "2026-11-03T20:01+09:00",
+        "measured_at": "2026-11-04T02:00+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -2335,16 +2335,16 @@ const DATA = {
       "country": "🇰🇷",
       "mc": 743.92,
       "momentum_1y": 143,
-      "momentum_1m": -24,
-      "momentum_3m": 6,
-      "momentum_6m": 8,
+      "momentum_1m": -17,
+      "momentum_3m": 5,
+      "momentum_6m": 20,
       "theme": "AI semiconductors",
       "story": "AI semiconductors · #20 globally · 1Y +143% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "semis",
       "story_auto": true,
       "auto": true,
       "status": "watch",
-      "streak_out": 3,
+      "streak_out": 4,
       "out_limit": 5,
       "carried_days": 0,
       "miss_limit": 3,
@@ -2355,57 +2355,57 @@ const DATA = {
       "ticker": "INTC",
       "name": "Intel",
       "country": "🇺🇸",
-      "mc": 318.74,
-      "momentum_1y": 52,
-      "momentum_1m": -50,
-      "momentum_3m": -41,
-      "momentum_6m": -37,
+      "mc": 323.55,
+      "momentum_1y": 54,
+      "momentum_1m": -48,
+      "momentum_3m": -40,
+      "momentum_6m": -44,
       "theme": "AI semiconductors",
-      "story": "AI semiconductors · #46 globally · 1Y +52% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI semiconductors · #46 globally · 1Y +54% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "semis",
       "story_auto": true,
       "auto": true,
       "status": "watch",
-      "streak_out": 1,
+      "streak_out": 2,
       "out_limit": 5,
       "carried_days": 0,
       "miss_limit": 3,
       "joined": "2026-10-19"
     },
     {
-      "rank": 49,
+      "rank": 47,
       "ticker": "AMAT",
       "name": "Applied Materials",
       "country": "🇺🇸",
-      "mc": 297.22,
-      "momentum_1y": 58,
-      "momentum_1m": -31,
-      "momentum_3m": -31,
-      "momentum_6m": -4,
+      "mc": 303.02,
+      "momentum_1y": 61,
+      "momentum_1m": -30,
+      "momentum_3m": -29,
+      "momentum_6m": -7,
       "theme": "AI semiconductors",
-      "story": "AI semiconductors · #49 globally · 1Y +58% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI semiconductors · #47 globally · 1Y +61% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "semis",
       "story_auto": true,
       "auto": true,
       "status": "watch",
-      "streak_out": 1,
+      "streak_out": 2,
       "out_limit": 5,
       "carried_days": 0,
       "miss_limit": 3,
       "joined": null
     },
     {
-      "rank": 58,
+      "rank": 54,
       "ticker": "TXN",
       "name": "Texas Instruments",
       "country": "🇺🇸",
-      "mc": 276.12,
-      "momentum_1y": 87,
-      "momentum_1m": 3,
-      "momentum_3m": 6,
-      "momentum_6m": 8,
+      "mc": 288.02,
+      "momentum_1y": 95,
+      "momentum_1m": 7,
+      "momentum_3m": 13,
+      "momentum_6m": 12,
       "theme": "AI semiconductors",
-      "story": "AI semiconductors · #58 globally · 1Y +87% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI semiconductors · #54 globally · 1Y +95% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "semis",
       "story_auto": true,
       "auto": true,
@@ -2415,18 +2415,18 @@ const DATA = {
       "carried_days": 0,
       "miss_limit": 3,
       "joined": "2026-11-03",
-      "new_day": 1
+      "new_day": 2
     },
     {
-      "rank": 70,
+      "rank": 64,
       "ticker": "DELL",
       "name": "Dell",
       "country": "🇺🇸",
-      "mc": 249.73,
-      "momentum_1y": 145,
-      "momentum_1m": -30,
-      "momentum_3m": -16,
-      "momentum_6m": 86,
+      "mc": 259.35,
+      "momentum_1y": 155,
+      "momentum_1m": -26,
+      "momentum_3m": -12,
+      "momentum_6m": 88,
       "theme": "AI 서버 OEM",
       "story": "★ New — NVIDIA Blackwell server supply chain critical node. +33% surge on day 1.",
       "theme_id": "",
@@ -2440,39 +2440,39 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 71,
+      "rank": 68,
       "ticker": "CRWD",
       "name": "CrowdStrike",
       "country": "🇺🇸",
-      "mc": 247.59,
-      "momentum_1y": 75,
-      "momentum_1m": -10,
-      "momentum_3m": 14,
-      "momentum_6m": 106,
+      "mc": 253.04,
+      "momentum_1y": 79,
+      "momentum_1m": -9,
+      "momentum_3m": 18,
+      "momentum_6m": 107,
       "theme": "AI software",
-      "story": "AI software · #71 globally · 1Y +75% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI software · #68 globally · 1Y +79% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "software",
       "story_auto": true,
       "auto": true,
       "status": "watch",
-      "streak_out": 1,
+      "streak_out": 2,
       "out_limit": 5,
       "carried_days": 0,
       "miss_limit": 3,
       "joined": null
     },
     {
-      "rank": 105,
+      "rank": 106,
       "ticker": "2454.TW",
       "name": "MediaTek",
       "country": "🇹🇼",
       "mc": 180.65,
       "momentum_1y": 168,
-      "momentum_1m": -26,
-      "momentum_3m": 3,
-      "momentum_6m": 41,
+      "momentum_1m": -19,
+      "momentum_3m": 23,
+      "momentum_6m": 54,
       "theme": "AI semiconductors",
-      "story": "AI semiconductors · #105 globally · 1Y +168% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI semiconductors · #106 globally · 1Y +168% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "semis",
       "story_auto": true,
       "auto": true,
@@ -2499,22 +2499,44 @@ const DATA = {
       "story_auto": true,
       "auto": true,
       "status": "watch",
-      "streak_out": 1,
+      "streak_out": 2,
       "out_limit": 5,
       "carried_days": 0,
       "miss_limit": 3,
       "joined": "2026-10-05"
     },
     {
-      "rank": 133,
+      "rank": 124,
+      "ticker": "SNDK",
+      "name": "Sandisk",
+      "country": "🇺🇸",
+      "mc": 159.66,
+      "momentum_1y": 442,
+      "momentum_1m": -34,
+      "momentum_3m": -17,
+      "momentum_6m": -20,
+      "theme": "AI tech",
+      "story": "AI tech · #124 globally · 1Y +442% — an AI value-chain candidate with explosive growth momentum.",
+      "theme_id": "tech",
+      "story_auto": true,
+      "auto": true,
+      "status": "member",
+      "streak_out": 0,
+      "out_limit": 5,
+      "carried_days": 0,
+      "miss_limit": 3,
+      "joined": null
+    },
+    {
+      "rank": 136,
       "ticker": "MRVL",
       "name": "Marvell Technology",
       "country": "🇺🇸",
-      "mc": 154.04,
-      "momentum_1y": 90,
-      "momentum_1m": -37,
-      "momentum_3m": -22,
-      "momentum_6m": 5,
+      "mc": 151.88,
+      "momentum_1y": 87,
+      "momentum_1m": -38,
+      "momentum_3m": -20,
+      "momentum_6m": 0,
       "theme": "AI 광 인터커넥트",
       "story": "★ New — NVIDIA CEO Jensen Huang officially names \"next trillion-dollar company\" (6/2 Computex). NVIDIA $2B direct investment, +42% surge on day 1.",
       "theme_id": "",
@@ -2528,39 +2550,17 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 136,
-      "ticker": "SNDK",
-      "name": "Sandisk",
-      "country": "🇺🇸",
-      "mc": 152.97,
-      "momentum_1y": 419,
-      "momentum_1m": -37,
-      "momentum_3m": -25,
-      "momentum_6m": -14,
-      "theme": "AI tech",
-      "story": "AI tech · #136 globally · 1Y +419% — an AI value-chain candidate with explosive growth momentum.",
-      "theme_id": "tech",
-      "story_auto": true,
-      "auto": true,
-      "status": "member",
-      "streak_out": 0,
-      "out_limit": 5,
-      "carried_days": 0,
-      "miss_limit": 3,
-      "joined": null
-    },
-    {
-      "rank": 159,
+      "rank": 152,
       "ticker": "STX",
       "name": "Seagate Technology",
       "country": "🇺🇸",
-      "mc": 136.3,
-      "momentum_1y": 124,
-      "momentum_1m": -30,
-      "momentum_3m": -30,
-      "momentum_6m": -20,
+      "mc": 139.84,
+      "momentum_1y": 129,
+      "momentum_1m": -31,
+      "momentum_3m": -27,
+      "momentum_6m": -21,
       "theme": "AI tech",
-      "story": "AI tech · #159 globally · 1Y +124% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI tech · #152 globally · 1Y +129% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "tech",
       "story_auto": true,
       "auto": true,
@@ -2572,22 +2572,22 @@ const DATA = {
       "joined": null
     },
     {
-      "rank": 256,
+      "rank": 247,
       "ticker": "FTNT",
       "name": "Fortinet",
       "country": "🇺🇸",
-      "mc": 92.72,
-      "momentum_1y": 44,
+      "mc": 94.99,
+      "momentum_1y": 48,
       "momentum_1m": -30,
-      "momentum_3m": -25,
-      "momentum_6m": 41,
+      "momentum_3m": -21,
+      "momentum_6m": 44,
       "theme": "AI software",
-      "story": "AI software · #256 globally · 1Y +44% — an AI value-chain candidate with explosive growth momentum.",
+      "story": "AI software · #247 globally · 1Y +48% — an AI value-chain candidate with explosive growth momentum.",
       "theme_id": "software",
       "story_auto": true,
       "auto": true,
       "status": "watch",
-      "streak_out": 1,
+      "streak_out": 2,
       "out_limit": 5,
       "carried_days": 0,
       "miss_limit": 3,

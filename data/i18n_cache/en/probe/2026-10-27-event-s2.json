@@ -4,12 +4,11 @@
  "lang": "en",
  "src_hash": "25cca4396a56",
  "model": "claude-sonnet-5-5",
- "at": "2026-10-27 11:31",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[md] 숫자: 원문에 없는 숫자 100 million",
-  "[md] 숫자: 원문의 숫자가 빠짐 32억"
- ]
+ "at": "2026-11-04 02:26",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. Financial Impact — In Numbers (all formulas built from figures in the source text; interest rate is an assumption)",
+  "md": "\n| Item | Value | Basis |\n|---|---|---|\n| Quarterly principal repayment | **$2 billion/quarter · $8 billion/year** | Formula: $40 billion ÷ 20 quarters (1/20 of the 8-K rent formula) |\n| Year-1 interest (assumed) | **Up to approx. $3.2 billion/year** | Formula: $40 billion × 8% (**assumption** — midpoint between the lowest tier of approx. 8.3% reported by Semafor on 10/22 and approx. 7.75% for chip-collateralized debt; not a confirmed value) · actual interest is lower than this because the balance declines |\n| Year-1 total rent (assumed) | **Approx. $11.2 billion/year** | Formula: 80 + 32 — assumes all tranches start simultaneously (in practice they start sequentially through 2027-1H) |\n| 3Q26 operating cash flow, annualized | **$38.5 billion** | Formula: $9,631M × 4 ([8-K Ex.99.1 3Q26](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm), 2026-10-20) |\n| Rent ÷ operating cash flow (assumed) | **Approx. 29%** | Formula: 112 ÷ 385 |\n| End-3Q26 liquidity / debt and finance leases | **$89.86 billion / $38.84 billion** | [8-K Ex.99.1 3Q26](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm) · [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm), 2026-10-22 |\n| Debt and finance leases if leases fully recognized (assumed) | **Approx. $78.8 billion** | Formula: 388.4 + 400 — upper bound if all tranches are recognized after starting in 2027-1H, before any repayment |\n| Non-cancellable purchase commitments 2027 | **$25.57 billion** | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm), 2026-10-22 — GPU leases replace cash purchases, so whether they overlap with these commitments should be checked in the 10-K notes |\n\n**How to read this**: This financing is not borrowing that brings in cash; it is **a device that converts CAPEX into a 5-year installment schedule**. In the spending structure where 3Q26 quarterly CAPEX was $19.593 billion, of which the AI segment was $16.444 billion, the 2027 GPU portion becomes a lease liability instead of a cash outflow (source: [8-K Ex.99.1 3Q26](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm), 2026-10-20). Once the interest rate is disclosed, the next monthly cycle will re-measure the gap between the discount rate assumption (12.9%) and the actual cost of debt (source: `state.valuation`).\n\n---\n"
+ }
 }
