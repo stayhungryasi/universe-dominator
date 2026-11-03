@@ -30,6 +30,7 @@ concurrency:
 permissions:
   contents: write          # main 커밋 또는 probe/ 브랜치 푸시
   pull-requests: write     # 관문 실패 시 PR (저장소 설정 'Actions 의 PR 생성 허용'이 켜져 있어야 함)
+  actions: write           # 게시 뒤 사이트 재빌드(daily-update quick 실행 요청)
 
 jobs:
   probe:
@@ -147,6 +148,7 @@ jobs:
         continue-on-error: true
 
       - name: Publish (main if gate passed, else probe/ branch + PR)
+        id: publish
         if: ${{ !cancelled() }}
         run: python scripts/probe_gate.py publish
         env:
@@ -158,6 +160,30 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           # 탐사 결과 DM 도 소장 전용 — 공개 채널 변수는 넘기지 않는다
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+
+      # 게시가 화면에 뜨기까지 다음 데일리(최대 8시간 남짓)를 기다리지 않는다 — 수동 단계는 결함이다(2026-11-03).
+      # daily-update 는 cancel-in-progress 라 돌고 있는 회차가 있으면 끝날 때까지 기다린다(빼앗지 않는다).
+      # 30분 안에 안 끝나면 건너뛴다 — 그 회차가 끝난 뒤 다음 회차가 게시분을 빌드한다.
+      - name: Rebuild site after publish (daily-update quick)
+        if: ${{ !cancelled() && steps.publish.outputs.where == 'main' }}
+        continue-on-error: true
+        timeout-minutes: 35
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          busy=1
+          for i in $(seq 1 60); do
+            n=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/daily-update.yml/runs?status=in_progress" --jq '.total_count' 2>/dev/null || echo 1)
+            q=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/daily-update.yml/runs?status=queued" --jq '.total_count' 2>/dev/null || echo 1)
+            if [ "$n" = "0" ] && [ "$q" = "0" ]; then busy=0; break; fi
+            sleep 30
+          done
+          if [ "$busy" = "1" ]; then
+            echo "daily-update 가 30분째 돌고 있다 — 재빌드 요청을 건너뛴다(다음 회차가 게시분을 빌드한다)"
+            exit 0
+          fi
+          gh workflow run daily-update.yml --ref main -f mode=quick
+          echo "사이트 재빌드 요청 — daily-update quick"
 
       - name: Keep run artifacts (prompts · gate · cost)
         if: always()

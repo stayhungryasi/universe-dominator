@@ -266,6 +266,19 @@ class WorkflowWiringTest(unittest.TestCase):
     def test_no_public_channel(self):
         self.assertNotIn("TELEGRAM_CHAT_ID:", self.y)
 
+    def test_rebuild_after_publish_without_cancelling_daily(self):
+        """게시분이 다음 데일리까지 화면에 안 뜨던 틈(2026-11-03) — main 게시 때만 quick 재빌드, 돌고 있는 데일리는 기다린다."""
+        i = self.y.index("Rebuild site after publish")
+        block = self.y[i:self.y.index("- name:", i)]
+        self.assertIn("steps.publish.outputs.where == 'main'", block)
+        self.assertIn("status=in_progress", block)                     # cancel-in-progress 회차를 빼앗지 않는다
+        self.assertIn("-f mode=quick", block)
+        self.assertIn("continue-on-error: true", block)
+        self.assertIn("actions: write", self.y)
+        self.assertIn("id: publish", self.y)
+        src = (Path(__file__).parent / "probe_gate.py").read_text(encoding="utf-8")
+        self.assertIn('_step_output("where", "main")', src)
+
     def test_daily_never_writes_agent_research(self):
         d = (Path(__file__).parent.parent / ".github" / "workflows" /
              "daily-update.yml").read_text(encoding="utf-8")

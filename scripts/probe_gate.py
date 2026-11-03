@@ -626,6 +626,14 @@ def selftest_new_failures(base_path, after_path):
     return [d.get("label") for d in after.get("detail") or [] if (d.get("label"), d.get("got")) not in seen]
 
 
+def _step_output(key, value):
+    """GitHub Actions 스텝 출력 — 로컬이면 아무것도 안 한다."""
+    out = os.environ.get("GITHUB_OUTPUT", "").strip()
+    if out:
+        with open(out, "a", encoding="utf-8") as f:
+            f.write(f"{key}={value}\n")
+
+
 def cmd_publish():
     ctx = read_json(WORK / "context.json", {}) or {}
     gate = (read_json(WORK / "gate_final2.json") or read_json(WORK / "gate_final.json")
@@ -677,6 +685,7 @@ def cmd_publish():
             [f"· 확률 {prob_line(prev, st)}", f"· {vtxt}"]
         send_dm("\n".join(lines) + pre_note)
         print("[관문] main 게시 완료")
+        _step_output("where", "main")      # 다음 스텝이 사이트를 다시 빌드한다(게시가 다음 데일리까지 화면에 안 뜨지 않게)
         return 0
     branch = f"probe/{rid}"
     _git("checkout", "-B", branch)
