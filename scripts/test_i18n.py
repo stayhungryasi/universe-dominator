@@ -204,6 +204,24 @@ class CatalogTest(unittest.TestCase):
                     bad += [(L, k, why) for why in Q.glossary(src, s, L)]
         self.assertEqual(bad, [])
 
+    def test_names_cover_whole_korean_universe(self):
+        """수집 우주(fetch_data 의 한국 종목 사전) 전부에 이름이 있어야 한다 — 오늘 순위에 든 종목만 보면 시장이 움직여
+        새 한국 종목이 들어오는 날 selftest 가 데일리를 세운다(2026-11-03 실측: 삼성화재가 잠재 목록에 들어와
+        다음 회차 정지 직전 — 시한폭탄 조기경보가 잡았다). 우주는 코드에 닫혀 있으니 우주 전체로 검사한다."""
+        import ast
+        tree = ast.parse((ROOT / "scripts" / "fetch_data.py").read_text(encoding="utf-8"))
+        pools = {}
+        for node in tree.body:
+            if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name) and \
+                    node.targets[0].id in ("KOREAN_NAMES", "KOREAN_ADRS"):
+                pools[node.targets[0].id] = ast.literal_eval(node.value)
+        self.assertEqual(sorted(pools), ["KOREAN_ADRS", "KOREAN_NAMES"])     # 사전 이름이 바뀌면 이 검사도 바뀌어야 한다
+        pairs = [(c + ".KS", n) for c, n in pools["KOREAN_NAMES"].items()] + list(pools["KOREAN_ADRS"].items())
+        self.assertGreater(len(pairs), 60)
+        for L in ("en", "es", "ja"):
+            left = sorted({n for t, n in pairs if i18n.has_hangul(i18n.stock_name(L, t, n))})
+            self.assertEqual(left, [], L)
+
     def test_names_cover_korean_stock_names(self):
         latest = json.loads((ROOT / "data" / "latest.json").read_text(encoding="utf-8"))
         names = [(s.get("ticker"), s.get("name")) for r in latest.get("regions", {}).values()

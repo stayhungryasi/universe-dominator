@@ -176,10 +176,16 @@ class RunTest(unittest.TestCase):
         sw.STATE_PATH.write_text(__import__("json").dumps({"triggers_next_12m": trig}),
                                  encoding="utf-8")
         dms = []
+        # 측정 원천은 전부 가짜로 — 2026-11-03 실측: collect_hourly_runs 를 막지 않아 CI(GITHUB_REPOSITORY 있음)에서만
+        # 실제 GitHub API 를 불렀고, 시계를 +3일 옮긴 조기경보에서 '매시간 감시 72시간째 실패' DM 이 끼어 실패했다.
+        # 테스트가 실제 네트워크·환경에 닿으면 CI 와 로컬이 다른 답을 낸다.
         with mock.patch.object(sw, "collect_sec", return_value=(sw.parse_filings(sub)[0], sub)), \
                 mock.patch.object(sw, "collect_launches", return_value=[]), \
                 mock.patch.object(sw, "collect_ir", return_value=[]), \
                 mock.patch.object(sw, "collect_engine"), \
+                mock.patch.object(sw, "collect_hourly_runs"), \
+                mock.patch.object(sw, "collect_prospectus_facts"), \
+                mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "", "SPACEX_HEARTBEAT": ""}), \
                 mock.patch.object(fc, "flush"), \
                 mock.patch.object(sw, "send_dm", side_effect=lambda t: dms.append(t)):
             sw.run()
