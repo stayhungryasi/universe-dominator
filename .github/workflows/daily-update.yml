@@ -56,7 +56,10 @@ jobs:
       
       # 자가진단 — 핵심 로직 회귀 테스트. 실패 시 수집 중단 (오염 방지, 2026-07 AMD 사고 이후)
       - name: Selftest (core logic regression)
+        id: selftest
         run: python scripts/selftest.py
+        env:
+          SELFTEST_FAILS_OUT: ${{ runner.temp }}/selftest_fails.json
         continue-on-error: false
 
       - name: Fetch latest market cap data (+ daily snapshot)
@@ -323,6 +326,18 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         continue-on-error: true
 
+      # ⏰ 시한폭탄 조기경보 — selftest 를 미래 날짜(+3·+14·+45일)로 미리 돌려, 며칠 뒤 저절로 실패할 테스트를
+      # 그날 전에 소장 DM 으로 알린다(2026-10-29 실제 사고: 실제 시계에 기댄 테스트가 데일리를 5일 세웠다).
+      # 비차단 — 오늘의 수집은 막지 않는다. 하루 한 번(같은 날 두 번째 회차부터 건너뜀).
+      - name: Timebomb early warning (future-dated selftest)
+        if: env.FULL_RUN == 'true'
+        run: python scripts/timebomb_probe.py
+        timeout-minutes: 20
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
+
       # ── 정비 관제탑 — 침묵 실패 감시 (관측자, 커밋 직전 마지막 관문) ──
       # 우아한 저하 덕에 파이프라인은 죽지 않는다. 대신 조용히 비어간다.
       # 이 스텝이 산출물을 읽어 '비어가는 중'을 텔레그램으로 시끄럽게 만든다.
@@ -408,6 +423,9 @@ jobs:
           # 파이썬 쪽만 고치고 여기를 놓쳤다. 미등록이면 로그 경고로 끝낸다.
           TG_CHAT: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SELFTEST_OUTCOME: ${{ steps.selftest.outcome }}
+          SELFTEST_FAILS: ${{ runner.temp }}/selftest_fails.json
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$TG_TOKEN" ]; then
             echo "::warning::[정비] TELEGRAM_BOT_TOKEN 없음 — 경성 실패 경보 발송 불가"
@@ -418,5 +436,17 @@ jobs:
             exit 0
           fi
           MSG="🚨 UNIVERTRIX 워크플로 경성 실패: $RUN_URL"
+          # 2026-11-03: 시한폭탄 테스트가 데일리를 5일(14회) 세우는 동안 이 경보는 링크만 14통 보냈다 —
+          # selftest 가 멈춘 경우 무엇이 실패했는지·몇 회째인지 싣는다. 파이썬이 죽어도 위 기본 문구는 나간다.
+          if [ "$SELFTEST_OUTCOME" = "failure" ]; then
+            N=$(GH_TOKEN="$GH_TOKEN" gh api "repos/$GITHUB_REPOSITORY/actions/workflows/daily-update.yml/runs?per_page=40&status=completed" \
+                  --jq '[.workflow_runs[].conclusion] | (index("success") // length)' 2>/dev/null || echo "?")
+            DETAIL=$(python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(' / '.join(x['label']+' → '+x['got'][:160] for x in d.get('detail',[])[:3]))" "$SELFTEST_FAILS" 2>/dev/null || true)
+            MSG="🚨 UNIVERTRIX 데일리 수집 중단 — selftest 실패(직전 연속 실패 ${N}회 + 이번)
+          · 실패: ${DETAIL:-실패 목록 없음(실행 기록 확인)}
+          · selftest 가 풀릴 때까지 매 회차 수집·빌드·커밋이 멈춥니다(사이트·관제실 정지).
+          · Claude 세션에 '데일리 selftest 실패 수리'라고 요청하세요.
+          $RUN_URL"
+          fi
           API="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
           curl -sS -m 30 -o /dev/null -X POST "$API" --data-urlencode "chat_id=$TG_CHAT" --data-urlencode "text=$MSG" || echo "::warning::[정비] 경보 발송 실패 (curl)"

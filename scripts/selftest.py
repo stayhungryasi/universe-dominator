@@ -16,6 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 FAILS = []
+DETAIL = []          # 실패 항목의 결과값(앞 300자) — 경보 DM·탐사 관문 기준선 대조가 읽는다
 
 
 def check(label, got, want):
@@ -23,7 +24,19 @@ def check(label, got, want):
         print(f"  ✅ {label}")
     else:
         FAILS.append(label)
+        DETAIL.append({"label": label, "got": repr(got)[:300]})
         print(f"  ❌ {label} — 결과 {got!r}, 기대 {want!r}", file=sys.stderr)
+
+
+def write_fails():
+    """SELFTEST_FAILS_OUT 이 있으면 실패 목록을 JSON 으로 남긴다(2026-11-03: 시한폭탄 테스트가 데일리를 5일 세우는
+    동안 경보 DM 은 '경성 실패: <링크>' 14통뿐이었다 — 무엇이 실패했는지 DM 에 실리게)."""
+    import json as _json
+    import os as _os
+    out = _os.environ.get("SELFTEST_FAILS_OUT", "").strip()
+    if out:
+        Path(out).write_text(_json.dumps({"fails": FAILS, "detail": DETAIL}, ensure_ascii=False, indent=1),
+                             encoding="utf-8")
 
 
 def main():
@@ -2782,7 +2795,7 @@ console.log(JSON.stringify(cases.map(c => {
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
                  "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit",
                  "test_i18n", "test_translate", "test_history_migration", "test_spacex_watch2",
-                 "test_spacex_news", "test_probe_audit"):
+                 "test_spacex_news", "test_probe_audit", "test_timebomb"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)
@@ -2813,6 +2826,7 @@ console.log(JSON.stringify(cases.map(c => {
             _ctrl.append(f"{_f.name}: {_n}")
     check("스크립트·템플릿 소스에 제어 문자 0", _ctrl, [])
 
+    write_fails()
     if FAILS:
         print(f"[자가진단] ❌ 실패 {len(FAILS)}건 — 수집을 중단합니다: {FAILS}",
               file=sys.stderr)

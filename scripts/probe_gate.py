@@ -611,6 +611,21 @@ def summary_lines(st, md):
     return []
 
 
+def selftest_new_failures(base_path, after_path):
+    """산출물이 **새로** 만든 selftest 실패 목록. 판정 불가(파일 없음·해석 실패)면 None — 그때는 예전처럼 막는다.
+
+    2026-11-03: 측정층 테스트의 시한폭탄이 10/29 부터 모든 selftest 를 세웠고, 탐사 관문은 그 실패를 산출물 탓으로
+    보고 10/29 사건·11월 월간을 main 에 들이지 못했다. 산출물 전(기준선)에도 같은 실패였으면 산출물 탓이 아니다.
+    같은 항목 이름이라도 결과값이 달라졌으면(예: 다른 테스트가 새로 실패) 새 실패로 친다."""
+    try:
+        base = json.loads(Path(base_path).read_text(encoding="utf-8"))
+        after = json.loads(Path(after_path).read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    seen = {(d.get("label"), d.get("got")) for d in base.get("detail") or []}
+    return [d.get("label") for d in after.get("detail") or [] if (d.get("label"), d.get("got")) not in seen]
+
+
 def cmd_publish():
     ctx = read_json(WORK / "context.json", {}) or {}
     gate = (read_json(WORK / "gate_final2.json") or read_json(WORK / "gate_final.json")
@@ -624,10 +639,17 @@ def cmd_publish():
     vtxt = (f"검증 일치 {vres.get('match', 0)}+반올림 {vres.get('rounding', 0)}"
             f" / {vres.get('checked', 0)} · 불일치 {len(vres.get('mismatch') or [])}"
             f" · 확인 불가 {len(vres.get('unverifiable') or [])}") if vres else "검증 결과 없음"
+    pre_note = ""
     if os.environ.get("SELFTEST_OUTCOME") == "failure":
-        # 저장소 selftest 를 세울 산출물은 main 에 넣지 않는다 — 다음 daily 회차가 멈춘다
-        gate = {"ok": False, "failures": (gate.get("failures") or [])
-                + ["저장소 selftest 실패 — 이 산출물을 main 에 넣으면 daily 파이프라인이 멈춘다"]}
+        new = selftest_new_failures(os.environ.get("SELFTEST_BASE_FAILS", ""), os.environ.get("SELFTEST_AFTER_FAILS", ""))
+        if new == [] and os.environ.get("SELFBASE_OUTCOME") == "failure":
+            # 산출물 전부터 같은 실패 — 산출물 탓이 아니다. 판단층은 게시하고, 실패는 따로 알린다
+            pre_note = "\n· ⚠️ 저장소 selftest 는 산출물 전부터 실패 중(산출물 탓 아님 — 데일리 수집이 멈춰 있을 수 있다)"
+        else:
+            # 저장소 selftest 를 세울 산출물은 main 에 넣지 않는다 — 다음 daily 회차가 멈춘다
+            gate = {"ok": False, "failures": (gate.get("failures") or [])
+                    + ["저장소 selftest 실패 — 이 산출물을 main 에 넣으면 daily 파이프라인이 멈춘다"
+                       + (f"(새 실패: {', '.join(new[:3])})" if new else "")]}
     if check_private(AR, ci=True) and os.environ.get("CI") == "true":
         gate = {"ok": False, "failures": (gate.get("failures") or []) + check_private(AR, ci=True)}
     _git("config", "user.name", "github-actions[bot]")
@@ -653,7 +675,7 @@ def cmd_publish():
         lines = [f"🛰 SpaceX 탐사 {rid} ({mode}) 게시 완료"] + \
             [f"· {x}" for x in summary_lines(st, md)] + \
             [f"· 확률 {prob_line(prev, st)}", f"· {vtxt}"]
-        send_dm("\n".join(lines))
+        send_dm("\n".join(lines) + pre_note)
         print("[관문] main 게시 완료")
         return 0
     branch = f"probe/{rid}"

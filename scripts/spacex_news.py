@@ -68,7 +68,8 @@ QUERIES = [
     ("경쟁", '"Amazon Leo" OR Kuiper OR "New Glenn" (launch OR pricing OR service OR satellites)'),
     ("CEO 발언", 'Musk SpaceX (says OR announces OR posted OR plans)'),
 ]
-WINDOW = "when:2d"
+WINDOW_DAYS = 2            # 평소 검색 창(일) — 회차 사이 공백이 길면 넓힌다(window_days)
+CATCHUP_MAX_DAYS = 7
 
 # 1급 발행처 — 1곳만 보도해도 엔진을 깨운다(나머지는 서로 다른 발행처 2곳 이상)
 TIER1 = {"reuters", "bloomberg", "bloomberg.com", "the wall street journal", "wsj", "financial times",
@@ -112,8 +113,23 @@ def write_json(path, doc):
 # 순수 함수 — 테스트가 직접 두드린다
 # ────────────────────────────────────────────────────────────────
 
-def query_url(q):
-    return "https://news.google.com/rss/search?q=" + quote_plus(q) + "+" + WINDOW + "&hl=en-US&gl=US&ceid=US:en"
+def query_url(q, days=WINDOW_DAYS):
+    return ("https://news.google.com/rss/search?q=" + quote_plus(q) + f"+when:{int(days)}d"
+            + "&hl=en-US&gl=US&ceid=US:en")
+
+
+def window_days(state, today):
+    """검색 창 — 마지막으로 '빠짐없이 판정한 날'(window_end) 이후를 덮는다. 2026-11-03: 데일리가 5일 멈추는 동안
+    2일 창 밖으로 밀려난 보도는 다시 볼 길이 없었다. 판정이 밀리면(이월) window_end 를 옮기지 않아 다음 회차도 넓게 본다.
+    window_end 가 없으면(처음 또는 이 규칙 이전) 한 번은 최대 창으로 훑는다."""
+    end = (state or {}).get("window_end")
+    if not end:
+        return CATCHUP_MAX_DAYS
+    try:
+        gap = (datetime.strptime(today, "%Y-%m-%d") - datetime.strptime(end, "%Y-%m-%d")).days
+    except Exception:
+        return CATCHUP_MAX_DAYS
+    return max(WINDOW_DAYS, min(CATCHUP_MAX_DAYS, gap + WINDOW_DAYS))
 
 
 def clean_title(title, publisher):
@@ -205,14 +221,14 @@ def news_message(wake, dm_only, judged, model_ok=True):
 # 수집 · 판정
 # ────────────────────────────────────────────────────────────────
 
-def collect(fc, logs):
+def collect(fc, logs, days=WINDOW_DAYS):
     from fetch_signals import parse_rss
     from email.utils import parsedate_to_datetime
     ua = {"User-Agent": "Mozilla/5.0 (UNIVERTRIX spacex-news; univertrix.com)"}
     out = []
     for name, q in QUERIES:
         label = "SpaceX 뉴스:" + name
-        text, oc, code = fc.fetch(query_url(q), label, "spacex_news", headers=ua)
+        text, oc, code = fc.fetch(query_url(q, days), label, "spacex_news", headers=ua)
         if text is None:
             logs.append(f"{label} 수집 실패({oc} {code})")
             continue
@@ -302,11 +318,13 @@ def run():
     st = read_json(STATE_PATH, {}) or {}
     triggers = [t for t in (st.get("triggers_next_12m") or []) if (t.get("status") or "대기") == "대기"]
 
-    heads = collect(fc, logs)
+    wdays = window_days(state, today)
+    heads = collect(fc, logs, wdays)
     seen = set(state.get("seen") or [])
     first = not seen
     fresh = order_fresh([h for h in heads if h["id"] not in seen])
-    batch = fresh[:MAX_HEADLINES]
+    cap = MAX_HEADLINES * (2 if wdays > WINDOW_DAYS else 1)     # 공백을 메우는 회차는 상한을 두 배로
+    batch = fresh[:cap]
     for i, h in enumerate(batch):
         h["i"] = i
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
@@ -358,6 +376,8 @@ def run():
         over_msg = "✅ SpaceX 뉴스 감시관 — 이월 해소(미판정 0건)"
         state.pop("deferred_alerted", None)
     state["deferred_streak"] = streak
+    if first or (model_ok is not False and deferred == 0 and model_ok is not None):
+        state["window_end"] = today          # 여기까지는 빠짐없이 봤다 — 이월·실패면 옮기지 않는다
 
     if wake or dm_only or model_ok is False or over_msg:
         try:
@@ -413,7 +433,7 @@ def run():
     state["decisions"] = dec[-80:]
     state["seen"] = sorted(seen)[-KEEP_SEEN:]
     state["last_run"] = {"date": today, "headlines": len(heads), "fresh": len(fresh), "judged": len(judged),
-                         "deferred": deferred, "baseline": first, "calls": calls,
+                         "deferred": deferred, "baseline": first, "calls": calls, "window_days": wdays,
                          "wake": len(wake), "report": len(dm_only), "ignored": ignored,
                          "model": MODEL, "model_ok": model_ok, "error": err,
                          "tokens_in": use.get("input_tokens"), "tokens_out": use.get("output_tokens")}

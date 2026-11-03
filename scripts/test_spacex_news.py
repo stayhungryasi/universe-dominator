@@ -194,6 +194,27 @@ class RunTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 sn.judge("k", [dict(H(0, "t", "P"))], [], [])
 
+    def test_window_widens_after_gap(self):
+        """2026-11-03: 데일리가 5일 멈추는 동안 2일 창 밖으로 밀린 보도는 다시 볼 길이 없었다 — 공백만큼 창을 넓힌다."""
+        self.assertEqual(sn.window_days({"window_end": "2026-11-03"}, "2026-11-03"), 2)
+        self.assertEqual(sn.window_days({"window_end": "2026-10-29"}, "2026-11-03"), 7)     # 5일 공백 + 2
+        self.assertEqual(sn.window_days({"window_end": "2026-10-01"}, "2026-11-03"), 7)     # 상한
+        self.assertEqual(sn.window_days({}, "2026-11-03"), 7)                               # 처음은 한 번 넓게
+        self.assertIn("+when:7d&", sn.query_url("SpaceX", 7))
+
+    def test_window_end_holds_while_deferred(self):
+        self._run([H(0, "old", "Reuters")])
+        n0 = json.loads(sn.NEWS_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(n0["window_end"], "2026-10-27")                                   # 기준선 회차
+        st = dict(n0, window_end="2026-10-20")
+        sn.NEWS_PATH.write_text(json.dumps(st), encoding="utf-8")
+        rc, dms, w, n, calls = self._run(self._many(600, 1))                               # 넓은 창 · 상한 두 배
+        self.assertEqual(n["last_run"]["window_days"], 7)
+        self.assertEqual(n["last_run"]["judged"], sn.MAX_HEADLINES * 2)
+        self.assertEqual(n["window_end"], "2026-10-20")                                    # 이월 → 옮기지 않는다
+        rc, dms, w, n, calls = self._run(self._many(600, 1))
+        self.assertEqual(n["window_end"], "2026-10-27")                                    # 다 봤다 → 오늘로
+
     def test_order_interleaves_queries(self):
         heads = [dict(H(k, f"t{k}", "P"), query=q) for k, q in enumerate(["A", "A", "A", "B", "C"])]
         self.assertEqual([h["query"] for h in sn.order_fresh(heads)], ["A", "B", "C", "A", "A"])

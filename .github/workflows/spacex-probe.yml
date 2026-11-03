@@ -74,6 +74,15 @@ jobs:
       - name: Gate selftest
         run: python scripts/test_engine_layer.py
 
+      # 기준선 — 산출물을 넣기 전의 저장소 selftest 실패 목록(2026-11-03: 측정층 테스트의 시한폭탄이 모든 selftest 를
+      # 세워, 관문이 그 실패를 산출물 탓으로 보고 10/29 사건·11월 월간을 main 에 들이지 못했다 — 산출물이 만든 실패만 막는다)
+      - name: Repository selftest baseline (before author)
+        id: selfbase
+        run: python scripts/selftest.py
+        env:
+          SELFTEST_FAILS_OUT: ${{ runner.temp }}/selftest_base.json
+        continue-on-error: true
+
       - name: Prepare run
         run: python scripts/probe_gate.py prepare --mode "$MODE" --reason "$REASON"
 
@@ -133,6 +142,8 @@ jobs:
         id: selfcheck
         if: ${{ !cancelled() }}
         run: python scripts/selftest.py
+        env:
+          SELFTEST_FAILS_OUT: ${{ runner.temp }}/selftest_after.json
         continue-on-error: true
 
       - name: Publish (main if gate passed, else probe/ branch + PR)
@@ -141,6 +152,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           SELFTEST_OUTCOME: ${{ steps.selfcheck.outcome }}
+          SELFBASE_OUTCOME: ${{ steps.selfbase.outcome }}
+          SELFTEST_BASE_FAILS: ${{ runner.temp }}/selftest_base.json
+          SELFTEST_AFTER_FAILS: ${{ runner.temp }}/selftest_after.json
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           # 탐사 결과 DM 도 소장 전용 — 공개 채널 변수는 넘기지 않는다
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}

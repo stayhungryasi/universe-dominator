@@ -259,5 +259,42 @@ class WorkflowWiringTest(unittest.TestCase):
         self.assertNotIn("claude -p", d)
 
 
+class BaselineSelftestTest(unittest.TestCase):
+    """2026-11-03: 측정층 테스트의 시한폭탄이 모든 selftest 를 세웠고, 관문은 그 실패를 산출물 탓으로 보고
+    10/29 사건·11월 월간을 main 에 들이지 못했다 — 산출물이 **새로** 만든 실패만 게시를 막는다."""
+
+    def _w(self, d, name, detail):
+        p = Path(d) / name
+        p.write_text(json.dumps({"fails": [x[0] for x in detail],
+                                 "detail": [{"label": a, "got": b} for a, b in detail]}), encoding="utf-8")
+        return str(p)
+
+    def test_preexisting_is_not_new(self):
+        with tempfile.TemporaryDirectory() as d:
+            same = [("test_spacex_watch2: 전 케이스 통과", "['test_collect_launches_wiring']")]
+            self.assertEqual(g.selftest_new_failures(self._w(d, "b", same), self._w(d, "a", same)), [])
+
+    def test_output_made_failure_is_new(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = [("test_spacex_watch2: 전 케이스 통과", "['test_collect_launches_wiring']")]
+            after = base + [("관제실: PROBE_DATA ≤ 400KB", "False")]
+            self.assertEqual(g.selftest_new_failures(self._w(d, "b", base), self._w(d, "a", after)),
+                             ["관제실: PROBE_DATA ≤ 400KB"])
+            # 같은 이름이어도 결과값이 바뀌면(다른 테스트가 새로 실패) 새 실패다
+            after2 = [("test_spacex_watch2: 전 케이스 통과", "['test_collect_launches_wiring', 'test_x']")]
+            self.assertEqual(len(g.selftest_new_failures(self._w(d, "b", base), self._w(d, "c", after2))), 1)
+
+    def test_unknown_blocks(self):
+        self.assertIsNone(g.selftest_new_failures("/nonexistent/b.json", "/nonexistent/a.json"))
+
+    def test_wired_in_workflow(self):
+        y = (Path(__file__).parent.parent / ".github" / "workflows" / "spacex-probe.yml").read_text(encoding="utf-8")
+        self.assertIn("id: selfbase", y)
+        self.assertIn("SELFTEST_BASE_FAILS:", y)
+        self.assertLess(y.index("id: selfbase"), y.index("Author (Claude Code headless)"))   # 기준선은 작성 전
+        src = (Path(__file__).parent / "probe_gate.py").read_text(encoding="utf-8")
+        self.assertIn("selftest_new_failures(os.environ.get(\"SELFTEST_BASE_FAILS\"", src)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
