@@ -678,6 +678,28 @@ class RunWiringTest(unittest.TestCase):
         self.assertEqual(len(dms), 1)
         self.assertEqual(h.get("heartbeat_date"), "2026-10-27")
 
+    def test_heartbeat_says_daily_halted(self):
+        """일일 점검이 데일리 정지를 직접 말한다(2026-10-29~11-03: 5일 정지 동안 점검은 매일 왔지만 침묵했다)."""
+        self._baseline()
+        env = {"SPACEX_HEARTBEAT": "1", "GITHUB_REPOSITORY": "o/r"}
+        runs = json.dumps({"workflow_runs": [{"updated_at": "2026-10-25T10:48:56Z"}]})
+        dms, *_ = self._run(sub_of(self.BASE), mode="hourly", env=env, now="2026-10-27T08:47:00+09:00",
+                            texts={"daily-update.yml/runs?status=success": runs})
+        self.assertEqual(len(dms), 1)
+        line = dms[0].splitlines()[2]
+        self.assertIn("데일리 수집 마지막 성공: 10/25 19:48", line)
+        self.assertIn("⚠️ 37시간째 성공 없음", line)
+        # 조회가 실패해도 점검은 간다 — '확인 불가'로(침묵은 통과가 아니다)
+        dms, *_ = self._run(sub_of(self.BASE), mode="hourly", env=env, now="2026-10-28T08:47:00+09:00")
+        self.assertIn("데일리 수집 마지막 성공: 확인 불가 ⚠️", dms[0])
+
+    def test_daily_line_fresh_and_local(self):
+        now = datetime.fromisoformat("2026-11-03T08:47:00+09:00")
+        self.assertEqual(sw.daily_line({"at": "2026-11-02T22:10:00Z", "checked": True}, now),
+                         "· 데일리 수집 마지막 성공: 11/3 07:10")
+        self.assertIsNone(sw.daily_line(None, now))                      # 로컬(저장소 정보 없음) — 줄 없음
+        self.assertIn("기록 없음", sw.daily_line({"at": None, "checked": True}, now))
+
     def test_dm_log_records_unregistered(self):
         """DM 결과는 산출물에 남는다 — '보냈다고 믿는 것'과 '보낸 것'을 가른다."""
         sw.DM_LOG.clear()

@@ -1202,7 +1202,7 @@ def watch_message(dues, records, fired, migration_note=None):
     return "\n".join(lines)
 
 
-def heartbeat_message(watch, hstate, st, now, status=None):
+def heartbeat_message(watch, hstate, st, now, status=None, daily=None):
     """3중 — 하루 한 번 소장 DM. 아무 일이 없어도 온다: 이 메시지가 안 오면 감시가 멈춘 것이다."""
     today = now.date()
     since = (today - timedelta(days=1)).isoformat()
@@ -1282,6 +1282,9 @@ def heartbeat_message(watch, hstate, st, now, status=None):
                      + (f" · ⚠️ 불일치 {len(au.get('mismatch') or [])}" if au.get("mismatch") else "")
                      + (f" · 대조 불가 {len(au.get('unverifiable') or [])}" if au.get("unverifiable") else "")
                      + f" ({(au.get('checked_at') or '')[:10]})")
+    dl = daily_line(daily, now)
+    if dl:
+        lines.insert(2, dl)                 # 사건 줄 바로 아래 — 사이트 전체가 멈췄는지가 가장 먼저 보이게
     lines.append("· 이 점검이 내일 아침에 오지 않으면 감시가 멈춘 것입니다.")
     return "\n".join(lines)
 
@@ -1369,6 +1372,51 @@ def collect_hourly_runs(fc, watch, logs):
                        "last_conclusion": (runs[0].get("conclusion") if runs else None),
                        "runs_24h": sum(1 for r in runs if (r.get("created_at") or "") >= cut),
                        "ok_24h": sum(1 for r in ok if (r.get("created_at") or "") >= cut)}
+
+
+DAILY_WORKFLOW = "daily-update.yml"
+DAILY_STALE_H = 30           # 데일리는 하루 3회 남짓(예약 지연 2~6시간) — 30시간 넘게 성공이 없으면 멈춘 것이다
+
+
+def collect_daily_runs(fc):
+    """데일리 수집(daily-update.yml)의 마지막 성공 — 일일 점검 DM 한 줄(하루 한 번, 점검을 보낼 때만 잰다).
+
+    2026-10-29~11-03: 데일리가 selftest 시한폭탄으로 5일·14회 멈춘 동안 일일 점검은 매일 왔지만 그 사실을 한 줄도
+    말하지 않았다(경성 실패 DM 은 '링크'뿐). 점검이 '사이트가 멈췄다'를 직접 말하게 한다.
+    → {"at": ISO(UTC) 또는 None, "checked": bool} · 저장소 정보가 없으면(로컬) None — 줄을 만들지 않는다.
+    """
+    repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if not repo:
+        return None
+    hdr = {"Accept": "application/vnd.github+json", "User-Agent": "univertrix-spacex-watch"}
+    tok = os.environ.get("GITHUB_TOKEN", "").strip()
+    if tok:
+        hdr["Authorization"] = "Bearer " + tok
+    url = f"https://api.github.com/repos/{repo}/actions/workflows/{DAILY_WORKFLOW}/runs?status=success&per_page=1"
+    doc, oc, code = _get_json(fc, url, "데일리 수집 실행기록", hdr)
+    if doc is None:
+        return {"at": None, "checked": False}
+    runs = doc.get("workflow_runs") or []
+    return {"at": (runs[0].get("updated_at") if runs else None), "checked": True}
+
+
+def daily_line(daily, now):
+    """일일 점검의 데일리 줄 — 30시간 넘게 성공이 없으면 경보 표식과 함께 '멈췄다'고 말한다. 잴 수 없으면 그렇다고."""
+    if not daily:
+        return None
+    if not daily.get("checked"):
+        return "· 데일리 수집 마지막 성공: 확인 불가 ⚠️(GitHub 실행기록 조회 실패)"
+    if not daily.get("at"):
+        return "· 데일리 수집 마지막 성공: 기록 없음 ⚠️"
+    try:
+        t = datetime.fromisoformat(daily["at"].replace("Z", "+00:00")).astimezone(KST)
+    except Exception:
+        return "· 데일리 수집 마지막 성공: 확인 불가 ⚠️(시각 해석 실패)"
+    h = (now - t).total_seconds() / 3600
+    line = f"· 데일리 수집 마지막 성공: {t.month}/{t.day} {t:%H:%M}"
+    if h > DAILY_STALE_H:
+        line += f" ⚠️ {h:.0f}시간째 성공 없음 — 사이트·아침 브리핑·뉴스 감시가 멈춰 있습니다"
+    return line
 
 
 def hourly_stale_message(watch, stale):
@@ -1542,7 +1590,13 @@ def run(mode="daily"):
         """하루 한 번 · 08시 이후 첫 회차 · 워크플로가 SPACEX_HEARTBEAT=1 일 때만. 이번 회차 사건까지 합친 뒤 센다."""
         if os.environ.get("SPACEX_HEARTBEAT") == "1" and now.hour >= 8 and \
                 today not in (watch.get("heartbeat_date"), hstate.get("heartbeat_date")):
-            if send_dm(heartbeat_message(watch, hstate, st, now, read_json(DATA_DIR / "fetch_status.json", {}))):
+            try:
+                daily = collect_daily_runs(fc)
+            except Exception as e:           # 부가 줄 — 실패해도 점검은 간다('확인 불가'로)
+                logs.append(f"데일리 실행기록 확인 실패({type(e).__name__})")
+                daily = {"at": None, "checked": False}
+            if send_dm(heartbeat_message(watch, hstate, st, now, read_json(DATA_DIR / "fetch_status.json", {}),
+                                         daily=daily)):
                 (hstate if hourly else watch)["heartbeat_date"] = today
             else:                    # 실패하면 날짜를 찍지 않는다 — 다음 회차(매시간)가 다시 보낸다
                 logs.append("일일 점검 DM 실패 — 다음 회차에 다시")
