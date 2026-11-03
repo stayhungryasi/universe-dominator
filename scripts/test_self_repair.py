@@ -128,6 +128,24 @@ class MessageTest(unittest.TestCase):
         self.assertIn("Merge", ok)
 
 
+class DrillTest(unittest.TestCase):
+    def test_drill_target_exists(self):
+        t = (ROOT / sr.DRILL_FILE).read_text(encoding="utf-8")
+        self.assertEqual(t.count(sr.DRILL_FROM), 1)                  # 훈련 고장을 심을 자리가 살아 있다
+
+    def test_verdict(self):
+        good = {"ok": True, "violations": [], "flags": ["검사 줄 1개 수정"]}
+        self.assertTrue(sr.drill_verdict(good, True, False)[0])
+        self.assertFalse(sr.drill_verdict(good, True, True)[0])         # 코드를 틀린 테스트에 맞춰 비틀면 실패
+        self.assertFalse(sr.drill_verdict(good, False, False)[0])
+        self.assertFalse(sr.drill_verdict({"ok": False, "violations": ["x"]}, True, False)[0])
+
+    def test_drill_never_publishes(self):
+        y = (ROOT / ".github" / "workflows" / "self-repair.yml").read_text(encoding="utf-8")
+        i = y.index("Publish repair")
+        self.assertIn("!inputs.drill", y[i:y.index("run:", i)])
+
+
 class WiringTest(unittest.TestCase):
     def setUp(self):
         self.y = (ROOT / ".github" / "workflows" / "self-repair.yml").read_text(encoding="utf-8")
