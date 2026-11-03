@@ -1,79 +1,23 @@
 {
-  "run_id": "2026-11",
-  "checked": 37,
-  "match": 36,
-  "rounding": 1,
+  "run_id": "2026-11-03-event",
+  "checked": 27,
+  "match": 25,
+  "rounding": 2,
   "mismatch": [],
   "unverifiable": [],
-  "verified_at": "2026-11-01T15:25+09:00",
-  "method": "verify_list.json 의 source_url 37건을 직접 열어 value 와 대조. 열리지 않은 원천(424B4, 10MB 초과)은 EDGAR 전문검색(efts)의 해당 공시 구절 적중 + 2차 출처(StockAlarm)로 같은 사실을 다시 찾았다. 보고서 where_in_report 위치와 state(valuation.risk_free_rate · triggers_next_12m T7 paths/note)도 같은 값인지 확인했다. 판단·서술·확률은 보지 않았다.",
   "rounding_items": [
-    {"claim": "발행주식수(백만주, 2026-10-15, Class A+B)", "value": 13581, "source_value": "8,246,541,218 + 5,334,522,491 = 13,581,063,709 주 → 13,581.06 백만주", "diff_pct": 0.0005}
+    {"claim": "발행주식수(백만주, 2026-10-15, Class A+B)", "value": 13581, "source_value": 13581.063709, "source_note": "10-Q 표지 Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 — 백만주 단위 반올림(0.0005%)"},
+    {"claim": "EchoStar 2Q26 — 매각 예정 규제 인가 자산(USD 십억)", "value": 16.8, "source_value": 16.822253, "source_note": "보도자료 대차대조표 Regulatory authorizations held for sale, net $16,822,253천 — 십억 단위 반올림(0.13%)"}
   ],
-  "source_notes": [
-    {"claim": "12/8 락업 해제 최대 물량(백만주)", "value": 797.6, "note": "424B4 원문은 도구 용량(10MB) 초과로 열리지 않음. EDGAR 전문검색이 구절 '797.6 million' 을 그 424B4(0001628280-26-042639)에서 적중. 2차 출처 StockAlarm(2026-10-24)도 12/8 'All remaining 797.6M' 으로 같은 값 · 조건부 미충족 시 적용. 일치로 분류하되 원문 표 칸을 눈으로 읽지는 못했다."},
-    {"claim": "3Q 실적 발표 후 둘째 거래일(10/22) 해제 비율(%)", "value": 28, "note": "424B4 미개봉. EDGAR 전문검색이 '28% of the shares' 구절을 같은 424B4 에서 적중. StockAlarm 일정표: 2026-10-22 '28%, about 1.3B' · 당일 종가 144.75 · 거래량 197.0M — 보고서 0-1 표·1-5 표와 같다. 원문 문맥은 미확인."},
-    {"claim": "8월 가격 조건부 추가 해제 물량(백만주)", "value": 455.8, "note": "424B4 미개봉. EDGAR 전문검색이 '455.8 million' 구절을 같은 424B4 에서 적중. StockAlarm: 2026-08-06 조건부 10% 455.8M, 175.50 이상 종가 10일 중 5일 조건 미충족."},
-    {"claim": "2027 매출 LSEG 컨센서스(USD 십억) — CNBC", "value": 110, "note": "목록의 source_url(CNBC 2026-10-21 기사)에는 연간 2027 수치가 없다 — 그 기사에 있는 LSEG 수치는 1Q27 평균 추정 22.2 와 3Q26 추정 12.72 뿐. 같은 값은 CNBC 2026-10-20 실적 라이브 기사(https://www.cnbc.com/2026/10/20/spacex-spcx-earnings-live-updates-q3-2026html.html)의 'full-year 2027 revenue of about $110 billion, according to LSEG' 에 있다. 값은 일치, 출처 URL 만 다른 기사다."},
-    {"claim": "미국 10년물 금리(%, 2026-10-27, FRED DGS10)", "value": 4.99, "note": "FRED 2026-10-27 행 4.99 일치. 최신 행은 2026-10-29 4.98 — 보고서는 10/27 기준으로 날짜를 명시하고 있어 불일치 아님."},
-    {"claim": "10/6 고점 이후 시가총액 감소(USD 십억 이상)", "value": 500, "note": "기사 원문 'erased more than $500 billion in market value since its Oct. 6 high' · 약 22% 하락 — 보고서 0-1 표 '약 −22%' 와 같다."}
+  "notes": [
+    "ir.echostar.com 보도자료(항목 '스펙트럼 거래 총액 약 $17B')는 403 — 원천 ① EchoStar 8-K Ex.99.1(sec.gov/Archives/edgar/data/1415404/000141540425000041/tmb-20250907xex99d1.htm, 2025-09-08)에서 같은 사실 확인: 약 $17B, 현금 최대 $8.5B + SpaceX 주식 최대 $8.5B, AWS-4·H-block — 일치",
+    "피고 기각 신청 기각일 2026-10-30: Earthjustice 자료(10/30 발행) 'On Friday' + CNBC 10/31 '판결문 금요일 늦게 공개' — 2026-10-30 은 금요일, 일치",
+    "10-Q R25: 제소 2026-04-14 · 예비금지명령 신청 2026-05-06 · 제5순회항소법원 기각 2026-10-19(같은 날 지법 개입 허용·기각 불허) — 일치. R83: 소송 충당금 9/30 $350M · 12/31 $399M — 일치",
+    "R58: 50MHz(2025-09-07) · 15MHz(2025-11-05) · 상대 Spectrum Business Trust 2025-1 · 선급 $856M — 일치",
+    "stockanalysis 최신 행 11/2: 종가 136.37 · +1.22% · 거래량 91,121,974 · 10/30 종가 134.72 — 일치. FRED DGS10 10/30 4.94%(10/27 4.99%) — 일치",
+    "SELC 4/14: 터빈 27기 · NOx 1,700톤/년 초과 — 일치. Earthjustice 10/30: NOx 5,000톤/년 초과 · 포름알데히드 47톤 — 일치(터빈 수는 '수십 기', 보고서도 수치 미채택)",
+    "SeekingAlpha 전재 EchoStar 2Q26(8/3): 가입자 7.38M · 순감 약 118,000 · 무선 매출 $929.0M · SpaceX Reimbursement of Cash Interim Debt Service Payments $413.7M(상반기) — 일치. TechCrunch 11/2: 약 7.5M(WP 인용) — 일치. EchoStar EDGAR 최신 8-K 2026-10-02 — 일치(최신 양식은 10/05 Form 4)",
+    "보고서 본문(머리글·1절 표·2절 표·3절·부록)과 state(T9·T10 note·status, valuation.event_run_note 4.94)의 숫자는 verify_list 와 같다. 'state.kpi_history' 항목은 본 회차 목록에 없다"
   ],
-  "items": [
-    {"claim": "기준 주가 — 2026-10-30 종가(USD)", "value": 134.72, "result": "match", "source_value": 134.72},
-    {"claim": "2026-10-30 거래량(주)", "value": 122608500, "result": "match", "source_value": 122608500},
-    {"claim": "2026-10-30 일간 등락률(%)", "value": -6.37, "result": "match", "source_value": -6.37},
-    {"claim": "10월호 기준가 — 2026-10-22 종가(USD)", "value": 144.75, "result": "match", "source_value": 144.75},
-    {"claim": "직전 회차 기준가 — 2026-10-27 종가(USD)", "value": 148.58, "result": "match", "source_value": 148.58},
-    {"claim": "2026-10-22 거래량(주)", "value": 197046495, "result": "match", "source_value": 197046495},
-    {"claim": "미국 10년물 금리(%, 2026-10-27)", "value": 4.99, "result": "match", "source_value": 4.99, "state_value": 0.0499},
-    {"claim": "발행주식수(백만주, 2026-10-15)", "value": 13581, "result": "rounding", "source_value": 13581.06},
-    {"claim": "3Q26 매출(USD 백만)", "value": 14575, "result": "match", "source_value": 14575},
-    {"claim": "3Q26 고객 B 연결 매출 비중(%)", "value": 34.5, "result": "match", "source_value": 34.5},
-    {"claim": "Anthropic–SpaceX 컴퓨트 계약 상한(USD 십억)", "value": 120.5, "result": "match", "source_value": 120.5},
-    {"claim": "Anthropic 월 지급액(USD 십억)", "value": 3.1, "result": "match", "source_value": 3.1},
-    {"claim": "Anthropic 해지 통지 기간(일)", "value": 90, "result": "match", "source_value": 90},
-    {"claim": "Fitch — SpaceX 총부채(USD 십억, 2026-09-30)", "value": 38.0, "result": "match", "source_value": 38.0},
-    {"claim": "Fitch — EBITDA 레버리지 전망 2027(배)", "value": 1.0, "result": "match", "source_value": 1.0},
-    {"claim": "Fitch — 한 SI 고객의 9M26 연결 매출 비중(%)", "value": 24.2, "result": "match", "source_value": 24.2},
-    {"claim": "$400억 GPU 마스터 금융리스 — 8-K 원금 합계(USD 십억)", "value": 40, "result": "match", "source_value": 40},
-    {"claim": "12/8 락업 해제 최대 물량(백만주)", "value": 797.6, "result": "match", "source_value": 797.6, "via": "efts 구절 적중 + StockAlarm"},
-    {"claim": "10/22 해제 비율(%)", "value": 28, "result": "match", "source_value": 28, "via": "efts 구절 적중 + StockAlarm"},
-    {"claim": "8월 가격 조건부 추가 해제 물량(백만주)", "value": 455.8, "result": "match", "source_value": 455.8, "via": "efts 구절 적중 + StockAlarm"},
-    {"claim": "8월 조건부 해제 창의 종가 하한(USD)", "value": 108.27, "result": "match", "source_value": 108.27},
-    {"claim": "루이지애나 PILOT 연간 지급액(USD 백만, 첫해)", "value": 25, "result": "match", "source_value": 25},
-    {"claim": "루이지애나 소송 — 공개회의법 위반 주장 건수", "value": 8, "result": "match", "source_value": 8},
-    {"claim": "루이지애나 PILOT 기간(년)", "value": 25, "result": "match", "source_value": 25},
-    {"claim": "FCC 10/29 D2D 추가 스펙트럼 상한(MHz)", "value": 482, "result": "match", "source_value": 482},
-    {"claim": "FCC 10/29 NPRM 의견 기간(일)", "value": 60, "result": "match", "source_value": 60},
-    {"claim": "상원 서한 — 서명 의원 수", "value": 9, "result": "match", "source_value": 9},
-    {"claim": "상원 서한 — 감찰관 회신 기한", "value": "2026-11-01", "result": "match", "source_value": "2026-11-01", "state_value": "2026-11-01"},
-    {"claim": "상원 서한 — SpaceX 가 인정한 속도 제한(mph)", "value": 100, "result": "match", "source_value": 100, "state_value": "100mph"},
-    {"claim": "Booster 22 정적 점화 엔진 수(기)", "value": 33, "result": "match", "source_value": 33},
-    {"claim": "Starship Flight 15 — Launch Library NET", "value": "2026-11-30", "result": "match", "source_value": "2026-11-30T00:00:00Z (precision Month, last_updated 2026-10-28)"},
-    {"claim": "Amazon Leo LV-01 — NET 날짜", "value": "2026-11-13", "result": "match", "source_value": "2026-11-13"},
-    {"claim": "Amazon Leo LV-01 — 탑재 위성 수", "value": 40, "result": "match", "source_value": 40},
-    {"claim": "Falcon 9 2026-10-31 밴덴버그 — Starlink 위성 수", "value": 27, "result": "match", "source_value": 27},
-    {"claim": "인도 IN-SPACe 인가 유효기간(년)", "value": 5, "result": "match", "source_value": 5},
-    {"claim": "2027 매출 LSEG 컨센서스(USD 십억)", "value": 110, "result": "match", "source_value": 110, "via": "CNBC 2026-10-20 라이브 기사(목록 URL 에는 없음)"},
-    {"claim": "10/6 고점 이후 시가총액 감소(USD 십억 이상)", "value": 500, "result": "match", "source_value": 500}
-  ],
-  "report_cross_check": {
-    "file": "agent-research/reports/2026-11.md",
-    "checked_sections": "머리글 · 0-1 표 · 1-1 표 · 1-3 · 1-5 락업 표 · 4-1 · 4-2 · 결론 ② · 부록",
-    "all_same_as_verify_list": true,
-    "derived_formulas_recomputed": [
-      "134.72 ÷ 144.75 − 1 = −0.0693 (보고서 −6.9%)",
-      "134.72 ÷ 148.58 − 1 = −0.0933 (보고서 −9.3%)",
-      "797.6 ÷ 13,581 = 0.0587 (보고서 5.9%)",
-      "134.72 × 13.581 = 1,829.6 (보고서 약 $1,830십억)",
-      "8,246.5 + 5,334.5 = 13,581.1 백만주 (보고서 82.47억 + 53.35억 = 135.81억)"
-    ]
-  },
-  "state_cross_check": {
-    "file": "agent-research/state/spacex_state.json",
-    "valuation.risk_free_rate": "0.0499 — 일치",
-    "triggers_next_12m[T7].paths[a].deadline": "2026-11-01 — 일치",
-    "triggers_next_12m[T7].note": "100mph — 일치",
-    "kpi_history": "이번 verify_list 에 state.kpi_history 항목 없음(S-1 분기 재무 미기입, 보고서 PHASE 5 ⑥) — 대조 대상 없음"
-  }
+  "verified_at": "2026-11-03T17:05+09:00"
 }
