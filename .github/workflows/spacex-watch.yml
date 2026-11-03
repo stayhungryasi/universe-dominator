@@ -24,6 +24,7 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write   # data/spacex_hourly.json 커밋 + repository_dispatch(탐사 엔진 사건 모드)
+      actions: read     # 일일 점검의 '데일리 수집 마지막 성공' 줄(daily-update.yml 실행기록 조회)
 
     steps:
       - name: Checkout repo
