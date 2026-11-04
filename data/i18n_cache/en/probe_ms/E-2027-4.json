@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "E-2027-4",
  "lang": "en",
- "src_hash": "a25ed99d967c",
+ "src_hash": "c2aaf73fc19b",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 2,
+ "at": "2026-11-04 12:40",
+ "attempts": 1,
  "status": "ok",
  "fields": {
   "text": "U.S. federal contract new orders above prior year",
-  "reason": "3Q26 NSSL 18 missions, ISS crew 3 missions, NASA Roman launch order confirmed (8-K Ex.99.1); amount and prior-year comparison data (USAspending) not yet aggregated. 2026-11 note: 10/23 bipartisan House and Senate delegation requested Secretary of Defense expand Starshield contract (request stage, not contract) · DoD Inspector General 10/27 letter defines Ukraine restriction as 'Air Force and Space Force contract matter' (Bloomberg summary) — contract condition changes not observed",
-  "hit": "Political risk not materialized",
-  "miss": "Downside probability rises if volume declines",
-  "method": "USAspending, DoD disclosure",
-  "parts.0.label": "U.S. federal contract new orders (vs. prior year)",
-  "parts.0.reason": "Amount and prior-year comparison data (USAspending) not yet aggregated"
+  "reason": "3Q26 NSSL 18 missions·ISS crew 3 missions·NASA Roman launch orders confirmed (8-K Ex.99.1), but amount and year-over-year comparison data (USAspending) not yet compiled. 2026-11-04 reference value (not progress input): NPR 10/06 — 'SpaceX 2026 U.S. defense contracts exceed $8 billion' (government contract announcement compilation, no year-over-year comparison) · DoD uses Grok. As of same date, Musk is co-director of Project Meridian on DoD advisory board (9/30) and 11/2 FACA litigation (SpaceX non-party) alleges 'contract inducement' — complaint does not assert inducement as fact. 2026-11 reference: 10/23 bipartisan congressional delegation demands DoD expand Starshield contracts (request stage, not contract) · DoD Inspector General 10/27 letter characterizes Ukraine restriction as 'Air Force and Space Force contract matter' (Bloomberg summary) — contract term changes not observed",
+  "hit": "political risk not realized",
+  "miss": "decline probability raised if decreased",
+  "method": "USAspending·DoD disclosure",
+  "parts.0.label": "U.S. federal contract new orders (year-over-year)",
+  "parts.0.reason": "amount and year-over-year comparison data (USAspending) not yet compiled"
  }
 }

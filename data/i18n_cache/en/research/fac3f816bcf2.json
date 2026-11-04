@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "fac3f816bcf2",
  "lang": "en",
- "src_hash": "9b4fcde7db65",
+ "src_hash": "40d189f00d48",
  "model": "claude-haiku-4-5",
- "at": "2026-11-04 10:29",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "TSM rose 33.2% over the past year, significantly outpacing semiconductor sector's 6.8%, showing external growth.",
-  "summary_ko.1": "Q3 2026 revenue of $46.72B represents 41.2% YoY increase, net profit surged 68.7%, with HPC revenue increasing to 68% of total.",
-  "summary_ko.2": "Advanced technology 7nm and below represents 79% of Q3 wafer revenue, 2nm technology accounts for 8%, with plans to more than double N2 annual production capacity in 2027."
- }
+ "at": "2026-11-04 12:40",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[3§summary_ko.2] 숫자: 원문에 없는 숫자 60",
+  "[3§summary_ko.2] 숫자: 원문의 숫자가 빠짐 600"
+ ]
 }

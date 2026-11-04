@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "E-2027-4",
  "lang": "es",
- "src_hash": "a25ed99d967c",
+ "src_hash": "c2aaf73fc19b",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
+ "at": "2026-11-04 12:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Nuevos contratos federales estadounidenses igual o superior al año anterior",
-  "reason": "Contrataciones confirmadas en 3Q26: NSSL 18 veces, tripulación ISS 3 veces, lanzamiento NASA Roman (8-K Ex.99.1), datos de importe y comparación con año anterior (USAspending) no compilados. Nota 2026-11: 10/23 delegación bipartidista de ambas cámaras exige al Secretario de Defensa expansión de contrato Starshield (fase de solicitud, no contrato ejecutado) · carta del Inspector General del DoD 10/27 clasifica restricción de Ucrania como 'asunto de contratación bajo jurisdicción de Fuerza Aérea y Fuerza Espacial' (resumen Bloomberg) — cambios en términos de contrato no observados",
+  "text": "Nuevas adjudicaciones de contratos federales estadounidenses superiores al año anterior",
+  "reason": "Se confirman adjudicaciones 3Q26 NSSL 18 veces·ISS tripulación 3 veces·lanzamiento NASA Roman (8-K Ex.99.1), datos de importe y comparación interanual (USAspending) no consolidados. Valor de referencia 2026-11-04 (sin entrada de progreso): NPR 10/06 — 'SpaceX supera los $8.000 millones en contratos de defensa estadounidenses 2026' (compilación de anuncios de contratos gubernamentales, sin comparación interanual) · Departamento de Defensa utiliza Grok. A la misma fecha, Musk es codirector conjunto del Proyecto Meridian en la junta asesora del Departamento de Defensa (9/30) y la demanda FACA 11/2 (SpaceX no es parte) alega 'inducción de contrato' — la demanda no alega inducción de hecho. Referencia 11/2026: 10/23 delegación bipartidista de ambas cámaras solicita al Secretario de Defensa ampliación de contrato Starshield (fase de solicitud, no contrato) · carta del Inspector General del Departamento de Defensa 10/27 define restricción de Ucrania como 'asunto de contrato bajo jurisdicción de la Fuerza Aérea y la Guardia Espacial' (resumen de Bloomberg) — cambios en condiciones de contrato no observados",
   "hit": "Riesgo político no materializado",
-  "miss": "Si disminuye, aumenta probabilidad de debilidad",
-  "method": "USAspending, divulgaciones DoD",
-  "parts.0.label": "Nuevos contratos federales estadounidenses (comparación anual)",
-  "parts.0.reason": "Datos de importe y comparación con año anterior (USAspending) no compilados"
+  "miss": "Si disminuye, probabilidad de debilidad al alza",
+  "method": "USAspending·DoD disclosure",
+  "parts.0.label": "Nuevas adjudicaciones de contratos federales estadounidenses (vs. año anterior)",
+  "parts.0.reason": "Datos de importe y comparación interanual (USAspending) no consolidados"
  }
 }

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-04-event-s4",
+ "lang": "en",
+ "src_hash": "23c6d4033419",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-04 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Triggers",
+  "md": "\n- **T11 newly added — \"Project Meridian (Department of Defense 'future warfare' advisory committee, Musk as co-director) FACA lawsuit — checkpoints on preliminary injunction, defendants' answer, SGE status and the 1/28 report\"**: ① Court records — case number, assigned judge, whether the plaintiffs have moved for a preliminary injunction (preliminary restraining order), and the defendants' answer (federal defendants have 60 days after service — estimated early 2027-01) ② Department of Defense response — a path that would moot the lawsuit through filing a FACA charter, registering the committee with the GSA, or opening meetings ③ Disclosure of Musk's and Luckey's SGE status (OGE public financial disclosures, etc.) → whether 18 U.S.C. §208 applies ④ Publication of the 2027-01-28 report (excluding classified annexes) — recommendations that fall within SpaceX's business areas (launch, satellites, AI compute) ⑤ Wording on Musk's government role and conflicts of interest in Item 1A of the 4Q26 10-K ⑥ The news monitor's 'regulation/CEO statements' query is the primary source. Expected dates: **2026-12-01** (KST, monthly checkpoint — court schedule not disclosed) → **2027-01-29** (KST, report deadline 1/28 + 1 day). Verdicts are made only from court records and government documents. The name prefix does not include 'procurement, contracts, earnings, Starship' (source: Section 1 table · `scripts/spacex_watch.py trigger_kind`).\n- **T7**: No change — as of this round (KST 11/4 = US 11/3), ⓓ Blumenthal 11/5 · ⓔ White House 11/6 **have yet to arrive**. Shaheen's opposition to Meridian is placed under T11 as an event separate from T7 (source: `state.triggers_next_12m[T7]`).\n- **T8 ②**: DA 26-1078 bond deadline 11/4 (US) — **not yet arrived** as of this round (US 11/3). To be checked next round (source: `state.triggers_next_12m[T8]`).\n- **T3·T4·T5·T6·T9·T10**: No change (source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

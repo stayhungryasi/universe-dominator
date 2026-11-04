@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-04 10:14",
- "generated_at": "2026-11-04T10:14:44.612488+09:00",
+ "generated_label": "2026-11-04 12:28",
+ "generated_at": "2026-11-04T12:28:55.318657+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-04",
@@ -927,7 +927,11 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "비용 상승(12%)이 수익 증가(8%)를 초과하며 사이클 구조 내 수익성 압박"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -945,7 +949,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -963,7 +967,32 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "✕",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2,
+    "period": "2026Q3"
+   },
+   "notes": "jamie Dimon의 '표면 아래 경제력이 변한다'는 경고는 사이클 정점 신호; 희귀한 earnings miss 이후 멀티플 재평가 국면",
+   "_evidence": {
+    "franchise": "JPMorgan Chase $5.1조 자산, 대체 불가능한 금융 인프라",
+    "risk5": "Costs rise 12% against 8% revenue growth; Jamie Dimon warns economic forces 'shift under the surface'",
+    "capalloc": "JPMorgan had $5.1 trillion in assets on Sept. 30; Q3 profit climbs despite cost pressures",
+    "owner_earnings": "Costs rise 12% against 8% revenue growth at JPMorgan Chase yet Q3 profit climbs"
+   }
   },
   "WMT": {
    "as_of": "2026-11-04",
@@ -1549,7 +1578,11 @@
     },
     "fcf_ttm": 17365000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "C",
+     "reason": "낸드 플래시 순환 사이클의 저점에서 높은 마진(85%)이 천장일 가능성과 이익 지속성에 대한 시장 의문"
+    }
    },
    "conversion": {
     "value": 0.9986,
@@ -1569,7 +1602,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 13건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -1589,7 +1622,28 @@
     }
    ],
    "g_forward_status": "전망치 이상(101%) — 취재 필요",
-   "notes": "전망치 이상(101%) — 취재 필요"
+   "notes": "메모리 반도체의 극도로 예측 불가능한 사이클 속에서 현재 밸류에이션(5x 가이던스)은 저점 신호이나, 사업 확실성 부족이 투자 결정을 어렵게 함",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "_evidence": {
+    "franchise": "낸드 순수 사이클 중 예측 가능성 최하단; 85% 마진이 천장인지에 대한 이익 논쟁 지속",
+    "risk5": "Q1 실적 후 매도세; 13% 급락; 가격 변동성 극심(AMD 대비 더 위험); 다음 실적 전망 불확실",
+    "capalloc": "12% 현금 환원(배당 또는 자사주매수); 8:1 주식 분할 발표",
+    "owner_earnings": "실적은 추정치 상회하나 마진 천장 및 사이클 리스크로 인한 이익 지속성 의문"
+   }
   },
   "STX": {
    "as_of": "2026-11-04",
@@ -2051,5 +2105,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-04 10:15"
+ "scout_label": "2026-11-04 12:29"
 }
