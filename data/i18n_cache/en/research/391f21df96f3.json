@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "391f21df96f3",
  "lang": "en",
- "src_hash": "8505dcc2f926",
+ "src_hash": "eca3839ba0dc",
  "model": "claude-haiku-4-5",
- "at": "2026-10-29 19:36",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "SPCX declined $3.35 (2.25%) after market close; classified as large-cap stock with market cap exceeding $200B.",
-  "summary_ko.1": "Space Exploration Technologies Corp. is an aerospace company engaged in space exploration, rocket and spacecraft manufacturing, and satellite communications businesses."
- }
+ "at": "2026-11-05 08:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[18§summary_ko.1] 숫자: 원문에 없는 숫자 200 billion",
+  "[18§summary_ko.1] 숫자: 원문의 숫자가 빠짐 200억"
+ ]
 }

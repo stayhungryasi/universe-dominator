@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "68c44263a0af",
+ "lang": "en",
+ "src_hash": "3d2e612ab29f",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-05 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "PHP2Shell Vulnerability, a Warning Light in the AI Era",
+  "sections.1.h": "Neglected Bug Transforms into Critical Vulnerability",
+  "sections.2.h": "AI Tools Discover Complex Attack Paths",
+  "sections.3.h": "AI's Capabilities and Limitations Become Clear",
+  "sections.4.h": "Patching Lags Far Behind Bug Discovery",
+  "sections.5.h": "Defense Must Be Strengthened with AI Models",
+  "sections.6.h": "Optimism and Pessimism Diverge",
+  "sections.7.h": "PHP2Shell Is Only the Beginning",
+  "sections.0.ko": "The PHP2Shell vulnerability disclosed last October threatened numerous websites including NASA, Wikipedia, and the White House. Fortunately, cybersecurity researchers discovered it and patches were distributed before exploitation, but this is interpreted as a harbinger of greater risks ahead in the AI era. Security experts view this incident as revealing a fundamental problem—the exposure of vulnerabilities in legacy software accumulated by humans over 40 years through AI tools.",
+  "sections.1.ko": "PHP is a programming language created in 1994 and used in many older sites. The bug underlying the PHP2Shell vulnerability had been reported since 2024, but it was not taken seriously because it was merely a memory overflow error that crashed the program. A Columbia University security expert points out that most developers tend not to view program crash bugs as serious issues.",
+  "sections.2.ko": "Earlier this year, Kalif, a cybersecurity firm backed by OpenAI, conducted a PHP surveillance project. Within just two weeks, researchers assisted by AI tools found a way to exploit the memory overflow bug to execute arbitrary code on the server, and what was once a simple bug has now transformed into a critical vulnerability. This requires sophisticated analysis—jumping to specific memory locations and overwriting bits in precise sequences to gain system control—demonstrating that AI handles this kind of \"complex and painful reasoning\" well.",
+  "sections.3.ko": "The researchers who participated in Kalif and Wiz possessed deep expertise in cybersecurity and the PHP language. Experts assess that while AI cannot handle everything alone, it is enabling top 0.1% experts to tackle more work and helping those below that tier reach the same level of analysis without fully understanding every detail.",
+  "sections.4.ko": "After the vulnerability was disclosed to the PHP Foundation, four engineers spent two months developing a patch. An expert points out the fundamental asymmetry between bug discovery and fixing. When fixing a bug, all attack paths must be blocked while existing functionality is preserved. This imbalance places a significant burden on open-source software maintenance teams that are widely used without a clear revenue structure.",
+  "sections.5.ko": "Experts propose strengthening the defense side by increasing funding and expanding access to cutting-edge cybersecurity AI models. Some AI frontier labs are donating a portion of their token budget to bug analysis, and more such efforts are needed. Additionally, automation technologies like the formal verification tool Anthropic released on October 22 are showing progress, which operates by having LLMs generate patches and prove patch correctness.",
+  "sections.6.ko": "Some experts view the combination of AI tools and formal verification technologies as having high potential to automate patch discovery as much as vulnerability discovery. However, other experts contend that \"no one will solve this problem until a really big incident occurs,\" predicting that a major investment will only happen when a severe incident occurs in early 2027 that the public takes seriously. An expert recommends immediately installing software security updates rather than delaying them as an action that can be taken now.",
+  "sections.7.ko": "Security experts do not view this vulnerability as the last and expect similar incidents to recur going forward. However, the current hope is that white-hat hackers will discover them first. This suggests the possibility of deepening asymmetry between attack and defense due to the instrumentalization of AI, and demonstrates that settling technical debt is now a necessity, not an option.",
+  "caveat": "The article relies heavily on opinions and analyses from security experts and includes future estimations such as a major incident prediction for 2027, so the article's main claims require critical examination of the original text."
+ }
+}

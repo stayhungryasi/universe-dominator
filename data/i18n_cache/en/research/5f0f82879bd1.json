@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "5f0f82879bd1",
  "lang": "en",
- "src_hash": "a21796d5f076",
+ "src_hash": "1645f8451816",
  "model": "claude-haiku-4-5",
- "at": "2026-11-04 12:40",
+ "at": "2026-11-05 08:41",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Samsung Electronics Q3 2026 revenue of KRW 195.2532 trillion (up 126.9% year-over-year), operating profit of KRW 107.4405 trillion (up 783.1%), operating margin 55.0% marking fourth consecutive record.",
-  "summary_ko.1": "Analyst price targets range from low of KRW 270,000 to high of KRW 670,000 (more than 2x spread); views diverge based on HBM4 yield improvement and memory demand stability assessment."
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§summary_ko.0] 숫자: 원문에 없는 숫자 374,500",
+  "[0§summary_ko.0] 숫자: 원문의 숫자가 빠짐 37만, 4,500"
+ ]
 }
