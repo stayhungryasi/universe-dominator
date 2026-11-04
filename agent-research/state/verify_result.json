@@ -1,23 +1,23 @@
 {
-  "run_id": "2026-11-03-event",
-  "checked": 27,
-  "match": 25,
-  "rounding": 2,
+  "run_id": "2026-11-04-event",
+  "checked": 21,
+  "match": 21,
+  "rounding": 0,
   "mismatch": [],
   "unverifiable": [],
-  "rounding_items": [
-    {"claim": "발행주식수(백만주, 2026-10-15, Class A+B)", "value": 13581, "source_value": 13581.063709, "source_note": "10-Q 표지 Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 — 백만주 단위 반올림(0.0005%)"},
-    {"claim": "EchoStar 2Q26 — 매각 예정 규제 인가 자산(USD 십억)", "value": 16.8, "source_value": 16.822253, "source_note": "보도자료 대차대조표 Regulatory authorizations held for sale, net $16,822,253천 — 십억 단위 반올림(0.13%)"}
-  ],
+  "verified_at": "2026-11-04T10:45+09:00",
   "notes": [
-    "ir.echostar.com 보도자료(항목 '스펙트럼 거래 총액 약 $17B')는 403 — 원천 ① EchoStar 8-K Ex.99.1(sec.gov/Archives/edgar/data/1415404/000141540425000041/tmb-20250907xex99d1.htm, 2025-09-08)에서 같은 사실 확인: 약 $17B, 현금 최대 $8.5B + SpaceX 주식 최대 $8.5B, AWS-4·H-block — 일치",
-    "피고 기각 신청 기각일 2026-10-30: Earthjustice 자료(10/30 발행) 'On Friday' + CNBC 10/31 '판결문 금요일 늦게 공개' — 2026-10-30 은 금요일, 일치",
-    "10-Q R25: 제소 2026-04-14 · 예비금지명령 신청 2026-05-06 · 제5순회항소법원 기각 2026-10-19(같은 날 지법 개입 허용·기각 불허) — 일치. R83: 소송 충당금 9/30 $350M · 12/31 $399M — 일치",
-    "R58: 50MHz(2025-09-07) · 15MHz(2025-11-05) · 상대 Spectrum Business Trust 2025-1 · 선급 $856M — 일치",
-    "stockanalysis 최신 행 11/2: 종가 136.37 · +1.22% · 거래량 91,121,974 · 10/30 종가 134.72 — 일치. FRED DGS10 10/30 4.94%(10/27 4.99%) — 일치",
-    "SELC 4/14: 터빈 27기 · NOx 1,700톤/년 초과 — 일치. Earthjustice 10/30: NOx 5,000톤/년 초과 · 포름알데히드 47톤 — 일치(터빈 수는 '수십 기', 보고서도 수치 미채택)",
-    "SeekingAlpha 전재 EchoStar 2Q26(8/3): 가입자 7.38M · 순감 약 118,000 · 무선 매출 $929.0M · SpaceX Reimbursement of Cash Interim Debt Service Payments $413.7M(상반기) — 일치. TechCrunch 11/2: 약 7.5M(WP 인용) — 일치. EchoStar EDGAR 최신 8-K 2026-10-02 — 일치(최신 양식은 10/05 Form 4)",
-    "보고서 본문(머리글·1절 표·2절 표·3절·부록)과 state(T9·T10 note·status, valuation.event_run_note 4.94)의 숫자는 verify_list 와 같다. 'state.kpi_history' 항목은 본 회차 목록에 없다"
-  ],
-  "verified_at": "2026-11-03T17:05+09:00"
+    "stockanalysis 일별 이력(최신 행 11/3): 11/3 종가 141.31 · +3.62% · 거래량 73,291,157 / 11/2 종가 136.37 · 거래량 90,995,429 — 5항목 일치. state.market.volume_recent 의 11/2 칸은 보고서가 밝힌 대로 직전 회차 조회값(91,121,974)을 유지하고 있다(검증 항목은 '수정 후 값'이라 원문과 일치).",
+    "10-Q 표지(2026-10-15): Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 → 13,581백만주 일치. 보고서 시가총액 산식(141.31 × 13.581 = 1,919)과 state.market.shares_outstanding_bn 13.581 일치.",
+    "FRED DGS10 최신 관측 2026-11-02 = 4.91 (11/3 값 미게시) — data/latest.json meta.macro.ust10 4.91(as_of 2026-11-02) · state.valuation.event_run_note 4.91 일치.",
+    "Project Meridian: MIXED 10/02 — 메모 9/30 · 1쪽 · 120일 · 기한 2027-01-28 · 메모가 이름으로 적은 관리는 Emil Michael(머스크·Luckey·Gingrich 없음) 일치. The Next Web 09/30 — 120일 · 2027-01-28 일치.",
+    "CREW 소송 페이지: 소장·첨부 날짜 2026-11-02 일치. 법원명은 페이지에 없음(보고서의 D.C. 연방지법은 숫자 항목 아님 — 평가하지 않음).",
+    "Military.com 11/03: 21명 중 19명 민간 · MITRE 참가자 17(+공동 디렉터 3) · 공개 보고서 최대 30쪽 · POGO 서한 10/29(회신 요청 10/30) · MITRE 의견 마감 11/12 · 회의 2회(9/30 SCIF · 10/1) 일치.",
+    "Politico(Yahoo 전재) 10/02: 회의 2회 일치. SpaceX 계약 금액은 기사에 없음('수십억 달러' 표현만) — 보고서 표기와 같다.",
+    "NPR(WFAE 전재) 10/06: 'over $8 billion in U.S. defense contracts in 2026', 출처 정부 계약 공고 — 일치. state.milestones[E-2027-4].progress_reason '$80억 초과' 일치. Anduril 해군 계약 금액은 이 기사에 없음(보고서도 OCBJ 로 출처 분리).",
+    "OCBJ 10/06: 해군 계약 최대 $2.9B · CNBC 인용 — 일치.",
+    "소장 PDF(Public Citizen 게시): 페이지 트리 37쪽 · 메타데이터 생성일 2026-11-02 — 일치. 본문은 본 회차 검증관 도구에서도 텍스트 추출 불가(렌더 불가) — 쪽수·날짜 외 본문 숫자(19/21 등)는 Military.com 인용으로만 대조했고 보고서도 그렇게 표기하고 있다.",
+    "EDGAR submissions: 최신 공시 8-K 2026-10-26(accn 0001104659-26-118614, Item 8.01) — 일치. 이후 공시 없음.",
+    "본 회차 검증관 도구에서 media.defense.gov·war.gov·pogo.org 는 열지 않았다(목록에 해당 URL 항목 없음 — 메모 날짜·기한은 전재 2곳으로 대조)."
+  ]
 }
