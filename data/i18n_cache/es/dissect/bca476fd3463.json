@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "bca476fd3463",
+ "lang": "es",
+ "src_hash": "161498573a23",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-04 10:29",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Portabilidad de modelo de clase frontera a hardware de consumidor",
+  "sections.1.h": "Velocidad de procesamiento medida e indicadores de rendimiento específicos",
+  "sections.2.h": "Instalación sencilla y configuración única",
+  "sections.3.h": "Requisitos de hardware y guía de selección de modelo",
+  "sections.4.h": "Integración mediante compatibilidad de API OpenAI/Anthropic",
+  "sections.5.h": "Núcleo de optimización técnica: arquitectura de procesamiento distribuido",
+  "sections.6.h": "Ecosistema de código abierto y licencia MIT",
+  "sections.7.h": "Solución de problemas y sistema de soporte",
+  "sections.0.ko": "Strata es un motor de inferencia de código abierto que permite ejecutar Qwen 3.8-Flash-Next, un modelo que convencionalmente solo funcionaba en servidores de nivel centro de datos, en computadoras personales. Este modelo realiza una amplia gama de tareas: conversación, escritura de código, reconocimiento de imágenes e integración de agentes, con todo el procesamiento de datos ocurriendo exclusivamente dentro de la computadora del usuario. Ha alcanzado velocidades prácticas incluso en computadoras personales ordinarias equipadas con GPU de juegos de gama media como RTX 5070 y 64 GB de RAM.",
+  "sections.1.ko": "El texto original presenta dos indicadores de rendimiento principales. La velocidad de generación de respuestas mide la rapidez con que aparecen las respuestas en conversaciones breves; en RTX 5070, el modelo comprimido Q2_0 más rápido genera 94 tokens por segundo (aproximadamente 70 palabras). La velocidad de procesamiento de entrada muestra la rapidez con que se leen los prompts del usuario, alcanzando 2.650 tokens por segundo en el mismo entorno. Los modelos más sofisticados (IQ3_S) son más lentos pero ofrecen una compensación con mejor calidad de respuesta.",
+  "sections.2.ko": "El proceso de instalación está diseñado de forma única. Los usuarios de Windows ejecutan START-HERE.bat, y los usuarios de Linux ejecutan setup.sh; el instalador detecta automáticamente la GPU y configura el motor apropiado. Después de descargar el modelo de aproximadamente 70 GB, los usuarios pueden acceder a la interfaz de chat a través de http://127.0.0.1:8080 desde el navegador web. Durante el arranque inicial, la PC puede ralentizarse durante 1 a 3 minutos, lo cual es normal al cargar 35 a 55 GB de datos en memoria.",
+  "sections.3.ko": "Los requisitos mínimos son tarjeta gráfica NVIDIA o AMD de 12 GB o más, RAM de 32 GB o superior, y espacio libre en disco de 80 GB o más. El texto original presenta recomendaciones de modelos según la capacidad de RAM: versión especializada en codificación para 32 GB, IQ2_XS para 64 GB, e IQ3_S de máxima calidad para 96 GB o superior. Cada modelo tiene grados diferentes de compresión, permitiendo a los usuarios equilibrar velocidad y sofisticación según su entorno.",
+  "sections.4.ko": "Strata proporciona API compatibles con OpenAI y Anthropic en el host local, lo que permite que asistentes de codificación IA existentes como Claude Code, Cursor y GitHub Copilot se conecten directamente. Los usuarios solo necesitan configurar la URL base de API como http://127.0.0.1:8080/v1; cualquier valor funciona para la clave de autenticación y el nombre del modelo. Esto permite aprovechar el ecosistema de aplicaciones existente sin depender de API en la nube.",
+  "sections.5.ko": "La razón por la que Strata funciona en hardware de consumidor es distribuyendo el cálculo del modelo en toda la PC. El modelo consta de 24.576 pequeños módulos de expertos, activando solo 10 de ellos según sea necesario por palabra. La GPU contiene los miles de expertos más utilizados, la RAM almacena todos ellos, y la CPU procesa el resto en paralelo. Además, mediante la técnica de «predicción y verificación» se logra una respuesta 1,6 a 1,8 veces más rápida, procesando textos de entrada largos en bloques de 8.192 tokens a más de 1.000 tokens por segundo.",
+  "sections.6.ko": "Este proyecto es el resultado de la compresión del modelo del equipo Qwen por ISTA-DASLab, UkisAI y Unsloth, utilizando tecnología de llama.cpp y ggml. Todo el código se publica bajo licencia MIT, permitiendo modificación y distribución libre. Los desarrolladores agradecen las contribuciones y aceptan donaciones de café; han establecido un procedimiento para reportar problemas de seguridad de forma privada.",
+  "sections.7.ko": "El texto original presenta soluciones para problemas comunes: falta de respuesta de la PC durante el arranque inicial, descargas interrumpidas, bajo rendimiento y conflictos de puerto. La mayoría de los casos se resuelven cerrando otros programas, seleccionando un modelo más pequeño o reiniciando; los problemas complejos pueden recibir soporte a través de documentación detallada o seguimiento de problemas en GitHub. Cuando los usuarios adjuntan archivos de registro, los desarrolladores proporcionan diagnósticos específicos.",
+  "caveat": "Los valores de rendimiento de este proyecto son mediciones reales en una configuración de hardware específica; en sistemas individuales de los usuarios pueden variar según el tamaño de memoria GPU, rendimiento de CPU y versión de controlador.",
+  "title": "Ejecutar Qwen 3.8 Flash Next (125B) en hardware de consumidor (RTX 4090) a 100T/s"
+ }
+}

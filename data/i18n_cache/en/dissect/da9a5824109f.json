@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "da9a5824109f",
+ "lang": "en",
+ "src_hash": "871fccea8bb3",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-04 10:29",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Unexpected changes discovered",
+  "sections.1.h": "Postman logs show automatic installation record",
+  "sections.2.h": "Installed hooks redirect broad API operations to Postman",
+  "sections.3.h": "Installer attempts to approve its own hooks",
+  "sections.4.h": "Unauthenticated remote MCP connection enabled",
+  "sections.5.h": "Claude plugins and CLI also installed together",
+  "sections.6.h": "Immediate actions demanded by user",
+  "sections.7.h": "Strong backlash from developer community",
+  "sections.8.h": "Postman's attempted denial of responsibility flagged",
+  "sections.9.h": "Postman's official response absent",
+  "sections.0.ko": "After running Postman on Mac, a user discovered repeated authentication warnings from external coding agents like Codex and Claude, with API operations being rerouted to Postman skills. Investigation revealed the user's global Postman plugin, startup command hooks, remote MCP connections, Claude Code plugin, and separately installed Postman CLI. The user noted these changes occurred without explicit consent, flagging Postman being configured into other tools' default workflows as a serious consent and trust issue.",
+  "sections.1.ko": "Log files in the Postman desktop application contain a clear record with a timestamp of October 24, 2026, 09:34 (Jerusalem time). The logs specify that claude-code and codex plugins were installed with a source of 'auto-existing-upgrade'. Additionally, the configuration file lists postman@postman as a marketplace source registered to a public GitHub repository, showing the installation process was performed by automated scripts.",
+  "sections.2.ko": "The installed codex-hooks.json file registers a SessionStart command, which loads the session-start-context.md file at session start. The file contents contain instructions to 「load and follow the Postman API Engineer skill before performing API engineering tasks」. This instruction far exceeds the scope of what the user explicitly requested to use Postman for, applying to a broad range of work including API design, implementation, testing, and deployment.",
+  "sections.3.ko": "Reviewing the installation code of the Postman plugin confirms that an approval function (approvePostmanHook) is called after installation. This function obtains the hook hash and then registers it as a trusted hash via config/batchWrite. Comments in the source code state 'approve only Postman's current hooks'. This is interpreted as an attempt by the installer itself to mark its own commands as trustworthy without user intervention.",
+  "sections.4.ko": "Postman set up a remote MCP (Model Context Protocol) connection pointing to mcp.postman.com, but Codex logs record an 'authentication required' error. This indicates the feature did not function normally, but the connection attempt itself occurred without user consent.",
+  "sections.5.ko": "Postman's automatic installation modified not only Codex but also plugin configuration files within Claude, and placed Postman executables and libraries in the ~/.local/bin directory. All installation items carry the same timestamp, suggesting they were performed simultaneously across multiple applications by a single automated process.",
+  "sections.6.ko": "The user demanded that Postman immediately cease automatic plugin and CLI installation targeting existing desktop users. The request also included removing the installer's ability to approve its own hooks, returning hook trust decisions to users of each application. It included limiting startup-executed skill commands to explicit requests for Postman and providing a complete rollback and removal path.",
+  "sections.7.ko": "The GitHub issue received 'like' reactions from over 150 people, with comments characterizing it as 'malware-like tactics', 'a serious security threat in corporate environments', and 'a betrayal of trust'. Some compared Postman to uTorrent, expressing long-held doubts about its reliability, while others recommended migration to open-source alternatives like Insomnia.",
+  "sections.8.ko": "One user flagged that Postman attempted to evade responsibility by modifying official website content, but a Wayback Machine snapshot from October 26, 2026, shows the content was not there. Additionally, other users were already affected before the problem was reported on October 25, with the user in question describing how scripts ran automatically after an update. This suggests Postman may have attempted to conceal facts.",
+  "sections.9.ko": "Through Discord and other channels, Postman appears not to be taking this issue seriously. Users expect Postman to issue an official statement before widespread media exposure, characterizing the current lack of response as 'bold disregard'.",
+  "caveat": "This report is based on detailed investigation by a single user, and the author stated they did not directly prove 'data leakage', so whether intentional data sharing occurred requires separate verification."
+ }
+}

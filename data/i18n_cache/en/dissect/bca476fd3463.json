@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "bca476fd3463",
+ "lang": "en",
+ "src_hash": "f38103b8d064",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-04 10:29",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Frontier-class model consumer hardware deployment",
+  "sections.1.h": "Measured processing speed and concrete performance metrics",
+  "sections.2.h": "Simple installation and one-time setup",
+  "sections.3.h": "Hardware requirements and model selection guide",
+  "sections.4.h": "Integration via OpenAI/Anthropic API compatibility",
+  "sections.5.h": "Core of technical optimization: distributed processing architecture",
+  "sections.6.h": "Open-source ecosystem and MIT License",
+  "sections.7.h": "Troubleshooting and support system",
+  "sections.0.ko": "Strata is an open-source inference engine that enables Qwen3.8-Flash-Next, previously runnable only on data-center-grade servers, to execute on personal PCs. This model performs a wide range of tasks including conversation, code writing, image recognition, and agent integration, with all data processed solely within the user's computer. Practical speed has been achieved even on ordinary personal computers equipped with mid-range gaming GPUs like the RTX 5070 and 64GB RAM.",
+  "sections.1.ko": "The source presents two major performance metrics. Response generation speed measures how quickly answers appear in brief conversations, with the fastest Q2_0 compressed model on an RTX 5070 generating 94 tokens per second (approximately 70 words). Input processing speed shows how quickly user prompts are read, reaching 2,650 tokens per second in the same environment. More sophisticated models (IQ3_S) trade off speed for better answer quality.",
+  "sections.2.ko": "The installation process is designed as one-click setup. Windows users run START-HERE.bat, and Linux users run setup.sh, whereupon the installer automatically detects the GPU and configures the appropriate engine. After downloading approximately 70GB of model, users can access the chat interface via http://127.0.0.1:8080 in their web browser. During initial boot, the PC may slow down for 1–3 minutes, a normal occurrence when loading 35–55GB of data into memory.",
+  "sections.3.ko": "Minimum requirements are an NVIDIA or AMD graphics card with 12GB or more, 32GB or more of RAM, and 80GB or more of available disk space. The source provides model recommendations based on RAM capacity: 32GB suits the coding-specialized version, 64GB suits IQ2_XS, and 96GB or more suits the highest-quality IQ3_S. Each model has different compression levels, allowing users to balance speed and sophistication to match their environment.",
+  "sections.4.ko": "Strata provides OpenAI and Anthropic-compatible APIs on localhost, so existing AI coding assistants like Claude Code, Cursor, and GitHub Copilot can connect directly. Users need only set the API base URL to http://127.0.0.1:8080/v1, with authentication keys and model names accepting any value. This enables full use of the existing application ecosystem without dependence on cloud APIs.",
+  "sections.5.ko": "The reason Strata works on consumer hardware is by distributing model computation across the entire PC. The model comprises 24,576 small expert modules, with only 10 activated per word. The GPU holds thousands of the most frequently used experts, RAM stores the complete set, and the CPU processes the remainder in parallel. Additionally, a 'speculate-then-verify' technique delivers 1.6–1.8x faster responses, and long input text is processed 8,192 tokens at a time at speeds exceeding 1,000 tokens per second.",
+  "sections.6.ko": "This project is the result of the Qwen team's model compressed by ISTA-DASLab, UkisAI, and Unsloth, leveraging the technology of llama.cpp and ggml. All code is released under the MIT License and can be freely modified and distributed. The developer welcomes contributions and accepts coffee donations; a procedure exists for privately reporting security issues.",
+  "sections.7.ko": "The source provides solutions to common issues such as PC unresponsiveness during initial boot, download interruptions, low performance, and port conflicts. Most cases are resolved by closing other programs, selecting a smaller model, or restarting; complex issues receive support through detailed documentation or GitHub issue tracking. When users attach log files, developers provide specific diagnostics.",
+  "caveat": "The performance figures for this project are measured values from specific hardware configurations, and may vary on individual user systems depending on GPU memory size, CPU performance, and driver version."
+ }
+}

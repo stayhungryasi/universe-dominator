@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-04T02:17+09:00",
+  "fetched_at": "2026-11-04T10:17+09:00",
   "year": 2026,
   "year_count": 124,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-04T02:17+09:00",
+  "checked_at": "2026-11-04T10:18+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-03T07:42:12Z",
@@ -1116,7 +1116,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-04T02:16+09:00",
+ "generated_at": "2026-11-04T10:17+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1254,13 +1254,39 @@
    "detected_at": "2026-11-03",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:pentagon-panel-lawsuit:2026-11-04",
+   "trigger_id": null,
+   "name": "머스크가 이끄는 비공개 국방부 패널에 대해 막대한 이해충돌 가능성을 이유로 소송이 제기됐다.",
+   "reason": "보도 감지(common dreams·defense daily)",
+   "event": "Lawsuit Targets Secretive Musk-Led Pentagon Panel Over 'Enormous Potential Conflicts of Interest'",
+   "event_date": "2026-11-04",
+   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBEd2FWeGRoUnhvM3A1WUtGQUg3dG1LWHVyamdDRlRxWWVpWkZhSGxMVXpkaV9zSDNIS01objlGMi02TW5ONjRvTG9Xd1d6M2VzMFZmZlVNYmQ2VUZzT29JeWlsM1U4Nlg5RFE?oc=5",
+   "detected_at": "2026-11-04",
+   "grade": "major",
+   "source": "news"
   }
  ],
- "dispatch_queue": [],
+ "dispatch_queue": [
+  {
+   "key": "qn:2026-11-04:1018",
+   "run_id": "41751045742",
+   "queued_at": "2026-11-04T10:18+09:00",
+   "state": "queued",
+   "trigger_id": "",
+   "name": "머스크가 이끄는 비공개 국방부 패널에 대해 막대한 이해충돌 가능성을 이유로 소송이 제기됐다.",
+   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMiakFVX3lxTFBEd2FWeGRoUnhvM3A1WUtGQUg3dG1LWHVyamdDRlRxWWVpWkZhSGxMVXpkaV9zSDNIS01objlGMi02TW5ONjRvTG9Xd1d6M2VzMFZmZlVNYmQ2VUZzT29JeWlsM1U4Nlg5RFE?oc=5",
+    "https://news.google.com/rss/articles/CBMijwFBVV95cUxQcWJaYmswa2RnVlYzcEp3ZWoteGtfeUU0N1dNZDR0UlY5NkxKbW9fLWh2TFdTT1VkZDkxLXJkUm41LTZnVmFsWGhUaWRtekx1MnZNbHEzSURyVXRBMFJXdFBUdHpGNUdjUlB3VVpMT25TSkZJV3l1djRLTjdtaFBJaWJBWHpENWlGaTBid1dCMA?oc=5"
+   ]
+  }
+ ],
  "hourly": {
-  "checked_at": "2026-11-04T02:17+09:00",
-  "last_success_at": "2026-11-03T17:15:49Z",
-  "last_run_at": "2026-11-03T17:15:12Z",
+  "checked_at": "2026-11-04T10:18+09:00",
+  "last_success_at": "2026-11-04T01:15:34Z",
+  "last_run_at": "2026-11-04T01:15:11Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50
