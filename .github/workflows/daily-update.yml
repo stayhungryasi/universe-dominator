@@ -1,12 +1,10 @@
 name: Daily Universe Dominator Update
 
 on:
-  schedule:
-    # 정각은 GitHub 부하로 자주 건너뜀 → 정각 회피, 하루 3회 (아침·점심·저녁)
-    # ※ GitHub 예약은 best-effort라 불안정 — 확실한 실행은 외부 스케줄러(cron-job.org)가 담당
-    - cron: '17 23 * * *'   # 08:17 KST (다음날)
-    - cron: '17 3 * * *'    # 12:17 KST
-    - cron: '17 9 * * *'    # 18:17 KST
+  # ⏰ GitHub 예약(08:17·12:17·18:17 KST)은 지웠다(2026-11-04) — 실측 3~7시간씩 늦게 울려 '18:17' 회차가 다음 날
+  #    새벽에 돌았고, 아침 브리핑이 새벽 2:26 에 미국 장중 가격으로 나갔다. 늦게 울린 예약은 cancel-in-progress 로
+  #    진행 중인 회차도 끊었다. 이제 시계 중계(scripts/clock_relay.py — spacex-watch 가 15분마다 돌린다)가
+  #    08:10·(09:10 재시도)·12:10·18:10 KST 에 workflow_dispatch(full)로 깨운다.
   workflow_dispatch:
     inputs:
       mode:
@@ -324,6 +322,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # 아침 브리핑 창(KST) — 창 밖 회차는 보내지 않는다(2026-11-04 새벽 2:26 발송). 저장소 변수로 바꿀 수 있다
+          BRIEFING_WINDOW: ${{ vars.BRIEFING_WINDOW || '08:00-11:00' }}
         continue-on-error: true
 
       # ⏰ 시한폭탄 조기경보 — selftest 를 미래 날짜(+3·+14·+45일)로 미리 돌려, 며칠 뒤 저절로 실패할 테스트를

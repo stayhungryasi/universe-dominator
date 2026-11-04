@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write   # data/spacex_hourly.json 커밋 + repository_dispatch(탐사 엔진 사건 모드)
-      actions: read     # 일일 점검의 '데일리 수집 마지막 성공' 줄(daily-update.yml 실행기록 조회)
+      actions: write    # 시계 중계(daily-update full 실행 요청) + 일일 점검의 '데일리 수집 마지막 성공' 줄
 
     steps:
       - name: Checkout repo
@@ -40,6 +40,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      # ⏰ 시계 중계 — 데일리 full 을 정해진 KST 시각(08:10·09:10 재시도·12:10·18:10)에 깨운다(2026-11-04).
+      # GitHub 예약이 3~7시간 늦게 울려 아침 브리핑이 새벽 2:26 에 나갔다 — 이 감시는 cron-job.org 가 15분마다
+      # 깨워 정확하다. 멱등: 슬롯 뒤 실행이 있으면 안 쏘고, 진행 중이면 기다린다(cancel-in-progress 로 빼앗지 않는다).
+      - name: Clock relay (daily full at fixed KST slots)
+        run: python scripts/clock_relay.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
 
       - name: SpaceX hourly watch
         run: python scripts/spacex_watch.py --hourly

@@ -274,6 +274,38 @@ def send_telegram(token, chat_id, text):
         raise RuntimeError(f"Telegram API 오류: {data}")
 
 
+DEFAULT_WINDOW = "08:00-11:00"
+
+
+def in_window(now, window, fetched_date):
+    """아침 브리핑을 보낼 때인가 → (bool, 사유). **순수 함수**.
+
+    2026-11-04: '그 날의 첫 full 회차'에 보내는 규칙이라, GitHub 예약이 몇 시간씩 늦자 새벽 2:26 에 나갔다(그 회차는
+    미국 장중이라 증감도 종가가 아니었다). 이제 정해진 창(기본 08:00~11:00 KST) 안에서, **오늘 수집한 데이터**로만 보낸다.
+    창 밖이면 보내지 않는다(발사 기록도 남기지 않아 창 안의 다음 회차가 보낸다).
+    """
+    try:
+        a, b = (window or DEFAULT_WINDOW).split("-")
+        ha, ma = (int(x) for x in a.split(":"))
+        hb, mb = (int(x) for x in b.split(":"))
+    except Exception:
+        ha, ma, hb, mb = 8, 0, 11, 0
+    start = now.replace(hour=ha, minute=ma, second=0, microsecond=0)
+    end = now.replace(hour=hb, minute=mb, second=0, microsecond=0)
+    if not (start <= now < end):
+        return False, f"아침 브리핑 창({ha:02d}:{ma:02d}~{hb:02d}:{mb:02d} KST) 밖({now:%H:%M})"
+    if fetched_date != now.strftime("%Y-%m-%d"):
+        return False, f"오늘 수집한 데이터가 아니다(수집일 {fetched_date or '없음'})"
+    return True, "창 안 · 오늘 데이터"
+
+
+def _fetched_date():
+    try:
+        return json.loads((DATA_DIR / "latest.json").read_text(encoding="utf-8")).get("meta", {}).get("fetched_date", "")
+    except Exception:
+        return ""
+
+
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     if not token:
@@ -290,6 +322,10 @@ def main():
             pass
     if state.get("last_sent") == today:
         print(f"[브리핑] 오늘({today}) 이미 발사 완료 — 침묵")
+        return
+    ok, why = in_window(datetime.now(KST), os.environ.get("BRIEFING_WINDOW", ""), _fetched_date())
+    if not ok:
+        print(f"[브리핑] {why} — 이번 회차는 보내지 않는다")
         return
 
     text = build_briefing()

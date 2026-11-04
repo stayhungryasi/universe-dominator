@@ -400,6 +400,23 @@ def judge_auto_axes(auto_doc, state, today):
     return out
 
 
+BRIEFING_DEADLINE_H = 11     # 아침 브리핑 창의 끝(KST) — 이 시각이 지나도 오늘 발송 기록이 없으면 경보
+
+
+def judge_briefing(state_doc, today, now):
+    """⑩ 아침 브리핑 미발송 — 창(08~11시)이 끝났는데 오늘 발송 기록이 없으면 1건(날짜별 서명).
+
+    브리핑은 이제 창 밖이면 보내지 않는다(2026-11-04: 새벽 2:26 발송). 그 대가로 창 안의 회차가 전부 실패하면
+    그날 브리핑이 조용히 빠진다 — 빠졌다는 사실은 반드시 소장에게 닿게 한다(침묵은 통과가 아니다).
+    """
+    if now.hour < BRIEFING_DEADLINE_H:
+        return []
+    if (state_doc or {}).get("last_sent") == today:
+        return []
+    return [alert("briefing-missed", f"아침 브리핑 오늘({today}) 미발송 — 08~11시 데일리 회차가 없었거나 실패했다"
+                                     "(시계 중계·데일리 실행 기록 확인)", today)]
+
+
 def judge_snapshot(snap_dir, today):
     """③ 오늘 날짜 스냅샷 부재 → 경보 (시총 수집이 통째로 실패한 신호)."""
     if (Path(snap_dir) / f"{today}.json").exists():
@@ -859,10 +876,11 @@ def run():
 
     wd_alerts = judge_withdrawals(read_json(DATA_DIR / "essays.json", {}), today)
     axis_alerts = judge_auto_axes(read_json(DATA_DIR / "buffett_auto.json", {}), state, today)
+    brief_alerts = judge_briefing(read_json(DATA_DIR / "briefing_state.json", {}), today, now)
 
     alerts = (sig_alerts + buf_alerts + cov_alerts + snap_alerts + stale_alerts
               + bot_alerts + mat_alerts + feed_alerts + i18n_alerts + probe_alerts + wd_alerts
-              + axis_alerts)
+              + axis_alerts + brief_alerts)
 
     # 판정 요약은 항상 로그에 남긴다 (텔레그램은 문제 있을 때만 — 로그는 매번)
     sig_part = ", ".join(

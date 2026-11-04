@@ -554,7 +554,7 @@ class AutoAxisTest(unittest.TestCase):
     def test_wired_into_run(self):
         src = Path(ps.__file__).read_text(encoding="utf-8")
         self.assertIn('judge_auto_axes(read_json(DATA_DIR / "buffett_auto.json"', src)
-        self.assertIn("+ axis_alerts)", src)
+        self.assertIn("+ axis_alerts", src)
 
 
 class RunWiringTest(unittest.TestCase):
