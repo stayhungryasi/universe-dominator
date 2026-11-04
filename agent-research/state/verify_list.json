@@ -1,28 +1,190 @@
 {
-  "run_id": "2026-11-04-event",
-  "prepared_at": "2026-11-04",
-  "note": "핵심 숫자 상위 항목. value 는 보고서·state 에 적힌 값, source_url 은 그 값을 읽은 원천. 본 회차 작성자 도구에서 media.defense.gov·war.gov·pogo.org·lawandcrime 은 403, 소장 PDF 2종은 렌더 불가, CourtListener API 는 401 이었다 — 열리지 않으면 원천 우선순위에서 같은 사실을 다시 찾는다(검증관 규약 1). 보도 출처 항목은 '보도상 값'이 맞는지만 본다. SpaceX 는 이 소송의 당사자가 아니라 회사 공시에는 이 사건이 없다.",
+  "run_id": "2026-11-05-event",
+  "generated_at": "2026-11-05",
   "items": [
-    {"claim": "기준 주가 — 2026-11-03 종가(USD)", "value": 141.31, "source_url": "https://stockanalysis.com/stocks/spcx/history/", "source_date": "2026-11-03", "where_in_report": "머리글 · 2절 · 부록 · state.market.price_usd"},
-    {"claim": "2026-11-03 일간 등락률(%)", "value": 3.62, "source_url": "https://stockanalysis.com/stocks/spcx/history/", "source_date": "2026-11-03", "where_in_report": "머리글 · 2절 · 부록"},
-    {"claim": "2026-11-03 거래량(주)", "value": 73291157, "source_url": "https://stockanalysis.com/stocks/spcx/history/", "source_date": "2026-11-03", "where_in_report": "머리글(7,329만주) · 부록 · state.market.volume_recent"},
-    {"claim": "직전 회차 기준가 — 2026-11-02 종가(USD)", "value": 136.37, "source_url": "https://stockanalysis.com/stocks/spcx/history/", "source_date": "2026-11-02", "where_in_report": "머리글(+3.6% 산식 분모) · 부록"},
-    {"claim": "2026-11-02 거래량(주) — 출처 측 사후 수정 후 값(직전 회차 조회값 91,121,974)", "value": 90995429, "source_url": "https://stockanalysis.com/stocks/spcx/history/", "source_date": "2026-11-02", "where_in_report": "2절 가격 반응 · 부록"},
-    {"claim": "발행주식수(백만주, 2026-10-15, Class A+B)", "value": 13581, "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm", "source_date": "2026-10-22", "where_in_report": "2절(시가총액 산식) · 부록"},
-    {"claim": "미국 10년물 금리(%, 2026-11-02, FRED DGS10)", "value": 4.91, "source_url": "https://fred.stlouisfed.org/series/DGS10", "source_date": "2026-11-02", "where_in_report": "2절 무위험금리 메모 · 부록 · state.valuation.event_run_note"},
-    {"claim": "Project Meridian 메모 날짜(Hegseth 'Commissioning of Project Meridian' — 1쪽 메모)", "value": "2026-09-30", "source_url": "https://mixed-news.com/en/project-meridian-memo-emil-michael-palmer-luckey-musk/", "source_date": "2026-10-02", "where_in_report": "결론 · 1절 표 · 부록 · T11 note"},
-    {"claim": "Project Meridian 보고 기한(발표 후 120일)", "value": "2027-01-28", "source_url": "https://thenextweb.com/news/pentagon-project-meridian-musk-luckey-gingrich", "source_date": "2026-09-30", "where_in_report": "결론 · 1절 표 · 4절 T11 · 부록"},
-    {"claim": "Project Meridian 연구 기간(일)", "value": 120, "source_url": "https://thenextweb.com/news/pentagon-project-meridian-musk-luckey-gingrich", "source_date": "2026-09-30", "where_in_report": "1절 표 · 부록 · state.run.notes"},
-    {"claim": "소송 제기일(소장 날짜 — CREW 게시)", "value": "2026-11-02", "source_url": "https://www.citizensforethics.org/legal-action/lawsuits/new-lawsuit-challenges-hegseths-illegal-future-of-warfare-committee/", "source_date": "2026-11-02", "where_in_report": "결론 · 1절 표 · 부록 · T11 status"},
-    {"claim": "소장이 민간으로 센 구성원 수(21명 중) — Military.com 소장 인용", "value": 19, "source_url": "https://www.military.com/hegseths-future-of-warfare-panel-is-stacked-with-contractors-who-stand-to-profit-lawsuit-says", "source_date": "2026-11-03", "where_in_report": "결론 · 1절 표 · 부록 · T11 note"},
-    {"claim": "MITRE 명단상 참가자 수(공동 디렉터 3명 외) — Military.com", "value": 17, "source_url": "https://www.military.com/hegseths-future-of-warfare-panel-is-stacked-with-contractors-who-stand-to-profit-lawsuit-says", "source_date": "2026-11-03", "where_in_report": "1절 표 · 부록"},
-    {"claim": "공개 보고서 분량 상한(쪽) — Military.com", "value": 30, "source_url": "https://www.military.com/hegseths-future-of-warfare-panel-is-stacked-with-contractors-who-stand-to-profit-lawsuit-says", "source_date": "2026-11-03", "where_in_report": "부록 · T11 note"},
-    {"claim": "POGO 사전 서한 날짜(Hartung 위원 요구)", "value": "2026-10-29", "source_url": "https://www.military.com/hegseths-future-of-warfare-panel-is-stacked-with-contractors-who-stand-to-profit-lawsuit-says", "source_date": "2026-11-03", "where_in_report": "1절 표 · 부록"},
-    {"claim": "MITRE 의견 접수 마감일", "value": "2026-11-12", "source_url": "https://www.military.com/hegseths-future-of-warfare-panel-is-stacked-with-contractors-who-stand-to-profit-lawsuit-says", "source_date": "2026-11-03", "where_in_report": "부록"},
-    {"claim": "국방부 회의 횟수(Politico 10/2 기준)", "value": 2, "source_url": "https://www.yahoo.com/news/politics/articles/musk-led-war-commission-triggers-184841551.html", "source_date": "2026-10-02", "where_in_report": "1절 표 · 부록"},
-    {"claim": "SpaceX 2026년 미 국방 계약(USD 십억, '초과') — NPR, 정부 계약 공고 집계", "value": 8, "source_url": "https://www.wfae.org/united-states-world/2026-10-06/elon-musk-and-palmer-luckeys-new-pentagon-roles-raise-ethics-worries", "source_date": "2026-10-06", "where_in_report": "결론 · 1절 표 · 1-1 · 부록 · state.milestones[E-2027-4].progress_reason"},
-    {"claim": "Anduril 해군 계약 상한(USD 십억, 2026-10-06 발표) — OCBJ(CNBC 인용); Common Dreams 는 $20억으로 보도(미채택)", "value": 2.9, "source_url": "https://www.ocbj.com/newsletter-feed/anduril-gets-u-s-navy-contract-for-up-to-2-9b/", "source_date": "2026-10-06", "where_in_report": "1절 표 · 원천 간 차이 ⓑ · 부록"},
-    {"claim": "소장 PDF 쪽수(Public Citizen 게시본, 메타데이터)", "value": 37, "source_url": "https://www.citizen.org/wp-content/uploads/CREW-v-DoD-Complaint.pdf", "source_date": "2026-11-02", "where_in_report": "1절 표 · 부록"},
-    {"claim": "SpaceX EDGAR 최신 공시 제출일(8-K Item 8.01 — 본 사건 관련 공시 없음)", "value": "2026-10-26", "source_url": "https://data.sec.gov/submissions/CIK0001181412.json", "source_date": "2026-11-04", "where_in_report": "결론 · 1절 표 · 6절 · 부록"}
+    {
+      "claim": "기준 주가 — 2026-11-04 종가",
+      "value": 135.84,
+      "unit": "USD",
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-11-05",
+      "where_in_report": "머리 · 기준 주가 / 3절 / 부록"
+    },
+    {
+      "claim": "2026-11-04 전일 대비 등락률",
+      "value": -3.87,
+      "unit": "%",
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-11-05",
+      "where_in_report": "머리 · 기준 주가 / 부록"
+    },
+    {
+      "claim": "2026-11-04 거래량",
+      "value": 135280836,
+      "unit": "주",
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-11-05",
+      "where_in_report": "부록 표"
+    },
+    {
+      "claim": "직전 회차 기준가 — 2026-11-03 종가",
+      "value": 141.31,
+      "unit": "USD",
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-11-05",
+      "where_in_report": "머리 · 기준 주가 / 부록"
+    },
+    {
+      "claim": "2026-11-03 거래량(출처 측 사후 수정 후)",
+      "value": 73241993,
+      "unit": "주",
+      "source_url": "https://stockanalysis.com/stocks/spcx/history/",
+      "source_date": "2026-11-05",
+      "where_in_report": "3절 가격 반응 / 부록"
+    },
+    {
+      "claim": "발행주식수(10-Q 표지, 2026-10-15)",
+      "value": 13581,
+      "unit": "백만주",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm",
+      "source_date": "2026-10-22",
+      "where_in_report": "부록 표"
+    },
+    {
+      "claim": "미국 10년물 국채 수익률(2026-11-03)",
+      "value": 4.95,
+      "unit": "%",
+      "source_url": "https://fred.stlouisfed.org/series/DGS10",
+      "source_date": "2026-11-03",
+      "where_in_report": "3절 무위험금리 메모 / 부록"
+    },
+    {
+      "claim": "8-K 2026-10-26 — 리스 스케줄 원금 지급 합계",
+      "value": 40,
+      "unit": "십억 USD(approximately)",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm",
+      "source_date": "2026-10-26",
+      "where_in_report": "1절 표 첫 행 / 부록"
+    },
+    {
+      "claim": "신디케이션 전 투자자 선매 요청 단위(최대)",
+      "value": 500,
+      "unit": "백만 USD",
+      "source_url": "https://srnnews.com/goldman-apollo-seek-buyers-for-40-billion-spacex-ai-chip-deal-bloomberg-news-reports/",
+      "source_date": "2026-11-04",
+      "where_in_report": "1절 표 2026-11-04 행 / 부록"
+    },
+    {
+      "claim": "임대인 측 선순위 담보대출(Bloomberg 2차 전재)",
+      "value": 8.3,
+      "unit": "십억 USD",
+      "source_url": "https://panews.io/articles/01a1a877-8025-732d-a694-7991aa27dd0e",
+      "source_date": "2026-11-05",
+      "where_in_report": "1절 표 2026-11-04/11-05 행 / 부록"
+    },
+    {
+      "claim": "리스 선납(Bloomberg 2차 전재)",
+      "value": 7,
+      "unit": "십억 USD",
+      "source_url": "https://panews.io/articles/01a1a877-8025-732d-a694-7991aa27dd0e",
+      "source_date": "2026-11-05",
+      "where_in_report": "1절 표 2026-11-04/11-05 행 / 부록"
+    },
+    {
+      "claim": "Nvidia Rubin 칩 매입액(Bloomberg 2차 전재)",
+      "value": 47.3,
+      "unit": "십억 USD",
+      "source_url": "https://phemex.com/news/article/goldman-sachs-and-apollo-seek-to-sell-stakes-in-40b-spacex-ai-chip-financing-deal-102417",
+      "source_date": "2026-11-04",
+      "where_in_report": "1절 표 2026-11-04/11-05 행 / 부록"
+    },
+    {
+      "claim": "Qualcomm 계약 — 전국 배치 시작 연도",
+      "value": 2027,
+      "unit": "년",
+      "source_url": "https://www.investing.com/news/stock-market-news/qualcomm-signs-major-5g-infrastructure-deal-with-spacex-for-starlink-mobile-network-4999443",
+      "source_date": "2026-11-04",
+      "where_in_report": "2절 표 Reuters 행 / 부록"
+    },
+    {
+      "claim": "Qualcomm 계약 — Massive MIMO 송수신 경로 수(64T64R)",
+      "value": 64,
+      "unit": "T/R",
+      "source_url": "https://www.fonearena.com/blog/496422/spacex-qualcomm-dragonwing-starlink-mobile-terrestrial-5g-network.html",
+      "source_date": "2026-11-04",
+      "where_in_report": "2절 표 첫 행 / 부록"
+    },
+    {
+      "claim": "Starlink 의 3Q26 매출 비중(CNBC)",
+      "value": 36,
+      "unit": "%",
+      "source_url": "https://www.cnbc.com/2026/11/04/spacex-strikes-deal-with-qualcomm-for-mobile-network-infrastructure.html",
+      "source_date": "2026-11-04",
+      "where_in_report": "2절 표 CNBC 행 / 부록"
+    },
+    {
+      "claim": "Starlink 의 3Q26 영업이익 비중(CNBC)",
+      "value": 85,
+      "unit": "%",
+      "source_url": "https://www.cnbc.com/2026/11/04/spacex-strikes-deal-with-qualcomm-for-mobile-network-infrastructure.html",
+      "source_date": "2026-11-04",
+      "where_in_report": "2절 표 CNBC 행 / 부록"
+    },
+    {
+      "claim": "Grain 800MHz 스펙트럼 — 최대 페어드 대역폭",
+      "value": 14,
+      "unit": "MHz",
+      "source_url": "https://www.notebookcheck.net/SpaceX-recruits-Qualcomm-to-challenge-America-s-biggest-mobile-carriers.1442194.0.html",
+      "source_date": "2026-11-04",
+      "where_in_report": "2절 표 Malladi 행 / 부록"
+    },
+    {
+      "claim": "EchoStar 무선 부문 매출 3Q26",
+      "value": 905152,
+      "unit": "천 USD",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1415404/000110465926121675/R73.htm",
+      "source_date": "2026-11-03",
+      "where_in_report": "2절 EchoStar 공시 문단 / 부록"
+    },
+    {
+      "claim": "EchoStar 무선 부문 매출 3Q25",
+      "value": 936571,
+      "unit": "천 USD",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1415404/000110465926121675/R73.htm",
+      "source_date": "2026-11-03",
+      "where_in_report": "2절 EchoStar 공시 문단 / 부록"
+    },
+    {
+      "claim": "EchoStar 무선 부문 OIBDA 3Q26",
+      "value": 109036,
+      "unit": "천 USD",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1415404/000110465926121675/R73.htm",
+      "source_date": "2026-11-03",
+      "where_in_report": "2절 EchoStar 공시 문단 / 부록"
+    },
+    {
+      "claim": "EchoStar 'SpaceX Transactions — Restricted Licenses' 장부가(2026-09-30)",
+      "value": 8667276,
+      "unit": "천 USD",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1415404/000110465926121675/R70.htm",
+      "source_date": "2026-11-03",
+      "where_in_report": "2절 EchoStar 공시 문단 / 부록"
+    },
+    {
+      "claim": "Boost Mobile 3Q26 가입자 순감(보도)",
+      "value": 182000,
+      "unit": "명",
+      "source_url": "https://broadbandbreakfast.com/echostar-wireless-losses-worse-than-expected/",
+      "source_date": "2026-11-03",
+      "where_in_report": "2절 EchoStar 공시 문단 / 부록"
+    },
+    {
+      "claim": "Boost Mobile 3Q26 ARPU(보도)",
+      "value": 39.10,
+      "unit": "USD",
+      "source_url": "https://broadbandbreakfast.com/echostar-wireless-losses-worse-than-expected/",
+      "source_date": "2026-11-03",
+      "where_in_report": "2절 EchoStar 공시 문단 / 부록"
+    }
   ]
 }

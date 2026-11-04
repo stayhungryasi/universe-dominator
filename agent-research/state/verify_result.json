@@ -1,23 +1,41 @@
 {
-  "run_id": "2026-11-04-event",
-  "checked": 21,
-  "match": 21,
-  "rounding": 0,
+  "run_id": "2026-11-05-event",
+  "report": "agent-research/reports/2026-11-05-event.md",
+  "checked": 23,
+  "match": 22,
+  "rounding": 1,
   "mismatch": [],
   "unverifiable": [],
-  "verified_at": "2026-11-04T10:45+09:00",
+  "verified_at": "2026-11-05T09:05+09:00",
   "notes": [
-    "stockanalysis 일별 이력(최신 행 11/3): 11/3 종가 141.31 · +3.62% · 거래량 73,291,157 / 11/2 종가 136.37 · 거래량 90,995,429 — 5항목 일치. state.market.volume_recent 의 11/2 칸은 보고서가 밝힌 대로 직전 회차 조회값(91,121,974)을 유지하고 있다(검증 항목은 '수정 후 값'이라 원문과 일치).",
-    "10-Q 표지(2026-10-15): Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 → 13,581백만주 일치. 보고서 시가총액 산식(141.31 × 13.581 = 1,919)과 state.market.shares_outstanding_bn 13.581 일치.",
-    "FRED DGS10 최신 관측 2026-11-02 = 4.91 (11/3 값 미게시) — data/latest.json meta.macro.ust10 4.91(as_of 2026-11-02) · state.valuation.event_run_note 4.91 일치.",
-    "Project Meridian: MIXED 10/02 — 메모 9/30 · 1쪽 · 120일 · 기한 2027-01-28 · 메모가 이름으로 적은 관리는 Emil Michael(머스크·Luckey·Gingrich 없음) 일치. The Next Web 09/30 — 120일 · 2027-01-28 일치.",
-    "CREW 소송 페이지: 소장·첨부 날짜 2026-11-02 일치. 법원명은 페이지에 없음(보고서의 D.C. 연방지법은 숫자 항목 아님 — 평가하지 않음).",
-    "Military.com 11/03: 21명 중 19명 민간 · MITRE 참가자 17(+공동 디렉터 3) · 공개 보고서 최대 30쪽 · POGO 서한 10/29(회신 요청 10/30) · MITRE 의견 마감 11/12 · 회의 2회(9/30 SCIF · 10/1) 일치.",
-    "Politico(Yahoo 전재) 10/02: 회의 2회 일치. SpaceX 계약 금액은 기사에 없음('수십억 달러' 표현만) — 보고서 표기와 같다.",
-    "NPR(WFAE 전재) 10/06: 'over $8 billion in U.S. defense contracts in 2026', 출처 정부 계약 공고 — 일치. state.milestones[E-2027-4].progress_reason '$80억 초과' 일치. Anduril 해군 계약 금액은 이 기사에 없음(보고서도 OCBJ 로 출처 분리).",
-    "OCBJ 10/06: 해군 계약 최대 $2.9B · CNBC 인용 — 일치.",
-    "소장 PDF(Public Citizen 게시): 페이지 트리 37쪽 · 메타데이터 생성일 2026-11-02 — 일치. 본문은 본 회차 검증관 도구에서도 텍스트 추출 불가(렌더 불가) — 쪽수·날짜 외 본문 숫자(19/21 등)는 Military.com 인용으로만 대조했고 보고서도 그렇게 표기하고 있다.",
-    "EDGAR submissions: 최신 공시 8-K 2026-10-26(accn 0001104659-26-118614, Item 8.01) — 일치. 이후 공시 없음.",
-    "본 회차 검증관 도구에서 media.defense.gov·war.gov·pogo.org 는 열지 않았다(목록에 해당 URL 항목 없음 — 메모 날짜·기한은 전재 2곳으로 대조)."
-  ]
+    {
+      "claim": "2026-11-04 거래량",
+      "result": "rounding",
+      "list_value": 135280836,
+      "source_value": 135339079,
+      "diff_pct": 0.04,
+      "detail": "stockanalysis 일별 이력의 11/4 거래량이 검증 시점에 135,339,079 로 바뀌어 있음(출처 측 사후 수정 — 보고서 3절이 11/3·11/2 에 대해 기록한 것과 같은 현상). ±0.5% 이내. 보고서 머리·부록의 135,280,836 은 verify_list 와 동일."
+    },
+    {
+      "claim": "발행주식수(10-Q 표지, 2026-10-15)",
+      "result": "match",
+      "detail": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 → 13,581 백만주. 보고서 3절 '135.81억주'·부록 '13,581백만주' 동일."
+    },
+    {
+      "claim": "EchoStar 'SpaceX Transactions — Restricted Licenses' 장부가(2026-09-30)",
+      "result": "match",
+      "detail": "R70 행 표기는 'SpaceX spectrum assets: Licenses' 이나 값 8,667,276(천 USD, 2026-09-30) 일치. 라벨 차이는 숫자 판정 대상 아님."
+    },
+    {
+      "claim": "Starlink 3Q26 매출·영업이익 비중(CNBC)",
+      "result": "match",
+      "detail": "CNBC 11/04 원문 '36% of the company's revenue in the third quarter and 85% of its operating profit'."
+    },
+    {
+      "claim": "Bloomberg 2차 전재 3건($83억·$70억·$473억)",
+      "result": "match",
+      "detail": "PANews 11/05: $8.3 billion senior secured loan · $7 billion in lease prepayments · roughly $47.3 billion of Nvidia Rubin. Phemex 11/04 21:29 동일. Bloomberg 원문은 대조하지 않음(목록의 source_url 이 2차 전재)."
+    }
+  ],
+  "report_cross_check": "where_in_report 위치(머리 기준 주가 · 1절 표 · 2절 표·EchoStar 문단 · 3절 · 부록 표)의 숫자 23건 모두 verify_list 값과 동일. state.kpi_history 항목 없음."
 }
