@@ -160,6 +160,14 @@ class WiringTest(unittest.TestCase):
         self.assertLess(self.y.index("Guard ("), self.y.index("Publish repair"))
         self.assertIn("REPAIR_MERGE: ${{ vars.REPAIR_MERGE || 'pr' }}", self.y)  # 기본은 사람이 Merge
 
+    def test_pr_check_never_repairs(self):
+        """pr-check 는 권한만 본다 — 계획·재현·수리 단계로 넘어가지 않는다(계획이 건너뛰어져도 재현이 돌면 안 된다)."""
+        self.assertIn("if: ${{ inputs.mode != 'pr-check' }}", self.y)
+        self.assertIn("steps.plan.outputs.mode == 'now' || steps.plan.outputs.mode == 'future'", self.y)
+        self.assertNotIn("steps.plan.outputs.mode != 'none'", self.y)
+        i = self.y.index("PR permission probe")
+        self.assertIn("__no_such_branch_probe__", self.y[i:i + 900])          # 실제 PR 을 만들지 않는 요청
+
     def test_daily_alarm_mentions_repair(self):
         d = (ROOT / ".github" / "workflows" / "daily-update.yml").read_text(encoding="utf-8")
         self.assertIn("자가 수리 에이전트", d)

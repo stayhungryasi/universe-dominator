@@ -15,10 +15,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'now: 오늘 selftest 실패 수리 / future: 조기경보가 찾은 미래 실패를 미리 수리'
+        description: 'now: 오늘 selftest 실패 수리 / future: 조기경보가 찾은 미래 실패를 미리 수리 / pr-check: Actions 의 PR 생성 권한만 점검(PR 은 만들지 않는다)'
         type: choice
         default: now
-        options: [now, future]
+        options: [now, future, pr-check]
       drill:
         description: '훈련 — 알려진 고장 하나를 러너 안에서만 심고 수리 고리가 도는지 본다(게시 안 함, 결과는 DM)'
         type: boolean
@@ -73,8 +73,22 @@ jobs:
         if: ${{ inputs.drill }}
         run: python scripts/self_repair.py drill-inject
 
+      # 저장소 설정 'Allow GitHub Actions to create and approve pull requests' 점검 — 없는 브랜치로 PR 생성을 요청해
+      # 거절 사유만 본다(PR 은 만들어지지 않는다): 권한이 있으면 422(검증 실패), 없으면 403(Actions 불허)
+      - name: PR permission probe (no PR is created)
+        if: ${{ inputs.mode == 'pr-check' }}
+        run: |
+          code=$(curl -sS -o pr_probe.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls" \
+            -d '{"title":"permission probe","head":"__no_such_branch_probe__","base":"main"}')
+          echo "HTTP $code"; head -c 400 pr_probe.json; echo
+          if [ "$code" = "422" ]; then echo "PR 생성 권한 있음(요청은 검증 단계까지 갔다)"; exit 0; fi
+          echo "::error::PR 생성 권한 없음 또는 예상 밖 응답(HTTP $code)"; exit 1
+
       - name: Plan (now · future · none)
         id: plan
+        if: ${{ inputs.mode != 'pr-check' }}
         run: python scripts/self_repair.py plan
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -84,7 +98,7 @@ jobs:
 
       - name: Reproduce the failure
         id: repro
-        if: steps.plan.outputs.mode != 'none'
+        if: steps.plan.outputs.mode == 'now' || steps.plan.outputs.mode == 'future'
         run: python scripts/self_repair.py reproduce
 
       - uses: actions/setup-node@v7
