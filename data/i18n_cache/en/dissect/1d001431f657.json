@@ -4,13 +4,24 @@
  "lang": "en",
  "src_hash": "e114eceecb75",
  "model": "claude-haiku-4-5",
- "at": "2026-10-28 11:48",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[2§sections.2.h] 숫자: 원문의 숫자가 빠짐 1.0",
-  "[2§sections.0.ko] 숫자: 원문의 숫자가 빠짐 1.0",
-  "[2§sections.5.ko] 숫자: 원문의 숫자가 빠짐 1.0"
- ]
+ "at": "2026-11-05 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Stable Release After Months of Feedback",
+  "sections.1.h": "Minimalism Philosophy: Selecting Only Verified Features",
+  "sections.2.h": "Key New Features in Pi 1.0",
+  "sections.3.h": "Awareness of Expanded Use Cases",
+  "sections.4.h": "Pi Durable: New Experimental Package",
+  "sections.5.h": "Open Source Release and Usage Path",
+  "sections.6.h": "Company Mission and Future Direction",
+  "sections.0.ko": "Earendil has officially launched Pi 1.0. This tool is used weekly by hundreds of thousands of people worldwide, and has been improved through their issue reports and code contributions. It is the result of carefully refining the software to reflect extensive user feedback accumulated over an extended period.",
+  "sections.1.ko": "Pi's core principle is to maintain simplicity. Even as the agent tool ecosystem changes weekly, Pi waits until features are actually proven before carefully reviewing their adoption. This follows an approach of thoughtfully balancing true utility against added complexity.",
+  "sections.2.ko": "This release includes Code Mode, native MCP support, non-LLM model integration (Jev, image models), and system message changes during conversations (transcript-aware prompts and tool changes). Features deliberated over many months were rigorously selected for addition, and while achieving meaningful progress overall, the tool still maintains a simple feel.",
+  "sections.3.ko": "During development, the team discovered that Pi extends beyond its originally designed use cases (coding agent, terminal-based) and is needed in much more diverse contexts. Users wanted access across various interfaces, support for long-running tasks, and more robust systems.",
+  "sections.4.ko": "To meet these needs, while maintaining Pi's minimalism principle, 'Pi Durable' is being released as an expanded dimension. It serves as a foundation for building long-running agent applications and is designed to allow users to fine-tune the underlying intelligence.",
+  "sections.5.ko": "Pi 1.0 and Pi Durable are released under the MIT License. Installation is available via npm, documentation can be found at pi.dev, and source code is available at the earendil-works/pi repository on GitHub.",
+  "sections.6.ko": "Earendil states it was founded to create software and open protocols that enhance human agency. This release represents tools implementing that mission, and the company indicates a commitment to evolving through ongoing feedback with the open community going forward.",
+  "caveat": "This text is an official announcement from Earendil, so independent verification is necessary regarding actual performance, stability, and market adoption."
+ }
 }

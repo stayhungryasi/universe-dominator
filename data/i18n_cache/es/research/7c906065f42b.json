@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "7c906065f42b",
  "lang": "es",
- "src_hash": "ec901830aade",
+ "src_hash": "f48fb49357aa",
  "model": "claude-haiku-4-5",
- "at": "2026-11-05 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Applied Materials (NASDAQ: AMAT) cayó un 28,06% en un mes pero subió un 64,10% en el año, con precio de cierre del 30 de octubre de 390,09 dólares y capitalización de mercado de 309.570 millones de dólares.",
-  "summary_ko.1": "El EPS ajustado creció un 41%, los ingresos de DRAM aumentaron un 52%, pero la presión de valoración resultó en una caída, mientras que los analistas ajustaron al alza las estimaciones de ganancias para 2026.",
-  "title": "Applied Materials (AMAT) cae a pesar de aumento de EPS y estimaciones más altas de analistas"
- }
+ "at": "2026-11-05 18:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§summary_ko.0] 숫자: 원문에 없는 숫자 30957 billion",
+  "[0§summary_ko.0] 숫자: 원문의 숫자가 빠짐 309.57억"
+ ]
 }

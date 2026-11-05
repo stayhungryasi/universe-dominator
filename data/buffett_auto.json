@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-05 12:28",
- "generated_at": "2026-11-05T12:28:22.676344+09:00",
+ "generated_label": "2026-11-05 18:29",
+ "generated_at": "2026-11-05T18:29:00.995272+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-05",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "Q4 실적은 비트했으나 마진 압박과 차기 분기 성장 둔화 우려로 가시성 제한"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,30 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "신임 CEO 터너스의 첫 본격 시험 속 메모리 원가 상승이 수익성 위협; 소비자 프랜차이즈 강력하나 성장 활주로 부족으로 밸류에이션 천장 근접",
-   "_evidence": {
-    "franchise": "Apple Posts Fiscal Q4 Beat On Strong iPhone, Services Sales",
-    "risk5": "Apple's Tight-Lipped CEO John Ternus Fails to Inspire; global memory crisis hurts profits; Wall Street has a big 'concern' about next quarter",
-    "capalloc": "Apple to report Q4 earnings Monday with strong iPhone sales and services revenue",
-    "owner_earnings": "Despite Apple's earnings beat, Wall Street has a big 'concern' about next quarter; Q4 Earnings Margin Squeeze"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-05",
@@ -398,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.09
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3612,
@@ -543,7 +516,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.69
+    "value": 1.68
    },
    "eps_status": null,
    "roe_tangible": 0.2781,
@@ -954,11 +927,7 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
    },
    "conversion": null,
    "conversion_status": {
@@ -976,7 +945,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -994,34 +963,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "notes": "시클리컬 금융주의 높은 멀티플에 대한 재평가 국면; Jamie Dimon의 경제 리스크 경고와 Q3 어닝 미스가 가격 정당성 의문 제기.",
-   "_evidence": {
-    "franchise": "금융 중개 기능과 결제 네트워크(Kinexys 자동화)는 대체 불가능한 인프라.",
-    "risk5": "Jamie Dimon warns economic forces 'shift under the surface', 'increasingly complex' economic risks - 경기 확실성 약화; 레버리지 금융기관으로서 신용사이클 노출.",
-    "capalloc": "JPMorgan tops estimates on Wall Street results, raises NII outlook - 수익성 유지와 자본반환 능력 입증.",
-    "owner_earnings": "Q3 earnings miss vs analyst estimates - 시장 기대치 대비 실적 부진으로 디스플레이 신뢰도 하락"
-   }
+   ]
   },
   "WMT": {
    "as_of": "2026-11-05",
@@ -1190,7 +1132,12 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 수요 급증으로 영업이익률 76%에 도달했으나 메모리 칩 사이클의 변동성으로 지속성 불확실"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1202,9 +1149,33 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null,
+   "confidence": "하",
    "g_forward_status": "전망치 이상(196%) — 취재 필요",
-   "notes": "전망치 이상(196%) — 취재 필요"
+   "notes": "20조 규모 캐펙스 없이는 경쟁력 유지 불가능하며 공급 계약으로 가격 규제 위험 존재",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "HBM4 양산 진입으로 독점적 기술 지위 형성, 빅테크 기업들의 칩 공급 확보 경쟁",
+    "risk5": "Q2 2026에 매출 257% YoY 급증 후 메모리 스톡 사이클 진입으로 실적 하락 우려, Nasdaq 상장 후 주가 급락",
+    "capalloc": "265억 달러 자본 조달 후 286억 달러 규모 자사주 매입 계획, 순현금 창출 지속",
+    "owner_earnings": "Operating margin 76% 달성했으나 메모리 칩 산업의 사이클적 특성으로 인한 수익성 변동"
+   }
   },
   "ASML": {
    "as_of": "2026-11-05",
@@ -1424,11 +1395,7 @@
     },
     "fcf_ttm": 8560000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 서버 수요 강세로 매출 성장하나 저마진 OEM 사업 구조로 주주 현금흐름 증대 한계"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.953,
@@ -1448,7 +1415,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1468,30 +1435,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "AI 서버 사이클의 수혜자이나 경기순환적 저마진 하드웨어 OEM으로서 장기 프랜차이즈 가치 제한적; 266% 랠리 후 밸류에이션 리셋 국면",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 0,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI 서버는 저마진 OEM — 매출 폭발과 주주 월세는 별개",
-    "risk5": "Dell Falls 4% Ahead of Earnings as Its 266% Rally Raises the Bar; Morgan Stanley Offers $2.3 Billion Debt for Dell Family Deal",
-    "capalloc": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength",
-    "owner_earnings": "Why is Dell Technologies stock sliding today? — Investing.com; Dell Technologies (DELL) Stock Drops Despite Market Gains"
-   }
+   "notes": "전망치 이상(66%) — 취재 필요"
   },
   "PANW": {
    "as_of": "2026-11-05",
@@ -1573,7 +1517,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.97
+    "value": 0.87
    },
    "eps_status": null,
    "roe_tangible": 0.1538,
@@ -1832,7 +1776,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 61.22
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1942,7 +1886,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 788.68
+    "value": 833.5
    },
    "eps_status": null,
    "roe_tangible": 0.6902,
@@ -1977,7 +1921,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 172.08
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.2951,
@@ -2012,7 +1956,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 761.51
+    "value": 787.92
    },
    "eps_status": null,
    "roe_tangible": 0.4807,
@@ -2047,7 +1991,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.93
+    "value": 33.24
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -2136,5 +2080,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-05 12:29"
+ "scout_label": "2026-11-05 18:30"
 }
