@@ -2,21 +2,21 @@
  "kind": "probe_ms",
  "id": "D-2027-1",
  "lang": "en",
- "src_hash": "f46b790cd33a",
+ "src_hash": "b2881b40074e",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 1,
+ "at": "2026-11-05 12:41",
+ "attempts": 2,
  "status": "ok",
  "fields": {
-  "text": "Additional financing $50.0 billion or less AND no equity issuance",
-  "reason": "Judgment year (2027) not yet arrived. 2027 financing planned (commitment stage): 8-K 2026-10-26 (Item 8.01) — Apollo operating entity and approximately $40.0 billion master finance lease commitment (10/24), 5–5.25 year tranches, quarterly prepayment (cost 1/20 + fixed rate), completion targeted before year-end, lease commencement 2027-1H → per definitions.additional_financing.year_attribution, counted as 2027 financing (margin $10.0 billion). No equity element (8-K contains no mention of equity, conversion, or warrants). Fixed rate not yet set. 2026 note: 9M debt financing $51.8 billion, repayment $39.8 billion (10-Q R18); Cursor is stock acquisition, not cash equity raise. 2026-11 addition: Fitch 10/28 — BBB+ unchanged; leases excluded from debt in primary leverage metric (lease-adjusted leverage as secondary metric); total debt $38.0 billion (9/30); no material principal maturity before 2031-07-15 — credit rater accounting differs from this metric's economic substance definition, which stands",
-  "hit": "Financed by debt",
-  "miss": "Equity issuance dilution + probability re-estimate if occurs",
-  "parts.0.label": "Additional financing scale (2027 commencement planned, commitment basis)",
+  "text": "Additional financing ≤$50 billion AND no equity issuance",
+  "reason": "Judgment year (2027) not yet arrived. 2027 financing scheduled (commitment stage): 8-K 2026-10-26 (Item 8.01) — Apollo operating entity and approximately $40 billion master finance lease commitment (10/24), tranches of 5–5.25 years, quarterly prepayment (cost 1/20 + fixed rate), expected to close before year-end, lease commencement 2027-1H → per definitions.additional_financing.year_attribution counted as 2027 financing (headroom $10 billion). No equity component (8-K makes no mention of equity, conversion, or warrants). Fixed rate undetermined. 2026 reference: 9M debt financing $51.8 billion, repayment $39.8 billion (10-Q R18), Cursor is share acquisition, not cash equity raise. 2026-11 addition: Fitch 10/28 — BBB+ unchanged, lease excluded from primary leverage metric debt (lease-adjusted leverage as supplementary metric), total debt $38 billion (9/30), no material principal repayment before 2031-07-15 — rating agency accounting is not GAAP, and this milestone's 'additional financing' definition (economic substance) counts as stated. 2026-11-05 addition (news, not judgment input): Bloomberg 11/4 (Reuters republished) — Goldman and Apollo discussing sale of portion of financing package to investors (up to $500 million presale); secondary republication detail — lessor-side $8.3 billion senior secured loan + bond tranche (PIMCO participating), lease prepayment $7 billion included approximately $47.3 billion chip purchase. Lessor-side financing already counted as '$40 billion off-balance vehicle financing', no size change (booked 2027). Prepayment $7 billion is cash outflow, not financing — if factual, input to liquidity ($89.86 billion, 9/30). Rate still undetermined. 8-K states rate set at 'pricing' before close — syndication is that stage.",
+  "hit": "Managed with debt",
+  "miss": "If equity issuance occurs, dilution + probability recalibration",
+  "parts.0.label": "Additional financing scale (2027 commencement expected, commitment basis)",
   "parts.1.label": "Equity issuance (8-K basis)",
-  "parts.0.reason": "8-K 2026-10-26 principal total approximately $40.0 billion — not completed (completion targeted before year-end), not commenced (2027-1H). Judgment in 2027",
-  "parts.1.reason": "8-K contains no equity, conversion, or warrant elements — judgment year (2027) not yet arrived",
-  "parts.0.unit": "billions USD",
-  "parts.1.unit": "incidents"
+  "parts.0.reason": "8-K 2026-10-26 principal total approximately $40 billion — not closed (expected before year-end), not commenced (2027-1H). Judgment year is 2027.",
+  "parts.1.reason": "8-K contains no equity, conversion, or warrant component — judgment year (2027) not yet arrived.",
+  "parts.0.unit": "$ billion",
+  "parts.1.unit": "instance"
  }
 }

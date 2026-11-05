@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-05-event-s3",
+ "lang": "ja",
+ "src_hash": "0ae340c73f09",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-05 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 確率・マイルストーン・価値 — 変化なし、価格のみ更新",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。R1 消化済み · R2~R6 条件未到来。ルール外の調整は禁止 (出典: `state.probability_adjustment_rules` · `prompts/monthly_run.md` 2項)。\n- **マイルストーン**: 29件の判定に変化なし(進行 23 · 未判定 5 · 未達 1)。A-2028-1・D-2027-1 は背景のみ記録。すべて `status_history` に今回分の行を追加 (出典: `state.scorecard` · `state.milestones`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定せず**(event モード)。価格に依存する算術値のみ更新: 時価総額 **$1,845十億**(算式: 135.84 × 135.81億株 = 1,844.8 — `data/latest.json` の SPCX 時価総額 1,845.0 と一致)、EV $1,794十億(算式: 1,845 − 純現金 51)、バンド中心比 **−51%**(算式: 66 ÷ 135.84 − 1 = −0.514)、AI内在価値 **$1,303十億**(算式: 1,845 − Connectivity 350 − Space 141 − 純現金 51; 前回の $1,377十億比 −5.4%)、年換算AI売上倍率 43(算式: 1,303 ÷ 30.24)· 契約ARR倍率 50(算式: 1,303 ÷ 26)· 年換算調整後EBITDA倍率 66(算式: 1,303 ÷ 19.81) (出典: `state.valuation` · [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-05 参照 · [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · `data/latest.json`)。\n- **無リスク金利メモ**: 米国10年債 **4.95%**(2026-11-03、FRED、`data/latest.json meta.macro.ust10`) — 前回メモの 4.91%(11/2)から +4bp、11月号の入力値 4.99%(10/27)から −4bp。割引率の再算定は月次回の担当 (出典: `data/latest.json` · [FRED DGS10](https://fred.stlouisfed.org/series/DGS10))。\n- **価格反応**: 11/4 −3.87%(場中で2か月超ぶりの安値、StockTwits) — 同日にQualcomm発表(08:30 ET)・シンジケーション報道(午後)・米中間選挙の翌日・Qualcomm決算日が重なり、切り分け不可。原因は帰属させない。**データ訂正記録**: 同サイトの11/3出来高が、前回参照値 73,291,157株から 73,241,993株に変わっていた(−0.07%、出典側の事後修正 — 11/2 にも同様のことがあった)。前回の数値は参照時点の値のまま維持 (出典: [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-05 参照 · `reports/2026-11-04-event.md` 2節)。\n\n---\n"
+ }
+}

@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-05 08:29",
- "generated_at": "2026-11-05T08:29:01.543957+09:00",
+ "generated_label": "2026-11-05 12:28",
+ "generated_at": "2026-11-05T12:28:22.676344+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-05",
@@ -35,11 +35,7 @@
     },
     "fcf_ttm": 127006000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9783,
@@ -59,7 +55,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -79,21 +75,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(83%) — 취재 필요",
-   "notes": "대형 고객의 자체칩 이탈 예고는 경호해 및 대체불가성 약화의 신호; 현물 가격 압박 지속.",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "✕",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "_evidence": {
-    "franchise": "대형 세입자 전원이 자체칩으로 이탈 예고 — 10년 뒤 월세를 적을 수 없다",
-    "risk5": "Nvidia stock valuation gets torched by tech stock rout; Nvidia Is $2 Away From Falling Below $200 for the First Time Since July",
-    "owner_earnings": "Nvidia (NVDA) Stock Price Lags Massive Earnings Growth—A Compelling Value Opportunity"
-   }
+   "notes": "전망치 이상(83%) — 취재 필요"
   },
   "AAPL": {
    "as_of": "2026-11-05",
@@ -131,7 +113,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "B",
-     "reason": "성숙 비즈니스로 프리미엄 밸류에이션 대비 성장성 부족"
+     "reason": "Q4 실적은 비트했으나 마진 압박과 차기 분기 성장 둔화 우려로 가시성 제한"
     }
    },
    "conversion": {
@@ -177,26 +159,22 @@
     "no_price_reg": "△"
    },
    "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "✕",
-    "tax_inflation": "△"
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2024H2"
+    "score": 2,
+    "period": "2026H1"
    },
-   "notes": "소비자 프랜차이즈 최강이나 성장 활주로 최저, 현재 가격에서 장기 리턴 제한적",
+   "notes": "신임 CEO 터너스의 첫 본격 시험 속 메모리 원가 상승이 수익성 위협; 소비자 프랜차이즈 강력하나 성장 활주로 부족으로 밸류에이션 천장 근접",
    "_evidence": {
-    "franchise": "브랜드 강도, 고객 충성도, 생태계 lock-in 효과로 대체 불가능한 경쟁우위 확립",
-    "risk5": "안정적 수익 모델과 경영진 능력 입증, 다만 고가 밸류에이션이 주요 리스크",
-    "capalloc": "지속적 현금 창출, 공격적 자사주 매입, 부채 최소화 유지",
-    "owner_earnings": "성숙 단계의 포화 시장에서 단일 자릿수 성장만 기대 가능"
+    "franchise": "Apple Posts Fiscal Q4 Beat On Strong iPhone, Services Sales",
+    "risk5": "Apple's Tight-Lipped CEO John Ternus Fails to Inspire; global memory crisis hurts profits; Wall Street has a big 'concern' about next quarter",
+    "capalloc": "Apple to report Q4 earnings Monday with strong iPhone sales and services revenue",
+    "owner_earnings": "Despite Apple's earnings beat, Wall Street has a big 'concern' about next quarter; Q4 Earnings Margin Squeeze"
    }
   },
   "GOOG": {
@@ -420,7 +398,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 15.09
    },
    "eps_status": null,
    "roe_tangible": 0.3612,
@@ -530,7 +508,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.24
+    "value": 0.23
    },
    "eps_status": null,
    "roe_tangible": -0.0238,
@@ -976,7 +954,11 @@
      }
     },
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": ""
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -994,7 +976,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) / us-gaap_NetIncomeLoss (투자손익·비영업 태그 없음 — 무조정) (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1012,7 +994,34 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "✕",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2026H1"
+   },
+   "notes": "시클리컬 금융주의 높은 멀티플에 대한 재평가 국면; Jamie Dimon의 경제 리스크 경고와 Q3 어닝 미스가 가격 정당성 의문 제기.",
+   "_evidence": {
+    "franchise": "금융 중개 기능과 결제 네트워크(Kinexys 자동화)는 대체 불가능한 인프라.",
+    "risk5": "Jamie Dimon warns economic forces 'shift under the surface', 'increasingly complex' economic risks - 경기 확실성 약화; 레버리지 금융기관으로서 신용사이클 노출.",
+    "capalloc": "JPMorgan tops estimates on Wall Street results, raises NII outlook - 수익성 유지와 자본반환 능력 입증.",
+    "owner_earnings": "Q3 earnings miss vs analyst estimates - 시장 기대치 대비 실적 부진으로 디스플레이 신뢰도 하락"
+   }
   },
   "WMT": {
    "as_of": "2026-11-05",
@@ -1120,11 +1129,7 @@
     },
     "fcf_ttm": 8403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "데이터센터 97% 성장 검증되나 PC 사업 약화 및 경쟁 격화로 지속성 불명확"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.8351,
@@ -1144,7 +1149,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -1164,28 +1169,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(98%) — 취재 필요",
-   "notes": "AI 칩 수요는 실증적이나 NVDA 대비 기술적 우위 부족으로 가격 결정력 제한적",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "data center revenue nearly doubles in Q3, CEO Su expects growth to accelerate; Data center revenue climbs 97%",
-    "risk5": "Wall Street remains split on the stock; AMD stock goes nowhere despite earnings beat suggests limited pricing power amid competition",
-    "capalloc": "AMD Earnings Checked Every Box - strong cash generation from accelerating data center",
-    "owner_earnings": "AMD Pivots to Data-Center First Status with strong outlook but PC worries linger"
-   }
+   "notes": "전망치 이상(98%) — 취재 필요"
   },
   "000660.KS": {
    "as_of": "2026-11-05",
@@ -1218,10 +1202,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": null,
    "g_forward_status": "전망치 이상(196%) — 취재 필요",
-   "notes": "시클리컬 최강자이나 고정자산 투자 의존도로 인해 버핏의 '무규제 기업' 기준 미충족; 10년 캐펙스 상한선 없는 점 중대 약점",
-   "_evidence": {}
+   "notes": "전망치 이상(196%) — 취재 필요"
   },
   "ASML": {
    "as_of": "2026-11-05",
@@ -1441,7 +1424,11 @@
     },
     "fcf_ttm": 8560000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 서버 수요 강세로 매출 성장하나 저마진 OEM 사업 구조로 주주 현금흐름 증대 한계"
+    }
    },
    "conversion": {
     "value": 0.953,
@@ -1461,7 +1448,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1481,7 +1468,30 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "전망치 이상(66%) — 취재 필요"
+   "notes": "AI 서버 사이클의 수혜자이나 경기순환적 저마진 하드웨어 OEM으로서 장기 프랜차이즈 가치 제한적; 266% 랠리 후 밸류에이션 리셋 국면",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 0,
+    "score": 2,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "AI 서버는 저마진 OEM — 매출 폭발과 주주 월세는 별개",
+    "risk5": "Dell Falls 4% Ahead of Earnings as Its 266% Rally Raises the Bar; Morgan Stanley Offers $2.3 Billion Debt for Dell Family Deal",
+    "capalloc": "Dell surges 9% after lifting fiscal 2027 forecast on AI server strength",
+    "owner_earnings": "Why is Dell Technologies stock sliding today? — Investing.com; Dell Technologies (DELL) Stock Drops Despite Market Gains"
+   }
   },
   "PANW": {
    "as_of": "2026-11-05",
@@ -2037,7 +2047,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 33.24
+    "value": 31.93
    },
    "eps_status": null,
    "roe_tangible": 0.3518,
@@ -2126,5 +2136,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-05 08:30"
+ "scout_label": "2026-11-05 12:29"
 }

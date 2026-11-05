@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T9",
  "lang": "ja",
- "src_hash": "c04a270153a7",
+ "src_hash": "2fcebcac2d1b",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 17:48",
+ "at": "2026-11-05 12:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Starlink Mobile 地上網 — Boost Mobile/EchoStar 取引確認ポイント(① SpaceX·EchoStar 8-K ② FCC ライセンス譲渡·HSR ③ AT&T·T-Mobile MVNO 契約同意 ④ 既存スペクトラム取引最終終結 ⑤ 10-K 約定注釈)",
-  "expected": "2026-12-01(KST、次の月間確認ポイント — 報道が『予備協議』のため取引日は推定していない) → 2027-02(4Q26 10-K 推定)",
-  "check": "① SpaceX 8-K Item 1.01(買収·網接近契約) · EchoStar(CIK 1415404) 8-K ② FCC ULS/ICFS ライセンス譲渡申請 · HSR 報告 ③ AT&T·T-Mobile の Boost MVNO 契約同意·異議(報道は確認対象) ④ スペクトラム取引(50+15MHz)最終終結 8-K — 前払い $856M の無形資産譲渡(10-Q R58) ⑤ 4Q26 10-K の EchoStar 関連約定·利息保全注釈 ⑥ EchoStar 3Q26 10-Q の無線加入者·『SpaceX 保全額』。判定は公示原文のみ。名前頭文字に調達·契約·実績·Starship を置かない(計測層種類分類)",
-  "note": "2026-11-03 新設。背景(公示): EchoStar 8-K 2025-09-08 — AWS-4·H-block 約 $170億(現金最大 $85億 + 株式最大 $85億) + 利息約 $20億(2027-11 まで)、Boost 加入者に Starlink D2C 接近 · 2025-11-05 ビペア AWS-3 約 $26億(株式) · 10-Q Note 6: 50MHz + 15MHz、Spectrum Business Trust 2025-1、利息支払い最小 2027-11-30、前払い $856M · EchoStar 2Q26(8/3): 無線加入者 738万(−11.8万)、無線売上 $929.0M、SpaceX 臨時債務返済保全 $413.7M(上半期)、売却予定規制認可資産 $168億。背景(報道): Boost は AT&T·T-Mobile 網賃借 MVNO、賃借契約譲渡不可通常 → 同意必要可能。CFO 10/20『主要通信事業者』発言は候補表のみ。FCC 10/29 NPRM(T8 ⑥)の『衛星事業者地上ライセンス直接取得』案と同方向",
-  "statusText": "待機(2026-11-03: 報道のみ — WP 11/2(Reuters も報道、原文未閲覧): 買収または網接近予備協議、マスク–Ergen 10月会動、通信3社 MVNO 容量販売拒否。SpaceX·EchoStar 8-K·声明なし)"
+  "name": "Starlink Mobile 地上網 — ⓐ Boost Mobile/EchoStar 取引(① SpaceX·EchoStar 8-K ② FCC ライセンス譲渡·HSR ③ AT&T·T-Mobile MVNO 契約同意 ④ 既存スペクトラム取引最終終結 ⑤ 10-K 約定注釈) + ⓑ 自社構築(Qualcomm 機器·タワー·CAPEX 公示) 確認点",
+  "expected": "2026-12-01(KST、次回月間回次確認点 — 報道が『予備協議』なので取引日は推定しない · 自社構築は2027 着工発表なので公示時点未定) → 2027-02(4Q26 10-K 推定)",
+  "check": "① SpaceX 8-K Item 1.01(買収·網接続契約) · EchoStar(CIK 1415404) 8-K ② FCC ULS/ICFS ライセンス譲渡申請 · HSR 報告 ③ AT&T·T-Mobile の Boost MVNO 契約同意·異議(報道は確認対象) ④ スペクトラム取引(50+15MHz) 最終終結 8-K — 前払い $856M の無形資産譲渡(10-Q R58) ⑤ 4Q26 10-K の EchoStar 関連約定·利子 保全注釈 ⑥ EchoStar 3Q26 10-Q の無線加入者·『SpaceX 保全額』 — 2026-11-05 確認: 無線売上 $905,152千(3Q25 $936,571千)·OIBDA $109,036千·SpaceX ライセンス簿価 $8,667,276千、加入者(7.193M)·保全額 3Q 値は XBRL 外(本文未閲覧) ⑦ 自社構築の SpaceX 公示 — 8-K Item 1.01(機器·タワー·バックホール契約) · 4Q26 CAPEX ガイダンスに地上網含有の有無 · 10-K 購買約定注釈 ⑧ Qualcomm 四半期公示のインフラ売上(間接) ⑨ 2GHz(AWS-4/H) 地上運用開始条件 — EchoStar ライセンス完全譲渡(報道 2027-11) および DA 26-1078 条件 3(T8 ⑤ と共有)。判定は公示原文のみ。名前冒頭に調達·契約·実績·Starship を置かない(測定層種類分類)",
+  "note": "2026-11-05 拡張: Qualcomm プレスリリース 'SpaceX Selects Qualcomm to Accelerate Starlink Mobile's Nationwide 5G Network'(ツールは題目のみ表示、本文は FoneArena·Converge Digest 転載 + Reuters·CNBC·UPI) — Dragonwing QRU100(RU)·QDU100(DU) + 商用 Layer 1、64T64R Massive MIMO を 2GHz に(Malladi: 通常 3.5GHz 以上)、マクロタワー、SpaceX が RU·DU ハードウェアと L2·L3 を直接開発、800MHz(Grain、最大 14MHz ペアード) カバレッジ層、2027 全国配置開始·数万個サイト·複数年、金額·タワーパートナー·サイト数非公開、Qualcomm『最大 5G 契約』。SpaceX 側引用: Starlink SVP Michael Nicolls『first fully-integrated nationwide satellite and terrestrial network』。Qualcomm 8-K 11/4 は実績(2.02)、10-K 全文検索『SpaceX』0件。ⓑ がⓐ を代替するのか補完するのかはいずれの原文も述べない。地上網 CAPEX はシナリオ Connectivity 前提にセルがない — 数字が公示されれば月間回次がセルを定める(推定禁止)。報道: Boost 3Q26 18.2万純減·7.193M·ARPU $39.10(Broadband Breakfast 11/03) / 2026-11-03 新設。背景(公示): EchoStar 8-K 2025-09-08 — AWS-4·H-block 約 $170億(現金最大 $85億 + 株式最大 $85億) + 利子約 $20億(2027-11 まで)、Boost 加入者に Starlink D2C 接続 · 2025-11-05 非ペアード AWS-3 約 $26億(株式) · 10-Q Note 6: 50MHz + 15MHz、Spectrum Business Trust 2025-1、利子支払最小 2027-11-30、前払い $856M · EchoStar 2Q26(8/3): 無線加入者 738万(−11.8万)、無線売上 $929.0M、SpaceX 一時借入金返済保全 $413.7M(上半期)、売却予定規制認可資産 $168億。背景(報道): Boost は AT&T·T-Mobile 網リース MVNO、リース契約譲渡不可通則 → 同意必要可能。CFO 10/20『主要移動通信事業者』発言は候補表のみ。FCC 10/29 NPRM(T8 ⑥)の『衛星事業者地上ライセンス直接取得』案と同方向",
+  "statusText": "待機(2026-11-05: ⓑ 自社構築は Qualcomm 11/4 公式発表で確認 — 複数年契約·2027 着工·数万個サイト·金額非公開、SpaceX 8-K·IR なし / ⓐ は依然報道のみ — EchoStar 3Q26 10-Q(11/3)に Boost 協議言及なし、『SpaceX Transactions』終結時期不確実)"
  }
 }
