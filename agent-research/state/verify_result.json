@@ -1,41 +1,63 @@
 {
-  "run_id": "2026-11-05-event",
-  "report": "agent-research/reports/2026-11-05-event.md",
-  "checked": 23,
-  "match": 22,
+  "run_id": "2026-11-06-event",
+  "report": "agent-research/reports/2026-11-06-event.md",
+  "checked": 26,
+  "match": 23,
   "rounding": 1,
   "mismatch": [],
-  "unverifiable": [],
-  "verified_at": "2026-11-05T09:05+09:00",
+  "unverifiable": [
+    {
+      "claim": "2026-11-05 장중 스냅샷 가격(ET 10시대, 종가 아님)",
+      "value": 125.91,
+      "reason": "장중 이동값 — 11/6 KST 검증 시각에 같은 페이지는 Nov 5 행을 123.42(−9.20%, 44,444,858주, 10:15 AM EST 기준)로 보여 특정 시각의 스냅샷 125.91 은 재현 불가. 보고서가 '종가 아님·기준가 미사용'으로 적어 판단에 쓰이지 않음"
+    },
+    {
+      "claim": "The Atlantic 보도일(Truthout 전재가 적은 원문 URL 의 월 + 검색 메타데이터)",
+      "value": "2026-10-29",
+      "reason": "Truthout 전재(10/30)의 원문 URL 은 /2026/10/ 까지만 — 날짜 미기재. Atlantic 원문은 도구 차단, NV 전재는 403. Clash Report 전재가 2026-10-29 10:39 GMT 에 Atlantic 을 인용해 '10/29 이전'까지만 확인됨 — 정확한 일자 미확인"
+    }
+  ],
+  "rounding_items": [
+    {
+      "claim": "기준 주가 — 2026-11-04 종가(직전 회차 조회값 유지)",
+      "value": 135.84,
+      "source_value": 135.92,
+      "diff_pct": 0.06,
+      "note": "출처가 사후 수정한 값 135.92 와 ±0.5% 이내. 보고서가 머리·4절·부록에서 수정 사실(135.92 / −3.81% / 135,443,382주)을 함께 적었다"
+    }
+  ],
   "notes": [
     {
-      "claim": "2026-11-04 거래량",
-      "result": "rounding",
-      "list_value": 135280836,
-      "source_value": 135339079,
-      "diff_pct": 0.04,
-      "detail": "stockanalysis 일별 이력의 11/4 거래량이 검증 시점에 135,339,079 로 바뀌어 있음(출처 측 사후 수정 — 보고서 3절이 11/3·11/2 에 대해 기록한 것과 같은 현상). ±0.5% 이내. 보고서 머리·부록의 135,280,836 은 verify_list 와 동일."
+      "claim": "Blumenthal 서한 — SpaceX 브리핑 요청 기한",
+      "value": "2026-11-12",
+      "note": "source_url(Kyiv Independent 10/23)은 서면 기한 11/5 만 적고 브리핑 기한은 없음. 규약 1항에 따라 다른 출처에서 확인 — TeslaNorth 10/23 '브리핑 11/12' 명시. 의원실 보도자료는 403"
+    },
+    {
+      "claim": "Stars and Stripes 가 인용한 5월 Reuters — Starshield 상위 서비스 월 요금(단말당)",
+      "value": 25000,
+      "note": "값 일치. 다만 Stripes 는 $25,000 을 The Atlantic 에, $5,000 을 5월 Reuters 에 귀속 — 보고서 1-1절 표의 '5월 Reuters: $5,000 → 약 $25,000' 표기는 두 출처를 한 줄로 묶었다(숫자 자체는 원문과 같음)"
+    },
+    {
+      "claim": "감찰관 거부 서한일(10/27 화)",
+      "value": "2026-10-27",
+      "note": "Stripes(10/30)는 'Tuesday', AP(10/28 수)는 'dated Tuesday' — 두 출처 모두 2026-10-27 로 귀결"
     },
     {
       "claim": "발행주식수(10-Q 표지, 2026-10-15)",
-      "result": "match",
-      "detail": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 → 13,581 백만주. 보고서 3절 '135.81억주'·부록 '13,581백만주' 동일."
+      "value": 13581,
+      "note": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 주 → 13,581 백만주. 보고서 4절 '135.81억주'·시가총액 1,845 = 135.84 × 13.581 산식 재현 일치"
     },
     {
-      "claim": "EchoStar 'SpaceX Transactions — Restricted Licenses' 장부가(2026-09-30)",
-      "result": "match",
-      "detail": "R70 행 표기는 'SpaceX spectrum assets: Licenses' 이나 값 8,667,276(천 USD, 2026-09-30) 일치. 라벨 차이는 숫자 판정 대상 아님."
+      "claim": "하원 3인 → 백악관 서한 발송일",
+      "value": "2026-10-23",
+      "note": "SF Standard 10/23 'sent on Friday' = 10/23. 원문은 '14일 내 브리핑'이며 서면 답변 기한은 없음 — 보고서의 '14일 → 11/6' 과 같은 뜻"
     },
     {
-      "claim": "Starlink 3Q26 매출·영업이익 비중(CNBC)",
-      "result": "match",
-      "detail": "CNBC 11/04 원문 '36% of the company's revenue in the third quarter and 85% of its operating profit'."
-    },
-    {
-      "claim": "Bloomberg 2차 전재 3건($83억·$70억·$473억)",
-      "result": "match",
-      "detail": "PANews 11/05: $8.3 billion senior secured loan · $7 billion in lease prepayments · roughly $47.3 billion of Nvidia Rubin. Phemex 11/04 21:29 동일. Bloomberg 원문은 대조하지 않음(목록의 source_url 이 2차 전재)."
+      "claim": "Blumenthal 서한 서면 답변 기한",
+      "value": "2026-11-05",
+      "note": "Kyiv Independent 기사 게재일은 2026-10-23(verify_list source_date 10-22 는 발표일) — 기한 Nov. 5 일치"
     }
   ],
-  "report_cross_check": "where_in_report 위치(머리 기준 주가 · 1절 표 · 2절 표·EchoStar 문단 · 3절 · 부록 표)의 숫자 23건 모두 verify_list 값과 동일. state.kpi_history 항목 없음."
+  "body_check": "where_in_report 위치(머리·1절 표·1-1절·2절 표·4절·부록)의 숫자는 verify_list 와 전부 같음. state.kpi_history 항목 없음",
+  "verified_at": "2026-11-06T00:25+09:00"
 }
