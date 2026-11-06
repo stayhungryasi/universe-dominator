@@ -1,5 +1,8 @@
 {
- "alerted": [],
+ "alerted": [
+  "0001628280-26-071689",
+  "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-Thanks-Don-Harrison-for-His-Service-on-the-Board--2026-Si4CNaX_y_/default.aspx"
+ ],
  "src": {
   "ir": {
    "streak": 0
@@ -67,6 +70,11 @@
    "at": "2026-11-06T08:00+09:00",
    "ok": true,
    "head": "🫀 SpaceX 관제 일일 점검 — 11/6(금)"
+  },
+  {
+   "at": "2026-11-07T06:30+09:00",
+   "ok": true,
+   "head": "🛰 SpaceX 감시 — 엔진 깨움 1건(긴급 0 · 중요 1) · 기록 1건"
   }
  ],
  "due": [
@@ -77,6 +85,17 @@
    "reason": "예상일 도래",
    "expected": "2026-11-06(추정: Blumenthal 답변 기한 11/5 + KST 1일 · 백악관 14일 11/6 전후) → 2026-11-19(하원 세출위 30일 11/18 + KST 1일) → 2027-1H(공군·우주군 검토 — 기한 없음)",
    "detected_at": "2026-11-06"
+  },
+  {
+   "key": "major:0001628280-26-071689",
+   "trigger_id": null,
+   "name": "수시공시 — 임원·이사 변동",
+   "reason": "중요 사건",
+   "event": "수시공시 — 임원·이사 변동",
+   "event_date": "2026-11-06",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026071689/spcx-20261104.htm",
+   "detected_at": "2026-11-07",
+   "grade": "major"
   }
  ],
  "dispatches": [
@@ -90,6 +109,42 @@
    "reason": "트리거·중요 사건 1건",
    "urls": [],
    "http": 204
+  },
+  {
+   "key": "q:2026-11-07:0630:1",
+   "run_id": "42297260365",
+   "queued_at": "2026-11-07T06:30+09:00",
+   "state": "sent",
+   "trigger_id": "",
+   "name": "수시공시 — 임원·이사 변동",
+   "reason": "트리거·중요 사건 1건",
+   "urls": [
+    "https://www.sec.gov/Archives/edgar/data/1181412/000162828026071689/spcx-20261104.htm"
+   ],
+   "http": 204
+  }
+ ],
+ "events": [
+  {
+   "date": "2026-11-06",
+   "form": "8-K",
+   "items": "5.02",
+   "title": "수시공시 — 임원·이사 변동",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026071689/spcx-20261104.htm",
+   "accn": "0001628280-26-071689",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "major"
+  },
+  {
+   "id": "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-Thanks-Don-Harrison-for-His-Service-on-the-Board--2026-Si4CNaX_y_/default.aspx",
+   "date": "2026-11-06",
+   "form": "보도자료",
+   "items": "",
+   "title": "SpaceX Thanks Don Harrison for His Service on the Board",
+   "kind": "ir",
+   "url": "https://ir.spacex.com/updates/releases-details/2026/SpaceX-Thanks-Don-Harrison-for-His-Service-on-the-Board--2026-Si4CNaX_y_/default.aspx",
+   "source": "SpaceX IR"
   }
  ]
 }
