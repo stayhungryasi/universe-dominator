@@ -1,41 +1,32 @@
 {
-  "run_id": "2026-11-05-event",
-  "report": "agent-research/reports/2026-11-05-event.md",
-  "checked": 23,
-  "match": 22,
+  "run_id": "2026-11-07-event",
+  "report": "reports/2026-11-07-event.md",
+  "checked": 20,
+  "match": 19,
   "rounding": 1,
   "mismatch": [],
   "unverifiable": [],
-  "verified_at": "2026-11-05T09:05+09:00",
-  "notes": [
+  "rounding_detail": [
     {
-      "claim": "2026-11-04 거래량",
-      "result": "rounding",
-      "list_value": 135280836,
-      "source_value": 135339079,
-      "diff_pct": 0.04,
-      "detail": "stockanalysis 일별 이력의 11/4 거래량이 검증 시점에 135,339,079 로 바뀌어 있음(출처 측 사후 수정 — 보고서 3절이 11/3·11/2 에 대해 기록한 것과 같은 현상). ±0.5% 이내. 보고서 머리·부록의 135,280,836 은 verify_list 와 동일."
-    },
-    {
-      "claim": "발행주식수(10-Q 표지, 2026-10-15)",
-      "result": "match",
-      "detail": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 → 13,581 백만주. 보고서 3절 '135.81억주'·부록 '13,581백만주' 동일."
-    },
-    {
-      "claim": "EchoStar 'SpaceX Transactions — Restricted Licenses' 장부가(2026-09-30)",
-      "result": "match",
-      "detail": "R70 행 표기는 'SpaceX spectrum assets: Licenses' 이나 값 8,667,276(천 USD, 2026-09-30) 일치. 라벨 차이는 숫자 판정 대상 아님."
-    },
-    {
-      "claim": "Starlink 3Q26 매출·영업이익 비중(CNBC)",
-      "result": "match",
-      "detail": "CNBC 11/04 원문 '36% of the company's revenue in the third quarter and 85% of its operating profit'."
-    },
-    {
-      "claim": "Bloomberg 2차 전재 3건($83억·$70억·$473억)",
-      "result": "match",
-      "detail": "PANews 11/05: $8.3 billion senior secured loan · $7 billion in lease prepayments · roughly $47.3 billion of Nvidia Rubin. Phemex 11/04 21:29 동일. Bloomberg 원문은 대조하지 않음(목록의 source_url 이 2차 전재)."
+      "claim": "SPCX 2026-11-06 거래량(주)",
+      "value": 114366062,
+      "source_value": 114527487,
+      "diff_pct": 0.14,
+      "note": "2026-11-07 재조회 시 출처 측 사후 수정값(보고서 4절이 같은 사이트의 사후 수정 관행을 기록). ±0.5% 이내. 보고서 머리 '1억 1,437만주'·부록 1행은 verify_list 값과 같다."
     }
   ],
-  "report_cross_check": "where_in_report 위치(머리 기준 주가 · 1절 표 · 2절 표·EchoStar 문단 · 3절 · 부록 표)의 숫자 23건 모두 verify_list 값과 동일. state.kpi_history 항목 없음."
+  "report_consistency": "where_in_report 위치 20건 전부 verify_list 값과 같음(머리·1~4절 표·부록 표). 발행주식 13,581백만주는 10-Q 표지 Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 의 백만 단위 반올림으로 일치 처리.",
+  "sources_opened": {
+    "stockanalysis_history": "열림 · 최신 행 2026-11-06",
+    "spcx_10q_3q26_cover": "열림",
+    "goog_10q_3q26_note3": "열림 · 각주 '$75.2 billion' · 시장성 지분증권 90,384",
+    "goog_10q_2q26_note3": "열림 · 각주(1) $80.0B · 각주(2) $14.1B(2027 3Q 까지)",
+    "restated_certificate": "열림 · Art.VIII(A) 51% · Art.VI(C)(5)(b) 10표",
+    "fwp_2026_05_20": "열림(2구간째에서 확인) · '약 82.4%'(옵션 전부 행사 시 82.3%)",
+    "spcx_10q_R12": "열림 · 고객 A 3Q26 16.6%",
+    "spcx_10q_R26": "열림 · Tesla $151M · TBC $561M",
+    "heygotrade_11_06": "열림 · 나스닥 −5.52%",
+    "click2houston": "열림 · Hinojosa 5,231,979(53%) · 9,801/9,900"
+  },
+  "verified_at": "2026-11-07T06:45+09:00"
 }
