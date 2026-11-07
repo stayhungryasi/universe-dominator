@@ -80,6 +80,11 @@
    "at": "2026-11-07T08:00+09:00",
    "ok": true,
    "head": "🫀 SpaceX 관제 일일 점검 — 11/7(토)"
+  },
+  {
+   "at": "2026-11-08T00:00+09:00",
+   "ok": true,
+   "head": "🛰 SpaceX 감시 — 엔진 깨움 1건(긴급 0 · 중요 1) · 기록 0건"
   }
  ],
  "due": [
@@ -101,6 +106,14 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1181412/000162828026071689/spcx-20261104.htm",
    "detected_at": "2026-11-07",
    "grade": "major"
+  },
+  {
+   "key": "T3:date:2026-11-08",
+   "trigger_id": "T3",
+   "name": "Starship Flight 15 — 부스터+Ship 동시 캡처 시도",
+   "reason": "예상일 도래",
+   "expected": "2026-11-08 ~ 11-30(FAA 내부 계획일 약 11/8 보도 · LL2 NET 2026-11 월 단위, 10/28 갱신) → 확인점 2026-12-01(KST)",
+   "detected_at": "2026-11-08"
   }
  ],
  "dispatches": [
@@ -126,6 +139,17 @@
    "urls": [
     "https://www.sec.gov/Archives/edgar/data/1181412/000162828026071689/spcx-20261104.htm"
    ],
+   "http": 204
+  },
+  {
+   "key": "q:2026-11-08:0000:1",
+   "run_id": "42384244701",
+   "queued_at": "2026-11-08T00:00+09:00",
+   "state": "sent",
+   "trigger_id": "T3",
+   "name": "Starship Flight 15 — 부스터+Ship 동시 캡처 시도",
+   "reason": "트리거·중요 사건 1건",
+   "urls": [],
    "http": 204
   }
  ],
