@@ -1,41 +1,23 @@
 {
-  "run_id": "2026-11-05-event",
-  "report": "agent-research/reports/2026-11-05-event.md",
-  "checked": 23,
-  "match": 22,
-  "rounding": 1,
+  "run_id": "2026-11-08-event",
+  "checked": 25,
+  "match": 25,
+  "rounding": 0,
   "mismatch": [],
   "unverifiable": [],
-  "verified_at": "2026-11-05T09:05+09:00",
+  "verified_at": "2026-11-08T00:01+09:00",
   "notes": [
-    {
-      "claim": "2026-11-04 거래량",
-      "result": "rounding",
-      "list_value": 135280836,
-      "source_value": 135339079,
-      "diff_pct": 0.04,
-      "detail": "stockanalysis 일별 이력의 11/4 거래량이 검증 시점에 135,339,079 로 바뀌어 있음(출처 측 사후 수정 — 보고서 3절이 11/3·11/2 에 대해 기록한 것과 같은 현상). ±0.5% 이내. 보고서 머리·부록의 135,280,836 은 verify_list 와 동일."
-    },
-    {
-      "claim": "발행주식수(10-Q 표지, 2026-10-15)",
-      "result": "match",
-      "detail": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 → 13,581 백만주. 보고서 3절 '135.81억주'·부록 '13,581백만주' 동일."
-    },
-    {
-      "claim": "EchoStar 'SpaceX Transactions — Restricted Licenses' 장부가(2026-09-30)",
-      "result": "match",
-      "detail": "R70 행 표기는 'SpaceX spectrum assets: Licenses' 이나 값 8,667,276(천 USD, 2026-09-30) 일치. 라벨 차이는 숫자 판정 대상 아님."
-    },
-    {
-      "claim": "Starlink 3Q26 매출·영업이익 비중(CNBC)",
-      "result": "match",
-      "detail": "CNBC 11/04 원문 '36% of the company's revenue in the third quarter and 85% of its operating profit'."
-    },
-    {
-      "claim": "Bloomberg 2차 전재 3건($83억·$70억·$473억)",
-      "result": "match",
-      "detail": "PANews 11/05: $8.3 billion senior secured loan · $7 billion in lease prepayments · roughly $47.3 billion of Nvidia Rubin. Phemex 11/04 21:29 동일. Bloomberg 원문은 대조하지 않음(목록의 source_url 이 2차 전재)."
-    }
-  ],
-  "report_cross_check": "where_in_report 위치(머리 기준 주가 · 1절 표 · 2절 표·EchoStar 문단 · 3절 · 부록 표)의 숫자 23건 모두 verify_list 값과 동일. state.kpi_history 항목 없음."
+    "stockanalysis 일별 이력(2026-11-08 조회): 11/6 134.27 / +8.62% / 115,599,839 · 11/5 123.62 / −9.05% / 171,356,235 · 9/30 150.86 — verify_list 7건 전부 일치. 부록의 11/4 행(135.92 / −3.81% / 135,443,382)도 원문과 같음",
+    "10-Q 표지(2026-10-15): Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 → 13,581백만주 일치. 4절 산식 134.27 × 13.581 = 1,823.5 재현",
+    "8-K: 사건일 2026-11-04(Date of earliest event reported) · EDGAR submissions filingDate 2026-11-06 · Class B Director 일치. 색인은 항목을 5.02 와 8.01 로 적는다(숫자 외 — 참고)",
+    "IR 보도자료: 'since February 2015' · 보도일 2026-11-06 일치",
+    "정관 Art. VIII(A) 51%(올림) · Art. VI(C)(5) Class B 10표/주 일치",
+    "Alphabet 13F-HR: SpaceX Class A 555,043,560주 · 83,733,871,462 USD · 합계 88,346,124,056 · 31종목(tableEntryTotal) · 보고기준일 09-30-2026 · 서명 11-05-2026 일치. 교차 산식 555,043,560 × 150.86 = 83,733,871,462 재현",
+    "Alphabet 10-Q 3Q26 Note 3: 시장성 지분증권 90,384백만 USD · 'includes $75.2 billion of SpaceX shares subject to short-term restrictions' 일치",
+    "SpaceX 10-Q R12: Customer A 3Q26 16.6% 일치",
+    "FRED DGS10: 2026-11-05 4.84 일치(최종 갱신 11/6 16:05 CST)",
+    "Teslarati 11/05: Dontchev(VP of Launch) · UP.Summit · 'Friday, November 13' 일치 · The Space Road(11/7 갱신): 1단계 100회/년 · 이후 456회 · 현행 25회 일치",
+    "상원 외교위 민주당 10/19: 'on or before November 2, 2026' 일치 · Reuters(SRN) 11/06: 'to about 555 million shares from 551.2 million' 일치",
+    "state.kpi_history 대상 항목 없음"
+  ]
 }
