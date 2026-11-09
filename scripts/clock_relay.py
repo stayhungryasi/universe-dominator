@@ -13,7 +13,8 @@
 울리면 cancel-in-progress 로 진행 중인 회차를 끊었다(감시의 GitHub 예약 '47분'이 이 중계의 예비 시계다).
 
 규칙(멱등):
-  · 슬롯 시각 이후 데일리 실행(이벤트 무관)이 이미 있으면 → 아무것도 안 한다(같은 슬롯에 두 번 쏘지 않는다)
+  · 슬롯 시각 이후 **수집(full)** 회차가 이미 있으면 → 아무것도 안 한다(같은 슬롯에 두 번 쏘지 않는다).
+    재빌드(quick)는 수집이 아니라 세지 않고, 취소된 수집도 실행된 것이 아니라 한 번 다시 쏜다(슬롯당 두 번까지)
   · 데일리가 진행 중·대기 중이면 → 기다린다(cancel-in-progress 로 빼앗지 않는다)
   · 재시도 슬롯(09:10)은 아침 슬롯(08:10) 이후 **성공한** 회차가 없을 때만 — 브리핑을 살리는 두 번째 기회
   · 슬롯이 지나고 유예 시간이 넘으면 쏘지 않는다(감시가 오래 멈췄다 돌아와 한꺼번에 쏘지 않게) — 다음 슬롯이 맡는다
@@ -52,9 +53,23 @@ def slot_times(now, slots=SLOTS):
     return out
 
 
+QUICK_TAG = "· quick"     # daily-update.yml run-name 의 꼬리 — 실행 기록 API 는 입력값(mode)을 돌려주지 않는다
+
+
+def is_full(r):
+    """수집(full) 회차인가 — 실행 이름의 모드 꼬리로 가른다. 꼬리가 없는 옛 회차(2026-11-09 이전)는 full 로 친다
+    (보수적: 같은 슬롯에 두 번 쏘지 않는 쪽).
+
+    2026-11-09 실측: 다른 세션의 quick(업로드 반영)이 슬롯 뒤에 돌면 '이미 실행됨'으로 세어 그 슬롯의 수집을
+    통째로 건너뛸 수 있었다. 재빌드는 수집이 아니다."""
+    return QUICK_TAG not in str(r.get("display_title") or "")
+
+
 def decide(now, runs, slots=SLOTS):
-    """→ (쏠 슬롯 라벨 | None, 사유). **순수 함수** — runs: [{created_at, status, conclusion}] (데일리 실행 기록)."""
+    """→ (쏠 슬롯 라벨 | None, 사유). **순수 함수** — runs: [{created_at, status, conclusion, display_title}]
+    (데일리 실행 기록). 진행 중 판정은 모드 무관(무엇이든 돌고 있으면 기다린다), '이미 실행됨'·'성공'은 full 만 센다."""
     busy = [r for r in runs or [] if r.get("status") in ("queued", "in_progress", "waiting", "pending", "requested")]
+    full = [r for r in runs or [] if is_full(r)]
     sl = slot_times(now, slots)
     morning = next((t for _, k, t, _ in sl if k == "morning"), None)
     for label, kind, t, end in reversed(sl):        # 가장 최근 슬롯부터 — 09:15 에는 아침 슬롯보다 재시도 슬롯이 먼저
@@ -63,16 +78,22 @@ def decide(now, runs, slots=SLOTS):
         if busy:
             return None, f"{label} 슬롯 — 데일리가 진행 중이라 기다린다(빼앗지 않는다)"
         if kind == "retry":
-            ok = [r for r in runs or [] if r.get("conclusion") == "success" and morning and _t(r["created_at"]) >= morning]
+            ok = [r for r in full if r.get("conclusion") == "success" and morning and _t(r["created_at"]) >= morning]
             if ok:
-                return None, f"{label} 재시도 슬롯 — 아침 슬롯 뒤 성공 회차가 있다"
+                return None, f"{label} 재시도 슬롯 — 아침 슬롯 뒤 성공한 수집 회차가 있다"
             # 재시도는 한 번만 — 2026-11-06~09 실측: 실패한 회차가 2분 만에 끝나 15분마다 다시 쏘았다(09:15·09:30·09:45·10:00)
-            if [r for r in runs or [] if _t(r["created_at"]) >= t]:
+            if [r for r in full if _t(r["created_at"]) >= t]:
                 return None, f"{label} 재시도 슬롯 — 이미 한 번 다시 쐈다"
-            return label, f"{label} 재시도 슬롯 — 아침 슬롯 뒤 성공 회차가 없다(브리핑 두 번째 기회)"
-        since = [r for r in runs or [] if _t(r["created_at"]) >= t]
+            return label, f"{label} 재시도 슬롯 — 아침 슬롯 뒤 성공한 수집 회차가 없다(브리핑 두 번째 기회)"
+        since = [r for r in full if _t(r["created_at"]) >= t]
+        done = [r for r in since if r.get("conclusion") != "cancelled"]
+        if done:
+            return None, f"{label} 슬롯 — 이미 실행됨({len(done)}회)"
+        # 취소된 수집은 실행된 것이 아니다(11/09 02:14Z: 복구 full 이 quick 에 끊겼다) — 다시 쏘되 슬롯당 두 번까지
+        if len(since) >= 2:
+            return None, f"{label} 슬롯 — 수집이 {len(since)}번 취소됐다. 이번 슬롯은 접는다(다음 슬롯이 맡는다)"
         if since:
-            return None, f"{label} 슬롯 — 이미 실행됨({len(since)}회)"
+            return label, f"{label} 슬롯 — 수집 회차가 취소돼 한 번 다시 요청"
         return label, f"{label} 슬롯 — 실행 요청"
     return None, "슬롯 시각 아님"
 
@@ -98,7 +119,8 @@ def run(dispatch=True):
     if code != 200:
         print(f"[시계] 데일리 실행 기록 조회 실패(HTTP {code}) — 이번엔 쏘지 않는다")
         return 0
-    runs = [{"created_at": r.get("created_at"), "status": r.get("status"), "conclusion": r.get("conclusion")}
+    runs = [{"created_at": r.get("created_at"), "status": r.get("status"), "conclusion": r.get("conclusion"),
+             "display_title": r.get("display_title")}
             for r in doc.get("workflow_runs") or []]
     label, why = decide(now, runs)
     print(f"[시계] {now:%m/%d %H:%M} KST — {why}")

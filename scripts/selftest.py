@@ -2831,6 +2831,23 @@ console.log(JSON.stringify(cases.map(c => {
         if _n:
             _ctrl.append(f"{_f.name}: {_n}")
     check("스크립트·템플릿 소스에 제어 문자 0", _ctrl, [])
+    # ── 2026-11-09 워크플로 문법 관문 — 워크플로 YAML 이 깨지면 그 워크플로는 **아예 돌지 않는다**(selftest 도 못 돈다).
+    #    데일리는 시계 중계의 dispatch 로만 깨는데, 문법 오류면 dispatch 가 422 로 거절돼 수집이 통째로 선다.
+    #    여러 세션이 같은 날 워크플로를 고친다(11/09: 중계·동시성·버크셔 단계) — 커밋 전 selftest·매시간 감시의 관문
+    #    미리보기가 여기서 잡는다. 셸·파이썬 린트는 끈다(러너 셸체크 판에 따라 결과가 흔들리지 않게 — 문법·문맥만).
+    import shutil as _shutil
+    import subprocess as _subp
+    _al = _shutil.which("actionlint")
+    _wfs = sorted(str(_p) for _p in (Path(__file__).parent.parent / ".github" / "workflows").glob("*.yml"))
+    if _al and _wfs:
+        _alr = _subp.run([_al, "-shellcheck=", "-pyflakes=", "-oneline", *_wfs],
+                         capture_output=True, text=True, timeout=180)
+        _all = [_ln.strip()[-160:] for _ln in (_alr.stdout + _alr.stderr).splitlines() if _ln.strip()][:5]
+        check(f"워크플로 문법(actionlint) — {len(_wfs)}개 오류 0", _all if _alr.returncode else [], [])
+    elif __import__("os").environ.get("GITHUB_ACTIONS") == "true":
+        check("워크플로 문법(actionlint) — CI 에 설치됨(requirements.txt)", bool(_al), True)
+    else:
+        print("  ⏭ 워크플로 문법(actionlint) — 로컬에 없어 건너뜀(pip install actionlint-py==1.7.12.25)")
 
     write_fails()
     if FAILS:

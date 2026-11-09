@@ -1,4 +1,7 @@
 name: Daily Universe Dominator Update
+# 실행 이름에 모드를 싣는다(2026-11-09) — 시계 중계·일일 점검이 '수집(full)'과 '재빌드(quick)'를 가를 유일한 흔적.
+# 실행 기록 API 는 입력값을 돌려주지 않는다. 이 이름의 '· quick' 꼬리를 바꾸면 clock_relay.is_full 도 같이 바꿀 것.
+run-name: "Daily Universe Dominator Update · ${{ inputs.mode == 'full' && 'full' || 'quick' }}"
 
 on:
   # ⏰ GitHub 예약(08:17·12:17·18:17 KST)은 지웠다(2026-11-04) — 실측 3~7시간씩 늦게 울려 '18:17' 회차가 다음 날
@@ -8,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: '실행 모드 — quick: 빌드·배포만(2~3분, 업로드 반영용) / full: 전체 수집 포함(~10분)'
+        description: '실행 모드 — quick: 빌드·배포만(2~3분, 업로드 반영용 · 돌고 있는 회차는 끊지 않고 기다린다) / full: 전체 수집 포함(~10분)'
         type: choice
         default: quick
         options: [quick, full]
@@ -21,10 +24,13 @@ on:
         type: string
         default: ''
 
-# 동시 실행 방지 — 새 실행이 시작되면 진행 중이던 이전 실행은 자동 취소
+# 동시 실행 방지 — 한 번에 하나. **quick(재빌드)은 진행 중인 회차를 끊지 않고 기다린다**(2026-11-09).
+#   옛 설정(cancel-in-progress: true)에서는 업로드 반영용 quick 이 돌고 있던 full 수집을 끊었다 — 11/09 02:14Z 실측:
+#   3.5일 정지 뒤 복구 full 이 13단계에서 다른 세션의 quick 에 끊겼다. full 은 여전히 돌고 있는 quick 을 끊는다
+#   (full 도 빌드하므로 잃는 것이 없다). 시계 중계는 무엇이든 돌고 있으면 쏘지 않는다(clock_relay.decide).
 concurrency:
   group: daily-update
-  cancel-in-progress: true
+  cancel-in-progress: ${{ inputs.mode == 'full' }}
 
 jobs:
   update:
@@ -40,6 +46,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
+        # 실행이 **시작될 때의** 브랜치 끝을 받는다(2026-11-09). 기본값은 '요청한 순간의 커밋'이라, quick 이 돌고 있는
+        # full 뒤에서 기다렸다 시작하면 full 이전 데이터로 빌드한다(그 커밋은 rebase 충돌로 버려진다).
+        with:
+          ref: ${{ github.ref }}
       
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -403,15 +413,23 @@ jobs:
           else
             git commit -m "Auto update: $(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')"
             # 동시 실행 충돌 대비: 최대 3회 rebase 후 push 재시도
+            pushed=0
             for i in 1 2 3; do
               if git push; then
                 echo "push 성공"
+                pushed=1
                 break
               fi
               echo "push 거부 — 원격 변경 반영 후 재시도 ($i/3)"
               git pull --rebase origin main || git rebase --abort
               sleep $((i * 3))
             done
+            # 세 번 다 거부되면 이번 회차의 수집·빌드가 통째로 사라진다 — 조용히 성공으로 끝내지 않는다(2026-11-09).
+            # 실패로 끝나야 경성 실패 경보가 운다(실패를 실패로 보고).
+            if [ "$pushed" != "1" ]; then
+              echo "::error::[커밋] push 3회 거부 — 이번 회차 산출물이 원격에 반영되지 않았다"
+              exit 1
+            fi
           fi
 
       # 🛰 탐사 엔진 사건 모드 발사 — **커밋 뒤에** 쏜다(엔진이 이번 회차 측정을 읽게).

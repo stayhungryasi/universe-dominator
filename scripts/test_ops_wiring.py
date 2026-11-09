@@ -89,6 +89,62 @@ class RelayRetryOnceTest(unittest.TestCase):
             self.assertIsNone(cr.decide(datetime(2026, 11, 9, *map(int, hm.split(":")), tzinfo=KST), again)[0])
 
 
+def _r(hm, concl="success", mode=None, status="completed"):
+    t = datetime(2026, 11, 9, *map(int, hm.split(":")), tzinfo=KST).astimezone(timezone.utc)
+    title = "Daily Universe Dominator Update" + (f" · {mode}" if mode else "")
+    return {"created_at": t.strftime("%Y-%m-%dT%H:%M:%SZ"), "status": status,
+            "conclusion": concl if status == "completed" else None, "display_title": title}
+
+
+class RelayModeTest(unittest.TestCase):
+    """⑤ 11/09 02:14Z 실측: 복구 full 이 다른 세션의 quick 에 끊겼다. quick 은 수집이 아니고, 취소된 수집은 실행이 아니다."""
+    def at(self, hm):
+        return datetime(2026, 11, 9, *map(int, hm.split(":")), tzinfo=KST)
+
+    def test_quick_after_slot_does_not_consume_slot(self):
+        self.assertEqual(cr.decide(self.at("12:15"), [_r("12:11", mode="quick")])[0], "12:10")
+        self.assertIsNone(cr.decide(self.at("12:15"), [_r("12:11", mode="full")])[0])
+        self.assertIsNone(cr.decide(self.at("12:15"), [_r("12:11")])[0])          # 꼬리 없는 옛 회차 = full(보수적)
+
+    def test_running_quick_still_waits(self):
+        self.assertIsNone(cr.decide(self.at("12:15"), [_r("12:12", mode="quick", status="in_progress")])[0])
+
+    def test_cancelled_full_refired_once_then_folds(self):
+        one = [_r("12:11", "cancelled", "full"), _r("12:12", mode="quick")]
+        self.assertEqual(cr.decide(self.at("12:30"), one)[0], "12:10")
+        two = one + [_r("12:31", "cancelled", "full")]
+        label, why = cr.decide(self.at("12:45"), two)
+        self.assertIsNone(label)
+        self.assertIn("접는다", why)
+
+    def test_quick_success_does_not_satisfy_retry(self):
+        runs = [_r("08:16", "failure", "full"), _r("08:40", "success", "quick")]
+        self.assertEqual(cr.decide(self.at("09:15"), runs)[0], "09:10")
+        self.assertIsNone(cr.decide(self.at("09:15"), [_r("08:16", "success", "full")])[0])
+
+    def test_heartbeat_counts_only_full_success(self):
+        doc = {"workflow_runs": [{"display_title": "Daily Universe Dominator Update · quick", "updated_at": "Q"},
+                                 {"display_title": "Daily Universe Dominator Update · full", "updated_at": "F"}]}
+        with mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "o/r", "GITHUB_TOKEN": ""}), \
+                mock.patch.object(sw, "_get_json", return_value=(doc, "ok", 200)):
+            self.assertEqual(sw.collect_daily_runs(None), {"at": "F", "checked": True})
+        doc["workflow_runs"] = doc["workflow_runs"][:1]
+        with mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "o/r", "GITHUB_TOKEN": ""}), \
+                mock.patch.object(sw, "_get_json", return_value=(doc, "ok", 200)):
+            self.assertEqual(sw.collect_daily_runs(None)["at"], None)            # 재빌드만 성공 = 수집 성공 기록 없음
+
+    def test_workflow_names_mode_and_quick_never_cancels(self):
+        # pyyaml 은 CI 의존성이 아니다 — 줄 단위로 본다(최상위 키는 들여쓰기 없음)
+        lines = (ROOT / ".github" / "workflows" / "daily-update.yml").read_text(encoding="utf-8").splitlines()
+        rn = [ln for ln in lines if ln.startswith("run-name:")]
+        self.assertEqual(len(rn), 1)
+        self.assertIn("Daily Universe Dominator Update · ${{ inputs.mode == 'full' && 'full' || 'quick' }}", rn[0])
+        self.assertEqual(cr.QUICK_TAG, "· quick")                               # 꼬리 = '· quick' / '· full'
+        i = lines.index("concurrency:")
+        self.assertEqual([ln.strip() for ln in lines[i + 1:i + 3]],
+                         ["group: daily-update", "cancel-in-progress: ${{ inputs.mode == 'full' }}"])
+
+
 class WorkflowWiringTest(unittest.TestCase):
     def _block(self, y, needle):
         i = y.index(needle)
@@ -101,6 +157,16 @@ class WorkflowWiringTest(unittest.TestCase):
         self.assertIn("actions: write", y)
         self.assertLess(y.index("repair_dispatch.py now"), y.index("Hard failure alarm"))
         self.assertIn("GITHUB_TOKEN", self._block(y, "python scripts/timebomb_probe.py"))
+
+    def test_daily_checks_out_tip_and_fails_on_lost_push(self):
+        """quick 이 full 뒤에서 기다렸다 시작해도 최신 끝을 받는다 · push 3회 거부는 실패로 끝난다."""
+        y = (ROOT / ".github" / "workflows" / "daily-update.yml").read_text(encoding="utf-8")
+        co = self._block(y, "uses: actions/checkout@")
+        self.assertIn("ref: ${{ github.ref }}", co)
+        cm = self._block(y, 'git commit -m "Auto update:')
+        self.assertIn("pushed=1", cm)
+        self.assertIn('if [ "$pushed" != "1" ]; then', cm)
+        self.assertIn("exit 1", cm[cm.index('if [ "$pushed" != "1" ]'):])
 
     def test_watch_previews_gate_after_commit(self):
         y = (ROOT / ".github" / "workflows" / "spacex-watch.yml").read_text(encoding="utf-8")

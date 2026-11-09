@@ -1392,11 +1392,13 @@ def collect_daily_runs(fc):
     tok = os.environ.get("GITHUB_TOKEN", "").strip()
     if tok:
         hdr["Authorization"] = "Bearer " + tok
-    url = f"https://api.github.com/repos/{repo}/actions/workflows/{DAILY_WORKFLOW}/runs?status=success&per_page=1"
+    # 2026-11-09: 재빌드(quick) 성공도 '수집 성공'으로 세고 있었다 — 수집이 멈춰도 업로드 반영 한 번이 이 줄을
+    # 초록으로 만든다. 실행 이름의 모드 꼬리(daily-update.yml run-name)로 full 만 센다(옛 회차는 full 로 친다).
+    url = f"https://api.github.com/repos/{repo}/actions/workflows/{DAILY_WORKFLOW}/runs?status=success&per_page=30"
     doc, oc, code = _get_json(fc, url, "데일리 수집 실행기록", hdr)
     if doc is None:
         return {"at": None, "checked": False}
-    runs = doc.get("workflow_runs") or []
+    runs = [r for r in doc.get("workflow_runs") or [] if "· quick" not in str(r.get("display_title") or "")]
     return {"at": (runs[0].get("updated_at") if runs else None), "checked": True}
 
 
