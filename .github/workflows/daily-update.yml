@@ -32,7 +32,7 @@ jobs:
     
     permissions:
       contents: write   # 자동 커밋 + repository_dispatch(탐사 엔진 사건 모드 발사)
-      actions: read     # 월간 탐사 엔진(spacex-probe.yml) 마지막 실행 결론 조회
+      actions: write    # 탐사 엔진 실행 결론 조회 + 자가 수리 에이전트 직접 호출(workflow_run 은 시계 중계 회차에 안 울린다)
     
     env:
       FULL_RUN: ${{ github.event_name == 'schedule' || inputs.mode == 'full' }}
@@ -59,6 +59,14 @@ jobs:
         env:
           SELFTEST_FAILS_OUT: ${{ runner.temp }}/selftest_fails.json
         continue-on-error: false
+
+      # selftest 가 멈추면 자가 수리 에이전트를 **직접** 부른다(2026-11-09: workflow_run 트리거는 시계 중계가 띄운
+      # 회차에 울리지 않아 11/04 이후 한 번도 불리지 않았다 — 그사이 경보 DM 은 27번 '수리안을 만듭니다'라고 약속했다)
+      - name: Call self-repair agent (selftest failed)
+        if: failure() && steps.selftest.outcome == 'failure'
+        run: python scripts/repair_dispatch.py now
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Fetch latest market cap data (+ daily snapshot)
         if: env.FULL_RUN == 'true'
@@ -337,6 +345,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}   # 미래 실패를 찾으면 자가 수리(future) 직접 호출
         continue-on-error: true
 
       # ── 정비 관제탑 — 침묵 실패 감시 (관측자, 커밋 직전 마지막 관문) ──

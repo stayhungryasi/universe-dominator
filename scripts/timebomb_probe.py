@@ -113,7 +113,16 @@ def message(found):
     return "\n".join(lines)
 
 
-def run(force=False, offsets=OFFSETS, selftest=None, send=None):
+def _dispatch(mode):
+    try:
+        from repair_dispatch import dispatch_repair
+        return dispatch_repair(mode)
+    except Exception as e:
+        print(f"[시한폭탄] 자가 수리 호출 실패({type(e).__name__})")
+        return False
+
+
+def run(force=False, offsets=OFFSETS, selftest=None, send=None, dispatch=_dispatch):
     now = now_kst()
     today = now.strftime("%Y-%m-%d")
     state = read_json(STATE_PATH, {}) or {}
@@ -133,6 +142,9 @@ def run(force=False, offsets=OFFSETS, selftest=None, send=None):
         if stale:
             send(message(found))
             state["alerted_on"] = today
+            # 미래 실패는 그날이 오기 전에 고친다 — 자가 수리 에이전트를 직접 부른다(+0일이면 now, 아니면 future)
+            if dispatch is not None:
+                dispatch("now" if min(x["offset"] for x in found) == 0 else "future")
         state["sig"] = sig
         state["found"] = [{"offset": x["offset"], "date": x["date"], "labels": [f["label"] for f in x["fails"]],
                            "error": x["error"]} for x in found]

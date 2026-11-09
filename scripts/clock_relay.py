@@ -66,6 +66,9 @@ def decide(now, runs, slots=SLOTS):
             ok = [r for r in runs or [] if r.get("conclusion") == "success" and morning and _t(r["created_at"]) >= morning]
             if ok:
                 return None, f"{label} 재시도 슬롯 — 아침 슬롯 뒤 성공 회차가 있다"
+            # 재시도는 한 번만 — 2026-11-06~09 실측: 실패한 회차가 2분 만에 끝나 15분마다 다시 쏘았다(09:15·09:30·09:45·10:00)
+            if [r for r in runs or [] if _t(r["created_at"]) >= t]:
+                return None, f"{label} 재시도 슬롯 — 이미 한 번 다시 쐈다"
             return label, f"{label} 재시도 슬롯 — 아침 슬롯 뒤 성공 회차가 없다(브리핑 두 번째 기회)"
         since = [r for r in runs or [] if _t(r["created_at"]) >= t]
         if since:

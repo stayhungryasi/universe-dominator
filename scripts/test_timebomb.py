@@ -74,28 +74,29 @@ class TimebombTest(unittest.TestCase):
         self.assertIn("실행 실패", err)                                  # 침묵은 통과가 아니다
 
     def test_once_a_day_and_realert(self):
-        sent = []
+        sent, calls = [], []
         with mock.patch.object(tb, "now_kst", return_value=datetime(2026, 11, 10, 9, 0, tzinfo=KST)):
-            tb.run(offsets=(14,), selftest=self.fake, send=sent.append)
-            tb.run(offsets=(14,), selftest=self.fake, send=sent.append)     # 같은 날 두 번째 — 건너뜀
+            tb.run(offsets=(14,), selftest=self.fake, send=sent.append, dispatch=calls.append)
+            tb.run(offsets=(14,), selftest=self.fake, send=sent.append, dispatch=calls.append)     # 같은 날 두 번째 — 건너뜀
         self.assertEqual(len(sent), 1)
         with mock.patch.object(tb, "now_kst", return_value=datetime(2026, 11, 11, 9, 0, tzinfo=KST)):
-            tb.run(offsets=(14,), selftest=self.fake, send=sent.append)     # 다음 날, 같은 실패 — 침묵(7일 재알림)
+            tb.run(offsets=(14,), selftest=self.fake, send=sent.append, dispatch=calls.append)     # 다음 날, 같은 실패 — 침묵(7일 재알림)
         self.assertEqual(len(sent), 1)
         with mock.patch.object(tb, "now_kst", return_value=datetime(2026, 11, 17, 9, 0, tzinfo=KST)):
-            tb.run(offsets=(14,), selftest=self.fake, send=sent.append)     # 7일 뒤 — 재알림
+            tb.run(offsets=(14,), selftest=self.fake, send=sent.append, dispatch=calls.append)     # 7일 뒤 — 재알림
         self.assertEqual(len(sent), 2)
+        self.assertEqual(calls, ["future", "future"])        # 경보마다 자가 수리를 미래 모드로 부른다
 
     def test_recovery_once(self):
-        sent = []
+        sent, calls = [], []
         with mock.patch.object(tb, "now_kst", return_value=datetime(2026, 11, 10, 9, 0, tzinfo=KST)):
-            tb.run(offsets=(14,), selftest=self.fake, send=sent.append)
+            tb.run(offsets=(14,), selftest=self.fake, send=sent.append, dispatch=calls.append)
         ok = self.tmp / "ok.py"
         ok.write_text("import os,json;open(os.environ['SELFTEST_FAILS_OUT'],'w').write(json.dumps({'fails':[],'detail':[]}))\n",
                       encoding="utf-8")
         with mock.patch.object(tb, "now_kst", return_value=datetime(2026, 11, 12, 9, 0, tzinfo=KST)):
-            tb.run(offsets=(14,), selftest=ok, send=sent.append)
-            tb.run(offsets=(14,), selftest=ok, send=sent.append, force=True)
+            tb.run(offsets=(14,), selftest=ok, send=sent.append, dispatch=calls.append)
+            tb.run(offsets=(14,), selftest=ok, send=sent.append, force=True, dispatch=calls.append)
         self.assertEqual(len(sent), 2)
         self.assertIn("해소", sent[1])
 

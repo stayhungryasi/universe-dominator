@@ -63,6 +63,7 @@ jobs:
           SPACEX_HEARTBEAT: "1"
 
       - name: Commit if changed
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -75,6 +76,7 @@ jobs:
           for i in 1 2 3; do
             if git push; then
               echo "push 성공"
+              echo "committed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             echo "push 거부 — 원격 변경 반영 후 재시도 ($i/3)"
@@ -83,3 +85,15 @@ jobs:
           done
           echo "push 3회 실패" >&2
           exit 1
+
+      # 다음 데일리 관문 미리보기 — 이 감시가 데이터를 커밋한 회차에만(하루 몇 번) selftest 를 돌려 본다.
+      # 2026-11-06: 이 감시의 00:01 커밋을 몰래 읽던 테스트가 깨져 08:15 데일리부터 3.5일 멈췄다 — 이제 커밋 직후에
+      # 알고, 다음 데일리 전에 소장 DM + 자가 수리 호출. 감시 자체는 실패로 세지 않는다(비차단).
+      - name: Next daily gate preview (after data commit)
+        if: steps.commit.outputs.committed == 'true'
+        run: python scripts/gate_preview.py "매시간 감시"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
