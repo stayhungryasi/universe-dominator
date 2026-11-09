@@ -938,6 +938,64 @@ def fit_budget(data, report_ids, budget=None):
             break
         step()
         trimmed.append(name)
+    # 2026-11-09: 위 단계를 다 밟아도 420KB — 11/06·11/07·11/08 사건 보고서 3편이 이 예산에 막혀 게시되지 못했다
+    # ('바닥 308KB 고정'은 옛 보고서 수에 대해서만 참이었다 — 최신 보고서·출처 자체가 커지면 바닥도 오른다).
+    # 이제 마지막 단계가 **예산을 보장**한다: 남은 검색 입구를 우선순위가 낮은 것부터 덜어 낸다. 화면의 보고서
+    # 목록·본문·이정표·트리거는 그대로 — 덜어지는 것은 검색 색인과 출처 주장 미리보기뿐이다.
+    newest_ev = events[-1:] if events else []
+
+    def s_keep_one():                       # 최신 사건 1 + 최신 월간 1 만 본문 검색
+        for e in data.get("search") or []:
+            a_ = e.get("anchor", "")
+            if a_.startswith("report/") and "full" in e and a_[7:].split(":")[0] not in set(newest_ev) | set(monthly[-1:]):
+                e.pop("full")
+
+    def s_claims1():
+        for src in data.get("sources") or []:
+            src["claims"] = [dict(c, text=(c.get("text") or "")[:90]) for c in (src.get("claims") or [])[:1]]
+
+    def s_full_cap():
+        for e in data.get("search") or []:
+            if isinstance(e.get("full"), str) and len(e["full"]) > 3000:
+                e["full"] = e["full"][:3000]
+
+    for name, step in (("full:keep1", s_keep_one), ("claims:1", s_claims1), ("full:cap3000", s_full_cap)):
+        if _size(data) <= budget:
+            break
+        step()
+        trimmed.append(name)
+    # 보장 단계 — 검색 입구를 낮은 우선순위부터 하나씩(출처 → 사건 → 이정표 → 트리거 → 변화 이력 → 보고서 뒤쪽 절)
+    prio = ("sources/", "events/", "milestones/", "triggers/", "changelog/", "report/")
+    dropped = 0
+    if _size(data) > budget:
+        srch = data.get("search") or []
+        for pref in prio:
+            idx = [i for i, e in enumerate(srch) if e.get("anchor", "").startswith(pref)]
+            if pref == "report/":           # 보고서는 절마다 첫 절을 남기고 뒤쪽 절부터
+                firsts, rest = set(), []
+                for i in idx:
+                    rid = srch[i]["anchor"][7:].split(":")[0]
+                    (rest.append(i) if rid in firsts else firsts.add(rid))
+                idx = rest
+            for i in reversed(idx):
+                srch[i] = None
+                dropped += 1
+                if dropped % 10 == 0:
+                    data["search"] = [e for e in srch if e is not None]
+                    if _size(data) <= budget:
+                        break
+            data["search"] = [e for e in srch if e is not None]
+            srch = data["search"]
+            if _size(data) <= budget:
+                break
+        trimmed.append(f"search:drop{dropped}")
+    if _size(data) > budget:                # 그래도 넘으면 출처 행을 오래된 날짜부터(최근 출처는 남긴다)
+        rows = sorted(data.get("sources") or [], key=lambda x: str(x.get("date") or ""))
+        n0 = len(rows)
+        while rows and _size(data) > budget:
+            rows = rows[max(1, len(rows) // 10):]
+            data["sources"] = rows
+        trimmed.append(f"sources:drop{n0 - len(rows)}")
     over = _size(data) > budget
     data["budget"] = {"bytes": _size(data), "limit": budget, "trimmed": trimmed, "over": over}
     return trimmed

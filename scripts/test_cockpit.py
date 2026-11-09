@@ -227,6 +227,24 @@ class BudgetTest(unittest.TestCase):
             self.assertFalse(any("event" in e["anchor"] and not any(k in e["anchor"] for k in ids[-3:]) for e in d["search"]))
         self.assertLess(abs(sizes[1] - sizes[0]), 2000)                # 옛 보고서 10 → 40 이어도 바닥은 그대로
 
+    def test_bound_is_guaranteed_even_when_newest_reports_are_huge(self):
+        """2026-11-09: 11/06·07·08 사건 보고서 3편이 예산(420KB, 단계 소진)에 막혀 미게시 — 최신 보고서·출처 자체가
+        커지면 '바닥'도 오른다. 마지막 단계는 검색 입구를 우선순위대로 덜어 **예산을 보장**해야 한다."""
+        ids = ["2026-11", "2026-11-05-event", "2026-11-06-event", "2026-11-08-event"]
+        search = [{"anchor": f"report/{r}:s{k}", "title": r, "text": "가" * 300, "full": "나" * 20_000}
+                  for r in ids for k in range(8)]
+        sources = [{"id": f"s{k}", "date": f"2026-10-{1 + k % 28:02d}", "url": f"https://x/{k}", "n": 3,
+                    "claims": [{"where": "보고서 2026-11 · 절", "text": "다" * 400}] * 3} for k in range(200)]
+        search += [{"anchor": f"sources/s{k}", "title": "t", "text": "라" * 200} for k in range(200)]
+        d = {"search": search, "sources": sources, "milestones": [{"t": "마" * 200}] * 30}
+        pc.fit_budget(d, ids, budget=150_000)
+        self.assertLessEqual(len(json.dumps(d, ensure_ascii=False).encode()), 150_000)
+        self.assertFalse(d["budget"]["over"])
+        self.assertEqual(len(d["milestones"]), 30)                       # 화면 요소(이정표)는 건드리지 않는다
+        firsts = {e["anchor"].split(":")[0] for e in d["search"] if e["anchor"].startswith("report/")}
+        # 최신 월간 + 최신 사건 2 는 검색 입구 하나씩 남는다(옛 보고서는 앞 단계 설계대로 목록·본문으로만 읽힌다)
+        self.assertEqual(firsts, {"report/2026-11", "report/2026-11-06-event", "report/2026-11-08-event"})
+
     def test_render_wired(self):
         """render() 가 예산 맞추기를 실제로 거친다(배선) — 예산을 낮추면 덜어낸 기록이 데이터에 남고 상한 안이다."""
         from unittest import mock
