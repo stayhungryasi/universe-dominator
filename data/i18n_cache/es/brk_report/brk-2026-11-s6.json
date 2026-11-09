@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-s6",
+ "lang": "es",
+ "src_hash": "3c88545f6cdf",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 18:38",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "FASE 5 — Reglas de reejecución",
+  "md": "- Las ediciones periódicas salen el segundo día de cada mes por la mañana (KST), más las ediciones por eventos de la capa de medición (informes trimestrales y anuales, detalle de posiciones, detección de divulgaciones ocasionales, llegada de la fecha prevista de un disparador). Si el vacío de observación supera un mes, la capa de medición lanza por sí misma la edición mensual (protocolo: fuente prompts/monthly_run.md).\n- Cada reejecución empieza por \"lo que cambió respecto a la edición anterior\", y las probabilidades solo se ajustan mediante R1~R6. Si el mismo eje incumple 3 veces seguidas, se fuerza un nuevo cálculo (fuente de la regla: prompts/berkshire_master.md).\n- Las declaraciones de la dirección (abajo) se registran solo como candidatas a hito: Abel, \"el entorno de seguros se volverá más difícil y se espera que se suavice hasta fin de año\" (junta del 2026-05-02, cita de [Forbes](https://www.forbes.com/sites/bill_stone/2026/11/07/berkshire-hathaway-q3-earnings-miss-on-insurance-not-on-strategy/)) · Buffett, \"el precio de muchas cosas parecerá muy absurdo, pero eso no significa que invertir sea malo\" (2026-05-02, [transcripción de CNBC](https://pressroom.versantmedia.com/cnbc/press-releases/cnbc-transcript-berkshire-hathaway-chairman-warren-buffett-sits-down-cnbcs)).\n"
+ }
+}

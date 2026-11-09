@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-s4",
+ "lang": "es",
+ "src_hash": "282c2cabcf14",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 18:38",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "FASE 3 — Panorama a 10 años",
+  "md": "| Escenario | Probabilidad | Capitalización anual del BPS (supuesto) | BPS de la acción B en 2036 (fórmula) | P/B al cierre de 2036 (supuesto) | Hitos necesarios |\n|---|---|---|---|---|---|\n| Alcista | 25% | 10,5% | $970,9 | 1,7x | C-2028-1·D-2027-1·A-2027-2·B-2028-1 |\n| Base | 50% | 8,0% | $772,3 | 1,45x | A-2027-1·B-2027-1·C-2027-2 |\n| Bajista | 25% | 4,5% | $555,5 | 1,15x | (a la inversa) incumplir C-2027-1·incumplir E-2028-1·incumplir A-2027-1 |\n\nFórmula: BPS 2036 = $357,73 × (1+g)^10. Fuente del BPS base: [10-Q del 3T26](https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf) (patrimonio ÷ número de acciones).\n\n- Alcista: el efectivo se despliega a gran escala en una fase de crisis (D5·D4), GEICO recupera su ratio de siniestralidad y BNSF y BHE se normalizan. Equivale a que se mantenga durante 10 años el crecimiento del BPS del último año, 10,5% (incluidas las plusvalías por valoración, fórmula).\n- Base: despliegue gradual del efectivo, devolución parcial mediante recompras y ciclo de seguros promedio. El 8% es un supuesto formado por la suma de \"crecimiento del beneficio operativo + efecto de las recompras + rentabilidad media de la cartera de acciones\".\n- Bajista: los ingresos por inversiones caen por la bajada de tipos (fórmula 1-1: por cada 1 p. p., unos $3.400 millones anuales antes de impuestos, estimación), el efectivo queda ocioso y coinciden grandes catástrofes, responsabilidad por incendios forestales y errores de asignación de capital tras la sucesión.\n- Base de las probabilidades: la primera edición no tiene historial de observación, por lo que parte de una distribución simétrica 25/50/25 (supuesto). Los ajustes posteriores se hacen solo con las reglas siguientes.\n\n| Regla | Condición | Ajuste |\n|---|---|---|\n| R1 | Ratio de siniestralidad trimestral de GEICO por encima del 78% durante 2 trimestres seguidos (fórmula del 10-Q) | Alcista −5 p. p. · Bajista +5 p. p. |\n| R2 | Cierre de una adquisición individual de $20.000 millones o más (8-K Item 2.01) | Alcista +5 p. p. · Bajista −5 p. p. |\n| R3 | Efectivo según el titular por encima de $400.000 millones durante 2 trimestres seguidos | Base −5 p. p. · Bajista +5 p. p. |\n| R4 | Recompra anual de acciones superior a $30.000 millones (supera los $27.000 millones de 2021) | Alcista +5 p. p. · Base −5 p. p. |\n| R5 | Nuevo reconocimiento de pérdidas por incendios de PacifiCorp superior a $1.000 millones en un trimestre | Base −5 p. p. · Bajista +5 p. p. |\n| R6 | Compras netas de acciones de $20.000 millones o más en un trimestre con el S&P 500 un −20% bajo su máximo | Alcista +5 p. p. · Bajista −5 p. p. |\n"
+ }
+}

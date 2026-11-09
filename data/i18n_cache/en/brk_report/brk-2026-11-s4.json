@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-s4",
+ "lang": "en",
+ "src_hash": "282c2cabcf14",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 18:38",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "PHASE 3 — The picture 10 years out",
+  "md": "| Scenario | Probability | BPS annual compounding (assumed) | 2036 Class B BPS (formula) | 2036 ending P/B (assumed) | Required milestones |\n|---|---|---|---|---|---|\n| Bull | 25% | 10.5% | $970.9 | 1.7x | C-2028-1·D-2027-1·A-2027-2·B-2028-1 |\n| Base | 50% | 8.0% | $772.3 | 1.45x | A-2027-1·B-2027-1·C-2027-2 |\n| Bear | 25% | 4.5% | $555.5 | 1.15x | (inverse) C-2027-1 missed·E-2028-1 missed·A-2027-1 missed |\n\nFormula: 2036 BPS = $357.73 × (1+g)^10. Base BPS source: [3Q26 10-Q](https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf) (equity ÷ share count).\n\n- Bull: cash is deployed on a large scale in a crisis phase (D5·D4), GEICO brings its loss ratio back, and BNSF and BHE normalize. Equivalent to the past year's BPS growth rate of 10.5% (including valuation gains, formula) lasting 10 years.\n- Base: gradual cash deployment, partial return via share repurchases, and an average insurance cycle. The 8% is an assumption set as the sum of 'operating earnings growth + buyback effect + average return of the equity portfolio'.\n- Bear: investment income falls as interest rates decline (1-1 formula: about $3.4 billion of annual pre-tax income per 1%p, estimate), cash is left idle, and major catastrophe and wildfire liabilities coincide with post-succession capital allocation mistakes.\n- Basis for probabilities: with no observation history in the first issue, we start from a symmetric 25/50/25 (assumption). Later adjustments follow only the rules below.\n\n| Rule | Condition | Adjustment |\n|---|---|---|\n| R1 | GEICO quarterly loss ratio above 78% for two consecutive quarters (10-Q formula) | Bull −5%p · Bear +5%p |\n| R2 | Completion of a single acquisition of $20 billion or more (8-K Item 2.01) | Bull +5%p · Bear −5%p |\n| R3 | Headline cash above $400 billion for two consecutive quarters | Base −5%p · Bear +5%p |\n| R4 | Annual share repurchases above $30 billion (breaking the 2021 record of $27 billion) | Bull +5%p · Base −5%p |\n| R5 | New PacifiCorp wildfire loss recognition above $1 billion in a single quarter | Base −5%p · Bear +5%p |\n| R6 | Net equity purchases of $20 billion or more in a quarter when the S&P 500 is −20% from its peak | Bull +5%p · Bear −5%p |\n"
+ }
+}
