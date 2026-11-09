@@ -1,37 +1,31 @@
 {
-  "run_id": "2026-11-09-event",
-  "checked": 30,
-  "match": 28,
+  "run_id": "2026-11-10-event",
+  "checked": 19,
+  "match": 18,
   "rounding": 1,
   "mismatch": [],
-  "unverifiable": [
-    {
-      "claim": "CEO 게시 시점 주가 등락(Dallas Express)",
-      "value": 6.05,
-      "unit": "%",
-      "source_url": "https://dallasexpress.com/national/just-say-the-word-musk-offers-to-cancel-unwanted-spacex-contracts/",
-      "reason": "원문 HTTP 403. 대체 원천(mitrade 11/07)은 '게시 후 금요일 약 6% 상승'으로 방향·크기는 일치하나 6.05%·$131.09 정확값은 확인 불가. 같은 날 종가 기준 +8.62% 는 별도 항목으로 일치 확인됨"
-    }
+  "unverifiable": [],
+  "details": [
+    {"claim": "기준 주가 — 2026-11-09 종가", "value": 142.12, "result": "일치", "source_value": 142.12, "report": "머리말·3절·부록 1행 142.12 일치"},
+    {"claim": "2026-11-09 등락률", "value": 5.85, "result": "일치", "source_value": 5.85, "report": "머리말·부록 일치"},
+    {"claim": "2026-11-09 거래량", "value": 103182512, "result": "일치", "source_value": 103182512, "report": "부록 1행 일치(머리말 '1억 318만주' 일치)"},
+    {"claim": "2026-11-09 장중 고가", "value": 143.20, "result": "일치", "source_value": 143.20, "report": "부록 1행·3절 일치"},
+    {"claim": "2026-11-09 장중 저가", "value": 135.37, "result": "일치", "source_value": 135.37, "report": "부록 1행·3절 일치"},
+    {"claim": "2026-11-06 거래량(출처 측 수정 후)", "value": 115494958, "result": "일치", "source_value": 115494958, "report": "3절·부록 2행 일치"},
+    {"claim": "2026-11-06 종가(불변)", "value": 134.27, "result": "일치", "source_value": 134.27, "report": "머리말·부록 2행 일치"},
+    {"claim": "발행주식수(2026-10-15, 10-Q 표지)", "value": 13581, "result": "일치", "source_value": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 (2026-10-15 기준, 표지)", "report": "3절·부록 3행 일치"},
+    {"claim": "시가총액(산식 142.12 × 13.581)", "value": 1930, "result": "반올림 차이", "source_value": "142.12 × 13,581.063709백만 = 1,930.1십억", "report": "3절·부록 4행 1,930 일치 · 차이 0.005%"},
+    {"claim": "미국 10년물 국채수익률(2026-11-06)", "value": 4.86, "result": "일치", "source_value": 4.86, "report": "3절·부록 5행 일치"},
+    {"claim": "Starship Flight 15 NET(LL2, UTC)", "value": "2026-11-13 22:45", "result": "일치", "source_value": "2026-11-13T22:45:00Z", "report": "1절 표·부록 6행 일치"},
+    {"claim": "Starship Flight 15 발사 창 종료(LL2, UTC)", "value": "2026-11-14 00:00", "result": "일치", "source_value": "2026-11-14T00:00:00Z", "report": "1절 표·부록 6행 일치"},
+    {"claim": "Starship Flight 15 LL2 마지막 갱신 시각(UTC)", "value": "2026-11-09 23:06", "result": "일치", "source_value": "2026-11-09T23:06:16Z", "report": "1절 표·부록 6행 일치"},
+    {"claim": "Flight 15 목표일 — 발사 부사장(UP.Summit)", "value": "2026-11-13", "result": "일치", "source_value": "11월 13일(금), Teslarati 2026-11-05", "report": "1절 표 2행·부록 7행 일치"},
+    {"claim": "FAA 항공 계획 슬라이드 날짜(첫 번째)", "value": "2026-11-08", "result": "일치", "source_value": "11월 8일 이후(NET)", "report": "1절 표 2행 일치"},
+    {"claim": "FAA 항공 계획 슬라이드 날짜(두 번째)", "value": "2026-11-12", "result": "일치", "source_value": "11월 12일", "report": "1절 표 2행 일치"},
+    {"claim": "Booster 22 정적 점화 엔진 수", "value": 33, "result": "일치", "source_value": 33, "report": "1절 표 3행 일치(10/25)"},
+    {"claim": "Ship 42 6기 정적 점화 지속 시간", "value": 60, "result": "일치", "source_value": "6기 60초(10/27)", "report": "1절 표 3행 '약 60초' 일치"},
+    {"claim": "SpaceX EDGAR 최신 공시 — 8-K Item 5.02 제출일", "value": "2026-11-06", "result": "일치", "source_value": "8-K 2026-11-06 accn 0001628280-26-071689 Item 5.02 (최신 행)", "report": "1절 표·2절·부록 8행 일치"},
+    {"claim": "Blumenthal 서한 브리핑 요청 기한", "value": "2026-11-12", "result": "일치", "source_value": "11월 12일", "report": "2절 표·부록 일치"}
   ],
-  "rounding_items": [
-    {
-      "claim": "시가총액(산식 134.27 × 13.581)",
-      "value": 1823,
-      "unit": "십억 USD",
-      "computed": 1823.5,
-      "note": "134.27 × 13,581.06 백만주 = 1,823.5 → 보고서 1,823 (−0.03%, 반올림 폭 이내). data/latest.json SPCX mc 1823.0 과 일치"
-    }
-  ],
-  "notes": [
-    "발행주식수: 10-Q 표지 Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709 (2026-10-15) → 13,581 백만주 일치",
-    "10-Q R12 원문: 고객 A 16.6/23.9/17.3/21.6%, 고객 B 34.5%(SI, 9M26 24.2%), 매출채권 1곳 27.7% — 보고서 1-2 절·부록과 전부 일치",
-    "3Q26 매출 14,575 · 3Q25 부문 합 3,097+813+1,666=5,576 — 8-K Ex.99.1 원문과 일치",
-    "S-1 20.9%는 2차 인용(대시보드) 원문 그대로 '20.9% of 2025 revenue (~$3.9B)'. 보고서 1-2 절 표의 2024 24.2% · 2023 25.2% 는 verify_list 에 없고 대시보드 페이지에도 없어 본 회차 대조 대상 외(작성자 미결 ① 과 같은 S-1 원문 열람 사안)",
-    "Yahoo(Investing.com) 원문은 '이번 분기 10% 미만 · 약 1년 뒤 5% 미만 · 직전 분기 16.6% · 2025 약 1/5' — 보고서 1-1·7절과 일치. 이 기사에는 주가 등락 언급 없음",
-    "8-K: 보고일 2026-11-04 · Item 5.02 · 서명 Bret Johnsen 11/06 — 일치. IR: 'served on our board since February 2015' — 일치",
-    "Flight 15: Wikipedia 인포박스 'NET November 13, 2026, 22:45 UTC' — 일치. Vulcan LV-01: newspaceeconomy 10/29 '11월 13일, Amazon Leo 40기' · data/spacex_watch.json competitor_next 2026-11-13 Go for Launch — 일치",
-    "미국 10년물: FRED DGS10 최신 4.84(2026-11-05) · data/latest.json meta.macro.ust10 4.84/2026-11-05 — 일치",
-    "stockanalysis 11/4 행: 종가 135.92 · 거래량 135,443,382 — 보고서 '출처 측 수정 후' 값과 일치"
-  ],
-  "verified_at": "2026-11-09T12:05+09:00"
+  "verified_at": "2026-11-10T08:50+09:00"
 }
