@@ -269,6 +269,20 @@ jobs:
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
         continue-on-error: true
 
+      # 🏛 버크셔 측정층(2026-11-09) — SEC 모든 양식·XBRL 분기 팩트·트리거 due·판단층 정지 감시.
+      # agent-research/ 에는 쓰지 않는다(판단층 불가침). 긴급·중요 공시와 관측 공백 33일(월간 자가 발사)은
+      # 발사 대기열에 올리고, 실제 발사는 커밋 **뒤** 단계가 한다. DM 은 소장 전용.
+      - name: Berkshire watch (measurement layer)
+        id: brk_watch
+        if: env.FULL_RUN == 'true'
+        run: python scripts/brk_watch.py
+        env:
+          SEC_USER_AGENT: "UNIVERTRIX univertrix.com contact@univertrix.com"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
+
       # 🧭 동행 관측 — 3사 10년 논제를 관찰로 쌓는 에세이 엔진
       # build_site 앞에 둔다: essays.json 이 journal.html 에 주입되기 때문.
       # 논제 원장이 플레이스홀더인 회사는 수집조차 하지 않고 "관찰 대기" 로그만 남긴다.
@@ -406,6 +420,16 @@ jobs:
       - name: Dispatch SpaceX probe (event mode)
         if: ${{ !cancelled() && env.FULL_RUN == 'true' }}
         run: python scripts/spacex_watch.py --dispatch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        continue-on-error: true
+
+      # 🏛 버크셔 탐사 엔진 발사 — 커밋 뒤에(엔진이 이번 회차 측정을 읽게). 대기열이 비면 침묵.
+      - name: Dispatch Berkshire probe
+        if: ${{ !cancelled() && env.FULL_RUN == 'true' }}
+        run: python scripts/brk_watch.py --dispatch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

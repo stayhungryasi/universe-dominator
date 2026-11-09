@@ -1,0 +1,837 @@
+{
+ "schema_version": 1,
+ "ticker": "BRK.B",
+ "company": "Berkshire Hathaway Inc.",
+ "run": {
+  "run_id": "2026-11",
+  "run_date": "2026-11-09",
+  "run_number": 1,
+  "previous_run_id": null,
+  "report_path": "reports/2026-11.md",
+  "mode": "monthly",
+  "reason": "1회차 — 기준선 수립(3Q26 10-Q 2026-11-07 직후)",
+  "summary": [
+   "3Q26 영업이익 $127.1억(−5.8%) — 보험 인수 −43%·투자수익 −14%를 BNSF(+19%)·BHE(+8%)·MSR(+12%)가 일부 상쇄",
+   "자사주 3Q $96.5억(9M $144.1억)·주식 9M 순매수 $112억 — '14분기 연속 순매도·현금 존버' 서사는 2Q26 에 이미 끝났다",
+   "B주 $570.89 는 기본 시나리오 현재가치 $464 위 — 시장은 BPS 연 10.3% 복리(종료 P/B 1.45배)를 반영 중"
+  ]
+ },
+ "axes": {
+  "A_insurance": "축 A — 보험·플로트(GEICO·Primary·재보험)",
+  "B_operating": "축 B — 운영 자회사(BNSF·BHE·제조·서비스·유통)",
+  "C_capital": "축 C — 자본배분(자사주·인수·현금)",
+  "D_portfolio": "축 D — 주식 포트폴리오",
+  "E_external": "축 E — 승계·지배구조·파괴적 변수"
+ },
+ "market": {
+  "price_usd": 570.89,
+  "price_asof": "2026-11-06",
+  "price_source": "https://stockanalysis.com/stocks/brk.b/statistics/",
+  "brk_a_price_usd": 856612,
+  "ath_close_b_usd": 579.09,
+  "ath_date": "2026-11-04",
+  "market_cap_usd_m": 1215054,
+  "market_cap_basis": "B주 종가 × A주 환산 1,418,900주 × 1,500 (산식)",
+  "pb": 1.6
+ },
+ "latest_reported_quarter": {
+  "period": "3Q26",
+  "report_date": "2026-11-07",
+  "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
+  "source_10q": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+  "op_earnings_usd_m": 12705,
+  "net_income_attrib_usd_m": 22112,
+  "equity_usd_m": 761368,
+  "shares_a_equiv": 1418900,
+  "bvps_a_usd": 536590,
+  "bvps_b_usd": 357.73,
+  "float_usd_m": 178500,
+  "cash_tbill_usd_m": 377435,
+  "tbill_payable_usd_m": 20489,
+  "cash_tbill_net_usd_m": 356946,
+  "equity_securities_usd_m": 335515,
+  "total_assets_usd_m": 1303907
+ },
+ "definitions": {
+  "cash": {
+   "fixed_on": "2026-11-09",
+   "headline": "보험·기타 현금 + 철도·유틸리티·에너지 현금 + 단기 미국 국채(10-Q 대차대조표) = $3,774억",
+   "net": "헤드라인 − 국채 매입 미지급금 $204.9억 = $3,569억(Reuters 사용치와 같음)",
+   "note": "Bloomberg '증가 $3,774억'과 Reuters '감소 $3,569억'은 정의 차이 — 둘 다 맞다. 화면 KPI 는 헤드라인 정의로 통일"
+  },
+  "geico_combined": {
+   "fixed_on": null,
+   "note": "보도 84.5% vs 10-Q 산식(손해·LAE + 기타 세그먼트 항목) 91.4% — 다음 회차에 정의 확정"
+  }
+ },
+ "scenarios": {
+  "as_of": "2026-11-09",
+  "baseline": "3Q26 A주 BPS $536,590(B주 $357.73) · TTM 세후 영업이익 $472.3억 · 헤드라인 현금 $3,774억",
+  "bull": {
+   "probability": 0.25,
+   "bps_cagr": 0.105,
+   "exit_pb": 1.7,
+   "bvps_b_2036_usd": 970.9,
+   "value_per_b_share": 684.5,
+   "description": "현금 대규모 배치(위기 시 매수 포함)·GEICO 회복·BNSF/BHE 정상화 — BPS 연 10.5%, 2036 P/B 1.7배"
+  },
+  "base": {
+   "probability": 0.5,
+   "bps_cagr": 0.08,
+   "exit_pb": 1.45,
+   "bvps_b_2036_usd": 772.3,
+   "value_per_b_share": 464.4,
+   "description": "점진 배치·자사주 부분 환원·보험 사이클 평균 — BPS 연 8%, 2036 P/B 1.45배"
+  },
+  "bear": {
+   "probability": 0.25,
+   "bps_cagr": 0.045,
+   "exit_pb": 1.15,
+   "bvps_b_2036_usd": 555.5,
+   "value_per_b_share": 265.0,
+   "description": "현금 장기 방치·금리 하락으로 이자수익 감소·보험 대형 손실·승계 후 자본배분 실수 — BPS 연 4.5%, 2036 P/B 1.15배"
+  }
+ },
+ "valuation": {
+  "method": "B주 BPS × (1+시나리오 BPS 복리)^10 × 2036 종료 P/B ÷ (1+할인율)^10 — 교차검증: 두 칸 방식(주당 투자자산 + 세전 영업이익×10)",
+  "discount_rate": 0.092,
+  "discount_rate_basis": "무위험 4.95%(미국 10년물, data/latest.json meta.macro.ust10, 2026-11-03) + ERP 5.0% × 베타 0.85(가정) = 9.2%",
+  "risk_free_rate": 0.0495,
+  "risk_free_asof": "2026-11-03",
+  "horizon_years": 10,
+  "discount_factor": 2.411,
+  "band": [
+   265,
+   684.5
+  ],
+  "mid": 464.4,
+  "pw_value": 469.6,
+  "price": 570.89,
+  "price_asof": "2026-11-06",
+  "implied_bps_cagr_at_base_exit": 0.1025,
+  "two_column_check_usd": 551.8,
+  "market_paid_for_operations_usd_m": 522593,
+  "market_paid_multiple_on_op_ex_inv": 13.7
+ },
+ "milestones": [
+  {
+   "id": "A-2027-1",
+   "axis": "A_insurance",
+   "year": 2027,
+   "statement": "2027년 연간 보험 인수이익(세후) 흑자",
+   "status": "진행",
+   "progress": {
+    "current": "9M26 $48.0억",
+    "target": "연간 > $0",
+    "unit": "백만 달러(세후)",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
+    "parts": [
+     {
+      "label": "9M26 인수이익(세후, 판정 연도 전 참고치)",
+      "current_num": 4800,
+      "target_num": 0,
+      "unit": "$M",
+      "op": ">"
+     }
+    ]
+   },
+   "if_hit": "보험 사이클 연화 속에서도 인수 규율 유지 — 플로트 비용 음수 지속",
+   "if_miss": "플로트가 '공짜 돈'에서 '유료 차입'으로 — 보험 축 확률 하향",
+   "check": "10-K 보험 인수 세후 손익",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "A-2028-1",
+   "axis": "A_insurance",
+   "year": 2028,
+   "statement": "2028년 말 보험 플로트 $1,900억 이상",
+   "status": "진행",
+   "progress": {
+    "current": "$1,785억",
+    "target": "$1,900억",
+    "unit": "십억 달러",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "플로트",
+      "current_num": 178.5,
+      "target_num": 190,
+      "unit": "$B",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "투자 재원이 연 2%대 이상 늘어난다",
+   "if_miss": "보험 성장 정체 — 투자 재원 확대가 멈춤",
+   "check": "10-Q/10-K 플로트 문단",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "A-2027-2",
+   "axis": "A_insurance",
+   "year": 2027,
+   "statement": "2027년 GEICO 연간 손해율 75% 이하",
+   "status": "진행",
+   "progress": {
+    "current": "76.6%(3Q26)",
+    "target": "≤75%",
+    "unit": "%",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "GEICO 분기 손해율(손해·LAE ÷ 경과보험료)",
+      "current_num": 76.6,
+      "target_num": 75,
+      "unit": "%",
+      "op": "<="
+     }
+    ]
+   },
+   "if_hit": "요율 인하로 계약을 되찾으면서도 손해를 통제 — 텔레매틱스 격차 축소 신호",
+   "if_miss": "가격 경쟁·사고 심도 상승에 밀림 — 파괴적 변수 D1 현실화 쪽",
+   "check": "10-K GEICO 표(경과보험료·손해·LAE)",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "A-2029-1",
+   "axis": "E_external",
+   "year": 2029,
+   "statement": "2029년 GEICO 연간 합산비율이 Progressive 연간 합산비율 이하",
+   "status": "미판정",
+   "progress": null,
+   "if_hit": "데이터·AI 언더라이팅 열위가 해소됐다는 관측",
+   "if_miss": "텔레매틱스·AI 요율 경쟁에서 구조적 열위 지속",
+   "check": "GEICO 10-K 표 vs Progressive 10-K",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "미판정"
+    }
+   ],
+   "progress_reason": "3Q26 GEICO 합산비율 원천 불일치(보도 84.5% vs 10-Q 산식 91.4%) — 정의(기타 비용 포함 여부)를 다음 회차에 확정한 뒤 판정",
+   "progress_parts": [
+    {
+     "label": "GEICO 합산비율 − Progressive 합산비율",
+     "current_num": null,
+     "target_num": 0,
+     "unit": "%p",
+     "op": "<=",
+     "reason": "GEICO 합산비율 정의 미확정"
+    }
+   ]
+  },
+  {
+   "id": "B-2027-1",
+   "axis": "B_operating",
+   "year": 2027,
+   "statement": "2027년 BNSF 연간 세후이익 $65억 이상",
+   "status": "진행",
+   "progress": {
+    "current": "TTM $60.1억",
+    "target": "$65억",
+    "unit": "백만 달러(세후)",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
+    "parts": [
+     {
+      "label": "BNSF 최근 4개 분기 세후이익",
+      "current_num": 6011,
+      "target_num": 6500,
+      "unit": "$M",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "물동량·가격 회복이 영업비율 개선으로 — 자율 트럭 위협이 아직 숫자에 없다",
+   "if_miss": "철도 경쟁력 정체 — 운영 축 하향",
+   "check": "분기 보도자료 세그먼트 표",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "B-2028-1",
+   "axis": "B_operating",
+   "year": 2028,
+   "statement": "2028년 BHE 연간 세후이익 $50억 이상",
+   "status": "진행",
+   "progress": {
+    "current": "TTM $43.1억",
+    "target": "$50억",
+    "unit": "백만 달러(세후)",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
+    "parts": [
+     {
+      "label": "BHE 최근 4개 분기 세후이익",
+      "current_num": 4308,
+      "target_num": 5000,
+      "unit": "$M",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "산불 부담을 넘고 데이터센터 전력 수요를 이익으로 전환",
+   "if_miss": "규제·산불 책임이 이익을 계속 잠식",
+   "check": "분기 보도자료 세그먼트 표",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "B-2030-1",
+   "axis": "B_operating",
+   "year": 2030,
+   "statement": "2030년 제조·서비스·유통 연간 세후이익 $200억 이상",
+   "status": "진행",
+   "progress": {
+    "current": "TTM $150.8억",
+    "target": "$200억",
+    "unit": "백만 달러(세후)",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
+    "parts": [
+     {
+      "label": "MSR 최근 4개 분기 세후이익",
+      "current_num": 15081,
+      "target_num": 20000,
+      "unit": "$M",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "OxyChem·Taylor Morrison 편입 효과 포함 자회사 이익 엔진 확장",
+   "if_miss": "인수 효과 없이 정체",
+   "check": "분기 보도자료 세그먼트 표",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "C-2027-1",
+   "axis": "C_capital",
+   "year": 2027,
+   "statement": "2027년 말 연결 현금·단기국채 ÷ 총자산 25% 이하",
+   "status": "진행",
+   "progress": {
+    "current": "28.9%",
+    "target": "≤25%",
+    "unit": "%",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "현금·단기국채 $3,774억 ÷ 총자산 $13,039억",
+      "current_num": 28.9,
+      "target_num": 25,
+      "unit": "%",
+      "op": "<="
+     }
+    ]
+   },
+   "if_hit": "현금이 실제 사업·주식·자사주로 배치되기 시작",
+   "if_miss": "현금 방치 — 금리 하락 시 이익 정체(약세 시나리오 논리)",
+   "check": "10-Q 대차대조표",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "C-2027-2",
+   "axis": "C_capital",
+   "year": 2027,
+   "statement": "2027년 연간 자사주 매입 $200억 이상",
+   "status": "진행",
+   "progress": {
+    "current": "2026년 9M $144.1억(참고)",
+    "target": "$200억",
+    "unit": "백만 달러",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "2026년 1~3분기 자사주 매입(판정 연도 전 참고치)",
+      "current_num": 14409,
+      "target_num": 20000,
+      "unit": "$M",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "에이블 체제가 내재가치 대비 저평가를 반복 확인 — 주주 환원 축 강화",
+   "if_miss": "매입 중단 — 주가가 보수적 내재가치를 넘었다는 회사 판단",
+   "check": "10-Q 자사주 매입 표",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "C-2028-1",
+   "axis": "C_capital",
+   "year": 2028,
+   "statement": "2028년 말까지 단일 거래 $200억 이상 인수(지배권) 완료",
+   "status": "진행",
+   "progress": {
+    "current": "최대 $94억(OxyChem)",
+    "target": "$200억",
+    "unit": "백만 달러",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "2026년 이후 최대 단일 인수 대가",
+      "current_num": 9400,
+      "target_num": 20000,
+      "unit": "$M",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "코끼리 사냥 재개 — 현금 배치의 결정적 증거",
+   "if_miss": "대형 인수 부재 — 현금 축 약세 쪽",
+   "check": "8-K(Item 2.01) · 10-Q 인수 주석",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "D-2027-1",
+   "axis": "D_portfolio",
+   "year": 2027,
+   "statement": "2027년 연간 주식 순매수(현금흐름표 매수 − 매도) 0 초과",
+   "status": "진행",
+   "progress": {
+    "current": "2026년 9M +$112억(참고)",
+    "target": "> $0",
+    "unit": "백만 달러",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "2026년 9M 주식 매수 41,771 − 매도 30,572(판정 연도 전 참고치)",
+      "current_num": 11199,
+      "target_num": 0,
+      "unit": "$M",
+      "op": ">"
+     }
+    ]
+   },
+   "if_hit": "'카지노 장세'에서도 살 것을 찾는다 — 14분기 순매도 국면 종료 확인",
+   "if_miss": "다시 순매도 국면 — 가격 부담 판단 지속",
+   "check": "10-K 현금흐름표",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "D-2030-1",
+   "axis": "D_portfolio",
+   "year": 2030,
+   "statement": "2030년 말 상위 5개 종목 공정가치 집중도 75% 이하",
+   "status": "진행",
+   "progress": {
+    "current": "66%(2026-06-30)",
+    "target": "≤75%",
+    "unit": "%",
+    "asof": "2026-06-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/2ndqtr26.pdf",
+    "parts": [
+     {
+      "label": "상위 5개 종목 집중도",
+      "current_num": 66,
+      "target_num": 75,
+      "unit": "%",
+      "op": "<="
+     }
+    ]
+   },
+   "if_hit": "알파벳 편입 후에도 단일 테마 쏠림 통제",
+   "if_miss": "특정 종목·테마 쏠림 심화 — 포트폴리오 변동성 확대",
+   "check": "10-Q/10-K 주식 주석",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "E-2027-1",
+   "axis": "E_external",
+   "year": 2027,
+   "statement": "에이블 체제 첫 2년(2026~2027) B주 주가 수익률이 S&P 500 대비 −10%p 이내",
+   "status": "진행",
+   "progress": {
+    "current": "2026년 연초 이후 +5.8%p",
+    "target": "≥ −10%p",
+    "unit": "%p",
+    "asof": "2026-11-06",
+    "source": "https://www.forbes.com/sites/bill_stone/2026/11/07/berkshire-hathaway-q3-earnings-miss-on-insurance-not-on-strategy/",
+    "parts": [
+     {
+      "label": "B주 연초 이후 +13.6% − S&P 500 +7.8%",
+      "current_num": 5.8,
+      "target_num": -10,
+      "unit": "%p",
+      "op": ">="
+     }
+    ]
+   },
+   "if_hit": "승계 디스카운트가 숫자로 나타나지 않는다",
+   "if_miss": "버핏 이후 디스카운트 현실화 — 승계 축 하향",
+   "check": "연말 종가(주가 데이터)",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  },
+  {
+   "id": "E-2028-1",
+   "axis": "E_external",
+   "year": 2028,
+   "statement": "2028년 말 PacifiCorp 산불 누적 추정 손실 인식액 $50억 이하",
+   "status": "진행",
+   "progress": {
+    "current": "$28.5억",
+    "target": "≤$50억",
+    "unit": "백만 달러",
+    "asof": "2026-09-30",
+    "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+    "parts": [
+     {
+      "label": "누적 추정 손실 인식액",
+      "current_num": 2850,
+      "target_num": 5000,
+      "unit": "$M",
+      "op": "<="
+     }
+    ]
+   },
+   "if_hit": "산불 책임이 관리 가능한 범위 — BHE 정상화 경로",
+   "if_miss": "책임 확대 — BHE 가치 훼손·규제 리스크 현실화",
+   "check": "10-Q 우발채무 주석",
+   "status_history": [
+    {
+     "run_id": "2026-11",
+     "status": "진행"
+    }
+   ]
+  }
+ ],
+ "scorecard": {
+  "achieved": 0,
+  "achieved_early": 0,
+  "missed": 0,
+  "in_progress": 13,
+  "pending": 1
+ },
+ "probability_adjustment_rules": [
+  {
+   "id": "R1",
+   "condition": "GEICO 분기 손해율 2분기 연속 78% 초과(10-Q 산식)",
+   "bull": -0.05,
+   "bear": 0.05,
+   "status": "대기"
+  },
+  {
+   "id": "R2",
+   "condition": "단일 $200억 이상 인수 완료(8-K Item 2.01)",
+   "bull": 0.05,
+   "bear": -0.05,
+   "status": "대기"
+  },
+  {
+   "id": "R3",
+   "condition": "헤드라인 현금 $4,000억 초과 2분기 연속(배치 실패 신호)",
+   "base": -0.05,
+   "bear": 0.05,
+   "status": "대기"
+  },
+  {
+   "id": "R4",
+   "condition": "연간 자사주 매입 $300억 초과(2021년 기록 $270억 경신)",
+   "bull": 0.05,
+   "base": -0.05,
+   "status": "대기"
+  },
+  {
+   "id": "R5",
+   "condition": "PacifiCorp 산불 신규 손실 인식 한 분기 $10억 초과",
+   "base": -0.05,
+   "bear": 0.05,
+   "status": "대기"
+  },
+  {
+   "id": "R6",
+   "condition": "S&P 500 고점 대비 −20% 국면의 분기에 주식 순매수 $200억 이상",
+   "bull": 0.05,
+   "bear": -0.05,
+   "status": "대기"
+  }
+ ],
+ "rule_proposals_not_applied": [],
+ "triggers_next_12m": [
+  {
+   "id": "T1",
+   "name": "3Q26 13F — 알파벳·애플·은행주 수량 변화, 3Q 순매도 $4.3억의 내역",
+   "expected_date": "2026-11-16(법정 기한 11-14 토 → 다음 영업일, 계산)",
+   "status": "대기",
+   "check": "SEC 13F-HR 원문(측정층이 감지)"
+  },
+  {
+   "id": "T2",
+   "name": "4Q26 실적·10-K·에이블 두 번째 주주서한 — 4Q 자사주·GEICO 손해율·BHE 산불 주석",
+   "expected_date": "2027-02-27(추정: 2026-02-28 토요일 공개 패턴)",
+   "status": "대기",
+   "check": "보도자료·10-K"
+  },
+  {
+   "id": "T3",
+   "name": "4Q26 13F",
+   "expected_date": "2027-02-16(추정: 기한 2-14 일요일·2-15 공휴일 → 다음 영업일)",
+   "status": "대기",
+   "check": "SEC 13F-HR"
+  },
+  {
+   "id": "T4",
+   "name": "2027 주주총회 — 에이블·하워드 버핏 체제 첫 주총, 배당·자사주 정책 질의",
+   "expected_date": "2027-05-01(추정: 5월 첫 토요일 관례)",
+   "status": "대기",
+   "check": "주총 안건(DEF 14A)·현장 문답"
+  },
+  {
+   "id": "T5",
+   "name": "Bending Spoons 추가 지분(약 4%) 결제·공시",
+   "expected_date": "일정 미정",
+   "status": "대기",
+   "check": "13F·보도"
+  },
+  {
+   "id": "T6",
+   "name": "PacifiCorp 산불 소송 주요 판결·합의",
+   "expected_date": "일정 미정",
+   "status": "대기",
+   "check": "BHE/PacifiCorp 공시·10-Q 우발채무 주석"
+  },
+  {
+   "id": "T7",
+   "name": "대형 인수·우선주 투자(≥$100억) 8-K",
+   "expected_date": "수시",
+   "status": "대기",
+   "check": "측정층 8-K 감시(중요 등급 → 사건 회차)"
+  }
+ ],
+ "disruption_watch": [
+  {
+   "id": "D1",
+   "name": "자율주행·텔레매틱스·AI 언더라이팅",
+   "threat_to": "GEICO 요율 경쟁력·데이터 해자",
+   "signal": "GEICO 손해율 vs Progressive 합산비율, 계약 수 추세",
+   "status": "3Q26 GEICO 손해율 76.6%(전년 71.4%, 10-Q) · Progressive 합산비율 88.7%(10/15 보도) · GEICO 계약 수는 '증가'만 공시(건수 미공개)"
+  },
+  {
+   "id": "D2",
+   "name": "자율 트럭·물류 자동화",
+   "threat_to": "BNSF 물동량",
+   "signal": "BNSF 매출·세전이익 추세, 인터모달 물량",
+   "status": "3Q26 BNSF 매출 $69.2억(+14.5%)·세전 $22.7억(+18.5%, 10-Q) — 위협은 아직 숫자에 없다"
+  },
+  {
+   "id": "D3",
+   "name": "산불 책임 vs AI 데이터센터 전력 수요",
+   "threat_to": "BHE 이익·규제 신뢰",
+   "signal": "PacifiCorp 누적 손실 인식·합의, 대형 전력 계약",
+   "status": "누적 추정 손실 $28.5억·누적 지급 $23억(10-Q) · 연방정부 청구 $5.75억 합의(2026-03) · 추가 손실 '합리적으로 가능, 추정 불가'"
+  },
+  {
+   "id": "D4",
+   "name": "AI 인프라 자본 집약화",
+   "threat_to": "(기회) 현금 $3,569억(순)의 배치처",
+   "signal": "데이터센터·전력·인프라 지분·대출·우선주 거래",
+   "status": "알파벳 $100억 사모 참여(2Q26 보도) · 대형 AI 인프라 직접 투자 공시 없음"
+  },
+  {
+   "id": "D5",
+   "name": "0DTE·예측시장·패시브 쏠림('카지노 장세')",
+   "threat_to": "(기회) 가격 왜곡 시 매수 여력",
+   "signal": "시장 급락 분기의 주식 순매수 규모",
+   "status": "2Q26 순매수 약 $198억으로 14분기 연속 순매도 종료(보도) · 3Q26 순매도 $4.3억(보도) · 버핏 '하루짜리 옵션은 도박' 발언(2026-05-02)"
+  },
+  {
+   "id": "D6",
+   "name": "버핏 이후 체제",
+   "threat_to": "자본배분 일관성·승계 디스카운트",
+   "signal": "에이블 체제의 대형 결정, B주 상대 수익률",
+   "status": "버핏 2026-09-18 명예회장·하워드 버핏 의장(AP) · 에이블 CEO 3번째 분기 · 2026년 B주 +13.6% vs S&P +7.8%(Forbes)"
+  }
+ ],
+ "manager_statements_as_milestone_candidates_only": [
+  {
+   "date": "2026-05-02",
+   "statement": "에이블 — 보험 환경이 어려워지고 연말까지 연화 예상(주총)",
+   "used_in_judgment": false
+  },
+  {
+   "date": "2026-05-02",
+   "statement": "버핏 — 많은 것의 가격이 매우 어리석어 보일 것(CNBC), 단 투자가 나쁘다는 뜻은 아니라고 덧붙임",
+   "used_in_judgment": false
+  }
+ ],
+ "open_questions_for_next_run": [
+  "GEICO 합산비율 정의 확정(보도 84.5% vs 10-Q 산식 91.4%) → A-2029-1 판정 가능화",
+  "3Q26 13F(11/16) — 3Q 매수 $24억·매도 $28억의 종목별 내역",
+  "분기 후 자사주 약 $20억(10/1~10/28, 보도)의 10-Q 원문 확인 — 10-Q 본문은 금액을 명시하지 않았다",
+  "1Q26 A주 환산 주식 수(BPS 시계열 공란 보충)",
+  "GEICO 4Q25 수입보험료 → TTM 수입보험료 산출"
+ ],
+ "resolved_from_prior_run": [],
+ "run_history": [
+  {
+   "run_id": "2026-11",
+   "run_date": "2026-11-09",
+   "price": 570.89,
+   "price_date": "2026-11-06",
+   "probs": {
+    "bull": 0.25,
+    "base": 0.5,
+    "bear": 0.25
+   },
+   "band": [
+    265,
+    684.5
+   ],
+   "mid": 464.4,
+   "pw_value": 469.6,
+   "summary": [
+    "3Q26 영업이익 $127.1억(−5.8%) — 보험 인수 −43%·투자수익 −14%를 BNSF(+19%)·BHE(+8%)·MSR(+12%)가 일부 상쇄",
+    "자사주 3Q $96.5억(9M $144.1억)·주식 9M 순매수 $112억 — '14분기 연속 순매도·현금 존버' 서사는 2Q26 에 이미 끝났다",
+    "B주 $570.89 는 기본 시나리오 현재가치 $464 위 — 시장은 BPS 연 10.3% 복리(종료 P/B 1.45배)를 반영 중"
+   ]
+  }
+ ],
+ "kpi_history": [
+  {
+   "quarter": "3Q25",
+   "period_end": "2025-09-30",
+   "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
+   "published": "2026-11-07",
+   "origin": "disc",
+   "op_earnings_usd_m": 13485,
+   "uw_usd_m": 2369,
+   "bnsf_usd_m": 1449,
+   "bhe_usd_m": 1489,
+   "buyback_usd_m": 0,
+   "cash_tbill_usd_m": 381700,
+   "equity_net_usd_m": -6100,
+   "bvps_a_usd": 485460,
+   "note": "현금·순매도는 보도(Reuters 2025-11-01·StockTitan), BPS 는 계산(자기자본 698.2B ÷ 1,438,223주)"
+  },
+  {
+   "quarter": "4Q25",
+   "period_end": "2025-12-31",
+   "source": "https://stocks.observer-reporter.com/observerreporter/article/bizwire-2026-2-28-berkshire-hathaway-inc-news-release",
+   "published": "2026-02-28",
+   "origin": "disc",
+   "op_earnings_usd_m": 10200,
+   "uw_usd_m": 1561,
+   "bnsf_usd_m": 1347,
+   "bhe_usd_m": 691,
+   "buyback_usd_m": 0,
+   "cash_tbill_usd_m": 373300,
+   "equity_net_usd_m": -3200,
+   "float_usd_m": 176000,
+   "bvps_a_usd": 498823,
+   "note": "BPS 계산(717,419 ÷ 1,438,223)"
+  },
+  {
+   "quarter": "1Q26",
+   "period_end": "2026-03-31",
+   "source": "https://www.sec.gov/Archives/edgar/data/0001067983/000119312526202243/brka-20260331.htm",
+   "published": "2026-05-02",
+   "origin": "disc",
+   "op_earnings_usd_m": 11346,
+   "uw_usd_m": 1717,
+   "bnsf_usd_m": 1377,
+   "bhe_usd_m": 1114,
+   "buyback_usd_m": 235,
+   "cash_tbill_usd_m": 397383,
+   "equity_net_usd_m": -8200,
+   "float_usd_m": 176900
+  },
+  {
+   "quarter": "2Q26",
+   "period_end": "2026-06-30",
+   "source": "https://www.berkshirehathaway.com/qtrly/2ndqtr26.pdf",
+   "published": "2026-08-08",
+   "origin": "disc",
+   "op_earnings_usd_m": 12983,
+   "uw_usd_m": 1731,
+   "bnsf_usd_m": 1558,
+   "bhe_usd_m": 891,
+   "buyback_usd_m": 4527,
+   "cash_tbill_usd_m": 365514,
+   "equity_net_usd_m": 19800,
+   "float_usd_m": 177500,
+   "bvps_a_usd": 522389,
+   "note": "순매수는 계산(상반기 매수 39.4B − 매도 27.8B − 1Q 순매도)"
+  },
+  {
+   "quarter": "3Q26",
+   "period_end": "2026-09-30",
+   "source": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+   "published": "2026-11-07",
+   "origin": "disc",
+   "op_earnings_usd_m": 12705,
+   "uw_usd_m": 1352,
+   "bnsf_usd_m": 1729,
+   "bhe_usd_m": 1612,
+   "buyback_usd_m": 9647,
+   "cash_tbill_usd_m": 377435,
+   "equity_net_usd_m": -426,
+   "float_usd_m": 178500,
+   "bvps_a_usd": 536590,
+   "note": "순매도는 보도(Forbes 2026-11-07), BPS 계산(761,368 ÷ 1,418,900)"
+  }
+ ]
+}

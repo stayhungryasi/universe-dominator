@@ -351,6 +351,49 @@ main { flex: 1; display: flex; align-items: center; justify-content: center; pad
 .ag-tl-s { display: inline-block; min-width: 150px; color: var(--text-muted); font-size: 11.5px;
   font-weight: 700; margin-right: 6px; }
 @media (max-width: 480px) { .ag-tl-s { display: block; min-width: 0; } }
+/* ── 🏛 버크셔 탐사선 (2026-11-09) — 접두 bk- · 기존 토큰만(신규 색 금지) ── */
+.bk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 6px; }
+.bk-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-width: 0; }
+.bk-wide { grid-column: 1 / -1; }
+.bk-h { font-size: 14px; font-weight: 800; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.bk-h small { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.bk-band { position: relative; height: 64px; margin: 26px 6px 4px; }
+.bk-band::before { content: ''; position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: var(--line); }
+.bk-band-rng { position: absolute; top: 14px; height: 18px; border-radius: 6px; background: var(--gold-bg); border: 1.5px solid var(--gold); }
+.bk-band-mid { position: absolute; top: 8px; height: 30px; border-left: 2px solid var(--gold); }
+.bk-band-mid span { position: absolute; top: -20px; left: -18px; font-size: 11.5px; font-weight: 800; }
+.bk-band-lo, .bk-band-hi { position: absolute; top: -18px; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.bk-band-px { position: absolute; top: 15px; transform: translateX(-50%); text-align: center; }
+.bk-band-px i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--text); margin: 0 auto; }
+.bk-band-px span { display: block; font-size: 11.5px; font-weight: 800; margin-top: 6px; white-space: nowrap; }
+.bk-sub { font-size: 12px; color: var(--text-secondary); margin: 6px 0 8px; line-height: 1.6; }
+.bk-fine { font-size: 11.5px; color: var(--text-muted); line-height: 1.6; margin: 6px 0 0; }
+.bk-probs { display: flex; gap: 4px; }
+.bk-prob { text-align: center; font-size: 12px; font-weight: 800; padding: 7px 4px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); white-space: nowrap; }
+.bk-prob-bull { color: var(--pc-up); border-color: var(--pc-up); }
+.bk-prob-bear { color: var(--pc-down); border-color: var(--pc-down); }
+.bk-delta { font-size: 12.5px; line-height: 1.65; color: var(--text-secondary); }
+.bk-delta ul { margin: 4px 0 8px; padding-left: 18px; }
+.bk-delta-prev { color: var(--text-muted); border-top: 1px solid var(--line); padding-top: 6px; }
+.bk-axis { display: grid; grid-template-columns: 110px 1fr; gap: 2px 10px; align-items: center; margin: 7px 0; }
+.bk-axis-n { font-size: 12.5px; font-weight: 800; }
+.bk-axis-b { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bk-axis-b i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold)); }
+.bk-axis-t { grid-column: 2; font-size: 11px; color: var(--text-muted); }
+.bk-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bk-tile { display: flex; flex-direction: column; gap: 2px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; color: var(--text); text-decoration: none; min-width: 0; }
+.bk-tile-k { font-size: 11px; font-weight: 700; color: var(--text-muted); display: flex; justify-content: space-between; gap: 4px; }
+.bk-tile-k em { font-style: normal; color: var(--gold); white-space: nowrap; }
+.bk .ag-table td:first-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bk-tile-v { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bk-tile-s { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; gap: 4px; }
+.bk-ar { font-size: 13px; margin-left: 4px; }
+.bk-ar-up { color: var(--pc-up); } .bk-ar-down { color: var(--pc-down); }
+.bk-spark { color: var(--gold); flex: none; }
+.bk-next { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.bk-nx { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; line-height: 1.55; display: flex; flex-direction: column; gap: 4px; }
+.bk-dd { align-self: flex-start; background: var(--gold); color: var(--bg-card); font-weight: 800; font-size: 11.5px; border-radius: 999px; padding: 2px 9px; }
+@media (max-width: 760px) { .bk-grid { grid-template-columns: 1fr; } .bk-tiles { grid-template-columns: repeat(2, 1fr); } .bk-next { grid-template-columns: 1fr; } .bk-axis { grid-template-columns: 90px 1fr; } }
 /* ── 🛰 SpaceX 관제실 v2 (2026-10-23) — 접두 pc- · 기존 토큰 + 증감 토큰(낮/밤) ── */
 :root, [data-theme="light"] { --pc-up: #1E8E5A; --pc-down: #C8473A; --pc-warn: #B7791F; }
 [data-theme="dark"] { --pc-up: #4FD69C; --pc-down: #FF7B6E; --pc-warn: #E6B450; }
@@ -601,6 +644,7 @@ body.obs-data .obs-tabs { scroll-margin-top: 60px; margin-bottom: 12px; }
       <button class="obs-tab" data-t="parallax" onclick="setObsTab('parallax', this)">{{t:obs.tab.parallax}}</button>
       <button class="obs-tab" data-t="legend" onclick="setObsTab('legend', this)">{{t:obs.tab.legend}}</button>
       <button class="obs-tab" data-t="agent" onclick="setObsTab('agent', this)">🛰 {{t:obs.tab.agent}}</button>
+      <button class="obs-tab" data-t="brk" onclick="setObsTab('brk', this)">🏛 {{t:obs.tab.brk}}</button>
     </div>
     <div id="obsBody"></div>
   </div>
@@ -633,7 +677,7 @@ const DATA = {{OBS_DATA}};
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let solarRAF = null;
 
-const OBS_DATA_TABS = ['columns', 'parallax', 'legend', 'agent'];
+const OBS_DATA_TABS = ['columns', 'parallax', 'legend', 'agent', 'brk'];
 function setObsTab(t, btn){
   document.querySelectorAll('.obs-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
@@ -652,6 +696,7 @@ function setObsTab(t, btn){
   else if (t === 'parallax') renderParallax();
   else if (t === 'legend') renderLegend();
   else if (t === 'agent') renderAgent();
+  else if (t === 'brk') renderBrk();
   else renderColumns();
 }
 
@@ -2419,6 +2464,19 @@ function renderAgent(){
   if (tb && html && location.hash.indexOf('#probe/') !== 0) tb.scrollIntoView({block: 'start'});
 }
 
+/* 🏛 버크셔 탐사선 — 무인 탐사선과 같은 규율: 빌드 시점에 준법 필터를 통과한 정적 HTML 을 꽂기만 한다. */
+function renderBrk(){
+  const host = document.getElementById('obsBody');
+  const html = DATA.brk || '';
+  host.innerHTML = html || '<div class="obs-note">' + T('obs.brk_empty') + '</div>';
+  if (location.hash !== '#brk' && location.hash.indexOf('#brk-') !== 0) history.replaceState(null, '', '#brk');
+  const m = location.hash.match(/^#(brk-[\w-]+)$/);
+  const tgt = m && document.getElementById(m[1]);
+  if (tgt) { tgt.open = true; tgt.scrollIntoView({block: 'start'}); return; }
+  const tb = document.querySelector('.obs-tabs');
+  if (tb && html) tb.scrollIntoView({block: 'start'});
+}
+
 /* i18n-keys: col.* */
 function renderColumns(){
   const cols = (DATA.columns || []);
@@ -2530,7 +2588,10 @@ function toggleCol(i){
   if (el) setColOpen(el, !el.classList.contains('open'));
 }
 
-if (location.hash === '#agent' || location.hash.indexOf('#agent-') === 0 || location.hash.indexOf('#probe') === 0) {
+if (location.hash === '#brk' || location.hash.indexOf('#brk-') === 0) {
+  const bb = document.querySelector('.obs-tab[data-t="brk"]');
+  if (bb) setObsTab('brk', bb);
+} else if (location.hash === '#agent' || location.hash.indexOf('#agent-') === 0 || location.hash.indexOf('#probe') === 0) {
   const btn = document.querySelector('.obs-tab[data-t="agent"]');
   if (btn) setObsTab('agent', btn); else renderAgent();
 } else if (location.hash === '#legend') {

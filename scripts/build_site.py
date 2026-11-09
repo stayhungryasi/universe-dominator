@@ -1083,6 +1083,15 @@ def build_observatory():
         import traceback
         traceback.print_exc()
         print(f"[warn] 무인 탐사선 렌더 실패(탭은 빈 상태): {e}")
+    # 🏛 버크셔 탐사선(2026-11-09) — agent-research/berkshire/ 를 빌드 시점에 정적 렌더(읽기만 · 준법 필터 통과분)
+    brk_html = ""
+    try:
+        import brk_cockpit
+        brk_html = brk_cockpit.render(lang=LANG)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"[warn] 버크셔 탐사선 렌더 실패(탭은 빈 상태): {e}")
     obs_data = {
         "earth": localize_latest(latest).get("regions", {}).get("earth", {}).get("stocks", []),
         "fetched": meta.get("fetched_date", ""),
@@ -1096,6 +1105,7 @@ def build_observatory():
         "agent": agent_html,
         "probe": probe_data,
         "probe_reports": probe_reports,
+        "brk": brk_html,
     }
     # 스크립트 블록 안의 JSON — 문자열 속 종료 태그가 블록을 닫지 못하게 슬래시를 이스케이프('<\/')
     html = template.replace("{{OBS_DATA}}", json.dumps(obs_data, ensure_ascii=False).replace("</", "<\\/"))

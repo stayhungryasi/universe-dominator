@@ -219,6 +219,16 @@
 - 공개 렌더에는 **준법 필터**가 걸린다 — PHASE 4 절 전체와 권고·진입·비중·분할 문단은 제외. selftest 가 산출물을 매 실행 grep 한다
 - 폴더 자체 규칙은 `agent-research/CLAUDE.md`(마스터 프롬프트 수정 금지 등)
 
+## 🏛 버크셔 탐사선 — `agent-research/berkshire/` (2026-11-09 신설)
+- 무인 탐사선과 **같은 관문·같은 규율, 대상만 다르다**. 관문은 한 벌: `probe_gate.py --subject berkshire`(또는 `PROBE_SUBJECT=berkshire`) — `configure()` 가 경로 전역만 바꾼다. 기본값은 spacex(옛 호출 불변)
+- 판단층 `agent-research/berkshire/`(prompts·state·reports)는 탐사 에이전트 본인만 쓴다. daily 의 어떤 스텝도 쓰지 않는다 — 측정층 `brk_watch.py` 도 state 를 **읽기만**
+- 엔진 `brk-probe.yml`: 매월 2일 09:43 KST · 사건 연동(`repository_dispatch: brk-event`, payload.mode) · 수동 · **월간 자가 발사**(관측 공백 33일 → 측정층이 monthly 로 발사, 3일 쿨다운 — GitHub 예약은 시계가 아니다 ㉓). 공백 35일 초과면 매일 DM
+- 측정층 `brk_watch.py`(daily full · 커밋 뒤 `--dispatch`): SEC submissions **모든 양식**을 등급(긴급: 8-K 5.02·4.01·4.02·NT / 중요: 10-Q·10-K·13F-HR·성격 모를 8-K 포함 모든 8-K·DEF 14A·13D / 기록: 3·4·5·144·13G·그 밖)으로 · 첫 회차는 기준선(발사·DM 없음) · XBRL 은 **분기 프레임(CYyyyyQn)만**(누적 차분 안 함, 못 잰 키는 사유) · 트리거 due(ISO 예상일이 지난 '대기'만, 1회) · 원천 연속 실패 3회 DM·7일 재알림·회복 1회 · 공시 0건 응답은 실패 · 엔진 실패 DM · 시계 `now_kst` 하나 · 쓰는 파일 `data/brk_watch.json` 하나
+- 관제판 `brk_cockpit.py` → 데이터 천문대 '🏛 버크셔 탐사선' 탭(`#brk`, 무인 탐사선 옆). 빌드 시점 정적 렌더(`obs_data.brk`) · 보고서는 `agent_report.sanitize` 통과분 · 화면 문구는 카탈로그 `bk.*`(4개 언어) · 판정 상태는 `pc.st.*` id · 축 기계 키 0 · KPI 화살표는 바로 앞 분기와만
+- 차별점: state.`disruption_watch`(파괴적 혁신 렌즈 — 해자별 위협·기회를 관측 신호로)
+- 테스트 `test_brk`(selftest 등재) · selftest '준법: 버크셔 판단층 공개 원본'
+- 리스크(정직 고지): 측정층은 개발 환경에서 SEC 에 닿지 못해 **가짜 원천으로만** 검증했다 — 첫 실전 full 회차 로그를 확인할 것. 사건 감시는 하루 3회(SpaceX 처럼 매시간 아님 — 버크셔 공시는 시간 단위로 급하지 않다고 판단). 뉴스로만 오는 사건(경영진 발언·보도)은 아직 감시하지 않는다
+
 ## 텔레그램 채널 분리 (2026-09-01 확정)
 - 공개 `@stayhungryasi` = **관측 결과만** (모닝브리핑·왕좌 교체·동행·필독 공지)
 - 정비 관제 경보·회복 알림·자동 취재 갱신 = **`TELEGRAM_ALERT_CHAT_ID`(소장 DM) 전용**

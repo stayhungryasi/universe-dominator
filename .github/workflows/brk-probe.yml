@@ -1,0 +1,197 @@
+name: Berkshire Probe (monthly + event)
+
+# 🏛 버크셔 탐사선 무정지 엔진 (2026-11-09) — 무인 탐사선(spacex-probe.yml)과 같은 관문·같은 규율, 대상만 다르다.
+#   · 매월 2일 09:43 KST 정기 회차(1일 SpaceX 회차와 겹치지 않게) · 사건 연동(brk_watch 의 repository_dispatch)
+#     · 수동 실행 · 관측 공백 33일이면 측정층이 월간 회차를 스스로 발사(GitHub 예약은 시계가 아니다 — 지뢰 ㉓)
+#   · 쓰는 것은 탐사 에이전트 본인뿐(agent-research/berkshire/) — daily-update.yml 은 여기에 쓰지 않는다
+#   · 로컬 Claude Code 수동 실행은 언제든 가능하고 우선한다(같은 monthly_run.md 규약)
+on:
+  schedule:
+    - cron: '43 0 2 * *'          # 매월 2일 00:43 UTC = 09:43 KST
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'monthly: PHASE 1~5 전체 / event: 사건이 건드린 축·이정표만 증분'
+        type: choice
+        default: monthly
+        options: [monthly, event]
+      reason:
+        description: '실행 사유(지시문에 주입됨)'
+        type: string
+        default: ''
+  repository_dispatch:
+    types: [brk-event]
+
+# daily-update 와 별도 그룹. 진행 중인 회차는 끊지 않고 다음 회차가 기다린다.
+concurrency:
+  group: brk-probe
+  cancel-in-progress: false
+
+permissions:
+  contents: write          # main 커밋 또는 probe/ 브랜치 푸시
+  pull-requests: write     # 관문 실패 시 PR (저장소 설정 'Actions 의 PR 생성 허용'이 켜져 있어야 함)
+  actions: write           # 게시 뒤 사이트 재빌드(daily-update quick 실행 요청)
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      PROBE_SUBJECT: berkshire
+      MODE: ${{ inputs.mode || github.event.client_payload.mode || (github.event_name == 'repository_dispatch' && 'event') || 'monthly' }}
+      REASON: ${{ inputs.reason || github.event.client_payload.reason || '월간 정기 회차' }}
+      # 기본 = best(Fable 사용 가능하면 Fable, 아니면 Opus). 저장소 변수로 덮어쓴다.
+      PROBE_MODEL: ${{ vars.PROBE_MODEL || 'best' }}
+      PROBE_PUBLISH: ${{ vars.PROBE_PUBLISH || 'auto' }}
+      AUTHOR_BUDGET: ${{ vars.PROBE_BUDGET_USD || '40' }}
+      VERIFY_BUDGET: ${{ vars.PROBE_VERIFY_BUDGET_USD || '15' }}
+      # 작성자 도구 — Bash 는 관문 스크립트로만(그 밖의 셸 명령은 -p 모드에서 거부된다)
+      AUTHOR_TOOLS: 'WebSearch,WebFetch,Read,Write,Edit,Grep,Glob,Bash'
+      AUTHOR_ALLOW: 'WebSearch,WebFetch,Read,Write,Edit,Grep,Glob,Bash(python scripts/probe_gate.py --subject berkshire *)'
+      # 검증관 — 편집·셸 없음. 결과 파일 하나만 쓴다
+      VERIFY_TOOLS: 'WebSearch,WebFetch,Read,Write,Grep,Glob'
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Install dependencies + Claude Code
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          npm install -g @anthropic-ai/claude-code
+          claude --version
+
+      # 관문 자체가 망가진 채 돌지 않게 — 탐사 관련 단위 테스트만 빠르게
+      - name: Gate selftest
+        run: |
+          python scripts/test_engine_layer.py
+          python scripts/test_brk.py
+
+      # 기준선 — 산출물을 넣기 전의 저장소 selftest 실패 목록(2026-11-03: 측정층 테스트의 시한폭탄이 모든 selftest 를
+      # 세워, 관문이 그 실패를 산출물 탓으로 보고 10/29 사건·11월 월간을 main 에 들이지 못했다 — 산출물이 만든 실패만 막는다)
+      - name: Repository selftest baseline (before author)
+        id: selfbase
+        run: python scripts/selftest.py
+        env:
+          SELFTEST_FAILS_OUT: ${{ runner.temp }}/selftest_base.json
+        continue-on-error: true
+
+      - name: Prepare run
+        run: python scripts/probe_gate.py --subject berkshire prepare --mode "$MODE" --reason "$REASON"
+
+      - name: Author (Claude Code headless)
+        id: author
+        run: |
+          claude -p "$(cat _probe_brk/author_prompt.md)" \
+            --model "$PROBE_MODEL" --max-turns 200 --max-budget-usd "$AUTHOR_BUDGET" \
+            --tools "$AUTHOR_TOOLS" --allowedTools "$AUTHOR_ALLOW" \
+            --output-format json > _probe_brk/author.json
+          python -c "import json;d=json.load(open('_probe_brk/author.json'));print('작성자 종료:',d.get('subtype'),'· 비용',d.get('total_cost_usd'),'· 턴',d.get('num_turns'))"
+        continue-on-error: true
+
+      - name: Gate (author stage — before verify)
+        id: gate_author
+        run: python scripts/probe_gate.py --subject berkshire check --stage author
+        continue-on-error: true
+
+      - name: Verifier (independent — no author context)
+        id: verify
+        run: |
+          claude -p "$(cat _probe_brk/verify_prompt.md)" \
+            --model "$PROBE_MODEL" --max-turns 80 --max-budget-usd "$VERIFY_BUDGET" \
+            --tools "$VERIFY_TOOLS" --allowedTools "$VERIFY_TOOLS" \
+            --output-format json > _probe_brk/verify.json
+        continue-on-error: true
+
+      - name: Gate (final)
+        id: gate1
+        run: python scripts/probe_gate.py --subject berkshire check --stage final
+        continue-on-error: true
+
+      # 불일치만 남았을 때 한 번 — 작성자 수정 → 재검증 → 재관문
+      - name: Author fix once + re-verify
+        id: fix
+        if: steps.gate1.outcome == 'failure'
+        run: |
+          if python -c "import json,sys;sys.path.insert(0,'scripts');import probe_gate as g;g.configure('berkshire');sys.exit(0 if g.only_verify_failures(json.load(open('_probe_brk/gate_final.json'))) else 1)"; then
+            python scripts/probe_gate.py --subject berkshire fix-prompt
+            claude -p "$(cat _probe_brk/fix_prompt.md)" \
+              --model "$PROBE_MODEL" --max-turns 60 --max-budget-usd "$VERIFY_BUDGET" \
+              --tools "$AUTHOR_TOOLS" --allowedTools "$AUTHOR_ALLOW" --output-format json > _probe_brk/fix.json
+            python scripts/probe_gate.py --subject berkshire check --stage author || true
+            claude -p "$(cat _probe_brk/verify_prompt.md)" \
+              --model "$PROBE_MODEL" --max-turns 80 --max-budget-usd "$VERIFY_BUDGET" \
+              --tools "$VERIFY_TOOLS" --allowedTools "$VERIFY_TOOLS" --output-format json > _probe_brk/verify2.json
+            python scripts/probe_gate.py --subject berkshire check --stage final2
+          else
+            echo "::warning::불일치 외의 관문 실패 — 수정 회차 없이 PR 경로로"
+            exit 1
+          fi
+        continue-on-error: true
+
+      # 탐사 산출물로 저장소 selftest 를 돌린다 — 게시한 글이 다음 daily 회차의 selftest 를
+      # 세우는 일이 없게(2026-10-23: 사건 회차 보고서의 '분할'이 낱말 검사에 걸려 파이프라인 정지).
+      - name: Repository selftest against probe output
+        id: selfcheck
+        if: ${{ !cancelled() }}
+        run: python scripts/selftest.py
+        env:
+          SELFTEST_FAILS_OUT: ${{ runner.temp }}/selftest_after.json
+        continue-on-error: true
+
+      - name: Publish (main if gate passed, else probe/ branch + PR)
+        id: publish
+        if: ${{ !cancelled() }}
+        run: python scripts/probe_gate.py --subject berkshire publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SELFTEST_OUTCOME: ${{ steps.selfcheck.outcome }}
+          SELFBASE_OUTCOME: ${{ steps.selfbase.outcome }}
+          SELFTEST_BASE_FAILS: ${{ runner.temp }}/selftest_base.json
+          SELFTEST_AFTER_FAILS: ${{ runner.temp }}/selftest_after.json
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 탐사 결과 DM 도 소장 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+
+      # 게시가 화면에 뜨기까지 다음 데일리(최대 8시간 남짓)를 기다리지 않는다 — 수동 단계는 결함이다(2026-11-03).
+      # daily-update 는 cancel-in-progress 라 돌고 있는 회차가 있으면 끝날 때까지 기다린다(빼앗지 않는다).
+      # 30분 안에 안 끝나면 건너뛴다 — 그 회차가 끝난 뒤 다음 회차가 게시분을 빌드한다.
+      - name: Rebuild site after publish (daily-update quick)
+        if: ${{ !cancelled() && steps.publish.outputs.where == 'main' }}
+        continue-on-error: true
+        timeout-minutes: 35
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          busy=1
+          for i in $(seq 1 60); do
+            n=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/daily-update.yml/runs?status=in_progress" --jq '.total_count' 2>/dev/null || echo 1)
+            q=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/daily-update.yml/runs?status=queued" --jq '.total_count' 2>/dev/null || echo 1)
+            if [ "$n" = "0" ] && [ "$q" = "0" ]; then busy=0; break; fi
+            sleep 30
+          done
+          if [ "$busy" = "1" ]; then
+            echo "daily-update 가 30분째 돌고 있다 — 재빌드 요청을 건너뛴다(다음 회차가 게시분을 빌드한다)"
+            exit 0
+          fi
+          gh workflow run daily-update.yml --ref main -f mode=quick
+          echo "사이트 재빌드 요청 — daily-update quick"
+
+      - name: Keep run artifacts (prompts · gate · cost)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: brk-probe-run-${{ github.run_id }}
+          path: _probe_brk/
+          retention-days: 30

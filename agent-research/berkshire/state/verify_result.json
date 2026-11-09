@@ -1,0 +1,18 @@
+{
+ "run_id": "2026-11",
+ "checked": 28,
+ "match": 28,
+ "rounding": 0,
+ "mismatch": [],
+ "unverifiable": [],
+ "report_check": {
+  "all_where_in_report_consistent": true,
+  "state_kpi_history_3Q26_consistent": true,
+  "notes": [
+   "3Q26 주식 순매도 426: 원문(Forbes 2026-11-07) 'almost $426 million' 일치 · state 3Q26.equity_net_usd_m = -426(설계대로 음수) 일치 · 보고서 1-4 는 '$4.3억'(426 의 억 단위 소수 1자리 표기 — 표기 반올림, 값 불일치 아님)",
+   "9M26 자사주 14409: 자본변동표 분기 합 235 + 4,527 + 9,647 = 14,409, 10-Q 본문 '$14.4 billion' 일치(현금흐름표 자사주 취득은 13,757 — 결제 시점 차이, verify_list 는 자본변동표 정의로 명시)",
+   "OxyChem 9400 · 플로트 178500 · PacifiCorp 2850 은 원문이 'approximately $9.4 billion' · 'approximately $178.5 billion' · 'approximately $2.85 billion' 으로 표기 — 원문 표기 자체와 일치"
+  ]
+ },
+ "verified_at": "2026-11-09T11:09:00+09:00"
+}

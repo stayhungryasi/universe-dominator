@@ -2737,6 +2737,12 @@ console.log(JSON.stringify(cases.map(c => {
     import probe_gate as _pgc
     check("준법: agent-research 공개 원본 금지 키·문장 0",
           _pgc.check_compliance(_pgc.public_files()), [])
+    # 🏛 버크셔 탐사선(2026-11-09) — 같은 관문 규칙을 버크셔 판단층 공개 원본에도(대상만 바꿔서)
+    try:
+        _pgc.configure("berkshire")
+        check("준법: 버크셔 판단층 공개 원본 금지 키·문장 0", _pgc.check_compliance(_pgc.public_files()), [])
+    finally:
+        _pgc.configure("spacex")
     _pubst = (Path(__file__).parent.parent / "agent-research" / "state" / "spacex_state.json")
     if _pubst.exists():
         _pst = __import__("json").loads(_pubst.read_text(encoding="utf-8"))
@@ -2795,7 +2801,7 @@ console.log(JSON.stringify(cases.map(c => {
     for _mod in ("test_event_layer", "test_measure_layer", "test_engine_layer", "test_display_layer",
                  "test_number_discipline", "test_fact_discipline", "test_recheck", "test_cockpit",
                  "test_i18n", "test_translate", "test_history_migration", "test_spacex_watch2",
-                 "test_spacex_news", "test_probe_audit", "test_timebomb", "test_snapshot_gap", "test_calendar", "test_legend_auto", "test_self_repair", "test_clock_relay", "test_ops_wiring"):
+                 "test_spacex_news", "test_probe_audit", "test_timebomb", "test_snapshot_gap", "test_calendar", "test_legend_auto", "test_self_repair", "test_clock_relay", "test_ops_wiring", "test_brk"):
         try:
             _suite = _ut.defaultTestLoader.loadTestsFromName(_mod)
             _res = _ut.TextTestRunner(stream=_io.StringIO(), verbosity=0).run(_suite)

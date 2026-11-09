@@ -45,15 +45,49 @@ except Exception:
 sys.path.insert(0, str(Path(__file__).parent))
 
 HERE = Path(__file__).parent.parent
-AR = HERE / "agent-research"
-STATE = AR / "state" / "spacex_state.json"
-VLIST = AR / "state" / "verify_list.json"
-VRES = AR / "state" / "verify_result.json"
-REPORTS = AR / "reports"
-CHANGELOG = REPORTS / "changelog.md"
-PROMPTS = AR / "prompts"
-WORK = HERE / "_probe"
 KST = timezone(timedelta(hours=9))
+
+# 탐사 대상(2026-11-09 버크셔 탐사선 추가) — 관문 규칙은 한 벌, 대상마다 다른 것은 경로·이름표뿐.
+# 기본값은 spacex(옛 호출·옛 테스트가 그대로 돈다). 버크셔는 --subject berkshire 또는 PROBE_SUBJECT=berkshire.
+SUBJECTS = {
+    "spacex": {"ar": "agent-research", "state": "spacex_state.json", "work": "_probe",
+               "watch": "spacex_watch.json", "label": "🛰 SpaceX 탐사", "branch": "probe"},
+    "berkshire": {"ar": "agent-research/berkshire", "state": "berkshire_state.json", "work": "_probe_brk",
+                  "watch": "brk_watch.json", "label": "🏛 버크셔 탐사", "branch": "probe-brk"},
+}
+SUBJECT = "spacex"
+
+
+def configure(subject=None):
+    """관문의 경로 전역을 대상에 맞춘다 — 순수 함수들은 호출 시점에 전역을 읽는다."""
+    global SUBJECT, AR, STATE, VLIST, VRES, REPORTS, CHANGELOG, PROMPTS, WORK
+    subject = (subject or os.environ.get("PROBE_SUBJECT", "") or "spacex").strip().lower()
+    if subject not in SUBJECTS:
+        raise SystemExit(f"[관문] 알 수 없는 탐사 대상: {subject!r} (가능: {', '.join(SUBJECTS)})")
+    c = SUBJECTS[subject]
+    SUBJECT = subject
+    AR = HERE / c["ar"]
+    STATE = AR / "state" / c["state"]
+    VLIST = AR / "state" / "verify_list.json"
+    VRES = AR / "state" / "verify_result.json"
+    REPORTS = AR / "reports"
+    CHANGELOG = REPORTS / "changelog.md"
+    PROMPTS = AR / "prompts"
+    WORK = HERE / c["work"]
+    return subject
+
+
+def subj(key):
+    return SUBJECTS[SUBJECT][key]
+
+
+def ar_rel():
+    """저장소 루트 기준 판단층 경로(지시문·git add 에 쓴다)."""
+    return AR.relative_to(HERE).as_posix()
+
+
+AR = STATE = VLIST = VRES = REPORTS = CHANGELOG = PROMPTS = WORK = None
+configure("spacex")
 
 STATUSES = ("미판정", "진행", "달성", "달성(조기)", "미달")
 UNSOURCED_MAX = 0.05
@@ -336,8 +370,9 @@ def reco_text_hits(text):
     return hits
 
 
-def public_files(root=AR):
+def public_files(root=None):
     """공개 원본 — reports/*.md(_private 제외) · state/*.json(_private 제외). changelog 포함."""
+    root = AR if root is None else root
     out = []
     for p in sorted((root / "reports").glob("*.md")):
         if not p.stem.endswith("_private"):
@@ -373,8 +408,9 @@ def check_compliance(files):
     return bad
 
 
-def check_private(root=AR, ci=None):
+def check_private(root=None, ci=None):
     """⑧ CI 실행은 _private 파일을 만들지 않는다(포지션 판단은 로컬 전용)."""
+    root = AR if root is None else root
     ci = os.environ.get("CI") == "true" if ci is None else ci
     if not ci:
         return []
@@ -445,7 +481,8 @@ def check_kpi_fin(st, vlist):
 
 
 def run_checks(stage="final", st=None, prev=None, md=None, vlist=None, vres=None,
-               files=None, root=AR, ci=None):
+               files=None, root=None, ci=None):
+    root = AR if root is None else root
     st = read_json(STATE) if st is None else st
     prev = read_json(WORK / "prev_state.json", {}) if prev is None else prev
     fails, stats = [], {}
@@ -511,7 +548,7 @@ def cmd_prepare(mode, reason):
     today = now_kst().strftime("%Y-%m-%d")
     existing = [p.stem for p in REPORTS.glob("*.md")]
     rid = run_id_for(mode, today, (prev.get("run") or {}).get("run_id"), existing)
-    watch = read_json(HERE / "data" / "spacex_watch.json", {}) or {}
+    watch = read_json(HERE / "data" / subj("watch"), {}) or {}
     events = (watch.get("events") or [])[:20]
     due = [d for d in (watch.get("due") or []) if not d.get("baseline")][-10:]
     ctx = {"mode": mode, "reason": reason, "run_id": rid, "today": today,
@@ -528,25 +565,30 @@ def cmd_prepare(mode, reason):
     author = "\n".join([
         body, "", "---", "# 이번 실행 정보 (워크플로가 주입)",
         f"- 모드: {mode}", f"- 사유: {reason}", f"- 회차 id: {rid}",
-        f"- 보고서 경로: agent-research/{ctx['report_path']}",
+        f"- 보고서 경로: {ar_rel()}/{ctx['report_path']}",
         f"- 직전 회차: {ctx['previous_run_id']} (run_number {ctx['previous_run_number']})",
         f"- 실행일(KST): {today}",
         "- 실행 환경: GitHub Actions(CI). `_private` 파일을 만들지 마라 — 포지션 판단은 로컬 실행 전용이다.",
-        "- 끝내기 전에 `python scripts/probe_gate.py check --stage author` 를 실행해 관문 실패 항목을 고쳐라.",
-        "", "## 측정층 최근 사건 (data/spacex_watch.json)", ev_lines,
+        f"- 끝내기 전에 `{gate_cmd()} check --stage author` 를 실행해 관문 실패 항목을 고쳐라.",
+        "", f"## 측정층 최근 사건 (data/{subj('watch')})", ev_lines,
         "", "## 트리거 due (측정층 감지)", due_lines,
     ])
     (WORK / "author_prompt.md").write_text(author, encoding="utf-8")
     verify = "\n".join([
         (PROMPTS / "verify_run.md").read_text(encoding="utf-8"), "", "---",
-        f"- 대상 보고서: agent-research/{ctx['report_path']}",
-        "- 대상 목록: agent-research/state/verify_list.json",
-        "- 결과 파일: agent-research/state/verify_result.json",
+        f"- 대상 보고서: {ar_rel()}/{ctx['report_path']}",
+        f"- 대상 목록: {ar_rel()}/state/verify_list.json",
+        f"- 결과 파일: {ar_rel()}/state/verify_result.json",
         f"- verified_at 은 ISO 형식(예: {now_kst().isoformat(timespec='minutes')})으로 적어라.",
     ])
     (WORK / "verify_prompt.md").write_text(verify, encoding="utf-8")
     print(f"[관문] 준비 완료 — {mode} · {rid} · 사건 {len(events)} · due {len(due)}")
     return 0
+
+
+def gate_cmd():
+    """작성자가 스스로 두드릴 관문 명령 — CI 허용 패턴 `python scripts/probe_gate.py *` 안에 있다."""
+    return "python scripts/probe_gate.py" + ("" if SUBJECT == "spacex" else f" --subject {SUBJECT}")
 
 
 def cmd_fix_prompt():
@@ -558,9 +600,9 @@ def cmd_fix_prompt():
         "독립 검증관이 아래 숫자가 원문과 다르다고 판정했다. 원문을 다시 열어 확인하고,",
         "틀렸으면 보고서·state·verify_list 를 고쳐라. 검증관이 틀렸다고 판단되면 원문 위치를",
         "verify_list 의 해당 항목 note 에 적어라(값을 바꾸지 않는다). verify_result.json 은 건드리지 마라.",
-        f"- 보고서: agent-research/{ctx.get('report_path', '')}",
+        f"- 보고서: {ar_rel()}/{ctx.get('report_path', '')}",
         "", "## 불일치 목록", json.dumps(mm, ensure_ascii=False, indent=1),
-        "", "끝나면 `python scripts/probe_gate.py check --stage author` 로 확인하라.",
+        "", f"끝나면 `{gate_cmd()} check --stage author` 로 확인하라.",
     ])
     (WORK / "fix_prompt.md").write_text(txt, encoding="utf-8")
     print(f"[관문] 수정 지시문 작성 — 불일치 {len(mm)}건")
@@ -662,13 +704,13 @@ def cmd_publish():
         gate = {"ok": False, "failures": (gate.get("failures") or []) + check_private(AR, ci=True)}
     _git("config", "user.name", "github-actions[bot]")
     _git("config", "user.email", "github-actions[bot]@users.noreply.github.com")
-    _git("add", "agent-research")
+    _git("add", ar_rel())
     if not _git("diff", "--cached", "--quiet", check=False).returncode:
-        send_dm(f"🛰 SpaceX 탐사 {rid} ({mode}): 산출물 변경 없음 — 게시할 것이 없습니다.\n"
+        send_dm(f"{subj('label')} {rid} ({mode}): 산출물 변경 없음 — 게시할 것이 없습니다.\n"
                 f"관문: {'통과' if gate.get('ok') else '실패 — ' + '; '.join(gate.get('failures', [])[:3])}")
         print("[관문] 변경 없음 — 게시 생략")
         return 0 if gate.get("ok") else 1
-    msg = f"probe: {rid} ({mode})"
+    msg = (f"probe: {rid} ({mode})" if SUBJECT == "spacex" else f"probe-{SUBJECT}: {rid} ({mode})")
     body = "\n\n" + ("관문 통과" if gate.get("ok") else "관문 실패:\n- " + "\n- ".join(gate.get("failures", [])))
     body += "\n" + vtxt + "\n\nCo-Authored-By: Claude <noreply@anthropic.com>"
     if gate.get("ok") and not force_pr:
@@ -680,14 +722,14 @@ def cmd_publish():
             _git("rebase", "--abort", check=False)
             if attempt == 2:
                 raise RuntimeError("main 게시 실패(재시도 후에도 충돌)")
-        lines = [f"🛰 SpaceX 탐사 {rid} ({mode}) 게시 완료"] + \
+        lines = [f"{subj('label')} {rid} ({mode}) 게시 완료"] + \
             [f"· {x}" for x in summary_lines(st, md)] + \
             [f"· 확률 {prob_line(prev, st)}", f"· {vtxt}"]
         send_dm("\n".join(lines) + pre_note)
         print("[관문] main 게시 완료")
         _step_output("where", "main")      # 다음 스텝이 사이트를 다시 빌드한다(게시가 다음 데일리까지 화면에 안 뜨지 않게)
         return 0
-    branch = f"probe/{rid}"
+    branch = f"{subj('branch')}/{rid}"
     _git("checkout", "-B", branch)
     _git("commit", "-m", msg + body)
     _git("push", "-f", "origin", branch)
@@ -702,7 +744,7 @@ def cmd_publish():
     else:
         # 저장소 설정(Actions 의 PR 생성 허용)이 꺼져 있으면 여기로 온다 — 브랜치는 남아 있다
         pr_url = f"https://github.com/{repo}/compare/main...{branch} (PR 자동 생성 실패: {r.stderr.strip()[:120]})"
-    send_dm(f"🛰 SpaceX 탐사 {rid} ({mode}) — main 미게시, 검토 필요\n· 사유: {reason}\n"
+    send_dm(f"{subj('label')} {rid} ({mode}) — main 미게시, 검토 필요\n· 사유: {reason}\n"
             f"· {vtxt}\n· {pr_url}")
     print(f"[관문] 브랜치 게시 — {branch} · {pr_url}")
     return 0 if gate.get("ok") else 1
@@ -710,6 +752,8 @@ def cmd_publish():
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--subject", choices=tuple(SUBJECTS), default=None,
+                    help="탐사 대상(기본: 환경 변수 PROBE_SUBJECT, 없으면 spacex)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("prepare")
     p.add_argument("--mode", choices=("monthly", "event"), default="monthly")
@@ -719,6 +763,7 @@ def main():
     sub.add_parser("fix-prompt")
     sub.add_parser("publish")
     a = ap.parse_args()
+    configure(a.subject)
     if a.cmd == "prepare":
         return cmd_prepare(a.mode, a.reason)
     if a.cmd == "check":
