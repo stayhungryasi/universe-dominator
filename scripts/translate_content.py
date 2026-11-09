@@ -271,6 +271,16 @@ def cockpit_nodes():
         return {}
 
 
+def berkshire_nodes():
+    """🏛 버크셔 탐사선 관제판 행·보고서 절 — brk_cockpit 이 화면·허브에 싣는 것과 같은 행(2026-11-09)."""
+    try:
+        import brk_cockpit as bc
+        return bc.translate_nodes()
+    except Exception as e:
+        print(f"[번역] 버크셔 관제판 수집 실패 — 이번 회차 제외 ({e})", file=sys.stderr)
+        return {}
+
+
 def thesis_nodes():
     """동행 논제 원장 — 화면(build_site.companion_data)과 같은 칸."""
     try:
@@ -310,6 +320,8 @@ def collect(today, data_dir=None, cache_dir=None, log=print):
         sources.append(("thesis", IC.THESIS, thesis_nodes()))
         for kind, nodes in cockpit_nodes().items():
             sources.append((kind, IC.COCKPIT[kind], nodes))
+        for kind, nodes in berkshire_nodes().items():
+            sources.append((kind, IC.BERKSHIRE[kind], nodes))
     for kind, spec, its in sources:
         for iid, date, node in its:
             for L in IC.TARGETS:

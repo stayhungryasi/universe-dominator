@@ -272,5 +272,62 @@ class CockpitTest(unittest.TestCase):
         self.assertEqual(bc.render(root=Path(tempfile.mkdtemp()), today=date(2026, 11, 9), watch={}), "")
 
 
+class TranslationAndExportTest(unittest.TestCase):
+    """버크셔 서술은 번역 엔진과 화면·허브가 같은 행·같은 칸을 본다 — 캐시가 있으면 그 언어, 없으면 원문."""
+
+    def test_nodes_cover_every_kind_in_spec(self):
+        import brk_cockpit as bc
+        import i18n_content as IC
+        if not (bc.AR / "state" / "berkshire_state.json").exists():
+            self.skipTest("버크셔 판단층 없음")
+        nodes = bc.translate_nodes()
+        self.assertEqual(sorted(nodes), sorted(IC.BERKSHIRE))
+        self.assertTrue(all(nodes[k] for k in nodes), {k: len(v) for k, v in nodes.items()})
+        ids = [i for v in nodes.values() for i, _, _ in v]
+        rep = [i for i, _, _ in nodes["brk_report"]]
+        self.assertTrue(all(i.startswith("brk-") for i in rep))       # SpaceX 보고서 캐시(2026-11-s0)와 겹치지 않는다
+        import translate_content
+        self.assertIn("berkshire_nodes", translate_content.collect.__code__.co_names)   # 변이: 배선 삭제 → 실패
+
+    def test_cached_translation_flows_to_screen_and_hub(self):
+        import brk_cockpit as bc
+        import i18n_content as IC
+        st = {"run": {"run_id": "R", "summary": ["한국어 요약"]},
+              "milestones": [{"id": "A-2027-1", "axis": "A_insurance", "year": 2027, "statement": "보험 인수이익 흑자",
+                              "status": "진행", "progress": None, "progress_reason": "사유"}],
+              "scenarios": {"bull": {"probability": 1.0, "description": "강세 그림"}}}
+        tmp = Path(tempfile.mkdtemp())
+        row = bc.rows(st)["brk_ms"][0]
+        f = IC.fields_for(IC.BERKSHIRE["brk_ms"], row, "en")
+        IC.write_cache("en", "brk_ms", "A-2027-1", {"status": "ok", "src_hash": IC.src_hash(f),
+                                                     "fields": {"text": "Insurance underwriting profit", "reason": "why"}}, tmp)
+        en = bc.localized_state(st, "en", cache_dir=tmp)
+        self.assertEqual(en["milestones"][0]["statement"], "Insurance underwriting profit")
+        self.assertEqual(en["milestones"][0]["progress_reason"], "why")
+        self.assertEqual(en["run"]["summary"], ["한국어 요약"])          # 캐시 없는 칸은 원문(표식은 화면이)
+        self.assertEqual(st["milestones"][0]["statement"], "보험 인수이익 흑자")   # 원본 불변
+        row["text"] = "바뀐 문장"
+        st["milestones"][0]["statement"] = "바뀐 문장"
+        self.assertEqual(bc.localized_state(st, "en", cache_dir=tmp)["milestones"][0]["statement"], "바뀐 문장")  # 원문이 바뀌면 캐시 무효
+
+    def test_export_shape_for_hub(self):
+        import brk_cockpit as bc
+        if not (bc.AR / "state" / "berkshire_state.json").exists():
+            self.skipTest("버크셔 판단층 없음")
+        for L in ("ko", "en", "es", "ja"):
+            d = bc.export(L, today=date(2026, 11, 9), watch={"events": []})
+            for k in ("run", "delta", "price", "band", "scen", "rules", "axes", "milestones", "triggers", "tiles",
+                      "disruption", "report", "labels", "links"):
+                self.assertIn(k, d, (L, k))
+            self.assertTrue(d["run"]["id"] and d["milestones"])
+            self.assertTrue(all(a["key"] in "ABCDE" for a in d["axes"]))
+            blob = json.dumps(d, ensure_ascii=False)
+            self.assertEqual(re.findall(r"\b[A-E]_[a-z]+\b", blob), [], L)      # 기계 키 0
+            if L != "ko":
+                import i18n
+                self.assertFalse(i18n.has_hangul(json.dumps(d["labels"], ensure_ascii=False)), L)
+                self.assertFalse(any(i18n.has_hangul(t["label"]) for t in d["tiles"]), L)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

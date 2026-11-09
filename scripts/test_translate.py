@@ -327,9 +327,23 @@ class F2F3Test(unittest.TestCase):
         with mock.patch.object(TC, "cockpit_nodes", return_value=nodes), \
              mock.patch.object(TC, "probe_nodes", return_value=[]), \
              mock.patch.object(TC, "thesis_nodes", return_value=[]), \
+             mock.patch.object(TC, "berkshire_nodes", return_value={}), \
              mock.patch.object(IC, "SPECS", {}):
             jobs, _ = TC.collect(TODAY, data_dir=None, cache_dir=self.tmp, log=lambda *a: None)
         self.assertEqual(sorted({(j[1], j[3]) for j in jobs}), [("probe_ms", L) for L in ("en", "es", "ja")])
+
+    def test_engine_collects_berkshire_kinds(self):
+        # 🏛 버크셔 탐사선(2026-11-09) — 관제판 행·보고서 절이 같은 엔진 회차에 실린다(격리: 다른 원천은 비움)
+        nodes = {"brk_ms": [("A-2027-1", "", {"id": "A-2027-1", "text": "보험 인수이익 흑자"})],
+                 "brk_report": [("brk-2026-11-s0", "2026-11-01", {"title": "", "md": "본문"})]}
+        with mock.patch.object(TC, "cockpit_nodes", return_value={}), \
+             mock.patch.object(TC, "probe_nodes", return_value=[]), \
+             mock.patch.object(TC, "thesis_nodes", return_value=[]), \
+             mock.patch.object(TC, "berkshire_nodes", return_value=nodes), \
+             mock.patch.object(IC, "SPECS", {}):
+            jobs, _ = TC.collect(TODAY, data_dir=None, cache_dir=self.tmp, log=lambda *a: None)
+        self.assertEqual(sorted({j[1] for j in jobs}), ["brk_ms", "brk_report"])
+        self.assertEqual(len(jobs), 6)
 
     def test_parallax_spec_skips_exact_types_and_keeps_ids(self):
         sp = IC.SPECS["parallax"]

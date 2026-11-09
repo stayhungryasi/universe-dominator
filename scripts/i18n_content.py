@@ -277,6 +277,19 @@ COCKPIT = {
 }
 
 
+# 🏛 버크셔 탐사선(2026-11-09) — 판단층 원장(agent-research/berkshire/state)의 서술 문장. 엔진(brk_cockpit.translate_nodes)과
+# 화면·허브(brk_cockpit.localized)가 같은 행·같은 칸을 본다. 상태값·숫자 칸은 여기 없다(기계 id + 카탈로그). 보고서 절은 PROBE 와 같은 칸
+BERKSHIRE = {
+    "brk_ms": {"ko": ("text", "cur", "tgt", "hit", "miss", "method", "reason")},
+    "brk_trig": {"ko": ("name", "expected", "check")},
+    "brk_delta": {"ko": ("lines.*",)},
+    "brk_disrupt": {"ko": ("name", "threat_to", "signal", "status")},
+    "brk_scen": {"ko": ("description",)},
+    "brk_rule": {"ko": ("condition",)},
+    "brk_report": PROBE,
+}
+
+
 def apply_node(kind, lang, iid, node, spec, cache_dir=None):
     """항목 하나에 번역을 끼운 사본(ok 캐시·원문 해시 일치일 때만). 없으면 원본 그대로."""
     if lang not in TARGETS:

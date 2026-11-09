@@ -223,6 +223,126 @@ def event_title(lang, ev):
 
 
 # ────────────────────────────────────────────────────────────────
+# 번역 — 엔진(translate_nodes)과 화면·허브(localized_state·report_sections)가 같은 행·같은 칸을 본다
+# ────────────────────────────────────────────────────────────────
+
+def rows(st):
+    """서술 행 → {kind: [행]}. 칸 이름은 i18n_content.BERKSHIRE 와 같다(숫자·상태값 칸 없음)."""
+    ms = []
+    for m in st.get("milestones") or []:
+        if not isinstance(m, dict) or not m.get("id"):
+            continue
+        pg = m.get("progress") if isinstance(m.get("progress"), dict) else {}
+        ms.append({"id": m["id"], "text": m.get("statement") or "", "cur": str(pg.get("current") or ""),
+                   "tgt": str(pg.get("target") or ""), "hit": m.get("if_hit") or "", "miss": m.get("if_miss") or "",
+                   "method": m.get("check") or "", "reason": m.get("progress_reason") or ""})
+    trig = [{"id": t["id"], "name": t.get("name") or "", "expected": str(t.get("expected_date") or ""),
+             "check": t.get("check") or ""} for t in st.get("triggers_next_12m") or [] if isinstance(t, dict) and t.get("id")]
+    delta = []
+    run = st.get("run") or {}
+    if run.get("run_id"):
+        summ = run.get("summary") or []
+        delta.append({"id": run["run_id"], "lines": [summ] if isinstance(summ, str) else list(summ)})
+    for r in st.get("run_history") or []:
+        if isinstance(r, dict) and r.get("run_id") and r.get("run_id") != run.get("run_id") and r.get("summary"):
+            delta.append({"id": r["run_id"], "lines": list(r["summary"])})
+    dis = [{"id": d["id"], "name": d.get("name") or "", "threat_to": d.get("threat_to") or "",
+            "signal": d.get("signal") or "", "status": d.get("status") or ""}
+           for d in st.get("disruption_watch") or [] if isinstance(d, dict) and d.get("id")]
+    sc = [{"id": k, "description": (st.get("scenarios") or {}).get(k, {}).get("description") or ""}
+          for k in ("bull", "base", "bear") if isinstance((st.get("scenarios") or {}).get(k), dict)]
+    rule = [{"id": r["id"], "condition": r.get("condition") or ""}
+            for r in st.get("probability_adjustment_rules") or [] if isinstance(r, dict) and r.get("id")]
+    return {"brk_ms": ms, "brk_trig": trig, "brk_delta": delta, "brk_disrupt": dis, "brk_scen": sc, "brk_rule": rule}
+
+
+def report_nodes(root=None):
+    """공개 보고서(준법 필터 통과본)의 절 → [(id, 날짜, {title, md})]. id 는 'brk-<stem>-s<i>'."""
+    import agent_report
+    import probe_cockpit
+    out = []
+    for f in report_files(root):
+        body, _ = agent_report.sanitize(f.read_text(encoding="utf-8"))
+        m = re.search(r"(20\d{2})-(\d{2})(?:-(\d{2}))?", f.stem)
+        d = f"{m.group(1)}-{m.group(2)}-{m.group(3) or '01'}" if m else ""
+        for i, (title, md) in enumerate(probe_cockpit.split_sections(body)):
+            out.append((f"brk-{f.stem}-s{i}", d, {"title": "" if title == "개요" else title, "md": md}))
+    return out
+
+
+def translate_nodes(root=None):
+    """번역 엔진용 → {kind: [(id, 날짜, 행)]}. 날짜 '' = 늘 걸려 있는 화면(엔진이 오늘로 친다)."""
+    st = read_state(root)
+    if not st:
+        return {}
+    out = {k: [(r["id"], "", r) for r in v] for k, v in rows(st).items()}
+    out["brk_report"] = report_nodes(root)
+    return out
+
+
+def _apply(kind, lang, iid, node, cache_dir=None):
+    import i18n_content as IC
+    return IC.apply_node(kind, lang, iid, node, IC.BERKSHIRE[kind], cache_dir)
+
+
+def localized_state(st, lang, cache_dir=None):
+    """다른 언어 — 번역 캐시(관문 통과·원문 해시 일치)가 있는 칸만 그 언어로 바꾼 state 사본. 없으면 원문 그대로."""
+    if lang == "ko" or not st:
+        return st
+    st = json.loads(json.dumps(st, ensure_ascii=False))
+    rs = rows(st)
+    tr = {k: {r["id"]: _apply(k, lang, r["id"], r, cache_dir) for r in v} for k, v in rs.items()}
+    for m in st.get("milestones") or []:
+        r = tr["brk_ms"].get(m.get("id"))
+        if not r:
+            continue
+        m["statement"], m["if_hit"], m["if_miss"], m["check"] = r["text"], r["hit"], r["miss"], r["method"]
+        if m.get("progress_reason"):
+            m["progress_reason"] = r["reason"]
+        if isinstance(m.get("progress"), dict):
+            m["progress"]["current"], m["progress"]["target"] = r["cur"], r["tgt"]
+    for t in st.get("triggers_next_12m") or []:
+        r = tr["brk_trig"].get(t.get("id"))
+        if r:
+            t["name"], t["expected_date"], t["check"] = r["name"], r["expected"], r["check"]
+    run = st.get("run") or {}
+    r = tr["brk_delta"].get(run.get("run_id"))
+    if r:
+        run["summary"] = r["lines"]
+    for h in st.get("run_history") or []:
+        r = tr["brk_delta"].get(h.get("run_id"))
+        if r and h.get("summary"):
+            h["summary"] = r["lines"]
+    for d in st.get("disruption_watch") or []:
+        r = tr["brk_disrupt"].get(d.get("id"))
+        if r:
+            d.update(name=r["name"], threat_to=r["threat_to"], signal=r["signal"], status=r["status"])
+    for k, s in (st.get("scenarios") or {}).items():
+        r = tr["brk_scen"].get(k)
+        if r and isinstance(s, dict):
+            s["description"] = r["description"]
+    for rr in st.get("probability_adjustment_rules") or []:
+        r = tr["brk_rule"].get(rr.get("id"))
+        if r:
+            rr["condition"] = r["condition"]
+    return st
+
+
+def report_sections(lang, root=None, cache_dir=None):
+    """보고서별 절 → [{id, title, sections:[{id, title, html, pending}]}] (최신순). 번역이 있는 절만 그 언어."""
+    import agent_report
+    by = {}
+    for iid, d, node in report_nodes(root):
+        stem = iid[len("brk-"):].rsplit("-s", 1)[0]
+        tn = node if lang == "ko" else _apply("brk_report", lang, iid, node, cache_dir)
+        pending = lang != "ko" and tn is node and bool(re.search(r"[가-힣]", node["md"] + node["title"]))
+        by.setdefault(stem, []).append({"id": iid.rsplit("-", 1)[1], "title": tn["title"] or L(lang, "bk.report.overview"),
+                                        "html": agent_report.md_to_html(tn["md"], base_level=4), "pending": pending})
+    return [{"id": f.stem, "title": L(lang, "bk.report.title", id=f.stem), "sections": by.get(f.stem, [])}
+            for f in report_files(root)]
+
+
+# ────────────────────────────────────────────────────────────────
 # 렌더
 # ────────────────────────────────────────────────────────────────
 
@@ -448,15 +568,19 @@ def render_events(watch, lang, n=12):
 
 def render_reports(lang, root=None, n=3):
     import agent_report
-    out, cut = [], {"phase4": 0, "blocks": 0}
-    for i, p in enumerate(report_files(root)[:n]):
-        body, info = agent_report.sanitize(p.read_text(encoding="utf-8"))
+    cut = {"phase4": 0, "blocks": 0}
+    for p in report_files(root)[:n]:
+        _, info = agent_report.sanitize(p.read_text(encoding="utf-8"))
         cut["phase4"] += int(bool(info.get("phase4")))
         cut["blocks"] += info.get("blocks", 0)
-        html = agent_report.md_to_html(body, base_level=3)
-        attr = ' lang="ko" data-uvx-pending="1"' if lang != "ko" else ""
-        out.append(f'<details class="ag-run" id="brk-{esc(p.stem)}"{" open" if i == 0 else ""}><summary>'
-                   + esc(L(lang, "bk.report.title", id=p.stem)) + f'</summary><div class="ag-body"{attr}>' + html + "</div></details>")
+    out = []
+    for i, rep in enumerate(report_sections(lang, root)[:n]):
+        body = []
+        for sec in rep["sections"]:
+            attr = ' lang="ko" data-uvx-pending="1"' if sec["pending"] else ""
+            body.append(f'<div{attr}><h3>{esc(sec["title"])}</h3>{sec["html"]}</div>')
+        out.append(f'<details class="ag-run" id="brk-{esc(rep["id"])}"{" open" if i == 0 else ""}><summary>'
+                   + esc(rep["title"]) + '</summary><div class="ag-body">' + "".join(body) + "</div></details>")
     if not out:
         return "", cut
     return '<h4 class="ag-h">' + esc(L(lang, "bk.h.report")) + "</h4>" + "".join(out), cut
@@ -484,7 +608,7 @@ def render(root=None, today=None, watch=None, lang="ko"):
     """관제판 HTML(빈 문자열이면 '준비 중'). 판단층은 읽기만 한다."""
     root = root or AR
     today = today or kst_today()
-    st = read_state(root)
+    st = localized_state(read_state(root), lang)
     if not st:
         return ""
     watch = read_json(DATA_DIR / "brk_watch.json", {}) if watch is None else watch
@@ -521,3 +645,112 @@ def render(root=None, today=None, watch=None, lang="ko"):
     html = "".join(h)
     print(f"[OK] 버크셔 탐사선({lang}): {len(html) // 1024}KB · PHASE4 제외 {cut['phase4']} · 권고 블록 제외 {cut['blocks']}")
     return html
+
+
+# ────────────────────────────────────────────────────────────────
+# 허브 내보내기 — stayhungryasi.com 의 BERKSHIRE 페이지가 이 함수 하나만 부른다(허브는 아무것도 재판정하지 않는다)
+# ────────────────────────────────────────────────────────────────
+
+def export(lang="ko", root=None, watch=None, today=None):
+    """허브용 관제판 데이터(그 언어 하나). 여기서 바꾸면 다음 동기화에 허브가 따라온다."""
+    import i18n
+    root = root or AR
+    today = today or kst_today()
+    st = localized_state(read_state(root), lang)
+    if not st:
+        return {}
+    watch = read_json(DATA_DIR / "brk_watch.json", {}) if watch is None else watch
+    vres = read_json(root / "state" / "verify_result.json", None) or {}
+    run, mk, v, sc = st.get("run") or {}, st.get("market") or {}, st.get("valuation") or {}, st.get("scenarios") or {}
+    axes = st.get("axes") or {}
+    hist_by_ms = {m.get("id"): [STATUS_ID.get(h.get("status"), "wait") for h in m.get("status_history") or []]
+                  for m in st.get("milestones") or [] if isinstance(m, dict)}
+    ms = []
+    for m in st.get("milestones") or []:
+        if not isinstance(m, dict):
+            continue
+        pg = m.get("progress") if isinstance(m.get("progress"), dict) else {}
+        ms.append({"id": m.get("id"), "axis": axis_letter(m.get("axis")), "axisL": axis_name(lang, axes, m.get("axis")),
+                   "year": m.get("year"), "text": m.get("statement"), "cls": STATUS_ID.get(m.get("status"), "wait"),
+                   "pct": ms_pct(m), "cur": pg.get("current"), "tgt": pg.get("target"), "unit": pg.get("unit"),
+                   "asof": pg.get("asof"), "source": pg.get("source"), "reason": m.get("progress_reason"),
+                   "hit": m.get("if_hit"), "miss": m.get("if_miss"), "method": m.get("check"),
+                   "hist": hist_by_ms.get(m.get("id")) or []})
+    ax = [{"key": axis_letter(r["key"]), "label": r["name"], "n": r["n"], "measured": r["measured"],
+           "avg": r["pct"], "counts": r["counts"]} for r in axis_rows(st, lang)]
+    trig = []
+    for t in next_triggers(st, today, n=12):
+        dd = t["dd"]
+        when = (L(lang, "bk.dd.future", n=dd) if dd is not None and dd > 0 else L(lang, "bk.dd.today") if dd == 0
+                else L(lang, "bk.dd.past", n=-dd) if dd is not None else L(lang, "bk.dd.tbd"))
+        trig.append({"id": t["id"], "name": t["name"], "expected": t["expected"], "when": when, "dday": dd, "check": t["check"]})
+    rules = []
+    for r in st.get("probability_adjustment_rules") or []:
+        if not isinstance(r, dict):
+            continue
+        d = " · ".join(f"{L(lang, 'bk.sc.' + k)} {'+' if r[k] > 0 else '−'}{abs(r[k]) * 100:.0f}p"
+                       for k in ("bull", "base", "bear") if isinstance(r.get(k), (int, float)))
+        state = "발동" if str(r.get("status", "")).startswith("발동") else "대기"
+        rules.append({"id": r.get("id"), "cond": r.get("condition"), "delta": d, "state": state})
+    tiles = []
+    series = kpi_series(st)
+    for key, tid, kind in KPI_TILES:
+        tl = tile(series, key)
+        if tl:
+            tiles.append({"id": tid, "label": L(lang, "bk.kpi." + tid), "value": fmt(lang, tl["value"], kind),
+                          "q": tl["quarter"], "dir": tl["arrow"], "series": tl["spark"], "origin": tl["origin"],
+                          "source": tl["source"]})
+    evs = []
+    for e in (watch or {}).get("events") or []:
+        if isinstance(e, dict) and not e.get("baseline"):
+            g = e.get("grade") if e.get("grade") in GRADE_ID else "record"
+            evs.append({"date": e.get("date"), "kind": g, "kindL": L(lang, "bk.grade." + g),
+                        "title": event_title(lang, e), "url": e.get("url"), "form": e.get("form")})
+    if not evs:      # 첫 회차(기준선)만 있을 때 — 최근 공시를 '기록'으로 보여 준다
+        for e in ((watch or {}).get("events") or [])[:8]:
+            if isinstance(e, dict):
+                g = e.get("grade") if e.get("grade") in GRADE_ID else "record"
+                evs.append({"date": e.get("date"), "kind": g, "kindL": L(lang, "bk.grade." + g),
+                            "title": event_title(lang, e), "url": e.get("url"), "form": e.get("form")})
+    reps = report_sections(lang, root)
+    delta = rows(st)["brk_delta"]
+    nr = next_run_date(run.get("run_date"))
+    try:
+        age = (today - date.fromisoformat(str(run.get("run_date"))[:10])).days
+    except Exception:
+        age = None
+    ok = int(vres.get("match") or 0) + int(vres.get("rounding") or 0)
+    return {
+        "lang": lang,
+        "run": {"id": run.get("run_id"), "date": run.get("run_date"), "mode": run.get("mode"),
+                "number": run.get("run_number"), "prev": run.get("previous_run_id"),
+                "verify": [ok, vres.get("checked")] if vres.get("checked") else [],
+                "next": nr.isoformat() if nr else None, "age": age, "stale": bool(age is not None and age > 35)},
+        "delta": [{"id": d["id"], "kind": L(lang, "bk.mode." + ("event" if run.get("mode") == "event" else "monthly"))
+                   if d["id"] == run.get("run_id") else d["id"], "lines": d["lines"]} for d in delta],
+        "price": {"v": mk.get("price_usd"), "date": mk.get("price_asof"), "pb": mk.get("pb")},
+        "band": {"lo": (v.get("band") or [None, None])[0], "hi": (v.get("band") or [None, None])[1],
+                 "mid": v.get("mid"), "pw": v.get("pw_value"), "rate": v.get("discount_rate")},
+        "val": {"implied": v.get("implied_bps_cagr_at_base_exit"), "twocol": v.get("two_column_check_usd"),
+                "opsMult": v.get("market_paid_multiple_on_op_ex_inv"), "method": v.get("method"),
+                "rateBasis": v.get("discount_rate_basis")},
+        "scen": [{"key": k, "label": L(lang, "bk.sc." + k), "prob": (sc.get(k) or {}).get("probability"),
+                  "prev": (sc.get(k) or {}).get("probability_prev"), "vps": (sc.get(k) or {}).get("value_per_b_share"),
+                  "cagr": (sc.get(k) or {}).get("bps_cagr"), "pb": (sc.get(k) or {}).get("exit_pb"),
+                  "rationale": (sc.get(k) or {}).get("description")} for k in ("bull", "base", "bear")],
+        "rules": rules,
+        "history": [{k: h.get(k) for k in ("run_id", "run_date", "price", "price_date", "probs", "band", "mid", "pw_value")}
+                    for h in st.get("run_history") or [] if isinstance(h, dict)],
+        "axes": ax, "milestones": ms, "triggers": trig, "events": evs[:12], "tiles": tiles,
+        "disruption": [{k: d.get(k) for k in ("id", "name", "threat_to", "signal", "status")}
+                       for d in st.get("disruption_watch") or [] if isinstance(d, dict)],
+        "report": ({"id": reps[0]["id"], "title": reps[0]["title"],
+                    "sections": [{"id": x["id"], "title": x["title"], "html": x["html"]} for x in reps[0]["sections"]]}
+                   if reps else None),
+        "reports": [{"id": r["id"], "n": len(r["sections"])} for r in reps],
+        "labels": {"st": {k: L(lang, "pc.st." + k) for k in ("done", "early", "prog", "miss", "wait")},
+                   "scen": {k: L(lang, "bk.sc." + k) for k in ("bull", "base", "bear")},
+                   "disclaimer": L(lang, "bk.disclaimer")},
+        "links": {"observatory": "https://univertrix.com/" + ("" if lang == "ko" else lang + "/") + "observatory.html#brk",
+                  "repo": "https://github.com/stayhungryasi/universe-dominator/tree/main/agent-research/berkshire"},
+    }
