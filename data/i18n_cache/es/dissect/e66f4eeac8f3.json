@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "e66f4eeac8f3",
+ "lang": "es",
+ "src_hash": "bfe677c9aab7",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-09 11:47",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Más de un año de relación con Claude Code",
+  "sections.1.h": "El intento tardío de respuesta de Anthropic",
+  "sections.2.h": "La incomodidad de formatos de configuración fragmentados",
+  "sections.3.h": "Defectos estructurales en la integración IDE",
+  "sections.4.h": "Adición excesiva de funciones ignorando la calidad",
+  "sections.5.h": "Acumulación de sobrecarga innecesaria de tokens",
+  "sections.6.h": "Ausencia de visión de producto y falta de filosofía de ingeniería",
+  "sections.7.h": "Transición a Pi y satisfacción",
+  "sections.0.ko": "Desde los primeros días de su suscripción a Claude Pro, el autor ha utilizado Claude Code como su herramienta de desarrollo principal. Sintió una gran atracción por la experiencia de generar código Python complejo con un único prompt, y esperaba que esta herramienta fuera uno de los catalizadores clave en la configuración de la forma actual de desarrollo de software en la era de la IA. Sin embargo, la acumulación de pequeñas molestias lo llevó finalmente a decidir abandonar esta plataforma.",
+  "sections.1.ko": "Al día siguiente de que el autor decidiera dejar Claude Code, Anthropic anunció el soporte para archivos AGENTS.md. Aunque la intención de prevenir la deserción de usuarios era clara, para el autor ya era demasiado tarde. Esta respuesta se convirtió más bien en un evento que revelaba la causa raíz del problema: la ausencia de dirección de la empresa.",
+  "sections.2.ko": "La adición del soporte AGENTS.md simboliza la principal insatisfacción que sintió el autor. Gestionar archivos CLAUDE.md dispersos en múltiples repositorios, o copiar y crear enlaces simbólicos entre dos formatos, daña la experiencia del usuario. Aunque puede ser efectivo desde la perspectiva del marketing, para los usuarios reales no es más que una sobrecarga incómoda.",
+  "sections.3.ko": "Al utilizar Claude Code dentro de VSCode, existe la limitación de que solo se puede conectar una sesión con el IDE a la vez. Si abre una nueva pestaña mientras el primer trabajo está en progreso, la segunda pestaña no recibirá eventos de selección de texto. Este problema, reportado desde diciembre de 2025, permanece abierto, y la extensión oficial de VSCode, aunque permite abrir múltiples pestañas, tiene sus propios problemas, como que ciertos comandos de barra inclinada no funcionan.",
+  "sections.4.ko": "Anthropic construyó rápidamente funciones como flujos de trabajo dinámicos, equipos de agentes y ultra-revisión en Claude Code. Aunque son efectivas para aumentar el consumo de tokens de los clientes empresariales, están lejos de las necesidades de los desarrolladores comunes. De las 244 versiones de este año, más de 3/4 modificaron el prompt del sistema o las descripciones de herramientas, lo que cambia significativamente el rendimiento del LLM y rompe frecuentemente las configuraciones personales del usuario.",
+  "sections.5.ko": "A pesar de reducir el prompt del sistema en un 80%, Claude Code aún tiene una sobrecarga mucho mayor que Pi. Solo la descripción de la herramienta Bash básica ronda los 3.000 tokens, y la mayoría de su contenido trata sobre cómo usar Git o escribir PRs de GitHub, temas que el modelo ya conoce. Según las estimaciones del autor, reducir solo 1.000 de estos tokens innecesarios podría ahorrar millones de dólares anuales en costos de inferencia.",
+  "sections.6.ko": "El autor señala que Claude Code parece haberse construido sin una dirección clara, con múltiples ingenieros y PM agregando sin discriminación funciones adaptadas a sus propios flujos de trabajo. Tampoco considera casos donde la mejora para un usuario daña a otro. Es un juicio de que alguien con autoridad para rechazar problemas no estableció criterios claros, un papel muy importante en la ingeniería de productos.",
+  "sections.7.ko": "Tras trasladarse a Pi, después de un período inicial de adaptación, el autor está satisfecho con su estabilidad, diseño minimalista y alta flexibilidad de personalización. Incluso pudo escribir una extensión que soporta su caso de uso personal en solo 20 minutos. Esto demuestra que la transición de Claude Code a una herramienta de código abierto no es una barrera técnica, e invita a personas con quejas similares a considerar intentar alternativas.",
+  "caveat": "Este artículo está escrito como una experiencia y opinión personal de un desarrollador, por lo que es difícil considerarlo representativo de las intenciones del equipo de productos de Anthropic o de la satisfacción general de los usuarios de Claude Code.",
+  "title": "Adiós Claude, hola Pi"
+ }
+}

@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "5dd4115f5511",
  "lang": "es",
- "src_hash": "7de8e68aa555",
+ "src_hash": "5650a6798ff0",
  "model": "claude-haiku-4-5",
- "at": "2026-11-05 18:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "TSM subió un 0,26% a 405,87 dólares el 4 de noviembre, y los datos de ventas de octubre se publicarán el 10 de noviembre.",
-  "summary_ko.1": "La gerencia estableció un objetivo de ganancias del cuarto trimestre de 52.300 millones a 54.300 millones de dólares, siendo el punto medio de 53.300 millones de dólares una representación de aproximadamente el 14,1% de crecimiento secuencial respecto al trimestre anterior.",
-  "title": "Las acciones de TSMC bajan mientras los datos de ventas de noviembre enfrentan el obstáculo de 53.300 millones de dólares trimestrales"
- }
+ "at": "2026-11-09 11:47",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.1] 숫자: 원문에 없는 숫자 52300",
+  "[17§summary_ko.1] 숫자: 원문의 숫자가 빠짐 523"
+ ]
 }

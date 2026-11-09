@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "e66f4eeac8f3",
+ "lang": "en",
+ "src_hash": "8740e6c4878e",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-09 11:47",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Over a year of relationship with Claude Code",
+  "sections.1.h": "Anthropic's late-stage response attempt",
+  "sections.2.h": "Inconvenience of fragmented configuration formats",
+  "sections.3.h": "Structural defects in IDE integration",
+  "sections.4.h": "Excessive feature additions ignoring quality",
+  "sections.5.h": "Cumulative unnecessary token overhead",
+  "sections.6.h": "Absence of product vision and lack of engineering philosophy",
+  "sections.7.h": "Transition to Pi and satisfaction",
+  "sections.0.ko": "The author has used Claude Code as a primary development tool since early Claude Pro subscription. He found great appeal in the experience of generating complex Python code from a single prompt, and expected this tool to become one of the key catalysts shaping software development methods in the current AI era. However, accumulated minor inconveniences eventually led him to the decision to leave this platform.",
+  "sections.1.ko": "The day after the author decided to abandon Claude Code, Anthropic announced AGENTS.md file support. This clearly showed intent to prevent user churn, but for the author it was already too late. This response became an event that instead further revealed the root cause of the problem—the company's lack of direction.",
+  "sections.2.ko": "The addition of AGENTS.md support symbolizes the core grievance the author felt. It means managing CLAUDE.md files scattered across multiple repositories or copying and symlinking between two formats harms user experience. While it may be effective from a marketing perspective, for actual users it is merely burdensome overhead.",
+  "sections.3.ko": "When using Claude Code within VSCode, there is a constraint that only one session can be connected to the IDE at a time. When opening a new tab while the first task is in progress, the second tab does not receive text selection events. This issue, reported from December 2025 onward, remains open. The official VSCode extension can also open multiple tabs, but it has its own issues such as some slash commands not working.",
+  "sections.4.ko": "Anthropic rapidly stacked features like dynamic workflows, agent teams, and ultra-review on Claude Code. These are effective at increasing token consumption for enterprise customers, but fall short of the needs of ordinary developers. Of over 244 releases this year, more than 3/4 changed system prompts or tool descriptions, which significantly alters LLM performance and frequently breaks user custom settings.",
+  "sections.5.ko": "Despite a 80% reduction in system prompt size, Claude Code still carries far greater overhead than Pi. Just the basic Bash tool description alone amounts to approximately 3,000 tokens, most of which covers content the model already knows such as Git usage or GitHub PR writing. According to the author's estimate, simply reducing such unnecessary 1,000 tokens would save millions of dollars annually in inference costs.",
+  "sections.6.ko": "The author points out that Claude Code appears to have been built with multiple engineers and PMs indiscriminately adding features suited to their own workflows without clear direction. It does not even consider cases where one user's improvement harms another. This is an assessment that someone with authority to reject issues failed to establish clear criteria—a role of critical importance in product engineering.",
+  "sections.7.ko": "After switching to Pi, the author went through an initial adaptation period and is now satisfied with its stability, minimalist design, and high customization flexibility. He was even able to write an extension supporting his personal use case in just 20 minutes. This demonstrates that the transition from Claude Code to an open-source tool is not a technical barrier, and the author recommends that others with similar grievances try exploring alternatives.",
+  "caveat": "This article is written from the personal experience and opinions of a single developer, and should not be viewed as representative of the Anthropic product team's intentions or the satisfaction level of Claude Code users overall."
+ }
+}
