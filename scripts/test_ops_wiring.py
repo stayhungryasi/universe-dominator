@@ -145,6 +145,107 @@ class RelayModeTest(unittest.TestCase):
                          ["group: daily-update", "cancel-in-progress: ${{ inputs.mode == 'full' }}"])
 
 
+class PublishConflictTest(unittest.TestCase):
+    """⑥ 엔진이 도는 사이 사람이 보류 PR 을 합치면 게시 rebase 가 충돌한다 — 예전엔 예외로 죽어 산출물이 사라졌다."""
+    def _publish(self, pull_rc):
+        import probe_gate as pg
+        calls, dms = [], []
+
+        class R:
+            def __init__(self, rc, out=""):
+                self.returncode, self.stdout, self.stderr = rc, out, ""
+
+        def git(*args, check=True):
+            calls.append(args)
+            if args[:2] == ("diff", "--cached"):
+                return R(1)                                            # 게시할 변경이 있다
+            if args[0] == "pull":
+                return R(pull_rc)
+            return R(0)
+
+        def rj(path, default=None):
+            return {"ok": True, "failures": []} if "gate_final" in str(path) else default
+
+        with mock.patch.object(pg, "_git", side_effect=git), mock.patch.object(pg, "read_json", side_effect=rj), \
+                mock.patch.object(pg, "send_dm", side_effect=dms.append), \
+                mock.patch.object(pg, "check_private", return_value=[]), \
+                mock.patch.object(pg, "summary_lines", return_value=[]), \
+                mock.patch.object(pg, "prob_line", return_value=""), \
+                mock.patch.object(pg, "_step_output"), \
+                mock.patch.object(pg.subprocess, "run", return_value=R(0, "https://github.com/o/r/pull/9")), \
+                mock.patch.dict("os.environ", {"PROBE_PUBLISH": "", "SELFTEST_OUTCOME": ""}):
+            rc = pg.cmd_publish()
+        return rc, calls, dms
+
+    def test_conflict_preserves_output_on_branch(self):
+        rc, calls, dms = self._publish(pull_rc=1)
+        self.assertEqual(rc, 1)                                            # 실패로 보고(워크플로가 운다)
+        self.assertEqual(sum(1 for c in calls if c[0] == "commit"), 1)     # 커밋은 한 번 — 두 번째 커밋으로 죽지 않는다
+        self.assertTrue(any(c[:2] == ("checkout", "-B") for c in calls))
+        self.assertTrue(any(c[:2] == ("push", "-f") for c in calls))       # 브랜치로 보존
+        self.assertIn("main 게시 충돌", dms[-1])
+        self.assertIn("pull/9", dms[-1])
+
+    def test_clean_publish_goes_to_main(self):
+        rc, calls, dms = self._publish(pull_rc=0)
+        self.assertEqual(rc, 0)
+        self.assertTrue(any(c[:2] == ("push", "origin") and c[2] == "HEAD:main" for c in calls))
+        self.assertFalse(any(c[:2] == ("push", "-f") for c in calls))
+
+
+class UnpublishedRunsTest(unittest.TestCase):
+    """⑦ 관문에 막힌 회차(probe/ 브랜치)는 다음 회차가 규약으로 이어받는다 — 작성자 재량에 맡기지 않는다."""
+    def setUp(self):
+        import probe_gate as pg
+        self.pg = pg
+        self.tmp = Path(tempfile.mkdtemp())
+        self.saved = (pg.WORK, pg.VLIST, pg.VRES, pg.REPORTS)
+        (self.tmp / "reports").mkdir()
+        (self.tmp / "reports" / "2026-11-05-event.md").write_text("x", encoding="utf-8")   # 이미 게시된 회차
+        pg.WORK, pg.VLIST, pg.VRES = self.tmp / "_probe", self.tmp / "vl.json", self.tmp / "vr.json"
+        pg.REPORTS = self.tmp / "reports"
+
+    def tearDown(self):
+        self.pg.WORK, self.pg.VLIST, self.pg.VRES, self.pg.REPORTS = self.saved
+
+    def _git(self, *args, check=True):
+        class R:
+            def __init__(s, rc=0, out=""):
+                s.returncode, s.stdout, s.stderr = rc, out, ""
+        if args[0] == "ls-remote":
+            return R(0, "a\trefs/heads/probe/2026-11-08-event\nb\trefs/heads/probe/2026-11-05-event\n"
+                        "c\trefs/heads/probe-brk/2026-11\nd\trefs/heads/repair/now-x\n")
+        if args[0] == "show":
+            return R(0, "# 11/08 보고서 본문")
+        return R(0)
+
+    def test_finds_only_unpublished_and_feeds_author(self):
+        pg = self.pg
+        with mock.patch.object(pg, "_git", side_effect=self._git):
+            self.assertEqual(pg.unpublished_branches(), [("probe/2026-11-08-event", "2026-11-08-event")])
+            pg.cmd_prepare("event", "테스트")
+        prompt = (pg.WORK / "author_prompt.md").read_text(encoding="utf-8")
+        self.assertIn("main 에 게시되지 못한 회차", prompt)
+        self.assertIn("_probe/unpublished/2026-11-08-event.md", prompt)
+        self.assertIn("unpublished_runs", prompt)
+        self.assertEqual((pg.WORK / "unpublished" / "2026-11-08-event.md").read_text(encoding="utf-8"), "# 11/08 보고서 본문")
+        self.assertEqual(json.loads((pg.WORK / "context.json").read_text(encoding="utf-8"))["unpublished"],
+                         ["2026-11-08-event"])
+
+    def test_close_only_absorbed(self):
+        pg = self.pg
+        ran = []
+
+        class R:
+            returncode, stdout, stderr = 0, "", ""
+        st = {"run": {"run_id": "2026-11-09-event", "unpublished_runs": [
+            {"run_id": "2026-11-08-event", "absorbed_by": "2026-11-09-event — T3"},
+            {"run_id": "2026-11-07-event", "not_absorbed": "원천 재확인 실패"}]}}
+        with mock.patch.object(pg.subprocess, "run", side_effect=lambda a, **k: ran.append(a) or R()):
+            self.assertEqual(pg.close_absorbed(st), ["2026-11-08-event"])
+        self.assertEqual([a[:4] for a in ran], [["gh", "pr", "close", "probe/2026-11-08-event"]])
+
+
 class WorkflowWiringTest(unittest.TestCase):
     def _block(self, y, needle):
         i = y.index(needle)

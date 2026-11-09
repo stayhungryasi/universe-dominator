@@ -533,6 +533,79 @@ def only_verify_failures(gate):
 # 하위 명령
 # ────────────────────────────────────────────────────────────────
 
+def unpublished_branches(limit=5):
+    """main 에 게시되지 못한 회차 — 원격 `<branch>/<rid>` 중 main 의 reports 에 그 보고서가 없는 것 → [(branch, rid)].
+
+    2026-11-09: 11/06·07·08 사건 회차가 관문(관제실 데이터 예산)에 막혀 PR 3건으로 쌓였다. 11/08 회차는 앞의 둘을
+    스스로 찾아 흡수했지만, 그건 작성자의 재량이었지 규약이 아니었다 — 다음 회차가 놓치면 독자는 그 취재를 영영
+    못 본다. 이제 준비 단계가 기계적으로 찾아 작성자에게 넘긴다."""
+    r = _git("ls-remote", "--heads", "origin", check=False)
+    if r.returncode != 0:
+        print(f"[관문] 보류 회차 조회 실패 — 건너뜀: {r.stderr.strip()[:120]}")
+        return []
+    pre = f"refs/heads/{subj('branch')}/"
+    out = []
+    for ln in r.stdout.splitlines():
+        parts = ln.split()
+        if len(parts) != 2 or not parts[1].startswith(pre):
+            continue
+        rid = parts[1][len(pre):]
+        if not rid or "/" in rid or (REPORTS / f"{rid}.md").exists():
+            continue
+        out.append((parts[1][len("refs/heads/"):], rid))
+    return sorted(out, key=lambda x: x[1])[-limit:]
+
+
+def stage_unpublished(pairs):
+    """보류 회차 보고서를 작업 폴더에 사본으로 꺼낸다(작성자는 git 을 못 쓴다 — 읽기 도구로 연다) → [(branch, rid, 상대경로)]."""
+    d = WORK / "unpublished"
+    staged = []
+    for branch, rid in pairs:
+        if _git("fetch", "--depth", "1", "origin", f"+refs/heads/{branch}:refs/remotes/origin/{branch}",
+                check=False).returncode != 0:
+            print(f"[관문] 보류 회차 {rid}: 브랜치 받기 실패 — 건너뜀")
+            continue
+        r = _git("show", f"origin/{branch}:{ar_rel()}/reports/{rid}.md", check=False)
+        if r.returncode != 0 or not r.stdout.strip():
+            print(f"[관문] 보류 회차 {rid}: 보고서 없음 — 건너뜀")
+            continue
+        d.mkdir(parents=True, exist_ok=True)
+        p = d / f"{rid}.md"
+        p.write_text(r.stdout, encoding="utf-8")
+        staged.append((branch, rid, Path(os.path.relpath(p, HERE)).as_posix()))
+    return staged
+
+
+def unpublished_section(staged):
+    if not staged:
+        return []
+    return ["", "## main 에 게시되지 못한 회차 (관문에서 막혀 브랜치에만 있다 — 워크플로가 주입)",
+            *[f"- {rid} · 브랜치 `{b}` · 보고서 사본 `{p}`" for b, rid, p in staged],
+            "독자는 이 회차들을 보지 못했다. **이번 회차가 이어받아라**: 사본을 읽고 1차 원천으로 다시 확인한 사실만 채택하고"
+            "(사본은 원천이 아니다), `state.run.unpublished_runs[]` 에 회차마다 "
+            "{run_id, run_date, reason, outcome, absorbed_by: '이번 회차 id — 무엇을 채택했나'} 를 남겨라. "
+            "채택하지 않은 것은 absorbed_by 대신 not_absorbed 에 이유를 적어라. absorbed_by 가 남은 회차의 PR 은 "
+            "게시 뒤 자동으로 닫힌다(브랜치는 남는다)."]
+
+
+def close_absorbed(st):
+    """main 게시 뒤 — 이번 회차가 흡수했다고 기록한 보류 회차의 PR 을 닫는다(브랜치 유지) → 닫은 회차 id 목록."""
+    run = st.get("run") or {}
+    rids = sorted({u.get("run_id") for u in (run.get("unpublished_runs") or [])
+                   if isinstance(u, dict) and u.get("run_id") and u.get("absorbed_by")})
+    closed = []
+    for rid in rids:
+        branch = f"{subj('branch')}/{rid}"
+        r = subprocess.run(["gh", "pr", "close", branch, "--comment",
+                            f"{run.get('run_id')} 회차가 이 회차를 1차 원천으로 재확인해 흡수하고 main 에 게시했다 "
+                            f"(state.run.unpublished_runs). 같은 사건이 두 번 게시되지 않게 닫는다 — 브랜치는 남긴다."],
+                           cwd=HERE, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        if r.returncode == 0:
+            closed.append(rid)
+        print(f"[관문] 흡수된 보류 회차 {rid} PR 닫기: {'완료' if r.returncode == 0 else '열린 PR 없음/실패'}")
+    return closed
+
+
 def cmd_prepare(mode, reason):
     WORK.mkdir(exist_ok=True)
     for old in list(WORK.glob("gate_*.json")) + [WORK / "fix_prompt.md"]:
@@ -551,7 +624,9 @@ def cmd_prepare(mode, reason):
     watch = read_json(HERE / "data" / subj("watch"), {}) or {}
     events = (watch.get("events") or [])[:20]
     due = [d for d in (watch.get("due") or []) if not d.get("baseline")][-10:]
+    staged = stage_unpublished(unpublished_branches())
     ctx = {"mode": mode, "reason": reason, "run_id": rid, "today": today,
+           "unpublished": [rid_ for _b, rid_, _p in staged],
            "report_path": f"reports/{rid}.md",
            "previous_run_id": (prev.get("run") or {}).get("run_id"),
            "previous_run_number": (prev.get("run") or {}).get("run_number"),
@@ -572,6 +647,7 @@ def cmd_prepare(mode, reason):
         f"- 끝내기 전에 `{gate_cmd()} check --stage author` 를 실행해 관문 실패 항목을 고쳐라.",
         "", f"## 측정층 최근 사건 (data/{subj('watch')})", ev_lines,
         "", "## 트리거 due (측정층 감지)", due_lines,
+        *unpublished_section(staged),
     ])
     (WORK / "author_prompt.md").write_text(author, encoding="utf-8")
     verify = "\n".join([
@@ -582,7 +658,7 @@ def cmd_prepare(mode, reason):
         f"- verified_at 은 ISO 형식(예: {now_kst().isoformat(timespec='minutes')})으로 적어라.",
     ])
     (WORK / "verify_prompt.md").write_text(verify, encoding="utf-8")
-    print(f"[관문] 준비 완료 — {mode} · {rid} · 사건 {len(events)} · due {len(due)}")
+    print(f"[관문] 준비 완료 — {mode} · {rid} · 사건 {len(events)} · due {len(due)} · 보류 회차 {len(staged)}")
     return 0
 
 
@@ -713,25 +789,37 @@ def cmd_publish():
     msg = (f"probe: {rid} ({mode})" if SUBJECT == "spacex" else f"probe-{SUBJECT}: {rid} ({mode})")
     body = "\n\n" + ("관문 통과" if gate.get("ok") else "관문 실패:\n- " + "\n- ".join(gate.get("failures", [])))
     body += "\n" + vtxt + "\n\nCo-Authored-By: Claude <noreply@anthropic.com>"
+    committed = False
     if gate.get("ok") and not force_pr:
         _git("commit", "-m", msg + body)
+        committed = True
+        pushed = False
         for attempt in (1, 2):
             if _git("pull", "--rebase", "origin", "main", check=False).returncode == 0 and \
                     _git("push", "origin", "HEAD:main", check=False).returncode == 0:
+                pushed = True
                 break
             _git("rebase", "--abort", check=False)
-            if attempt == 2:
-                raise RuntimeError("main 게시 실패(재시도 후에도 충돌)")
-        lines = [f"{subj('label')} {rid} ({mode}) 게시 완료"] + \
-            [f"· {x}" for x in summary_lines(st, md)] + \
-            [f"· 확률 {prob_line(prev, st)}", f"· {vtxt}"]
-        send_dm("\n".join(lines) + pre_note)
-        print("[관문] main 게시 완료")
-        _step_output("where", "main")      # 다음 스텝이 사이트를 다시 빌드한다(게시가 다음 데일리까지 화면에 안 뜨지 않게)
-        return 0
+        if pushed:
+            closed = close_absorbed(st)
+            lines = [f"{subj('label')} {rid} ({mode}) 게시 완료"] + \
+                [f"· {x}" for x in summary_lines(st, md)] + \
+                [f"· 확률 {prob_line(prev, st)}", f"· {vtxt}"] + \
+                ([f"· 흡수한 보류 회차 {', '.join(closed)} — PR 닫음(브랜치 유지)"] if closed else [])
+            send_dm("\n".join(lines) + pre_note)
+            print("[관문] main 게시 완료")
+            _step_output("where", "main")      # 다음 스텝이 사이트를 다시 빌드한다(게시가 다음 데일리까지 화면에 안 뜨지 않게)
+            return 0
+        # 2026-11-09: 그사이 main 의 판단층 파일이 바뀌면(사람이 보류 PR 을 합쳤거나 다른 회차가 게시) rebase 가
+        # 충돌한다. 예전엔 여기서 예외로 죽어 **이번 회차 산출물이 러너와 함께 사라졌다**(브랜치도 PR 도 없이).
+        # 관문은 통과했으니 브랜치 + PR 로 보존하고 사람에게 넘긴다.
+        print("[관문] main 게시 충돌 — 브랜치로 보존")
+        gate = {"ok": False, "failures": ["main 게시 충돌 — 그사이 main 의 판단층 파일이 바뀌었다(보류 PR 병합·다른 회차 게시). "
+                                          "관문은 통과 — 브랜치로 보존, 두 쪽을 합쳐 다시 게시해야 한다"]}
     branch = f"{subj('branch')}/{rid}"
     _git("checkout", "-B", branch)
-    _git("commit", "-m", msg + body)
+    if not committed:
+        _git("commit", "-m", msg + body)
     _git("push", "-f", "origin", branch)
     repo = os.environ.get("GITHUB_REPOSITORY", "")
     reason = "PROBE_PUBLISH=pr" if gate.get("ok") else "; ".join(gate.get("failures", [])[:4])
