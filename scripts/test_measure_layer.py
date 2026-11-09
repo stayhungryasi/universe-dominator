@@ -164,15 +164,18 @@ class RunTest(unittest.TestCase):
     """배선 — 기준선 회차는 DM·발사 없음, 다음 회차의 새 실적 공시는 DM 1건 + 대기열 1건."""
 
     def setUp(self):
-        self._saved = (sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH)
+        self._saved = (sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH)
 
     def tearDown(self):        # 모듈 경로 원복 — selftest 같은 프로세스의 뒤쪽 검사를 오염시키지 않게
-        sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH = self._saved
+        sw.WATCH_PATH, sw.KPI_PATH, sw.STATE_PATH, sw.HOURLY_PATH = self._saved
 
     def _run(self, tmp, sub, trig):
         import feed_client as fc
         sw.WATCH_PATH, sw.KPI_PATH = tmp / "w.json", tmp / "k.json"
         sw.STATE_PATH = tmp / "s.json"
+        # 매시간 감시 파일도 격리 — 2026-11-06 실측: HOURLY_PATH 를 막지 않아 진짜 data/spacex_hourly.json 을 읽었고,
+        # 매시간 감시가 11/06 00:01 에 '예상일 도래'·'중요 사건'을 기록하자 이 테스트가 깨져 데일리가 3.5일·27회 멈췄다
+        sw.HOURLY_PATH = tmp / "h.json"
         sw.STATE_PATH.write_text(__import__("json").dumps({"triggers_next_12m": trig}),
                                  encoding="utf-8")
         dms = []
