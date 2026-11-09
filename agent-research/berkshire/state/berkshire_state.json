@@ -3,17 +3,17 @@
  "ticker": "BRK.B",
  "company": "Berkshire Hathaway Inc.",
  "run": {
-  "run_id": "2026-11",
-  "run_date": "2026-11-09",
-  "run_number": 1,
-  "previous_run_id": null,
-  "report_path": "reports/2026-11.md",
-  "mode": "monthly",
-  "reason": "1회차 — 기준선 수립(3Q26 10-Q 2026-11-07 직후)",
+  "run_id": "2026-11-10-event",
+  "run_date": "2026-11-10",
+  "run_number": 2,
+  "previous_run_id": "2026-11",
+  "report_path": "reports/2026-11-10-event.md",
+  "mode": "event",
+  "reason": "3Q26 실적 8-K(Item 2.02)·10-Q SEC 게시(2026-11-09) + 엔화 사채 424B5 예비 설명서",
   "summary": [
-   "3Q26 영업이익 $127.1억(−5.8%) — 보험 인수 −43%·투자수익 −14%를 BNSF(+19%)·BHE(+8%)·MSR(+12%)가 일부 상쇄",
-   "자사주 3Q $96.5억(9M $144.1억)·주식 9M 순매수 $112억 — '14분기 연속 순매도·현금 존버' 서사는 2Q26 에 이미 끝났다",
-   "B주 $570.89 는 기본 시나리오 현재가치 $464 위 — 시장은 BPS 연 10.3% 복리(종료 P/B 1.45배)를 반영 중"
+   "SEC 원문이 기준선 숫자(영업이익 $127.05억·자기자본 $7,613.68억)를 그대로 확인 — 새 분기 숫자 없음",
+   "GEICO 합산비율 정의 확정: SEC 세그먼트 주석 산식 91.4%(전년 84.3%) — Progressive 88.7% 대비 +2.7%p, A-2029-1 진행",
+   "10/1~10/28 자사주는 표지 주식 수 감소(A주 환산 2,554주)로 역산 $19.2억~$21.0억(추정) · 엔화 사채로 ¥964억 만기 차환 예정"
   ]
  },
  "axes": {
@@ -24,21 +24,28 @@
   "E_external": "축 E — 승계·지배구조·파괴적 변수"
  },
  "market": {
-  "price_usd": 570.89,
-  "price_asof": "2026-11-06",
-  "price_source": "https://stockanalysis.com/stocks/brk.b/statistics/",
+  "price_usd": 574.76,
+  "price_asof": "2026-11-09",
+  "price_source": "https://stockanalysis.com/stocks/brk.b/history/",
   "brk_a_price_usd": 856612,
+  "brk_a_price_asof": "2026-11-06(1회차 값, 이번 회차 미갱신)",
   "ath_close_b_usd": 579.09,
   "ath_date": "2026-11-04",
-  "market_cap_usd_m": 1215054,
+  "market_cap_usd_m": 1223290,
   "market_cap_basis": "B주 종가 × A주 환산 1,418,900주 × 1,500 (산식)",
-  "pb": 1.6
+  "pb": 1.61
  },
  "latest_reported_quarter": {
   "period": "3Q26",
   "report_date": "2026-11-07",
   "source": "https://www.berkshirehathaway.com/news/nov0726.pdf",
   "source_10q": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf",
+  "source_sec_8k_ex99": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452530/brka-ex99_1.htm",
+  "source_sec_10q": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm",
+  "sec_filed": "2026-11-09",
+  "shares_a_equiv_cover": 1416346,
+  "shares_cover_asof": "2026-10-28",
+  "shares_cover_basis": "A주 480,476 + B주 1,403,805,594 ÷ 1,500 (10-Q 표지, 산식)",
   "op_earnings_usd_m": 12705,
   "net_income_attrib_usd_m": 22112,
   "equity_usd_m": 761368,
@@ -60,8 +67,11 @@
    "note": "Bloomberg '증가 $3,774억'과 Reuters '감소 $3,569억'은 정의 차이 — 둘 다 맞다. 화면 KPI 는 헤드라인 정의로 통일"
   },
   "geico_combined": {
-   "fixed_on": null,
-   "note": "보도 84.5% vs 10-Q 산식(손해·LAE + 기타 세그먼트 항목) 91.4% — 다음 회차에 정의 확정"
+   "fixed_on": "2026-11-10",
+   "definition": "(손해·LAE + 기타 세그먼트 항목) ÷ 경과보험료 — SEC 10-Q/10-K 세그먼트 주석(XBRL, GEICO Underwriting 멤버) 기준. 세전 인수이익 = 경과보험료 × (1 − 합산비율) 과 항등식",
+   "source": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/R110.htm",
+   "values": "3Q26 91.4%(10,423 ÷ 11,405) · 3Q25 84.3%(9,491 ÷ 11,264)",
+   "note": "1회차 보도치 84.5%(Forbes)는 SEC 원문 3Q26 숫자로 재현되지 않는다 — 전년 3Q25 산식 84.3% 와 가깝다(추정). 판정에 쓰지 않는다"
   }
  },
  "scenarios": {
@@ -106,12 +116,13 @@
   ],
   "mid": 464.4,
   "pw_value": 469.6,
-  "price": 570.89,
-  "price_asof": "2026-11-06",
-  "implied_bps_cagr_at_base_exit": 0.1025,
+  "price": 574.76,
+  "price_asof": "2026-11-09",
+  "implied_bps_cagr_at_base_exit": 0.1033,
   "two_column_check_usd": 551.8,
-  "market_paid_for_operations_usd_m": 522593,
-  "market_paid_multiple_on_op_ex_inv": 13.7
+  "market_paid_for_operations_usd_m": 530829,
+  "market_paid_multiple_on_op_ex_inv": 13.9,
+  "note": "2026-11-10 사건 회차: 시나리오·할인율 재산정 없음(사건 회차), 주가 관련 칸만 갱신. 참고 — 10년물 4.86%(2026-11-06) 적용 시 할인율 9.1%·기본 현재가치 약 $468, 다음 월간 회차에 반영"
  },
  "milestones": [
   {
@@ -142,6 +153,10 @@
    "status_history": [
     {
      "run_id": "2026-11",
+     "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
      "status": "진행"
     }
    ]
@@ -175,6 +190,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -207,6 +226,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -215,26 +238,35 @@
    "axis": "E_external",
    "year": 2029,
    "statement": "2029년 GEICO 연간 합산비율이 Progressive 연간 합산비율 이하",
-   "status": "미판정",
-   "progress": null,
+   "status": "진행",
+   "progress": {
+    "current": "+2.7%p(3Q26 GEICO 91.4% − Progressive 88.7%)",
+    "target": "≤ 0%p(2029년 연간)",
+    "unit": "%p",
+    "asof": "2026-09-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/R110.htm",
+    "parts": [
+     {
+      "label": "GEICO 분기 합산비율(SEC 세그먼트 주석 산식) − Progressive 분기 합산비율",
+      "current_num": 2.7,
+      "target_num": 0,
+      "unit": "%p",
+      "op": "<="
+     }
+    ],
+    "note": "GEICO 10,423 ÷ 11,405 = 91.4%(전년 84.3%) · Progressive 88.7%(전년 89.5%, insurancebusinessmag 2026-10-15) — 1년 전엔 GEICO 가 5.2%p 낮았다"
+   },
    "if_hit": "데이터·AI 언더라이팅 열위가 해소됐다는 관측",
    "if_miss": "텔레매틱스·AI 요율 경쟁에서 구조적 열위 지속",
-   "check": "GEICO 10-K 표 vs Progressive 10-K",
+   "check": "GEICO 10-K 세그먼트 주석(비용 합계 ÷ 경과보험료) vs Progressive 10-K",
    "status_history": [
     {
      "run_id": "2026-11",
      "status": "미판정"
-    }
-   ],
-   "progress_reason": "3Q26 GEICO 합산비율 원천 불일치(보도 84.5% vs 10-Q 산식 91.4%) — 정의(기타 비용 포함 여부)를 다음 회차에 확정한 뒤 판정",
-   "progress_parts": [
+    },
     {
-     "label": "GEICO 합산비율 − Progressive 합산비율",
-     "current_num": null,
-     "target_num": 0,
-     "unit": "%p",
-     "op": "<=",
-     "reason": "GEICO 합산비율 정의 미확정"
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -266,6 +298,10 @@
    "status_history": [
     {
      "run_id": "2026-11",
+     "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
      "status": "진행"
     }
    ]
@@ -299,6 +335,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -330,6 +370,10 @@
    "status_history": [
     {
      "run_id": "2026-11",
+     "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
      "status": "진행"
     }
    ]
@@ -363,6 +407,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -373,7 +421,7 @@
    "statement": "2027년 연간 자사주 매입 $200억 이상",
    "status": "진행",
    "progress": {
-    "current": "2026년 9M $144.1억(참고)",
+    "current": "2026년 9M $144.1억(참고) · 10/1~10/28 역산 $19.2~21.0억(추정)",
     "target": "$200억",
     "unit": "백만 달러",
     "asof": "2026-09-30",
@@ -394,6 +442,10 @@
    "status_history": [
     {
      "run_id": "2026-11",
+     "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
      "status": "진행"
     }
    ]
@@ -427,6 +479,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -458,6 +514,10 @@
    "status_history": [
     {
      "run_id": "2026-11",
+     "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
      "status": "진행"
     }
    ]
@@ -491,6 +551,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   },
@@ -522,6 +586,10 @@
    "status_history": [
     {
      "run_id": "2026-11",
+     "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
      "status": "진행"
     }
    ]
@@ -555,6 +623,10 @@
     {
      "run_id": "2026-11",
      "status": "진행"
+    },
+    {
+     "run_id": "2026-11-10-event",
+     "status": "진행"
     }
    ]
   }
@@ -563,8 +635,8 @@
   "achieved": 0,
   "achieved_early": 0,
   "missed": 0,
-  "in_progress": 13,
-  "pending": 1
+  "in_progress": 14,
+  "pending": 0
  },
  "probability_adjustment_rules": [
   {
@@ -649,10 +721,10 @@
   },
   {
    "id": "T6",
-   "name": "PacifiCorp 산불 소송 주요 판결·합의",
-   "expected_date": "일정 미정",
+   "name": "PacifiCorp 산불 소송 주요 판결·합의 — 오리건 대법원 James 사건(1단계 평결 파기 항소심 재심리)",
+   "expected_date": "판결일 미정(구두변론 2026-11-03 예정으로 10-Q 기재)",
    "status": "대기",
-   "check": "BHE/PacifiCorp 공시·10-Q 우발채무 주석"
+   "check": "BHE/PacifiCorp 공시·10-Q 우발채무 주석(https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/R31.htm)"
   },
   {
    "id": "T7",
@@ -660,6 +732,20 @@
    "expected_date": "수시",
    "status": "대기",
    "check": "측정층 8-K 감시(중요 등급 → 사건 회차)"
+  },
+  {
+   "id": "T8",
+   "name": "엔화 선순위 사채 3개 트랜치 확정 조건 — 발행 총액이 차환 대상 ¥964억(¥734억 2026-11-27 · ¥230억 2027-01-25 만기)을 넘는가",
+   "expected_date": "2026-11-27 이전(추정: 차환 대상 만기일)",
+   "status": "대기",
+   "check": "SEC 최종 설명서 424B2/FWP(예비 https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm)"
+  },
+  {
+   "id": "T9",
+   "name": "PacifiCorp 워싱턴주 자산 Portland General Electric 매각 종결(기본 현금가 $19억)",
+   "expected_date": "2027-06-30 이전(10-Q: 2027년 상반기)",
+   "status": "대기",
+   "check": "BHE·PacifiCorp 8-K · 버크셔 10-Q 우발채무·인수처분 주석"
   }
  ],
  "disruption_watch": [
@@ -668,7 +754,7 @@
    "name": "자율주행·텔레매틱스·AI 언더라이팅",
    "threat_to": "GEICO 요율 경쟁력·데이터 해자",
    "signal": "GEICO 손해율 vs Progressive 합산비율, 계약 수 추세",
-   "status": "3Q26 GEICO 손해율 76.6%(전년 71.4%, 10-Q) · Progressive 합산비율 88.7%(10/15 보도) · GEICO 계약 수는 '증가'만 공시(건수 미공개)"
+   "status": "3Q26 GEICO 손해율 76.6%(전년 71.4%) · 합산비율 91.4%(전년 84.3%, SEC 세그먼트 주석 산식 — 2026-11-10 정의 확정) · Progressive 합산비율 88.7%(10/15 보도) → 격차 +2.7%p(1년 전 −5.2%p) · GEICO 계약 수는 '증가'만 공시(건수 미공개)"
   },
   {
    "id": "D2",
@@ -682,7 +768,7 @@
    "name": "산불 책임 vs AI 데이터센터 전력 수요",
    "threat_to": "BHE 이익·규제 신뢰",
    "signal": "PacifiCorp 누적 손실 인식·합의, 대형 전력 계약",
-   "status": "누적 추정 손실 $28.5억·누적 지급 $23억(10-Q) · 연방정부 청구 $5.75억 합의(2026-03) · 추가 손실 '합리적으로 가능, 추정 불가'"
+   "status": "누적 추정 손실 $28.5억(변화 없음)·누적 지급 $23억(9M26 $5.95억)·남은 충당 $5.66억(10-Q R31) · 연방정부 청구 $5.75억 합의(2026-03) · 오리건 대법원 James 사건 심리(구두변론 2026-11-03 예정 기재) · 워싱턴 자산 $19억 매각 2027 상반기 종결 예정 · 추가 손실 '합리적으로 가능, 추정 불가'"
   },
   {
    "id": "D4",
@@ -719,13 +805,27 @@
   }
  ],
  "open_questions_for_next_run": [
-  "GEICO 합산비율 정의 확정(보도 84.5% vs 10-Q 산식 91.4%) → A-2029-1 판정 가능화",
   "3Q26 13F(11/16) — 3Q 매수 $24억·매도 $28억의 종목별 내역",
-  "분기 후 자사주 약 $20억(10/1~10/28, 보도)의 10-Q 원문 확인 — 10-Q 본문은 금액을 명시하지 않았다",
+  "엔화 사채 최종 설명서 — 발행 총액·쿠폰·만기, 차환 대상 ¥964억 대비 순차입 증감(T8)",
+  "오리건 대법원 James 판결 — E-2028-1·R5 직결(T6)",
   "1Q26 A주 환산 주식 수(BPS 시계열 공란 보충)",
-  "GEICO 4Q25 수입보험료 → TTM 수입보험료 산출"
+  "GEICO 4Q25 수입보험료 → TTM 수입보험료 산출",
+  "Progressive 3Q26 합산비율의 1차 원천(Progressive 10-Q) 확인 — 현재는 보도치 88.7%"
  ],
- "resolved_from_prior_run": [],
+ "resolved_from_prior_run": [
+  {
+   "run_id": "2026-11-10-event",
+   "question": "GEICO 합산비율 정의 확정(보도 84.5% vs 10-Q 산식 91.4%)",
+   "resolution": "SEC 세그먼트 주석(R110) 산식 (손해·LAE + 기타 세그먼트 항목) ÷ 경과보험료 = 91.4% 로 확정, A-2029-1 미판정 → 진행",
+   "source": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/R110.htm"
+  },
+  {
+   "run_id": "2026-11-10-event",
+   "question": "분기 후 자사주 약 $20억(10/1~10/28, 보도)의 원문 확인",
+   "resolution": "10-Q 표지 주식 수(2026-10-28)와 9/30 주식 수 차이 A주 환산 2,554주 × 10월 B주 종가 범위로 $19.2~21.0억 역산(추정) — 확정 금액은 4Q26 10-K",
+   "source": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm"
+  }
+ ],
  "run_history": [
   {
    "run_id": "2026-11",
@@ -747,6 +847,28 @@
     "3Q26 영업이익 $127.1억(−5.8%) — 보험 인수 −43%·투자수익 −14%를 BNSF(+19%)·BHE(+8%)·MSR(+12%)가 일부 상쇄",
     "자사주 3Q $96.5억(9M $144.1억)·주식 9M 순매수 $112억 — '14분기 연속 순매도·현금 존버' 서사는 2Q26 에 이미 끝났다",
     "B주 $570.89 는 기본 시나리오 현재가치 $464 위 — 시장은 BPS 연 10.3% 복리(종료 P/B 1.45배)를 반영 중"
+   ]
+  },
+  {
+   "run_id": "2026-11-10-event",
+   "run_date": "2026-11-10",
+   "price": 574.76,
+   "price_date": "2026-11-09",
+   "probs": {
+    "bull": 0.25,
+    "base": 0.5,
+    "bear": 0.25
+   },
+   "band": [
+    265,
+    684.5
+   ],
+   "mid": 464.4,
+   "pw_value": 469.6,
+   "summary": [
+    "SEC 원문(8-K EX-99.1·10-Q)이 기준선 숫자를 그대로 확인 — 확률·가정 가치 변화 없음(사건 회차, 규칙 충족 없음)",
+    "GEICO 합산비율 91.4%(전년 84.3%)로 정의 확정 — Progressive 대비 +2.7%p, A-2029-1 진행",
+    "분기 후 자사주 $19.2~21.0억 역산(추정) · 엔화 사채 차환 · PacifiCorp 워싱턴 자산 $19억 매각 예정 → T8·T9 신설"
    ]
   }
  ],
@@ -831,7 +953,7 @@
    "equity_net_usd_m": -426,
    "float_usd_m": 178500,
    "bvps_a_usd": 536590,
-   "note": "순매도는 보도(Forbes 2026-11-07), BPS 계산(761,368 ÷ 1,418,900)"
+   "note": "순매도는 보도(Forbes 2026-11-07), BPS 계산(761,368 ÷ 1,418,900). 2026-11-10 SEC 원문(8-K EX-99.1·10-Q, EDGAR 2026-11-09)과 대조 — 영업이익·부문 3개·자사주·현금·플로트·자기자본 일치"
   }
  ]
 }
