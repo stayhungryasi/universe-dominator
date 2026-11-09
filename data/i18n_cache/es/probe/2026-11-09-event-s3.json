@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-09-event-s3",
+ "lang": "es",
+ "src_hash": "5cb634ddf96c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Fecha prevista superada — T7·T3·T4",
+  "md": "\n| Disparador | Previsto | Real (verificado el 2026-11-09) | Veredicto |\n|---|---|---|---|\n| T7 ⓓ Blumenthal → respuesta del secretario de Defensa 5/11 · briefing de SpaceX 12/11 | 6/11 (KST) | Respuesta pública **no encontrada** — 0 resultados en comunicados de la oficina del senador, Reuters y AP. El portavoz del Departamento de Defensa dijo el 22/10 que 'responde directamente al autor' (según prensa) | Plazo vencido · registrado como 'no publicada' (no como rechazo) → siguiente 13/11 (briefing + 1 día) |\n| T7 ⓔ 3 miembros de la Cámara → Casa Blanca, 14 días 6/11 | 6/11 (KST) | Respuesta pública **no encontrada** | Plazo vencido · no publicada |\n| T7 ②·③ salida de contratos en el extranjero · segunda intervención | — | Sin anuncio oficial (búsqueda) | Se mantiene 1 caso E-2027-3 · propuesta ④ no activada |\n| T3 Flight 15 | desde el 8/11 (fecha del plan interno de la FAA) | **Sin vuelo el 8/11**. Anuncio de SpaceX en X el 7/11 (tras las declaraciones del vicepresidente de lanzamiento Dontchev en UP.Summit): \"targeting to launch as early as Friday, November 13, pending regulatory approval\" · LL2 NET 13/11 22:45 UTC 'To Be Confirmed' · NOTAM 14~19/11 de reserva · **modificación de licencia de la FAA no emitida** (página de la FAA: 403 en esta ronda) | Previsión errónea — premisa 'fecha del plan = fecha de lanzamiento'. Punto de verificación 14/11 (KST) · el resultado lo detecta automáticamente la capa de medición LL2 |\n| T4 Vulcan LV-01 (Amazon Leo, 40 satélites) | 13/11 | LL2 **'Go for Launch'** (precisión de minutos) · Ariane 64 LE-04 23/11 TBD · New Glenn LN-01 2026 (precisión anual) | Sin cambios · punto de verificación 1/12 |\n\n(Fuentes: [Comunicado de Blumenthal 22/10](https://www.blumenthal.senate.gov/newsroom/press/release/blumenthal-announces-congressional-inquiry-into-starlink-and-starshield) · [The Star/Reuters 23/10](https://www.thestar.com.my/news/world/2026/10/23/us-democratic-senator-probes-ukraine039s-loss-of-starshield-service) · [Tesla Oracle 07/11](https://www.teslaoracle.com/2026/11/07/flight-15-starship-double-catch-to-happen-net-friday-the-13th-confirmed/) · [Wikipedia Starship flight 15](https://en.wikipedia.org/wiki/Starship_flight_15) · `data/spacex_watch.json launches`, LL2 2026-11-09 11:35 KST · `state.triggers_next_12m[T7].paths`)\n\n---\n"
+ }
+}

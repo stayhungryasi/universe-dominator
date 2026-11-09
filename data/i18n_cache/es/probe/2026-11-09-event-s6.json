@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-09-event-s6",
+ "lang": "es",
+ "src_hash": "0e25b3619790",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 12:40",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "6. Disparadores",
+  "md": "\n- **T1**: se añade al check 'si en la nota de concentración de clientes del 10-K la línea del cliente A (Gobierno de EE. UU.) desaparece por caer por debajo del 10% — único punto de verificación en divulgaciones de la afirmación del CEO del 11/6. Si desaparece, la medición de A-2032-1 pasa a la descripción de ingresos gubernamentales del 10-K' · 'Google aparece como línea nueva si supera el 10%'. La conexión de T1 por parte del supervisor **esta vez fue correcta** (la divulgación de resultados del 4Q es el punto de verificación) (fuente: `state.triggers_next_12m[T1]`).\n- **T3**: fecha prevista 11/8 → **11/14 (KST, NET 11/13 22:45 UTC + 1 día)** · reserva 11/20 · punto de verificación 12/01. En prev se registra el error de premisa 'fecha planificada = fecha de lanzamiento'. La primera detección corresponde a LL2, en la capa de medición (fuente: sección 3).\n- **T6**: en el estado se registran la dimisión de Harrison y los 6 miembros del comité especial según la prensa; al check se añade 'número e independencia de los miembros tras la dimisión · cobertura de la vacante de Class B · poder de representación para la junta de Tesla del 12/3 (sin punto de fusión, según la prensa)' (fuente: sección 2).\n- **T7**: fecha prevista 11/6 → **11/13 (KST, briefing ⓓ 11/12 + 1 día) → 11/19 → 1S de 2027**. Estado de paths ⓓ·ⓔ: 'plazo vencido — sin respuesta pública localizada'. La falta de respuesta no es 'rechazo' sino 'sin divulgar' (fuente: sección 3).\n- **T4**: Vulcan LV-01 11/13 'Go for Launch' registrado, sin cambios · **T2**: a un mes del lock-up del 12/8 (máx. 797,6 millones de acciones) — sin cambios · **T5·T8·T9·T10·T11**: sin cambios (fuente: `state.triggers_next_12m` · `data/spacex_watch.json launches.competitor_next`).\n\n---\n"
+ }
+}

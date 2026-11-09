@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-09-event-s3",
+ "lang": "ja",
+ "src_hash": "5cb634ddf96c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 予想日の経過 — T7·T3·T4",
+  "md": "\n| トリガー | 予想 | 実際(2026-11-09 確認) | 判定 |\n|---|---|---|---|\n| T7 ⓓ Blumenthal → 国防長官 回答 11/5 · SpaceX ブリーフィング 11/12 | 11/6(KST) | 公開回答は**未発見** — 議員事務所のプレスリリース·Reuters·AP の検索は0件。国防総省の報道官は10/22に「作成者に直接回答する」と述べた(報道) | 期限経過 · 「非公開」として記録(拒否ではない) → 次回 11/13(ブリーフィング + 1日) |\n| T7 ⓔ 下院3人 → ホワイトハウス 14日 11/6 | 11/6(KST) | 公開回答は**未発見** | 期限経過 · 非公開 |\n| T7 ②·③ 海外契約の離脱 · 2件目の介入 | — | 公式発表なし(検索) | E-2027-3 1件を維持 · 提案 ④ 未発動 |\n| T3 Flight 15 | 11/8~(FAA 内部計画日) | **11/8の飛行なし**。SpaceX 11/7 X 告知(UP.Summit 打ち上げ担当副社長 Dontchev 発言後): \"targeting to launch as early as Friday, November 13, pending regulatory approval\" · LL2 NET 11/13 22:45 UTC 'To Be Confirmed' · NOTAM 11/14~19 予備 · **FAA ライセンス修正は未発行**(FAA ページは今回 403) | 予想外れ — 「計画日 = 打ち上げ日」という前提。確認点 11/14(KST) · 結果は測定層の LL2 自動検知 |\n| T4 Vulcan LV-01(Amazon Leo 40機) | 11/13 | LL2 **'Go for Launch'**(分単位) · Ariane 64 LE-04 11/23 TBD · New Glenn LN-01 2026(年単位) | 変化なし · 確認点 12/01 |\n\n(出典: [Blumenthal 10/22 プレスリリース](https://www.blumenthal.senate.gov/newsroom/press/release/blumenthal-announces-congressional-inquiry-into-starlink-and-starshield) · [The Star/Reuters 10/23](https://www.thestar.com.my/news/world/2026/10/23/us-democratic-senator-probes-ukraine039s-loss-of-starshield-service) · [Tesla Oracle 11/07](https://www.teslaoracle.com/2026/11/07/flight-15-starship-double-catch-to-happen-net-friday-the-13th-confirmed/) · [Wikipedia Starship flight 15](https://en.wikipedia.org/wiki/Starship_flight_15) · `data/spacex_watch.json launches`, LL2 2026-11-09 11:35 KST · `state.triggers_next_12m[T7].paths`)\n\n---\n"
+ }
+}

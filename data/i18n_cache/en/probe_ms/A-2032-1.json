@@ -2,19 +2,19 @@
  "kind": "probe_ms",
  "id": "A-2032-1",
  "lang": "en",
- "src_hash": "6f139aa6733b",
+ "src_hash": "d4918d4503b6",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 1,
+ "at": "2026-11-09 12:40",
+ "attempts": 2,
  "status": "ok",
  "fields": {
-  "text": "Government and military revenue $20.0 billion or more",
-  "reason": "Government and military revenue not separately disclosed — only combined enterprise and government $2.127B/quarter (annualized $8.5B) disclosed. Will not use proxy indicator; awaiting 10-K disclosure",
+  "text": "Government·Military revenue $20B+",
+  "cur": "Annualized ~$9.7B — 3Q26 Customer A (US Government) 16.6% × $14,575M = $2,419M (vs 3Q25 23.9% × $5,576M = $1,333M +81%). FY2025 20.9% × $18,674M = $3,903M",
+  "tgt": "$20B",
   "hit": "Non-cyclical revenue secured",
-  "miss": "Political risk materialization",
-  "method": "DoD and Space Force contract disclosure",
-  "parts.0.label": "Government and military revenue",
-  "parts.0.reason": "Government and military revenue not separately disclosed (only enterprise and government combined disclosed)",
-  "parts.0.unit": "billions USD"
+  "miss": "Political risk materialized",
+  "method": "DoD/Space Force contract disclosure",
+  "parts.0.label": "Government revenue (annualized, Customer A share × revenue)",
+  "parts.0.unit": "$B"
  }
 }

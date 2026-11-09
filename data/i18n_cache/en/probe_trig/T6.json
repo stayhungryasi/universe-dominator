@@ -2,15 +2,14 @@
  "kind": "probe_trig",
  "id": "T6",
  "lang": "en",
- "src_hash": "0f4c37263e6e",
+ "src_hash": "9f41f0af77e3",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "name": "Tesla Merger Special Committee Conclusion — Exchange Ratio·New Share Volume",
-  "expected": "2027-1H (Estimated)",
-  "check": "SpaceX·Tesla 8-K (Item 1.01 Merger Agreement) · Proxy (S-4/DEFM14A) · Committee Composition Disclosure. News·Statements Subject of Verification",
-  "statusText": "Awaiting (2026-11-01: After 10/20 Call Remarks, No 8-K·Proxy·Committee Member List Disclosure)"
- }
+ "at": "2026-11-09 12:40",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§note] 숫자: 원문에 없는 숫자 551.189M",
+  "[0§note] 숫자: 원문의 숫자가 빠짐 5억 5,118만, 9,500"
+ ]
 }

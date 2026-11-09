@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-09-event-s7",
+ "lang": "ja",
+ "src_hash": "d5662139cdfd",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "7. 経営陣の発言 — マイルストーン候補としてのみ記録",
+  "md": "\n| 日付 | 発言 | 照合 |\n|---|---|---|\n| 2026-11-06 | CEO(X): 政府からの支払い 4Q 10%未満 → 1年後に5%未満 · 3Q 16.6% · 2025年は約1/5 · 「最高の製品・最低価格」 · 「望まない契約は喜んで解除する、言ってほしい」 | 見通し・意向 — 判定の根拠ではない。「16.6%」は 10-Q の顧客Aと一致(交差入力)。確認は 4Q26 10-K 集中度注記(T1)・8-K Item 1.02 |\n| 2026-11-06 | Google(報道引用): Harrison 辞任後も「SpaceX のミッションとパートナーシップを支持」 | 相手方企業の発言 — 持分・契約開示に変化なし |\n| 2026-11-07 | SpaceX(X 告知、転載): Flight 15 'as early as Friday, November 13, pending regulatory approval' · 打上げ担当副社長 Dontchev(UP.Summit)も同じ日付 | 会社告知 — T3 の日付入力、結果は LL2 |\n\n(出典: [Investing.com 11/06](https://ca.finance.yahoo.com/news/spacex-government-contracts-under-10-183013206.html) · [Dallas Express 11/06](https://dallasexpress.com/national/just-say-the-word-musk-offers-to-cancel-unwanted-spacex-contracts/) · [Tesla Oracle 11/07](https://www.teslaoracle.com/2026/11/07/flight-15-starship-double-catch-to-happen-net-friday-the-13th-confirmed/) · `state.musk_statements_as_milestone_candidates_only`)\n\n---\n"
+ }
+}

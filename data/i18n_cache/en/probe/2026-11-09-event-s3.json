@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-09-event-s3",
+ "lang": "en",
+ "src_hash": "5cb634ddf96c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Expected Dates Passed — T7·T3·T4",
+  "md": "\n| Trigger | Expected | Actual (confirmed 2026-11-09) | Verdict |\n|---|---|---|---|\n| T7 ⓓ Blumenthal → Defense Secretary reply 11/5 · SpaceX briefing 11/12 | 11/6 (KST) | Public reply **not found** — 0 results in congressional office press releases, Reuters, AP searches. The Defense Department spokesperson said on 10/22 that it 'responds directly to the author' (reported) | Deadline passed · recorded as 'not disclosed' (not a refusal) → next 11/13 (briefing + 1 day) |\n| T7 ⓔ Three House members → White House 14 days 11/6 | 11/6 (KST) | Public reply **not found** | Deadline passed · not disclosed |\n| T7 ②·③ Overseas contract exit · second intervention | — | No official announcement (search) | E-2027-3 stays at 1 case · Proposal ④ not triggered |\n| T3 Flight 15 | From 11/8 (FAA internal planned date) | **No flight on 11/8**. SpaceX X post on 11/7 (after UP.Summit launch VP Dontchev's remarks): \"targeting to launch as early as Friday, November 13, pending regulatory approval\" · LL2 NET 11/13 22:45 UTC 'To Be Confirmed' · NOTAM 11/14~19 reserve · **FAA license modification not issued** (FAA page returned 403 this round) | Expectation wrong — premise 'planned date = launch date'. Checkpoint 11/14 (KST) · result automatically detected by the LL2 measurement layer |\n| T4 Vulcan LV-01 (Amazon Leo 40 satellites) | 11/13 | LL2 **'Go for Launch'** (minute-level) · Ariane 64 LE-04 11/23 TBD · New Glenn LN-01 2026 (year-level) | No change · checkpoint 12/01 |\n\n(Sources: [Blumenthal 10/22 press release](https://www.blumenthal.senate.gov/newsroom/press/release/blumenthal-announces-congressional-inquiry-into-starlink-and-starshield) · [The Star/Reuters 10/23](https://www.thestar.com.my/news/world/2026/10/23/us-democratic-senator-probes-ukraine039s-loss-of-starshield-service) · [Tesla Oracle 11/07](https://www.teslaoracle.com/2026/11/07/flight-15-starship-double-catch-to-happen-net-friday-the-13th-confirmed/) · [Wikipedia Starship flight 15](https://en.wikipedia.org/wiki/Starship_flight_15) · `data/spacex_watch.json launches`, LL2 2026-11-09 11:35 KST · `state.triggers_next_12m[T7].paths`)\n\n---\n"
+ }
+}

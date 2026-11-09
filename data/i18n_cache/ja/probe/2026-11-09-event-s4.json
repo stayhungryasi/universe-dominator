@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-09-event-s4",
+ "lang": "ja",
+ "src_hash": "dad743e68844",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-09 12:40",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "4. 確率・マイルストーン・価値 — 変化なし(マイルストーン1件の判定転換は訂正の産物)",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。CEO発言・取締役辞任・T7無応答・Flight 15延期は、R1~R6のいずれの条件にも該当しない。ルール外の調整は禁止(出典: `state.probability_adjustment_rules` · `prompts/monthly_run.md` 2項)。\n- **マイルストーン**: 29件中 **A-2032-1 未判定 → 進行**(1-2節、出来事ではなく「顧客A」訂正の産物) — スコアカード 進行 24 · 未判定 4 · 未達 1。残り28件は変化なし。E-2027-4(連邦契約の新規受注)はCEO発言を参考としてのみ記録(USAspending未集計のまま)。すべて `status_history` に今回分の行を追加(出典: `state.scorecard` · `state.milestones`)。\n- **弱気論拠の訂正**: 10月号原文「顧客集中51%の相手方離脱(Google 90日解約条項)」→「AI最大顧客であるAnthropic・Googleの90日解約条項(報道) / 政府16.6%はCEOが縮小を公言」。ルール新設提案⑤の相手方表記も同じ訂正(条件の意味・数字は不変)(出典: `state.scenarios.bear` · `state.rule_proposals_not_applied[4]`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定せず**(eventモード)。価格依存の算術値のみ更新: 時価総額 **$1,823十億**(算式: 134.27 × 135.81億株 = 1,823.5 — `data/latest.json` SPCX 1,823.0 と一致)、EV $1,772十億(算式: 1,823 − 純現金 51)、バンド中心比 **−51%**(算式: 66 ÷ 134.27 − 1 = −0.508)、AI内在価値 **$1,281十億**(算式: 1,823 − Connectivity 350 − Space 141 − 純現金 51; 前回 $1,303十億比 −1.7%)、年換算AI売上倍率 42(算式: 1,281 ÷ 30.24) · 契約ARR倍率 49(算式: 1,281 ÷ 26) · 年換算調整後EBITDA倍率 65(算式: 1,281 ÷ 19.81)(出典: `state.valuation` · [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-09 閲覧 · [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · `data/latest.json`)。\n- **無リスク金利メモ**: 米10年債 **4.84%**(2026-11-05、FRED、`data/latest.json meta.macro.ust10`) — 11月号入力 4.99%(10/27)から −15bp。割引率の再算定は月次回(12/01)の役割(出典: `data/latest.json` · [FRED DGS10](https://fred.stlouisfed.org/series/DGS10))。\n- **価格反応**: 11/5 −9.05% — ナスダック急落日(報道)・中間選挙結果・$400億のリースCAPEX懸念・ロックアップ前の売却(報道ごとに挙げる理由はまちまち) → 11/6 +8.62%(CEO投稿の取引時間中)。切り分け不可、原因は帰属させない。**データ訂正記録**: 同サイトの11/4終値が前回の閲覧値 135.84 から **135.92** に、出来高が 135,280,836 → 135,443,382 に変わっていた(出典側による事後修正 — 11/2・11/3にも同様)。前回の数値は閲覧時点の値を維持し、`price_history` は修正値(出典: [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) · [Seeking Alpha 11/05](https://seekingalpha.com/news/4667392-spacex-falls-9-amid-broad-market-retreat) · [MarketBeat 11/05](https://www.marketbeat.com/instant-alerts/price-spacex-nasdaq-spcx-stock-falls-9-heres-why-2026-11-05/) · [TradingKey 11/05](https://www.tradingkey.com/analysis/stocks/us-stocks/262288363-stock-spacex-spcx-ai-starklink-starkship-nasa-ipo-tradingkey))。\n\n---\n"
+ }
+}

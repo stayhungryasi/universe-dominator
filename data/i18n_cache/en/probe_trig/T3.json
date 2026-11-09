@@ -2,17 +2,17 @@
  "kind": "probe_trig",
  "id": "T3",
  "lang": "en",
- "src_hash": "8a717acbd3b9",
+ "src_hash": "4386817c4dbc",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
+ "at": "2026-11-09 12:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Starship Flight 15 — Booster+Ship simultaneous catch attempt",
-  "expected": "2026-11-08 ~ 11-30 (FAA internal plan date approximately 11/8 report · LL2 NET 2026-11 monthly unit, updated 10/28) → checkpoint 2026-12-01 (KST)",
-  "check": "① FAA Starship license page — launch site return (RTLS) and booster+ship simultaneous tower catch license amendment issued ② LL2 flight result (measurement layer phase 1 — Starship result confirmed event, auto-detected) ③ Ship catch success → R2 activation + B-2027-1 overall fulfillment ④ Flight 14 early engine shutdown follow-up (Ship 42 Raptor re-certification) official record",
-  "note": "2026-11-01: TechTimes 10/30 — B22·Ship 42 static fire complete, remaining is FAA license amendment. Musk 10/10 '4~6 weeks' comment (→ 11/7~21) is candidate slate only",
-  "prev": "T3 Flight 14 Ship catch attempt — expected 4Q26 → actual 9/28 flight, no catch attempt (orbital insertion was the goal). prediction tying flight number to catch was incorrect",
-  "statusText": "Awaiting (2026-11-01: static fire complete — B22 33 engines ~15 seconds on 10/25 · Ship 42 single ~60 seconds on 10/27, 6 engines on 10/28, FAA license amendment not yet issued)"
+  "name": "Starship Flight 15 — Simultaneous Booster+Ship Catch Attempt",
+  "expected": "2026-11-14 (KST — NET 11/13 22:45 UTC + 1 day; preliminary NOTAM 11/14~19 → 11/20 KST) → checkpoint 2026-12-01 (KST). Flight result is auto-detected by measurement layer LL2, so this date is supplementary",
+  "check": "① FAA Starship license page — return-to-launch-site (RTLS) and simultaneous booster+ship tower catch included in amended license issuance ② LL2 flight result (measurement layer first pass — auto-detected as Starship result confirmation event) ③ ship catch success → R2 activation + B-2027-1 overall fulfillment ④ official record of Flight 14 early engine shutdown follow-up (Ship 42 Raptor re-certification)",
+  "note": "2026-11-01: TechTimes 10/30 — B22·Ship 42 static fire complete, FAA license amendment remains. Musk 10/10 '4~6 weeks' remark (→ 11/7~21) appears in candidate table only",
+  "prev": "T3 Flight 14 Ship catch attempt — expected 4Q26 → actual 9/28 flight, no catch attempt (orbital insertion was goal). forecast conflating flight number with catch was wrong / 2026-11-09: expected '11/8~' (FAA internal plan date) → no 11/8 flight, company notice NET 11/13. false premise: regulatory agency internal plan date = launch date (license not yet issued). correction: dates only from company notice (X·IR)+LL2 NET, first detection delegated to measurement layer launch record",
+  "statusText": "Awaiting (2026-11-09: 11/8 no-fly — SpaceX 11/7 X notice 'NET 11/13, awaiting regulatory approval' (after UP.Summit launch VP Dontchev remark), LL2 11/13 22:45 UTC 'To Be Confirmed', FAA license amendment not issued (11/7 report · FAA page this cycle 403) / 2026-11-01: static fire complete — B22 33 engines ~15 seconds 10/25 · Ship 42 single ~60 seconds 10/27·6 engines 10/28)"
  }
 }

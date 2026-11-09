@@ -73,18 +73,19 @@
   ],
   "2026-11-09": [
    "sentinel:briefing-missed:2026-11-09",
+   "sentinel:probe-fail-recover:2026-11-09",
    "sentinel:probe-fail:2026-11-09"
   ]
  },
  "last_verdict": {
-  "at": "2026-11-09 11:48",
+  "at": "2026-11-09 12:40",
   "ok": false,
   "alerts": [
-   "SpaceX 월간 엔진: 마지막 실행 실패(2026-11-07) — https://github.com/stayhungryasi/universe-dominator/actions/runs/42384288529",
+   "SpaceX 월간 엔진: 실행 성공 ✅",
    "아침 브리핑 오늘(2026-11-09) 미발송 — 08~11시 데일리 회차가 없었거나 실패했다(시계 중계·데일리 실행 기록 확인)"
   ]
  },
- "last_run": "2026-11-09 11:48",
+ "last_run": "2026-11-09 12:40",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -1153,14 +1154,12 @@
  },
  "probe": {
   "stale": false,
-  "fail_alerted": true,
-  "fail_alerted_first": "2026-11-09",
-  "fail_alerted_last": "2026-11-09"
+  "fail_alerted": false
  },
  "i18n": {
-  "streak": 0,
+  "streak": 1,
   "alerted": false,
-  "last_ts": "2026-11-09 11:47"
+  "last_ts": "2026-11-09 12:40"
  },
  "auto_axes": {
   "zero_g_forward": false,

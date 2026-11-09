@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "C-2029-1",
  "lang": "es",
- "src_hash": "1df85f580a64",
+ "src_hash": "e228ecee50da",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
+ "at": "2026-11-09 12:40",
  "attempts": 2,
  "status": "ok",
  "fields": {
   "text": "Ingresos de los 2 principales clientes 50% o menos",
-  "cur": "51,1 % (base ingresos consolidados, cliente B 34,5 % + cliente A 16,6 %) — primera divulgación. Adición 11/2026: cliente B = Anthropic (Bloomberg 10/29, cita de fuente — no confirmado por la empresa), según documentos de oferta pública de Anthropic hasta $120.5 mil millones hasta 2029, aproximadamente $3.1 mil millones mensuales desde diciembre, opción de rescisión con 90 días de notificación desde inicios 2027 (según informes). Google también con opción de rescisión 90 días después de 2026-12-31 (TechCrunch 06/05) → ambos 2 principales clientes con opción de rescisión 2027-1H",
+  "cur": "51,1% (sobre base de ingresos consolidados, cliente B 34,5% + cliente A 16,6%) — primera revelación. Adición 2026-11: cliente B = Anthropic (Bloomberg 10/29, citando fuentes — empresa no confirmó), en documentos de oferta pública Anthropic máximo $120.500 millones hasta 2029, aproximadamente $3.100 millones mensuales desde diciembre, rescisión posible con notificación de 90 días desde inicios de 2027 (reportajes). Corrección 2026-11-09: cliente A (todos los tres segmentos) = gobierno estadounidense (S-1 FY2025 revela 20,9%, cita secundaria) — 'cliente A = Google' en número de noviembre es incorrecto. Contrato Google (TechCrunch 06/05, rescisión de 90 días posterior a 2026-12-31) es menos del 10%. Los 2 principales = 1 empresa IA (Anthropic) + gobierno. CEO 11/6: se compromete a que participación gubernamental 4Q sea menos del 10% (declaración) — si es cierto, tabla de concentración 4Q solo mantiene una línea de cliente B",
   "tgt": "50% o menos",
-  "hit": "diversificación de demanda",
-  "miss": "si se supera, riesgo de acantilado al vencimiento del contrato (2029)",
-  "method": "nota de concentración de clientes 10-K",
+  "hit": "Diversificación de demanda",
+  "miss": "Si supera, riesgo de acantilado de vencimiento de contrato (2029)",
+  "method": "Nota de concentración de clientes 10-K",
   "parts.0.label": "Ingresos de los 2 principales clientes"
  }
 }

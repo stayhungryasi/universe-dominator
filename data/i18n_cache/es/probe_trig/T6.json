@@ -2,15 +2,14 @@
  "kind": "probe_trig",
  "id": "T6",
  "lang": "es",
- "src_hash": "0f4c37263e6e",
+ "src_hash": "9f41f0af77e3",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "name": "Conclusión comité especial fusión Tesla — relación canje·magnitud nuevas acciones",
-  "expected": "2027-1H(estimado)",
-  "check": "SpaceX·Tesla 8-K(Item 1.01 contrato fusión) · declaración de poder(S-4/DEFM14A) · divulgación composición comité. Prensa·declaraciones son objetivo verificación",
-  "statusText": "Espera(2026-11-01: post-declaración llamada 10/20 sin divulgación 8-K·declaración poder·lista miembros)"
- }
+ "at": "2026-11-09 12:40",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§note] 숫자: 원문에 없는 숫자 551 million, 189500, 3T",
+  "[0§note] 숫자: 원문의 숫자가 빠짐 5억 5,118만, 9,500"
+ ]
 }
