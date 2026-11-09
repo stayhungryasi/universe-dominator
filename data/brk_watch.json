@@ -2,11 +2,6 @@
  "baselined": "2026-11-09T11:39+09:00",
  "facts": {
   "quarters": {
-   "1Q25": {
-    "net_income_attrib_usd_m": 4603.0,
-    "revenues_usd_m": 89725.0,
-    "equity_usd_m": 654471.0
-   },
    "2Q25": {
     "net_income_attrib_usd_m": 12370.0,
     "revenues_usd_m": 92515.0,
@@ -30,6 +25,11 @@
     "net_income_attrib_usd_m": 25667.0,
     "revenues_usd_m": 101808.0,
     "equity_usd_m": 747910.0
+   },
+   "3Q26": {
+    "net_income_attrib_usd_m": 22112.0,
+    "revenues_usd_m": 105647.0,
+    "equity_usd_m": 761368.0
    }
   },
   "coverage": {
@@ -46,29 +46,29 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-09T18:33+09:00"
+  "measured_at": "2026-11-10T08:34+09:00"
  },
  "due": [],
  "due_fired": [],
- "probe_age_days": 0,
+ "probe_age_days": 1,
  "engine": {
   "last": null,
-  "checked_at": "2026-11-09T18:33+09:00"
+  "checked_at": "2026-11-10T08:34+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-09T18:33+09:00",
+ "generated_at": "2026-11-10T08:34+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-09T18:33+09:00",
-   "n": 1001
+   "at": "2026-11-10T08:34+09:00",
+   "n": 1004
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-09T18:33+09:00",
+   "at": "2026-11-10T08:34+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -894,6 +894,9 @@
   "0001193125-26-417254",
   "0001193125-26-438090",
   "0001193125-26-445930",
+  "0001193125-26-452412",
+  "0001193125-26-452530",
+  "0001193125-26-452592",
   "0001209191-17-022770",
   "0001209191-17-026722",
   "0001209191-17-028040",
@@ -1078,6 +1081,39 @@
   "9999999997-17-000759"
  ],
  "events": [
+  {
+   "accn": "0001193125-26-452592",
+   "date": "2026-11-09",
+   "form": "424B5",
+   "items": "",
+   "grade": "record",
+   "kind": "prospectus",
+   "title": "투자설명서·발행 조건 (424B5)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-452530",
+   "date": "2026-11-09",
+   "form": "8-K",
+   "items": "2.02,9.01",
+   "grade": "major",
+   "kind": "results",
+   "title": "수시공시 — 실적 발표 (8-K)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452530/brka-20261107.htm",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-452412",
+   "date": "2026-11-09",
+   "form": "10-Q",
+   "items": "",
+   "grade": "major",
+   "kind": "quarterly",
+   "title": "분기 보고서(실적) (10-Q)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm",
+   "baseline": false
+  },
   {
    "accn": "0001193125-26-445930",
    "date": "2026-11-03",
@@ -1924,41 +1960,27 @@
    "title": "내부자·대량 보유자 거래 보고 (4)",
    "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526033900/xslF345X05/ownership.xml",
    "baseline": true
-  },
-  {
-   "accn": "0001193125-26-004727",
-   "date": "2026-01-06",
-   "form": "8-K/A",
-   "items": "5.02",
-   "grade": "urgent",
-   "kind": "officer",
-   "title": "수시공시 — 임원·이사 변동 (8-K/A)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526004727/d32284d8ka.htm",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-25-331138",
-   "date": "2025-12-23",
-   "form": "S-8 POS",
-   "items": "",
-   "grade": "record",
-   "kind": "registration",
-   "title": "증권 신고(발행 등록) (S-8 POS)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312525331138/d47679ds8pos.htm",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-25-314935",
-   "date": "2025-12-11",
-   "form": "8-K",
-   "items": "5.02,9.01",
-   "grade": "urgent",
-   "kind": "officer",
-   "title": "수시공시 — 임원·이사 변동 (8-K)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312525314935/d10933d8k.htm",
-   "baseline": true
   }
  ],
  "alerts": {},
- "dm_log": []
+ "dm_log": [
+  {
+   "at": "2026-11-10T08:34+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  }
+ ],
+ "dispatch_queue": [
+  {
+   "mode": "event",
+   "reason": "수시공시 — 실적 발표 (8-K) · 분기 보고서(실적) (10-Q) · 원문: https://www.sec.gov/Archives/edgar/data/1067983/000119312526452530/brka-20261107.htm https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm",
+   "keys": [
+    "0001193125-26-452530",
+    "0001193125-26-452412"
+   ],
+   "state": "queued",
+   "run_id": "42718982557",
+   "queued_at": "2026-11-10T08:34+09:00"
+  }
+ ]
 }

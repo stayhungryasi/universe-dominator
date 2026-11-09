@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "5f0f82879bd1",
  "lang": "en",
- "src_hash": "f140ac7091eb",
+ "src_hash": "e90ed4eee4ba",
  "model": "claude-haiku-4-5",
- "at": "2026-11-05 18:41",
+ "at": "2026-11-10 08:42",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Samsung Electronics closed at KRW 232,000 on October 29, a 38% decline from its June high of KRW 374,500, with analyst target prices ranging from KRW 270,000 to KRW 670,000, a variance of up to 2.5x or more.",
-  "summary_ko.1": "In Q3 2026 earnings, Samsung recorded revenue of KRW 195.2532 trillion (+126.9%), operating profit of KRW 107.4405 trillion (+783.1%), and operating margin of 55.0%, with quarterly operating profit exceeding KRW 100 trillion for the first time.",
-  "summary_ko.2": "The primary source of target price divergence stems from differing expectations regarding the pace of entry into high-value-added AI memory such as HBM4, with bullish forecasts of prolonged memory supply shortages opposed by conservative concerns about softening demand."
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[14§summary_ko.2] 숫자: 원문에 없는 숫자 232,000, 374,500",
+  "[14§summary_ko.2] 숫자: 원문의 숫자가 빠짐 23만, 37만, 4500"
+ ]
 }

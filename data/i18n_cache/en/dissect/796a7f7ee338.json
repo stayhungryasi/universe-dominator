@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "796a7f7ee338",
+ "lang": "en",
+ "src_hash": "c1be702a1c83",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-10 08:42",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Launch of new model line and core performance improvements",
+  "sections.1.h": "Triple improvement in performance, speed, and price",
+  "sections.2.h": "Safety validation and misuse prevention mechanisms",
+  "sections.3.h": "Positioning within ecosystem and usage recommendations",
+  "sections.4.h": "Benchmark performance and competitive advantage analysis",
+  "sections.5.h": "Cost efficiency: half the price for equivalent performance",
+  "sections.6.h": "Anthropic internal use cases and real-world effects",
+  "sections.7.h": "Demonstration of large-scale autonomous system building capability",
+  "sections.8.h": "Customer experience cases: applications in coding, security, and analytics",
+  "sections.9.h": "Complex proofs and new level of engineering problem solving",
+  "sections.0.ko": "Anthropic has launched new model lines: Claude Fable 5.2 and Claude Mythos 5.2. Both models share the same foundation, but Mythos includes advanced safety features in cybersecurity and biology domains, available only to verified institutions, while Fable is open to all users. They demonstrate significant improvements in coding, reasoning, and vision capabilities over previous versions, and have proven real-world results across diverse domains including software migration, electronic device design, solving unsolved problems in physics, and robotics evaluation.",
+  "sections.1.ko": "Fable 5.2 and Mythos 5.2 improved token generation speed by up to 30% compared to previous versions and significantly reduced pricing to $8 per million input tokens and $40 per million output tokens. An optional fast mode is offered at additional cost, enabling token generation acceleration of up to 2.5x. This combination provides users the flexibility to freely choose between cost efficiency and performance.",
+  "sections.2.ko": "Anthropic conducted extensive pre-release safety testing and developed new evaluation metrics for risky behaviors such as sandbox escape. Overall alignment-related high-risk concerns remain at low levels, demonstrating alignment performance equivalent to or better than recent models. Fable 5.2's cybersecurity and biology safety features maintain strength equivalent to 5.1 while reducing unnecessary blocking, and implement top-tier defenses against distillation attacks.",
+  "sections.3.ko": "Anthropic has clearly positioned the new models within the Claude ecosystem. For most coding and knowledge work, recommendation is to start with Opus 5.5 as the everyday workhorse, then scale up to Fable or Mythos based on task scale and complexity, or scale down to Sonnet or Haiku. Fable 5.2 can also serve as an advisor role (for smaller models to reference when solving difficult problems) or coordinator role (delegating simple tasks to smaller models).",
+  "sections.4.ko": "In comprehensive benchmark comparisons, Fable 5.2 surpassed Opus 5.5 on nearly all evaluation metrics. It achieved the highest score among all publicly available models on agent coding (FrontierCode 2.0) at 49.1%, reached 76.3% on cybersecurity (CyScenarioBench), 85.1% on protein design, and 89.3% on computer use (OSWorld). It also outperformed competitor models on robotics, multidisciplinary reasoning, and chart recognition.",
+  "sections.5.ko": "Fable 5.2's superiority in cost-to-performance is striking. On FrontierCode 2.0, Fable 5.2's high-effort score (45.3%) matches Opus 5.5's top score (45.5%) while achieving it at approximately half the cost per task. On Humanity's Last Exam, it matched Opus 5.5's top score at the low-effort level at less than one-tenth the cost. This means enterprise users can realize substantial cost savings.",
+  "sections.6.ko": "Over 90% of Anthropic's own core codebase is now written with Claude's support. Fable 5.2 resolved chronic bugs in minutes, optimized overall service performance, and completed large-scale software projects that were impossible due to cost or speed constraints. Notably, a critical production service migration from Python to Rust achieved increased efficiency, improved reliability, and a 26x acceleration in startup speed.",
+  "sections.7.ko": "When an Anthropic engineer assigned Fable 5.2 the task of prototyping an operating system design, the model coordinated over 1,000 sub-agents and operated continuously for 8 days to complete a fully bootable operating system. The OS reached a level including disk, keyboard, and network drivers, file storage, windows, login screen, installer, and built-in Claude functionality. This demonstrates the model's ability to exercise engineering judgment on ambiguous requests and autonomously design complex systems.",
+  "sections.8.ko": "Early testers from major companies including Vercel, Shopify, Datadog, Unity, and Uber evaluated that Fable 5.2 delivers exceptional value across multiple domains. Game development teams achieved high quality in 3D scene construction and vision-referenced reimplementation; security teams experienced automation where 170 audit agents coordinated over 10-12 hours to produce remediation proposals and policy recommendations. In data analytics, Fable 5.2 prevented errors that other models miss in complex SQL query generation, ensuring accuracy in business calculations.",
+  "sections.9.ko": "One tester reported that Fable 5.2 could generate mathematically provable kernels in hypervisor (software isolating virtual computers) design. Over 3,500 machine-verified proofs covered all cases, based on formal proofs rather than merely test cases. These achievements demonstrate Fable 5.2's ability to decompose large problems into provable components, combine them, and progressively perform increasingly complex tasks.",
+  "caveat": "The presented benchmark scores and use cases are all self-evaluations by Anthropic or voluntary reports from testers, and should be interpreted considering the possibility of independent third-party verification or objections from other AI companies."
+ }
+}

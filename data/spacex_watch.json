@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-09T18:31+09:00",
+  "fetched_at": "2026-11-10T08:31+09:00",
   "year": 2026,
   "year_count": 125,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-09T18:31+09:00",
+  "checked_at": "2026-11-10T08:31+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-09T02:48:43Z",
@@ -1117,7 +1117,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-09T18:30+09:00",
+ "generated_at": "2026-11-10T08:31+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1342,32 +1342,56 @@
    "detected_at": "2026-11-09",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:starship-flight15:2026-11-10",
+   "trigger_id": null,
+   "name": "SpaceX가 11월 13일 Starship 15번째 비행과 첫 이중 캐치 시도를 목표로 한다.",
+   "reason": "보도 감지(biggo finance·fourweekmba·india today)",
+   "event": "SpaceX targets Nov 13 for Starship Flight 15 and first dual-catch attempt",
+   "event_date": "2026-11-08",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQUHQzaE14SVRtSmVmSm5lQ0RsTkViU0N6dWs1ckhSMElNSWJ2Ql92NlRYT2hjMkgwUUR3d1BnczNNSVJVcjg4R1hBa3FCT3ZiUHo3aklqYjN5eHBucGdsUXU0SGZRWXEzVGwtdWVPRERvUTVSblp2N2pmZUh6WldMbXZjTmktX0hSSnVVTnlYTXFYMmFHZDJqU25vZFZMaWtrTDNUMkxicEtkeTlHRTd2M21sLXpXd9IBsgFBVV95cUxPOHpBWTZRNmhsc0RHaVNkQUUydTZaOTJ5LUMzT19YWnlDZUVNdGdIUnVMSzRWY1d2UjZuNEtTY0JwYTdIdXF6cGpVM29oY1MzTF83MzRPOHRZRzdmUGU1dDNXdklsVl84VDVZanlYekhrNlZFalBpSng3ZHAzall0UDRFcVZqRWpkLTdLX1htRzNYcUNVSnhfQWN0d1JQdzVaSkgzSE1sLWlGRVpJdC1NU2R3?oc=5",
+   "detected_at": "2026-11-10",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:starship-flight15-double-catch:2026-11-10",
+   "trigger_id": null,
+   "name": "SpaceX가 11월 13일 Starship 부스터와 상단을 동시에 포획하는 시험을 계획하고 있다.",
+   "reason": "보도 감지(aerospace global news·aviation week·quartz)",
+   "event": "SpaceX Plans Historic Double Starship Catch on November 13",
+   "event_date": "2026-11-10",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPclpyaDZYTDVuTEFZeUlJa0I1YVk1WUJyS3RnQTNQNndYcWJ3TXNZTGtfUW5HZmhwenNXOGRCc19WY2dWLU9lZHJYcE1oZC1Camx2SWFNRXZ4STI4bWVxMWxpdWgxbzNwSTZFOTBtYXlhbGxZUXlPVHB1QXdHX1lFdmhMWk9VZURFUlFTX3EwUkpGQQ?oc=5",
+   "detected_at": "2026-11-10",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-11-09:1135",
-   "run_id": "42550178663",
-   "queued_at": "2026-11-09T11:35+09:00",
+   "key": "qn:2026-11-10:0832",
+   "run_id": "42718982557",
+   "queued_at": "2026-11-10T08:32+09:00",
    "state": "queued",
-   "trigger_id": "T1",
-   "name": "머스크가 SpaceX의 정부 계약 노출도에 대해 설명했다. · 머스크가 SpaceX가 미 정부 의존도를 줄이고 AI 성장에 집중한다고 말했다.",
+   "trigger_id": "",
+   "name": "SpaceX가 11월 13일 Starship 15번째 비행과 첫 이중 캐치 시도를 목표로 한다. · SpaceX가 11월 13일 Starship 부스터와 상단을 동시에 포획하는 시험을 계획하고 있다.",
    "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQRU5RNHA5MnV5bTZZWUxVTU5SOFJSMEZxNkN1YTBHWS1TbEZTTHpmWHk3MTdQX2FYanA2cHdBdG1ONmlkRmdLZHh2X1ZOSFgtczFNcmE4OEJkUTN5TGx2QXBtWXNKaTQ4ZFQ4NVRzN2ZmNE80MllydVhieTMyWGtnRTYtUkhDTEJ4amVWcnIwdVFZQmp6Y1RYeDlsSWc2UmRoZkRpcUI4eHVjdm1EZlZaSWVXM3BucFp3VWZTX09KQzQ?oc=5",
-    "https://news.google.com/rss/articles/CBMieEFVX3lxTFAxZFlycHBlZHFTMVRBbW9TQUtoXzFpenpzbmhvLUNBVTViZFNBV0hWRHpzY2VxWWRNa3g0Sk9KanhLcWNQdm5BSlZnckFEVVpPSnNESHdhYWg3N2E5cndDRXlvYzNyakxLUUVqd0RZQlRQZU5WQ3dHNw?oc=5",
-    "https://news.google.com/rss/articles/CBMikgFBVV95cUxPajU0M3VfNGwyLUpnU1NEMHNqNHFWUWNwdUVRSGJGbWZVUm9FWHJ0VzhIVW1hSWxETmh3SGpZSXhnOWhCckhJUV9sTnRfWUl2T3ozdl9zSFptaEd1eE4wNlBpbmhHbS1vQThaa1dkbUtFM1g0b0pIMWtqTE5uYkhjZ3Z4Y0YwcHQ5dEt1Uk5CNlZnQQ?oc=5",
-    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOZ29yT1NZUHBuNjl1ejQtZWFRQ29URW1ZZWF4am53M3p5enV6OXczeTBtWlBYNXRNbDQxZWtQMU9tRWZreFlobms4amJTRUNyRldiQkFlajNfR2NURHN5S1E2dmUzcXAzWDdUa1lTYWFybWoyRTFJVlFWRDZIcVVvb05YWTdiSjJTY2k5VnMtNFZyN0J2TFVVMDNjdVRRQ3UzNmluRHlKdUpIZjFya3p4ZVRlQnZrRU16b0hQSnNUd1dWUms?oc=5"
+    "https://news.google.com/rss/articles/CBMitgFBVV95cUxQUHQzaE14SVRtSmVmSm5lQ0RsTkViU0N6dWs1ckhSMElNSWJ2Ql92NlRYT2hjMkgwUUR3d1BnczNNSVJVcjg4R1hBa3FCT3ZiUHo3aklqYjN5eHBucGdsUXU0SGZRWXEzVGwtdWVPRERvUTVSblp2N2pmZUh6WldMbXZjTmktX0hSSnVVTnlYTXFYMmFHZDJqU25vZFZMaWtrTDNUMkxicEtkeTlHRTd2M21sLXpXd9IBsgFBVV95cUxPOHpBWTZRNmhsc0RHaVNkQUUydTZaOTJ5LUMzT19YWnlDZUVNdGdIUnVMSzRWY1d2UjZuNEtTY0JwYTdIdXF6cGpVM29oY1MzTF83MzRPOHRZRzdmUGU1dDNXdklsVl84VDVZanlYekhrNlZFalBpSng3ZHAzall0UDRFcVZqRWpkLTdLX1htRzNYcUNVSnhfQWN0d1JQdzVaSkgzSE1sLWlGRVpJdC1NU2R3?oc=5",
+    "https://news.google.com/rss/articles/CBMidkFVX3lxTE5FbjNVcVdCcl83N3AwWXdzTXFncmk1bVRHQUlYaUt5dkxCcmdKUTBpRXZ3Sml6bUtFdURJSXVSTUZodU5BS3J3NWRoT0lBN3dOLTJNcGowemItVlBVYTA2bmp1VEp5UG41MHhKdFhxSFY2ejdmRkE?oc=5",
+    "https://news.google.com/rss/articles/CBMikgFBVV95cUxPclpyaDZYTDVuTEFZeUlJa0I1YVk1WUJyS3RnQTNQNndYcWJ3TXNZTGtfUW5HZmhwenNXOGRCc19WY2dWLU9lZHJYcE1oZC1Camx2SWFNRXZ4STI4bWVxMWxpdWgxbzNwSTZFOTBtYXlhbGxZUXlPVHB1QXdHX1lFdmhMWk9VZURFUlFTX3EwUkpGQQ?oc=5",
+    "https://news.google.com/rss/articles/CBMi1AFBVV95cUxObzJxS3pPV3MwcVN1czhMWEZlYm1xbGV2eC02ZzdwdktJaGxoOUJpWm1fS2pYcTVKU3R5cTAzdzZEdXhRR0lFeXVzT1FZRXU1NGltT1lBVjNGbFYtUG5JN2J2bVN0SlRBRVRoOEp3WlpmRnJ0OC1sSVBfLWlzTy1fS0U4QlZpRDdFLU9jczAxM2ZHTF9tRmJTeGFLcy1mQzJXcktVTzEtY0F1NUFlYmlqelZUR1NEdldOLWQ4Umgzb2ZlT1VuRFdUUzM2a1gxS2p0cDJvdA?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-09T18:31+09:00",
-  "last_success_at": "2026-11-09T09:30:48Z",
-  "last_run_at": "2026-11-09T09:30:19Z",
+  "checked_at": "2026-11-10T08:32+09:00",
+  "last_success_at": "2026-11-09T23:31:23Z",
+  "last_run_at": "2026-11-09T23:30:20Z",
   "last_conclusion": "success",
   "runs_24h": 50,
-  "ok_24h": 50
+  "ok_24h": 49
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",
