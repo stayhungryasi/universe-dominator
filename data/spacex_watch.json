@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-10T18:31+09:00",
+  "fetched_at": "2026-11-11T08:31+09:00",
   "year": 2026,
   "year_count": 125,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-10T18:31+09:00",
+  "checked_at": "2026-11-11T08:32+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-09T23:43:56Z",
@@ -1117,7 +1117,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-10T18:31+09:00",
+ "generated_at": "2026-11-11T08:31+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1366,29 +1366,39 @@
    "detected_at": "2026-11-10",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:spacex-texas-24b-datacenter:2026-11-11",
+   "trigger_id": "T1",
+   "name": "SpaceX가 텍사스에 240억 달러 규모의 데이터센터와 가스 발전소를 계획하고 있다고 Bloomberg가 보도했다.",
+   "reason": "보도 감지(analytics insight·benzinga·bloomberg.com)",
+   "event": "SpaceX Plans $24 Billion Data Center and Gas Plant in Texas",
+   "event_date": "2026-11-10",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQa2tLdTRWMGF3cFpraEd5VWpXMzdGNlpZRUdvY0VOTVZNLWl6MXBncjJoRl9TTzZBN0JjMHhSd3NjLTJ5alRFWDlMZFRKSmVIaktDLW14U2piaUIxUVBPWnU3MTBmVWx3WjRrYjA1ejFWWGFwSm9xbzhFWWZzY1VoVDRSb1U4UERRbFJ6ZHhMV2JLUGxGRFFuWmd0YmloVXROdzByZ0lIVzhLV2dhYlE?oc=5",
+   "detected_at": "2026-11-11",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-11-10:0832",
-   "run_id": "42718982557",
-   "queued_at": "2026-11-10T08:32+09:00",
+   "key": "qn:2026-11-11:0832",
+   "run_id": "42921854112",
+   "queued_at": "2026-11-11T08:32+09:00",
    "state": "queued",
-   "trigger_id": "",
-   "name": "SpaceX가 11월 13일 Starship 15번째 비행과 첫 이중 캐치 시도를 목표로 한다. · SpaceX가 11월 13일 Starship 부스터와 상단을 동시에 포획하는 시험을 계획하고 있다.",
-   "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "trigger_id": "T1",
+   "name": "SpaceX가 텍사스에 240억 달러 규모의 데이터센터와 가스 발전소를 계획하고 있다고 Bloomberg가 보도했다.",
+   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMitgFBVV95cUxQUHQzaE14SVRtSmVmSm5lQ0RsTkViU0N6dWs1ckhSMElNSWJ2Ql92NlRYT2hjMkgwUUR3d1BnczNNSVJVcjg4R1hBa3FCT3ZiUHo3aklqYjN5eHBucGdsUXU0SGZRWXEzVGwtdWVPRERvUTVSblp2N2pmZUh6WldMbXZjTmktX0hSSnVVTnlYTXFYMmFHZDJqU25vZFZMaWtrTDNUMkxicEtkeTlHRTd2M21sLXpXd9IBsgFBVV95cUxPOHpBWTZRNmhsc0RHaVNkQUUydTZaOTJ5LUMzT19YWnlDZUVNdGdIUnVMSzRWY1d2UjZuNEtTY0JwYTdIdXF6cGpVM29oY1MzTF83MzRPOHRZRzdmUGU1dDNXdklsVl84VDVZanlYekhrNlZFalBpSng3ZHAzall0UDRFcVZqRWpkLTdLX1htRzNYcUNVSnhfQWN0d1JQdzVaSkgzSE1sLWlGRVpJdC1NU2R3?oc=5",
-    "https://news.google.com/rss/articles/CBMidkFVX3lxTE5FbjNVcVdCcl83N3AwWXdzTXFncmk1bVRHQUlYaUt5dkxCcmdKUTBpRXZ3Sml6bUtFdURJSXVSTUZodU5BS3J3NWRoT0lBN3dOLTJNcGowemItVlBVYTA2bmp1VEp5UG41MHhKdFhxSFY2ejdmRkE?oc=5",
-    "https://news.google.com/rss/articles/CBMikgFBVV95cUxPclpyaDZYTDVuTEFZeUlJa0I1YVk1WUJyS3RnQTNQNndYcWJ3TXNZTGtfUW5HZmhwenNXOGRCc19WY2dWLU9lZHJYcE1oZC1Camx2SWFNRXZ4STI4bWVxMWxpdWgxbzNwSTZFOTBtYXlhbGxZUXlPVHB1QXdHX1lFdmhMWk9VZURFUlFTX3EwUkpGQQ?oc=5",
-    "https://news.google.com/rss/articles/CBMi1AFBVV95cUxObzJxS3pPV3MwcVN1czhMWEZlYm1xbGV2eC02ZzdwdktJaGxoOUJpWm1fS2pYcTVKU3R5cTAzdzZEdXhRR0lFeXVzT1FZRXU1NGltT1lBVjNGbFYtUG5JN2J2bVN0SlRBRVRoOEp3WlpmRnJ0OC1sSVBfLWlzTy1fS0U4QlZpRDdFLU9jczAxM2ZHTF9tRmJTeGFLcy1mQzJXcktVTzEtY0F1NUFlYmlqelZUR1NEdldOLWQ4Umgzb2ZlT1VuRFdUUzM2a1gxS2p0cDJvdA?oc=5"
+    "https://news.google.com/rss/articles/CBMirgFBVV95cUxQa2tLdTRWMGF3cFpraEd5VWpXMzdGNlpZRUdvY0VOTVZNLWl6MXBncjJoRl9TTzZBN0JjMHhSd3NjLTJ5alRFWDlMZFRKSmVIaktDLW14U2piaUIxUVBPWnU3MTBmVWx3WjRrYjA1ejFWWGFwSm9xbzhFWWZzY1VoVDRSb1U4UERRbFJ6ZHhMV2JLUGxGRFFuWmd0YmloVXROdzByZ0lIVzhLV2dhYlE?oc=5",
+    "https://news.google.com/rss/articles/CBMipwFBVV95cUxOeGNxT2o3ZzRiQjJmQk4tZXZsMDQybThWeHlORTVQZWJuT3YwUmhWVDJvWF9zS29YVlg2MVk1NzVxLU5ZY09qZmFIWklRcmdmS0VsbDVfMjZSS2dnbkJabEtIRjJ4R1FZdG42YWZ2VTZaYnp3ZTdmbHQxMEhMUE9mcGZ1U2Nrblpiakd6X2wtV3poZERaSWxtY0dCUWxKaTNXUzJqMGNhVdIBtAFBVV95cUxORGdkUWh5RjRYMi0yWE9Ma19sajRuVG5OVjNlajR3V2lqX2RjdVpITFJseFFycmpsaFRBd1oxb2tVZ2p5UVpZMy1Mc3NpS0ozcDU0R3pTU3ljUlBoSFoxa3Z0bDRRY1BpbldMZWM1eldkWi16LV9ONW9lUjMxZEY0ai1HdUxKdWRuaXRXclNlWWxCbmF2cWVEM1c3U091YU9FS2JXWEt6Qi1qTVNMSHhWOE8wSjc?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-10T18:31+09:00",
-  "last_success_at": "2026-11-10T09:30:48Z",
-  "last_run_at": "2026-11-10T09:30:20Z",
+  "checked_at": "2026-11-11T08:32+09:00",
+  "last_success_at": "2026-11-10T23:30:48Z",
+  "last_run_at": "2026-11-10T23:30:18Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

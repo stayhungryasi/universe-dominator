@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "428ac4b42c0b",
+ "lang": "en",
+ "src_hash": "0490b5a9c1cc",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-11 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Solving a decades-old challenge with AI",
+  "sections.1.h": "How AlphaProof Code works",
+  "sections.2.h": "Reducing human review to 1% of the codebase",
+  "sections.3.h": "Bridging the gap from design to real-world implementation",
+  "sections.4.h": "Completing a multi-year project in 4 weeks",
+  "sections.5.h": "Signal's assessment of the significance",
+  "sections.6.h": "From medical devices to power grids, the impact",
+  "sections.7.h": "Research expansion and open-source release",
+  "sections.0.ko": "DeepMind's research team has successfully provided a mathematical proof of the cryptographic security properties of the Signal protocol. The Signal protocol is technology that protects tens of billions of private messages worldwide, and formal verification (mathematically proving that code operates correctly without defects) is the highest standard of security but is extremely difficult and labor-intensive. This achievement represents the first instance of AI performing formal verification of a widely deployed cryptographic protocol at this level of rigor, and the first instance of formally verifying the actual implementation of such a protocol by any method.",
+  "sections.1.ko": "AlphaProof Code is an agent framework leveraging multiple LLMs that divides tasks like a research team. Human experts collaborate with AI models to determine what to prove, while groups of AI agents perform the proofs. Researchers first translated Signal's security objectives into formal mathematical specifications, which human experts reviewed at every step. The agents, powered by Gemini Carbon, then generated proofs and wrote over 6 million lines of code in Lean, a computer language.",
+  "sections.2.ko": "As AI agents monitored the proofs, they flagged portions requiring human review, which amounted to only 1% of the total codebase. Since Lean automatically verified the remainder, experts could focus their effort on areas where human judgment was most critical. This represents a significant reduction in the labor intensity of traditional formal verification.",
+  "sections.3.ko": "Cryptographic protocols form the foundation of nearly all digital communications, from online banking to web browsing, and a single flaw can expose millions of people at once. Traditional protocol verification stopped at the design stage, but DeepMind's agents went further, proving that compiled code meets core security properties down to the precise code level executed on devices. Because real-world vulnerabilities hide in the gap between design and implementation, closing this gap makes the proof vastly more complex.",
+  "sections.4.ko": "This complex verification process was completed in just 4 weeks, work that historically took expert teams years to accomplish. It demonstrated that Signal's core cryptographic code delivers the specified security protections. To validate AlphaProof Code's reliability, the team reintroduced two previously fixed actual bugs into the Signal codebase, and in both cases the system generated machine-verified proofs showing that the buggy versions were unsafe.",
+  "sections.5.ko": "Signal's Chief Technology Officer assessed that while previous formal verification efforts covered only small portions of code, this approach enables meaningful scale. Traditionally, verifying that deployed code precisely matches cryptographic design required extensive manual work; automatically converting actual code to valid Lean theorems using AI agents represents a major breakthrough. With growing AI-based security threats, rigorously verifying the Signal protocol implementation heightens confidence in privacy assurances.",
+  "sections.6.ko": "Verifying Signal's core cryptography establishes a foundation for protecting other critical systems, from medical device firmware to power grid software. To counter the speed and scale of cyber threats posed by AI agents, combining automated defense agents like CodeMender with formal verification creates software that uses mathematical proofs to guarantee protective functions work as intended.",
+  "sections.7.ko": "Scaling this technology requires ongoing research. DeepMind has released the formal verification artifacts as open source for community use, along with technical papers. This provides a foundation for academia and industry to validate and advance this research.",
+  "caveat": "This article is from the official blog posts of DeepMind and Google, with focus on highlighting research achievements; technical limitations and challenges in practical application should be verified in separate academic papers."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "428ac4b42c0b",
+ "lang": "es",
+ "src_hash": "8b8f00da43a3",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-11 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Resolviendo un problema de décadas con IA",
+  "sections.1.h": "Cómo funciona el código AlphaProof",
+  "sections.2.h": "Reduciendo la revisión humana al 1%",
+  "sections.3.h": "Cerrando la brecha entre diseño e implementación real",
+  "sections.4.h": "Un proyecto de años completado en 4 semanas",
+  "sections.5.h": "La importancia según Signal",
+  "sections.6.h": "Impacto: desde dispositivos médicos hasta redes eléctricas",
+  "sections.7.h": "Expansión de la investigación y lanzamiento de código abierto",
+  "sections.0.ko": "El equipo de investigación de DeepMind ha logrado demostrar matemáticamente las propiedades de seguridad criptográfica del protocolo Signal. El protocolo Signal es una tecnología que protege decenas de miles de millones de mensajes privados en todo el mundo, y la verificación formal (demostrar matemáticamente que el código funciona correctamente sin defectos) es el estándar más alto de seguridad, pero es extremadamente difícil y requiere mucho trabajo. Este logro es el primer caso en el que la IA ha realizado verificación formal a este nivel de profundidad en un protocolo criptográfico ampliamente implementado, y el primer caso en el que se ha verificado formalmente la implementación real de cualquier protocolo de este tipo.",
+  "sections.1.ko": "AlphaProof Code es un marco de agentes que aprovecha múltiples LLM y divide el trabajo como lo haría un equipo de investigación. Los expertos humanos colaboran con modelos de IA para decidir qué se debe demostrar, y un grupo de agentes de IA realiza la demostración. Los investigadores tradujeron primero los objetivos de seguridad de Signal a una especificación matemática formal, que fue revisada por expertos humanos en cada paso. Posteriormente, los agentes impulsados por Gemini Carbon generaron demostraciones y escribieron más de 6 millones de líneas de código en Lean, un lenguaje informático.",
+  "sections.2.ko": "Mientras los agentes de IA supervisaban las demostraciones, marcaban las partes que los humanos necesitaban revisar, que representaban solo el 1% del código total. Debido a que Lean validaba automáticamente el resto, los expertos pudieron concentrarse en las áreas donde el juicio humano era más crítico. Este es un logro importante en la reducción de la intensidad laboral de la verificación formal tradicional.",
+  "sections.3.ko": "Los protocolos criptográficos son la base de casi toda comunicación digital, desde banca en línea hasta navegación web, y un único defecto puede exponer a millones de personas a la vez. La validación de protocolos tradicional se detenía en la fase de diseño, pero los agentes de DeepMind fueron más allá, demostrando que el código compilado cumple con las propiedades de seguridad clave en el nivel exacto del código que se ejecuta en los dispositivos. Las vulnerabilidades del mundo real se encuentran en la brecha entre el diseño y la implementación, por lo que cerrar esta brecha hace que la demostración sea mucho más compleja.",
+  "sections.4.ko": "Este complejo proceso de validación se completó en solo 4 semanas, un trabajo que históricamente requería años para que equipos de expertos completaran. Demostró que el código criptográfico central de Signal proporciona las protecciones de seguridad especificadas. Además, para validar la confiabilidad de AlphaProof Code, se reinsertaron 2 bugs reales que Signal había corregido anteriormente en su código, y en ambos casos el sistema generó demostraciones verificadas automáticamente que mostraban que las versiones con bugs no eran seguras.",
+  "sections.5.ko": "El director de tecnología de Signal evaluó que mientras la verificación formal anterior solo cubría pequeñas partes del código, este enfoque permite una expansión significativa. Tradicionalmente, verificar que el código operativo coincida exactamente con el diseño criptográfico requería un trabajo manual extensivo, y destacó que usar agentes de IA para convertir automáticamente código real en teoremas de Lean válidos es un gran avance. Con el aumento de las amenazas de seguridad basadas en IA, enfatizó que validar rigurosamente la implementación del protocolo Signal refuerza la confianza en las garantías de privacidad.",
+  "sections.6.ko": "La verificación criptográfica central de Signal establece la base para proteger otros sistemas críticos, desde firmware de dispositivos médicos hasta software de redes eléctricas. Para hacer frente a la velocidad y escala de las amenazas cibernéticas que traerán los agentes de IA, combinar agentes de defensa automática como CodeMender con verificación formal puede crear software que garantice mediante prueba matemática que las funciones de protección funcionan.",
+  "sections.7.ko": "Expandir estas tecnologías requiere investigación continua. DeepMind publicó los resultados de la verificación formal como código abierto para uso de la comunidad, junto con documentos técnicos. Esto proporciona una base para que la academia y la industria validen y desarrollen estos resultados de investigación.",
+  "caveat": "Este artículo es una publicación de blog oficial de DeepMind y Google, enfocada en destacar los logros de investigación, por lo que las limitaciones técnicas y los desafíos en la aplicación práctica deben confirmarse en documentos académicos separados.",
+  "title": "AlphaProof Code"
+ }
+}

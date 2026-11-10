@@ -4,14 +4,21 @@
  "lang": "es",
  "src_hash": "4e72920854b2",
  "model": "claude-haiku-4-5",
- "at": "2026-11-03 16:41",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[16§cur] 숫자: 원문에 없는 숫자 2.2 million",
-  "[16§cur] 숫자: 원문의 숫자가 빠짐 2,200만",
-  "[16§parts.1.reason] 숫자: 원문에 없는 숫자 2.2 million",
-  "[16§parts.1.reason] 숫자: 원문의 숫자가 빠짐 2,200만"
- ]
+ "at": "2026-11-11 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Suscriptores 30 millones o superior, Starlink Mobile (D2C) ingresos publicados por separado $3 mil millones o superior",
+  "cur": "13,6 millones / D2C sin publicación separada (usuarios mensuales 22 millones es de declaración en llamada)",
+  "tgt": "30 millones / $3 mil millones",
+  "unit": "personas·$",
+  "hit": "Transición a operador de telecomunicaciones exitosa",
+  "miss": "Si D2C ni siquiera se publica por separado, la narrativa fracasa",
+  "method": "Tabla de secciones de materiales de resultados",
+  "parts.0.label": "Suscriptores de consumidor",
+  "parts.1.label": "Ingresos D2C (publicación separada)",
+  "parts.1.reason": "Ingresos D2C sin publicación separada (usuarios mensuales 22 millones es de declaración en llamada)",
+  "parts.0.unit": "millones de personas",
+  "parts.1.unit": "decenas de millones de dólares"
+ }
 }
