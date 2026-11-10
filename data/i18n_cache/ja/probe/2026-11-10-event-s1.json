@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-10-event-s1",
+ "lang": "ja",
+ "src_hash": "9fd51a5cb8e3",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-10 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. 事件 — Flight 15「11/13 ダブルキャッチ」報道の一次情報源との照合",
+  "md": "\n| 項目 | 値(2026-11-10 確認) | 情報源の等級・出典 |\n|---|---|---|\n| LL2 打ち上げ記録 | **NET 2026-11-13 22:45 UTC** · 状態 'To Be Confirmed' · ウィンドウ終了 2026-11-14 00:00 UTC · 最終更新 2026-11-09 23:06 UTC · Orbital Launch Pad 2(Starbase)。ミッション説明(打ち上げ**前**の計画文言): 2段目の発射場帰還の初試行 · ブースターのタワーキャッチ | ④ [LL2 upcoming](https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=Starship&limit=3&mode=normal) · `data/spacex_watch.json launches.starship_next`(11/10 08:31 KST、同じ日付・状態) |\n| 日付の出所 | SpaceX の打ち上げ担当副社長 Dontchev(UP.Summit)が 11/13 を提示。それ以前のFAA航空計画スライドは 11/8 → 11/12 — **規制当局の計画日であり、会社の日付ではない** | ⑥ [Teslarati 11/05](https://www.teslarati.com/spacex-starship-catch-nov-13/) (Ars Technica 引用) |\n| ハードウェア | Booster 22 の33基静的燃焼(10/25) · Ship 42 の6基約60秒燃焼(10/27 前後) — 11月号・11/9 回の記録と同じ(変化なし) | ⑥ [Teslarati 11/05](https://www.teslarati.com/spacex-starship-catch-nov-13/) · `state.triggers_next_12m[T3].status` |\n| FAA ライセンス | **Flight 15 のライセンス修正発給は確認されていない** — Flight 14 のライセンスはそのフライトのみを対象としており、Ship の発射場帰還(人口密集地上空の飛行)を含む修正が必要との報道。FAA Starship ページは今回 403 | ⑤ [NASASpaceflight 11月](https://www.nasaspaceflight.com/2026/11/starship-flight-15-awaits-faa/)(タイトル・検索要約 — 本文 403) · [FAA Starship](https://www.faa.gov/space/stakeholder_engagement/spacex_starship)(403) |\n| 開示 | **SpaceX の 8-K・IR なし** — EDGAR の最新は 11/06 の 8-K(Item 5.02)、IR RSS の最新は 11/06 | ① [EDGAR 開示一覧](https://data.sec.gov/submissions/CIK0001181412.json) · ② [IR RSS](https://ir.spacex.com/rss/pressrelease.aspx)、2026-11-10 閲覧 |\n\n**判定**: 監視官の報道2件の内容(11/13 · ブースター+Ship 同時キャッチ)は、11/9 回の T3 記録と**同じ**である。新たに確認されたのは、LL2 が 11/9 夕方(UTC)にも日付を維持していたことだけで、残る不確実性(ライセンス)はそのままだ。事件ではなく**確認**なので、マイルストーン・確率の入力はない — B-2027-1(Ship の回収・再使用の始動)と R2 は、飛行結果が出てから動く。結果は測定層 LL2 が「結果確定フライト」として自動検知し(`launch_final`)、それが次の事件回を開く (出典: 上の表 · `state.probability_adjustment_rules` R2 · `state.milestones` B-2027-1)。\n\n**測定層の担当分(登録のみ)**: 監視官は同じトリガー・同じ日付の再報道でエンジンを再び起動させた。判断層がすべきことはなかった — 「すでに記録された日付と同じ再報道」では起動しないというルールは、測定層の設計課題として `open_questions_for_next_run` に残す (出典: `data/spacex_watch.json` due)。\n\n---\n"
+ }
+}

@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "8109ee0251bf",
  "lang": "es",
- "src_hash": "230c3488024d",
+ "src_hash": "748ce16faa3e",
  "model": "claude-haiku-4-5",
- "at": "2026-11-10 08:42",
+ "at": "2026-11-10 12:40",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "MediaTek tiene previsto publicar sus ventas mensuales de octubre el 10 de noviembre, anunciando una guía de ventas para el cuarto trimestre de NT$210,1~221,8 mil millones (crecimiento neto del 25-32%) desde las ventas del tercer trimestre de NT$168,058 mil millones (aumento del 18,3% interanual).",
-  "summary_ko.1": "Se espera que el primer acelerador de IA genere 2,5 mil millones de dólares en ventas en el cuarto trimestre, con el objetivo de alcanzar una cuota máxima en un mercado de aproximadamente 16 mil millones de dólares en 2027, mientras que el negocio de aceleradores de IA está transformando la composición de resultados.",
-  "title": "La acción de MediaTek se dirige al punto de control de ventas del 10 de noviembre"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[18§summary_ko.0] 숫자: 원문에 없는 숫자 168058 billion",
+  "[18§summary_ko.0] 숫자: 원문의 숫자가 빠짐 168.058 billion"
+ ]
 }

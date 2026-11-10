@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "fea55cef6041",
+ "lang": "es",
+ "src_hash": "1125e331290d",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-10 12:40",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "La promesa original de Google y el cambio de política",
+  "sections.1.h": "El mecanismo de recopilación automática en segundo plano",
+  "sections.2.h": "Cuatro resultados posibles de sistemas no deterministas",
+  "sections.3.h": "Las limitaciones de los resultados de pruebas y la necesidad de revalidación",
+  "sections.4.h": "Método y procedimiento de prueba real",
+  "sections.5.h": "Casos reales de exposición de datos",
+  "sections.6.h": "Insuficiencia de la función de edición automática",
+  "sections.7.h": "El retiro de las garantías existentes de Google y la realidad",
+  "sections.0.ko": "Cuando Google lanzó las extensiones de Gemini Workspace en 2023, la empresa prometió explícitamente que los contenidos personales de Gmail, Docs y Drive no serían expuestos a revisores humanos. Sin embargo, Google ha retirado silenciosamente esta promesa recientemente, y en los documentos de ayuda oficiales actualizados y la versión del 16 de octubre de la publicación del blog de 2023, ha admitido explícitamente que Drive personal y correo electrónico se enrutan a través del pipeline de revisión humana.",
+  "sections.1.ko": "El núcleo del cambio de política de Google es que la información personal se recopila automáticamente sin que el usuario haya solicitado archivos específicos. Al conversar con Gemini, simplemente mencionar accidentalmente temas personales como viajes, facturas, nombres o reservas desencadena automáticamente una búsqueda de Workspace en segundo plano. Esto ocurre sin que el usuario utilice etiquetas @Drive o @Gmail ni solicite explícitamente la búsqueda de archivos.",
+  "sections.2.ko": "Debido a que la invocación de herramientas de LLM y la inyección de contexto tienen naturaleza probabilística, pueden aparecer cuatro escenarios diferentes cada vez que se prueba la misma consulta. El primero es cuando no se recuperan datos personales en absoluto; el segundo es cuando solo se generan metadatos o resúmenes de alto nivel; el tercero es cuando se extraen citas exactas de 2-4 oraciones que incluyen información personal sensible o detalles de cuenta; el cuarto es cuando el texto completo sin editar del documento o correo electrónico se recopila directamente en el contexto de la sesión.",
+  "sections.3.ko": "Observar el primer o segundo escenario en una sola prueba no permite concluir que no hay problema. En sistemas no deterministas, pueden producirse resultados diferentes cada vez. Por lo tanto, para un diagnóstico preciso, se deben intentar repetidamente después de eliminar la conversación de prueba. Es importante destacar que un único resultado no puede determinar la existencia o no del pipeline de recopilación en cuestión.",
+  "sections.4.ko": "El método de reproducción presentado por el autor es el siguiente: primero, con la aplicación de conexión de Workspace habilitada, menciona accidentalmente un tema en Drive o Gmail sin utilizar etiquetas @. Si Gemini responde basándose en correo electrónico o archivo, solicita que imprima el texto exacto y los metadatos devueltos e inyectados por la herramienta de revisión. El autor reporta haber reproducido los cuatro escenarios anteriores en una prueba utilizando un correo electrónico de factura del proveedor de internet.",
+  "sections.5.ko": "Los resultados de las pruebas muestran que Gemini no solo resumió, sino que extrajo información personal real. En la fase de metadatos, se expuso información que incluía nombre, monto de pago y fecha de pago; en la fase de extracción parcial, se citó un bloque completo que incluía nombre completo, dirección, número de cuenta, número de confirmación y fecha de pago completa; en el peor de los casos, se mostró el texto completo sin editar, incluidos los encabezados de correo electrónico.",
+  "sections.6.ko": "Las herramientas de edición automática basadas en expresiones regulares y reconocimiento de entidades nombradas que posee Google no eliminen suficientemente información de identificación personal que pueda identificarse a través de números de cuenta, números de confirmación, fechas de transacción, así como combinaciones de múltiples información (por ejemplo, combinaciones de nombres específicos y ciudades, eventos). La propia documentación técnica de Google reconoce estas limitaciones.",
+  "sections.7.ko": "En conclusión, Google originalmente vendió la integración de Workspace bajo la garantía de aislamiento estricto de la revisión humana. Sin embargo, ese aislamiento ha sido eliminado, archivos completos se recopilan probabilísticamente durante conversaciones cotidianas, y esas sesiones están sujetas a revisión por contratistas humanos. Los usuarios se encuentran en una situación donde información personal sensible puede exponerse a terceros en momentos no intencionados.",
+  "caveat": "Este informe se basa en la experiencia de prueba de un usuario individual, por lo que se ha confirmado el cambio de política oficial de Google y su reproducibilidad, pero la amplitud del impacto y la escala real del procesamiento por revisores humanos requieren verificación independiente.",
+  "title": "Google Gemini envía archivos personales de Drive y correos electrónicos a anotadores humanos"
+ }
+}

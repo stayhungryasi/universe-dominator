@@ -46,29 +46,44 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-10T08:34+09:00"
+  "measured_at": "2026-11-10T12:33+09:00"
  },
- "due": [],
- "due_fired": [],
- "probe_age_days": 1,
+ "due": [
+  {
+   "id": "T6",
+   "name": "PacifiCorp 산불 소송 주요 판결·합의 — 오리건 대법원 James 사건(1단계 평결 파기 항소심 재심리)",
+   "expected": "2026-11-03",
+   "days_over": 7
+  }
+ ],
+ "due_fired": [
+  "T6@2026-11-03"
+ ],
+ "probe_age_days": 0,
  "engine": {
-  "last": null,
-  "checked_at": "2026-11-10T08:34+09:00"
+  "last": {
+   "id": 42722805050,
+   "status": "completed",
+   "conclusion": "success",
+   "event": "repository_dispatch",
+   "created_at": "2026-11-09T23:43:56Z"
+  },
+  "checked_at": "2026-11-10T12:33+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-10T08:34+09:00",
+ "generated_at": "2026-11-10T12:33+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-10T08:34+09:00",
+   "at": "2026-11-10T12:33+09:00",
    "n": 1004
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-10T08:34+09:00",
+   "at": "2026-11-10T12:33+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -1965,6 +1980,11 @@
  "alerts": {},
  "dm_log": [
   {
+   "at": "2026-11-10T12:33+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  },
+  {
    "at": "2026-11-10T08:34+09:00",
    "ok": true,
    "head": "🏛 버크셔 측정층"
@@ -1981,6 +2001,16 @@
    "state": "queued",
    "run_id": "42718982557",
    "queued_at": "2026-11-10T08:34+09:00"
+  },
+  {
+   "mode": "event",
+   "reason": "트리거 T6 예상일 2026-11-03",
+   "keys": [
+    "trigger"
+   ],
+   "state": "queued",
+   "run_id": "42748260292",
+   "queued_at": "2026-11-10T12:33+09:00"
   }
  ]
 }

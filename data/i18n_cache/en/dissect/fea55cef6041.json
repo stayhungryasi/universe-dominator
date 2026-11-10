@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "fea55cef6041",
+ "lang": "en",
+ "src_hash": "c64d87d86c66",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-10 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Google's Original Promise and Policy Change",
+  "sections.1.h": "Mechanism of Automatic Background Collection",
+  "sections.2.h": "Four Outcomes of Non-Deterministic Systems",
+  "sections.3.h": "Limitations of Test Results and Need for Re-Verification",
+  "sections.4.h": "Actual Test Method and Procedure",
+  "sections.5.h": "Real Data Exposure Cases",
+  "sections.6.h": "Insufficiency of Automatic Redaction Features",
+  "sections.7.h": "Google's Withdrawal of Existing Guarantees and Reality",
+  "sections.0.ko": "When Google launched the Gemini Workspace extension in 2023, the company explicitly promised that personal content in Gmail, Docs, and Drive would not be exposed to human reviewers. However, Google recently quietly withdrew this promise, explicitly acknowledging in updated official help documentation and the October 16 revision of a 2023 blog post that personal Drive and email are routed through a human review pipeline.",
+  "sections.1.ko": "The core of Google's policy change is that personal information is collected automatically even when users do not request specific files. When chatting with Gemini, merely incidentally mentioning personal topics like travel, invoices, names, or reservations triggers Workspace searches automatically in the background. This occurs without users using @Drive or @Gmail tags or explicitly requesting file searches.",
+  "sections.2.ko": "Because LLM tool calling and context injection are probabilistic in nature, four different scenarios can appear each time the same query is tested. First, personal data is not retrieved at all; second, only metadata or high-level summaries are generated; third, precise quotations of approximately 2-4 sentences are extracted, including sensitive personal information or account details; fourth, the complete unredacted text of a document or email is collected directly into the session context.",
+  "sections.3.ko": "Observing the first or second scenario in a single test cannot conclude that there is no problem. In non-deterministic systems, different results can occur each time. Therefore, for accurate diagnosis, test conversations must be deleted and attempts repeated iteratively. It is important that a single result alone cannot determine whether the collection pipeline exists.",
+  "sections.4.ko": "The reproduction method presented by the author is as follows. First, with the Workspace connection app enabled, incidentally mention a topic in Drive or Gmail without using @ tags. If Gemini responds based on an email or file, request output of the exact text and metadata returned and injected by the review tool. The author reports reproducing all four scenarios above in a test utilizing an internet service provider's invoice email.",
+  "sections.5.ko": "Test results showed that Gemini not only provided summaries but actually extracted personal information. At the metadata stage, information including name, payment amount, and payment date was exposed; at the partial extraction stage, a full block including full name, address, account number, confirmation number, and payment date was quoted; and in the worst case, the complete text including email headers was displayed in unredacted form.",
+  "sections.6.ko": "Google's automatic redaction tools based on regular expressions and named entity recognition fail to sufficiently remove account numbers, confirmation numbers, transaction dates, and combinations of multiple pieces of information (e.g., combinations of a specific name and city, event) that are identifiable as personal information. Google's own technical documentation also acknowledges these limitations.",
+  "sections.7.ko": "In conclusion, Google originally sold Workspace integration under a guarantee of strict isolation from human review. However, that isolation has now been removed, complete files are collected probabilistically during everyday conversation, and those sessions are subject to review by human contractors. Users are placed in a situation where sensitive personal information may be exposed to third parties at unintended moments.",
+  "caveat": "This report is based on individual user test experience, so Google's official policy change and reproducibility are confirmed, but the scope of impact and actual scale of human reviewer processing require independent verification."
+ }
+}

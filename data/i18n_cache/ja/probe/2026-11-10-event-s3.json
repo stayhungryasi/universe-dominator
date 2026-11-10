@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-10-event-s3",
+ "lang": "ja",
+ "src_hash": "c40246beac64",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-10 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 確率・マイルストーン・価値 — 変化なし",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。フライト日程の再報道は R1~R6 のどの条件にも該当しない(R2 は Ship キャッチの**成功**が条件)(出典: `state.probability_adjustment_rules`)。\n- **マイルストーン**: 29件の判定は**変化なし** — スコアカード進行 24 · 未判定 4 · 未達 1。すべて `status_history` に今回の回の行を追加(出典: `state.scorecard` · `state.milestones`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定しない**(event モード)。価格依存の算術値のみ更新: 時価総額 **$1,930十億**(算式: 142.12 × 13.581 = 1,930.1 — `data/latest.json` の SPCX 1,929.0 と0.1%以内)、EV $1,879十億(算式: 1,930 − 純現金 51)、バンド中心比 **−54%**(算式: 66 ÷ 142.12 − 1 = −0.536)、AI 内在価値 **$1,388十億**(算式: 1,930 − Connectivity 350 − Space 141 − 純現金 51; 前回の $1,281十億比 +8.4%)、年換算 AI 売上倍率 46(算式: 1,388 ÷ 30.24) · 契約 ARR 倍率 53(算式: 1,388 ÷ 26) · 年換算調整後 EBITDA 倍率 70(算式: 1,388 ÷ 19.81)(出典: `state.valuation` · [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-10 閲覧 · [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm))。\n- **無リスク金利メモ**: 米10年債 **4.86%**(2026-11-06、FRED、`data/latest.json meta.macro.ust10`) — 11月号の入力値 4.99%(10/27)比 −13bp。割引率の再算定は月次回(12/01)の担当(出典: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json`)。\n- **価格反応**: 11/9 +5.85%(日中 $135.37~$143.20) — 同日に SpaceX の開示・IR はなく、Flight 15 の日程報道が続いた。原因は帰属させない。**データ訂正記録**: 同サイトの11/6の出来高が、前回の閲覧値 115,599,839 から **115,494,958** に変わっていた(終値 134.27 は不変、出典側の事後修正 — 11/2・11/3・11/4 にも同様の件)。前回の数値は閲覧時の値のまま維持し、`volume_recent` は修正値を使用(出典: [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-10 閲覧)。\n\n---\n"
+ }
+}
