@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-10-event-s5",
+ "lang": "en",
+ "src_hash": "33adce703989",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-10 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probability and Value — Unchanged (event rounds do not recalculate)",
+  "md": "- Of the probability adjustment rules R1–R6, none was triggered by this event (R1 76.6% < 78% · R2 no large-acquisition 8-K · R3 headline cash $377.4 billion < $400 billion · R4 and R6 not in their assessment period · R5 no new quarterly loss disclosed — sources in the sections above). Scenarios 25/50/25 maintained.\n- Assumed value band $265.0–$684.5 · probability-weighted $469.6 · base $464.4 — Round 1 values as is (formula and sources in the value assessment section of the [2026-11 report](2026-11.md)).\n- Price update: Class B shares $574.76 (2026-11-09, [stockanalysis](https://stockanalysis.com/stocks/brk.b/history/)) — 23.8% above the base present value (formula 574.76 ÷ 464.4 − 1). BPS compounding priced in at 10.3% assuming a fixed exit P/B of 1.45x (formula (574.76 × 2.411 ÷ (357.73 × 1.45))^(1/10) − 1). P/B of 1.61x (formula 574.76 ÷ 357.73).\n- Market capitalization of about $1,223.3 billion (formula 574.76 × 2.12835 billion Class B-equivalent shares) − net cash $356.9 billion − equities $335.5 billion = about $530.8 billion assigned to operating businesses → 13.9 times annualized after-tax operating earnings excluding investment income of $38.08 billion (formula, same approximation as Round 1).\n- Reference (not reflected): The US 10-year yield is 4.86% (2026-11-06, data/latest.json meta.macro.ust10), lower than Round 1's 4.95%. With the same formula (4.86% + 5.0% × 0.85), the discount rate would be 9.1% and the base present value about $468 (formula 772.3 × 1.45 ÷ 1.0911^10). Recalculating the discount rate is left to the next monthly round (2026-12) (convention: prompts/monthly_run.md item 4).\n"
+ }
+}

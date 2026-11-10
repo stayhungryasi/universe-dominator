@@ -2,15 +2,13 @@
  "kind": "brk_disrupt",
  "id": "D3",
  "lang": "es",
- "src_hash": "3f0415b0694e",
+ "src_hash": "6007e7a8b926",
  "model": "claude-haiku-4-5",
- "at": "2026-11-09 18:38",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "name": "responsabilidad por incendios forestales vs demanda de energía para centros de datos IA",
-  "threat_to": "beneficios de BHE · confianza regulatoria",
-  "signal": "reconocimiento de pérdidas acumuladas de PacifiCorp · acuerdos · grandes contratos de energía",
-  "status": "pérdida estimada acumulada $2.850 millones · desembolsos acumulados $2.300 millones (10-Q) · acuerdo con gobierno federal por $575 millones (2026-03) · pérdidas adicionales 'razonablemente posibles, no estimables'"
- }
+ "at": "2026-11-10 18:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§status] 숫자: 원문의 숫자가 빠짐 19억, 2,000"
+ ]
 }

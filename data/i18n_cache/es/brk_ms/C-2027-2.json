@@ -2,17 +2,14 @@
  "kind": "brk_ms",
  "id": "C-2027-2",
  "lang": "es",
- "src_hash": "2e55ce809acc",
+ "src_hash": "d136c10149aa",
  "model": "claude-haiku-4-5",
- "at": "2026-11-09 18:38",
+ "at": "2026-11-10 18:39",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "text": "Recompra de acciones propias anuales 2027 superior a 20.000 millones de dólares",
-  "cur": "2026 9M 14.410 millones de dólares (referencia)",
-  "tgt": "20.000 millones de dólares",
-  "hit": "Régimen de Abel confirma reiteradamente infravaloración respecto al valor intrínseco — refuerzo del eje de devolución al accionista",
-  "miss": "Suspensión de recompras — evaluación de la empresa de que el precio de la acción supera el valor intrínseco conservador",
-  "method": "Tabla de recompra de acciones propias 10-Q"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§cur] 숫자: 원문에 없는 숫자 14410 billion, 2100 billion",
+  "[0§cur] 숫자: 원문의 숫자가 빠짐 144.1억, 21.0억, 19.2"
+ ]
 }

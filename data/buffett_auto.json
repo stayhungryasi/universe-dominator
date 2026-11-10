@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-10 12:29",
- "generated_at": "2026-11-10T12:29:17.281351+09:00",
+ "generated_label": "2026-11-10 18:28",
+ "generated_at": "2026-11-10T18:28:12.071624+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-10",
@@ -371,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.97
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3612,
@@ -434,7 +434,11 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 칩 포캐스트 불변에도 불구하고 강한 실적 발표, 소프트웨어 판매 약세로 성장성 불확실"
+    }
    },
    "conversion": {
     "value": 0.9836,
@@ -454,7 +458,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -474,7 +478,28 @@
     }
    ],
    "g_forward_status": "전망치 이상(69%) — 취재 필요",
-   "notes": "전망치 이상(69%) — 취재 필요"
+   "notes": "AI 패닉 시장평가와 경영진 가이던스의 괴리; 소프트웨어 부문 약화가 핵심 리스크",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; VM API to Open Source and Kubernetes expansion signals infrastructure moat",
+    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; Markets Discount Broadcom on MediaTek TPU Rumors",
+    "capalloc": "Q3 Earnings and Revenues Beat Estimates indicates cash generation capability",
+    "owner_earnings": "Strong results 'not enough to keep investors happy' reflects valuation disconnect; weak software sales offset hardware strength"
+   }
   },
   "SPCX": {
    "as_of": "2026-11-10",
@@ -508,8 +533,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중",
-   "g_forward_status": "전망치 이상(1639%) — 취재 필요",
-   "notes": "전망치 이상(1639%) — 취재 필요"
+   "g_forward_status": "전망치 이상(1642%) — 취재 필요",
+   "notes": "전망치 이상(1642%) — 취재 필요"
   },
   "2222.SR": {
    "as_of": "2026-11-10",
@@ -1014,7 +1039,7 @@
     "adj_ni": 22863630000.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.1053,
+   "g_forward": 0.1051,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -1153,7 +1178,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 43.17
+    "value": 40.64
    },
    "eps_status": null,
    "roe_tangible": 0.7976,
@@ -1366,11 +1391,7 @@
     },
     "fcf_ttm": 8560000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 서버 매출 폭발이 실제 현금흐름 개선으로 이어지는지 불명확; 저마진 OEM 특성상 규모 성장이 주주가치로 전환되지 않을 위험"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.953,
@@ -1390,7 +1411,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1410,28 +1431,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "AI 수요 주도 실적 상향이 시장 기대를 충족하나, 시클리컬 OEM 특성과 마진 압박이 근본적 제약; 130% 랠리 후 고평가 우려",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "_evidence": {
-    "franchise": "AI server demand 필수 요소 but competitive OEM 시장; Latin American megaprojects 언급은 지역 다각화",
-    "risk5": "Earnings beat 실적 but 'Post-Midterm Sell-Off' 12% 낙폭은 시장 신뢰 취약; 266% 랠리 후 높은 기대치",
-    "capalloc": "Fiscal 2027 forecast lifted on AI server strength → cash generation 신호",
-    "owner_earnings": "AI 매출 폭발 vs 저마진 OEM 구조의 이율배반적 긴장; 'Cheap at 13x Forward Earnings' 평가도 매출 인정일뿐 수익성 미확보"
-   }
+   "notes": "전망치 이상(66%) — 취재 필요"
   },
   "PANW": {
    "as_of": "2026-11-10",
@@ -1772,7 +1772,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 66.54
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1917,7 +1917,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 183.1
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.2951,
@@ -1952,7 +1952,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 798.05
+    "value": 787.92
    },
    "eps_status": null,
    "roe_tangible": 0.4807,
@@ -2076,5 +2076,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-10 12:30"
+ "scout_label": "2026-11-10 18:29"
 }

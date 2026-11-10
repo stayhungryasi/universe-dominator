@@ -2,14 +2,15 @@
  "kind": "research",
  "id": "8ddb5c70221e",
  "lang": "en",
- "src_hash": "a103688dafac",
+ "src_hash": "de76d7ee0895",
  "model": "claude-haiku-4-5",
- "at": "2026-11-10 12:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Nvidia NVDA: 59 of 62 analysts rate Buy, average price target of $327.14 implies 84% upside from current $177.81, with only 1 Sell rating.",
-  "summary_ko.1": "Q2 FY2027 non-GAAP EPS of $2.22 exceeded consensus of $2.0887, revenue of $96.22B with 5 consecutive quarters of revenue cycling and gross margin declining from 75% to 71-72% raising concerns.",
-  "summary_ko.2": "Debt obligations of $108.5B, supply commitments of $279B, days sales outstanding increased from 45 to 60 days forming bear case, stock down 22% in one month."
- }
+ "at": "2026-11-10 18:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[15§summary_ko.0] 번역이 비었다",
+  "[15§summary_ko.1] 숫자: 원문에 없는 숫자 96.22B",
+  "[15§summary_ko.1] 숫자: 원문의 숫자가 빠짐 96.22억"
+ ]
 }
