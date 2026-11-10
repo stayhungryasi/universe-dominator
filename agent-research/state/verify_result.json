@@ -1,31 +1,22 @@
 {
-  "run_id": "2026-11-10-event",
+  "run_id": "2026-11-11-event",
   "checked": 19,
   "match": 18,
   "rounding": 1,
   "mismatch": [],
   "unverifiable": [],
-  "details": [
-    {"claim": "기준 주가 — 2026-11-09 종가", "value": 142.12, "result": "일치", "source_value": 142.12, "report": "머리말·3절·부록 1행 142.12 일치"},
-    {"claim": "2026-11-09 등락률", "value": 5.85, "result": "일치", "source_value": 5.85, "report": "머리말·부록 일치"},
-    {"claim": "2026-11-09 거래량", "value": 103182512, "result": "일치", "source_value": 103182512, "report": "부록 1행 일치(머리말 '1억 318만주' 일치)"},
-    {"claim": "2026-11-09 장중 고가", "value": 143.20, "result": "일치", "source_value": 143.20, "report": "부록 1행·3절 일치"},
-    {"claim": "2026-11-09 장중 저가", "value": 135.37, "result": "일치", "source_value": 135.37, "report": "부록 1행·3절 일치"},
-    {"claim": "2026-11-06 거래량(출처 측 수정 후)", "value": 115494958, "result": "일치", "source_value": 115494958, "report": "3절·부록 2행 일치"},
-    {"claim": "2026-11-06 종가(불변)", "value": 134.27, "result": "일치", "source_value": 134.27, "report": "머리말·부록 2행 일치"},
-    {"claim": "발행주식수(2026-10-15, 10-Q 표지)", "value": 13581, "result": "일치", "source_value": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 (2026-10-15 기준, 표지)", "report": "3절·부록 3행 일치"},
-    {"claim": "시가총액(산식 142.12 × 13.581)", "value": 1930, "result": "반올림 차이", "source_value": "142.12 × 13,581.063709백만 = 1,930.1십억", "report": "3절·부록 4행 1,930 일치 · 차이 0.005%"},
-    {"claim": "미국 10년물 국채수익률(2026-11-06)", "value": 4.86, "result": "일치", "source_value": 4.86, "report": "3절·부록 5행 일치"},
-    {"claim": "Starship Flight 15 NET(LL2, UTC)", "value": "2026-11-13 22:45", "result": "일치", "source_value": "2026-11-13T22:45:00Z", "report": "1절 표·부록 6행 일치"},
-    {"claim": "Starship Flight 15 발사 창 종료(LL2, UTC)", "value": "2026-11-14 00:00", "result": "일치", "source_value": "2026-11-14T00:00:00Z", "report": "1절 표·부록 6행 일치"},
-    {"claim": "Starship Flight 15 LL2 마지막 갱신 시각(UTC)", "value": "2026-11-09 23:06", "result": "일치", "source_value": "2026-11-09T23:06:16Z", "report": "1절 표·부록 6행 일치"},
-    {"claim": "Flight 15 목표일 — 발사 부사장(UP.Summit)", "value": "2026-11-13", "result": "일치", "source_value": "11월 13일(금), Teslarati 2026-11-05", "report": "1절 표 2행·부록 7행 일치"},
-    {"claim": "FAA 항공 계획 슬라이드 날짜(첫 번째)", "value": "2026-11-08", "result": "일치", "source_value": "11월 8일 이후(NET)", "report": "1절 표 2행 일치"},
-    {"claim": "FAA 항공 계획 슬라이드 날짜(두 번째)", "value": "2026-11-12", "result": "일치", "source_value": "11월 12일", "report": "1절 표 2행 일치"},
-    {"claim": "Booster 22 정적 점화 엔진 수", "value": 33, "result": "일치", "source_value": 33, "report": "1절 표 3행 일치(10/25)"},
-    {"claim": "Ship 42 6기 정적 점화 지속 시간", "value": 60, "result": "일치", "source_value": "6기 60초(10/27)", "report": "1절 표 3행 '약 60초' 일치"},
-    {"claim": "SpaceX EDGAR 최신 공시 — 8-K Item 5.02 제출일", "value": "2026-11-06", "result": "일치", "source_value": "8-K 2026-11-06 accn 0001628280-26-071689 Item 5.02 (최신 행)", "report": "1절 표·2절·부록 8행 일치"},
-    {"claim": "Blumenthal 서한 브리핑 요청 기한", "value": "2026-11-12", "result": "일치", "source_value": "11월 12일", "report": "2절 표·부록 일치"}
+  "notes": [
+    "2026-11-10 거래량: 목록 81,790,496 / 원문 재조회(stockanalysis, 2026-11-11) 81,830,047 — 차이 39,551주(+0.048%), ±0.5% 이내. 출처 측 사후 수정으로 보이며(보고서 3절 '데이터 정정 기록'과 같은 유형), 보고서 머리말 '8,179만주'·부록 '81,790,496주'는 조회 당시 값",
+    "2026-11-10 종가 143.16 · 등락 +0.77% · 고가 144.89 · 저가 137.65 일치. 11/9 종가 142.07 · 거래량 103,473,158 일치",
+    "발행주식: 10-Q 표지 2026-10-15 기준 Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주(합계는 원문 숫자로 된 산식) → 13,581백만주 일치",
+    "시가총액 산식: 143.16 × 13.581063709 = 1,944.2십억 → 1,944 일치",
+    "DGS10 2026-11-09 4.88% 일치(FRED 최신 관측)",
+    "Starbase 공고 PDF 본문: 'approximately $24 billion'(initial phases) · 'approximately 444-acre' · 'Property ID# 171887' · 'Wednesday, December 9, 2026 at 7:00 p.m.' 전부 일치. PDF 메타데이터 작성일 2026-11-06",
+    "3Q26 CAPEX: 8-K Ex.99.1 부문 표 Capex 합계 $19,593M 일치(현금흐름표는 9개월 $48,069M만 표기)",
+    "RGV Business Journal: '35 natural gas turbines' · '748 megawatts' 숫자 일치. 단 기사는 이를 '1단계'로 구분하지 않고 프로젝트 발전소 전체로 서술 — 목록 claim 의 '1단계' 표지는 원문에 없음(숫자 판정에는 영향 없음, 보고서 1-2 표 본문은 '1단계' 표기 없이 씀)",
+    "LL2: Starship Flight 15 net 2026-11-13T22:45:00Z · last_updated 2026-11-10T22:06:46Z 일치",
+    "EDGAR submissions 최신: 8-K 2026-11-06 Items 5.02 (accn 0001628280-26-071689) 일치 — 이후 공시 없음",
+    "보고서 본문 where_in_report 위치의 숫자 전부 목록과 동일 확인"
   ],
-  "verified_at": "2026-11-10T08:50+09:00"
+  "verified_at": "2026-11-11T08:55+09:00"
 }
