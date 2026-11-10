@@ -1,5 +1,11 @@
 # 버크셔 탐사선 변화 기록
 
+## 2026-11-10-event-r2 (3회차 · 사건 — 트리거 T6 예상일 도래)
+- 오리건 대법원 James 사건 구두변론 2026-11-03 개최 확인(10-Q 'was held' — 직전 회차 '예정' 표기는 오독) · 서면 판결 '수개월 내', 판결·신규 합의 없음 — https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/R31.htm · https://www.opb.org/article/2026/11/04/wildfire-survivors-lawsuit-utility-company-fire-oregon/
+- T6 예상일을 판결 확인점 2027-05-03(추정: 변론 + 6개월)으로 교체 — 예상일 칸의 변론 날짜가 판결 아닌 사건으로 엔진을 깨운 설계 실수
+- B주 2026-11-09 종가 $575.25(직전 $574.76 은 마감 전 값으로 추정) — https://stockanalysis.com/stocks/brk.b/history/ · 시가총액·영업 사업 배수(14.0배, 산식) 갱신
+- E-2028-1·R5·확률 25/50/25·가정 가치 밴드 변화 없음(규칙 충족 없음)
+
 ## 2026-11-10-event (2회차 · 사건 — 3Q26 8-K·10-Q SEC 게시 2026-11-09)
 - 기준선 숫자 SEC 원문 대조: 영업이익 $127.05억·자기자본 $7,613.68억 등 변화 없음 — https://www.sec.gov/Archives/edgar/data/1067983/000119312526452530/brka-ex99_1.htm
 - GEICO 합산비율 정의 확정: (손해·LAE + 기타 세그먼트 항목) ÷ 경과보험료 = 91.4%(전년 84.3%, 산식) — https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/R110.htm · A-2029-1 미판정 → 진행(Progressive 대비 +2.7%p)
