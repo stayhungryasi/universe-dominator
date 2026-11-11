@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-11-event-r2-s3",
+ "lang": "ja",
+ "src_hash": "635853c809ca",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-11 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 確率・マイルストーン・価値 — 変化なし",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。競合打上げ企業の資金はR1~R6のどの条件にも含まれない(出典: `state.probability_adjustment_rules`)。\n- **マイルストーン**: 29件の判定 **変化なし** — 進行 24 · 未判定 4 · 未達 1。すべて `status_history` に本回の行を追加。E-2027-4 progress_reason に背景を一行追加(判定入力ではない)(出典: `state.scorecard` · `state.milestones`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定しない**(eventモード)。基準価格が前回と同じため価格依存の算術値もそのまま — 時価総額 **$1,944十億**(算式: 143.16 × 13.581 = 1,944.3) · EV $1,893十億(算式: 1,944 − 51) · AI内在価値 $1,402十億 · バンド中心比 −54%(出典: `state.valuation` · [10-Q表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm))。\n- **無リスク金利メモ**: 米10年債 4.88%(2026-11-09) — 前回と同じ。割引率の再算定は月次回(12/01)の担当(出典: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json meta.macro.ust10`)。\n- **価格反応**: Rocket Lab確約発表日(11/9)のSPCXは+5.81% — 同日にStarbase団地・Flight 15の報道が重なったため帰属させない。競合の融資がSpaceX株価を押し上げる理由もない(出典: [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) · 前回3節)。\n\n---\n"
+ }
+}

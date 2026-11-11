@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-11-event-r2-s6",
+ "lang": "ja",
+ "src_hash": "aa72a4457502",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-11 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. 未掲載回 — 吸収記録を維持",
+  "md": "\nワークフローが注入した未掲載回4件(10/29 · 11/06 · 11/07 · 11/08)は、すでに月次の `2026-11`(10/29)と `2026-11-09-event`(11/06~08)が一次ソースとして再確認し、吸収済みである。本回はコピーを一次ソースとして使わず、現時点で再確認できるもの — EDGAR最新の11/06 8-K(5.02)のまま · Flight 15 LL2 NET 11/13 22:45 UTC(更新 11/10 22:06 UTC)不変 · T7 ⓓ 公開回答なし — を午後に再確認し、`state.run.unpublished_runs[].absorbed_by` に追記した。11/08のコピーにある「顧客A = Google」という記述は引き続き採用しない(11/09の訂正を維持 — 顧客A = 米政府)(出典: `_probe/unpublished/*.md` · `state.run.unpublished_runs`)。\n\n---\n"
+ }
+}

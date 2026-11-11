@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-11-11-event-r2-s0",
+ "lang": "ja",
+ "src_hash": "db1873336531",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-11 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **作成基準日**: 2026-11-11 (KST) · 回id `2026-11-11-event-r2` · モード **event**(増分) · 前回 `2026-11-11-event`(14回目、同日午前の事件回) · 直近の月次回 `2026-11` (出典: ワークフロー注入の回情報)\n- **理由**: ニュース監視官が報道を検知 — \"Pentagon commits $300 million in conditional loans to SpaceX rivals\"(mezha.net · mlq.ai)。監視官はどのトリガーにも紐付けなかった(—)。**報道は判断の根拠ではなく確認の対象**である (出典: `data/spacex_watch.json` due · [mezha.net](https://mezha.net/eng/news/mezha-6861ada54d72cff29bd333b6_pentagon_commits_-300/))\n- **基準株価**: $143.16 — 2026-11-10(火)終値、前回と同じ。同日2回目の回で米国11/11の寄り付き前のため、新しい終値はない (出典: [stockanalysis 日次履歴](https://stockanalysis.com/stocks/spcx/history/)、前回の照会値)\n- **範囲**: 事件が触れるものだけ — 軸B(打上げ)・軸E(連邦契約)の背景、トリガー新設1件(T13)。測定層dueの残りは11/05~11/11の回が処理した事件の再共鳴なので再確認のみ行う。確率・適正価値の再算定は行わない (出典: `prompts/monthly_run.md` · `state.triggers_next_12m`)\n\n> **結論から**: 見出しの「$3億」は1件ではなく、国防総省の戦略資本局(Office of Strategic Capital, OSC)の**条件付き融資確約2件の合計**である — ① **Stoke Space $1.5億**(2026-10-26発表、Cape Canaveral第2発射台 · Nova Block 2) ② **Rocket Lab $1.5億**(2026-11-09発表、再使用型Neutronの初打上げ以降の飛行頻度)。どちらも金融クロージング前に財務・法務・技術・投資・デューデリジェンスの要件が残る**確約**であり、金利・満期は発表にない。両機体は**まだ一度も飛んでいない**(Neutron初飛行は2027年目標 · Nova Block 2初飛行は2029年予定 — 報道)。SpaceXの8-K・IRはない。政府が国防打上げの供給をSpaceX以外にも広げようと資金を出し始めたという事実は記録に値するが、マイルストーンへの入力はない → **確率 25/50/25 · 確率加重 $32 · マイルストーン29件の判定 変化なし**。新トリガー **T13**(融資クロージング · 競合機の初飛行 · Falcon 9退役の公式化 · NSSL配分)を新設 (出典: 以下1~4節)。\n\n---\n"
+ }
+}

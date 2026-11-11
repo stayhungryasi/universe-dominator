@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-11-11-event-r2-s0",
+ "lang": "en",
+ "src_hash": "db1873336531",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-11 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-11-11 (KST) · run id `2026-11-11-event-r2` · mode **event** (incremental) · previous run `2026-11-11-event` (run 14, the event run earlier the same day) · previous monthly run `2026-11` (Source: run information injected by the workflow)\n- **Reason**: News watcher detected a report — \"Pentagon commits $300 million in conditional loans to SpaceX rivals\" (mezha.net · mlq.ai). The watcher linked it to no trigger (—). **The report is an item to verify, not a basis for judgment** (Source: `data/spacex_watch.json` due · [mezha.net](https://mezha.net/eng/news/mezha-6861ada54d72cff29bd333b6_pentagon_commits_-300/))\n- **Reference share price**: $143.16 — 2026-11-10 (Tue) close, same as the previous run. This is the second run of the same day and it is before the U.S. market open on 11/11, so there is no new close (Source: [stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), previous run's queried value)\n- **Scope**: Only what the event touches — background for Axis B (launch) and Axis E (federal contracts), one new trigger (T13). The remainder of the measurement-layer dues are echoes of events handled by the 11/05–11/11 runs, so only rechecks are done. No recalculation of probability or fair value (Source: `prompts/monthly_run.md` · `state.triggers_next_12m`)\n\n> **Conclusion first**: The headline's '$300 million' is not a single item but the **sum of two conditional loan commitments** from the Defense Department's Office of Strategic Capital (OSC) — ① **Stoke Space $150 million** (announced 2026-10-26, Cape Canaveral second launch pad · Nova Block 2) ② **Rocket Lab $150 million** (announced 2026-11-09, flight cadence after the first launch of the reusable Neutron). Both are **commitments** with financial, legal, technical, investment and due-diligence requirements remaining before financial closing, and the announcements give no interest rate or maturity. Neither vehicle has **yet flown even once** (Neutron first flight targeted for 2027 · Nova Block 2 first flight scheduled for 2029 — reported). There is no SpaceX 8-K or IR. The fact that the government has begun funding to widen defense launch supply beyond SpaceX is worth recording, but there is no milestone input → **probability 25/50/25 · probability-weighted $32 · 29 milestone judgments no change**. New trigger **T13** (loan closing · competing vehicle first flight · formalization of Falcon 9 retirement · NSSL assignments) established (Source: Sections 1–4 below).\n\n---\n"
+ }
+}
