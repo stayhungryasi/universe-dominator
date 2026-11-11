@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-11T18:31+09:00",
+  "fetched_at": "2026-11-12T08:32+09:00",
   "year": 2026,
   "year_count": 125,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-11T18:31+09:00",
+  "checked_at": "2026-11-12T08:33+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-11T03:39:23Z",
@@ -1117,7 +1117,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-11T18:31+09:00",
+ "generated_at": "2026-11-12T08:32+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1390,43 +1390,56 @@
    "detected_at": "2026-11-11",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:solar-100gw:2026-11-12",
+   "trigger_id": "T1",
+   "name": "SpaceX가 100GW 규모 태양광 제조 설비를 주문했다.",
+   "reason": "보도 감지(benzinga·convergence now·tradingkey)",
+   "event": "Elon Musk Wants to Build a ‘Sentient Sun’: SpaceX Orders Massive 100 GW Solar Manufacturing Line",
+   "event_date": "2026-11-11",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQb0FKYWNiRjlodFlMQmNpSTN2eHcxR2lRZzE1UWw5RXFONW9jUGp5aUMyWjF2amd3Mk04U2dzQTlPNkdJNWRNbDc1ZlkzTnp1SHZtaTUtMk5qczl6cTZrc1M5LWNQdDZwcktVdDFNZEYwZzJCeGxBZzlvN1FtN1d4WmJ1bzEyb1A5RGJCYTVva1V6M3BvOXNqWnBrSmoyQ1BlRU1aMk9yU1k2c01IVl9IenREX3NNNE9fZ3U0Yk5tdW9zQWtXcTdmSmw1RlR4UkFxa0VmN3N3MTZzdnRSeGlF?oc=5",
+   "detected_at": "2026-11-12",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:anthropic-compute-deal:2026-11-12",
+   "trigger_id": "T1",
+   "name": "Anthropic이 SpaceX와의 파트너십이 2027년 2분기 이후 지속되지 않을 것으로 보고 있으며, 머스크는 컴퓨팅 자원을 기꺼이 되가져오겠다고 말했다.",
+   "reason": "보도 감지(teslanorth.com·wccftech)",
+   "event": "Anthropic Believes Its Partnership With SpaceX Won’t Last Beyond Q2 2027, And Elon Musk Now Says “We’ll Be Happy To Take The Compute Back”",
+   "event_date": "2026-11-12",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNbzJnQ1UxdVNjV3hCQzQtUWswb2hSOWFFdHg3R21RUFplZkl6R0wzSnp0U2ZTUFVGZTJuOFNERWpJNkZYbjZQTXNNSXVKbm53LXE3UExVNG44TU5abUpBMGpsb1IwaUltQVBWYVpGOXVzakRiNGZhdDJjX1ZhSjhJRGtsQ3U1cVBPS3hkMk9vbXZQVmxMbmFJY09xZlhPVDg5ZHRhc1lnbXVPbEkyUFJKNjNQam56amxZeEIwRm1mOEUta0tHeFVieTcwSW80Vi1KSzhkMGlSSXIwODhsUnJsSmV0enJ5N243Q1h30gHwAUFVX3lxTFBGS2czWnI2VWg4alNvT0N0N3VqZXhDbmlmVV9UYUJuSWFSQ2JSNnBJZTJOTXdnRDFzSTdETnRPdThyaUFlRW9aLUtqMFhKU2VhZEY3eUxXSVBQWnV3RjVaeXVOZFd6dW53N2FkYzN0WVNXUjY4NHdGUVNxUGRyZ2I2WjJSdmhTMmZGMGM3THFqRkF1R0JDTHltQXRFeEtyeDRyWDVmRU1PbWZzTG1DRktkZnFpeWdMWEM1M0ItV3ozbEJGMWM5YlVFTGJOUmRRSVd3NndZSnlER0otT0xhSTJmUXplX0NzWkZfSU80eDFqOA?oc=5",
+   "detected_at": "2026-11-12",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-11-11:0832",
-   "run_id": "42921854112",
-   "queued_at": "2026-11-11T08:32+09:00",
+   "key": "qn:2026-11-12:0833",
+   "run_id": "43118436890",
+   "queued_at": "2026-11-12T08:33+09:00",
    "state": "queued",
    "trigger_id": "T1",
-   "name": "SpaceX가 텍사스에 240억 달러 규모의 데이터센터와 가스 발전소를 계획하고 있다고 Bloomberg가 보도했다.",
-   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "name": "SpaceX가 100GW 규모 태양광 제조 설비를 주문했다. · Anthropic이 SpaceX와의 파트너십이 2027년 2분기 이후 지속되지 않을 것으로 보고 있으며, 머스크는 컴퓨팅 자원을 기꺼이 되가져오",
+   "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMirgFBVV95cUxQa2tLdTRWMGF3cFpraEd5VWpXMzdGNlpZRUdvY0VOTVZNLWl6MXBncjJoRl9TTzZBN0JjMHhSd3NjLTJ5alRFWDlMZFRKSmVIaktDLW14U2piaUIxUVBPWnU3MTBmVWx3WjRrYjA1ejFWWGFwSm9xbzhFWWZzY1VoVDRSb1U4UERRbFJ6ZHhMV2JLUGxGRFFuWmd0YmloVXROdzByZ0lIVzhLV2dhYlE?oc=5",
-    "https://news.google.com/rss/articles/CBMipwFBVV95cUxOeGNxT2o3ZzRiQjJmQk4tZXZsMDQybThWeHlORTVQZWJuT3YwUmhWVDJvWF9zS29YVlg2MVk1NzVxLU5ZY09qZmFIWklRcmdmS0VsbDVfMjZSS2dnbkJabEtIRjJ4R1FZdG42YWZ2VTZaYnp3ZTdmbHQxMEhMUE9mcGZ1U2Nrblpiakd6X2wtV3poZERaSWxtY0dCUWxKaTNXUzJqMGNhVdIBtAFBVV95cUxORGdkUWh5RjRYMi0yWE9Ma19sajRuVG5OVjNlajR3V2lqX2RjdVpITFJseFFycmpsaFRBd1oxb2tVZ2p5UVpZMy1Mc3NpS0ozcDU0R3pTU3ljUlBoSFoxa3Z0bDRRY1BpbldMZWM1eldkWi16LV9ONW9lUjMxZEY0ai1HdUxKdWRuaXRXclNlWWxCbmF2cWVEM1c3U091YU9FS2JXWEt6Qi1qTVNMSHhWOE8wSjc?oc=5"
-   ]
-  },
-  {
-   "key": "qn:2026-11-11:1230",
-   "run_id": "42951550677",
-   "queued_at": "2026-11-11T12:30+09:00",
-   "state": "queued",
-   "trigger_id": "",
-   "name": "국방부가 SpaceX 경쟁사들에 3억 달러 규모 조건부 대출을 약속했다.",
-   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
-   "urls": [
-    "https://news.google.com/rss/articles/CBMihwFBVV95cUxQY2JGUy11T3RROURQQzFWM0s4a2kwd1VXa1dqRFY2OTlmcUxvTFdlc3NyZ3lCWFkyN2lDaFFQc3BNbXFJYzRHTjlRa1g0R2l2U0tidlZna0RBa25MWUoxWFd0bzNhcVFDemFyUjVkaWJtOW9vLWRISm9XWnFiQXE3OTdBb2pPbU0?oc=5",
-    "https://news.google.com/rss/articles/CBMitwFBVV95cUxNR2M5cEZSeHU1RUI1VEYwSVF2bHhMTWMydlZqV0NpVkhjOUtZUzdEdjJqYmU0TjBGNFdUTFhlel81U1QwNWlQWldYeGRONHRDaWo2ME82WFhQWlhSRi1RUkVaOFBQUU1IWE5Tc092dWg0WXJOVDAtQXFlaUo0Tnh4OVdHLUMzZmdGZkxyQk5kMC15cTVpY2M3Wnh6TERmUlByYTI5TTJ0N054Smc3eDl3Ni1CV1otUk0?oc=5"
+    "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQb0FKYWNiRjlodFlMQmNpSTN2eHcxR2lRZzE1UWw5RXFONW9jUGp5aUMyWjF2amd3Mk04U2dzQTlPNkdJNWRNbDc1ZlkzTnp1SHZtaTUtMk5qczl6cTZrc1M5LWNQdDZwcktVdDFNZEYwZzJCeGxBZzlvN1FtN1d4WmJ1bzEyb1A5RGJCYTVva1V6M3BvOXNqWnBrSmoyQ1BlRU1aMk9yU1k2c01IVl9IenREX3NNNE9fZ3U0Yk5tdW9zQWtXcTdmSmw1RlR4UkFxa0VmN3N3MTZzdnRSeGlF?oc=5",
+    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPR0w1Vk1wLU9fS1UxYWtBbnNJWXlhcFFxUTg1UFZGN3YwV08tTF95OTM5by1RdUJSVmVHeGlsRk5DM1BnVmhFYnhGcDBNX2tmeDVTMnFXMU4yUmtiZVBEdkZ6dVlpdEtMektCX0h5RmZzQXhCU1dSMmZELUVFZzk1T2Y3Sk9WQUswMkNSdGhVY3VGOUdHSG0zdTdvbkhDSEM1RlpsQi1mejNlUmwwTk5MQUtzaFBYUXl2cXNKOXdrNlROSUU?oc=5",
+    "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNbzJnQ1UxdVNjV3hCQzQtUWswb2hSOWFFdHg3R21RUFplZkl6R0wzSnp0U2ZTUFVGZTJuOFNERWpJNkZYbjZQTXNNSXVKbm53LXE3UExVNG44TU5abUpBMGpsb1IwaUltQVBWYVpGOXVzakRiNGZhdDJjX1ZhSjhJRGtsQ3U1cVBPS3hkMk9vbXZQVmxMbmFJY09xZlhPVDg5ZHRhc1lnbXVPbEkyUFJKNjNQam56amxZeEIwRm1mOEUta0tHeFVieTcwSW80Vi1KSzhkMGlSSXIwODhsUnJsSmV0enJ5N243Q1h30gHwAUFVX3lxTFBGS2czWnI2VWg4alNvT0N0N3VqZXhDbmlmVV9UYUJuSWFSQ2JSNnBJZTJOTXdnRDFzSTdETnRPdThyaUFlRW9aLUtqMFhKU2VhZEY3eUxXSVBQWnV3RjVaeXVOZFd6dW53N2FkYzN0WVNXUjY4NHdGUVNxUGRyZ2I2WjJSdmhTMmZGMGM3THFqRkF1R0JDTHltQXRFeEtyeDRyWDVmRU1PbWZzTG1DRktkZnFpeWdMWEM1M0ItV3ozbEJGMWM5YlVFTGJOUmRRSVd3NndZSnlER0otT0xhSTJmUXplX0NzWkZfSU80eDFqOA?oc=5",
+    "https://news.google.com/rss/articles/CBMif0FVX3lxTFBEMG1NQzJack53bGpWUWdQb0s5UGZoQ0lkRHhNUHlKSk1EbURKS0lXN01zQk95djcwTnRhdUxfLTVsd1B3V1J6SFRiU1ducml3OFp6WDJISUVIeUQ0WjFObUtucnFnWUNZaHVEbnhwbkNQTlRXalI3MkVSekVmVDg?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-11T18:31+09:00",
-  "last_success_at": "2026-11-11T09:30:44Z",
-  "last_run_at": "2026-11-11T09:30:18Z",
+  "checked_at": "2026-11-12T08:33+09:00",
+  "last_success_at": "2026-11-11T23:30:55Z",
+  "last_run_at": "2026-11-11T23:30:17Z",
   "last_conclusion": "success",
   "runs_24h": 50,
-  "ok_24h": 50
+  "ok_24h": 48
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",
