@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "8972f065dd39",
  "lang": "es",
- "src_hash": "0a8f8442ca99",
+ "src_hash": "07ad9187e40f",
  "model": "claude-haiku-4-5",
- "at": "2026-11-11 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Texas Instruments (TXN) subió un 70% este año registrando el mejor desempeño de la industria de semiconductores, mientras que QUALCOMM subió un 5%, en contraste con NVIDIA y Broadcom que cayeron un 3,8% y 7,3% respectivamente.",
-  "summary_ko.1": "Ingresos de Q3 2026 de $6.060 millones (aumento interanual del 28%), EPS ajustado de $2,62 (aumento interanual del 77%), con una previsión de Q4 que anticipa un crecimiento de ingresos interanual del 37% y un crecimiento de EPS superior al 106% en términos de valor central.",
-  "summary_ko.2": "Se anticipa que el crecimiento de ingresos de consenso para 2026 y 2027 sea del 26,4% y 15,4% respectivamente, y el crecimiento de EPS del 64,6% y 25,3%, con la demanda de chips de gestión de energía y procesamiento de señales en expansión debido al aumento de la demanda de infraestructura de IA.",
-  "title": "Las Acciones de Texas Instruments se Disparan un 70% desde Inicio de Año: ¿Está el Rallye Destinado a Continuar?"
- }
+ "at": "2026-11-11 12:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[16§summary_ko.1] 숫자: 원문에 없는 숫자 5800, 6300 million",
+  "[16§summary_ko.1] 숫자: 원문의 숫자가 빠짐 6.30억, 5.80"
+ ]
 }

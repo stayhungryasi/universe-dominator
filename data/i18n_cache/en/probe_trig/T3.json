@@ -2,17 +2,17 @@
  "kind": "probe_trig",
  "id": "T3",
  "lang": "en",
- "src_hash": "e3769c7715e4",
+ "src_hash": "48fcdaed08da",
  "model": "claude-haiku-4-5",
- "at": "2026-11-10 12:40",
+ "at": "2026-11-11 12:39",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Starship Flight 15 — Booster+Ship simultaneous catch attempt",
-  "expected": "2026-11-14(KST — NET 11/13 22:45 UTC + 1 day; provisional NOTAM 11/14~19 → 11/20 KST) → checkpoint 2026-12-01(KST). Flight result is auto-detected by measurement layer LL2, so this date is secondary",
-  "check": "① FAA Starship license page — modified license issued including return-to-launch-site (RTLS) and booster+ship simultaneous tower catch ② LL2 flight result (measurement layer 1st degree — auto-detected as Starship result confirmation event) ③ Ship catch success → R2 activation + B-2027-1 overall fulfillment ④ official record of Flight 14 early engine shutdown follow-up (Ship 42 Raptor re-certification)",
-  "note": "2026-11-01: TechTimes 10/30 — B22·Ship 42 static fire complete, remaining is FAA license modification. Musk 10/10 statement '4–6 weeks' (→ 11/7~21) is candidate date only",
-  "prev": "T3 Flight 14 Ship catch attempt — expected 4Q26 → actual 9/28 flight, no catch attempt (orbital insertion was objective). expectation linking flight number to catch was incorrect / 2026-11-09: expected '11/8~' (FAA internal plan date) → no 11/8 flight, company notice NET 11/13. incorrect premise: regulatory authority internal plan date = launch date (license not issued then). correction: dates entered only from company notice (X·IR)+LL2 NET, first detection delegated to measurement layer launch record",
-  "statusText": "awaiting (2026-11-10: date re-confirmation only — LL2 NET 2026-11-13 22:45 UTC 'To Be Confirmed', window until 11/14 00:00 UTC, last update 11/9 23:06 UTC · pad Orbital Launch Pad 2. no news of FAA Flight 15 license modification issued (NSF 'license pending' report, FAA page this session 403). two reports of '11/13 dual catch' detected by monitor are re-reporting of date already processed in 11/9 session — no new facts / 2026-11-09: 11/8 non-flight — SpaceX 11/7 X notice 'NET 11/13, regulatory approval pending' (after UP.Summit launch VP Dontchev statement), LL2 11/13 22:45 UTC 'To Be Confirmed', FAA license modification not issued (11/7 report · FAA page this session 403) / 2026-11-01: static fire complete — B22 33 engines ~15 seconds on 10/25 · Ship 42 single engine ~60 seconds on 10/27·6 engines on 10/28)"
+  "name": "Starship Flight 15 — Booster + Ship simultaneous catch attempt",
+  "expected": "2026-11-14(KST — NET 11/13 22:45 UTC + 1 day; backup NOTAM 11/14~19 → 11/20 KST) → checkpoint 2026-12-01(KST). Flight result is auto-detected by measurement layer LL2, so this date is auxiliary",
+  "check": "① FAA Starship license page — return-to-launch-site (RTLS) and booster + ship simultaneous tower catch license amendment issuance ② LL2 flight result (measurement layer primary — Starship result confirmed event auto-detected) ③ Ship catch success → R2 activation + B-2027-1 overall fulfillment ④ Post-early engine shutdown from Flight 14 (Ship 42 Raptor recertification) official record",
+  "note": "2026-11-01: TechTimes 10/30 — B22 and Ship 42 static fire complete, remaining is FAA license amendment. Musk 10/10 'within 4–6 weeks' statement (→ 11/7~21) is candidate table only",
+  "prev": "T3 Flight 14 Ship catch attempt — expected 4Q26 → actual 9/28 flight, no catch attempt (orbital insertion was objective). Expectation tying flight number to catch was wrong / 2026-11-09: expected '11/8~' (FAA internal plan date) → no 11/8 flight, company notice NET 11/13. Wrong premise: regulatory agency internal plan date = launch date (license not yet issued). Correction: dates from company notice (X·IR) + LL2 NET only, primary detection delegated to measurement layer launch record",
+  "statusText": "Awaiting (2026-11-11: no change — LL2 NET 2026-11-13 22:45 UTC 'To Be Confirmed' maintained, window closes 11/14 00:00 UTC, last update 11/10 22:06 UTC · Pad 2 / 2026-11-10: date reconfirm only — LL2 NET 2026-11-13 22:45 UTC 'To Be Confirmed', window until 11/14 00:00 UTC, last update 11/9 23:06 UTC · Pad Orbital Launch Pad 2. No news of FAA Flight 15 license amendment issuance (NSF 'awaiting license' report, FAA page this revision 403). Two reports of '11/13 dual catch' detected by monitor are reruns of dates already handled in 11/9 revision — no new facts / 2026-11-09: 11/8 no-fly — SpaceX 11/7 X notice 'NET 11/13, awaiting regulatory approval' (after UP.Summit launch VP Dontchev remarks), LL2 11/13 22:45 UTC 'To Be Confirmed', FAA license amendment not issued (11/7 report · FAA page this revision 403) / 2026-11-01: static fire complete — B22 33 engines ~15 sec on 10/25 · Ship 42 single ~60 sec on 10/27, 6 engines on 10/28)"
  }
 }

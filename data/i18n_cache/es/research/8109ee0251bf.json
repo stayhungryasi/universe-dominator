@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "8109ee0251bf",
  "lang": "es",
- "src_hash": "983395a73d99",
+ "src_hash": "ffe19901c004",
  "model": "claude-haiku-4-5",
- "at": "2026-11-11 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "MediaTek anunciará ventas mensuales de octubre el 10 de noviembre, con directrices de ingresos del cuarto trimestre de 210.100 millones a 221.800 millones de nuevas taiwanesas, esperando crecimiento de 25-32% respecto al trimestre anterior",
-  "summary_ko.1": "Objetivo de ingresos de $2.500 millones en aceleradores de IA para el cuarto trimestre, expandiendo negocios de IA con objetivo empresarial de aproximadamente $16.000 millones en 2027",
-  "title": "MediaTek stock heads for November 10 sales checkpoint"
- }
+ "at": "2026-11-11 12:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[16§summary_ko.0] 숫자: 원문에 없는 숫자 21.01",
+  "[16§summary_ko.0] 숫자: 원문의 숫자가 빠짐 210.1"
+ ]
 }

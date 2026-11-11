@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-11-event-s3",
+ "lang": "ja",
+ "src_hash": "d105c5cc558c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-11 12:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 確率・マイルストーン・価値 — 変化なし",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。地方の減免申請・投資計画はR1~R6のいずれの条件にも該当しない (出典: `state.probability_adjustment_rules`)。\n- **マイルストーン**: 29件の判定 **変化なし** — 採点表 進行 24 · 未判定 4 · 未達 1。すべて `status_history` に今回の回の行を追加 (出典: `state.scorecard` · `state.milestones`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定しない**(eventモード)。価格依存の算術値のみ更新: 時価総額 **$1,944十億**(算式: 143.16 × 13.581 = 1,944.3 — `data/latest.json` SPCX 1,943.0 と0.1%以内)、EV $1,893十億(算式: 1,944 − 純現金 51)、バンド中心比 **−54%**(算式: 66 ÷ 143.16 − 1 = −0.539)、AI内在価値 **$1,402十億**(算式: 1,944 − Connectivity 350 − Space 141 − 純現金 51; 前回の$1,388十億比 +1.0%)、年換算AI売上倍率 46(算式: 1,402 ÷ 30.24 = 46.4) · 契約ARR倍率 54(算式: 1,402 ÷ 26 = 53.9) · 年換算調整後EBITDA倍率 71(算式: 1,402 ÷ 19.81 = 70.8) (出典: `state.valuation` · [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-11 参照 · [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm))。\n- **$240億が価値算式に入らない理由**: シナリオのAI CAPEXは部門合算の仮定であり、今回の公告はその中の一つの用地が明らかになったにすぎず、総額が増えた証拠ではない。増分か代替かは、4Q26決算のCAPEXガイダンスと10-Kのコミットメント注記が示す (出典: `state.scenarios` · T12 check)。\n- **無リスク金利メモ**: 米10年債 **4.88%**(2026-11-09、FRED、`data/latest.json meta.macro.ust10`) — 11月号の入力値4.99%(10/27)比 −11bp。割引率の再算定は月次の回(12/01)で行う (出典: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json`)。\n- **価格反応**: 11/9 +5.81%(Bloomberg・Reuters報道日、Reuters転載時刻 14:58 — 場中) · 11/10 +0.77%。同じ日にFlight 15の日付の報道も続いた — 原因は帰属させない。**データ訂正記録**: 同サイトの11/9終値が前回の参照値142.12から**142.07**(+5.81%)に、出来高が103,182,512から**103,473,158**に変わっていた(出典側の事後修正 — 11/2・11/3・11/4・11/6にも同様)。前回の数値は参照時点の値を維持し、`price_history_recent`・`volume_recent` は修正値 (出典: [stockanalysis](https://stockanalysis.com/stocks/spcx/history/)、2026-11-11 参照)。\n\n---\n"
+ }
+}

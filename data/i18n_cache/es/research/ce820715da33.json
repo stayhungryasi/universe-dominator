@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "ce820715da33",
  "lang": "es",
- "src_hash": "ad2ee1e739ec",
+ "src_hash": "62177b32d6f5",
  "model": "claude-haiku-4-5",
- "at": "2026-11-11 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Lucid Group (NASDAQ:LCID) asegura una línea de crédito adicional de $1.750 millones del Fondo de Inversión Pública de Arabia Saudita (PIF), que proporciona apoyo operativo hasta el cuarto trimestre de 2027",
-  "summary_ko.1": "Con ventas del tercer trimestre de $350,3 millones en comparación con una pérdida neta de $830,9 millones, el flujo de caja libre de -$1.040 millones representa una reducción del 30% en la quema de efectivo respecto al segundo trimestre",
-  "summary_ko.2": "La deuda pendiente con el PIF aumenta de $0 a finales de 2025 a $1.690 millones a septiembre de 2026, aumentando la necesidad de financiación adicional si se retrasa el SUV mediano",
-  "title": "Arabia Saudita acaba de darle a Lucid otros $1.750 millones para alcanzar su SUV más económico"
- }
+ "at": "2026-11-11 12:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[7§summary_ko.1] 숫자: 원문에 없는 숫자 1040 million",
+  "[7§summary_ko.1] 숫자: 원문의 숫자가 빠짐 4억"
+ ]
 }

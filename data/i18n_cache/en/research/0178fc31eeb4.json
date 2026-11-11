@@ -2,13 +2,16 @@
  "kind": "research",
  "id": "0178fc31eeb4",
  "lang": "en",
- "src_hash": "c2a179afecf8",
+ "src_hash": "786db087946e",
  "model": "claude-haiku-4-5",
- "at": "2026-11-11 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "AAPL's price target is set at $385, offering 11% upside from the current price of $345.71, with BofA analysts maintaining a buy rating",
-  "summary_ko.1": "Fiscal Q4 revenue of $11.448 billion (11.7% year-over-year increase) and EPS of $2.10 (exceeding guidance of $1.98), but gross margin for December quarter lowered to 45–46% due to rising memory prices"
- }
+ "at": "2026-11-11 12:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[7§summary_ko.0] 숫자: 원문에 없는 숫자 48, 45, 46, 9 billion",
+  "[7§summary_ko.0] 숫자: 원문의 숫자가 빠짐 11",
+  "[7§summary_ko.1] 숫자: 원문에 없는 숫자 3.157 billion, 76",
+  "[7§summary_ko.1] 숫자: 원문의 숫자가 빠짐 48, 45, 46, 9B"
+ ]
 }

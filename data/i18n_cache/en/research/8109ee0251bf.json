@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "8109ee0251bf",
  "lang": "en",
- "src_hash": "88b5ae538ed6",
+ "src_hash": "999fa50a60ea",
  "model": "claude-haiku-4-5",
- "at": "2026-11-11 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "MediaTek is scheduled to disclose October monthly revenue on November 10, with Q4 revenue guidance of TWD 210.1 billion to TWD 221.8 billion, expecting 25–32% growth versus the previous quarter",
-  "summary_ko.1": "Targeting $2.5 billion in revenue from AI accelerators in Q4, with plans to expand the AI business to approximately $16 billion in scale by 2027"
- }
+ "at": "2026-11-11 12:39",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[2§summary_ko.0] 숫자: 원문에 없는 숫자 168.058 billion, 221.8 billion",
+  "[2§summary_ko.0] 숫자: 원문의 숫자가 빠짐 168.058억, 221.8억"
+ ]
 }

@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-11 08:28",
- "generated_at": "2026-11-11T08:28:45.643925+09:00",
+ "generated_label": "2026-11-11 12:27",
+ "generated_at": "2026-11-11T12:27:34.366040+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-11",
@@ -110,7 +110,11 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "기록적 실적에도 마진 압박 심화로 현금 창출력 둔화"
+    }
    },
    "conversion": {
     "value": 1.0334,
@@ -155,10 +159,9 @@
     "no_price_reg": "△"
    },
    "risk5": {
-    "business_certainty": "○",
+    "business_certainty": "△",
     "mgmt_ability": "○",
-    "price": "△",
-    "tax_inflation": "△"
+    "price": "✕"
    },
    "capalloc": {
     "cash_positive": 1,
@@ -167,11 +170,12 @@
     "score": 3,
     "period": "2026H1"
    },
-   "notes": "최강 프랜차이즈이나 성장 정체·마진 악화·세제혜택 의존으로 정당화 가능한 상한선 28 근처 재평가 필요",
+   "notes": "프리미엄 가격에 성장 없는 구조 지속, 마진 악화 신호 주목 필요",
    "_evidence": {
-    "franchise": "Consumer franchise strongest; iPhone demand surges; no substitute products",
-    "risk5": "Record earnings mask growing margin problem; margin squeeze concerns; tax bill optimization by $2.7B suggests vulnerability",
-    "capalloc": "Largest-ever stock buyback under Tim Cook announced; strong cash generation evident from record earnings"
+    "franchise": "Apple's iPhone Demand Surges - 소비자 선호도 강함; 가격 규제 압력은 $5T 마켓캡 도달로 한계 노출",
+    "risk5": "Record Earnings Mask A Growing Margin Problem - 마진 악화 추세; Apple cut tax bill by $2.7B by moving some earnings to Singapore - 조세 최적화 의존도 상승",
+    "capalloc": "Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership - 역사상 최대 자사주 매입 집행",
+    "owner_earnings": "Record Earnings Mask A Growing Margin Problem (NASDAQ:AAPL) - 실적 증가가 마진 압박으로 상쇄"
    }
   },
   "GOOG": {
@@ -395,7 +399,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 15.74
    },
    "eps_status": null,
    "roe_tangible": 0.3612,
@@ -458,11 +462,7 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI칩 수요 성장 중이나 소프트웨어 부문 약세와 연간 AI칩 전망 미변경으로 실적 불확실성 높음"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9836,
@@ -482,7 +482,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -502,28 +502,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(69%) — 취재 필요",
-   "notes": "AI 인프라 수요의 핵심 공급사이나 근 1개월 22% 하락, Q3 강한 실적에도 주가 반응 부진으로 시장 신뢰도 낮음",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2025Q3"
-   },
-   "_evidence": {
-    "franchise": "Broadcom delivers strong earnings view as CEO touts growth with AI labs; Google News 관련 기사들에서 AI 인프라 지위 확인",
-    "risk5": "Broadcom stock plunges on weak software sales, unchanged AI chip forecast for the year; strong results 'not enough to keep investors happy'",
-    "capalloc": "Broadcom Inc. (AVGO) Q3 Earnings and Revenues Beat Estimates",
-    "owner_earnings": "Broadcom stock falls as chipmaker's strong results 'not enough to keep investors happy'; weak software sales + unchanged AI chip forecast"
-   }
+   "notes": "전망치 이상(69%) — 취재 필요"
   },
   "SPCX": {
    "as_of": "2026-11-11",
@@ -1559,7 +1538,7 @@
    "conversion_check": null,
    "eps_divergence": null,
    "g_cagr3y": null,
-   "g_forward": 0.3186,
+   "g_forward": 0.3178,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
@@ -1796,7 +1775,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.56
+    "value": 62.27
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1810,12 +1789,7 @@
     "asof": "2026-06-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "AI ASIC 모멘텀 견인하나 모바일 사이클 종속성으로 인한 수익 변동성"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1827,30 +1801,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": "중",
    "g_forward_status": "전망치 이상(53%) — 취재 필요",
-   "notes": "팹리스 우량사나 AI 수요 확대로 사이클 위험 일부 상쇄, 밸류에이션 과열 신호(GF Value 35% 하향)",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI ASIC Momentum Drives Record, AI Accelerator Ramp Drives Record - 핵심 칩 수요처 강화",
-    "risk5": "Q3 2026 Earnings Call에서 CEO가 AI 수요 강세 언급하나 모바일 사이클 종속성 여전",
-    "capalloc": "Record 실적 기반 현금 창출 능력 확인, 구체적 배분 정책 명시 필요",
-    "owner_earnings": "Earnings To Watch 헤드라인에서 GF Value 35% Downside 지적 - 현재 밸류에이션이 정상화 위험"
-   }
+   "notes": "전망치 이상(53%) — 취재 필요"
   },
   "MRVL": {
    "as_of": "2026-11-11",
@@ -2126,5 +2079,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-11 08:29"
+ "scout_label": "2026-11-11 12:28"
 }
