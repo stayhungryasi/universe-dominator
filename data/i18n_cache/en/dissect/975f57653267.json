@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "975f57653267",
+ "lang": "en",
+ "src_hash": "f5d31aadbabc",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-12 12:43",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Argon's Role and Performance Range",
+  "sections.1.h": "Launch Strategy and Safety-First",
+  "sections.2.h": "Google Internal Use Cases and Results",
+  "sections.3.h": "Industry-Leading Token Limit and Reasoning Depth",
+  "sections.4.h": "Enterprise Workload Performance Benchmarks",
+  "sections.5.h": "Cybersecurity Defense Capabilities and Real-World Results",
+  "sections.6.h": "Four Safety Enhancement Areas Before Broad Launch",
+  "sections.7.h": "Pricing and Launch Targets",
+  "sections.0.ko": "Google has unveiled Gemini 4 Argon, a new frontier model, currently deployed with limited availability through the Fairwind program to trusted cyber defense organizations. The model is designed to deliver frontier-level performance in three key areas: software engineering, enterprise knowledge work such as law and finance, and cybersecurity defense. Its core feature is the ability to sustain deep reasoning through complex, long-running workflows.",
+  "sections.1.ko": "Google has adopted a phased approach to safely release frontier capabilities of this scale. It is actively participating in the U.S. government's voluntary pre-disclosure process, collecting feedback from early testers, iteratively improving safeguards, and then expanding to developers, enterprises, and consumers. This careful staging reflects the intent to validate security and reliability before broad deployment.",
+  "sections.2.ko": "Argon is already being used by thousands of engineers in Google's internal workflows, demonstrating strengths in specialized coding tasks, deep research, and sentence quality improvement. In quantum algorithm optimization, it surpassed existing benchmarks by 40%; through data center memory optimization, it freed up 300 terabytes of memory with an additional 500–1,000 terabytes in savings expected. A major effort to migrate C/C++ code to Rust is underway; in the libgav1 open-source project, 32,000 lines of SIMD code were replaced with safe Rust, achieving 2.7x faster performance.",
+  "sections.3.ko": "Argon's most notable feature is a dramatic expansion of its output token limit from the existing 64,000 to 1 million tokens. This means the model can perform deep reasoning within a vastly larger thinking space and offers a new dimension of capability to solve complex problems in a single processing pass. This expansion is expected to substantially improve the quality and efficiency of long-running multi-step tasks.",
+  "sections.4.ko": "Argon has demonstrated frontier-level performance across multiple enterprise workloads based on coding, reasoning, and multimodal capabilities. It set a new benchmark of 77.9% on DeepSWE v1.1, which measures real software engineering tasks, and holds a leading position on the Vals Index, which measures economic impact across finance, coding, law, and tax. It also achieved top-tier performance on financial research, legal document drafting, and business function automation benchmarks, and attained a leading score of 91.7% on long-form video understanding evaluation.",
+  "sections.5.ko": "Google has trained Argon to be highly specialized for a new era of cyber threats, enabling the model to automatically discover, validate, and patch software vulnerabilities. A version with removed cybersecurity safeguards is provided to trusted defenders and Google internal teams to fully leverage frontier-level defense capabilities. Security firm Wiz, using Argon for public infrastructure protection work, discovered critical vulnerabilities in medical software missed by the previous frontier model, and achieved the highest score of 68% on CWE Bench v1.",
+  "sections.6.ko": "Before broadly launching Argon, Google is continuously improving frontier-level safeguards in four areas: abuse prevention, prompt injection attack response, model misalignment detection, and system hardening. Abuse prevention has undergone robustness testing through both manual and automated red team attacks from internal and external teams; against prompt injection attacks, it has demonstrated industry-leading robustness on the Gray Swan benchmark. A system has been deployed to monitor reasoning processes and behavior during inference, pausing execution when necessary; to prevent monitoring evasion, findings are not fed back into training.",
+  "sections.7.ko": "Argon's input tokens are priced at $2 per million tokens, and output tokens at $10 per million tokens; cached input tokens receive a 95% discount on the input token price (these prices apply during the early adoption phase and will later increase to $4 for input and $20 for output). Trusted cyber defense organizations currently have priority access, with planned sequential expansion to paying API customers and Google AI Ultra subscribers, followed by developers, enterprises, and consumers.",
+  "caveat": "As the source is an official announcement, separate monitoring is needed to determine whether Google's performance claims have undergone third-party validation and whether the stated performance will be maintained upon actual deployment."
+ }
+}

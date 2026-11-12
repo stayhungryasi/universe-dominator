@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-12 08:29",
- "generated_at": "2026-11-12T08:29:47.437998+09:00",
+ "generated_label": "2026-11-12 12:28",
+ "generated_at": "2026-11-12T12:28:22.988577+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-12",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "Record absolute earnings masked by margin deterioration and growth stagnation creates valuation opacity"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,32 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "Premium valuation (MAX 28) unjustified by growth runway; record quarter cannot offset structural margin pressures and iPhone cycle dependence.",
-   "_evidence": {
-    "franchise": "소비자 프랜차이즈 최강이나 활주로 최저",
-    "risk5": "Record Earnings Mask A Growing Margin Problem; iPhone Demand Surges, But AAPL Still Isn't a 'Strong Buy'",
-    "capalloc": "Largest-Ever Stock Buyback Under Tim Cook's Leadership",
-    "owner_earnings": "Why Apple Stock Fell Despite a Record Quarter"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-12",
@@ -400,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 16.09
    },
    "eps_status": null,
    "roe_tangible": 0.3612,
@@ -1886,7 +1857,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 787.64
+    "value": 746.24
    },
    "eps_status": null,
    "roe_tangible": 1.0681,
@@ -2080,5 +2051,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-12 08:30"
+ "scout_label": "2026-11-12 12:29"
 }
