@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "8972f065dd39",
  "lang": "es",
- "src_hash": "99dde623b6fa",
+ "src_hash": "140c79ef3944",
  "model": "claude-haiku-4-5",
- "at": "2026-11-12 12:43",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Texas Instruments (TXN) sube un 70% este año liderando el sector de semiconductores, con perspectivas optimistas de crecimiento de ventas del Q4 del 37% interanual",
-  "summary_ko.1": "EPS no-GAAP aumenta un 77% hasta $2,62 mostrando alta rentabilidad, con demanda de centros de datos IA y fuerte generación de efectivo como motores de crecimiento clave",
-  "summary_ko.2": "Suministra chips analógicos y de procesamiento integrado, beneficiándose del aumento de demanda de gestión de potencia y procesamiento de señales de las empresas de infraestructura IA",
-  "title": "Texas Instruments Stock Surges 70% YTD: Is the Rally Set to Continue?"
- }
+ "at": "2026-11-12 18:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[7§summary_ko.1] 숫자: 원문에 없는 숫자 58B, 63B",
+  "[7§summary_ko.1] 숫자: 원문의 숫자가 빠짐 63억"
+ ]
 }

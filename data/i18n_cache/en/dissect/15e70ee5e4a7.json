@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "15e70ee5e4a7",
+ "lang": "en",
+ "src_hash": "d9993818867e",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-12 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Emergence and Role Definition of Frontier Models",
+  "sections.1.h": "Industry-Leading Token Context Window",
+  "sections.2.h": "Internal Google Workplace Transformation Case",
+  "sections.3.h": "Performance on Enterprise Standard Benchmarks",
+  "sections.4.h": "Autonomous Capabilities in Cybersecurity Defense",
+  "sections.5.h": "Four Pillars of Frontier Model Safety",
+  "sections.6.h": "Gradual Expansion and Pricing Policy",
+  "sections.7.h": "Balancing Frontier Capability and Transparency",
+  "sections.0.ko": "Google has announced a new frontier model, Gemini 4 Argon, which delivers performance across three domains: software engineering, specialized knowledge work such as legal and finance, and cybersecurity defense. It is designed to maintain deep reasoning in real-world environments requiring prolonged work on complex problems. It is currently being rolled out incrementally through the Fairwind program to trusted cybersecurity defenders, prioritizing safety testing and validation before public release.",
+  "sections.1.ko": "Argon has significantly expanded output limits from the previous 64K tokens to an industry-leading 1 million tokens. This expansive context window allows the model to generate hundreds of thousands of tokens in a single execution flow, creating an environment for solving complex problems with greater depth in one pass. The ability to handle multi-stage tasks spanning long periods within a single conversation represents a fundamental difference from the previous generation.",
+  "sections.2.ko": "Argon is already in use by thousands of Google employees internally, showing particular strength in specialized coding work, in-depth research, and writing quality. In quantum algorithm optimization, it achieved 40% improvement over published benchmarks, and in datacenter memory efficiency, it immediately freed over 300TB of memory with anticipated savings of 500TB to 1PB total. It is also progressing through large-scale projects migrating C/C++ codebases to Rust, from libraries on the scale of 80,000 lines to kernel code exceeding 800,000 lines, undergoing automated validation and manual oversight.",
+  "sections.3.ko": "Argon set a new record of 77.9% on DeepSWE v1.1, which measures actual real-world software engineering tasks. It also demonstrated leading performance on the Vals Index, which comprehensively measures economic impact of finance, coding, legal, and tax work weighted by US GDP contribution, and achieved top-tier results on financial multi-stage research and legal drafting benchmarks. On Zapier's AutomationBench, a business automation benchmark, it ranked first with 51.3 points, and on LVBench measuring long-form video understanding, it achieved 91.7 points, the industry's highest.",
+  "sections.4.ko": "Argon is specialized through training to automatically discover, validate, and patch software vulnerabilities, and provides full capabilities with cybersecurity guardrails removed to trusted cybersecurity defenders and Google internal teams. Wiz, which already operates a public infrastructure protection program, is utilizing Argon, and in initial demonstrations discovered critical vulnerabilities in medical software that previous frontier models had missed. On CWE-bench v1, which measures vulnerability remediation capability, Argon recorded the highest score at 68%, and surpassed previous-generation models on both Google's internal vulnerability benchmarks and Wiz's penetration testing benchmarks.",
+  "sections.5.ko": "Google is strengthening four safety domains before broad deployment of Argon. First is preventing malicious use, improving techniques to monitor internal activation to block exploitation for cyber and CBRN attacks while allowing legitimate scientific research. Second is responding to prompt injection attacks, achieving leading performance on Gray Swan's indirect prompt injection benchmark through automated adversarial training. Third is alignment drift detection, monitoring the model's reasoning process and behavior to halt execution when it deviates from user intent. Fourth is sandboxing environment strengthening, implementing isolation measures before high-risk training or evaluation and sharing security best practices with industry partners.",
+  "sections.6.ko": "Google is actively cooperating with the US government's voluntary pre-disclosure review process and plans to expand access incrementally. It has committed to collecting feedback from initial testers, iteratively improving guardrails, and releasing to developers, enterprises, and consumers as quickly as possible. Pricing is $2 per million input tokens and $10 per million output tokens, with cached input tokens receiving a 95% discount on the input price.",
+  "sections.7.ko": "Google stated that Argon serves as a partner with frontier-level capabilities in coding, knowledge work, cybersecurity, and creative writing, while seeking to help developers, experts, and enterprises solve difficult problems. The author emphasized that practical evaluation and feedback from the initial cybersecurity defender cohort and trusted testers are important for strengthening the system before broad deployment, and recommended that the entire industry maintain reasoning transparency while managing alignment risks at this critical juncture of capability expansion.",
+  "caveat": "This announcement reflects Google's official position and thus incorporates perspectives emphasizing technological superiority and safety; benchmark performance should be interpreted with limitations to evaluation metrics selected by Google."
+ }
+}

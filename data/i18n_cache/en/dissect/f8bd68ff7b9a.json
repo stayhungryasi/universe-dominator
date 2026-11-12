@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "f8bd68ff7b9a",
+ "lang": "en",
+ "src_hash": "b47f60b42f96",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-12 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Positioning and price innovation of the new model",
+  "sections.1.h": "Balance of performance and cost suitable for everyday tasks",
+  "sections.2.h": "Competitiveness in software engineering work",
+  "sections.3.h": "Complex document analysis capability",
+  "sections.4.h": "Multi-step business process automation",
+  "sections.5.h": "Performance in computer usage tasks",
+  "sections.6.h": "Rapid performance improvement in scientific research workflows",
+  "sections.7.h": "Improvement in factual accuracy and reliability",
+  "sections.8.h": "Progress in safety and transparency",
+  "sections.9.h": "Launch timeline and approach",
+  "sections.0.ko": "OpenAI's announced GPT-6.1 Sol is a higher version of the existing GPT-6 Sol, with its core value being the provision of GPT-6 Astra-level intelligence at one-fifth the cost. Particularly, cached input is priced at $0.10 per million tokens, which is 95% cheaper than standard input pricing and 50% cheaper than the existing Sol cache pricing. This pricing structure creates an environment where developers can more easily develop and operate intelligent agents that reuse context between requests.",
+  "sections.1.ko": "GPT-6.1 Sol demonstrates considerable improvement over GPT-6 Sol in specialized tasks such as code writing and debugging, document understanding, and executing multi-step business workflows. Multiple evaluation metrics demonstrate that this model achieves performance approaching Astra at significantly lower cost. It is positioned as a model that presents a new equilibrium point between cost-effectiveness and capability.",
+  "sections.2.ko": "On the DeepSWE v1.1 evaluation of complex software engineering challenges in real codebases, GPT-6.1 Sol achieved performance equivalent to Astra at one-fifth the cost. Simultaneously, it delivered results 6.4 percentage points higher than the best scores of the existing GPT-6 Sol at lower inference cost. This result demonstrates both practical utility and cost-effectiveness as a development tool.",
+  "sections.3.ko": "The GDP.pdf evaluation measures accuracy in answering expert questions using complex PDF documents containing tables, charts, diagrams, and details from specialized fields such as finance, healthcare, and law. On this evaluation, GPT-6.1 Sol achieved Claude Opus 5.5-level performance at more than half the cost, and approached Astra's cutting-edge performance at one-fifth the cost. It demonstrates strong capability in supporting document-centric practical decision-making.",
+  "sections.4.ko": "The AutomationBench evaluation measures the ability to automatically complete end-to-end workflows utilizing 47 enterprise tools across sales, marketing, operations, support, finance, and human resources. GPT-6.1 Sol recorded scores 2.2 percentage points higher than Opus 5.5 at medium reasoning level at one-third the cost, and improved 4.8 percentage points over GPT-6 Sol in the same setting. It demonstrates its position as a cost-effective choice in the enterprise workflow automation domain.",
+  "sections.5.ko": "The OSWorld 2.0 evaluation assesses the ability of automation agents to handle extended workflows involving both everyday and professional computer tasks. GPT-6.1 Sol exceeded GPT-6 Sol by 7 percentage points at maximum reasoning level while costing less than half, and achieved performance within 2.1 percentage points of Astra at one-seventh the cost. It has solidified its position as a high-value-for-money model in the computer interaction automation domain.",
+  "sections.6.ko": "Terminal-Bench Science 0.1 evaluates scientific workflow capability including data analysis, simulation, and formal proof. GPT-6.1 Sol more than doubled the performance of GPT-6 Sol at maximum reasoning level while costing less than half. In terms of cost, at an average of $5.47 per task compared to the $23 range for Opus 5.5 and Astra, it is over 75% cheaper while still providing substantial scientific capability. However, for the highest difficulty scientific research, continued use of Astra is recommended.",
+  "sections.7.ko": "GPT-6.1 Sol reduced the proportion of responses containing factual errors from the existing 11.4% to 7.7% at low reasoning level, a reduction of approximately 32%. Across various reasoning levels, the error rate maintains a level within 1.9 percentage points of Astra while costing less than one-fifth. This signifies that improvement in generating reliable responses has been achieved beyond simple performance gains.",
+  "sections.8.ko": "GPT-6.1 Sol is more reliable in more transparently disclosing its limitations and respecting user intent and safety constraints. On difficult evaluation items such as search tool failure disclosure, explicit constraint compliance, and unauthorized result avoidance during agent tasks, it recorded lower failure rates than GPT-6 Sol. Attempts to bypass automated safety reviewers were not observed, consistent with Astra and GPT-6 Sol.",
+  "sections.9.ko": "GPT-6.1 Sol is immediately available to ChatGPT Work and Codex Plus, Pro, Business, Enterprise, and Edu users, and developers can access it via OpenAI API as gpt-6.1-sol. Standard API pricing is set at $2 per million input tokens, $0.10 per million cached input tokens, and $10 per million output tokens. An Ultrafast version capable of 8x faster token generation compared to standard speed will be offered within the coming days.",
+  "caveat": "Evaluations were conducted in OpenAI's own research environment, and competitive models are based on public reports, so there may be differences in actual production environment performance or measurement conditions."
+ }
+}

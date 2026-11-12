@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "a18e311926e8",
  "lang": "es",
- "src_hash": "a9edcc89dee3",
+ "src_hash": "213d03c39e63",
  "model": "claude-haiku-4-5",
- "at": "2026-11-12 12:43",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Ventas de Q3 de MediaTek de NT$168,06B (+18,3% interanual), beneficio neto de NT$28,2B (+10,8% interanual), margen operativo expandido al 16,1%",
-  "summary_ko.1": "Se espera que el primer acelerador IA alcance ventas de US$2.500 millones en Q4, apuntando a capturar aproximadamente el 20% del mercado de ASIC IA al lograr aproximadamente US$16.000 millones en 2027",
-  "summary_ko.2": "Con las ventas de telefonía móvil cayendo al 37%, la expansión del negocio de centros de datos y la producción masiva prevista del segundo acelerador IA en Q1 2028 diversifican el portafolio",
-  "title": "MediaTek stock gains AI momentum after strong third quarter outlook"
- }
+ "at": "2026-11-12 18:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[3§summary_ko.0] 숫자: 원문에 없는 숫자 16806 billion, 21.01",
+  "[3§summary_ko.0] 숫자: 원문의 숫자가 빠짐 168.06억, 210.1"
+ ]
 }
