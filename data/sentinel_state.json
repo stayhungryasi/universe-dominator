@@ -74,17 +74,21 @@
    "sentinel:probe-fail:2026-11-12"
   ],
   "2026-11-13": [
-   "sentinel:bot:spacex_news:2026-11-13"
+   "sentinel:bot:spacex_news:2026-11-13",
+   "sentinel:feed:spacex_news:판정 모델:2026-11-13",
+   "sentinel:i18n-gate:2026-11-13"
   ]
  },
  "last_verdict": {
-  "at": "2026-11-13 08:31",
+  "at": "2026-11-13 12:29",
   "ok": false,
   "alerts": [
-   "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)"
+   "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)",
+   "SpaceX 뉴스 판정 모델: 요청 실패 2회 연속",
+   "번역: 관문 실패율 100%(268/268) 2회 연속"
   ]
  },
- "last_run": "2026-11-13 08:31",
+ "last_run": "2026-11-13 12:29",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -145,7 +149,7 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 0,
+   "err_streak": 1,
    "zero_streak": 0,
    "err_alerted": false,
    "zero_alerted": false
@@ -1132,10 +1136,12 @@
    "zero_alerted": false
   },
   "spacex_news:판정 모델": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
-   "zero_alerted": false
+   "err_alerted": true,
+   "zero_alerted": false,
+   "err_alerted_first": "2026-11-13",
+   "err_alerted_last": "2026-11-13"
   },
   "research:TXN": {
    "err_streak": 0,
@@ -1164,9 +1170,11 @@
   "fail_alerted_last": "2026-11-12"
  },
  "i18n": {
-  "streak": 1,
-  "alerted": false,
-  "last_ts": "2026-11-13 08:30"
+  "streak": 2,
+  "alerted": true,
+  "last_ts": "2026-11-13 12:29",
+  "alerted_first": "2026-11-13",
+  "alerted_last": "2026-11-13"
  },
  "auto_axes": {
   "zero_g_forward": false,
