@@ -2,36 +2,36 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-13T18:28+09:00",
+  "fetched_at": "2026-11-14T08:28+09:00",
   "year": 2026,
-  "year_count": 126,
+  "year_count": 127,
   "starship_last": {
-   "id": "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
-   "date": "2026-09-28",
+   "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+   "date": "2026-11-13",
    "form": "발사",
    "items": "",
-   "title": "Starship | Starlink Group 31-1 (Starship Flight 14) — 발사 성공",
-   "result": "Success",
-   "name": "Starship | Starlink Group 31-1 (Starship Flight 14)",
+   "title": "Starship | Starlink Group 31-2 (Starship Flight 15) — 결과 미확정",
+   "result": "In Flight",
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
    "kind": "starship",
    "grade": "major",
-   "url": "https://ll.thespacedevs.com/2.4.0/launches/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
    "source": "Launch Library 2",
    "label": "직전 Starship"
   },
   "starship_next": {
-   "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
-   "date": "2026-11-13",
-   "status": "To Be Confirmed",
-   "precision": "Minute"
+   "name": "Starship | SpaceX HLS LEO Demo",
+   "date": "2027-06-30",
+   "status": "To Be Determined",
+   "precision": "Month"
   },
   "source": "Launch Library 2 (2.4.0)",
   "competitor_next": [
    {
     "name": "Vulcan VC6L | Amazon Leo (LV-01)",
-    "date": "2026-11-13",
+    "date": "2026-11-14",
     "status": "Go for Launch",
-    "precision": "Minute"
+    "precision": "Second"
    },
    {
     "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
@@ -48,13 +48,13 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-13T18:28+09:00",
+  "checked_at": "2026-11-14T08:28+09:00",
   "last_run": {
    "conclusion": "failure",
-   "created_at": "2026-11-12T15:01:05Z",
+   "created_at": "2026-11-13T15:00:58Z",
    "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/43243220416",
-   "run_id": 43243220416
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/43448288388",
+   "run_id": 43448288388
   },
   "in_progress": false
  },
@@ -1117,7 +1117,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-13T18:28+09:00",
+ "generated_at": "2026-11-14T08:28+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1422,13 +1422,21 @@
    "reason": "예상일 도래",
    "expected": "2026-11-13(KST — ⓓ SpaceX 브리핑 요청일 11/12 + 1일) → 2026-11-19(하원 세출위 30일 11/18 + KST 1일) → 2027-1H(공군·우주군 검토 — 기한 없음). ⓓ 답변 11/5·ⓔ 백악관 11/6 은 경과(2026-11-09 확인: 공개 답변 없음)",
    "detected_at": "2026-11-13"
+  },
+  {
+   "key": "T3:date:2026-11-14",
+   "trigger_id": "T3",
+   "name": "Starship Flight 15 — 부스터+Ship 동시 캡처 시도",
+   "reason": "예상일 도래",
+   "expected": "2026-11-14(KST — NET 11/13 22:45 UTC + 1일; 예비 NOTAM 11/14~19 → 11/20 KST) → 확인점 2026-12-01(KST). 비행 결과는 측정층 LL2 가 자동 감지하므로 이 날짜는 보조",
+   "detected_at": "2026-11-14"
   }
  ],
  "dispatch_queue": [],
  "hourly": {
-  "checked_at": "2026-11-13T18:28+09:00",
-  "last_success_at": "2026-11-13T09:15:48Z",
-  "last_run_at": "2026-11-13T09:15:11Z",
+  "checked_at": "2026-11-14T08:28+09:00",
+  "last_success_at": "2026-11-13T23:15:37Z",
+  "last_run_at": "2026-11-13T23:15:11Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

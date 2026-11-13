@@ -3,7 +3,7 @@
 <head>
 <script id="uvx-i18n-v1">
 (function(){
-var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "hist.empty": "아직 기록이 없습니다.", "lg.auto": "자동"}, R = {"EUR": 0.90245, "JPY": 159.7, "KRW": 1334.1, "MXN": 18.6906, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
+var L = "ko", M = {"common.presence": "지금 {n}명이 우주를 관측 중", "hist.empty": "아직 기록이 없습니다.", "lg.auto": "자동"}, R = {"EUR": 0.90481, "JPY": 160.0, "KRW": 1337.13, "MXN": 18.593, "USD": 1}, P = "번역 준비 중 — 한국어 원문", U = {"cheonjo_won": "천조원", "jo_won": "조원", "jo_yen": "조 엔", "jo": "조", "eok": "억"};
 function pick(v, n){ if (v && typeof v === 'object') return (n === 1 && v.one != null) ? v.one : (v.other != null ? v.other : ''); return v; }
 function T(k, p){ var s = M.hasOwnProperty(k) ? M[k] : null; if (s == null) return '';
   s = pick(s, p ? p.n : undefined);
@@ -652,10 +652,10 @@ html[lang="ja"] body{font-family:'Pretendard Variable','Pretendard','Noto Sans J
     <div class="header-right">
       <span class="update-badge" id="updateDate">—</span>
       <span class="ud-macro" data-band="ud-macro-v1"><a href="https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 18:16 · 출처 frankfurter · 네이버 실시간 환율 보기">
+         target="_blank" rel="noopener" class="rate-badge" data-mk="usd_krw" title="USD/KRW 환율 · 측정 08:16 · 출처 frankfurter · 네이버 실시간 환율 보기">
         KRW <span id="usdKrwDisplay">—</span>
         <span class="rate-badge-arrow" aria-hidden="true">↗</span>
-      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 18:16 · 출처 FRED API">WTI <span class="ud-mv">$90</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 18:16 · 출처 FRED API">10Y <span class="ud-mv">4.98%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 18:16 · 출처 FRED API">30Y <span class="ud-mv">5.35%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 18:16 · 출처 frankfurter">JPY <span class="ud-mv">159.7</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
+      </a><a href="https://fred.stlouisfed.org/series/DCOILWTICO" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="wti" title="WTI 원유 현물 · 전일 종가 · 측정 08:16 · 출처 FRED API">WTI <span class="ud-mv">$90</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust10" title="미국 10년물 국채 금리 · 측정 08:16 · 출처 FRED API">10Y <span class="ud-mv">5.10%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://fred.stlouisfed.org/series/DGS30" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="ust30" title="미국 30년물 국채 금리 · 측정 08:16 · 출처 FRED API">30Y <span class="ud-mv">5.43%</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a><a href="https://finance.naver.com/marketindex/worldExchangeDetail.naver?marketindexCd=FX_USDJPY" target="_blank" rel="noopener" class="rate-badge ud-mb" data-mk="usd_jpy" title="USD/JPY 환율 · 측정 08:16 · 출처 frankfurter">JPY <span class="ud-mv">160.0</span><span class="rate-badge-arrow" aria-hidden="true">↗</span></a></span>
       <details class="uvx-lang"><summary aria-label="언어">KO</summary><div class="uvx-lang-menu"><a href="history-latent.html" hreflang="ko" lang="ko" aria-current="true">한국어<small>KO</small></a><a href="en/history-latent.html" hreflang="en" lang="en">English<small>EN</small></a><a href="es/history-latent.html" hreflang="es" lang="es">Español<small>ES</small></a><a href="ja/history-latent.html" hreflang="ja" lang="ja">日本語<small>JA</small></a></div></details><button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환"></button>
     </div>
   </div>
@@ -707,6 +707,264 @@ const DATA = {
   "page_title": "잠재지배자 변동 이력",
   "page_desc": "차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스",
   "entries": [
+    {
+      "date": "2026.11.14",
+      "period": "11.5 → 11.14 (주간)",
+      "prev": "2026-11-05",
+      "curr": "2026-11-14",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "label": "잠재지배자 주간 변동 (자동 감지)",
+          "events": [
+            {
+              "k": "t_out",
+              "name": "Advantest",
+              "tk": "6857.T",
+              "when": "11.10",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "t_out",
+              "name": "Applied Materials",
+              "tk": "AMAT",
+              "when": "11.10",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "t_out",
+              "name": "Fortinet",
+              "tk": "FTNT",
+              "when": "11.10",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "t_out",
+              "name": "Intel",
+              "tk": "INTC",
+              "when": "11.10",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "t_out",
+              "name": "CrowdStrike",
+              "tk": "CRWD",
+              "when": "11.13",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "tk": "DELL",
+              "a": 75,
+              "b": 79
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "tk": "2454.TW",
+              "a": 118,
+              "b": 87
+            },
+            {
+              "k": "l_rank",
+              "name": "Marvell Technology",
+              "tk": "MRVL",
+              "a": 143,
+              "b": 147
+            },
+            {
+              "k": "l_rank",
+              "name": "Sandisk",
+              "tk": "SNDK",
+              "a": 139,
+              "b": 175
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "tk": "STX",
+              "a": 175,
+              "b": 184
+            },
+            {
+              "k": "l_mom",
+              "name": "Dell",
+              "tk": "DELL",
+              "a": 141,
+              "b": 157
+            },
+            {
+              "k": "l_mom",
+              "name": "MediaTek",
+              "tk": "2454.TW",
+              "a": 150,
+              "b": 216
+            },
+            {
+              "k": "l_mom",
+              "name": "Sandisk",
+              "tk": "SNDK",
+              "a": 433,
+              "b": 263
+            },
+            {
+              "k": "l_mom",
+              "name": "Seagate Technology",
+              "tk": "STX",
+              "a": 122,
+              "b": 101
+            },
+            {
+              "k": "mc_move",
+              "name": "MediaTek",
+              "tk": "2454.TW",
+              "pct": 19.073377234242706,
+              "old": 170.08,
+              "new": 202.52
+            }
+          ],
+          "items": [
+            "<strong>Advantest</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.10 확정",
+            "<strong>Applied Materials</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.10 확정",
+            "<strong>Fortinet</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.10 확정",
+            "<strong>Intel</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.10 확정",
+            "<strong>CrowdStrike</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.13 확정",
+            "<strong>Dell</strong> 잠재 순위 <span class='em-down'>75위 → 79위 하락</span>",
+            "<strong>MediaTek</strong> 잠재 순위 <span class='em-up'>118위 → 87위 상승</span>",
+            "<strong>Marvell Technology</strong> 잠재 순위 <span class='em-down'>143위 → 147위 하락</span>",
+            "<strong>Sandisk</strong> 잠재 순위 <span class='em-down'>139위 → 175위 하락</span>",
+            "<strong>Seagate Technology</strong> 잠재 순위 <span class='em-down'>175위 → 184위 하락</span>",
+            "<strong>Dell</strong> 1Y 모멘텀 <span class='em-up'>141% → 157%</span>",
+            "<strong>MediaTek</strong> 1Y 모멘텀 <span class='em-up'>150% → 216%</span>",
+            "<strong>Sandisk</strong> 1Y 모멘텀 <span class='em-down'>433% → 263%</span>",
+            "<strong>Seagate Technology</strong> 1Y 모멘텀 <span class='em-down'>122% → 101%</span>",
+            "<strong>MediaTek</strong> 시총 <span class='em-up'>+19%</span> ($170B → $203B)"
+          ]
+        },
+        {
+          "type": "items",
+          "label_id": "sector",
+          "label_p": {
+            "n": 7
+          },
+          "label": "섹터 분포 (7종목)",
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "",
+              "names": [
+                {
+                  "name": "SK Hynix",
+                  "tk": "000660.KS"
+                },
+                {
+                  "name": "Texas Instruments",
+                  "tk": "TXN"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Sandisk",
+                  "tk": "SNDK"
+                },
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 광 인터커넥트",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Marvell Technology",
+                  "tk": "MRVL"
+                }
+              ]
+            }
+          ],
+          "items": [
+            "<strong>AI 반도체 (3)</strong>: SK Hynix, Texas Instruments, MediaTek",
+            "<strong>AI 테크 (2)</strong>: Sandisk, Seagate Technology",
+            "<strong>AI 서버 OEM (1)</strong>: Dell",
+            "<strong>AI 광 인터커넥트 (1)</strong>: Marvell Technology"
+          ]
+        },
+        {
+          "type": "items",
+          "label_id": "points",
+          "label_p": {},
+          "label": "관전 포인트",
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "Sandisk",
+              "tk": "SNDK",
+              "m": 263
+            }
+          ],
+          "items": [
+            "<strong>가장 폭발적</strong>: Sandisk — 1Y <span class='em-up'>+263%</span>"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "fx": {
+            "rate": "1,337",
+            "date": "11/14",
+            "mult": "1.34"
+          },
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,337 (11/14 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.34"
+            }
+          ]
+        }
+      ]
+    },
     {
       "date": "2026.10.24",
       "period": "10.17 → 10.24 (주간)",
@@ -6473,42 +6731,42 @@ const DATA = {
     }
   ],
   "meta": {
-    "fetched_date": "2026-11-13",
-    "usd_krw": 1334.1,
-    "fetched_at": "2026-11-13T18:16:27.131625+09:00",
+    "fetched_date": "2026-11-14",
+    "usd_krw": 1337.13,
+    "fetched_at": "2026-11-14T08:16:16.747795+09:00",
     "macro": {
       "usd_krw": {
-        "value": 1334.1,
-        "as_of": "2026-11-12",
+        "value": 1337.13,
+        "as_of": "2026-11-13",
         "source": "frankfurter",
-        "measured_at": "2026-11-13T18:16+09:00",
+        "measured_at": "2026-11-14T08:16+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "usd_jpy": {
-        "value": 159.7,
-        "as_of": "2026-11-12",
+        "value": 160.0,
+        "as_of": "2026-11-13",
         "source": "frankfurter",
-        "measured_at": "2026-11-13T18:16+09:00",
+        "measured_at": "2026-11-14T08:16+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust10": {
-        "value": 4.98,
-        "as_of": "2026-11-10",
+        "value": 5.1,
+        "as_of": "2026-11-12",
         "source": "FRED API",
-        "measured_at": "2026-11-13T18:16+09:00",
+        "measured_at": "2026-11-14T08:16+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
       },
       "ust30": {
-        "value": 5.35,
-        "as_of": "2026-11-10",
+        "value": 5.43,
+        "as_of": "2026-11-12",
         "source": "FRED API",
-        "measured_at": "2026-11-13T18:16+09:00",
+        "measured_at": "2026-11-14T08:16+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null
@@ -6517,7 +6775,7 @@ const DATA = {
         "value": 89.62,
         "as_of": "2026-11-11",
         "source": "FRED API",
-        "measured_at": "2026-11-13T18:16+09:00",
+        "measured_at": "2026-11-14T08:16+09:00",
         "outcome": "ok",
         "carried": false,
         "note": null

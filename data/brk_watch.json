@@ -46,13 +46,13 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-13T18:29+09:00"
+  "measured_at": "2026-11-14T08:29+09:00"
  },
  "due": [],
  "due_fired": [
   "T6@2026-11-03"
  ],
- "probe_age_days": 3,
+ "probe_age_days": 4,
  "engine": {
   "last": {
    "id": 42750983274,
@@ -61,22 +61,22 @@
    "event": "repository_dispatch",
    "created_at": "2026-11-10T03:40:41Z"
   },
-  "checked_at": "2026-11-13T18:29+09:00"
+  "checked_at": "2026-11-14T08:29+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-13T18:29+09:00",
+ "generated_at": "2026-11-14T08:29+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-13T18:29+09:00",
-   "n": 1004
+   "at": "2026-11-14T08:29+09:00",
+   "n": 1005
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-13T18:29+09:00",
+   "at": "2026-11-14T08:29+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -905,6 +905,7 @@
   "0001193125-26-452412",
   "0001193125-26-452530",
   "0001193125-26-452592",
+  "0001193125-26-459815",
   "0001209191-17-022770",
   "0001209191-17-026722",
   "0001209191-17-028040",
@@ -1089,6 +1090,17 @@
   "9999999997-17-000759"
  ],
  "events": [
+  {
+   "accn": "0001193125-26-459815",
+   "date": "2026-11-13",
+   "form": "FWP",
+   "items": "",
+   "grade": "record",
+   "kind": "prospectus",
+   "title": "투자설명서·발행 조건 (FWP)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm",
+   "baseline": false
+  },
   {
    "accn": "0001193125-26-452592",
    "date": "2026-11-09",
@@ -1957,21 +1969,15 @@
    "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
    "url": "https://www.sec.gov/Archives/edgar/data/1067983/000031506626000368/xslSCHEDULE_13G_X01/primary_doc.xml",
    "baseline": true
-  },
-  {
-   "accn": "0001193125-26-033900",
-   "date": "2026-02-02",
-   "form": "4",
-   "items": "",
-   "grade": "record",
-   "kind": "insider",
-   "title": "내부자·대량 보유자 거래 보고 (4)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526033900/xslF345X05/ownership.xml",
-   "baseline": true
   }
  ],
  "alerts": {},
  "dm_log": [
+  {
+   "at": "2026-11-14T08:29+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  },
   {
    "at": "2026-11-10T12:33+09:00",
    "ok": true,
