@@ -27,6 +27,7 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 sys.path.insert(0, str(Path(__file__).parent))
 

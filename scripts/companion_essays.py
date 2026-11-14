@@ -35,6 +35,7 @@ import string
 import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 import requests
 
