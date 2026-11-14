@@ -2,6 +2,7 @@
  "alerted": [
   "0001426012-26-000007",
   "0001628280-26-071689",
+  "0f867f0c-5422-4d44-93b8-d7faaae7019b",
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-Thanks-Don-Harrison-for-His-Service-on-the-Board--2026-Si4CNaX_y_/default.aspx"
  ],
  "src": {
@@ -17,11 +18,6 @@
  },
  "heartbeat_date": "2026-11-14",
  "dm_log": [
-  {
-   "at": "2026-11-02T08:00+09:00",
-   "ok": true,
-   "head": "🫀 SpaceX 관제 일일 점검 — 11/2(월)"
-  },
   {
    "at": "2026-11-03T08:01+09:00",
    "ok": true,
@@ -116,6 +112,11 @@
    "at": "2026-11-15T00:01+09:00",
    "ok": true,
    "head": "🛰 SpaceX 감시 — 엔진 깨움 1건(긴급 0 · 중요 1) · 기록 0건"
+  },
+  {
+   "at": "2026-11-15T06:30+09:00",
+   "ok": true,
+   "head": "🛰 SpaceX 감시 — 엔진 깨움 1건(긴급 0 · 중요 1) · 기록 0건"
   }
  ],
  "due": [
@@ -169,6 +170,17 @@
    "reason": "예상일 도래",
    "expected": "2026-11-15(KST — Ship 귀환 예정 11/14 21:20 UTC 전후 = 11/15 06:20 KST, KST 당일 회차가 결과를 보는 첫날) → 확인점 2026-12-01(KST). 비행 결과는 측정층 LL2 결과 확정이 1차, 이 날짜는 보조",
    "detected_at": "2026-11-15"
+  },
+  {
+   "key": "major:0f867f0c-5422-4d44-93b8-d7faaae7019b",
+   "trigger_id": null,
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "reason": "중요 사건",
+   "event": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "event_date": "2026-11-13",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+   "detected_at": "2026-11-15",
+   "grade": "major"
   }
  ],
  "dispatches": [
@@ -239,9 +251,36 @@
    "reason": "트리거·중요 사건 1건",
    "urls": [],
    "http": 204
+  },
+  {
+   "key": "q:2026-11-15:0630:1",
+   "run_id": "43643154557",
+   "queued_at": "2026-11-15T06:30+09:00",
+   "state": "sent",
+   "trigger_id": "",
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "reason": "트리거·중요 사건 1건",
+   "urls": [
+    "https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/"
+   ],
+   "http": 204
   }
  ],
  "events": [
+  {
+   "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+   "date": "2026-11-13",
+   "form": "발사",
+   "items": "",
+   "title": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "result": "Success",
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
+   "kind": "starship",
+   "grade": "major",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+   "source": "Launch Library 2",
+   "label": "Starship"
+  },
   {
    "date": "2026-11-13",
    "form": "SCHEDULE 13G/A",
