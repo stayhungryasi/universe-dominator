@@ -40,6 +40,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      # Claude Code 인증 — auto: 구독 토큰(시크릿 CLAUDE_CODE_OAUTH_TOKEN)이 있으면 구독, 없으면 API 키.
+      # subscription: 구독만 / api: API 키만(되돌리는 스위치). 규칙은 scripts/claude_auth.sh 한 곳(2026-11-14).
+      CLAUDE_AUTH: ${{ vars.CLAUDE_AUTH || 'auto' }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       GITHUB_TOKEN: ${{ github.token }}
       GH_TOKEN: ${{ github.token }}
@@ -117,7 +120,10 @@ jobs:
       - name: Repair (Claude Code headless)
         id: agent
         if: steps.repro.outputs.proceed == 'true'
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
+          . scripts/claude_auth.sh
           claude -p "$(cat _repair/prompt.md)" \
             --model "$REPAIR_MODEL" --max-turns 120 --max-budget-usd "$REPAIR_BUDGET" \
             --tools "$REPAIR_TOOLS" --allowedTools "$REPAIR_ALLOW" \

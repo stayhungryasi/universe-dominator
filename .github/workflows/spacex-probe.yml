@@ -49,6 +49,9 @@ jobs:
       AUTHOR_ALLOW: 'WebSearch,WebFetch,Read,Write,Edit,Grep,Glob,Bash(python scripts/probe_gate.py *)'
       # 검증관 — 편집·셸 없음. 결과 파일 하나만 쓴다
       VERIFY_TOOLS: 'WebSearch,WebFetch,Read,Write,Grep,Glob'
+      # Claude Code 인증 — auto: 구독 토큰(시크릿 CLAUDE_CODE_OAUTH_TOKEN)이 있으면 구독, 없으면 API 키.
+      # subscription: 구독만 / api: API 키만(되돌리는 스위치). 규칙은 scripts/claude_auth.sh 한 곳(2026-11-14).
+      CLAUDE_AUTH: ${{ vars.CLAUDE_AUTH || 'auto' }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - uses: actions/checkout@v7
@@ -89,7 +92,10 @@ jobs:
 
       - name: Author (Claude Code headless)
         id: author
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
+          . scripts/claude_auth.sh
           claude -p "$(cat _probe/author_prompt.md)" \
             --model "$PROBE_MODEL" --max-turns 200 --max-budget-usd "$AUTHOR_BUDGET" \
             --tools "$AUTHOR_TOOLS" --allowedTools "$AUTHOR_ALLOW" \
@@ -104,7 +110,10 @@ jobs:
 
       - name: Verifier (independent — no author context)
         id: verify
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
+          . scripts/claude_auth.sh
           claude -p "$(cat _probe/verify_prompt.md)" \
             --model "$PROBE_MODEL" --max-turns 80 --max-budget-usd "$VERIFY_BUDGET" \
             --tools "$VERIFY_TOOLS" --allowedTools "$VERIFY_TOOLS" \
@@ -120,7 +129,10 @@ jobs:
       - name: Author fix once + re-verify
         id: fix
         if: steps.gate1.outcome == 'failure'
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
+          . scripts/claude_auth.sh
           if python -c "import json,sys;sys.path.insert(0,'scripts');import probe_gate as g;sys.exit(0 if g.only_verify_failures(json.load(open('_probe/gate_final.json'))) else 1)"; then
             python scripts/probe_gate.py fix-prompt
             claude -p "$(cat _probe/fix_prompt.md)" \

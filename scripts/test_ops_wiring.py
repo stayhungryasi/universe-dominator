@@ -279,5 +279,73 @@ class WorkflowWiringTest(unittest.TestCase):
         self.assertLess(y.index("id: commit"), y.index("gate_preview.py"))
 
 
+class ClaudeAuthTest(unittest.TestCase):
+    """에이전트 인증 고르기(2026-11-14) — 탐사·수리 에이전트가 API 키로 돌며 월 지출 한도를 채워 데일리의
+    집필·번역·뉴스 판정까지 세웠다. 구독 토큰이 있으면 구독으로 가되, 그때 API 키가 환경에 남아 있으면
+    -p 모드는 묻지 않고 API 키를 쓴다 — '옮긴 줄 알았는데 계속 과금'을 막는 것이 이 테스트의 일이다."""
+    AGENT_WORKFLOWS = {"spacex-probe.yml": 3, "brk-probe.yml": 3, "self-repair.yml": 1}
+
+    def _pick(self, env):
+        import os
+        import shutil
+        import subprocess
+        bash = shutil.which("bash")
+        if not bash:                                                  # 윈도우 로컬 — 배선 검사(아래 테스트)만 남는다
+            return None
+        base = {"PATH": os.environ.get("PATH", "")}
+        base.update(env)
+        script = ('. scripts/claude_auth.sh; rc=$?; '
+                  'echo "rc=$rc|used=${CLAUDE_AUTH_USED:-}|key=${ANTHROPIC_API_KEY:-}|tok=${CLAUDE_CODE_OAUTH_TOKEN:-}"')
+        r = subprocess.run([bash, "-c", script], cwd=str(ROOT), env=base, capture_output=True, text=True)
+        last = [ln for ln in r.stdout.splitlines() if ln.startswith("rc=")]
+        return dict(kv.split("=", 1) for kv in last[-1].split("|")) if last else {"rc": "died"}
+
+    def test_token_present_drops_api_key(self):
+        got = self._pick({"ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t"})
+        if got is None:
+            return
+        self.assertEqual(got, {"rc": "0", "used": "subscription", "key": "", "tok": "t"})
+
+    def test_no_token_keeps_old_behaviour(self):
+        for tok in ({}, {"CLAUDE_CODE_OAUTH_TOKEN": ""}):             # 시크릿 미등록은 빈 문자열로 온다
+            env = {"ANTHROPIC_API_KEY": "k"}
+            env.update(tok)
+            got = self._pick(env)
+            if got is None:
+                return
+            self.assertEqual(got, {"rc": "0", "used": "api", "key": "k", "tok": ""})
+
+    def test_api_switch_ignores_token(self):
+        got = self._pick({"CLAUDE_AUTH": "api", "ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t"})
+        if got is None:
+            return
+        self.assertEqual(got, {"rc": "0", "used": "api", "key": "k", "tok": ""})
+
+    def test_fails_loudly_instead_of_leaking(self):
+        cases = [{"CLAUDE_AUTH": "subscription", "ANTHROPIC_API_KEY": "k"},   # 구독만 — API 로 새지 않는다
+                 {},                                                           # 둘 다 없음
+                 {"CLAUDE_AUTH": "typo", "ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t"}]
+        for env in cases:
+            got = self._pick(env)
+            if got is None:
+                return
+            self.assertEqual((got["rc"], got["used"]), ("1", ""), env)
+
+    def test_every_agent_step_selects_auth_first(self):
+        import re
+        for name, want in self.AGENT_WORKFLOWS.items():
+            y = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
+            self.assertIn("CLAUDE_AUTH: ${{ vars.CLAUDE_AUTH || 'auto' }}", y, name)
+            steps = [s for s in re.split(r"(?m)^(?=      - )", y) if "claude -p" in s]
+            self.assertEqual(len(steps), want, name)                  # 에이전트 호출이 늘면 이 표도 함께
+            for s in steps:
+                self.assertIn("CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}", s, name)
+                self.assertIn(". scripts/claude_auth.sh", s, name)
+                self.assertLess(s.index(". scripts/claude_auth.sh"), s.index("claude -p"), name)
+            # 구독 토큰은 에이전트 스텝에만 — 잡 전체(파이썬 관문·게시 스텝)에는 싣지 않는다
+            job_env = y[y.index("    env:"):y.index("    steps:")]
+            self.assertNotIn("secrets.CLAUDE_CODE_OAUTH_TOKEN", job_env, name)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
