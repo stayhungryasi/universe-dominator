@@ -18,6 +18,7 @@ import re
 import time
 from pathlib import Path
 from datetime import datetime, timedelta, timezone, date
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 import requests
 import html as html_mod

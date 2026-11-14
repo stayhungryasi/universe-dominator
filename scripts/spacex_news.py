@@ -30,6 +30,7 @@ import traceback
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import quote_plus
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")

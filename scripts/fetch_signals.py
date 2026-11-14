@@ -22,6 +22,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 from xml.etree import ElementTree
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 import requests
 

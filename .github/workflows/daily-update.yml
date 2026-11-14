@@ -392,6 +392,18 @@ jobs:
             parallax_journal=${{ steps.parallax.outcome }},community_notice=${{ steps.notice.outcome }},companion_essays=${{ steps.companion.outcome }},spacex_watch=${{ steps.spacex_watch.outcome }},spacex_news=${{ steps.spacex_news.outcome }},i18n=${{ steps.i18n.outcome }}
         continue-on-error: true
 
+      # 💳 API 비용 일일 보고(2026-11-14 ㉗) — 계량기(api_meter)가 이번 회차까지 쌓은 스크립트별 비용을 하루 한 번
+      # 소장 DM 으로. 11월은 13일 뒤에 Console 배너로 알았다(조직 월 지출 한도 정지 ㉕). 예산은 포함 크레딧에 맞춘다.
+      # 커밋 앞에 둔다 — 원장(data/api_cost.json)과 '오늘 보냄' 날짜가 함께 실린다. 공개 채널 변수는 넘기지 않는다.
+      - name: API cost report (daily owner DM)
+        if: ${{ !cancelled() && env.FULL_RUN == 'true' }}
+        run: python scripts/api_cost_report.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+          API_BUDGET_USD: ${{ vars.API_BUDGET_USD || '200' }}
+        continue-on-error: true
+
       # 커밋 직전 관문 — 주입이 빠진 페이지가 하나라도 있으면 여기서 멈춘다.
       # build_site 의 원자적 교체와 **다른 다리**다: 같은 코드를 공유하면 그 코드가
       # 죽는 날 검사도 같이 죽는다. continue-on-error 를 붙이지 않는 것이 요점 —

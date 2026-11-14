@@ -18,6 +18,7 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 import requests
 from bs4 import BeautifulSoup

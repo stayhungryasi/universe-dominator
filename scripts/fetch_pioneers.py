@@ -20,6 +20,7 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import quote
 from xml.etree import ElementTree
+import api_meter  # noqa: F401 — API 비용 계량(관찰만 · ㉗)
 
 import requests
 
