@@ -43,6 +43,8 @@ jobs:
       # Claude Code 인증 — auto: 구독 토큰(시크릿 CLAUDE_CODE_OAUTH_TOKEN)이 있으면 구독, 없으면 API 키.
       # subscription: 구독만 / api: API 키만(되돌리는 스위치). 규칙은 scripts/claude_auth.sh 한 곳(2026-11-14).
       CLAUDE_AUTH: ${{ vars.CLAUDE_AUTH || 'auto' }}
+      # 구독 경로에서 'best' 를 고정할 모델 — 지금 API 경로가 실제로 쓰는 모델(결과가 달라지지 않게)
+      CLAUDE_SUBSCRIPTION_BEST: ${{ vars.CLAUDE_SUBSCRIPTION_BEST || 'claude-opus-5-5' }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       GITHUB_TOKEN: ${{ github.token }}
       GH_TOKEN: ${{ github.token }}
@@ -147,6 +149,16 @@ jobs:
       - name: Drill verdict (DM, nothing published)
         if: ${{ !cancelled() && inputs.drill && steps.repro.outputs.proceed == 'true' }}
         run: python scripts/self_repair.py drill-report
+
+      # 구독 인증이 실패해 API 키로 물러난 회차는 반드시 알린다 — '옮긴 줄 알았는데 계속 과금'을 막는다(㉕)
+      - name: Alarm (subscription auth fell back to API key)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # 소장 DM 전용 — 공개 채널 변수는 넘기지 않는다
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+        run: python scripts/claude_auth_alarm.py
 
       - name: Keep repair artifacts
         if: ${{ always() && steps.repro.outputs.proceed == 'true' }}
