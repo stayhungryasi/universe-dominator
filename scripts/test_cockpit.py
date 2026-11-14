@@ -245,6 +245,37 @@ class BudgetTest(unittest.TestCase):
         # 최신 월간 + 최신 사건 2 는 검색 입구 하나씩 남는다(옛 보고서는 앞 단계 설계대로 목록·본문으로만 읽힌다)
         self.assertEqual(firsts, {"report/2026-11", "report/2026-11-06-event", "report/2026-11-08-event"})
 
+    def test_guarantee_stage_keeps_every_kind_searchable(self):
+        """2026-11-14: 11/14 사건 회차(58KB 초과)에서 보장 단계가 출처·사건·이정표 검색 입구를 통째로 지워
+        '검색 색인은 모든 종류를 덮는다' selftest 가 실패 → 관문을 통과한 보고서가 main 에 못 들어갔다.
+        예산이 허락하는 한 종류마다 몇 건은 남아야 한다 — 그리고 정말 좁으면 바닥 없이도 예산은 지킨다."""
+        ids = ["2026-11", "2026-11-11-event", "2026-11-14-event"]
+
+        def mk():
+            search = [{"anchor": f"report/{r}:s{k}", "title": r, "text": "가" * 150, "full": "나" * 900}
+                      for r in ids for k in range(6)]
+            for pref, n, size in (("sources/", 170, 80), ("events/", 37, 70), ("milestones/", 29, 100),
+                                  ("triggers/", 15, 250), ("changelog/", 16, 230)):
+                search += [{"anchor": f"{pref}x{k}", "title": "t", "text": "다" * size} for k in range(n)]
+            return {"search": search, "sources": [], "milestones": [{"t": "마" * 300}] * 20}
+
+        d = mk()
+        full = len(json.dumps(d, ensure_ascii=False).encode())
+        budget = full - 62_000                                         # 출처·사건·이정표를 다 덜어야 닿는 만큼 초과
+        pc.fit_budget(d, ids, budget=budget)
+        self.assertLessEqual(d["budget"]["bytes"], budget)             # 함수가 잰 크기(덜어낸 기록 칸을 싣기 전)
+        self.assertFalse(d["budget"]["over"])
+        kinds = {e["anchor"].split("/")[0] for e in d["search"]}
+        self.assertEqual(kinds, {"report", "sources", "events", "milestones", "triggers", "changelog"})
+        for pref in ("sources/", "events/", "milestones/"):
+            self.assertGreaterEqual(sum(e["anchor"].startswith(pref) for e in d["search"]), pc.SEARCH_FLOOR, pref)
+            self.assertIn(f"{pref}x0", {e["anchor"] for e in d["search"]})   # 남는 것은 앞쪽(최신) 건
+        d = mk()
+        pc.fit_budget(d, ids, budget=27_000)                           # 바닥을 지킬 수 없을 만큼 좁으면 — 예산이 이긴다
+        self.assertLessEqual(d["budget"]["bytes"], 27_000)
+        self.assertFalse(d["budget"]["over"])
+        self.assertLess(sum(not e["anchor"].startswith("report/") for e in d["search"]), 5 * pc.SEARCH_FLOOR)
+
     def test_render_wired(self):
         """render() 가 예산 맞추기를 실제로 거친다(배선) — 예산을 낮추면 덜어낸 기록이 데이터에 남고 상한 안이다."""
         from unittest import mock
