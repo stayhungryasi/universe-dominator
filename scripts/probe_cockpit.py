@@ -840,6 +840,7 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
 
 PAYLOAD_BUDGET = 380 * 1024     # 관제실 데이터 덩어리 예산(selftest 상한 400KB 아래 여유)
 KEEP_FULL_REPORTS = 2           # 본문 전체 검색을 늘 남기는 최신 보고서 수
+SEARCH_FLOOR = 3                # 보장 단계에서도 검색 종류(출처·사건·이정표·트리거·변화 이력)마다 남기는 최소 건수
 
 
 def _size(data):
@@ -965,27 +966,36 @@ def fit_budget(data, report_ids, budget=None):
         step()
         trimmed.append(name)
     # 보장 단계 — 검색 입구를 낮은 우선순위부터 하나씩(출처 → 사건 → 이정표 → 트리거 → 변화 이력 → 보고서 뒤쪽 절)
+    # 2026-11-14: 11/14 사건 회차가 58KB 초과 → 이 단계가 출처·사건·이정표 검색 입구를 **통째로** 지웠고(250건),
+    # '검색 색인은 모든 종류를 덮는다'는 저장소 selftest 가 실패해 관문을 통과한 보고서가 main 에 못 들어갔다.
+    # 종류 하나를 통째로 비우는 것과 몇 건 남기는 것의 차이는 1KB 안팎이다 — 먼저 종류마다 SEARCH_FLOOR 건을
+    # 남기며 덜고(낮은 우선순위부터), 그래도 넘을 때만 바닥 없이 다시 던다(예산 보장은 그대로).
     prio = ("sources/", "events/", "milestones/", "triggers/", "changelog/", "report/")
     dropped = 0
     if _size(data) > budget:
-        srch = data.get("search") or []
-        for pref in prio:
-            idx = [i for i, e in enumerate(srch) if e.get("anchor", "").startswith(pref)]
-            if pref == "report/":           # 보고서는 절마다 첫 절을 남기고 뒤쪽 절부터
-                firsts, rest = set(), []
-                for i in idx:
-                    rid = srch[i]["anchor"][7:].split(":")[0]
-                    (rest.append(i) if rid in firsts else firsts.add(rid))
-                idx = rest
-            for i in reversed(idx):
-                srch[i] = None
-                dropped += 1
-                if dropped % 10 == 0:
-                    data["search"] = [e for e in srch if e is not None]
-                    if _size(data) <= budget:
-                        break
-            data["search"] = [e for e in srch if e is not None]
-            srch = data["search"]
+        for floor in (SEARCH_FLOOR, 0):
+            srch = data.get("search") or []
+            for pref in prio:
+                idx = [i for i, e in enumerate(srch) if e.get("anchor", "").startswith(pref)]
+                if pref == "report/":           # 보고서는 절마다 첫 절을 남기고 뒤쪽 절부터
+                    firsts, rest = set(), []
+                    for i in idx:
+                        rid = srch[i]["anchor"][7:].split(":")[0]
+                        (rest.append(i) if rid in firsts else firsts.add(rid))
+                    idx = rest
+                else:
+                    idx = idx[floor:]           # 종류마다 앞쪽 floor 건은 남긴다(바닥 없는 둘째 바퀴는 0)
+                for i in reversed(idx):
+                    srch[i] = None
+                    dropped += 1
+                    if dropped % 10 == 0:
+                        data["search"] = [e for e in srch if e is not None]
+                        if _size(data) <= budget:
+                            break
+                data["search"] = [e for e in srch if e is not None]
+                srch = data["search"]
+                if _size(data) <= budget:
+                    break
             if _size(data) <= budget:
                 break
         trimmed.append(f"search:drop{dropped}")
