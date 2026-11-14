@@ -1,30 +1,23 @@
 {
- "run_id": "2026-11-11-event-r2",
- "checked": 14,
- "match": 12,
- "rounding": 2,
+ "run_id": "2026-11-14-event",
+ "checked": 23,
+ "match": 23,
+ "rounding": 0,
  "mismatch": [],
  "unverifiable": [],
- "details": [
-  {"claim": "국방부 OSC 의 Rocket Lab 조건부 대출 확약 금액", "result": "일치", "source_value": "$150 million (newsroomamerica 전재, 2026-11-09 17:51 표기)", "report": "1-1 표 $1.5억 — 같음"},
-  {"claim": "Rocket Lab 확약 발표일", "result": "일치", "source_value": "Defense Daily 2026-11-10 기사: 국방부가 '월요일'(2026-11-09) 발표", "report": "1-1 표 2026-11-09 — 같음"},
-  {"claim": "국방부 OSC 의 Stoke Space 조건부 대출 확약 금액", "result": "일치", "source_value": "$150 million", "report": "1-1 표 $1.5억 — 같음"},
-  {"claim": "Stoke 확약 발표일", "result": "일치", "source_value": "2026-10-26 (기사 2026-10-27)", "report": "1-1 표 2026-10-26 — 같음"},
-  {"claim": "Nova Block 2 저궤도 탑재량", "result": "일치", "source_value": "15 metric tons", "report": "1-1 표 15톤급 — 같음"},
-  {"claim": "Nova Block 2 첫 비행 예정 연도", "result": "일치", "source_value": "2029", "report": "1-1 표·결론 2029 — 같음"},
-  {"claim": "두 확약 합계(헤드라인 $3억)", "result": "일치(산식)", "source_value": "구성값 150(Stoke, Air & Space Forces) + 150(Rocket Lab, newsroomamerica·Defense Daily) = 300. mezha.net 원문 페이지는 HTTP 403 — 헤드라인 문구 자체는 열람하지 못했고, 합계는 검증된 원문 숫자 2개의 산식으로 확인", "report": "결론·1-2 표 300 — 같음"},
-  {"claim": "SpaceX EDGAR 최신 공시", "result": "일치", "source_value": "8-K 2026-11-06 · Items 5.02 · accn 0001628280-26-071689 (filings.recent 첫 행)", "report": "1-3·2절 — 같음"},
-  {"claim": "Starship Flight 15 LL2 NET", "result": "일치", "source_value": "2026-11-13T22:45:00Z · TBC · 창 종료 2026-11-14T00:00:00Z · Orbital Launch Pad 2", "report": "2절 표 T3 행 — 같음"},
-  {"claim": "Flight 15 LL2 마지막 갱신", "result": "일치", "source_value": "2026-11-10T22:06:46Z", "report": "2절 표 T3 행 — 같음"},
-  {"claim": "기준 주가(11/10 종가)", "result": "반올림 차이(±0.5% 이내)", "source_value": "stockanalysis 일별 이력 Nov 10, 2026 종가 143.09 (수정종가 143.09) — 목록값 143.16 과 0.07 차이(0.05%). 2회 조회 모두 143.09", "report": "머리말·3절·부록 143.16 — verify_list 와 같음"},
-  {"claim": "발행주식(10/15, 10-Q 표지)", "result": "일치", "source_value": "Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 (2026-10-15 기준)", "report": "3절·부록 13,581백만주 — 같음"},
-  {"claim": "시가총액(산식 143.16 × 13.581)", "result": "반올림 차이(±0.5% 이내)", "source_value": "목록 산식 143.16 × 13.581 = 1,944.3 은 산술상 맞음. 원문 종가 143.09 로는 143.09 × 13.581 = 1,943.3 → $1,943십억(0.05% 차이, data/latest.json SPCX 1,943.0 과도 부합)", "report": "3절 $1,944십억 — verify_list 와 같음"},
-  {"claim": "미국 10년물", "result": "일치", "source_value": "FRED DGS10 2026-11-09 = 4.88 (페이지 최신 관측)", "report": "3절 4.88% — 같음"}
- ],
  "notes": [
-  "checked 14 = verify_list 항목 14개 전부.",
-  "목록 밖 참고: 보고서 3절 '11/9 SPCX +5.81%' 는 stockanalysis Nov 9, 2026 change 5.81% 와 일치.",
-  "war.gov 4644766 원문은 이번 검증에서도 열지 않았다(목록 note 대로 전재 기준) — Rocket Lab 금액은 전재 2곳(newsroomamerica·Defense Daily)이 같은 값."
+  "LL2 0f867f0c: net 2026-11-13T22:47:36Z · status 'Payload Deployed' · last_updated 2026-11-14T02:11:54Z — 3항목 일치. LL2 임무 설명에도 Starlink V3 26기.",
+  "Spaceflight Now 11/13: 26기 · 2120 UTC(발사 22.5시간 뒤) · 부스터 캐치 발사 약 6.5분 뒤 — 일치. 보고서 1-2 표 '21:20 UTC(11/14)' 동일.",
+  "Hawaii News Now: HDOT 게시 1:55 p.m. 11/13 · 지상 정지 해제 약 3:20 p.m. — 일치(기사 문맥상 현지 시각, 시간대 표기는 명시 없음).",
+  "13G/A: 보고인 합계 314,357,058주 · 3.8% · 분모 Class A 8,240,000,000주(2026-09-30, 10-Q 인용) — 일치. 보고서 82.4억주 동일.",
+  "Motley Fool: 인터뷰일은 'Thursday'로만 표기 — 기사일 2026-11-13(금) 기준 11/12 로 산출, 일치로 판정.",
+  "cryptobriefing: 2026-11-12 · San Francisco Superior Court — 일치.",
+  "사건번호 3:26-cv-10693: CourtListener PDF 는 압축 스트림이라 이 환경에서 본문 추출 불가. 보조 원천 Bloomberg Law 9/18 기사의 소장 링크(N.D. Cal., Buist v. Anthropic PBC)에서 같은 번호·피고 SpaceXAI 확인 — 일치로 판정(소장 본문 대조는 미실시).",
+  "SINGULUS 11/10: 'first half of 2027' · 'more than 100 GW of production equipment' — 일치.",
+  "10-Q R12: 고객 B 34.5% · 3Q26 매출 14,575백만 달러 — 일치. 산식 34.5% × 14,575 = 5,028.4 → 보고서 약 $5,028M 일치.",
+  "stockanalysis: 11/13 종가 139.11 · 거래량 78,500,538 · 11/12 고가 147.60 · 11/10 종가 143.09(거래량 82,134,539) — 일치. 보고서 4절의 11/11 139.75 · 11/12 139.94 도 원문과 같음.",
+  "10-Q 표지(2026-10-15): Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 → 13,581백만주 일치. 시가총액 산식 139.11 × 13.581 = 1,889.3 재현.",
+  "FRED DGS10: 2026-11-12 = 5.10 — 일치."
  ],
- "verified_at": "2026-11-11T13:05+09:00"
+ "verified_at": "2026-11-14T12:58+09:00"
 }
