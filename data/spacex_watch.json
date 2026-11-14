@@ -48,17 +48,28 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-14T08:28+09:00",
+  "checked_at": "2026-11-14T12:32+09:00",
   "last_run": {
    "conclusion": "failure",
-   "created_at": "2026-11-13T15:00:58Z",
-   "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/43448288388",
-   "run_id": 43448288388
+   "created_at": "2026-11-14T02:43:12Z",
+   "event": "workflow_dispatch",
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/43547840302",
+   "run_id": 43547840302
   },
   "in_progress": false
  },
  "events": [
+  {
+   "date": "2026-11-13",
+   "form": "SCHEDULE 13G/A",
+   "items": "",
+   "title": "5% 이상 지분 보고(단순 투자) 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000142601226000007/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "accn": "0001426012-26-000007",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
   {
    "date": "2026-11-06",
    "form": "8-K",
@@ -997,17 +1008,6 @@
    "source": "SEC EDGAR",
    "kind": "filing",
    "grade": "record"
-  },
-  {
-   "date": "2019-05-24",
-   "form": "D/A",
-   "items": "06b",
-   "title": "사모 발행 신고 정정",
-   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000003/xslFormDX01/primary_doc.xml",
-   "accn": "0001181412-19-000003",
-   "source": "SEC EDGAR",
-   "kind": "filing",
-   "grade": "record"
   }
  ],
  "seen": [
@@ -1045,6 +1045,7 @@
   "0001213900-26-105393",
   "0001354457-26-000562",
   "0001426012-26-000004",
+  "0001426012-26-000007",
   "0001628279-26-000583",
   "0001628279-26-000584",
   "0001628280-26-021860",
@@ -1117,7 +1118,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-14T08:28+09:00",
+ "generated_at": "2026-11-14T12:32+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1430,13 +1431,90 @@
    "reason": "예상일 도래",
    "expected": "2026-11-14(KST — NET 11/13 22:45 UTC + 1일; 예비 NOTAM 11/14~19 → 11/20 KST) → 확인점 2026-12-01(KST). 비행 결과는 측정층 LL2 가 자동 감지하므로 이 날짜는 보조",
    "detected_at": "2026-11-14"
+  },
+  {
+   "key": "news:starship-15-booster:2026-11-14",
+   "trigger_id": null,
+   "name": "SpaceX Starship 부스터가 발사 후 폭발했다.",
+   "reason": "보도 감지(dw.com·financial times·nbc news)",
+   "event": "SpaceX Starship booster explodes after launch",
+   "event_date": "2026-11-14",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNSy1EekJZNUs0N3VjRlhXdzdmVmNNeUMwQjEzaEFNWkRXRmowQ24xMXEzOTFndDYtUGd3YmVQblU4TVVPeGVDWUhuYS1xMXdGM1VGQXg3X0dTcURwVG5mU2FTeVViazNPWEdBUUVXOXpJanJzb19FV1RkdHdzNkdxN2hmTkVSVHBCV01OMGdfaDBseUdfQ3h3VHpHdw?oc=5",
+   "detected_at": "2026-11-14",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:launch-debris-flight-halt:2026-11-14",
+   "trigger_id": null,
+   "name": "SpaceX 발사 잔해로 미 서부 해안 항공편이 모두 중단되었다는 보도다.",
+   "reason": "보도 감지(kauai now·khon2·kitv)",
+   "event": "‘Debris from SpaceX launch’ causes all US West Coast flights to be grounded",
+   "event_date": "2026-11-14",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxObEdXRnlXNF8zLThncmRTYXZtMzVhVmxWV2V4a0Q1WHRCQkE1S2dTb0kyNzFDdmJzS1pWYVYwTzZqVDBKM3B0eUNOekUwM0s1WHNTUnRDRFgxanVEeGVnelo2bk9xanlXQ09WLTV1LVJLREN2Y3AzN3RiTjloZUdUdjNfcWl4WFVyVnVnMkRxb0dXMGdzNzNLV0tzTE5WWDhwYzg1SXQ1bmpXY1lRNldz?oc=5",
+   "detected_at": "2026-11-14",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:frontier-ai-lawsuit:2026-11-14",
+   "trigger_id": null,
+   "name": "OpenAI, Google, Anthropic, Meta와 SpaceX가 첨단 AI 개발을 문제 삼는 소송을 당했다.",
+   "reason": "보도 감지(bnn bloomberg·exchange4media·times now)",
+   "event": "OpenAI, Google, Anthropic, Meta and SpaceX sued over frontier AI development",
+   "event_date": "2026-11-13",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPLWxxNHRRbUhsTC1OM0c2aFA0T2dkek1ZcnQ2VFpyM2VRem9WNHM3a3JnTWNMNXcwSzE0M2RTZkkzTTA1aV9TQUQxUnVTSHppXzlUOENzRkhabnpTcktSWWwteVZReW9CUmJsYTdBMHRTZGc2ampjbjBlM0VZeGZOeXhmSlg5bVVRWERxYndySFltSjc5dUxXTFFnQ3Z3STNfQzFaN2t0NTRGUmp6VXR5NVJyeDVTZGNrTy0xVkhCZmJKMWhGTnUtTA?oc=5",
+   "detected_at": "2026-11-14",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:spacex-tesla-merger:2026-11-14",
+   "trigger_id": "T2",
+   "name": "텍사스 법무장관 당선인이 SpaceX-Tesla 합병을 강하게 조사하겠다고 공언했다.",
+   "reason": "보도 감지(24/7 wall st.·asktraders.com·basenor - tesla accessories)",
+   "event": "Texas AG-elect vows 'tremendous scrutiny' of SpaceX-Tesla merger",
+   "event_date": "2026-11-14",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOWUxWMVJWdTBHblRyYjJiNXd0NWJsaDVMX3VkVFBTSGM2RmdWTy1uOTBHZ241MmlZQWlDM3g3b0ExcW9jbmpDck0xUkRKX0QtaE94VVlqdW5DYmFScXRZbURSYjNiZWkxNHdUV1VzeUIwd3lObnJWdG9SNnpiMzMyWnVublgzVDdNU3p6YjUtc08wV3dldWNnd25EWV9nejVzMVNOcmdfenFUWkYyRVREMHllbDlWVFB5ckVBQ0ZmcWVqQlFtUWh0YWF4UDFQY2hoSmdBVUJra0Q0QQ?oc=5",
+   "detected_at": "2026-11-14",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:starship-flight-15-result:2026-11-14",
+   "trigger_id": null,
+   "name": "SpaceX가 Starship을 다시 발사했지만 부스터 캐치는 중단했다.",
+   "reason": "보도 감지(aol.com·aviation week·bbc)",
+   "event": "With Florida waiting in wings, SpaceX launches Starship again, but aborts booster catch",
+   "event_date": "2026-11-14",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNblBIamNvV0l1STNiOVlrQ2xZdlpVZTF5bXhHWjMzLVp5Tk5TWHBYbzZhSGVMSzMxenZlV252RGZxRTVCc2VoUWFuVGFSUktmUVl6UlJnR09NWW5iY1BlRjlSd29YVTY3djFLT0x1YS1CUGxqQnVJcEhQejhrVmVrbkNDTWlLbDV2QVVTYnVJUEFZQi1PSmQtY1JDRjBtNzhGN3gzck9LdG9BX3VXWE1NUW11QjZCTGdMS01V?oc=5",
+   "detected_at": "2026-11-14",
+   "grade": "major",
+   "source": "news"
   }
  ],
- "dispatch_queue": [],
+ "dispatch_queue": [
+  {
+   "key": "qn:2026-11-14:1232",
+   "run_id": "43550688388",
+   "queued_at": "2026-11-14T12:32+09:00",
+   "state": "queued",
+   "trigger_id": "T2",
+   "name": "SpaceX Starship 부스터가 발사 후 폭발했다. · SpaceX 발사 잔해로 미 서부 해안 항공편이 모두 중단되었다는 보도다. · OpenAI, Google, Anthropic, Meta와 SpaceX가 첨단 AI 개발을 문제 삼는 소송을 당했다. · 텍사스 법무장관 당선인이 SpaceX-Tesla 합병을 강하게 조사하겠다고 공언했다. · Spac",
+   "reason": "보도 감지 5건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMimwFBVV95cUxNSy1EekJZNUs0N3VjRlhXdzdmVmNNeUMwQjEzaEFNWkRXRmowQ24xMXEzOTFndDYtUGd3YmVQblU4TVVPeGVDWUhuYS1xMXdGM1VGQXg3X0dTcURwVG5mU2FTeVViazNPWEdBUUVXOXpJanJzb19FV1RkdHdzNkdxN2hmTkVSVHBCV01OMGdfaDBseUdfQ3h3VHpHdw?oc=5",
+    "https://news.google.com/rss/articles/CBMihAFBVV95cUxNZWNnWFZjVm4xQnc4N1VLS2pwTjUtNGlIM1hGLW1xeDVnLUZJaFhfSXlneFhrel9kRFB5eU1fZURhSEMyWml0SWx3NVZJTi12WVluY01BdWRpLUU3NlV1a3liaHk4V0dDbm1EdldPS2JielZPTTlUMEhmRlJYbVRIeTJyTUc?oc=5",
+    "https://news.google.com/rss/articles/CBMirwFBVV95cUxObEdXRnlXNF8zLThncmRTYXZtMzVhVmxWV2V4a0Q1WHRCQkE1S2dTb0kyNzFDdmJzS1pWYVYwTzZqVDBKM3B0eUNOekUwM0s1WHNTUnRDRFgxanVEeGVnelo2bk9xanlXQ09WLTV1LVJLREN2Y3AzN3RiTjloZUdUdjNfcWl4WFVyVnVnMkRxb0dXMGdzNzNLV0tzTE5WWDhwYzg1SXQ1bmpXY1lRNldz?oc=5",
+    "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQOXJJRThaMEhuc3I2YmlkX1B4ekIyZXpYbk9xVjZub1NfVGlXRy1CTlpHd19QNzZaVGNHXzhBQkx6aTk0UWYyS25Hbm53VEhocVVSZTQ3NW4wMmFBRGNDLWhyZGN1MTU0OVJ4dTJsUWw4cUtKcW1PUXhoZ3FjTXNuTU12T3Fhd3lTLWJ2WVd2QnR6U2gzSE1TUzlFOEdtV05EMHhPN2hJZ180MV9HeGprU2ItRE9BOXYtTVptcVF4QkRvTUNSVkFIZnRMR3hOTEFhbzJ4U1p1NjlNUTFPeDlxTTE5YlRvcExUQU11dlh6NGJua0NJVHRIZXFFRQ?oc=5",
+    "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPLWxxNHRRbUhsTC1OM0c2aFA0T2dkek1ZcnQ2VFpyM2VRem9WNHM3a3JnTWNMNXcwSzE0M2RTZkkzTTA1aV9TQUQxUnVTSHppXzlUOENzRkhabnpTcktSWWwteVZReW9CUmJsYTdBMHRTZGc2ampjbjBlM0VZeGZOeXhmSlg5bVVRWERxYndySFltSjc5dUxXTFFnQ3Z3STNfQzFaN2t0NTRGUmp6VXR5NVJyeDVTZGNrTy0xVkhCZmJKMWhGTnUtTA?oc=5"
+   ]
+  }
+ ],
  "hourly": {
-  "checked_at": "2026-11-14T08:28+09:00",
-  "last_success_at": "2026-11-13T23:15:37Z",
-  "last_run_at": "2026-11-13T23:15:11Z",
+  "checked_at": "2026-11-14T12:32+09:00",
+  "last_success_at": "2026-11-14T03:30:48Z",
+  "last_run_at": "2026-11-14T03:30:18Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50
