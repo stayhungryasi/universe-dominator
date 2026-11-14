@@ -2,22 +2,22 @@
  "kind": "probe_ms",
  "id": "B-2027-1",
  "lang": "en",
- "src_hash": "e66b199d1343",
+ "src_hash": "d0bc5c84e61d",
  "model": "claude-haiku-4-5",
- "at": "2026-10-26 18:31",
+ "at": "2026-11-14 18:39",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Orbit insertion + Ship recovery success 1+ times",
-  "cur": "Orbit insertion 1 time (Flight 14, 2026-09-28) / Ship recovery 0 times",
-  "tgt": "Both 1+ times each",
-  "unit": "times",
-  "hit": "Full reusability prerequisite passed",
-  "miss": "Failure delays Starlink V3 mass deployment",
+  "text": "orbital insertion + upper stage (Ship) recovery success 1 or more",
+  "cur": "orbital insertions 2 (Flight 14 2026-09-28 · Flight 15 2026-11-13 — Ship 42 reached orbit·Starlink V3 26 units deployed, LL2 'Payload Deployed') / Ship recovery 0 (Flight 15 Ship tower catch scheduled around 11/14 21:20 UTC — not occurred at time of writing). Booster B22 catch canceled·exploded during Gulf of Mexico landing (this milestone does not count boosters).",
+  "tgt": "both 1 or more",
+  "unit": "instances",
+  "hit": "necessary condition for full reusability passed",
+  "miss": "if failed, Starlink V3 mass deployment delayed",
   "method": "FAA license·flight results",
-  "parts.0.label": "Orbit insertion",
+  "parts.0.label": "orbital insertion",
   "parts.1.label": "Ship recovery",
-  "parts.0.unit": "times",
-  "parts.1.unit": "times"
+  "parts.0.unit": "instances",
+  "parts.1.unit": "instances"
  }
 }

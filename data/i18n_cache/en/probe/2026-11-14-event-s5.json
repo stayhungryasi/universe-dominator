@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-14-event-s5",
+ "lang": "en",
+ "src_hash": "f71bd9ed5160",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers",
+  "md": "\n- **T3 — Expected vs. actual**: Expected '11/14 (KST) = NET 11/13 22:45 UTC + 1 day' → the actual launch was at 11/13 22:47 UTC, so **the date was right**. What was wrong is the shape of the event.\n  - ① For the name's 'booster + Ship **simultaneous** catch', the booster side was canceled in flight.\n  - ② It is a multi-day flight of about 22 hours, so the result is only confirmed the day after launch. A 'launch + 1 day' checkpoint cannot see the result of such a flight.\n  - **Revision**: the checkpoint for a multi-day flight is set to the KST date of the scheduled return time → **2026-11-15 (KST)**, then 12/01. The primary detection is confirmation of the result in the measurement layer, LL2 (source: `state.triggers_next_12m[T3]`).\n- **T6**: Recorded in 2-1. The watcher linked this report to T2, which was wrong.\n- **T7**: ⓓ The requested date for the SpaceX briefing, 11/12, has passed. No congressional office materials or press reports announcing it as held, postponed, or held privately were found (search 11/14). No response is recorded as 'undisclosed'. The next checkpoint is **11/19 (KST — ⓒ House Appropriations Committee 11/18 + 1 day)** (source: [Blumenthal letter](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf)).\n- **T14 new — AI customer B (Anthropic) extension/termination**: Expected dates are, in order, **2026-12-01 (KST, S-1/A clause text)** → 2027-02 (10-K, estimated) → **2027-04-02 (KST, estimated)** (source: 3-1 · `state.triggers_next_12m[T14]`).\n- **T15 new — Starmind solar cell supply chain**: Expected dates are, in order, **2026-12-01 (KST)** → 2027-02 (10-K, estimated) → **2027-07-01 (KST — end of first line delivery 'H1 2027' + 1 day)** (source: 3-1 · `state.triggers_next_12m[T15]`).\n- **T16 new — Frontier AI lawsuit**: Expected dates are, in order, **2026-12-01 (KST)** → 2027-02 (10-K legal proceedings note, estimated) (source: 2-2 · `state.triggers_next_12m[T16]`).\n- **T1**: The watcher linked the solar cell line and the Anthropic message to T1, which was wrong (they belong to T15 and T14 respectively). T1, T2, T4, T5, and T8–T13 are unchanged (source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

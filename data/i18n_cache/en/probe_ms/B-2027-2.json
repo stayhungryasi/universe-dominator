@@ -2,19 +2,19 @@
  "kind": "probe_ms",
  "id": "B-2027-2",
  "lang": "en",
- "src_hash": "ffe2a35a7706",
+ "src_hash": "dd0dacc53743",
  "model": "claude-haiku-4-5",
- "at": "2026-11-09 12:40",
+ "at": "2026-11-14 18:39",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Annual Starship flights 12 or more",
-  "cur": "2026 3 flights (5/22·7/24·9/28) — Flight 15 not flown by 11/8 (FAA internal plan date), SpaceX 11/7 notice NET 11/13 'awaiting regulatory approval' (LL2 11/13 22:45 UTC 'To Be Confirmed', NOTAM 11/14~19 contingency), FAA license amendment not issued (11/7 report) → 2026 maximum 4 flights — reference before 2027 judgment",
+  "text": "12 or more Starship flights per year",
+  "cur": "4 flights in 2026 (5/22·7/24·9/28·11/13 — Flight 15 launch 2026-11-13 22:47:36 UTC, LL2) — reference before 2027 judgment",
   "unit": "flights/year",
-  "hit": "Cadence secured",
-  "miss": "If under 6 flights, −50% versus target",
-  "method": "Launch record",
-  "parts.0.label": "Annual Starship flights (2026 reference)",
+  "hit": "cadence secured",
+  "miss": "below 6 flights = −50% vs target",
+  "method": "launch record",
+  "parts.0.label": "Starship flights per year (2026 reference)",
   "parts.0.unit": "flights/year"
  }
 }

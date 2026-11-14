@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-14-event-s2",
+ "lang": "ja",
+ "src_hash": "e55a3b8e6344",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. 外部の出来事2件 — 開示なし、記録のみ",
+  "md": "\n### 2-1. テキサス州司法長官当選者のTesla合併発言(T6)\n\n| 項目 | 内容 | 出典 |\n|---|---|---|\n| 発言者 | Nathan Johnson — テキサス州司法長官当選者(民主党)、2027-01就任 | ⑤ [Bloomberg 11/13](https://www.bloomberg.com/news/articles/2026-11-13/texas-next-ag-vows-tremendous-scrutiny-of-tesla-spacex-deal) · [Motley Fool 11/13](https://www.fool.com/investing/2026/11/13/spacexs-big-day-a-historic-starship-launch-a-tesla-merger-under-scrutiny-and-a-74-billion-ai-bet/) |\n| 発言 | Bloombergのインタビュー(11/12):'any merger of companies of that consequence warrants tremendous scrutiny'。取引の詳細についてのコメントは拒否 | 同上 |\n| 合併の進行(報道) | 協議進行中 · 正式合意は早ければ12月または2027年初め | 同上 |\n| 開示 | SpaceX・Teslaの8-K・委任状・特別委員会の開示なし | ① [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json), 2026-11-14 |\n\n- **判定**: 確率ルールの対象外である。弱気論拠「合併による希薄化」の日程面の背景にすぎない。監視官はこの報道をT2(ロックアップ)に結び付けたが、誤りだった — T6の事案である。現司法長官(Paxton)とSpaceXのTerafab公共情報訴訟は別件であり、原文を開いていないため、登載のみ行う(出典:`state.triggers_next_12m[T6]` · `state.open_questions_for_next_run`)。\n\n### 2-2. フロンティアAI開発中止請求訴訟(T16 新設)\n\n| 項目 | 内容 | 出典 |\n|---|---|---|\n| 提起 | 2026-11-12 · サンフランシスコ上位裁判所(州裁判所) | ⑥ [cryptobriefing 11/13](https://cryptobriefing.com/nonprofits-sue-ai-labs-halt-frontier-development/) |\n| 原告 | Alliance for Secure AI · Irreplaceable Education Fund · Public Citizen · Heat Initiative(代理人 Matthew Platkin 前ニュージャージー州司法長官) | 同上 |\n| 被告 | Anthropic · Google · Meta · OpenAI · SpaceXのAI系列(法人名は報道ごとに異なる) | 同上 |\n| 根拠・請求 | カリフォルニア州不公正競争法 — 現在の最先端より強力なモデルの開発中止を求める差止命令 | 同上 |\n| 状態 | 裁判所の命令なし · 訴状原文・事件番号は未確認 · 原告側のプレスリリースは未発見 | 同上 |\n| 別件 | 2026-09-18 連邦反トラスト集団訴訟 Buist et al. v. Anthropic PBC et al.(N.D. Cal. 3:26-cv-10693) — 'Pace the Frontier' の談合主張、被告にSpaceXAI | ③ [訴状(CourtListener RECAP)](https://storage.courtlistener.com/recap/gov.uscourts.cand.479357/gov.uscourts.cand.479357.1.0.pdf) · ⑤ [Bloomberg Law](https://news.bloomberglaw.com/litigation/openai-anthropic-google-spacexai-hit-with-antitrust-lawsuit) |\n\n- **判定**: 差止命令が出るまでは、軸C(AI)のマイルストーン入力はない。2件の訴訟をT16の一か所で見る。判断層の空白も一つ記す — 9/18の訴訟が10/22提出の10-Qの法的手続注記(R25)に含まれているか確認していない(11/03回の「開示が報道より先に語る」という教訓)→ 次回の課題(出典:`state.triggers_next_12m[T16]`)。\n\n---\n"
+ }
+}

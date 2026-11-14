@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-14 12:29",
- "generated_at": "2026-11-14T12:29:15.885018+09:00",
+ "generated_label": "2026-11-14 18:27",
+ "generated_at": "2026-11-14T18:27:36.239166+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-14",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "매출 예상 상회하나 마진 압박으로 실질 수익성 불확실"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,29 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "프리미엄 밸류에이션(36.15X P/E)과 성장 정체로 고평가 리스크 높음",
-   "_evidence": {
-    "franchise": "Apple (AAPL) Puts Tim Cook At The Center Of A Surprise CEO Search; 소비자 프랜차이즈 최강의 지위 유지",
-    "risk5": "AAPL is Trading at a Premium at 36.15X P/E: Is the Stock Still a Hold?; Apple Shares (AAPL) Look Expensive Heading into 2027",
-    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership",
-    "owner_earnings": "Apple Earnings Review: Revenue Beats Estimates as Memory Crunch Threatens Margins"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-14",
@@ -397,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.17
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3612,
@@ -460,11 +434,7 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 수익 급성장하나 소프트웨어 판매 부진과 AI칩 가이던스 미변경으로 실적 기대 미충족"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9836,
@@ -484,7 +454,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -504,28 +474,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(69%) — 취재 필요",
-   "notes": "AI 칩 수요 핵심 공급사이나 AI 칩 10년 추정 불확실성(±30% 초과), 주가 실적 대비 약보 신호",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI revenue doubles, strong earnings guidance with growth AI labs",
-    "risk5": "Weak software sales, unchanged AI chip forecast despite strong results, post-earnings share dips despite beat",
-    "capalloc": "Strong earnings and AI revenue growth indicate positive cash generation",
-    "owner_earnings": "Broadcom beats earnings and guidance, AI revenue doubles but weak software sales and unchanged AI chip forecast temper investor enthusiasm"
-   }
+   "notes": "전망치 이상(69%) — 취재 필요"
   },
   "SPCX": {
    "as_of": "2026-11-14",
@@ -864,12 +813,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "보험 플로트의 내재가치 창출력은 확실하나 투자수익 변동성으로 순익 보고가 불안정"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -881,34 +825,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026Q3"
-   },
-   "notes": "Greg Abel 체제에서도 강력한 자본배분 규율 유지(매분기 buyback 확대)하나, 기록적 주가수준에서의 평가 신중 필요",
-   "_evidence": {
-    "franchise": "Insurance float as permanent capital source with no substitute; Berkshire's core underwriting moat intact",
-    "risk5": "Q3 profit fell 28% YoY due to investment gains shrink (earning display volatility △); Management succession formalized with Abel showing aggressive buyback discipline (mgmt fidelity ○); Stock trading at record levels raises valuation concern (price ✕); Insurance earnings missed estimates signaling business uncertainty (✕→△)",
-    "capalloc": "Berkshire more than doubled buybacks in Q3 ($9.6B reported); cash levels retreat again as acquisitions and buybacks pick up; no dilution structure maintained; debt discipline demonstrated through yen note issuance without equity raising",
-    "owner_earnings": "Q3 earnings decline reflects investment volatility, not operational deterioration; insurance underwriting and float generation remain core value drivers but earnings display masks underlying owner earnings quality"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-11-14",
@@ -1583,12 +1500,7 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "로열티 모델 안정성은 있으나 수익성 부진과 높은 주가 간의 괴리"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1600,22 +1512,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "notes": "AI·데이터센터 수요 전망은 긍정적이나 현재 주가는 기대를 선반영한 상태로 판단됨",
-   "_evidence": {
-    "franchise": "칩 설계 로열티 통행료 모델은 경제적 해자 강함",
-    "risk5": "Profit fell yet stock up 77%, Earnings beat but shares tumble 후 diving after hours - 시장 신호 불일치; 로열티 지속성 및 AI 수익화 불확실성",
-    "owner_earnings": "Earnings beat and revenue beat but stock dips in extended trading, shares tumble despite forecasts above estimates - 실적 개선과 주가 방향성 역행"
-   }
+   "confidence": "중"
   },
   "SNDK": {
    "as_of": "2026-11-14",
@@ -1650,7 +1547,11 @@
     },
     "fcf_ttm": 17365000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "C",
+     "reason": "NAND 사이클의 예측 불가능성으로 인한 순이익 변동성 극대화"
+    }
    },
    "conversion": {
     "value": 0.9986,
@@ -1670,7 +1571,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 13건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -1690,7 +1591,30 @@
     }
    ],
    "g_forward_status": "전망치 이상(102%) — 취재 필요",
-   "notes": "전망치 이상(102%) — 취재 필요"
+   "notes": "P/E 4배의 저가는 사이클 하단 신호이지만, NAND 수급 반전 시점 불확실성이 투자 판단을 어렵게 함",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "✕",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "메모리칩은 필수 부품이나 가격 결정권 제한적",
+    "risk5": "NAND 순수 사이클로 수익 예측성 최악; 대규모 자사주매입 진행 중",
+    "capalloc": "Jim Cramer Highlights Sandisk's (SNDK) Massive Buybacks After Stock Surge",
+    "owner_earnings": "The Next NAND Downturn Could Prove Bulls Right — 사이클 변동성 명시"
+   }
   },
   "STX": {
    "as_of": "2026-11-14",
@@ -1725,11 +1649,7 @@
     },
     "fcf_ttm": 4157000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "실적 비트 반복이나 주가 낙폭, CEO 매도 타이밍의 의혹으로 어닝스 신뢰도 손상"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9101,
@@ -1749,7 +1669,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -1769,29 +1689,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(105%) — 취재 필요",
-   "notes": "HDD 복점 인정되나 수요 사이클 의존도 높고, AI 수요 낙관론에도 불구하고 주가 약세 지속—모멘텀 재평가 필요",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "✕",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "_evidence": {
-    "franchise": "HDD 시장의 높은 진입장벽 및 Seagate의 점유율 우위; HAMR·FireCuda Forge 등 기술 차별화",
-    "risk5": "Earnings beat 반복에도 주가 하락('Why Seagate Stock Is Falling Despite An Earnings Beat'); CEO $17.4M 매도 직후 낙폭('CEO Sold the Day Before the Toshiba Drop'); 사이클 업종 특성상 수요 불확실성",
-    "capalloc": "연속 실적 비트로 캐시 생성력 입증, 주가 약세 시기의 매도로 유리한 자본배분 기회 상실 가능성",
-    "owner_earnings": "실적 지속 상향에도 시장 반응 약세로 보고된 이익과 실제 이해관계자 수익성 간 괴리 신호"
-   }
+   "notes": "전망치 이상(105%) — 취재 필요"
   },
   "CRWD": {
    "as_of": "2026-11-14",
@@ -1874,7 +1772,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 64.81
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1984,7 +1882,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 729.47
+    "value": 746.24
    },
    "eps_status": null,
    "roe_tangible": 1.0681,
@@ -2019,7 +1917,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 181.18
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -2054,7 +1952,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 804.34
+    "value": 787.93
    },
    "eps_status": null,
    "roe_tangible": 0.4807,
@@ -2178,5 +2076,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-14 12:30"
+ "scout_label": "2026-11-14 18:28"
 }

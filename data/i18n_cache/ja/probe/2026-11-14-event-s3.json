@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-14-event-s3",
+ "lang": "ja",
+ "src_hash": "be92408ef89c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 未公開回の引き継ぎ",
+  "md": "\nコピーは原典ではない。原文を開き直して確認できた事実のみを採用する (出典: `_probe/unpublished/` · `state.run.unpublished_runs`)。\n\n### 3-1. 2026-11-12-event(API支出上限による停止で未完了)\n\n| 項目 | 原文の内容 | 出典 |\n|---|---|---|\n| SINGULUS契約 | 2026-11-10 · ヘテロ接合(HJT)太陽電池の**ターンキー生産ライン**供給 · 追加ライン多数を計画 | ③ [SINGULUS プレスリリース](https://www.singulus.com/2026/11/10/spacex-heterojunction-solar-cells-singulus/), 2026-11-14 再閲覧 |\n| 納入 | 最初のライン **2027年上半期** | 同上 |\n| 規模表現 | 'more than 100 GW of production equipment' — セル出力ではなく設備の表現で、年間・累計の表記なし | 同上 |\n| 用途 | テキサス州Bastropの衛星生産 · Nicolls引用 'our Starmind satellites' | 同上 |\n| 資金 | SpaceXが2026-03・2026-10に資金を提供(10月は劣後担保貸付)。**金額はすべて非公開** | 同上 |\n| Anthropic伝聞 | Citrini ResearchのJukanがXに転載したセルサイドミーティングのメモ — '2027年半ば以降は延長しない'。両社とも未確認 | ⑥ [teslanorth 11/11](https://teslanorth.com/2026/11/11/anthropic-spacex-compute-contract-mid-2027/), 2026-11-14 再閲覧 |\n\n- **SINGULUS → T15新設**: C-2030-1(軌道データセンター売上)は進行維持。この契約は売上ではなく、衛星電力部品のサプライチェーンである。セル生産設備のGWはコンピュートのGWではない。コピーにある「最初のライン€6,000万超」は原文になく、使用しない (出典: 上記の表)。\n- **Anthropic伝聞 → T14新設**: 解約通知でも開示でもない → ルール新設提案⑤は未発動 · C-2029-1は進行維持。規模は顧客Bの3Q売上約$5,028M(算式: 34.5% × 14,575, [10-Q R12](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R12.htm))である。CEOの返信 'happy to take the compute back' は候補表にのみ置く (出典: `state.rule_proposals_not_applied`)。\n\n### 3-2. 2026-11-14-event(同日の先行実行)\n\n- 同じ事象(Flight 15)を扱った先行実行はゲートを通過できなかった。作成環境ではブランチを開けず、理由を確認できなかった。打ち上げ・軌道到達・衛星26基・ブースターキャッチ中止・基準価格は、一次情報源(LL2・stockanalysis)とSpaceflight Now・APで再確認して採用した。コピーにある「33基中1基停止」と「着水6分30秒」は一次記録になく、報道間でも食い違うため使用しない (出典: 1-1・1-2の表)。\n- 11/07・11/08の回はすでに `2026-11-09-event` が吸収済みである。今回は、11/08の回が待っていたFlight 15が実際に飛行したという事実のみを付け加えた(LL2) (出典: `state.run.unpublished_runs`)。\n\n---\n"
+ }
+}

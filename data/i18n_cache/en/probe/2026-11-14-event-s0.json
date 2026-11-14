@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-11-14-event-s0",
+ "lang": "en",
+ "src_hash": "98ab39d200c7",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-11-14 (KST) · run id `2026-11-14-event` · mode **event** (incremental) · previous run `2026-11-11-event-r2` (run 15) · previous monthly run `2026-11` (source: run information injected by the workflow)\n- **Reason**: The measurement-layer trigger expected date arrived for **T3 (Flight 15)** + 5 reports from the news watcher — booster explosion · west coast flight suspension · frontier AI lawsuit · Texas attorney general-elect's remarks on a Tesla merger · booster catch halted. Reports are items to verify, not grounds for judgment. The unpublished 11/12 run and an earlier run on the same day are also carried over (source: `data/spacex_watch.json` due · `_probe/context.json`)\n- **Reference price**: $139.11 — close on 2026-11-13 (Fri), −0.59%, volume 78.5 million shares. The Flight 15 launch (22:47 UTC) came after the US market close (21:00 UTC), so it is not included in this close (source: [stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), accessed 2026-11-14)\n- **Scope**: Axis B (progress on B-2027-1 and B-2027-2) · R2 check · redesign of the T3 checkpoint · T6 record · new T14, T15, T16 · T7 check. Probabilities and fair value are not recalculated (source: `prompts/monthly_run.md`)\n\n> **Conclusion first**: Flight 15 launched at **2026-11-13 22:47:36 UTC**. **Ship 42 reached orbit** and deployed 26 Starlink V3 satellites (second orbital insertion). **Booster B22 went to the Gulf of Mexico instead of a tower catch after an automatic abort, and exploded just before splashdown** — the cause has not been disclosed. The Ship's return and tower catch are **scheduled around 11/15 06:20 KST**, so they had not occurred at the time of writing. → **R2 (Ship recovery) not triggered · probabilities 25/50/25 · probability-weighted $32 · no change in the verdicts on the 29 milestones**. Only progress changes: B-2027-1 orbital insertions 1 → 2 (Ship recoveries remain 0), B-2027-2's 2026 reference value 3 → 4. Because this is a multi-day flight, the result cannot be seen with a 'launch + 1 day' checkpoint → **the T3 checkpoint moves to 11/15 (KST)**. Among the reports, the 'west coast flight suspension' rests only on a Hawaii transportation department notice, with no official FAA confirmation. The Texas attorney general-elect's remarks (T6) and the frontier AI lawsuit (new T16) are external events without filings, so they are only recorded (source: sections 1–5 below).\n\n---\n"
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "kind": "probe_trig",
+ "id": "T14",
+ "lang": "en",
+ "src_hash": "317f947531a6",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "AI customer B (Anthropic) renewal and termination checkpoint — ① Anthropic offering document (S-1/A·FWP) SpaceX provision source text (initial non-cancellation period end date, terminating party) ② termination notice disclosure (proposed rule ⑤) ③ 4Q26 10-K customer concentration note",
+  "expected": "2026-12-01 (KST, monthly checkpoint — S-1/A provision source text) → 2027-02 (4Q26 10-K customer concentration note, estimated) → 2027-04-02 (KST — assuming initial non-cancellation period ends 2027-01 or 2027-03 per press report, 90-day notice becomes possible thereafter; if fiscal half-year ends 6/30, notice deadline approximately 4/1 + 1 day, estimated)",
+  "check": "① EDGAR — Anthropic (CIK 2130357) S-1/A·FWP SpaceX compute commitment provision source text (press citation: maximum $120.5 billion through 2029 · initial non-cancellation period ends 2027-01 or 2027-03 · thereafter 90-day written notice) ② SpaceX 8-K (receipt of termination notice is material event) — proposed rule ⑤ trigger condition ③ 4Q26 10-K customer B percentage ④ 10-Q R12 customer B 3Q 34.5% (approximately $5,028M = 34.5% × 14,575, formula). Hearsay and CEO replies subject to verification; judgment by disclosure text only. Do not prefix name with procurement, contract, results, or Starship (measurement layer classification).",
+  "note": "Created 2026-11-14 (continuing unpublished 11/12 session — teslanorth 11/11 re-reviewed: source is Jukan (@jukan05) X post, 'independent verification not possible'. CEO 'happy to take the compute back' (wccftech 11/11) candidate for background only). Monitor linked to T1 — incorrect.",
+  "statusText": "Pending (created 2026-11-14: sellside meeting memo relayed by Citrini Research's Jukan on X (11/11) — 'no renewal from mid-2027 onward'. Anthropic and SpaceX unconfirmed, no termination notice or disclosure)."
+ }
+}

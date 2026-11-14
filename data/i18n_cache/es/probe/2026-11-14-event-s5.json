@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-14-event-s5",
+ "lang": "es",
+ "src_hash": "f71bd9ed5160",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores",
+  "md": "\n- **T3 — previsto vs. real**: previsto «14/11 (KST) = NET 13/11 22:45 UTC + 1 día» → el lanzamiento real fue el 13/11 a las 22:47 UTC, así que **la fecha fue correcta**. Lo equivocado es la forma del evento.\n  - ① En el nombre, la captura «**simultánea** de propulsor+Ship»: la del propulsor se canceló durante el vuelo.\n  - ② Es un vuelo de varios días de unas 22 horas, por lo que el resultado solo se confirma al día siguiente del lanzamiento. El punto de control «lanzamiento + 1 día» no llega a ver el resultado de este tipo de vuelos.\n  - **Corrección**: el punto de control de un vuelo de varios días se fija en la fecha KST de la hora prevista de regreso → **2026-11-15 (KST)**, y luego el 01/12. La primera detección es la confirmación del resultado en LL2 de la capa de medición (fuente: `state.triggers_next_12m[T3]`).\n- **T6**: registro 2-1. El vigilante vinculó esta noticia a T2, y fue un error.\n- **T7**: ⓓ ya pasó el 12/11, fecha solicitada para la sesión informativa de SpaceX. No se encontraron materiales de oficinas legislativas ni noticias que anuncien su celebración, aplazamiento o celebración a puerta cerrada (búsqueda del 14/11). La falta de respuesta se anota como «no divulgado». El siguiente punto de control es el **19/11 (KST — ⓒ Comité de Asignaciones de la Cámara 18/11 + 1 día)** (fuente: [carta de Blumenthal](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf)).\n- **T14 nuevo — renovación o rescisión del cliente de IA B (Anthropic)**: las fechas previstas son, en orden, **2026-12-01 (KST, texto original de la cláusula del S-1/A)** → 2027-02 (10-K, estimado) → **2027-04-02 (KST, estimado)** (fuente: 3-1 · `state.triggers_next_12m[T14]`).\n- **T15 nuevo — cadena de suministro de células solares de Starmind**: las fechas previstas son, en orden, **2026-12-01 (KST)** → 2027-02 (10-K, estimado) → **2027-07-01 (KST — fin de la entrega de la primera línea «primer semestre de 2027» + 1 día)** (fuente: 3-1 · `state.triggers_next_12m[T15]`).\n- **T16 nuevo — litigio de IA de frontera**: las fechas previstas son, en orden, **2026-12-01 (KST)** → 2027-02 (nota de procedimientos legales del 10-K, estimado) (fuente: 2-2 · `state.triggers_next_12m[T16]`).\n- **T1**: el vigilante vinculó a T1 la línea de células solares y el mensaje de Anthropic, y fue un error (corresponden a T15 y T14, respectivamente). T1, T2, T4, T5 y T8~T13 no presentan cambios (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

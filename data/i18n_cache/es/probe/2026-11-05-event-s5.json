@@ -4,12 +4,11 @@
  "lang": "es",
  "src_hash": "cf3fbb10978d",
  "model": "claude-sonnet-5-5",
- "at": "2026-11-05 12:41",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[2§md] 숫자: 원문에 없는 숫자 8.667M",
-  "[2§md] 숫자: 원문의 숫자가 빠짐 8,667M"
- ]
+ "at": "2026-11-14 18:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores",
+  "md": "\n- **T5**: se mantiene el estado «confirmación parcial». En la nota se registran por capas las noticias de sindicación del 4/11 (confirmado por Reuters: unos $40 mil millones · hasta $500 millones de preventa / reproducido por terceros: préstamo de $8,3 mil millones · bonos · PIMCO · anticipo de $7 mil millones · $47,3 mil millones). Nuevo check ④: «noticia de sindicación completada y fijación de precio → el 8-K de cierre llega 4 días hábiles después». Fecha prevista **2027-01-07 sin cambios** + punto de control mensual **2026-12-01**. Parte de la capa de medición: error de vinculación a T1 por parte del vigilante (fuente: sección 1 · `state.triggers_next_12m[T5]`).\n- **T9**: el nombre se amplía a «red terrestre de Starlink Mobile — punto de control del acuerdo Boost/EchoStar (ⓐ) + Qualcomm de construcción propia (ⓑ)». En check se añaden ⑦ divulgación de SpaceX de contratos de equipos, torres y backhaul (8-K Item 1.01 · compromisos de compra del 10-K) ⑧ tendencia de ingresos de infraestructura en las divulgaciones trimestrales de Qualcomm (indirecto) ⑨ verificación completada del 10-Q del 3T26 de EchoStar — ingresos inalámbricos de $905,2 M · valor contable de licencias de SpaceX de $8.667 M · incertidumbre sobre el momento del cierre. Se mantiene el punto de control del 01/12 (fuente: sección 2 · `state.triggers_next_12m[T9]`).\n- **T7**: sin cambios — según esta edición (KST 5/11 = EE. UU. 4/11), ⓓ plazo de respuesta a Blumenthal 5/11 · ⓔ Casa Blanca 6/11 **aún no llegados** (fuente: `state.triggers_next_12m[T7]`).\n- **T8 ②**: plazo del depósito de DA 26-1078 el 4/11 (EE. UU.) — **no verificable** (FCC ICFS y fcc.report 403 en esta edición, sin noticias). Junto con el plazo de aceptación del 5/11, pasa a la próxima edición (fuente: `state.triggers_next_12m[T8]` · [fcc.report](https://fcc.report/IBFS/SAT-LOA-20250206-00024) 403).\n- **T3·T4**: LL2 — Flight 15 NET 2026-11 (por mes, sin fijar) · Vulcan LV-01 11/13 **«Go for Launch»** · Ariane 64 LE-04 11/23. Sin cambios (fuente: `data/spacex_watch.json launches`, 2026-11-05 08:32 KST).\n- **T1·T2·T6·T10·T11**: sin cambios (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
 }
