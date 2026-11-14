@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s8",
+ "lang": "es",
+ "src_hash": "68b2024fa86c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Tres datos para verificar directamente antes del próximo ciclo",
+  "md": "\n1. **Refuerzo de la base de R2**: el resumen oficial de vuelo de SpaceX sobre la captura de la Ship en el Flight 15 (página de vuelos de spacex.com · cuenta de X de SpaceX) o una segunda cobertura de primer nivel (Reuters·Bloomberg·WSJ·FT·AP). Si se confirma cualquiera de ellos, se registran en el mismo ciclo la activación de R2 y una recuperación de B-2027-1 (fuente: `state.open_questions_for_next_run` n.º 1).\n2. **FAA**: si hay designación de investigación de accidente del Flight 15 (pérdida del propulsor) y la licencia del Flight 16 (fuente: `state.triggers_next_12m[T3]` check ③④).\n3. **Puntos de verificación existentes**: T7 ⓒ 11/18 · T2 bloqueo 12/8 · T12 votación 12/9 · 8-K de fusión con Tesla (T6) · mensual 12/01 (fuente: `state.triggers_next_12m`).\n\n---\n\n### Apéndice: resumen de hechos confirmados en este ciclo (fuente·fecha)\n\n| Hecho | Valor | Fuente·fecha |\n|---|---|---|\n| Estado del Flight 15 | 'Launch Successful' · actualizado 2026-11-14 21:23:58 UTC | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), consultado el 2026-11-15 KST |\n| Registro de aterrizaje de la Ship | success true · 'returned to its launch site at Starbase' | ídem |\n| Registro de aterrizaje del propulsor | success false · amerizaje en el golfo de México | ídem |\n| Cobertura de la captura de la Ship (primer nivel) | captura en la parte superior por los brazos de la torre de lanzamiento — 11/14 16:14 EST | [CNBC](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html) |\n| Cobertura de la captura de la Ship (⑥) | se posó en los brazos hacia las 2120 GMT | [Space.com](https://www.space.com/news/live/spacex-starship-flight-15-live-updates-nov-14-2026-starship-first-double-landing-attempt) |\n| Último en EDGAR | 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) | [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json), consultado el 2026-11-15 KST |\n| Precio de referencia | $139,11 (11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| Bono del Tesoro de EE. UU. a 10 años | 5,10 % (2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

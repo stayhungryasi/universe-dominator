@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s1",
+ "lang": "en",
+ "src_hash": "fb2dc74336f1",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. Event Comparison — The Run Cycle Came Before the Outcome",
+  "md": "\n### 1-1. First record (④ launch record, queried at time of writing)\n\n| Item | Value | Source |\n|---|---|---|\n| Launch | 2026-11-13 22:47:36 UTC | ④ [LL2 launch record](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), queried 2026-11-15 KST |\n| Status | **'Payload Deployed'** (outcome not confirmed) · last updated **2026-11-14 10:48:08 UTC** | Same as above |\n| Last line of updates | 2026-11-14 00:59 UTC 'All Starlink satellites have been deployed.' | Same as above |\n| Booster landing record | Attempted · **failed** — stopped before the landing burn, so it did not attempt a return to the launch site and splashed down in the Gulf of Mexico | Same as above |\n| Ship landing record | Attempt planned · **result null** — 'Ship 42 will attempt to return to its launch site at Starbase' | Same as above |\n| Ship scheduled return | 22.5 hours after launch, about 21:20 UTC (11/14) = **11/15 06:20 KST** | ⑥ [Spaceflight Now 11/13](https://spaceflightnow.com/2026/11/13/live-coverage-starship-flight-15-attempts-to-recover-full-vehicle-in-double-launch-pad-catch/) |\n\n### 1-2. What reports added (⑤·⑥ — to be verified)\n\n| Item | Content | Source |\n|---|---|---|\n| Booster reason | SpaceX broadcast commentator Dan Huot: the booster 'detected a guidance and navigation issue and canceled the catch on its own' and switched to a splashdown at sea. This was a remark made during the broadcast and is not the company's official flight summary | ⑥ [TNW 11/14](https://thenextweb.com/news/spacex-starship-flight-15-booster-catch-aborted) |\n| Ship 42 | Reached orbit · deployed 26 Starlink satellites · if a problem arises, it can abandon the return and be sent to the ocean | Same as above |\n| FAA | No official announcement of a Flight 15 mishap designation or regarding debris was found in searches (2026-11-15 KST). The Hawaii Department of Transportation post that 'West Coast flights were halted by SpaceX debris' also still lacks FAA confirmation | 0 search results |\n\n**Verdict**:\n\n1. **R2 (Ship recovery success by 2027-06)**: **Not triggered** — the return has not yet occurred (source: table 1-1).\n2. **B-2027-1**: Remains in progress — 2 orbital insertions, 0 Ship recoveries. The progress text states 'before return' and the new definition (source: `state.milestones` B-2027-1).\n3. **B-2027-2**: Remains in progress — 2026 reference value of 4, no change (source: `state.milestones` B-2027-2).\n4. **Booster reason**: It is at the level of broadcast commentary, so it is not a milestone input. It will be recorded again once an official company record appears (source: table 1-2).\n\n---\n"
+ }
+}

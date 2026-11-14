@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s5",
+ "lang": "en",
+ "src_hash": "23abb2c0cd12",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers",
+  "md": "\n- **T3 — expected vs actual**: The previous run revised the checkpoint to the 'date 11/16 (KST)'. In practice, the measurement layer's LL2 result-confirmation detection woke the engine first, about 3 hours after the result. The expectation was not wrong. We worked as written: 'date is auxiliary, primary detection is LL2'. The remaining share (R2 evidence reinforcement) is resolved not by a date but by the arrival of documents. So the checkpoint is set at **monthly 12/01** (source: `state.triggers_next_12m[T3]` prev_2026_11_15_r2).\n- **T7**: ⓒ 11/19 (KST) pending (source: [Blumenthal letter](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf)).\n- **T1·T2·T4~T6·T8~T16**: No change. For reports that resurfaced in due, the previous runs had already corrected the linkage (source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

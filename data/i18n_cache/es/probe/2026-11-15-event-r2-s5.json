@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s5",
+ "lang": "es",
+ "src_hash": "23abb2c0cd12",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores",
+  "md": "\n- **T3 — previsto vs. real**: el ciclo anterior corrigió el punto de verificación a 'fecha 11/16 (KST)'. En realidad, la detección de resultado confirmado en LL2 de la capa de medición despertó el motor primero, unas 3 horas después del resultado. La previsión no fue errónea. Se trabajó tal como se escribió: 'la fecha es auxiliar, la detección primaria es LL2'. La parte restante (refuerzo de la base de R2) no se resuelve por la fecha, sino cuando llegue el documento. Por eso el punto de verificación se fija en el **mensual 12/01** (fuente: `state.triggers_next_12m[T3]` prev_2026_11_15_r2).\n- **T7**: en espera de ⓒ 11/19 (KST) (fuente: [carta de Blumenthal](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf)).\n- **T1·T2·T4~T6·T8~T16**: sin cambios. En las noticias que volvieron a sonar en due, los ciclos anteriores ya corrigieron la conexión (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

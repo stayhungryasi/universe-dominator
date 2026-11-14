@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s8",
+ "lang": "en",
+ "src_hash": "eed6563dac33",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Three Data Points to Check Directly Before the Next Issue",
+  "md": "\n1. **Flight 15 Ship 42 return result** (around 11/15 06:20 KST) is judged using the definition in Section 2. The basis is the LL2 Ship landing success field and either the official SpaceX flight summary or two top-tier news reports. Also check the company's official record of the reason for the booster abort and any FAA mishap investigation designation (Source: [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/)).\n2. Check the **original complaint text and case number of the 11/12 SF Superior Court filing** (T16). Because the 9/18 lawsuit was not in the 10-Q, the legal proceedings note in the 4Q26 10-K is the next disclosure checkpoint (Source: [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm)).\n3. **Existing checkpoints**: T7 ⓒ 11/18 · T2 12/8 lock-up · T12 12/9 vote · Tesla merger 8-K (T6) · monthly 12/01 (Source: `state.triggers_next_12m`).\n\n---\n\n### Appendix: Summary of Facts Confirmed This Issue (Source · Date)\n\n| Fact | Value | Source · Date |\n|---|---|---|\n| Flight 15 status (at time of writing) | 'Payload Deployed' · updated 2026-11-14 10:48:08 UTC · Ship landing result null | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), queried 2026-11-15 KST |\n| Booster landing record | Aborted before landing burn · no launch-site return attempt · splashdown in the Gulf of Mexico | Same as above |\n| Booster abort reason (broadcast commentary) | 'Guidance and navigation issue detected' — Dan Huot | [TNW](https://thenextweb.com/news/spacex-starship-flight-15-booster-catch-aborted), 2026-11-14 |\n| Scheduled Ship return | About 21:20 UTC 11/14 = 06:20 KST 11/15 | [Spaceflight Now](https://spaceflightnow.com/2026/11/13/live-coverage-starship-flight-15-attempts-to-recover-full-vehicle-in-double-launch-pad-catch/), 2026-11-13 |\n| 10-Q litigation reserve | $350M (9/30) · $399M (2025-12-31) · 9/18 antitrust lawsuit not disclosed | [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm), filed 2026-10-22 |\n| Latest on EDGAR | 11/13 SC 13G/A → 11/06 8-K (5.02) → 10/26 8-K (8.01) | [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json), queried 2026-11-15 KST |\n| Reference share price | $139.11 (11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| US 10-year yield | 5.10% (2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

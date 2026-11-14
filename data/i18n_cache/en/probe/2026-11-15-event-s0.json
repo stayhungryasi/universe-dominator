@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s0",
+ "lang": "en",
+ "src_hash": "1f1d77e51340",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-11-15 (KST, 00:00 hour — UTC 11/14 afternoon) · run id `2026-11-15-event` · mode **event** (incremental) · previous run `2026-11-14-event` (run 16) · previous monthly run `2026-11` (source: workflow-injected run info)\n- **Reason**: The measurement-layer trigger's expected date arrived for **T3 (Flight 15 — Ship return and tower catch result)**. The remaining due items (T7 11/13 · solar cell line · Anthropic message · OSC loan · booster explosion · west coast flights · frontier AI lawsuit · Texas attorney general-elect · booster catch halt) are events already handled by the 11/11–11/14 runs that resurfaced. The 4 unpublished runs (11/06·07·08·12) are also picked up (source: `data/spacex_hourly.json` due · `_probe/context.json`)\n- **Reference share price**: $139.11 — close on 2026-11-13 (Fri). There was no new trading day at execution time (source: [stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/))\n- **Scope**: R2 definition finalized · T3 checkpoint redesigned · B-2027-1 progress wording · T16 (10-Q legal proceedings note review) · T7 check. Probabilities and fair value are not recalculated (source: `prompts/monthly_run.md`)\n\n> **Conclusion first**: This run executed **before the result was visible**. The measurement layer woke the engine at 11/15 00:00 KST, but Ship 42's scheduled return is 11/14 21:20 UTC, i.e. **11/15 06:20 KST**. At the time of writing, the LL2 record shows status 'Payload Deployed' and **Ship landing result null** (last updated 11/14 10:48:08 UTC). → **R2 not triggered · probabilities 25/50/25 · probability-weighted $32 · no change in the verdicts of the 29 milestones**. In the absence of a result, the first task left by the previous run was completed. **R2's 'successful recovery' was defined before the result**: only cases where the vehicle is recovered **by a tower catch or a ground landing** after orbital insertion count. Ocean splashdowns and total loss during a catch are excluded, and reflight certification is not required. As the reason for the booster catch cancellation, a remark by the SpaceX broadcast commentator about 'a guidance and navigation issue detected' was reported. It is not the company's official flight summary. No FAA mishap investigation designation was found. The T3 date checkpoint fired 6 hours before the event — the expected method is being revised (source: sections 1–5 below).\n\n---\n"
+ }
+}

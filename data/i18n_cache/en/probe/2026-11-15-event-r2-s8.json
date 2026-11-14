@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s8",
+ "lang": "en",
+ "src_hash": "68b2024fa86c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Three data points to check directly before the next run",
+  "md": "\n1. **R2 evidence reinforcement**: SpaceX's official flight summary of the Flight 15 Ship catch (spacex.com flight page · SpaceX X account) or a second top-tier report (Reuters·Bloomberg·WSJ·FT·AP). If either is confirmed, R2 triggering and one recovery for B-2027-1 are recorded in the same run (source: `state.open_questions_for_next_run` item 1).\n2. **FAA**: Whether a mishap investigation is designated for Flight 15 (booster loss) and the Flight 16 license (source: `state.triggers_next_12m[T3]` check ③④).\n3. **Existing checkpoints**: T7 ⓒ 11/18 · T2 12/8 lock-up · T12 12/9 vote · Tesla merger 8-K (T6) · monthly 12/01 (source: `state.triggers_next_12m`).\n\n---\n\n### Appendix: Summary of facts confirmed in this run (source · date)\n\n| Fact | Value | Source · date |\n|---|---|---|\n| Flight 15 status | 'Launch Successful' · updated 2026-11-14 21:23:58 UTC | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), queried 2026-11-15 KST |\n| Ship landing record | success true · 'returned to its launch site at Starbase' | same as above |\n| Booster landing record | success false · Gulf of Mexico splashdown | same as above |\n| Ship catch report (tier 1) | Caught at the top by the launch tower arms — 11/14 16:14 EST | [CNBC](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html) |\n| Ship catch report (⑥) | Settled onto the arms at about 2120 GMT | [Space.com](https://www.space.com/news/live/spacex-starship-flight-15-live-updates-nov-14-2026-starship-first-double-landing-attempt) |\n| EDGAR latest | 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) | [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json), queried 2026-11-15 KST |\n| Reference share price | $139.11 (11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| US 10-year yield | 5.10% (2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

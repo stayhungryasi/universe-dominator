@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s6",
+ "lang": "en",
+ "src_hash": "ca7ce7ecf38b",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Triggers",
+  "md": "\n- **T3 — expected vs. actual**: The expectation '11/15 (KST) = the KST date of the scheduled return time' was wrong. The measurement layer fired at **midnight** (00:00 KST) on that date, while the return occurred at 06:20 KST that day. The run took place about 6 hours before the result.\n  - Wrong premise: a date checkpoint fires at the start of that date. If the event occurs that morning, the result cannot be seen.\n  - **Revision**: checkpoint = the first KST midnight after the scheduled event time → **2026-11-16 (KST)**, then 12/01. The result itself will be picked up first by the measurement layer's LL2 result-confirmation detection (source: `state.triggers_next_12m[T3]` prev_2026_11_15).\n- **T7**: ⓓ There are still no congressional office materials or press reports indicating whether the 11/12 SpaceX briefing was held (searched 11/15 KST). The next checkpoint is **11/19 (KST — ⓒ House Appropriations Committee 11/18 + 1 day)** (source: [Blumenthal letter](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf)).\n- **T16**: Section 3 — the 10-Q has no 9/18 lawsuit; the checkpoint remains the 4Q26 10-K (source: [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm)).\n- **T1·T2·T4–T6·T8–T15**: no change. For reports that fired again at due, the previous runs had already corrected the linkage (source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

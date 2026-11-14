@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s2",
+ "lang": "en",
+ "src_hash": "af5eec7bae44",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. R2 'successful recovery' definition — fixed before the result",
+  "md": "\nThe previous run wrote: 'If the definition is chosen after seeing the result, the rule bends to fit the result.' This run took place 6 hours before the return. So this is the last point at which the definition can be fixed (source: `state.open_questions_for_next_run` (previous) · table 1-1).\n\n| Category | Content |\n|---|---|\n| **Accepted** | The company **physically recovers** a Ship that completed an orbital flight. ① After a launch-site tower catch, the vehicle remains held by the tower ② After a ground or platform landing, the vehicle remains intact |\n| **Excluded** | Ocean splashdown (including undamaged or precision splashdown — the vehicle is not recovered) · total loss (explosion, fire, crash) during a catch attempt before being held · flight aborted before return · recovery from a flight without orbital insertion |\n| **Not required** | Reusable condition (re-flight certification). That is covered by B-2028-1 (same Ship re-flown 3 times). An accident during ground handling after being held is recorded separately and the judgment is not reversed |\n| **Basis** | LL2 Ship landing success=true **and** (SpaceX official flight summary **or** 2 tier-1 news reports). If results conflict, it is left undetermined and re-examined against primary sources in the next run |\n| **Reason** | The milestone means 'the first gate of upper-stage reuse — is the vehicle recovered?' An ocean splashdown leaves the vehicle in the sea and is not a reuse path. Requiring re-flight certification would overlap with B-2028-1 |\n\n- The same definition is also used for the 'Ship recovery' column of B-2027-1 and for T3. Booster recovery is not counted (source: `state.definitions.ship_recovery` · `state.probability_adjustment_rules` R2).\n- This is a definition being fixed, not a number, so the probabilities do not move. Nor is it a proposal for a new rule. It fills in the definition of existing rule R2 (source: `prompts/monthly_run.md` item 2 — 'if a definition is ambiguous, fix the definition first and record it in state').\n\n---\n"
+ }
+}

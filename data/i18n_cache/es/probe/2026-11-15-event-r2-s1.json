@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s1",
+ "lang": "es",
+ "src_hash": "86425722953f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "1. Contraste del suceso — resultado del Flight 15",
+  "md": "\n### 1-1. Registro primario (④ registro de lanzamiento, consultado el 2026-11-15 KST)\n\n| Elemento | Valor | Fuente |\n|---|---|---|\n| Estado | **'Launch Successful'** · sin failreason | ④ [Registro de lanzamiento de LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/) |\n| Última actualización | 2026-11-14 21:23:58 UTC | Ídem |\n| Última línea de actualización | 2026-11-14 21:23 UTC 'Starship Ship 42 has returned to Starbase.' | Ídem |\n| Registro de aterrizaje de la Ship | attempt true · **success true** · 'Ship 42 has returned to its launch site at Starbase.' | Ídem |\n| Registro de aterrizaje del propulsor | attempt true · success false — se interrumpió antes de la combustión de aterrizaje, por lo que no intentó regresar al sitio de lanzamiento y amerizó en el golfo de México | Ídem |\n| Lanzamiento | 2026-11-13 22:47:36 UTC | Ídem |\n\nLa expresión de LL2 para el aterrizaje de la Ship es «regreso». Solo con este registro no se puede distinguir si fue una captura en la torre o un aterrizaje en tierra. Sin embargo, por definición ambos entran en el rango admitido (fuente: `state.definitions.ship_recovery`).\n\n### 1-2. Prensa (⑤ primer nivel · ⑥ otros — objeto de verificación)\n\n| Nivel | Contenido | Fuente |\n|---|---|---|\n| ⑤ Primer nivel | 'SpaceX, in a historic first, catches upper stage of its Starship rocket' — el brazo mecánico de la torre de lanzamiento atrapó la etapa superior que regresaba de la órbita. Publicado el 11/14 a las 16:14 EST. El artículo no menciona el estado de la nave tras la captura. Señala que el propulsor explotó antes de amerizar en el golfo de México | [CNBC 11/14](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html) |\n| ⑥ | Blog en vivo — 'SpaceX catches Ship with chopsticks for 1st time ever!', se posó en el brazo hacia las 2120 GMT | [Space.com en vivo](https://www.space.com/news/live/spacex-starship-flight-15-live-updates-nov-14-2026-starship-first-double-landing-attempt) (confirmado mediante el resumen de búsqueda — el texto completo no se pudo renderizar en la herramienta) |\n| ① Empresa | Resumen oficial del vuelo de SpaceX — la página de spacex.com se renderizó en la herramienta solo como la palabra 'SpaceX'. **Sin confirmar** | [spacex.com/updates](https://www.spacex.com/updates) |\n| ⑤ Otros de primer nivel | Artículos de Reuters, AP, Bloomberg, WSJ y FT sobre el resultado de la captura — **no se encontraron** en 3 intentos de búsqueda (solo hay artículos sobre el lanzamiento y el propulsor, 2026-11-15 KST) | Resultados de búsqueda |\n\n---\n"
+ }
+}

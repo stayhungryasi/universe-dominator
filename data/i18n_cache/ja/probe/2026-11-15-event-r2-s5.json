@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s5",
+ "lang": "ja",
+ "src_hash": "23abb2c0cd12",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. トリガー",
+  "md": "\n- **T3 — 予想 vs 実際**: 直前回次は確認点を「11/16(KST)の日付」に直した。実際には、測定層の LL2 結果確定検知が結果の約3時間後にエンジンを先に起こした。予想が誤っていたわけではない。「日付は補助、一次検知は LL2」と記したとおりに動いた。残りの分担(R2 の根拠補強)は、日付ではなく文書が届いて初めて解消する。そのため確認点を**月次 12/01** に置く (出典: `state.triggers_next_12m[T3]` prev_2026_11_15_r2)。\n- **T7**: ⓒ 11/19(KST)待機 (出典: [Blumenthal 書簡](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf))。\n- **T1·T2·T4~T6·T8~T16**: 変化なし。due に再び鳴った報道は、直前の回次が関連づけを正した (出典: `state.triggers_next_12m`)。\n\n---\n"
+ }
+}

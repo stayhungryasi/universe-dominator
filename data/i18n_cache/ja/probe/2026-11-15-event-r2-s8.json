@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s8",
+ "lang": "ja",
+ "src_hash": "68b2024fa86c",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 次回次の前に直接確認するデータ3つ",
+  "md": "\n1. **R2 の根拠補強**: Flight 15 Ship キャッチに関する SpaceX の公式飛行要約(spacex.com の飛行ページ・SpaceX の X アカウント)、または2件目の一級報道(Reuters·Bloomberg·WSJ·FT·AP)。どちらか1つでも確認できれば、R2 発動と B-2027-1 回収1回を同じ回次に記載する (出典: `state.open_questions_for_next_run` 1番)。\n2. **FAA**: Flight 15 事故調査の指定の有無(ブースター喪失)と Flight 16 の免許 (出典: `state.triggers_next_12m[T3]` check ③④)。\n3. **既存の確認点**: T7 ⓒ 11/18 · T2 12/8 ロックアップ · T12 12/9 議決 · Tesla 合併 8-K(T6) · 月次 12/01 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回の回次で確認した事実の要約(出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| Flight 15 の状態 | 'Launch Successful' · 更新 2026-11-14 21:23:58 UTC | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), 2026-11-15 KST 照会 |\n| Ship 着陸記録 | success true · 'returned to its launch site at Starbase' | 同上 |\n| ブースター着陸記録 | success false · メキシコ湾に着水 | 同上 |\n| Ship キャッチ報道(一級) | 発射塔のアーム上部でキャッチ — 11/14 16:14 EST | [CNBC](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html) |\n| Ship キャッチ報道(⑥) | 約 2120 GMT にアームに着座 | [Space.com](https://www.space.com/news/live/spacex-starship-flight-15-live-updates-nov-14-2026-starship-first-double-landing-attempt) |\n| EDGAR 最新 | 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) | [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json), 2026-11-15 KST 照会 |\n| 基準株価 | $139.11(11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| 米10年債 | 5.10%(2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

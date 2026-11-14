@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s3",
+ "lang": "en",
+ "src_hash": "503a71d851e9",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Frontier AI lawsuit (T16) — checked against the filing text",
+  "md": "\nThis is a gap left by the previous run. We checked whether the 9/18 federal antitrust class action (Buist, N.D. Cal. 3:26-cv-10693) is already included in the legal proceedings note of the 10-Q filed 10/22 (source: `state.open_questions_for_next_run` (previous)).\n\n| Item | Content of the text | Source |\n|---|---|---|\n| Note | Note 16 'Commitments and Contingencies' | ① [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm) |\n| Cases listed | 10 — EU Digital Services Act fine €120 million · Youtoo patent verdict $105 million + prejudgment interest $67 million · music copyright suit closed (7/16) · Netherlands SDBN·SOMI · Search and Share patent · Grok image generation suit · NAACP air pollution suit · Grok.com tracking class action · Tennessee construction dispute (lien·counterclaim about $569 million) | Same as above |\n| 9/18 antitrust suit | **None** | Same as above |\n| Litigation reserve | $350M (2026-09-30) · $399M (2025-12-31) | Same as above |\n\n- **Determination**: At the time of the 3Q filing, the company did not list the 9/18 suit as a legal proceeding. The text does not say whether the reason is a judgment that it is 'not material'. So the checkpoint remains the 4Q26 10-K legal proceedings note. The original complaint and case number for the 11/12 SF Superior Court filing are still unconfirmed. With no injunction, there is also no Axis C milestone input (source: `state.triggers_next_12m[T16]`).\n\n---\n"
+ }
+}

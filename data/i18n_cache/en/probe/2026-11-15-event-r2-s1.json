@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s1",
+ "lang": "en",
+ "src_hash": "86425722953f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. Event Cross-check — Flight 15 Result",
+  "md": "\n### 1-1. Primary record (④ launch record, queried 2026-11-15 KST)\n\n| Item | Value | Source |\n|---|---|---|\n| Status | **'Launch Successful'** · no failreason | ④ [LL2 launch record](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/) |\n| Last updated | 2026-11-14 21:23:58 UTC | Same as above |\n| Last line of updates | 2026-11-14 21:23 UTC 'Starship Ship 42 has returned to Starbase.' | Same as above |\n| Ship landing record | attempt true · **success true** · 'Ship 42 has returned to its launch site at Starbase.' | Same as above |\n| Booster landing record | attempt true · success false — aborted before the landing burn; did not attempt a return to the launch site and splashed down in the Gulf of Mexico | Same as above |\n| Launch | 2026-11-13 22:47:36 UTC | Same as above |\n\nThe LL2 wording for the Ship landing is 'returned'. This record alone does not settle whether it was a tower catch or a ground landing. By definition, however, both fall within the accepted range (source: `state.definitions.ship_recovery`).\n\n### 1-2. Media reports (⑤ top-tier · ⑥ other — to be verified)\n\n| Grade | Content | Source |\n|---|---|---|\n| ⑤ Top-tier | 'SpaceX, in a historic first, catches upper stage of its Starship rocket' — the launch tower's mechanical arms caught the upper stage returning from orbit. Posted 11/14 16:14 EST. The article does not describe the vehicle's condition after the catch. It stated that the booster exploded before splashing down in the Gulf of Mexico | [CNBC 11/14](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html) |\n| ⑥ | Live blog — 'SpaceX catches Ship with chopsticks for 1st time ever!', settled onto the arms at about 2120 GMT | [Space.com live](https://www.space.com/news/live/spacex-starship-flight-15-live-updates-nov-14-2026-starship-first-double-landing-attempt) (confirmed via search summary — the body failed to render in the tool) |\n| ① Company | SpaceX official flight summary — the spacex.com page rendered in the tool as just the single word 'SpaceX'. **Unconfirmed** | [spacex.com/updates](https://www.spacex.com/updates) |\n| ⑤ Other top-tier | Catch-result articles from Reuters, AP, Bloomberg, WSJ and FT — **not found** in 3 searches (only launch and booster articles, 2026-11-15 KST) | Search results |\n\n---\n"
+ }
+}

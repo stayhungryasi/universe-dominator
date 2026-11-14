@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s2",
+ "lang": "en",
+ "src_hash": "3cd9273ffdef",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. R2 Judgment — Evidence Requirements Are Not Lowered to Fit the Outcome",
+  "md": "\nWe apply as-is the definition and evidence requirements the previous round wrote before the return (source: `state.definitions.ship_recovery` — fixed 2026-11-15).\n\n| Requirement | This round | Met |\n|---|---|---|\n| Orbital-insertion flight | LL2 — Starlink satellite deployment completed (11/14 00:59 UTC) | ✓ |\n| Vehicle recovered by tower catch or ground landing | LL2 'return' · CNBC·Space.com 'catch' | ✓ (per reports) |\n| Evidence ① LL2 Ship landing success=true | success true | ✓ |\n| Evidence ② SpaceX official flight summary **or** 2 top-tier reports | Official summary unconfirmed · 1 top-tier (CNBC) | **1/2** |\n| Conflict between sources | None | — |\n\n**Judgment: not triggered — awaiting judgment (evidence 1/2)** (source: table above).\n\n- The definition only stated 'if results conflict, untested' and did not cover cases where evidence is insufficient. This round treats the insufficient case the same way. It is not counted until confirmed, and the sources will be checked again next round. This is not a new rule but the result of reading the requirements as written (source: `state.definitions.ship_recovery.evidence`).\n- The event is likely to have occurred. Three independent sources (LL2·CNBC·Space.com) say the same thing. Even so, this is exactly why the definition was written before the result. If requirements are reduced when the result is welcome, the rule bends to fit the result (source: `state.definitions.ship_recovery.rationale`).\n- To do in the round when the evidence is filled in — trigger R2: bull +5 · bear −5 → **30/50/20** (formula: 0.25+0.05 / 0.50 / 0.25−0.05). The probability-weighted value is recalculated from scenario values in that round. Enter 1 in the B-2027-1 Ship recovery cell (source: `state.probability_adjustment_rules` R2).\n- The vehicle's condition after the catch (whether it remained intact while held) is not in the CNBC article. Space.com wrote 'settled'. The definition states that an accident during ground handling after being caught is recorded separately and the judgment is not reversed (source: table 1-2 · `state.definitions.ship_recovery.rule`).\n\n---\n"
+ }
+}

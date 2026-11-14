@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s1",
+ "lang": "ja",
+ "src_hash": "86425722953f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. 事件の照合 — Flight 15 の結果",
+  "md": "\n### 1-1. 一次記録(④ 打ち上げ記録、2026-11-15 KST 照会)\n\n| 項目 | 値 | 出典 |\n|---|---|---|\n| 状態 | **'Launch Successful'** · failreason なし | ④ [LL2 打ち上げ記録](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/) |\n| 最終更新 | 2026-11-14 21:23:58 UTC | 同上 |\n| アップデート最終行 | 2026-11-14 21:23 UTC 'Starship Ship 42 has returned to Starbase.' | 同上 |\n| Ship 着陸記録 | attempt true · **success true** · 'Ship 42 has returned to its launch site at Starbase.' | 同上 |\n| ブースター着陸記録 | attempt true · success false — 着陸燃焼前に中断となり、発射場への帰還を試みずメキシコ湾に着水 | 同上 |\n| 打ち上げ | 2026-11-13 22:47:36 UTC | 同上 |\n\nLL2 の Ship 着陸の文言は「帰還」である。タワーでのキャッチか地上への着地かは、この記録だけでは判別できない。ただし定義上、どちらも認定範囲である(出典: `state.definitions.ship_recovery`)。\n\n### 1-2. 報道(⑤ 一級 · ⑥ その他 — 確認対象)\n\n| 等級 | 内容 | 出典 |\n|---|---|---|\n| ⑤ 一級 | 'SpaceX, in a historic first, catches upper stage of its Starship rocket' — 発射タワーの機械アームで軌道から帰還した上段を捕捉した。掲載 11/14 16:14 EST。キャッチ後の機体の状態は記事にない。ブースターはメキシコ湾に着水する前に爆発したと書かれている | [CNBC 11/14](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html) |\n| ⑥ | ライブブログ — 'SpaceX catches Ship with chopsticks for 1st time ever!'、約 2120 GMT にアームに収まった | [Space.com ライブ](https://www.space.com/news/live/spacex-starship-flight-15-live-updates-nov-14-2026-starship-first-double-landing-attempt) (検索要約で確認 — 本文はツールでのレンダリングに失敗) |\n| ① 企業 | SpaceX 公式のフライト要約 — spacex.com のページがツール上で 'SpaceX' の一語のみ表示された。**未確認** | [spacex.com/updates](https://www.spacex.com/updates) |\n| ⑤ その他の一級 | Reuters・AP・Bloomberg・WSJ・FT のキャッチ結果記事 — 3回の検索で**見つからなかった**(打ち上げ・ブースターの記事のみ、2026-11-15 KST) | 検索結果 |\n\n---\n"
+ }
+}

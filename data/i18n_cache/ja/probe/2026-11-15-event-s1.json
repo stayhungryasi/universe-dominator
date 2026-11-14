@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s1",
+ "lang": "ja",
+ "src_hash": "fb2dc74336f1",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. 事件の対照 — 周回が結果より先に進んだ",
+  "md": "\n### 1-1. 一次記録(④ 打ち上げ記録、作成時点での照会)\n\n| 項目 | 値 | 出典 |\n|---|---|---|\n| 打ち上げ | 2026-11-13 22:47:36 UTC | ④ [LL2 打ち上げ記録](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/)、2026-11-15 KST 照会 |\n| 状態 | **'Payload Deployed'**(結果未確定) · 最終更新 **2026-11-14 10:48:08 UTC** | 同上 |\n| アップデート最終行 | 2026-11-14 00:59 UTC 'All Starlink satellites have been deployed.' | 同上 |\n| ブースター着陸記録 | 試行 · **失敗** — 着陸燃焼前に中断し、発射場への帰還を試みずメキシコ湾に着水 | 同上 |\n| Ship 着陸記録 | 試行予定 · **結果 null** — 'Ship 42 will attempt to return to its launch site at Starbase' | 同上 |\n| Ship 帰還予定 | 打ち上げの22.5時間後、約 21:20 UTC(11/14) = **11/15 06:20 KST** | ⑥ [Spaceflight Now 11/13](https://spaceflightnow.com/2026/11/13/live-coverage-starship-flight-15-attempts-to-recover-full-vehicle-in-double-launch-pad-catch/) |\n\n### 1-2. 報道で追加された内容(⑤・⑥ — 確認対象)\n\n| 項目 | 内容 | 出典 |\n|---|---|---|\n| ブースターの理由 | SpaceX の中継解説者 Dan Huot: ブースターが「誘導・航法の問題を検知して自らキャッチを取り消し」、海上着水に切り替えた。中継での発言であり、同社の公式飛行サマリーではない | ⑥ [TNW 11/14](https://thenextweb.com/news/spacex-starship-flight-15-booster-catch-aborted) |\n| Ship 42 | 軌道到達 · Starlink 衛星26基を展開 · 異常が生じた場合は帰還を取りやめ、海へ向かわせることができる | 同上 |\n| FAA | Flight 15 の事故調査(mishap)指定や残骸に関する公式発表は、検索では見つからなかった(2026-11-15 KST)。ハワイ州運輸局の「西海岸発着便がSpaceXの残骸で運航停止」という投稿も、依然としてFAAの確認がない | 検索結果 0件 |\n\n**判定**:\n\n1. **R2(2027-06 までの Ship 回収成功)**: **未発動** — 帰還前である(出典: 1-1 の表)。\n2. **B-2027-1**: 進行維持 — 軌道投入2回、Ship 回収0回。進捗文言に「帰還前」と新しい定義を記載した(出典: `state.milestones` B-2027-1)。\n3. **B-2027-2**: 進行維持 — 2026年の参考値4回、変化なし(出典: `state.milestones` B-2027-2)。\n4. **ブースターの理由**: 中継解説レベルのため、マイルストーンの入力ではない。同社の公式記録が出れば改めて記載する(出典: 1-2 の表)。\n\n---\n"
+ }
+}

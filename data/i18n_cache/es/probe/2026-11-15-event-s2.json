@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s2",
+ "lang": "es",
+ "src_hash": "af5eec7bae44",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. Definición de 'recuperación exitosa' de R2 — confirmada antes del resultado",
+  "md": "\nLa ronda anterior escribió: 'Si se elige la definición tras ver el resultado, la regla se curva según el resultado.' Esta ronda se ejecutó 6 horas antes del retorno. Por eso es la última oportunidad para confirmar la definición (fuente: `state.open_questions_for_next_run` (anterior) · tabla 1-1).\n\n| Categoría | Contenido |\n|---|---|\n| **Se admite** | Cuando la empresa **recupera físicamente** una Ship que completó un vuelo con inserción orbital. ① Tras la captura en la torre del sitio de lanzamiento, el vehículo queda sujeto a la torre ② Tras el aterrizaje en tierra o en plataforma, el vehículo queda intacto |\n| **Se excluye** | Amerizaje en el mar (incluido el amerizaje sin daños y de precisión — no se recupera el vehículo) · pérdida total (explosión·incendio·caída) durante un intento de captura antes de quedar sujeto · interrupción del vuelo antes del retorno · recuperación de un vuelo sin inserción orbital |\n| **No se exige** | Estado reutilizable (certificación de revuelo). Eso lo evalúa B-2028-1 (3 revuelos de la misma Ship). Un accidente durante el manejo en tierra tras quedar sujeta se registra aparte y no revierte el dictamen |\n| **Base** | LL2 aterrizaje de la Ship success=true **y** (resumen oficial del vuelo de SpaceX **o** 2 reportajes de primer nivel). Si los resultados discrepan, se deja sin dictaminar y se revisa en la siguiente ronda con fuentes primarias |\n| **Motivo** | El significado del hito es 'primera puerta de la reutilización de la etapa superior — ¿se recupera el vehículo?'. En el amerizaje el vehículo queda en el mar y no es una vía de reutilización. Exigir también la certificación de revuelo se solaparía con B-2028-1 |\n\n- La misma definición se usa también en la casilla 'recuperación de Ship' de B-2027-1 y en T3. No se cuenta la recuperación del propulsor (fuente: `state.definitions.ship_recovery` · `state.probability_adjustment_rules` R2).\n- Al ser una confirmación de definición y no un número, la probabilidad no se mueve. Tampoco es una propuesta de regla nueva: completa la definición de la regla existente R2 (fuente: `prompts/monthly_run.md` apartado 2 — 'si la definición es ambigua, confirmarla primero y registrarla en state').\n\n---\n"
+ }
+}

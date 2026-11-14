@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s6",
+ "lang": "es",
+ "src_hash": "ca7ce7ecf38b",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Disparadores",
+  "md": "\n- **T3 — previsto vs. real**: lo previsto, '11/15 (KST) = fecha KST de la hora prevista de retorno', fue erróneo. La capa de medición sonó a la **medianoche** (00:00 KST) de ese día, y el retorno ocurre a las 06:20 KST de ese mismo día. La ronda se ejecutó unas 6 horas antes que el resultado.\n  - Premisa errónea: el punto de verificación de una fecha suena al inicio de esa fecha. Si el evento ocurre por la mañana de ese día, no se ve el resultado.\n  - **Corrección**: punto de verificación = primera medianoche KST posterior a la hora prevista del evento → **2026-11-16 (KST)**, y después 12/01. El resultado en sí lo despierta antes la detección de confirmación de resultados de LL2 de la capa de medición (fuente: `state.triggers_next_12m[T3]` prev_2026_11_15).\n- **T7**: ⓓ Sigue sin haber materiales ni reportajes de las oficinas de legisladores que informen si se celebró la sesión informativa de SpaceX del 11/12 (búsqueda 11/15 KST). El próximo punto de verificación es el **11/19 (KST — ⓒ comité de asignaciones de la Cámara 11/18 + 1 día)** (fuente: [carta de Blumenthal](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf)).\n- **T16**: sección 3 — el 10-Q no incluye la demanda del 9/18; se mantiene como punto de verificación el 10-K del 4T26 (fuente: [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm)).\n- **T1·T2·T4~T6·T8~T15**: sin cambios. Respecto de las noticias que volvieron a sonar en el due, las rondas anteriores corrigieron la conexión (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

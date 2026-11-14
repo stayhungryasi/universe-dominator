@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s5",
+ "lang": "ja",
+ "src_hash": "ee491a0d5ac7",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. 確率・マイルストーン・価値 — 変化なし",
+  "md": "\n- **確率**: 強気 25 / 基本 50 / 弱気 25 — **変化なし**。R2は結果によってのみ発動する。残りの規則と提案①~⑤は今回の回には関わらない (出典: `state.probability_adjustment_rules`)。\n- **マイルストーン**: 29件の判定は**変化なし**(進行 24 · 未判定 4 · 未達 1)。29件すべての `status_history` に今回の回の行を追加した (出典: `state.milestones` · `state.scorecard`)。\n- **適正価値**: $32 · バンド $32~$121 · 中心 $66 — **再算定せず**。基準価格が同じため算術値もそのまま: 時価総額 $1,889十億(139.11 × 13.581) · EV $1,838十億 · AI内在価値 $1,347十億 (出典: `state.valuation` · `state.market` · [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm))。\n- **無リスク金利メモ**: 米10年債 5.10%(2026-11-12) — 直前の回と同じ。割引率の再算定は月次回(12/01)の担当である (出典: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json meta.macro.ust10`)。\n- **価格**: Flight 15の結果は11/16(月)の取引から価格に反映され得る。Ship帰還の結果と重なるため、その反応はどの事象にも帰属させない (出典: `state.market.event_run_note`)。\n\n---\n"
+ }
+}

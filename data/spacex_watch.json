@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-14T18:30+09:00",
+  "fetched_at": "2026-11-15T08:31+09:00",
   "year": 2026,
   "year_count": 127,
   "starship_last": {
@@ -10,8 +10,8 @@
    "date": "2026-11-13",
    "form": "발사",
    "items": "",
-   "title": "Starship | Starlink Group 31-2 (Starship Flight 15) — 결과 미확정",
-   "result": "Deployed",
+   "title": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "result": "Success",
    "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
    "kind": "starship",
    "grade": "major",
@@ -29,7 +29,7 @@
   "competitor_next": [
    {
     "name": "Vulcan VC6L | Amazon Leo (LV-01)",
-    "date": "2026-11-14",
+    "date": "2026-11-15",
     "status": "Go for Launch",
     "precision": "Second"
    },
@@ -48,17 +48,31 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-14T18:30+09:00",
+  "checked_at": "2026-11-15T08:31+09:00",
   "last_run": {
-   "conclusion": "failure",
-   "created_at": "2026-11-14T03:42:47Z",
+   "conclusion": "success",
+   "created_at": "2026-11-14T21:30:46Z",
    "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/43553027540",
-   "run_id": 43553027540
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/43643202236",
+   "run_id": 43643202236
   },
   "in_progress": false
  },
  "events": [
+  {
+   "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+   "date": "2026-11-13",
+   "form": "발사",
+   "items": "",
+   "title": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "result": "Success",
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15)",
+   "kind": "starship",
+   "grade": "major",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+   "source": "Launch Library 2",
+   "label": "Starship"
+  },
   {
    "date": "2026-11-13",
    "form": "SCHEDULE 13G/A",
@@ -997,17 +1011,6 @@
    "source": "SEC EDGAR",
    "kind": "filing",
    "grade": "record"
-  },
-  {
-   "date": "2019-05-24",
-   "form": "D/A",
-   "items": "06b",
-   "title": "사모 발행 신고 정정",
-   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000004/xslFormDX01/primary_doc.xml",
-   "accn": "0001181412-19-000004",
-   "source": "SEC EDGAR",
-   "kind": "filing",
-   "grade": "record"
   }
  ],
  "seen": [
@@ -1096,6 +1099,7 @@
   "0001628280-26-066903",
   "0001628280-26-071689",
   "0001950047-26-009740",
+  "0f867f0c-5422-4d44-93b8-d7faaae7019b",
   "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
   "9999999995-26-001968",
   "9999999997-02-047442",
@@ -1118,7 +1122,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-14T18:30+09:00",
+ "generated_at": "2026-11-15T08:31+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1491,33 +1495,75 @@
    "detected_at": "2026-11-14",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "T3:date:2026-11-15",
+   "trigger_id": "T3",
+   "name": "Starship Flight 15 — Ship 귀환·타워 캐치 결과(부스터 캐치는 비행 중 취소됨)",
+   "reason": "예상일 도래",
+   "expected": "2026-11-15(KST — Ship 귀환 예정 11/14 21:20 UTC 전후 = 11/15 06:20 KST, KST 당일 회차가 결과를 보는 첫날) → 확인점 2026-12-01(KST). 비행 결과는 측정층 LL2 결과 확정이 1차, 이 날짜는 보조",
+   "detected_at": "2026-11-15"
+  },
+  {
+   "key": "major:0f867f0c-5422-4d44-93b8-d7faaae7019b",
+   "trigger_id": null,
+   "name": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "reason": "중요 사건",
+   "event": "Starship | Starlink Group 31-2 (Starship Flight 15) — 발사 성공",
+   "event_date": "2026-11-13",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+   "detected_at": "2026-11-15",
+   "grade": "major"
+  },
+  {
+   "key": "news:starship-f15-ship-catch:2026-11-15",
+   "trigger_id": null,
+   "name": "Starship이 부스터 사고 이후에도 궤도에서 귀환해 발사대 암에 포획됐다.",
+   "reason": "보도 감지(abc13 houston·bbc·cbs news)",
+   "event": "SpaceX’s Starship, after mishap, returns from orbit and is captured by launchpad",
+   "event_date": "2026-11-15",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNTlNWTkYwQl9QSDcwbGxVQ1J0cmU0dXBVWk9WbmY2NDlHR2U0SnNYaWZFOTdFdy1obTdwOU5TUTRuSmtnSGRkU1hLcTZrNTB3OWtuRXQxMlcwYzh0b3NwQUVaZXk4ajgzb3I1Tk90Mm9xZ1RuQWIxejZlVF82bXQ3YlVxSjNSM0ZOUVB3YXdTcFctdkVyYWJZV3Y1cnB2TGRwR2paZ05XM1ozMHo0YTNFNV8zRVNHdDdzaVA2WWl1N0N4TmlkcWc?oc=5",
+   "detected_at": "2026-11-15",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:starship-ship-catch:2026-11-15",
+   "trigger_id": null,
+   "name": "SpaceX가 Starship을 발사대에 착륙(캐치)시켰다.",
+   "reason": "보도 감지(abc news & headlines – australian broadcasting corporation·afr·anadolu ajansı)",
+   "event": "SpaceX Lands Starship At Its Launch Pad",
+   "event_date": "2026-11-15",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBZcGZyM1BGVzlrb2p5YUpTd1gxeXIzZ2huV1BRVVVHeTZrT2U1ZGxtQ04weEctSlNwRkhoOG9WTzZMempZcVBrb292NW40Y1pYLWw3V21VVzVMMUdtcHpzUjZ1R2NlS24yUUR6RGJWMmY3U1lCdlhydzhfNk9QZw?oc=5",
+   "detected_at": "2026-11-15",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-11-14:1232",
-   "run_id": "43550688388",
-   "queued_at": "2026-11-14T12:32+09:00",
+   "key": "qn:2026-11-15:0831",
+   "run_id": "43652320978",
+   "queued_at": "2026-11-15T08:31+09:00",
    "state": "queued",
-   "trigger_id": "T2",
-   "name": "SpaceX Starship 부스터가 발사 후 폭발했다. · SpaceX 발사 잔해로 미 서부 해안 항공편이 모두 중단되었다는 보도다. · OpenAI, Google, Anthropic, Meta와 SpaceX가 첨단 AI 개발을 문제 삼는 소송을 당했다. · 텍사스 법무장관 당선인이 SpaceX-Tesla 합병을 강하게 조사하겠다고 공언했다. · Spac",
-   "reason": "보도 감지 5건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "trigger_id": "",
+   "name": "Starship이 부스터 사고 이후에도 궤도에서 귀환해 발사대 암에 포획됐다. · SpaceX가 Starship을 발사대에 착륙(캐치)시켰다.",
+   "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMimwFBVV95cUxNSy1EekJZNUs0N3VjRlhXdzdmVmNNeUMwQjEzaEFNWkRXRmowQ24xMXEzOTFndDYtUGd3YmVQblU4TVVPeGVDWUhuYS1xMXdGM1VGQXg3X0dTcURwVG5mU2FTeVViazNPWEdBUUVXOXpJanJzb19FV1RkdHdzNkdxN2hmTkVSVHBCV01OMGdfaDBseUdfQ3h3VHpHdw?oc=5",
-    "https://news.google.com/rss/articles/CBMihAFBVV95cUxNZWNnWFZjVm4xQnc4N1VLS2pwTjUtNGlIM1hGLW1xeDVnLUZJaFhfSXlneFhrel9kRFB5eU1fZURhSEMyWml0SWx3NVZJTi12WVluY01BdWRpLUU3NlV1a3liaHk4V0dDbm1EdldPS2JielZPTTlUMEhmRlJYbVRIeTJyTUc?oc=5",
-    "https://news.google.com/rss/articles/CBMirwFBVV95cUxObEdXRnlXNF8zLThncmRTYXZtMzVhVmxWV2V4a0Q1WHRCQkE1S2dTb0kyNzFDdmJzS1pWYVYwTzZqVDBKM3B0eUNOekUwM0s1WHNTUnRDRFgxanVEeGVnelo2bk9xanlXQ09WLTV1LVJLREN2Y3AzN3RiTjloZUdUdjNfcWl4WFVyVnVnMkRxb0dXMGdzNzNLV0tzTE5WWDhwYzg1SXQ1bmpXY1lRNldz?oc=5",
-    "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQOXJJRThaMEhuc3I2YmlkX1B4ekIyZXpYbk9xVjZub1NfVGlXRy1CTlpHd19QNzZaVGNHXzhBQkx6aTk0UWYyS25Hbm53VEhocVVSZTQ3NW4wMmFBRGNDLWhyZGN1MTU0OVJ4dTJsUWw4cUtKcW1PUXhoZ3FjTXNuTU12T3Fhd3lTLWJ2WVd2QnR6U2gzSE1TUzlFOEdtV05EMHhPN2hJZ180MV9HeGprU2ItRE9BOXYtTVptcVF4QkRvTUNSVkFIZnRMR3hOTEFhbzJ4U1p1NjlNUTFPeDlxTTE5YlRvcExUQU11dlh6NGJua0NJVHRIZXFFRQ?oc=5",
-    "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPLWxxNHRRbUhsTC1OM0c2aFA0T2dkek1ZcnQ2VFpyM2VRem9WNHM3a3JnTWNMNXcwSzE0M2RTZkkzTTA1aV9TQUQxUnVTSHppXzlUOENzRkhabnpTcktSWWwteVZReW9CUmJsYTdBMHRTZGc2ampjbjBlM0VZeGZOeXhmSlg5bVVRWERxYndySFltSjc5dUxXTFFnQ3Z3STNfQzFaN2t0NTRGUmp6VXR5NVJyeDVTZGNrTy0xVkhCZmJKMWhGTnUtTA?oc=5"
+    "https://news.google.com/rss/articles/CBMixgFBVV95cUxNTlNWTkYwQl9QSDcwbGxVQ1J0cmU0dXBVWk9WbmY2NDlHR2U0SnNYaWZFOTdFdy1obTdwOU5TUTRuSmtnSGRkU1hLcTZrNTB3OWtuRXQxMlcwYzh0b3NwQUVaZXk4ajgzb3I1Tk90Mm9xZ1RuQWIxejZlVF82bXQ3YlVxSjNSM0ZOUVB3YXdTcFctdkVyYWJZV3Y1cnB2TGRwR2paZ05XM1ozMHo0YTNFNV8zRVNHdDdzaVA2WWl1N0N4TmlkcWc?oc=5",
+    "https://news.google.com/rss/articles/CBMiugFBVV95cUxNUy1hcVFMUVFOc0lrZWNVT3lvV1gzbVl1MHE0am1WaFBYRjlJWWtJNnEwZERmdGxLZHdLUFhhaUJoZ3BPeTZRZ0ZtNzBJcmFqTTVjcnBtb2pUblpLTm5nWXBnazdHZTBDNUM1cmJYTjlwNnk5TkllVEd4bnJQSGxJanU3OHBhMmpRRnN5b3F4Q1BQRV9ud001RHc3cEo0d1pJbWNZSnhMc0hZSV9RV3JmUW5KT2ZxY3JoRGc?oc=5",
+    "https://news.google.com/rss/articles/CBMifkFVX3lxTFBZcGZyM1BGVzlrb2p5YUpTd1gxeXIzZ2huV1BRVVVHeTZrT2U1ZGxtQ04weEctSlNwRkhoOG9WTzZMempZcVBrb292NW40Y1pYLWw3V21VVzVMMUdtcHpzUjZ1R2NlS24yUUR6RGJWMmY3U1lCdlhydzhfNk9QZw?oc=5",
+    "https://news.google.com/rss/articles/CBMifkFVX3lxTFBSOGVZMGNGRFRFcTVtODV2bU8xWXFSUHpBVGJ5MWhYSzlDcXM5WDRrR2QwRXpmV2RKVHo1cEpxNnNaZ2huM2NCV3lEWHFlSGUzOTVVTlJ3WngzT1ZZRXV6bEE5YnZOWC1hZE9idkhkSU01U1h2WUg3VkVPeFZFdw?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-14T18:30+09:00",
-  "last_success_at": "2026-11-14T09:15:42Z",
-  "last_run_at": "2026-11-14T09:30:18Z",
-  "last_conclusion": null,
+  "checked_at": "2026-11-15T08:31+09:00",
+  "last_success_at": "2026-11-14T23:30:47Z",
+  "last_run_at": "2026-11-14T23:30:18Z",
+  "last_conclusion": "success",
   "runs_24h": 50,
-  "ok_24h": 49
+  "ok_24h": 50
  },
  "schema": 2,
  "heartbeat_date": "2026-10-27",

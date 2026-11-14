@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s6",
+ "lang": "ja",
+ "src_hash": "ca7ce7ecf38b",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. トリガー",
+  "md": "\n- **T3 — 予想 vs 実績**: 予想した「11/15(KST) = 帰還予定時刻のKST日付」は誤りだった。測定層はその日の**零時**(00:00 KST)に作動し、帰還はその日の06:20 KSTである。実行回は結果より約6時間早く回った。\n  - 誤った前提: 日付の確認点はその日の始まりに作動する。事象の時刻がその日の朝なら、結果は見られない。\n  - **修正**: 確認点 = 予定事象時刻の後の最初のKST零時 → **2026-11-16(KST)**、その次は12/01。結果そのものは、測定層のLL2結果確定検知が先に起動する (出典: `state.triggers_next_12m[T3]` prev_2026_11_15)。\n- **T7**: ⓓ 11/12のSpaceXブリーフィングが開催されたかを知らせる議員事務所の資料・報道は、依然としてない(検索 11/15 KST)。次の確認点は**11/19(KST — ⓒ 下院歳出委員会 11/18 + 1日)**である (出典: [Blumenthal 書簡](https://www.hsgac.senate.gov/wp-content/uploads/2026-10-22-Letter-from-Ranking-Member-Blumenthal-to-SpaceX.pdf))。\n- **T16**: 第3節 — 10-Qに9/18の訴訟はなく、確認点は4Q26 10-Kのまま維持 (出典: [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm))。\n- **T1·T2·T4~T6·T8~T15**: 変化なし。dueに再び報じられた記事は、直前の回が関連づけを正した (出典: `state.triggers_next_12m`)。\n\n---\n"
+ }
+}

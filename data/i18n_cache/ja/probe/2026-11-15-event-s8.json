@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-s8",
+ "lang": "ja",
+ "src_hash": "eed6563dac33",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 次回までに直接確認すべきデータ3点",
+  "md": "\n1. **Flight 15 Ship 42 帰還結果**(11/15 06:20 KST 前後)を第2節の定義で判定する。根拠は LL2 の Ship 着陸 success と、SpaceX 公式のフライト要約または一次級報道2件である。ブースター中断理由に関する同社公式記録と、FAA の事故調査指定もあわせて確認する (出典: [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/))。\n2. **SF 上級裁判所 11/12 訴状原文・事件番号**(T16)を確認する。9/18 の訴訟が 10-Q に記載されていなかったため、4Q26 10-K の法的手続注記が次の開示確認点である (出典: [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm))。\n3. **既存の確認点**: T7 ⓒ 11/18 · T2 12/8 ロックアップ · T12 12/9 議決 · Tesla 合併 8-K(T6) · 月次 12/01 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回確認した事実の要約(出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| Flight 15 の状態(作成時点) | 'Payload Deployed' · 更新 2026-11-14 10:48:08 UTC · Ship 着陸結果 null | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), 2026-11-15 KST 照会 |\n| ブースター着陸記録 | 着陸燃焼前に中断 · 発射場への帰還試行なし · メキシコ湾に着水 | 同上 |\n| ブースター中止理由(中継解説) | '誘導・航法の問題を検知' — Dan Huot | [TNW](https://thenextweb.com/news/spacex-starship-flight-15-booster-catch-aborted), 2026-11-14 |\n| Ship 帰還予定 | 約 21:20 UTC 11/14 = 06:20 KST 11/15 | [Spaceflight Now](https://spaceflightnow.com/2026/11/13/live-coverage-starship-flight-15-attempts-to-recover-full-vehicle-in-double-launch-pad-catch/), 2026-11-13 |\n| 10-Q 訴訟引当金 | $350M(9/30) · $399M(2025-12-31) · 9/18 の反トラスト訴訟は未記載 | [10-Q R25](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R25.htm), 2026-10-22 提出 |\n| EDGAR 最新 | 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) | [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json), 2026-11-15 KST 照会 |\n| 基準株価 | $139.11(11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| 米10年債 | 5.10%(2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

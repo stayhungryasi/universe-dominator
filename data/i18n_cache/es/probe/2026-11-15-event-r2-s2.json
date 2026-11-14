@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r2-s2",
+ "lang": "es",
+ "src_hash": "3cd9273ffdef",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 08:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. Veredicto R2 — los requisitos de evidencia no se rebajan para ajustarlos al resultado",
+  "md": "\nSe aplican tal cual la definición y los requisitos de evidencia que la edición anterior escribió antes del regreso (fuente: `state.definitions.ship_recovery` — confirmado el 2026-11-15).\n\n| Requisito | Esta edición | Cumple |\n|---|---|---|\n| Vuelo con inserción en órbita | LL2 — despliegue de satélites Starlink completado (11/14 00:59 UTC) | ✓ |\n| Recuperar el vehículo mediante captura en torre o aterrizaje en tierra | LL2 'regreso' · CNBC y Space.com 'captura' | ✓ (según la prensa) |\n| Evidencia ① LL2 aterrizaje de Ship success=true | success true | ✓ |\n| Evidencia ② resumen oficial del vuelo de SpaceX **o** 2 medios de primer nivel | resumen oficial sin confirmar · 1 medio de primer nivel (CNBC) | **1/2** |\n| Discrepancia entre fuentes | ninguna | — |\n\n**Veredicto: no activado — pendiente de veredicto (evidencia 1/2)** (fuente: tabla anterior).\n\n- La definición solo estableció 'sin veredicto si los resultados discrepan' y no previó el caso de evidencia insuficiente. Esta edición trata también ese caso por la misma vía: no se cuenta hasta que se confirme y se revisa de nuevo la fuente original en la próxima edición. No es una regla nueva, sino el resultado de leer los requisitos tal cual (fuente: `state.definitions.ship_recovery.evidence`).\n- Es muy probable que el suceso haya ocurrido. Tres fuentes independientes (LL2, CNBC, Space.com) dicen lo mismo. Aun así, precisamente por esto se escribió la definición antes del resultado: si se reducen los requisitos cuando el resultado es grato, la regla se doblega según el resultado (fuente: `state.definitions.ship_recovery.rationale`).\n- Tareas para la edición en que se complete la evidencia — activar R2: alcista +5 · bajista −5 → **30/50/20** (fórmula: 0,25+0,05 / 0,50 / 0,25−0,05). El valor ponderado por probabilidad se recalculará en esa edición con el valor de los escenarios. Se anota 1 vez en la casilla de recuperación de Ship de B-2027-1 (fuente: `state.probability_adjustment_rules` R2).\n- El estado del vehículo tras la captura (si quedó sujeto y con la forma intacta) no aparece en el artículo de CNBC. Space.com escribió 'asentamiento'. La definición establece que un accidente durante el manejo en tierra tras la captura se registra aparte y el veredicto no se revierte (fuente: tabla 1-2 · `state.definitions.ship_recovery.rule`).\n\n---\n"
+ }
+}
