@@ -279,5 +279,162 @@ class WorkflowWiringTest(unittest.TestCase):
         self.assertLess(y.index("id: commit"), y.index("gate_preview.py"))
 
 
+class ClaudeAuthTest(unittest.TestCase):
+    """에이전트 인증 고르기(2026-11-14 ㉕) — 탐사·수리 에이전트가 API 키로 돌며 월 지출 한도를 채워 데일리의
+    집필·번역·뉴스 판정까지 세웠다. 구독 토큰이 있으면 구독으로 가되 ① 그때 API 키가 환경에 남아 있으면 -p 모드는
+    묻지 않고 API 키를 쓴다 ② 'best' 는 구독에서 다른 모델로 풀릴 수 있다 ③ 구독이 못 돌리는 회차에 탐사가
+    서면 안 된다 ④ 그렇다고 조용히 API 로 물러나면 '옮긴 줄 알았는데 계속 과금'이다 — 넷을 잰다."""
+    AGENT_WORKFLOWS = {"spacex-probe.yml": 3, "brk-probe.yml": 3, "self-repair.yml": 1}
+    STUB = """#!/bin/sh
+echo "KEYSEEN=${ANTHROPIC_API_KEY:-none}" >> "$STUB_LOG"
+echo "ARGS=$*" >> "$STUB_LOG"
+case "$STUB_CLAUDE" in
+  ok) echo '{"type":"result","subtype":"success","is_error":false,"result":"ok"}' ;;
+  limit) echo '{"type":"result","subtype":"error_during_execution","is_error":true,"result":"usage limit reached"}' ;;
+  *) echo "Invalid bearer token" >&2; exit 1 ;;
+esac
+"""
+
+    def setUp(self):
+        import os
+        import shutil
+        self.bash = shutil.which("bash")
+        self.tmp = tempfile.TemporaryDirectory()
+        d = Path(self.tmp.name)
+        self.log, self.note = d / "stub.log", d / "fallback.txt"
+        stub = d / "bin" / "claude"
+        stub.parent.mkdir()
+        stub.write_text(self.STUB, encoding="utf-8")
+        stub.chmod(0o755)
+        self.base = {"PATH": str(stub.parent) + os.pathsep + os.environ.get("PATH", ""),
+                     "STUB_LOG": str(self.log), "CLAUDE_AUTH_FALLBACK_FILE": str(self.note)}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _pick(self, env, stub="ok"):
+        """claude_auth.sh 를 읽은 뒤의 환경. bash 가 없는 로컬(윈도우)에서는 None — 배선 검사만 남는다."""
+        import subprocess
+        if not self.bash:
+            return None
+        e = dict(self.base)
+        e["STUB_CLAUDE"] = stub
+        e.update(env)
+        script = ('. scripts/claude_auth.sh; rc=$?; '
+                  'echo "rc=$rc|used=${CLAUDE_AUTH_USED:-}|key=${ANTHROPIC_API_KEY:-}|tok=${CLAUDE_CODE_OAUTH_TOKEN:-}'
+                  '|pm=${PROBE_MODEL:-}|rm=${REPAIR_MODEL:-}"')
+        r = subprocess.run([self.bash, "-c", script], cwd=str(ROOT), env=e, capture_output=True, text=True)
+        last = [ln for ln in r.stdout.splitlines() if ln.startswith("rc=")]
+        return dict(kv.split("=", 1) for kv in last[-1].split("|")) if last else {"rc": "died", "used": ""}
+
+    def _log(self):
+        return self.log.read_text(encoding="utf-8") if self.log.exists() else ""
+
+    def test_subscription_drops_api_key_and_pins_best(self):
+        got = self._pick({"ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t", "PROBE_MODEL": "best"})
+        if got is None:
+            return
+        self.assertEqual(got, {"rc": "0", "used": "subscription", "key": "", "tok": "t",
+                               "pm": "claude-opus-5-5", "rm": ""})
+        log = self._log()
+        self.assertIn("KEYSEEN=none", log)                            # 사전 점검도 API 키 없이 — 점검이 API 로 새지 않게
+        self.assertIn("--model claude-opus-5-5", log)                 # 실제 호출과 같은 모델로 점검
+        self.assertIn("--max-budget-usd", log)                        # 같은 예산 옵션으로 점검(구독에서 거절되면 여기서 드러난다)
+
+    def test_explicit_model_is_kept_and_repair_model_pinned(self):
+        got = self._pick({"ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t", "PROBE_MODEL": "claude-fable-5-2"})
+        if got is None:
+            return
+        self.assertEqual((got["used"], got["pm"]), ("subscription", "claude-fable-5-2"))
+        got = self._pick({"ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t", "REPAIR_MODEL": "best",
+                          "CLAUDE_SUBSCRIPTION_BEST": "claude-opus-9"})
+        self.assertEqual((got["used"], got["pm"], got["rm"]), ("subscription", "", "claude-opus-9"))
+
+    def test_no_token_keeps_old_behaviour(self):
+        for tok in ({}, {"CLAUDE_CODE_OAUTH_TOKEN": ""}):             # 시크릿 미등록은 빈 문자열로 온다
+            env = {"ANTHROPIC_API_KEY": "k", "PROBE_MODEL": "best"}
+            env.update(tok)
+            got = self._pick(env)
+            if got is None:
+                return
+            self.assertEqual(got, {"rc": "0", "used": "api", "key": "k", "tok": "", "pm": "best", "rm": ""})
+        self.assertEqual(self._log(), "")                             # 옛 경로는 점검 호출조차 하지 않는다
+        self.assertFalse(self.note.exists())
+
+    def test_api_switch_ignores_token(self):
+        got = self._pick({"CLAUDE_AUTH": "api", "ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t",
+                          "PROBE_MODEL": "best"})
+        if got is None:
+            return
+        self.assertEqual(got, {"rc": "0", "used": "api", "key": "k", "tok": "", "pm": "best", "rm": ""})
+        self.assertEqual(self._log(), "")
+
+    def test_subscription_down_falls_back_to_api_and_says_so(self):
+        for stub in ("limit", "die"):                                 # 사용량 한도(오류 응답) · 토큰 만료(종료 코드)
+            if self.note.exists():
+                self.note.unlink()
+            got = self._pick({"ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t", "PROBE_MODEL": "best"}, stub)
+            if got is None:
+                return
+            self.assertEqual(got, {"rc": "0", "used": "api-fallback", "key": "k", "tok": "", "pm": "best", "rm": ""},
+                             stub)                                    # 탐사는 서지 않는다 — 옛 경로 그대로(모델도 best)
+            self.assertTrue(self.note.exists() and self.note.read_text(encoding="utf-8").strip(), stub)
+
+    def test_fails_loudly_instead_of_leaking(self):
+        cases = [({"CLAUDE_AUTH": "subscription", "ANTHROPIC_API_KEY": "k"}, "ok"),                 # 구독만 · 토큰 없음
+                 ({"CLAUDE_AUTH": "subscription", "ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t"}, "limit"),
+                 ({"CLAUDE_CODE_OAUTH_TOKEN": "t"}, "die"),                                          # 구독 불능 · 물러날 키 없음
+                 ({}, "ok"),                                                                          # 둘 다 없음
+                 ({"CLAUDE_AUTH": "typo", "ANTHROPIC_API_KEY": "k", "CLAUDE_CODE_OAUTH_TOKEN": "t"}, "ok")]
+        for env, stub in cases:
+            got = self._pick(env, stub)
+            if got is None:
+                return
+            self.assertEqual((got["rc"], got["used"]), ("1", ""), env)
+        self.assertFalse(self.note.exists())                          # 실패는 실패 — 물러남 기록이 아니다
+
+    def test_alarm_message(self):
+        import claude_auth_alarm as al
+        self.assertEqual(al.build_message([]), "")
+        self.assertEqual(al.build_message(["", "  "]), "")
+        m = al.build_message(["probe · 모델 x · 오류 응답", "probe · 모델 x · 오류 응답"], "https://example/run")
+        self.assertIn("물러난 호출 2건", m)
+        self.assertIn("API", m)
+        self.assertEqual(m.count("오류 응답"), 1)                      # 같은 사유는 한 줄로
+        self.assertIn("https://example/run", m)
+        sent = []
+        with mock.patch.dict("os.environ", {"CLAUDE_AUTH_FALLBACK_FILE": str(self.note)}), \
+                mock.patch.object(al, "send", side_effect=lambda t: sent.append(t)):
+            self.assertEqual(al.main(), 0)                            # 물러난 적 없으면 아무것도 보내지 않는다
+            self.assertEqual(sent, [])
+            self.note.write_text("probe · 모델 x · 종료 코드 1" + chr(10), encoding="utf-8")
+            self.assertEqual(al.main(), 0)
+            self.assertEqual(len(sent), 1)
+
+    def test_every_agent_step_selects_auth_first(self):
+        import re
+        for name, want in self.AGENT_WORKFLOWS.items():
+            y = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
+            self.assertIn("CLAUDE_AUTH: ${{ vars.CLAUDE_AUTH || 'auto' }}", y, name)
+            self.assertIn("CLAUDE_SUBSCRIPTION_BEST: ${{ vars.CLAUDE_SUBSCRIPTION_BEST || 'claude-opus-5-5' }}", y, name)
+            parts = re.split(r"(?m)^(?=      - )", y)
+            steps = [s for s in parts if "claude -p" in s]
+            self.assertEqual(len(steps), want, name)                  # 에이전트 호출이 늘면 이 표도 함께
+            for s in steps:
+                self.assertIn("CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}", s, name)
+                self.assertIn(". scripts/claude_auth.sh", s, name)
+                self.assertLess(s.index(". scripts/claude_auth.sh"), s.index("claude -p"), name)
+            # 구독 토큰은 에이전트 스텝에만 — 잡 전체(파이썬 관문·게시 스텝)에는 싣지 않는다
+            job_env = y[y.index("    env:"):y.index("    steps:")]
+            self.assertNotIn("secrets.CLAUDE_CODE_OAUTH_TOKEN", job_env, name)
+            # 물러남 알림 — 마지막 에이전트 호출 뒤 · 취소가 아니면 늘 · 소장 DM 전용
+            alarm = [s for s in parts if "python scripts/claude_auth_alarm.py" in s]
+            self.assertEqual(len(alarm), 1, name)
+            self.assertIn("if: ${{ !cancelled() }}", alarm[0], name)
+            self.assertIn("TELEGRAM_ALERT_CHAT_ID", alarm[0], name)
+            self.assertNotIn("TELEGRAM_CHAT_ID:", alarm[0], name)
+            self.assertLess(y.rindex("claude -p"), y.index("claude_auth_alarm.py"), name)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
