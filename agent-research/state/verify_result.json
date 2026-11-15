@@ -1,20 +1,23 @@
 {
-  "run_id": "2026-11-15-event-r3",
-  "checked": 18,
-  "match": 18,
+  "run_id": "2026-11-16-event",
+  "checked": 20,
+  "match": 20,
   "rounding": 0,
   "mismatch": [],
   "unverifiable": [],
   "notes": [
-    "LL2 0f867f0c…: last_updated 2026-11-14T21:31:56Z · net 2026-11-13T22:47:36Z · Ship 42 착륙 attempt true/success true · Booster 22 착륙 attempt true/success false · 업데이트 'All Starlink satellites have been deployed.' created_on 2026-11-14T00:59Z — 보고서 1-1·2절·부록 및 state B-2027-1(Flight 15 2026-11-13) 동일",
-    "CNBC 2026-11-14 16:14 EST 게시, 발사탑 'chopsticks' 로 상단 캐치 서술 — 일치",
-    "Spokesman-Review 2026-11-14 게시, 바이라인 Loren Grush(Bloomberg), 발사탑 기계 팔 캐치 서술 — 일치(bloomberg.com 원문 URL 은 검증관도 열지 않음, 게재본으로 대조)",
-    "AP(Marcia Dunn) News4Jax·Press Democrat 2026-11-14: 165마일(265km) · 14바퀴 · Starlink 26기 · 약 22시간 — 일치",
-    "stockanalysis SPCX 2026-11-13 종가 139.11 — 일치",
-    "FRED DGS10 2026-11-12 = 5.10 — 일치",
-    "10-Q 표지(2026-10-15 기준) Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 = 13.581십억 — 일치",
-    "시가총액 139.11 × 13.581063709 = 1,889.3십억 → 1,889 — 일치(파생값 재현)",
-    "EDGAR submissions: 최신 SCHEDULE 13G/A 2026-11-13(accn 0001426012-26-000007) · 8-K 5.02 accn 0001628280-26-071689 제출 2026-11-06(사건일 11/04) · 그 앞 8-K 8.01 2026-10-26 — 보고서 4절·6절 일치"
+    "LL2 기록: net 2026-11-15T17:40:30Z · 상태 Launch Failure · last_updated 2026-11-15T19:30:04Z 일치. 임무 설명의 '45기'는 Vulcan 일반 문구이고 같은 페이지 영상 설명은 40기 — 보고서 2절 위성 수 정리와 같다",
+    "Spaceflight Now 11/15: 10분 · 40기 · 38회 · 436 · New Glenn 24 · Falcon 9 13 모두 일치",
+    "CNBC 11/12: 본문 약 161km/h(100mph) 일치. 기사의 요점 상자는 160km/h 로 적어 기사 안에서 1km/h 차이가 있다 — 본문 값 채택은 정상",
+    "Ukrainska Pravda 11/14: 5일 · 105명 일치. 원문은 '서명'이 아니라 '촉구(call)'라고 표현 — 숫자는 같다. 보고서 본문 '요구'는 숫자 판정 대상 아님",
+    "Kyiv Independent(야후 게재): SpaceX 의 Axios 답변 문장 원문과 동일",
+    "RBC-Ukraine 11/15: 대리대사 Denys Sienik 일치",
+    "stockanalysis: 2026-11-13 종가 139.11 일치",
+    "FRED DGS10: 2026-11-12 5.10 일치(최신 관측)",
+    "10-Q 표지(2026-10-15 기준): Class A 8,246,541,218 + Class B 5,334,522,491 = 13,581,063,709주 → 13.581십억 일치",
+    "시가총액 파생값: 139.11 × 13.581063709 = 1,889.26십억 → 1,889 일치",
+    "EDGAR submissions: 최신 SCHEDULE 13G/A 2026-11-13(accn 0001426012-26-000007) 일치. 그다음 8-K 11/06 · 8-K 10/26 · S-8/10-Q 10/22 순서도 보고서 5절과 같다",
+    "보고서 본문 위치(머리말 · 1-1 표 · 2절 표 · 3절 · 5절 · 부록)의 숫자가 verify_list 값과 모두 같다"
   ],
-  "verified_at": "2026-11-15T08:55+09:00"
+  "verified_at": "2026-11-16T08:44+09:00"
 }
