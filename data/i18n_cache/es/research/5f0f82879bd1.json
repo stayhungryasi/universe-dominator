@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "5f0f82879bd1",
  "lang": "es",
- "src_hash": "afe3d8fd4c37",
+ "src_hash": "0f64d22dd7f6",
  "model": "claude-haiku-4-5",
- "at": "2026-11-14 12:42",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "El rango de precios objetivo para Samsung Electronics se ha ampliado significativamente, desde 270.000 wones (BNK Investment Securities) hasta 670.000 wones (Nomura Securities), con el precio cayendo a 179.200 wones durante la sesión del 6 de noviembre y rebotando a un nivel de 208.000 wones el 12 de noviembre.",
-  "summary_ko.1": "Los ingresos del tercer trimestre fueron de 195,2532 billones de wones (YoY +126,9%), con beneficios operativos de 107,4405 billones de wones (+783,1%), estableciendo un cuarto récord consecutivo, siendo el segmento de semiconductores responsable del 99% de las ganancias totales."
- }
+ "at": "2026-11-15 18:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[12§summary_ko.0] 숫자: 원문에 없는 숫자 374500, 179200, 195 trillion, 2532 billion, 107 trillion, 4405 billion",
+  "[12§summary_ko.0] 숫자: 원문의 숫자가 빠짐 37만, 17만, 195조 2,532억, 107조 4,405억, 4,500, 9,200"
+ ]
 }

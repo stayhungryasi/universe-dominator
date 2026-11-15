@@ -2,16 +2,14 @@
  "kind": "research",
  "id": "653adceb72b4",
  "lang": "es",
- "src_hash": "438a9250d4f6",
+ "src_hash": "e5e22765a7a1",
  "model": "claude-haiku-4-5",
- "at": "2026-11-15 12:41",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[11§summary_ko.0] 숫자: 원문에 없는 숫자 17 billion",
-  "[11§summary_ko.0] 숫자: 원문의 숫자가 빠짐 17 억",
-  "[11§summary_ko.1] 숫자: 원문에 없는 숫자 8240 million",
-  "[11§summary_ko.1] 숫자: 원문의 숫자가 빠짐 8.24억"
- ]
+ "at": "2026-11-15 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "summary_ko.0": "Founders Fund y Peter Thiel redujeron su participación accionaria en SpaceX (SPCX) aproximadamente 26% el trimestre pasado, desinvirtiendo aproximadamente $17 mil millones de acciones valoradas en $150,86 al 30 de septiembre.",
+  "summary_ko.1": "La participación de Founders Fund en SpaceX se redujo del 5,5% al 3,8%, con cada asociación de fondo disminuyendo aproximadamente 27,5% de manera uniforme, lo que sugiere una naturaleza de distribución proporcional a los inversores.",
+  "title": "$17 mil millones de Acciones de SpaceX Salieron del Fondo de Peter Thiel el Trimestre Pasado"
+ }
 }
