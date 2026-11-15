@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r3-s3",
+ "lang": "es",
+ "src_hash": "0a374a4f1da2",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Hitos — B-2027-1 se mantiene «en curso»",
+  "md": "\n**B-2027-1** (2027 · inserción en órbita + al menos 1 recuperación de la Ship): 2 inserciones en órbita · **1** recuperación de la Ship. Ambas condiciones han llegado a al menos 1 (fuente: [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/) · sección 1).\n\nAl ser antes del año de evaluación, debe aplicarse la regla de cumplimiento anticipado («cumplir el mismo umbral durante 2 trimestres consecutivos»). Pero no estaba escrito cómo leer esta regla para hitos de recuento. Conforme al protocolo, se fijó primero la definición y luego se juzgó (fuente: `prompts/monthly_run.md` punto 2 · `state.definitions.early_achievement`).\n\n| Trimestre | Inserciones en órbita en el trimestre | Recuperaciones de la Ship en el trimestre | Cumple | Fuente |\n|---|---|---|---|---|\n| 3Q26 | 1 (Flight 14) | 0 (amerizaje en el mar) | ✗ | `state.milestones` B-2027-1 |\n| 4Q26 | 1 (Flight 15) | 1 (Flight 15) | ✓ | sección 1 |\n\n- **Lectura confirmada** (`state.definitions.count_milestone_early`): en cada trimestre se cuenta con los recuentos de ese trimestre. Si se cumple 2 trimestres consecutivos antes del año de evaluación, es «logrado (anticipado)». Si solo se cumple en 1 trimestre, es «en curso». Si en la primera ronda del año de evaluación el recuento acumulado (desde 2026-09-02) es igual o superior al objetivo, es «logrado» (fuente: dicha definición).\n- **Por qué esta lectura**: si se lee con recuento acumulado, una vez cumplido, los trimestres siguientes se cumplen automáticamente. Entonces la condición de «2 trimestres consecutivos» no filtra nada. C-2027-2 también usa la misma lectura: «1 trimestre cumplido, logrado (anticipado) si son 2 consecutivos». Como la lectura se fijó tras ver el resultado, se eligió la más estricta, que sigue el texto literalmente (fuente: `state.milestones` C-2027-2 progress).\n- **Resultado**: B-2027-1 está **«en curso»**. El trimestre siguiente a 4Q26 (1Q27) ya es año de evaluación, por lo que «logrado (anticipado)» ya no es posible. Si en la primera ronda de 2027 se cumple con el acumulado, se juzgará «logrado» (fuente: `state.definitions.count_milestone_early.applied`).\n- **29 hitos**: sin cambios de juicio (en curso 24 · sin juzgar 4 · incumplido 1). En los 29 se añadió la línea de esta ronda a `status_history` (fuente: `state.scorecard`).\n\n---\n"
+ }
+}

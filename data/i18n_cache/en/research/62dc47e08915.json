@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "62dc47e08915",
  "lang": "en",
- "src_hash": "024c213ea40a",
+ "src_hash": "128e7e044b73",
  "model": "claude-haiku-4-5",
- "at": "2026-11-14 12:42",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "AAPL is trading near its 52-week high, up 0.39% from the previous day, and is a mega-cap company with market capitalization exceeding $200 billion.",
-  "summary_ko.1": "Revenue increased 15.06% last year, net income grew 18.0%, and EPS increased 20.28%, showing strong growth."
- }
+ "at": "2026-11-15 12:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[14§summary_ko.1] 숫자: 원문에 없는 숫자 200 billion",
+  "[14§summary_ko.1] 숫자: 원문의 숫자가 빠짐 200억"
+ ]
 }

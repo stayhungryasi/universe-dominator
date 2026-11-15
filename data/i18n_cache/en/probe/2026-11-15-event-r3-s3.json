@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r3-s3",
+ "lang": "en",
+ "src_hash": "0a374a4f1da2",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Milestones — B-2027-1 stays 'In progress'",
+  "md": "\n**B-2027-1** (2027 · orbital insertion + at least 1 Ship recovery): 2 orbital insertions · **1** Ship recovery. Both conditions are now at 1 or more (source: [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/) · Section 1).\n\nSince this is before the judgment year, the early-achievement rule ('meeting the same threshold in 2 consecutive quarters') must be applied. However, how to read this rule for count milestones had not been written down. As the protocol requires, the definition was fixed first and then the judgment was made (source: `prompts/monthly_run.md` item 2 · `state.definitions.early_achievement`).\n\n| Quarter | Orbital insertions within the quarter | Ship recoveries within the quarter | Met | Source |\n|---|---|---|---|---|\n| 3Q26 | 1 (Flight 14) | 0 (ocean splashdown) | ✗ | `state.milestones` B-2027-1 |\n| 4Q26 | 1 (Flight 15) | 1 (Flight 15) | ✓ | Section 1 |\n\n- **Reading fixed** (`state.definitions.count_milestone_early`): Each quarter is counted by the number within that quarter. Meeting the threshold in 2 consecutive quarters before the judgment year means 'Achieved (early)'. Meeting it in only 1 quarter means 'In progress'. If the cumulative count (since 2026-09-02) is at or above the target in the first run of the judgment year, it is 'Achieved' (source: the definition itself).\n- **Why this reading**: Reading by cumulative count, once the count is filled, the next quarter is automatically met as well. Then the '2 consecutive quarters' condition filters out nothing. C-2027-2 also uses the same reading as '1 quarter met, Achieved (early) if 2 consecutive quarters'. Since the reading was decided after seeing the result, the stricter option, which follows the wording as is, was chosen (source: `state.milestones` C-2027-2 progress).\n- **Result**: B-2027-1 is **'In progress'**. The quarter after 4Q26 (1Q27) is already the judgment year, so 'Achieved (early)' no longer applies. If the cumulative count is met in the first run of 2027, it will be judged 'Achieved' (source: `state.definitions.count_milestone_early.applied`).\n- **29 milestones**: No change in judgment (In progress 24 · Unjudged 4 · Missed 1). A line for this run was added to `status_history` for all 29 (source: `state.scorecard`).\n\n---\n"
+ }
+}

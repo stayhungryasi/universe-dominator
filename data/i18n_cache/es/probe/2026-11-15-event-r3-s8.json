@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r3-s8",
+ "lang": "es",
+ "src_hash": "56af87b50594",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 3 datos que conviene verificar directamente antes de la próxima edición",
+  "md": "\n1. **FAA**: si se designa o no la investigación del accidente del Flight 15 (pérdida del propulsor) y la licencia y el calendario del Flight 16 (fuente: `state.open_questions_for_next_run` n.º 1).\n2. **Motivo de la interrupción del propulsor y estado de la Ship 42 tras la captura**: 1 resumen oficial de vuelo de SpaceX. Un accidente durante el manejo en tierra tras la captura se registra por separado y el veredicto no se revierte (fuente: `state.definitions.ship_recovery.rule`).\n3. **Puntos de control existentes**: T7 ⓒ 19/11 · T2 8/12 lockup · T12 9/12 votación · 8-K de la fusión con Tesla (T6) · mensual 01/12 (fuente: `state.triggers_next_12m`).\n\n---\n\n### Apéndice: resumen de hechos verificados en esta edición (fuente y fecha)\n\n| Hecho | Valor | Fuente y fecha |\n|---|---|---|\n| Actualización de LL2 del Flight 15 | 2026-11-14 21:31:56 UTC · Ship success true · propulsor success false | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), consultado el 2026-11-15 KST |\n| Cobertura de primer nivel ① | CNBC — captura en la parte superior de la torre de lanzamiento con brazos | [CNBC](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html), 2026-11-14 |\n| Cobertura de primer nivel ② | Bloomberg — 'Catches Starship Rocket in Landmark Texas Landing' | [Spokesman-Review(Bloomberg)](https://www.spokesman.com/stories/2026/nov/14/spacex-catches-starship-in-novel-landing-at-texas-/), 2026-11-14 |\n| Contraste | AP — unas 165 millas (265 km) · 14 órbitas · 26 Starlink | [News4Jax(AP)](https://www.news4jax.com/business/2026/11/14/spacexs-starship-returns-from-orbit-and-is-captured-by-launch-pad-arms-in-a-dramatic-first/), 2026-11-14 |\n| Probabilidad | 30/50/20 (R2 activada) | `state.scenarios` |\n| Valor ponderado por probabilidad | $36 = 0,30×76,3 + 0,50×24,1 + 0,20×3,3 | `state.valuation` |\n| Banda · centro | $36~$121 · $68 | `state.valuation` |\n| Precio de referencia | $139,11 (13/11) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| Bono del Tesoro de EE. UU. a 10 años | 5,10 % (2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

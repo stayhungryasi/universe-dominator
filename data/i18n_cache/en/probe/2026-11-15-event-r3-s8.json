@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r3-s8",
+ "lang": "en",
+ "src_hash": "56af87b50594",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Three data points to check directly before the next run",
+  "md": "\n1. **FAA**: Whether a mishap investigation has been designated for Flight 15 (booster loss) and the Flight 16 license and schedule (source: item 1 of `state.open_questions_for_next_run`).\n2. **Reason the booster was discontinued and Ship 42's condition after the catch**: one official SpaceX flight summary. Any accident during ground handling after the catch is recorded separately, and the verdict is not reversed (source: `state.definitions.ship_recovery.rule`).\n3. **Existing checkpoints**: T7 ⓒ 11/19 · T2 12/8 lockup · T12 12/9 vote · Tesla merger 8-K (T6) · monthly 12/01 (source: `state.triggers_next_12m`).\n\n---\n\n### Appendix: Summary of facts confirmed this run (source · date)\n\n| Fact | Value | Source · date |\n|---|---|---|\n| Flight 15 LL2 update | 2026-11-14 21:31:56 UTC · Ship success true · Booster success false | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), accessed 2026-11-15 KST |\n| Tier-1 report ① | CNBC — catch at the top of the launch tower arms | [CNBC](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html), 2026-11-14 |\n| Tier-1 report ② | Bloomberg — 'Catches Starship Rocket in Landmark Texas Landing' | [Spokesman-Review(Bloomberg)](https://www.spokesman.com/stories/2026/nov/14/spacex-catches-starship-in-novel-landing-at-texas-/), 2026-11-14 |\n| Cross-check | AP — about 165 miles (265km) · 14 orbits · 26 Starlink satellites | [News4Jax(AP)](https://www.news4jax.com/business/2026/11/14/spacexs-starship-returns-from-orbit-and-is-captured-by-launch-pad-arms-in-a-dramatic-first/), 2026-11-14 |\n| Probabilities | 30/50/20 (R2 triggered) | `state.scenarios` |\n| Probability-weighted value | $36 = 0.30×76.3 + 0.50×24.1 + 0.20×3.3 | `state.valuation` |\n| Band · center | $36~$121 · $68 | `state.valuation` |\n| Reference share price | $139.11 (11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| US 10-year yield | 5.10% (2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

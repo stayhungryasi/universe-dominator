@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-15-event-r3-s8",
+ "lang": "ja",
+ "src_hash": "56af87b50594",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-15 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 次回までに直接確認すべきデータ3件",
+  "md": "\n1. **FAA**: Flight 15の事故調査の指定有無(ブースター喪失)と、Flight 16のライセンス・日程 (出典: `state.open_questions_for_next_run` 1番)。\n2. **ブースター中断の理由とShip 42のキャッチ後の状態**: SpaceX公式のフライト概要1件。キャッチ後の地上での取り扱い中の事故は別途記録し、判定は覆さない (出典: `state.definitions.ship_recovery.rule`)。\n3. **既存の確認ポイント**: T7 ⓒ 11/19 · T2 12/8 ロックアップ · T12 12/9 議決 · Tesla合併8-K(T6) · 月次 12/01 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回確認した事実の要約(出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| Flight 15 LL2更新 | 2026-11-14 21:31:56 UTC · Ship success true · ブースター success false | [LL2](https://ll.thespacedevs.com/2.3.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), 2026-11-15 KST閲覧 |\n| 一級報道 ① | CNBC — 発射塔のアームによる上部キャッチ | [CNBC](https://www.cnbc.com/2026/11/14/spacex-plans-to-try-first-ever-catch-of-starship-rocket-from-orbit.html), 2026-11-14 |\n| 一級報道 ② | Bloomberg — 'Catches Starship Rocket in Landmark Texas Landing' | [Spokesman-Review(Bloomberg)](https://www.spokesman.com/stories/2026/nov/14/spacex-catches-starship-in-novel-landing-at-texas-/), 2026-11-14 |\n| クロスチェック | AP — 約165マイル(265km) · 14周 · Starlink 26機 | [News4Jax(AP)](https://www.news4jax.com/business/2026/11/14/spacexs-starship-returns-from-orbit-and-is-captured-by-launch-pad-arms-in-a-dramatic-first/), 2026-11-14 |\n| 確率 | 30/50/20 (R2発動) | `state.scenarios` |\n| 確率加重価値 | $36 = 0.30×76.3 + 0.50×24.1 + 0.20×3.3 | `state.valuation` |\n| バンド・中心 | $36~$121 · $68 | `state.valuation` |\n| 基準株価 | $139.11(11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| 米10年債 | 5.10%(2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

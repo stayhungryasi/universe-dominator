@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "752c2a3f6761",
  "lang": "es",
- "src_hash": "d624f90ba6f7",
+ "src_hash": "68421e3fe2fa",
  "model": "claude-haiku-4-5",
- "at": "2026-11-15 08:40",
+ "at": "2026-11-15 12:41",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Marvell Technology, Inc. (MRVL) mantiene una valoración elevada con un P/E trailing de 46,45 mientras ha caído por debajo de su media móvil de 200 días, y 96 fondos de cobertura mantienen posiciones de compra.",
-  "summary_ko.1": "Los ingresos del centro de datos de Marvell del segundo trimestre del año fiscal 2027 aumentaron un 46% interanual, impulsando un aumento del 37% en los ingresos totales de la empresa de $2,739B.",
-  "title": "Marvell (MRVL): Una de las 10 principales acciones con P/E elevado bajo la SMA de 200 días"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[9§summary_ko.1] 숫자: 원문에 없는 숫자 2739 billion",
+  "[9§summary_ko.1] 숫자: 원문의 숫자가 빠짐 2.739B"
+ ]
 }
