@@ -1,0 +1,32 @@
+{
+ "kind": "dissect",
+ "id": "dfc615803e71",
+ "lang": "es",
+ "src_hash": "3d5cdf226e3c",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-16 08:42",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Línea GPT-6 expandida con tres opciones",
+  "sections.1.h": "Rendimiento de flujo de trabajo empresarial y ventaja de precio",
+  "sections.2.h": "Avance sustancial en precisión y fiabilidad",
+  "sections.3.h": "Equilibrio de rendimiento y coste de agentes de codificación",
+  "sections.4.h": "Eficiencia de la capacidad de uso de computadora",
+  "sections.5.h": "Mejora en el estilo de comunicación y ejemplo de resolución de problemas técnicos",
+  "sections.6.h": "Optimización de caché de indicaciones y herramientas para desarrolladores",
+  "sections.7.h": "Mejora de alineación y fortalecimiento de fiabilidad del modelo",
+  "sections.8.h": "Alcance de lanzamiento, accesibilidad e instrucciones de implementación gradual",
+  "sections.0.ko": "OpenAI presentó a principios de este mes su modelo más poderoso, GPT-6 Astra, y ahora ha revelado dos nuevos modelos, Sol y Luna. Aplicando la misma metodología de entrenamiento que Astra pero con mejoras significativas en eficiencia de costes, estos dos modelos permiten que empresas y desarrolladores elijan según la escala, ritmo y presupuesto de sus tareas. En particular, OpenAI ha reducido los precios de API de Sol y Luna en un 50% respecto a los precios promocionales de la generación anterior (GPT-5.6) a través de optimizaciones de caché e inferencia.",
+  "sections.1.ko": "En el benchmark AutomationBench (prueba de flujos de trabajo empresariales reales utilizando 47 herramientas), Sol superó a Claude Opus 5 a aproximadamente el 9% del precio de Opus, mientras que Luna mejoró el rendimiento con un coste un 58% menor que el modelo de comparación. En la evaluación Agents' Last Exam (tareas especializadas complejas que abarcan 55 sectores industriales), Sol también superó a Opus 5 con un coste un 60% menor. OpenAI especifica que estos benchmarks están probando condiciones extremas de uso real, y que muestran mayor fiabilidad en uso típico.",
+  "sections.2.ko": "En evaluaciones internas de precisión, Sol redujo errores aproximadamente a la mitad en comparación con modelos de generación anterior, acercándose al nivel de fiabilidad de Astra a un coste mucho menor. Luna también logra precisión equivalente a Sol anterior en dificultad alta mientras requiere solamente aproximadamente 1/100 del coste. Aunque esta evaluación se basa en conversaciones reales donde los usuarios reportaron errores, se enfatiza que los errores de precisión son mucho más raros en entornos de producción.",
+  "sections.3.ko": "El uso de agentes de codificación dentro de OpenAI ha crecido exponencialmente (mediana de $600 en tokens diarios por investigador, percentil 90 de $7.000), y Sol y Luna mantienen un rendimiento de codificación fuerte mientras reducen significativamente los precios de API. En el benchmark FrontierCode (preparación de fusión de código real), Sol logró la configuración de alta dificultad de Claude a un coste mucho menor, y en DeepSWE v1.1 (tareas complejas de ingeniería de software), Sol se acerca dentro del 1,1% de la puntuación máxima de Claude mientras registra un coste aproximadamente un 80% menor.",
+  "sections.4.ko": "En el benchmark offline OSWorld 2.0 (simulación de tareas cotidianas y profesionales), Sol logró un rendimiento similar a la dificultad media-alta de Claude Opus a aproximadamente un 80% menos de coste, mientras que Luna superó a Sol anterior a 1/10 del coste. Aunque Astra sigue siendo de nivel superior en capacidad de uso de computadora, los nuevos modelos ofrecen alternativas mucho más eficientes que la generación anterior.",
+  "sections.5.ko": "El estilo de comunicación mejorado de Astra también se ha aplicado a Sol y Luna, destacándose particularmente la expresión más clara y reducción de detalles innecesarios en conversaciones técnicas y de codificación. El ejemplo original presenta un caso de conversación sobre mejora de diseño de sitios web, donde Sol primero revisó la posibilidad de adoptar React pero luego concluyó que era innecesario, proporcionando una respuesta más cautelosa, y se evalúa positivamente por no compartir detalles de implementación innecesarios.",
+  "sections.6.ko": "OpenAI ha mejorado el caché de indicaciones para GPT-6, aumentando por defecto la tasa de acierto de caché y ofreciendo un descuento del 90% en las lecturas de tokens de entrada en caché. Según el caso de GitHub, esta mejora resultó en una reducción de más del 50% en la proporción de tokens de indicación que requieren nuevo procesamiento entre miles de millones de solicitudes a modelos OpenAI, y también mejoró la velocidad de respuesta de Copilot. Los desarrolladores pueden utilizar el panel de caché y herramientas de diagnóstico para monitorear el rendimiento y ajustar la dificultad de inferencia y activación de herramientas sin pérdida de caché.",
+  "sections.7.ko": "Sol y Luna, basándose en el trabajo de alineación mejorado introducido junto con Astra, muestran mejora en fiabilidad como la reducción de afirmaciones engañosas comparadas con la generación anterior. OpenAI especifica que estas evaluaciones están probando intencionalmente situaciones difíciles y difieren de las tasas de fallo en uso real, y dirige a los usuarios a la tarjeta del sistema para ver resultados completos.",
+  "sections.8.ko": "Sol y Luna están disponibles inmediatamente para usuarios de Plus, Pro, Business, Enterprise y Edu en ChatGPT Work y Codex, mientras que usuarios de Free y Go pueden acceder a Luna en la aplicación de escritorio. Aún no está soportado en Chat, y en la API de OpenAI se pueden invocar como gpt-6-sol y gpt-6-luna. Para garantizar la estabilidad del servicio, OpenAI realizará una implementación gradual durante todo el día en ChatGPT.",
+  "caveat": "Todos los resultados de benchmark se realizaron en el entorno de investigación de OpenAI o en API, y las puntuaciones de modelos competidores se citan de informes públicos, por lo que pueden diferir del rendimiento real en entornos de producción.",
+  "title": "GPT-6 Sol y Luna"
+ }
+}

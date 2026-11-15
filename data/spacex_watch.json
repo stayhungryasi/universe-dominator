@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-15T18:31+09:00",
+  "fetched_at": "2026-11-16T08:28+09:00",
   "year": 2026,
   "year_count": 127,
   "starship_last": {
@@ -28,12 +28,6 @@
   "source": "Launch Library 2 (2.4.0)",
   "competitor_next": [
    {
-    "name": "Vulcan VC6L | Amazon Leo (LV-01)",
-    "date": "2026-11-15",
-    "status": "Go for Launch",
-    "precision": "Second"
-   },
-   {
     "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
     "date": "2026-11-23",
     "status": "To Be Determined",
@@ -44,11 +38,17 @@
     "date": "2026-12-31",
     "status": "To Be Determined",
     "precision": "Year"
+   },
+   {
+    "name": "New Glenn | BlueBird Block 2",
+    "date": "2026-12-31",
+    "status": "To Be Determined",
+    "precision": "Year"
    }
   ]
  },
  "engine": {
-  "checked_at": "2026-11-15T18:31+09:00",
+  "checked_at": "2026-11-16T08:28+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-14T23:42:14Z",
@@ -59,6 +59,20 @@
   "in_progress": false
  },
  "events": [
+  {
+   "id": "ef9850ad-1096-425b-9d27-f7bbd186e61a",
+   "date": "2026-11-15",
+   "form": "경쟁 발사",
+   "items": "",
+   "title": "[경쟁] Vulcan VC6L | Amazon Leo (LV-01) — 발사 실패",
+   "result": "Failure",
+   "name": "Vulcan VC6L | Amazon Leo (LV-01)",
+   "kind": "competitor",
+   "grade": "major",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
+   "source": "Launch Library 2",
+   "label": "경쟁 발사"
+  },
   {
    "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
    "date": "2026-11-13",
@@ -1000,17 +1014,6 @@
    "source": "SEC EDGAR",
    "kind": "filing",
    "grade": "record"
-  },
-  {
-   "date": "2019-07-09",
-   "form": "D",
-   "items": "06b",
-   "title": "사모 발행 신고",
-   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141219000005/xslFormDX01/primary_doc.xml",
-   "accn": "0001181412-19-000005",
-   "source": "SEC EDGAR",
-   "kind": "filing",
-   "grade": "record"
   }
  ],
  "seen": [
@@ -1108,6 +1111,7 @@
   "9999999997-07-012379",
   "9999999997-08-034955",
   "ac897b9f-44d2-4ff4-8416-1a0a076e98a2",
+  "ef9850ad-1096-425b-9d27-f7bbd186e61a",
   "ir:https://ir.spacex.com/files/content_files/SpaceX-Reports-Third-Quarter-2026-Results.pdf",
   "ir:https://ir.spacex.com/files/doc_financials/2026/q2/SpaceX-Reports-Second-Quarter-2026-Results.pdf",
   "ir:https://ir.spacex.com/updates/releases-details/2026/SPACEX-SECURES-40-BILLION-IN-THE-LARGEST-GPU-FINANCING-EVER-2026-EnDqGhTAB3/default.aspx",
@@ -1122,7 +1126,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-15T18:31+09:00",
+ "generated_at": "2026-11-16T08:28+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1538,29 +1542,76 @@
    "detected_at": "2026-11-15",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "major:ef9850ad-1096-425b-9d27-f7bbd186e61a",
+   "trigger_id": null,
+   "name": "[경쟁] Vulcan VC6L | Amazon Leo (LV-01) — 발사 실패",
+   "reason": "중요 사건",
+   "event": "[경쟁] Vulcan VC6L | Amazon Leo (LV-01) — 발사 실패",
+   "event_date": "2026-11-15",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/",
+   "detected_at": "2026-11-16",
+   "grade": "major"
+  },
+  {
+   "key": "news:starship-flight15-ship-catch:2026-11-16",
+   "trigger_id": null,
+   "name": "SpaceX가 발사탑에서 Starship 우주선의 첫 캐치에 성공했다.",
+   "reason": "보도 감지(cbs news·hindustan times·israel hayom)",
+   "event": "SpaceX Makes First Starship Catch at Launch Tower",
+   "event_date": "2026-11-15",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1XQXZlTjhDWUd0Y1VpWHVNRlprV0lMRC1XRFdLaDF4T2wxUGJYb2RBSXktUTJjRURSdWJKa0UzNEsxNTI2QjBCMktwd181eWJGSXJ1cVpTaVdhejdJZ1h3TzNDSXo1MVd2UXdEU3g3QWdSRUdU?oc=5",
+   "detected_at": "2026-11-16",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:starshield-ukraine-restrictions:2026-11-16",
+   "trigger_id": null,
+   "name": "SpaceX가 Starshield 제한을 기술 문제 탓으로 돌렸지만 우크라이나에 세부 내용을 제공하지 않았다고 매체가 전했다.",
+   "reason": "보도 감지(cbc·цензор.нет)",
+   "event": "SpaceX attributed Starshield restrictions to technical issue, but did not provide Ukraine with any details, - media",
+   "event_date": "2026-11-16",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxONk1SY0JYdXg0SzVtZ0lTWE82T091eUlhV25KemU0Y25hRll1eURPS0cycWxaYmZDcUJNeEY1RVFkTDRCZzg1WDlDQ3N0T1dVOGEzNEUzVlBoNVlWYkVtQUoxVmw0YjRlcWo1bGdYYl9LRE5yTXdMaHVZVncyeTZRaUlRVFJKbmliSDZpNWFpZlRQVExCdDYyX2JQbm41a0h0RS1ncEotblZVbmlSLVRqdWJuYmlaclNi?oc=5",
+   "detected_at": "2026-11-16",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-11-15:0831",
-   "run_id": "43652320978",
-   "queued_at": "2026-11-15T08:31+09:00",
+   "key": "q:2026-11-16:0828:1",
+   "run_id": "43773433080",
+   "queued_at": "2026-11-16T08:28+09:00",
    "state": "queued",
    "trigger_id": "",
-   "name": "Starship이 부스터 사고 이후에도 궤도에서 귀환해 발사대 암에 포획됐다. · SpaceX가 Starship을 발사대에 착륙(캐치)시켰다.",
+   "name": "[경쟁] Vulcan VC6L | Amazon Leo (LV-01) — 발사 실패",
+   "reason": "트리거·중요 사건 1건",
+   "urls": [
+    "https://ll.thespacedevs.com/2.4.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/"
+   ]
+  },
+  {
+   "key": "qn:2026-11-16:0828",
+   "run_id": "43773433080",
+   "queued_at": "2026-11-16T08:28+09:00",
+   "state": "queued",
+   "trigger_id": "",
+   "name": "SpaceX가 발사탑에서 Starship 우주선의 첫 캐치에 성공했다. · SpaceX가 Starshield 제한을 기술 문제 탓으로 돌렸지만 우크라이나에 세부 내용을 제공하지 않았다고 매체가 전했다.",
    "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMixgFBVV95cUxNTlNWTkYwQl9QSDcwbGxVQ1J0cmU0dXBVWk9WbmY2NDlHR2U0SnNYaWZFOTdFdy1obTdwOU5TUTRuSmtnSGRkU1hLcTZrNTB3OWtuRXQxMlcwYzh0b3NwQUVaZXk4ajgzb3I1Tk90Mm9xZ1RuQWIxejZlVF82bXQ3YlVxSjNSM0ZOUVB3YXdTcFctdkVyYWJZV3Y1cnB2TGRwR2paZ05XM1ozMHo0YTNFNV8zRVNHdDdzaVA2WWl1N0N4TmlkcWc?oc=5",
-    "https://news.google.com/rss/articles/CBMiugFBVV95cUxNUy1hcVFMUVFOc0lrZWNVT3lvV1gzbVl1MHE0am1WaFBYRjlJWWtJNnEwZERmdGxLZHdLUFhhaUJoZ3BPeTZRZ0ZtNzBJcmFqTTVjcnBtb2pUblpLTm5nWXBnazdHZTBDNUM1cmJYTjlwNnk5TkllVEd4bnJQSGxJanU3OHBhMmpRRnN5b3F4Q1BQRV9ud001RHc3cEo0d1pJbWNZSnhMc0hZSV9RV3JmUW5KT2ZxY3JoRGc?oc=5",
-    "https://news.google.com/rss/articles/CBMifkFVX3lxTFBZcGZyM1BGVzlrb2p5YUpTd1gxeXIzZ2huV1BRVVVHeTZrT2U1ZGxtQ04weEctSlNwRkhoOG9WTzZMempZcVBrb292NW40Y1pYLWw3V21VVzVMMUdtcHpzUjZ1R2NlS24yUUR6RGJWMmY3U1lCdlhydzhfNk9QZw?oc=5",
-    "https://news.google.com/rss/articles/CBMifkFVX3lxTFBSOGVZMGNGRFRFcTVtODV2bU8xWXFSUHpBVGJ5MWhYSzlDcXM5WDRrR2QwRXpmV2RKVHo1cEpxNnNaZ2huM2NCV3lEWHFlSGUzOTVVTlJ3WngzT1ZZRXV6bEE5YnZOWC1hZE9idkhkSU01U1h2WUg3VkVPeFZFdw?oc=5"
+    "https://news.google.com/rss/articles/CBMidEFVX3lxTE1XQXZlTjhDWUd0Y1VpWHVNRlprV0lMRC1XRFdLaDF4T2wxUGJYb2RBSXktUTJjRURSdWJKa0UzNEsxNTI2QjBCMktwd181eWJGSXJ1cVpTaVdhejdJZ1h3TzNDSXo1MVd2UXdEU3g3QWdSRUdU?oc=5",
+    "https://news.google.com/rss/articles/CBMiogFBVV95cUxNZUxEbmpFVnAzM3EzQVhTdGtoY1ZpUFZ4VlMyaW9Zc1BhTVZ4eUNVZ3NPdktMdTNVTVZxY2NMU3JQbktqVFlnR2Q5UVpQSktVM1pPcHJJR0ZRS1lscDNJZUhyd2piSTJ3ZnNfVG9PRExBSWt6X2hSbEt4M2QyMTBZMWx2NWVsQmhFYzgxaUttRFlCQTB2R3RuazhfNXdSM3JjYWc?oc=5",
+    "https://news.google.com/rss/articles/CBMiuAFBVV95cUxONk1SY0JYdXg0SzVtZ0lTWE82T091eUlhV25KemU0Y25hRll1eURPS0cycWxaYmZDcUJNeEY1RVFkTDRCZzg1WDlDQ3N0T1dVOGEzNEUzVlBoNVlWYkVtQUoxVmw0YjRlcWo1bGdYYl9LRE5yTXdMaHVZVncyeTZRaUlRVFJKbmliSDZpNWFpZlRQVExCdDYyX2JQbm41a0h0RS1ncEotblZVbmlSLVRqdWJuYmlaclNi?oc=5",
+    "https://news.google.com/rss/articles/CBMiowFBVV95cUxPclh5M2V5N1paZEFGM1BuSnZKOWhWRHZKMUxMODZmUUJkX0tTbF93MlNuVEF5M0tMVnJvaWRYRmVzN19iQ0xfRGRhV1NFWjVFYURTZkp1Rlp6bnVIRnk1ZTk0LUk4cVFpMVpDZFlvbGVjbHJSazF2LWJSdndpekpKLVhGXzZRRUFLMkFRbHAwTzY4SzNoUDlwUW9udXhPSDBDM3pB?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-15T18:31+09:00",
-  "last_success_at": "2026-11-15T09:30:43Z",
-  "last_run_at": "2026-11-15T09:30:19Z",
+  "checked_at": "2026-11-16T08:28+09:00",
+  "last_success_at": "2026-11-15T23:15:43Z",
+  "last_run_at": "2026-11-15T23:15:11Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50
@@ -1608,5 +1659,12 @@
    ],
    "note": "원문 문장 그대로(기계 추출). 해석·판정은 탐사 엔진(판단층)이 한다."
   }
- }
+ },
+ "dm_log": [
+  {
+   "at": "2026-11-16T08:28+09:00",
+   "ok": true,
+   "head": "🛰 SpaceX 감시 — 엔진 깨움 1건(긴급 0 · 중요 1) · 기록 0건"
+  }
+ ]
 }

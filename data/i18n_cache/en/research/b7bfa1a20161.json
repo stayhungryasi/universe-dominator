@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "b7bfa1a20161",
  "lang": "en",
- "src_hash": "e65048215ab9",
+ "src_hash": "71fa3aa28ea5",
  "model": "claude-haiku-4-5",
- "at": "2026-11-14 18:39",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Eli Lilly (LLY) has a P/E of 46.1x compared to S&P 500's 21.9x, requiring annual revenue growth of 13.4% over the next 6 years to sustain current stock price.",
-  "summary_ko.1": "Mounjaro and Zepbound recorded over $16 billion in revenue in Q3 2026, contributing approximately 86% of company growth ($6 billion of $6 billion year-over-year growth)."
- }
+ "at": "2026-11-16 08:42",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[12§summary_ko.2] 숫자: 원문에 없는 숫자 91",
+  "[12§summary_ko.2] 숫자: 원문의 숫자가 빠짐 910"
+ ]
 }

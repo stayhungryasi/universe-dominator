@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "9e1ebb4d7589",
  "lang": "en",
- "src_hash": "8fc04e7dfb3d",
+ "src_hash": "957a93a2a048",
  "model": "claude-haiku-4-5",
- "at": "2026-11-15 18:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Marvell Technology (NASDAQ:MRVL) ranks 9th among 10 notable AI infrastructure stocks, with the share price rising 9.33% on November 11 alongside an upward annual revenue outlook revision.",
-  "summary_ko.1": "Data center revenue for Q2 FY2027 reached $2.17 billion, up 46% YoY, with analysts projecting 79.50% upside potential."
- }
+ "at": "2026-11-16 08:42",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[13§summary_ko.0] 준법: 원문에 없는 권고 표현(매매·비중·목표가) — Marvell Technology (NASDAQ:MRVL) fiscal 2028 annual revenue outlook was raised to approximately $2 billion, with 79.50% ",
+  "[13§summary_ko.2] 숫자: 원문의 숫자가 빠짐 9.1"
+ ]
 }

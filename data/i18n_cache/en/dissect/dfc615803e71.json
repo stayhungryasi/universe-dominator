@@ -1,0 +1,31 @@
+{
+ "kind": "dissect",
+ "id": "dfc615803e71",
+ "lang": "en",
+ "src_hash": "3deded0e5ccc",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-16 08:42",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "GPT-6 lineup expanded with three options",
+  "sections.1.h": "Business workflow performance and price advantage",
+  "sections.2.h": "Substantive progress in factuality and reliability",
+  "sections.3.h": "Coding agent performance and cost balance",
+  "sections.4.h": "Efficiency gains in computer use capability",
+  "sections.5.h": "Improved communication style and technical problem-solving examples",
+  "sections.6.h": "Prompt caching optimization and developer tools",
+  "sections.7.h": "Alignment improvements and enhanced model reliability",
+  "sections.8.h": "Launch scope and accessibility, phased rollout guidance",
+  "sections.0.ko": "After OpenAI announced its most powerful model GPT-6 Astra earlier this month, it has now publicly released two new models, Sol and Luna. Applying the same training methodology as Astra while significantly improving cost efficiency, the launch of these two models enables enterprises and developers to choose options that match their task scale, pace, and budget. In particular, through caching and inference optimization, OpenAI has reduced the API pricing of Sol and Luna by 50% compared to the promotional pricing of the previous generation (GPT-5.6).",
+  "sections.1.ko": "In the AutomationBench benchmark (real business workflow testing using 47 tools), Sol surpassed Claude Opus 5 at approximately 9% of Opus pricing, and Luna improved performance at 58% lower cost compared to comparable models. In the Agents' Last Exam evaluation (complex expert tasks spanning 55 industry sectors), Sol also exceeded Opus 5 at 60% lower cost. OpenAI specifies that these benchmarks test extreme conditions of actual use, and shows higher reliability in typical usage.",
+  "sections.2.ko": "In internal factuality evaluations, Sol reduced errors to approximately half compared to the previous generation model and achieved Astra-level reliability at much lower cost. Luna also achieves accuracy equivalent to the previous Sol at higher difficulty levels while requiring only approximately 1/100 of the cost. While this evaluation is based on actual conversations where users reported errors, it emphasizes that factual errors are much rarer in real-world environments.",
+  "sections.3.ko": "Usage of coding agents within OpenAI has increased exponentially (median daily token spending per researcher $600, 90th percentile $7,000), and Sol and Luna have significantly lowered API pricing while maintaining strong coding performance. In the FrontierCode benchmark (real codebase merge readiness), Sol achieved Claude's high-difficulty settings at much lower cost, and in DeepSWE v1.1 (complex software engineering tasks), Sol achieved within 1.1% of Claude's highest score while recording approximately 80% lower cost.",
+  "sections.4.ko": "In the OSWorld 2.0 offline benchmark (simulating everyday and professional tasks), Sol achieved performance similar to Claude Opus's mid-to-high difficulty at approximately 80% lower cost, and Luna surpassed the previous generation Sol at 1/10 of the cost. While Astra remains at the highest level in computer use capability, the new models present much more efficient alternatives to previous generations.",
+  "sections.5.ko": "Astra's improved communication style has been applied to Sol and Luna as well, with clearer and more concise expression particularly expected in technical and coding conversations, reducing unnecessary details. The original source presents a case of website design improvement dialogue, where Sol first examined the possibility of adopting React and then determined it was actually unnecessary, providing a more cautious answer, and is evaluated as a strength for not sharing unnecessary implementation details.",
+  "sections.6.ko": "OpenAI has improved prompt caching for GPT-6, increasing cache hit rates by default, and offers a 90% discount for reading cached input tokens. According to GitHub's case, this improvement has reduced the proportion of prompt tokens requiring new processing by over 50% across billions of requests to OpenAI models, and also improved Copilot's response speed. Developers can use the caching dashboard and diagnostic tools to monitor performance and adjust inference difficulty and tool activation without incurring cache loss.",
+  "sections.7.ko": "Sol and Luna, based on improved alignment work introduced alongside Astra, demonstrate improved reliability including reduced misleading claims compared to previous generations. OpenAI specifies that these evaluations intentionally test difficult scenarios and differ from failure rates in actual usage, and guides users to check full results in the system card.",
+  "sections.8.ko": "Sol and Luna are immediately available to Plus, Pro, Business, Enterprise, and Edu users in ChatGPT Work and Codex, while Free and Go users can access Luna on the desktop app. Chat is not yet supported, and can be called as gpt-6-sol and gpt-6-luna in the OpenAI API. For service stability, ChatGPT will conduct a phased rollout throughout the day.",
+  "caveat": "All benchmark results were conducted in OpenAI's research environment or API, and competing model scores are cited from public reports, so actual performance differences in production environments may vary."
+ }
+}
