@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s1",
+ "lang": "en",
+ "src_hash": "d8224761ac1b",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "0. Changes since the previous report",
+  "md": "This report confirms two things. **The 13F has not yet been posted to the SEC.** And the only new filing since the previous report (FWP, 2026-11-13) is the **final terms of the yen-denominated bonds**, which closes T8. Probabilities and assumed value band do not move — no rule has been satisfied.\n\n| Item | Previous report (2026-11-10-event-r2) | This report | Basis |\n|---|---|---|---|\n| 3Q26 13F-HR | Scheduled 2026-11-16 (calculated) | **Not posted** — latest EDGAR filing is the 2026-11-13 FWP | [EDGAR filing list](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20) |\n| Yen bonds (T8) | Preliminary prospectus: 3 series, terms blank | **Finalized: 5 tranches · total ¥182.3 billion · settlement 2026-11-19** | [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm) 2026-11-13 |\n| Class B share price | $575.25 (2026-11-09 close) | **$592.94 (2026-11-13 close)** — higher than the Report 1 record-high close of $579.09 (2026-11-04) | [stockanalysis](https://stockanalysis.com/stocks/brk.b/history/) |\n| P/B | 1.61x | 1.66x (formula: 592.94 ÷ 357.73) | Formula · BPS from the [10-Q](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm) |\n| US 10-year yield | 4.86% (2026-11-06, reference) | 5.10% (2026-11-12, reference — discount rate recalculation is done in the monthly report) | data/latest.json meta.macro.ust10 |\n| Scenario probabilities | 25/50/25 | No change — R1–R6 not satisfied | Section 3 below |\n"
+ }
+}

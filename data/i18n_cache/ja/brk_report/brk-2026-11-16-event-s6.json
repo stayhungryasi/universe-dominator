@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s6",
+ "lang": "ja",
+ "src_hash": "d7bdb1a67fd6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "結論",
+  "md": "1. 一文結論: 3Q26の13FはKST実行時点で未掲載のためT1は待機のままだが、代わりに公開されたFWPが円建て社債を5トランシェ計¥1,823億(借換対象¥964億に対し純増¥859億、約$5.4億と推定)で確定させ、T8を閉じた — 確率25/50/25・仮定価値は変わらない(出所: [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm) · 3節)。\n2. ブリーフィング5行\n   - 3Q26の13Fはまだ SEC に未掲載 — 米国法定期限は2026-11-16で、掲載されれば測定層がエンジンを再び起こす([EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20))。\n   - 円建て社債確定: 2029〜2056年満期の5トランシェ計¥1,823億、加重平均クーポン2.97%(算式)、決済2026-11-19([FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm))。\n   - 借換対象¥964億(クーポン0.955%・0.203%)より¥859億多い — ドルでは約$5.4億(推定、円/ドル160.0)で、ヘッドライン現金の0.14%(算式 5.4 ÷ 3,774)。\n   - B株11/13終値$592.94、P/B 1.66倍(算式) — 基本シナリオの現在価値$464.4より27.7%上([stockanalysis](https://stockanalysis.com/stocks/brk.b/history/))。\n   - ルールR1〜R6の充足なし — シナリオ25/50/25・仮定価値バンド$265.0〜$684.5を維持(state基準線)。\n3. 次回までに直接確認するデータ3件\n   - 3Q26 13F-HR(米国2026-11-16期限) — 3Qの売買の銘柄別内訳(T1、[EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20))。\n   - 円建て社債の決済(2026-11-19)と¥734億の満期償還(2026-11-27) — 4Q26 10-Kの負債注記で確認(T2、[424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm))。\n   - 米10年債5.10%(2026-11-12)が続くか — 2026-12月次回の割引率再算定の入力(data/latest.json meta.macro.ust10)。"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s1",
+ "lang": "ja",
+ "src_hash": "d8224761ac1b",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "0. 前回からの変化",
+  "md": "今回の回で確認したことは二つある。**13FはまだSECに掲載されていない。** そして前回以降に提出された唯一の新規開示(FWP、2026-11-13)が**円建て社債の確定条件**であるため、T8を閉じる。確率・仮定価値は動かない — 充足されたルールがないためである。\n\n| 項目 | 前回(2026-11-10-event-r2) | 今回 | 根拠 |\n|---|---|---|---|\n| 3Q26 13F-HR | 2026-11-16予定(計算) | **未掲載** — EDGARの最新開示は2026-11-13のFWP | [EDGAR開示一覧](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20) |\n| 円建て社債(T8) | 予備目論見書: 3シリーズ・条件は空欄 | **確定: 5トランシェ · 合計¥1,823億 · 決済2026-11-19** | [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm) 2026-11-13 |\n| B株価格 | $575.25(2026-11-09終値) | **$592.94(2026-11-13終値)** — 第1回に記録された最高終値$579.09(2026-11-04)より高い | [stockanalysis](https://stockanalysis.com/stocks/brk.b/history/) |\n| P/B | 1.61倍 | 1.66倍(算式 592.94 ÷ 357.73) | 算式・BPSは[10-Q](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm) |\n| 米10年債 | 4.86%(2026-11-06、参考) | 5.10%(2026-11-12、参考 — 割引率の再算定は月次の回) | data/latest.json meta.macro.ust10 |\n| シナリオ確率 | 25/50/25 | 変化なし — R1~R6の充足なし | 下記第3節 |\n"
+ }
+}

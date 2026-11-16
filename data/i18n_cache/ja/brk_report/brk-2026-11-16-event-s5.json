@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s5",
+ "lang": "ja",
+ "src_hash": "b375d7e2f9c3",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 18:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. トリガー更新",
+  "md": "| ID | 内容 | 予想日 | 確認方法 | 変更 |\n|---|---|---|---|---|\n| T1 | 3Q26 13F | 2026-11-16(KST基準で未掲載 — 米国期限当日の開示を待機) | SEC 13F-HR(測定層の「重要」等級が掲載時にエンジンを起こす) | 状態は待機を維持 · 日付は不変(再鳴動防止) |\n| T8 | 円建て社債の確定条件 | 2026-11-13(実績 · FWP) | SEC FWP | **確認完了** — 5トランシェ¥1,823億、純増¥859億 |\n| T3 | 4Q26 13F | 2027-02-17(推定: 米国開示日2027-02-16 + 1日、KST確認日) | SEC 13F-HR | 予想日ルール変更 |\n\n出所: T1 [EDGAR開示一覧](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20) · T8 [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm)·[424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm)。T2·T4〜T7·T9は前回のまま。\n\n借換対象¥734億の満期償還(2026-11-27)は**トリガーに置かない** — 償還は個別に開示されない可能性があり、日付でエンジンを起こしても確認すべき原文がない(1節の「鳴る理由のない日に鳴る」)。代わりに次回の確認質問へ回し、4Q26 10-Kの負債注記(T2)で照合する(根拠: [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm))。\n"
+ }
+}

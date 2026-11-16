@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "67bbd1b3d1be",
  "lang": "es",
- "src_hash": "88ac701b80c1",
+ "src_hash": "76da4a16321f",
  "model": "claude-haiku-4-5",
- "at": "2026-11-16 08:42",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "El precio objetivo de Wedbush para Taiwan Semiconductor Manufacturing Co (NYSE:TSM) es de NT$3.300, con ingresos récord de octubre de NT$58.689 millones (aumento interanual del 59,7%) confirmando el ímpetu alcista.",
-  "summary_ko.1": "Los ingresos acumulados de los primeros 10 meses del año fiscal fueron NT$4,49 billones, un aumento del 43,3% interanual, con crecimiento trimestralizado esperado de aproximadamente 13% en el cuarto trimestre.",
-  "summary_ko.2": "El tipo de cambio real (32,8) está debilitándose respecto a la suposición del tipo de cambio planificado para el cuarto trimestre (31,8), con un impacto de aproximadamente 0,4% en el margen operativo por cada 1% de movimiento del tipo de cambio.",
-  "title": "Las Ventas Récord de TSMC Refuerzan la Perspectiva Alcista de Wedbush"
- }
+ "at": "2026-11-16 18:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[1§summary_ko.0] 숫자: 원문에 없는 숫자 58689 billion",
+  "[1§summary_ko.0] 숫자: 원문의 숫자가 빠짐 586.89억"
+ ]
 }
