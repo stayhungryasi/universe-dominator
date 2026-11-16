@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-16T18:30+09:00",
+  "fetched_at": "2026-11-17T08:32+09:00",
   "year": 2026,
   "year_count": 127,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-16T18:31+09:00",
+  "checked_at": "2026-11-17T08:32+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-15T23:43:35Z",
@@ -59,6 +59,17 @@
   "in_progress": false
  },
  "events": [
+  {
+   "date": "2026-11-16",
+   "form": "SCHEDULE 13G/A",
+   "items": "",
+   "title": "5% 이상 지분 보고(단순 투자) 정정",
+   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000121390026120715/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "accn": "0001213900-26-120715",
+   "source": "SEC EDGAR",
+   "kind": "filing",
+   "grade": "record"
+  },
   {
    "id": "ef9850ad-1096-425b-9d27-f7bbd186e61a",
    "date": "2026-11-15",
@@ -1003,17 +1014,6 @@
    "source": "SEC EDGAR",
    "kind": "filing",
    "grade": "record"
-  },
-  {
-   "date": "2020-03-13",
-   "form": "D",
-   "items": "06b",
-   "title": "사모 발행 신고",
-   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141220000001/xslFormDX01/primary_doc.xml",
-   "accn": "0001181412-20-000001",
-   "source": "SEC EDGAR",
-   "kind": "filing",
-   "grade": "record"
   }
  ],
  "seen": [
@@ -1049,6 +1049,7 @@
   "0001213900-26-087780",
   "0001213900-26-100186",
   "0001213900-26-105393",
+  "0001213900-26-120715",
   "0001354457-26-000562",
   "0001426012-26-000004",
   "0001426012-26-000007",
@@ -1126,7 +1127,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-16T18:30+09:00",
+ "generated_at": "2026-11-17T08:31+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1577,41 +1578,53 @@
    "detected_at": "2026-11-16",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:starship-flight15-catch:2026-11-17",
+   "trigger_id": null,
+   "name": "Starship이 캐치에 성공했고, Amazon Leo 발사는 실패했다.",
+   "reason": "보도 감지(al jazeera·around prague·broadband breakfast)",
+   "event": "Starship Catch Successful, Amazon Leo Launch Fails",
+   "event_date": "2026-11-17",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQeGNJZlFPVERWaWRZdWl5eEdacnRSZWlWU0V5Wm5pQU5ucVR5dE9VbjhIYklTSFlSWkVZa0ltWjRVbm16azhsVWlPb1M0aFNGa3JMWGRGTXpqY2FUUzhkcXhiQkhlM1VwVEhadkhNRENqc25YaF85TWdtbU9KTk5YVFFzTjlSR2VN?oc=5",
+   "detected_at": "2026-11-17",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:samsung-spacex-chips:2026-11-17",
+   "trigger_id": null,
+   "name": "Samsung이 텍사스에서 SpaceX용 칩을 생산할 것이라는 보도가 나왔다.",
+   "reason": "보도 감지(tipranks·wccftech)",
+   "event": "Elon Musk’s Ties With Samsung Deepen As The Korean Chip Giant Will Reportedly Make Chips For SpaceX At Texas, Says Report",
+   "event_date": "2026-11-17",
+   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPbzZZb2t4TkFqcnRxSnV2dEc5US1XYm0zT0VCR3Noc0dZaW55VU9KZVFHMGRacUozQVZqSWM3S1piNzM1MEo2YU1tWEtkVlVmT1FLVVo2MG5aVWs0ektoNVBTLS00azBScTF0VGp3Vkg5d2tPbGtQdHljcjZTNjRFOGNCZFJnZkVxa0RHM1ZEN0JrY0p4RG9tckJsLUNJbGhUVEFBYWtJa0FabWpxQ1dfOUxvUnZtdkhnQzgydTNfT2p3NTNjU08xeV9MT0c2NXhNVVhRbjFsV2fSAd4BQVVfeXFMT0NBcS05ZTBhQ2NzdkRwWldqUmRlYnY1czZxc0ExVld0WmE5bXBJd284anY4Tm5fVXM3N1gwSnpqNHhtcGNoUGVvTEc4SnJJeVFaaGdUeUREa05oZDA4cjliQnNEV3dqYS1QcUpVTERiZlVFSzRPaXF1QnFsQTh1eW1xRUNHS21hdFF2X1NUcDRLMWdrcl9uTzk4ek8zTkRnYnNnejVkWFRORFhkTnMzNzNBSjBabGxUbVhwZ1ZaZTRHN01kMnA3aURKRnZGRmNPX0tYRVp3QzdXbkFWcnhR?oc=5",
+   "detected_at": "2026-11-17",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "q:2026-11-16:0828:1",
-   "run_id": "43773433080",
-   "queued_at": "2026-11-16T08:28+09:00",
+   "key": "qn:2026-11-17:0832",
+   "run_id": "43977698876",
+   "queued_at": "2026-11-17T08:32+09:00",
    "state": "queued",
    "trigger_id": "",
-   "name": "[경쟁] Vulcan VC6L | Amazon Leo (LV-01) — 발사 실패",
-   "reason": "트리거·중요 사건 1건",
-   "urls": [
-    "https://ll.thespacedevs.com/2.4.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/"
-   ]
-  },
-  {
-   "key": "qn:2026-11-16:0828",
-   "run_id": "43773433080",
-   "queued_at": "2026-11-16T08:28+09:00",
-   "state": "queued",
-   "trigger_id": "",
-   "name": "SpaceX가 발사탑에서 Starship 우주선의 첫 캐치에 성공했다. · SpaceX가 Starshield 제한을 기술 문제 탓으로 돌렸지만 우크라이나에 세부 내용을 제공하지 않았다고 매체가 전했다.",
+   "name": "Starship이 캐치에 성공했고, Amazon Leo 발사는 실패했다. · Samsung이 텍사스에서 SpaceX용 칩을 생산할 것이라는 보도가 나왔다.",
    "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMidEFVX3lxTE1XQXZlTjhDWUd0Y1VpWHVNRlprV0lMRC1XRFdLaDF4T2wxUGJYb2RBSXktUTJjRURSdWJKa0UzNEsxNTI2QjBCMktwd181eWJGSXJ1cVpTaVdhejdJZ1h3TzNDSXo1MVd2UXdEU3g3QWdSRUdU?oc=5",
-    "https://news.google.com/rss/articles/CBMiogFBVV95cUxNZUxEbmpFVnAzM3EzQVhTdGtoY1ZpUFZ4VlMyaW9Zc1BhTVZ4eUNVZ3NPdktMdTNVTVZxY2NMU3JQbktqVFlnR2Q5UVpQSktVM1pPcHJJR0ZRS1lscDNJZUhyd2piSTJ3ZnNfVG9PRExBSWt6X2hSbEt4M2QyMTBZMWx2NWVsQmhFYzgxaUttRFlCQTB2R3RuazhfNXdSM3JjYWc?oc=5",
-    "https://news.google.com/rss/articles/CBMiuAFBVV95cUxONk1SY0JYdXg0SzVtZ0lTWE82T091eUlhV25KemU0Y25hRll1eURPS0cycWxaYmZDcUJNeEY1RVFkTDRCZzg1WDlDQ3N0T1dVOGEzNEUzVlBoNVlWYkVtQUoxVmw0YjRlcWo1bGdYYl9LRE5yTXdMaHVZVncyeTZRaUlRVFJKbmliSDZpNWFpZlRQVExCdDYyX2JQbm41a0h0RS1ncEotblZVbmlSLVRqdWJuYmlaclNi?oc=5",
-    "https://news.google.com/rss/articles/CBMiowFBVV95cUxPclh5M2V5N1paZEFGM1BuSnZKOWhWRHZKMUxMODZmUUJkX0tTbF93MlNuVEF5M0tMVnJvaWRYRmVzN19iQ0xfRGRhV1NFWjVFYURTZkp1Rlp6bnVIRnk1ZTk0LUk4cVFpMVpDZFlvbGVjbHJSazF2LWJSdndpekpKLVhGXzZRRUFLMkFRbHAwTzY4SzNoUDlwUW9udXhPSDBDM3pB?oc=5"
+    "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQeGNJZlFPVERWaWRZdWl5eEdacnRSZWlWU0V5Wm5pQU5ucVR5dE9VbjhIYklTSFlSWkVZa0ltWjRVbm16azhsVWlPb1M0aFNGa3JMWGRGTXpqY2FUUzhkcXhiQkhlM1VwVEhadkhNRENqc25YaF85TWdtbU9KTk5YVFFzTjlSR2VN?oc=5",
+    "https://news.google.com/rss/articles/CBMixwFBVV95cUxQQm13OElrVUhzY0ExSjdERURkcDRpOHZReXFLbmU4LUhNTWZJVW9XOXlKNUptOGJ1blhURjh4RE5zLXJBN3BfMW8wWndXWjgxazZlNnR2ZXdJNnVzelVaLVB1TEJWQjJFV1VkZDZEREVhb3kwc0ladFZmSFFlU0JHZ0g5emQ0Z2szZE1QNWlzQjlJY2NCS3g5UEs1T0g5VE90bEZjZGQ0bi1mMUZuekpJQ0ZWLTAyVGRsNk9BdlBjb0NfTjFPbUM0?oc=5",
+    "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPbzZZb2t4TkFqcnRxSnV2dEc5US1XYm0zT0VCR3Noc0dZaW55VU9KZVFHMGRacUozQVZqSWM3S1piNzM1MEo2YU1tWEtkVlVmT1FLVVo2MG5aVWs0ektoNVBTLS00azBScTF0VGp3Vkg5d2tPbGtQdHljcjZTNjRFOGNCZFJnZkVxa0RHM1ZEN0JrY0p4RG9tckJsLUNJbGhUVEFBYWtJa0FabWpxQ1dfOUxvUnZtdkhnQzgydTNfT2p3NTNjU08xeV9MT0c2NXhNVVhRbjFsV2fSAd4BQVVfeXFMT0NBcS05ZTBhQ2NzdkRwWldqUmRlYnY1czZxc0ExVld0WmE5bXBJd284anY4Tm5fVXM3N1gwSnpqNHhtcGNoUGVvTEc4SnJJeVFaaGdUeUREa05oZDA4cjliQnNEV3dqYS1QcUpVTERiZlVFSzRPaXF1QnFsQTh1eW1xRUNHS21hdFF2X1NUcDRLMWdrcl9uTzk4ek8zTkRnYnNnejVkWFRORFhkTnMzNzNBSjBabGxUbVhwZ1ZaZTRHN01kMnA3aURKRnZGRmNPX0tYRVp3QzdXbkFWcnhR?oc=5",
+    "https://news.google.com/rss/articles/CBMitAFBVV95cUxPYWFhNEhNeWJKT202TUdJNkItVUI4TXlhdk1xRzNkclk0a0M4NWtXdDhGWFpJOWhDQ0lGOUxzYzNoQ0RGTk1qalhVcF8xdDZzYXlBUl84NXNVaG9FYUdxcXZkeDg5RUVVSEdPb1RsbDNVMVMzd3JXMU4zQmRDMGlqaVROZDZZUDNhRWpJX1F4RVdkZDExQU5ZVWNPeWNvbEc2eUVEams1VUFIWm1XMGV5ZVBjb1o?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-16T18:31+09:00",
-  "last_success_at": "2026-11-16T09:30:45Z",
-  "last_run_at": "2026-11-16T09:30:19Z",
+  "checked_at": "2026-11-17T08:32+09:00",
+  "last_success_at": "2026-11-16T23:30:43Z",
+  "last_run_at": "2026-11-16T23:30:19Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

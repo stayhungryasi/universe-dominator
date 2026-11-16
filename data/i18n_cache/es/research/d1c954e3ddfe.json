@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "d1c954e3ddfe",
  "lang": "es",
- "src_hash": "19dfeced0619",
+ "src_hash": "831afde63bd5",
  "model": "claude-haiku-4-5",
- "at": "2026-11-16 18:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "ExxonMobil Holdings Corp. (XOM) pertenece a la categoría de megacapitalización con una capitalización de mercado superior a $200 mil millones, con ganancia neta que disminuyó 14,36% interanual pero aumentó 6,11% respecto al trimestre anterior.",
-  "summary_ko.1": "El precio de las acciones de XOM se cotiza cerca del máximo de 52 semanas y ha subido +12,6% en los últimos 6 meses en comparación con el promedio industrial (+8,3%).",
-  "title": "Cotización y pronóstico de precios de acciones de XOM"
- }
+ "at": "2026-11-17 08:42",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[19§summary_ko.0] 숫자: 원문에 없는 숫자 2 billion",
+  "[19§summary_ko.0] 숫자: 원문의 숫자가 빠짐 2천"
+ ]
 }

@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "d1c954e3ddfe",
  "lang": "ja",
- "src_hash": "19dfeced0619",
+ "src_hash": "831afde63bd5",
  "model": "claude-haiku-4-5",
- "at": "2026-11-16 18:41",
+ "at": "2026-11-17 08:42",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "ExxonMobil Holdings Corp. (XOM)は2,000億ドルを超える時価総額でメガキャップカテゴリーに属し、純利益は前年比14.36%減少したが前四半期比6.11%増加した。",
-  "summary_ko.1": "XOM株価は52週最高値近くで取引されており過去6ヶ月間は業界平均(+8.3%)対比+12.6%上昇した。",
-  "title": "XOM Stock Quote Price and Forecast"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[19§summary_ko.0] 숫자: 원문에 없는 숫자 2,000 억",
+  "[19§summary_ko.0] 숫자: 원문의 숫자가 빠짐 2천"
+ ]
 }

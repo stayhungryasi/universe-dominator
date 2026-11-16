@@ -46,21 +46,21 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-16T18:33+09:00"
+  "measured_at": "2026-11-17T08:35+09:00"
  },
  "due": [
   {
    "id": "T1",
    "name": "3Q26 13F — 알파벳·애플·은행주 수량 변화, 3Q 순매도 $4.3억의 내역",
    "expected": "2026-11-16",
-   "days_over": 0
+   "days_over": 1
   }
  ],
  "due_fired": [
   "T1@2026-11-16",
   "T6@2026-11-03"
  ],
- "probe_age_days": 0,
+ "probe_age_days": 1,
  "engine": {
   "last": {
    "id": 43776353819,
@@ -69,22 +69,22 @@
    "event": "repository_dispatch",
    "created_at": "2026-11-15T23:43:35Z"
   },
-  "checked_at": "2026-11-16T18:33+09:00"
+  "checked_at": "2026-11-17T08:35+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-16T18:33+09:00",
+ "generated_at": "2026-11-17T08:35+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-16T18:33+09:00",
-   "n": 1005
+   "at": "2026-11-17T08:35+09:00",
+   "n": 1008
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-16T18:33+09:00",
+   "at": "2026-11-17T08:35+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -914,6 +914,9 @@
   "0001193125-26-452530",
   "0001193125-26-452592",
   "0001193125-26-459815",
+  "0001193125-26-463399",
+  "0001193125-26-463989",
+  "0001193125-26-464003",
   "0001209191-17-022770",
   "0001209191-17-026722",
   "0001209191-17-028040",
@@ -1098,6 +1101,39 @@
   "9999999997-17-000759"
  ],
  "events": [
+  {
+   "accn": "0001193125-26-464003",
+   "date": "2026-11-16",
+   "form": "4",
+   "items": "",
+   "grade": "record",
+   "kind": "insider",
+   "title": "내부자·대량 보유자 거래 보고 (4)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526464003/xslF345X06/ownership.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-463989",
+   "date": "2026-11-16",
+   "form": "4",
+   "items": "",
+   "grade": "record",
+   "kind": "insider",
+   "title": "내부자·대량 보유자 거래 보고 (4)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526463989/xslF345X06/ownership.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-463399",
+   "date": "2026-11-16",
+   "form": "13F-HR",
+   "items": "",
+   "grade": "major",
+   "kind": "holdings",
+   "title": "보유 주식 명세(13F) (13F-HR)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml",
+   "baseline": false
+  },
   {
    "accn": "0001193125-26-459815",
    "date": "2026-11-13",
@@ -1944,43 +1980,15 @@
    "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
    "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054609/xslSCHEDULE_13G_X01/primary_doc.xml",
    "baseline": true
-  },
-  {
-   "accn": "0001193125-26-054580",
-   "date": "2026-02-17",
-   "form": "13F-HR",
-   "items": "",
-   "grade": "major",
-   "kind": "holdings",
-   "title": "보유 주식 명세(13F) (13F-HR)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054580/xslForm13F_X02/primary_doc.xml",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-26-054571",
-   "date": "2026-02-17",
-   "form": "SCHEDULE 13G/A",
-   "items": "",
-   "grade": "record",
-   "kind": "stake",
-   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054571/xslSCHEDULE_13G_X01/primary_doc.xml",
-   "baseline": true
-  },
-  {
-   "accn": "0000315066-26-000368",
-   "date": "2026-02-05",
-   "form": "SCHEDULE 13G/A",
-   "items": "",
-   "grade": "record",
-   "kind": "stake",
-   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000031506626000368/xslSCHEDULE_13G_X01/primary_doc.xml",
-   "baseline": true
   }
  ],
  "alerts": {},
  "dm_log": [
+  {
+   "at": "2026-11-17T08:35+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  },
   {
    "at": "2026-11-16T08:31+09:00",
    "ok": true,
@@ -2005,13 +2013,13 @@
  "dispatch_queue": [
   {
    "mode": "event",
-   "reason": "트리거 T1 예상일 2026-11-16",
+   "reason": "보유 주식 명세(13F) (13F-HR) · 원문: https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml",
    "keys": [
-    "trigger"
+    "0001193125-26-463399"
    ],
    "state": "queued",
-   "run_id": "43773433080",
-   "queued_at": "2026-11-16T08:31+09:00"
+   "run_id": "43977698876",
+   "queued_at": "2026-11-17T08:35+09:00"
   }
  ]
 }

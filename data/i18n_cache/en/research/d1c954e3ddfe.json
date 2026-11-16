@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "d1c954e3ddfe",
  "lang": "en",
- "src_hash": "68531af0836b",
+ "src_hash": "1838b87c83c0",
  "model": "claude-haiku-4-5",
- "at": "2026-11-16 18:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "ExxonMobil Holdings Corp. (XOM) belongs to the mega-cap category with market capitalization exceeding $200 billion; net income declined 14.36% year-over-year but increased 6.11% sequentially.",
-  "summary_ko.1": "XOM stock is trading near 52-week highs and has risen +12.6% over the past 6 months compared to the industry average of +8.3%."
- }
+ "at": "2026-11-17 08:42",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.0] 숫자: 원문에 없는 숫자 2 trillion",
+  "[17§summary_ko.0] 숫자: 원문의 숫자가 빠짐 2천"
+ ]
 }
