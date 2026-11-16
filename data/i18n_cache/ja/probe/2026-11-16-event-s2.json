@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-16-event-s2",
+ "lang": "ja",
+ "src_hash": "04ec93e547ac",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. 競争 — Vulcan LV-01 打ち上げ失敗(Amazon Leo)",
+  "md": "\n| 項目 | 値 | 出典 |\n|---|---|---|\n| 状態 | 'Launch Failure' — ロケットが軌道に到達できなかったか、ペイロードが分離されなかった · failreason は空欄 | ④ [LL2 打ち上げ記録](https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/) |\n| 打ち上げ | 2026-11-15 17:40:30 UTC · SLC-41(Cape Canaveral) | 同上 |\n| 最終更新 | 2026-11-15 19:30:04 UTC · アップデート 18:32 UTC '軌道未到達、T+10分前後に異常' | 同上 |\n| ULA声明 | 打ち上げの約50分後: '飛行開始から10分で異常が発生し、Amazonのミッションを軌道に投入できなかった'。原因を特定できる具体的なデータはまだない | ⑥ [Spaceflight Now 11/15](https://spaceflightnow.com/2026/11/15/ula-suffers-first-total-mission-failure-with-loss-of-vulcan-rocket-carrying-40-amazon-leo-satellites/) |\n| 搭載 | 衛星40基 — Amazonが購入したVulcan 38回のうち初の飛行。成功していれば Amazon Leo の累計打ち上げは436基になる予定だった | 同上 |\n| 意味 | 2006年のULA発足後初の全面失敗であり、Vulcanとしては9か月ぶりの飛行だった。Bloombergは、初の全面的なミッション損失によりStarlinkへの挑戦に遅れが生じたと報じた | 同上 · ⑤ [Bloomberg 11/15](https://www.bloomberg.com/news/articles/2026-11-15/ula-vulcan-rocket-launches-with-its-first-amazon-leo-payload) |\n| Amazonのその他の打ち上げ予約 | New Glenn 24 · Ariane 6 24 · Falcon 9 13。New Glennは5月の発射台爆発後、まだ復帰していない | ⑥ Spaceflight Now 11/15 |\n\n- **衛星数の整理**: LL2のミッション説明にある'45基'はVulcanのミッションに使われる一般的な文言である。今回の飛行は40基である(Spaceflight Now · ULAの10月の発表を伝える報道)。40基を採用する (出典: 上記2か所)。\n- **T4**(Amazon Leoの米国消費者向け開始・料金): 今回の失敗で配備ペースが落ちた。ただしT4は料金・地域の掲載で判定するため、状態は'待機'である。残る確認点は Ariane 64 LE-04(11/23) · 12/01 月間 · 2027-01-04 である (出典: `state.triggers_next_12m[T4]`)。\n- **R5**(2027年末までにKuiperの米国消費者向け料金プランが未発売 → 基本 +5): このルールは発売の有無だけで判定する。打ち上げ失敗は判定対象の事象ではない → **発動なし**。結果の前に定めた条件を、事象に合わせて拡大解釈しない (出典: `state.probability_adjustment_rules` R5)。\n- **T13**(国防打ち上げ供給の多様化): 宇宙軍はすでにVulcanによる国家安全保障打ち上げを、追加分析が終わるまで保留していた。今回の失敗が保留やNSSL割り当てに与える影響について、公式発表はない。入力は宇宙軍の発表と契約公告のみで受け付ける (出典: Spaceflight Now 11/15 · `state.triggers_next_12m[T13]`)。\n\n---\n"
+ }
+}

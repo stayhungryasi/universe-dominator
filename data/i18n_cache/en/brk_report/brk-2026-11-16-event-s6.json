@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s6",
+ "lang": "en",
+ "src_hash": "d7bdb1a67fd6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "Conclusion",
+  "md": "1. One-sentence conclusion: The 3Q26 13F was still unpublished at the KST run time, so T1 stays pending; instead, the FWP that came in finalized the yen bond at 5 tranches totaling ¥182.3 billion (net increase of ¥85.9 billion versus ¥96.4 billion to be refinanced, about $540 million estimated), closing T8 — probabilities 25/50/25 and the assumed value are unchanged (source: [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm) · Section 3).\n2. Briefing in 5 lines\n   - The 3Q26 13F is not yet posted on the SEC — the US statutory deadline is 2026-11-16; once posted, the measurement layer wakes the engine again ([EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20)).\n   - Yen bond finalized: 5 tranches maturing 2029–2056, total ¥182.3 billion, weighted coupon 2.97% (calculated), settlement 2026-11-19 ([FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm)).\n   - That is ¥85.9 billion more than the ¥96.4 billion to be refinanced (coupons 0.955% and 0.203%) — about $540 million in dollars (estimate, yen/dollar 160.0), or 0.14% of headline cash (calculated 5.4 ÷ 3,774).\n   - Class B closed at $592.94 on 11/13, P/B 1.66x (calculated) — 27.7% above the base-scenario present value of $464.4 ([stockanalysis](https://stockanalysis.com/stocks/brk.b/history/)).\n   - No rules R1–R6 met — scenarios 25/50/25 and assumed value band $265.0–$684.5 maintained (state baseline).\n3. Three data points to check directly before the next round\n   - 3Q26 13F-HR (US deadline 2026-11-16) — security-level detail of 3Q buys and sells (T1, [EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20)).\n   - Settlement of the yen bond (2026-11-19) and the ¥73.4 billion maturity repayment (2026-11-27) — to be confirmed in the 4Q26 10-K debt note (T2, [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm)).\n   - Whether the US 10-year yield of 5.10% (2026-11-12) persists — input for the discount rate recalculation in the 2026-12 monthly round (data/latest.json meta.macro.ust10)."
+ }
+}

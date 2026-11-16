@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-16-event-s8",
+ "lang": "ja",
+ "src_hash": "b4d00c105998",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 次回までに直接確認すべきデータ3点",
+  "md": "\n1. **11月のStarshield制限の原因文書**: 米政府やSpaceXの公式説明、Reuters・Bloomberg・WSJ・FTの記事、Axiosの原文、ウクライナ国防省による開始日・解除の発表 (出典: `state.open_questions_for_next_run`)。\n2. **Vulcanの後続動向**: ULAの事故調査、Amazonの配備・サービス日程に関する公式見解、宇宙軍によるVulcan保留の延長有無、Ariane 64 LE-04(11/23)の結果 (出典: `state.triggers_next_12m` T4・T13)。\n3. **既存の確認ポイント**: T7 ⓒ 11/19 · T2 12/8 ロックアップ · T12 12/9 議決 · Tesla合併8-K(T6) · 月間 12/01 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回確認された事実の要約 (出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| 11月の制限発表 | 大統領 X — 「体系的な速度制限」、前線・占領地、時速161km | [CNBC](https://www.cnbc.com/2026/11/12/starlink-starshield-ukraine-restrictions-spacex.html), 2026-11-12 |\n| 制限の継続 | 「5日目」(11/13時点) | [Ukrainska Pravda](https://www.pravda.com.ua/eng/news/2026/11/14/8062848/), 2026-11-14 |\n| SpaceXの公開回答 | 'This is false. There has been no change.'(Axios引用) | [Kyiv Independent](https://www.yahoo.com/news/us/articles/zelensky-says-starshield-restrictions-russia-123032225.html), 2026-11-14 |\n| SpaceX → 代理大使 | 「技術的問題」 | [RBC-Ukraine](https://newsukraine.rbc.ua/news/spacex-explains-starshield-speed-restrictions-1794755540.html), 2026-11-15 |\n| 下院コーカス | 105人 | [Ukrainska Pravda](https://www.pravda.com.ua/eng/news/2026/11/14/8062848/), 2026-11-14 |\n| Vulcan LV-01 | 'Launch Failure' · 17:40:30 UTC | [LL2](https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/), 2026-11-15 |\n| 衛星損失 | 40基 · AmazonのVulcan 38回中初の飛行 | [Spaceflight Now](https://spaceflightnow.com/2026/11/15/ula-suffers-first-total-mission-failure-with-loss-of-vulcan-rocket-carrying-40-amazon-leo-satellites/), 2026-11-15 |\n| 確率 | 30/50/20(不変) | `state.scenarios` |\n| 確率加重価値 · バンド · 中心 | $36 · $36~$121 · $68(不変) | `state.valuation` |\n| 基準株価 | $139.11(11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| 米10年債 | 5.10%(2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

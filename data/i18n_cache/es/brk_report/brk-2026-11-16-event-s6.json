@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s6",
+ "lang": "es",
+ "src_hash": "d7bdb1a67fd6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "Conclusión",
+  "md": "1. Conclusión en una frase: el 13F del 3Q26 aún no estaba publicado en el momento de la ejecución en KST, por lo que T1 sigue en espera; en su lugar, el FWP recibido confirmó la deuda en yenes en 5 tramos por ¥182.300 millones (aumento neto de ¥85.900 millones frente a los ¥96.400 millones por refinanciar, unos $540 millones estimados) y cerró T8 — las probabilidades 25/50/25 y el valor supuesto no cambian (fuente: [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm) · sección 3).\n2. Resumen en 5 líneas\n   - El 13F del 3Q26 aún no está publicado en la SEC — el plazo legal en EE. UU. es el 2026-11-16; cuando se publique, la capa de medición volverá a activar el motor ([EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20)).\n   - Deuda en yenes confirmada: 5 tramos con vencimientos entre 2029 y 2056, total ¥182.300 millones, cupón ponderado del 2,97% (fórmula), liquidación el 2026-11-19 ([FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm)).\n   - Es ¥85.900 millones superior a lo que se refinancia, ¥96.400 millones (cupones 0,955% y 0,203%) — unos $540 millones (estimado, yen/dólar 160,0), el 0,14% del efectivo de titular (fórmula 5,4 ÷ 3.774).\n   - Cierre de las acciones B el 11/13: $592,94, P/B de 1,66 veces (fórmula) — un 27,7% por encima del valor presente del escenario base, $464,4 ([stockanalysis](https://stockanalysis.com/stocks/brk.b/history/)).\n   - No se cumple ninguna de las reglas R1~R6 — se mantienen los escenarios 25/50/25 y la banda de valor supuesto de $265,0~$684,5 (línea base del state).\n3. Tres datos que comprobar directamente antes de la próxima edición\n   - 13F-HR del 3Q26 (plazo en EE. UU. 2026-11-16) — detalle por valor de las compras y ventas del 3Q (T1, [EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20)).\n   - Liquidación de la deuda en yenes (2026-11-19) y reembolso del vencimiento de ¥73.400 millones (2026-11-27) — se comprobará en la nota de deuda del 10-K del 4Q26 (T2, [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm)).\n   - Si el bono estadounidense a 10 años se mantiene en 5,10% (2026-11-12) — entrada para recalcular la tasa de descuento de la edición mensual de 2026-12 (data/latest.json meta.macro.ust10)."
+ }
+}

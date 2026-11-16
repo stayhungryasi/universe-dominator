@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-16-event-s5",
+ "lang": "en",
+ "src_hash": "8005a537a046",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Other checks",
+  "md": "\n| Item | Result | Source |\n|---|---|---|\n| EDGAR latest | 11/13 SC 13G/A → 11/06 8-K (5.02) → 10/26 8-K (8.01) → 10/22 S-8 · 10-Q — no new filings | [EDGAR submissions](https://data.sec.gov/submissions/CIK0001181412.json) |\n| Starship catch coverage (echo) | The 11/15 r3 run finished handling it with R2 triggered and B-2027-1. No new facts | `state.definitions.ship_recovery.resolved` |\n| Remainder of due items | Frontier AI lawsuit (T16) · Texas attorney general-elect (T6) · booster catch halt · T3 · Flight 15 launch success are echoes of events handled by the 11/14–15 runs | `state.triggers_next_12m` |\n\n---\n"
+ }
+}

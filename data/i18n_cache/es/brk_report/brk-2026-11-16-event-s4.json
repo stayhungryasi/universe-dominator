@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s4",
+ "lang": "es",
+ "src_hash": "250b8852ebb4",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Probabilidad y valor — sin cambios",
+  "md": "- Ninguna de las reglas de ajuste de probabilidad R1~R6 se cumple con este suceso (13F sin publicar · los bonos no son objeto de las reglas, fuente: state.probability_adjustment_rules). Se mantienen los escenarios 25/50/25.\n- Banda de valor supuesto $265,0~$684,5 · ponderado por probabilidad $469,6 · base $464,4 — valores de la primera entrega sin cambios (fórmulas y fuentes en la sección de valoración del [informe de 2026-11](2026-11.md)).\n- Actualización de precio (cierre): acción B $592,94 (2026-11-13, [stockanalysis](https://stockanalysis.com/stocks/brk.b/history/)) — un 27,7% por encima del valor presente base (fórmula 592,94 ÷ 464,4 − 1). Con un P/B final fijo de 1,45 veces, el crecimiento compuesto del BPS incorporado es del 10,7% (fórmula (592,94 × 2,411 ÷ (357,73 × 1,45))^(1/10) − 1).\n- Capitalización bursátil de unos $1,262 billones (fórmula 592,94 × 1.418.900 × 1.500) − efectivo neto $356.900 millones − acciones $335.500 millones = valor asignado a los negocios operativos de unos $569.500 millones → 15,0 veces el beneficio operativo después de impuestos anualizado, sin ingresos por inversiones, de $38.080 millones (fórmula 569.523 ÷ 38.080, misma aproximación que en la primera entrega).\n- Referencia (no incorporada): con el bono a 10 años al 5,10% (2026-11-12, data/latest.json meta.macro.ust10), la tasa de descuento sería del 9,35% (fórmula 5,10% + 5,0% × 0,85) y el valor presente base de unos $458 (fórmula 772,3 × 1,45 ÷ 1,0935^10). Recalcular la tasa de descuento corresponde a la próxima entrega mensual (2026-12).\n- La acción subió un 3,1% en 4 sesiones (fórmula 592,94 ÷ 575,25 − 1) sin cambio en las cifras publicadas — no es material de juicio para esta exploración (prohibido ajustar fuera de las reglas, prompts/monthly_run.md apartado 2).\n"
+ }
+}

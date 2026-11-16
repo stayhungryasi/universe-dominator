@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-16-event-s5",
+ "lang": "ja",
+ "src_hash": "8005a537a046",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. その他の確認",
+  "md": "\n| 項目 | 結果 | 出典 |\n|---|---|---|\n| EDGAR 最新 | 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) → 10/22 S-8 · 10-Q — 新規開示なし | [EDGAR submissions](https://data.sec.gov/submissions/CIK0001181412.json) |\n| Starship キャッチ報道(再報) | 11/15 の r3 が R2 発動と B-2027-1 で処理を終えた。新事実なし | `state.definitions.ship_recovery.resolved` |\n| due の残り | フロンティアAI訴訟(T16) · テキサス州司法長官当選者(T6) · ブースターキャッチ中断 · T3 · Flight 15 打ち上げ成功は、11/14~15 の回が処理した事案の再報である | `state.triggers_next_12m` |\n\n---\n"
+ }
+}

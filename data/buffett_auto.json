@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-16 08:25",
- "generated_at": "2026-11-16T08:25:00.902477+09:00",
+ "generated_label": "2026-11-16 12:28",
+ "generated_at": "2026-11-16T12:28:20.631319+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-16",
@@ -130,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -148,7 +148,28 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "notes": "소비자 프랜차이즈 강력하나 27% 년초 상승 후 밸류에이션 상한선 근접, 성장 부재 프리미엄 구조의 한계 노출",
+   "_evidence": {
+    "franchise": "Apple's Q4 Earnings Loom: Buy or Sell AAQL Stock Ahead of Results; Revenue Beats Estimates as Memory Crunch Threatens Margins",
+    "risk5": "Apple Shares (AAPL) Look Expensive Heading into 2027; Why Apple Stock Fell Despite a Record Quarter",
+    "capalloc": "Apple Shares Are Up 27% This Year; strong iPhone, China sales"
+   }
   },
   "GOOG": {
    "as_of": "2026-11-16",
@@ -454,7 +475,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -474,27 +495,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(69%) — 취재 필요",
-   "notes": "AI 칩 수요는 확실하나 광범위한 커스텀 AI 칩 경쟁과 예측 불확실성(±30% 초과)이 내재적 가치 산정을 어렵게 함",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "AI revenue doubles, strong earnings guidance; critical semiconductor infrastructure provider to major tech labs",
-    "risk5": "Weak software sales, unchanged AI chip forecast despite strong results, stock weakness post-earnings despite beats suggest uncertain forward visibility",
-    "capalloc": "Reports strong earnings and positive cash generation enabling capital allocation"
-   }
+   "notes": "전망치 이상(69%) — 취재 필요"
   },
   "SPCX": {
    "as_of": "2026-11-16",
@@ -2069,5 +2070,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-16 08:26"
+ "scout_label": "2026-11-16 12:29"
 }

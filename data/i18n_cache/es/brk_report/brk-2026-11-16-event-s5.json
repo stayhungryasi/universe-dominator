@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s5",
+ "lang": "es",
+ "src_hash": "b375d7e2f9c3",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Actualización de disparadores",
+  "md": "| ID | Qué | Fecha prevista | Cómo se comprueba | Cambio |\n|---|---|---|---|---|\n| T1 | 13F del 3T26 | 2026-11-16 (sin publicar según KST — a la espera de la publicación el día del plazo en EE. UU.) | SEC 13F-HR (la capa de medición, con grado 'importante', activa el motor al publicarse) | Estado en espera · fecha sin cambios (para evitar un nuevo disparo) |\n| T8 | Condiciones definitivas de los bonos en yenes | 2026-11-13 (real · FWP) | SEC FWP | **Confirmado** — 5 tramos por ¥182.300 millones, aumento neto de ¥85.900 millones |\n| T3 | 13F del 4T26 | 2027-02-17 (estimada: fecha de publicación en EE. UU. 2027-02-16 + 1 día, día de comprobación en KST) | SEC 13F-HR | Cambio en la regla de fecha prevista |\n\nFuentes: T1 [lista de documentos de EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20) · T8 [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm)·[424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm). T2·T4~T7·T9 se mantienen como en la entrega anterior.\n\nLa amortización al vencimiento de los ¥73.400 millones por refinanciar (2026-11-27) **no se fija como disparador** — puede que la amortización no se publique por separado, de modo que activar el motor por fecha no dejaría ningún texto original que comprobar (el 'disparo en un día sin motivo' de la sección 1). En su lugar, se pasa a la pregunta de comprobación de la próxima entrega y se contrastará en la nota de deuda del 10-K del 4T26 (T2) (base: [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm)).\n"
+ }
+}

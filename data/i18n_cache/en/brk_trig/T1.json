@@ -2,14 +2,14 @@
  "kind": "brk_trig",
  "id": "T1",
  "lang": "en",
- "src_hash": "a52d5ba1d914",
+ "src_hash": "6d2466338a35",
  "model": "claude-haiku-4-5",
- "at": "2026-11-09 18:38",
+ "at": "2026-11-16 12:40",
  "attempts": 2,
  "status": "ok",
  "fields": {
-  "name": "3Q26 13F — Alphabet, Apple, Bank Stock Quantity Changes, 3Q Net Sales Details of $430 million",
-  "expected": "2026-11-16 (Statutory Deadline 11-14 Sat → Next Business Day, Calculated)",
-  "check": "SEC 13F-HR Original Text (Measurement Layer Detection)"
+  "name": "3Q26 13F — Alphabet·Apple·bank stock quantity changes, details of 3Q net sales of $430 million",
+  "expected": "2026-11-16 (statutory deadline 11-14 Saturday → next business day, calculated — U.S. Eastern date)",
+  "check": "SEC 13F-HR source text (detection layer flagged — 13F-HR is posted as 'critical' grade so it triggers separate engine activation)"
  }
 }

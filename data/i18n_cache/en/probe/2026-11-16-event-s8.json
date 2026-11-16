@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-16-event-s8",
+ "lang": "en",
+ "src_hash": "b4d00c105998",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Three data points to verify directly before the next run",
+  "md": "\n1. **Source documents for the November Starshield restrictions**: official explanations from the U.S. government or SpaceX, articles from Reuters, Bloomberg, WSJ and FT, the original Axios piece, and the Ukrainian Ministry of Defense's announcements of the start and lifting dates (source: `state.open_questions_for_next_run`).\n2. **Vulcan follow-up**: the ULA accident investigation, Amazon's official position on its deployment and service schedule, whether the Space Force extends its hold on Vulcan, and the result of Ariane 64 LE-04 (11/23) (source: `state.triggers_next_12m` T4·T13).\n3. **Existing checkpoints**: T7 ⓒ 11/19 · T2 12/8 lockup · T12 12/9 vote · Tesla merger 8-K (T6) · monthly 12/01 (source: `state.triggers_next_12m`).\n\n---\n\n### Appendix: Summary of facts confirmed in this run (source · date)\n\n| Fact | Value | Source · Date |\n|---|---|---|\n| November restriction announcement | President on X — 'systematic speed limit', front line and occupied territories, 161 km/h | [CNBC](https://www.cnbc.com/2026/11/12/starlink-starshield-ukraine-restrictions-spacex.html), 2026-11-12 |\n| Restrictions continuing | 'Day 5' (as of 11/13) | [Ukrainska Pravda](https://www.pravda.com.ua/eng/news/2026/11/14/8062848/), 2026-11-14 |\n| SpaceX public response | 'This is false. There has been no change.' (quoted by Axios) | [Kyiv Independent](https://www.yahoo.com/news/us/articles/zelensky-says-starshield-restrictions-russia-123032225.html), 2026-11-14 |\n| SpaceX → chargé d'affaires | 'Technical issue' | [RBC-Ukraine](https://newsukraine.rbc.ua/news/spacex-explains-starshield-speed-restrictions-1794755540.html), 2026-11-15 |\n| House caucus | 105 members | [Ukrainska Pravda](https://www.pravda.com.ua/eng/news/2026/11/14/8062848/), 2026-11-14 |\n| Vulcan LV-01 | 'Launch Failure' · 17:40:30 UTC | [LL2](https://ll.thespacedevs.com/2.3.0/launches/ef9850ad-1096-425b-9d27-f7bbd186e61a/), 2026-11-15 |\n| Satellite loss | 40 satellites · first flight of Amazon's 38 Vulcan launches | [Spaceflight Now](https://spaceflightnow.com/2026/11/15/ula-suffers-first-total-mission-failure-with-loss-of-vulcan-rocket-carrying-40-amazon-leo-satellites/), 2026-11-15 |\n| Probabilities | 30/50/20 (unchanged) | `state.scenarios` |\n| Probability-weighted value · band · center | $36 · $36~$121 · $68 (unchanged) | `state.valuation` |\n| Reference share price | $139.11 (11/13) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/) |\n| U.S. 10-year yield | 5.10% (2026-11-12) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

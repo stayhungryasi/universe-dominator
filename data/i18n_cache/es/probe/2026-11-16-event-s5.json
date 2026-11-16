@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-16-event-s5",
+ "lang": "es",
+ "src_hash": "8005a537a046",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Otras comprobaciones",
+  "md": "\n| Elemento | Resultado | Fuente |\n|---|---|---|\n| Último en EDGAR | 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) → 10/22 S-8 · 10-Q — sin nuevas presentaciones | [EDGAR submissions](https://data.sec.gov/submissions/CIK0001181412.json) |\n| Noticias de la captura de Starship (eco) | r3 del 11/15 cerró el tratamiento con la activación de R2 y B-2027-1. Sin hechos nuevos | `state.definitions.ship_recovery.resolved` |\n| Resto de due | La demanda de IA de frontera (T16) · el fiscal general electo de Texas (T6) · la suspensión de la captura del propulsor · T3 · el lanzamiento exitoso de Flight 15 son ecos de sucesos ya tratados por las rondas del 11/14~15 | `state.triggers_next_12m` |\n\n---\n"
+ }
+}

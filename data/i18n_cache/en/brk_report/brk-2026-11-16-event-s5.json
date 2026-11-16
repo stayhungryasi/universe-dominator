@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s5",
+ "lang": "en",
+ "src_hash": "b375d7e2f9c3",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Trigger Updates",
+  "md": "| ID | What | Expected date | How to verify | Change |\n|---|---|---|---|---|\n| T1 | 3Q26 13F | 2026-11-16 (unposted as of KST — awaiting filing on the US deadline day) | SEC 13F-HR (the measurement layer's 'important' grade wakes the engine when posted) | Status stays pending · date unchanged (to prevent re-firing) |\n| T8 | Yen bond final terms | 2026-11-13 (actual · FWP) | SEC FWP | **Confirmed** — 5 tranches ¥182.3 billion, net increase ¥85.9 billion |\n| T3 | 4Q26 13F | 2027-02-17 (estimate: US filing date 2027-02-16 + 1 day, KST confirmation date) | SEC 13F-HR | Expected-date rule changed |\n\nSources: T1 [EDGAR filing list](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20) · T8 [FWP](https://www.sec.gov/Archives/edgar/data/1067983/000119312526459815/d127427dfwp.htm)·[424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm). T2, T4–T7 and T9 are unchanged from the previous round.\n\nThe maturity repayment of the ¥73.4 billion to be refinanced (2026-11-27) is **not set as a trigger** — the repayment may not be disclosed separately, so even if a date woke the engine there would be no source text to check (the 'firing on a day with no reason to fire' in Section 1). Instead it is passed to the next round's check questions and will be reconciled against the 4Q26 10-K debt note (T2) (basis: [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452592/d86634d424b5.htm)).\n"
+ }
+}

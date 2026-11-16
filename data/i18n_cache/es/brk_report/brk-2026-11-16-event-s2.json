@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s2",
+ "lang": "es",
+ "src_hash": "e1460ac927ac",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. T1 — fecha prevista frente a fecha real",
+  "md": "- **Qué se esperaba**: fin de trimestre (2026-09-30) + 45 días = 2026-11-14 (sáb.) → se anotó como fecha prevista el siguiente día hábil, 2026-11-16 (lun.) (fórmula, fuente: state.triggers_next_12m T1).\n- **Real (en el momento de ejecución de esta entrega)**: la fecha de ejecución es el 2026-11-16 en KST, pero en hora del este de EE. UU. todavía es el 15-11 (dom.). El último documento de Berkshire en EDGAR es el FWP del 2026-11-13 y no hay 13F-HR (fuente: [lista de documentos de EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20)). El 13F anterior se publicó el 2026-08-14 (2T26) (misma fuente).\n- **Lo que falló (registro honesto)**: la fecha prevista en sí no era errónea — simplemente aún no ha llegado el día del plazo legal. Lo que falló fue la **zona horaria**: la capa de medición determina la llegada de la fecha prevista según la fecha KST, pero los documentos de la SEC entran en días hábiles del este de EE. UU. Si se anota como fecha prevista la fecha del día hábil estadounidense, en KST el motor se activa esa mañana, antes de la publicación — una variante del 'disparo en un día sin motivo' como en T6 de la entrega anterior (fecha de la vista).\n- **Corrección del método de previsión**: en la casilla de fecha prevista de los disparadores basados en documentos de la SEC se anota la **fecha de publicación en el este de EE. UU. + 1 día (día de comprobación en KST)**. T1 no corrige la misma fecha — la capa de medición se activa una sola vez por 'id de disparador@fecha prevista', por lo que cambiar la fecha lo activaría de nuevo (scripts/brk_watch.py `due_fired`). El 13F en sí tiene grado 'importante' en la tabla de grados de la capa de medición, de modo que al publicarse ese documento activa el motor por separado (tabla de grados de la capa de medición, CLAUDE.md sección Sonda de Berkshire). La fecha prevista de T3 (13F del 4T26) se traslada con esta regla al 2027-02-17 (fórmula: fecha estimada de publicación en EE. UU. 2027-02-16 + 1 día).\n"
+ }
+}

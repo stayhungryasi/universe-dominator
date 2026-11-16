@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-16-event-s2",
+ "lang": "en",
+ "src_hash": "e1460ac927ac",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-16 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. T1 — Expected Date vs. Actual Date",
+  "md": "- **What was expected**: quarter-end (2026-09-30) + 45 days = 2026-11-14 (Sat) → the expected date was written as the next business day, 2026-11-16 (Mon) (calculated, source: state.triggers_next_12m T1).\n- **Actual (at the time of this round's run)**: The run date is 2026-11-16 KST, but in US Eastern time it is still 11-15 (Sun). The latest Berkshire filing on EDGAR is the 2026-11-13 FWP, and there is no 13F-HR (source: [EDGAR filing list](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=&dateb=&owner=include&count=20)). The previous 13F was posted on 2026-08-14 (2Q26) (same source).\n- **What was wrong (honest record)**: The expected date itself was not wrong — the statutory deadline day simply has not yet arrived. What was wrong is the **time zone**: the measurement layer judges whether an expected date has arrived by the KST date, while SEC filings arrive on US Eastern business days. If a US business day is written as the expected date, the engine wakes on that morning in KST, before the filing — a variant of the 'firing on a day with no reason to fire' seen in the previous round's T6 (hearing date).\n- **Fix to the expected-date method**: In the expected-date field of SEC filing triggers, write **US Eastern filing date + 1 day (KST confirmation date)**. T1's date is not corrected — the measurement layer fires only once per 'trigger id@expected date', so changing the date would make it fire again (scripts/brk_watch.py `due_fired`). The 13F itself is graded 'important' in the measurement layer's grade table, so once posted, that filing wakes the engine on its own (measurement layer grade table, CLAUDE.md Berkshire probe section). T3's (4Q26 13F) expected date moves to 2027-02-17 under this rule (calculated: estimated US filing date 2027-02-16 + 1 day).\n"
+ }
+}
