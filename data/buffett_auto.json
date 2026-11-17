@@ -1,9 +1,9 @@
 {
- "generated_label": "2026-11-17 18:26",
- "generated_at": "2026-11-17T18:26:27.854108+09:00",
+ "generated_label": "2026-11-18 08:23",
+ "generated_at": "2026-11-18T08:23:46.929194+09:00",
  "items": {
   "NVDA": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -78,7 +78,7 @@
    "notes": "전망치 이상(82%) — 취재 필요"
   },
   "AAPL": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -110,7 +110,11 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": ""
+    }
    },
    "conversion": {
     "value": 1.0334,
@@ -130,7 +134,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -148,10 +152,29 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2026H1"
+   },
+   "notes": "소비자 프랜차이즈 최강이나 성장 활주로 최저로 현재 주가는 프리미엄 가격대 형성 중.",
+   "_evidence": {
+    "franchise": "Apple's consumer franchise dominance with iPhone ecosystem and ecosystem lock-in",
+    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership; strong cash generation enabling shareholder returns",
+    "owner_earnings": "Post-earnings context shows margin pressure and mature growth profile limiting earnings expansion"
+   }
   },
   "GOOG": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -224,7 +247,7 @@
    ]
   },
   "MSFT": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -294,7 +317,7 @@
    ]
   },
   "AMZN": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -342,7 +365,7 @@
     "adj_ni": 79845560000.0
    },
    "g_cagr3y": 0.9275,
-   "g_forward": 0.2208,
+   "g_forward": 0.2192,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
@@ -367,7 +390,7 @@
    ]
   },
   "TSM": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -402,7 +425,7 @@
    "notes": "전망치 이상(48%) — 취재 필요"
   },
   "AVGO": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -477,7 +500,7 @@
    "notes": "전망치 이상(69%) — 취재 필요"
   },
   "SPCX": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -512,11 +535,11 @@
    "notes": "전망치 이상(1353%) — 취재 필요"
   },
   "2222.SR": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.84
+    "value": 1.86
    },
    "eps_status": null,
    "roe_tangible": 0.3005,
@@ -545,7 +568,7 @@
    "confidence": "중"
   },
   "META": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -621,7 +644,7 @@
    ]
   },
   "TSLA": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -691,7 +714,7 @@
    ]
   },
   "005930.KS": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -726,7 +749,7 @@
    "notes": "전망치 이상(243%) — 취재 필요"
   },
   "MU": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q4",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -801,7 +824,7 @@
    "notes": "전망치 이상(66%) — 취재 필요"
   },
   "BRK-B": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -813,7 +836,12 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "Q3 순이익 28% 하락했으나 플로트 복리와 대규모 자사주 매입으로 주가는 18% 상승, 보유 주식 구성 변화 중"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -836,7 +864,7 @@
     "mgmt_ability": "○",
     "mgmt_fidelity": "○",
     "price": "△",
-    "tax_inflation": "○"
+    "tax_inflation": "△"
    },
    "capalloc": {
     "cash_positive": 1,
@@ -846,15 +874,16 @@
     "score": 4,
     "period": "2026Q3"
    },
-   "notes": "플로트 복리 엔진의 현금 축적 가속화 대비 순이익 28% 하락은 보험 언더라이팅 수익성 약화와 주식 매각으로 인한 양측 압력.",
+   "notes": "리더십 전환 이후 첫해 18% 상승, CFO의 $888,869/주 매입으로 경영진 신뢰도 확인, 플로트 가치 창출 메커니즘 작동 중",
    "_evidence": {
-    "franchise": "Insurance float가 무대체 자본(no-cost capital) 역할 수행, BNSF 철도 사업이 Q3 순이익 19.3% 기여.",
-    "risk5": "Buffett의 주식 기부 약속와 경영진 교체 관측으로 경영진 충성도 불확실성 증가, 보험 언더라이팅 수익 43% 감소는 단기 사이클 변동성.",
-    "capalloc": "Berkshire more than doubles buybacks in third quarter, $9.6B buyback 집행, 현금 보유 계속."
+    "franchise": "Berkshire Hathaway의 보험 플로트는 대체 불가능한 저비용 자본 조달 수단이며 복리 창출의 핵심 엔진",
+    "risk5": "리더십 변화 속에서도 18% 상승 달성, CFO의 대규모 자사주 매입(888,869/주)은 경영진 확신 반영, 다만 Q3 순이익 28% 하락과 주식 매각 증가는 가격 리스크와 불확실성 존재",
+    "capalloc": "Berkshire Hathaway more than doubles buybacks in third quarter, Berkshire's CFO Just Paid $888,869 a Share for Berkshire Stock",
+    "owner_earnings": "Berkshire Hathaway Is Up 18% in Its First Year Without Buffett as CEO와 Q3 2026 profit falls 28% to $22.1 bn의 괴리는 플로트 기반 자본배분 우월성을 시사"
    }
   },
   "LLY": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -926,7 +955,7 @@
    "notes": "전망치 이상(45%) — 취재 필요"
   },
   "JPM": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -992,7 +1021,7 @@
    ]
   },
   "WMT": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1040,7 +1069,7 @@
     "adj_ni": 22863630000.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.1055,
+   "g_forward": 0.1058,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -1065,7 +1094,7 @@
    ]
   },
   "AMD": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1140,7 +1169,7 @@
    "notes": "전망치 이상(106%) — 취재 필요"
   },
   "000660.KS": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -1175,7 +1204,7 @@
    "notes": "전망치 이상(198%) — 취재 필요"
   },
   "ASML": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1210,7 +1239,7 @@
    "notes": "전망치 이상(51%) — 취재 필요"
   },
   "LRCX": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1285,7 +1314,7 @@
    "notes": "전망치 이상(45%) — 취재 필요"
   },
   "AMAT": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1358,7 +1387,7 @@
    ]
   },
   "DELL": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1433,7 +1462,7 @@
    "notes": "전망치 이상(66%) — 취재 필요"
   },
   "PANW": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1508,7 +1537,7 @@
    "notes": "전망치 이상(-26%) — 취재 필요"
   },
   "ARM": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1541,7 +1570,7 @@
    "confidence": "중"
   },
   "SNDK": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1616,7 +1645,7 @@
    "notes": "전망치 이상(102%) — 취재 필요"
   },
   "STX": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1691,7 +1720,7 @@
    "notes": "전망치 이상(105%) — 취재 필요"
   },
   "CRWD": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1742,11 +1771,11 @@
     "adj_ni": 26446830.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.3142,
+   "g_forward": 0.3145,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 23건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1764,10 +1793,30 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2024H2"
+   },
+   "notes": "AI 사이클 주도 중이지만 219배~157배 P/E에서 가격 규율 부재; SaaS 플랫폼으로 필수성은 있으나 실질 수익성 평가 어려움",
+   "_evidence": {
+    "franchise": "CrowdStrike jumps 11% on record second quarter as 'Mythos moment' drives AI cyber wave; 사이버보안 플랫폼으로 고객 switching cost 존재",
+    "risk5": "CrowdStrike Could Plunge 30% After Earnings & CrowdStrike (CRWD) Is Accelerating Again. Is 219 Times Earnings Too Far Ahead?; 초고 밸류에이션과 AI 사이클 의존성",
+    "capalloc": "CrowdStrike Holdings (CRWD) Q2 Earnings and Revenues Top Estimates; 분기별 실적 초과 달성으로 현금 창출력 입증"
+   }
   },
   "2454.TW": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1802,7 +1851,7 @@
    "notes": "전망치 이상(53%) — 취재 필요"
   },
   "MRVL": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": "2027Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1877,7 +1926,7 @@
    "notes": "전망치 이상(61%) — 취재 필요"
   },
   "285A.T": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1912,11 +1961,11 @@
    "notes": "전망치 이상(284%) — 취재 필요"
   },
   "8035.T": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 178.17
+    "value": 175.39
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -1930,12 +1979,7 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "A",
-     "reason": "AI 투자 호황으로 기록적 분기 매출 ¥732.3B 달성 및 상향 조정된 가이던스"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1947,39 +1991,16 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": "중",
    "g_forward_status": "전망치 이상(44%) — 취재 필요",
-   "notes": "반도체 장비 과점 구조(LRCX·AMAT 동일)에서 AI 사이클 수혜 중이나 시클리컬 특성상 경기 민감도 높음",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2027H1"
-   },
-   "_evidence": {
-    "franchise": "장비 과점 — LRCX·AMAT와 동일 구조로 높은 진입장벽과 대체불가능성",
-    "risk5": "AI 투자 호황 주도 실적이나 반도체 사이클 의존도로 인한 사업 불확실성 존재; 주가 1년 130% 상승으로 밸류에이션 재평가 필요",
-    "capalloc": "¥150억 자사주 매입 계획 및 5:1 주식분할 단행으로 현금 운용 규율 입증",
-    "owner_earnings": "AI 투자 테일윈드가 첫번째 반기 예상을 크게 상향 조정하며 기록적 분기 매출 달성"
-   }
+   "notes": "전망치 이상(44%) — 취재 필요"
   },
   "6857.T": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 787.94
+    "value": 753.33
    },
    "eps_status": null,
    "roe_tangible": 0.5398,
@@ -2010,7 +2031,7 @@
    "notes": "전망치 이상(64%) — 취재 필요"
   },
   "2308.TW": {
-   "as_of": "2026-11-17",
+   "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -2103,5 +2124,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-17 18:27"
+ "scout_label": "2026-11-18 08:25"
 }

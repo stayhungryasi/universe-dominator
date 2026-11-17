@@ -46,14 +46,14 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-17T18:32+09:00"
+  "measured_at": "2026-11-18T08:30+09:00"
  },
  "due": [],
  "due_fired": [
   "T1@2026-11-16",
   "T6@2026-11-03"
  ],
- "probe_age_days": 0,
+ "probe_age_days": 1,
  "engine": {
   "last": {
    "id": 43981754357,
@@ -62,22 +62,22 @@
    "event": "repository_dispatch",
    "created_at": "2026-11-16T23:43:39Z"
   },
-  "checked_at": "2026-11-17T18:32+09:00"
+  "checked_at": "2026-11-18T08:30+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-17T18:32+09:00",
+ "generated_at": "2026-11-18T08:30+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-17T18:32+09:00",
-   "n": 1013
+   "at": "2026-11-18T08:30+09:00",
+   "n": 1014
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-17T18:32+09:00",
+   "at": "2026-11-18T08:30+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -915,6 +915,7 @@
   "0001193125-26-464214",
   "0001193125-26-464218",
   "0001193125-26-464219",
+  "0001193125-26-465047",
   "0001209191-17-022770",
   "0001209191-17-026722",
   "0001209191-17-028040",
@@ -1099,6 +1100,17 @@
   "9999999997-17-000759"
  ],
  "events": [
+  {
+   "accn": "0001193125-26-465047",
+   "date": "2026-11-17",
+   "form": "424B5",
+   "items": "",
+   "grade": "record",
+   "kind": "prospectus",
+   "title": "투자설명서·발행 조건 (424B5)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526465047/d86634d424b5.htm",
+   "baseline": false
+  },
   {
    "accn": "0001193125-26-464219",
    "date": "2026-11-16",
@@ -1967,21 +1979,15 @@
    "title": "내부자·대량 보유자 거래 보고 (4)",
    "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526092556/xslF345X05/ownership.xml",
    "baseline": true
-  },
-  {
-   "accn": "0001193125-26-085801",
-   "date": "2026-03-02",
-   "form": "8-K",
-   "items": "2.02,9.01",
-   "grade": "major",
-   "kind": "results",
-   "title": "수시공시 — 실적 발표 (8-K)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526085801/d117283d8k.htm",
-   "baseline": true
   }
  ],
  "alerts": {},
  "dm_log": [
+  {
+   "at": "2026-11-18T08:30+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  },
   {
    "at": "2026-11-17T12:37+09:00",
    "ok": true,
