@@ -46,45 +46,38 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-17T08:35+09:00"
+  "measured_at": "2026-11-17T12:37+09:00"
  },
- "due": [
-  {
-   "id": "T1",
-   "name": "3Q26 13F — 알파벳·애플·은행주 수량 변화, 3Q 순매도 $4.3억의 내역",
-   "expected": "2026-11-16",
-   "days_over": 1
-  }
- ],
+ "due": [],
  "due_fired": [
   "T1@2026-11-16",
   "T6@2026-11-03"
  ],
- "probe_age_days": 1,
+ "probe_age_days": 0,
  "engine": {
   "last": {
-   "id": 43776353819,
+   "id": 43981754357,
    "status": "completed",
    "conclusion": "success",
    "event": "repository_dispatch",
-   "created_at": "2026-11-15T23:43:35Z"
+   "created_at": "2026-11-16T23:43:39Z"
   },
-  "checked_at": "2026-11-17T08:35+09:00"
+  "checked_at": "2026-11-17T12:37+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-17T08:35+09:00",
+ "generated_at": "2026-11-17T12:37+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-17T08:35+09:00",
-   "n": 1008
+   "at": "2026-11-17T12:37+09:00",
+   "n": 1013
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-17T08:35+09:00",
+   "at": "2026-11-17T12:37+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -917,6 +910,11 @@
   "0001193125-26-463399",
   "0001193125-26-463989",
   "0001193125-26-464003",
+  "0001193125-26-464189",
+  "0001193125-26-464211",
+  "0001193125-26-464214",
+  "0001193125-26-464218",
+  "0001193125-26-464219",
   "0001209191-17-022770",
   "0001209191-17-026722",
   "0001209191-17-028040",
@@ -1101,6 +1099,61 @@
   "9999999997-17-000759"
  ],
  "events": [
+  {
+   "accn": "0001193125-26-464219",
+   "date": "2026-11-16",
+   "form": "SCHEDULE 13G/A",
+   "items": "",
+   "grade": "record",
+   "kind": "stake",
+   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526464219/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-464218",
+   "date": "2026-11-16",
+   "form": "SCHEDULE 13G",
+   "items": "",
+   "grade": "record",
+   "kind": "stake",
+   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526464218/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-464214",
+   "date": "2026-11-16",
+   "form": "SCHEDULE 13G/A",
+   "items": "",
+   "grade": "record",
+   "kind": "stake",
+   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526464214/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-464211",
+   "date": "2026-11-16",
+   "form": "SCHEDULE 13G/A",
+   "items": "",
+   "grade": "record",
+   "kind": "stake",
+   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526464211/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-464189",
+   "date": "2026-11-16",
+   "form": "SCHEDULE 13G/A",
+   "items": "",
+   "grade": "record",
+   "kind": "stake",
+   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526464189/xslSCHEDULE_13G_X02/primary_doc.xml",
+   "baseline": false
+  },
   {
    "accn": "0001193125-26-464003",
    "date": "2026-11-16",
@@ -1925,65 +1978,15 @@
    "title": "수시공시 — 실적 발표 (8-K)",
    "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526085801/d117283d8k.htm",
    "baseline": true
-  },
-  {
-   "accn": "0001193125-26-083899",
-   "date": "2026-03-02",
-   "form": "10-K",
-   "items": "",
-   "grade": "major",
-   "kind": "annual",
-   "title": "연차 보고서(주주서한 동봉 연차보고) (10-K)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526083899/brka-20251231.htm",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-26-054947",
-   "date": "2026-02-17",
-   "form": "4",
-   "items": "",
-   "grade": "record",
-   "kind": "insider",
-   "title": "내부자·대량 보유자 거래 보고 (4)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054947/xslF345X05/ownership.xml",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-26-054931",
-   "date": "2026-02-17",
-   "form": "3",
-   "items": "",
-   "grade": "record",
-   "kind": "insider",
-   "title": "내부자·대량 보유자 거래 보고 (3)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054931/xslF345X02/ownership.xml",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-26-054685",
-   "date": "2026-02-17",
-   "form": "SCHEDULE 13G",
-   "items": "",
-   "grade": "record",
-   "kind": "stake",
-   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054685/xslSCHEDULE_13G_X01/primary_doc.xml",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-26-054609",
-   "date": "2026-02-17",
-   "form": "SCHEDULE 13G/A",
-   "items": "",
-   "grade": "record",
-   "kind": "stake",
-   "title": "5% 이상 대량 보유 보고 (SCHEDULE 13G/A)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526054609/xslSCHEDULE_13G_X01/primary_doc.xml",
-   "baseline": true
   }
  ],
  "alerts": {},
  "dm_log": [
+  {
+   "at": "2026-11-17T12:37+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  },
   {
    "at": "2026-11-17T08:35+09:00",
    "ok": true,

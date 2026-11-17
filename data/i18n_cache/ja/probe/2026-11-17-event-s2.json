@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-17-event-s2",
+ "lang": "ja",
+ "src_hash": "5739e8b76c92",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. SC 13G/A(2026-11-16) — 取締役Gracias",
+  "md": "\n| 項目 | 値 | 出典 |\n|---|---|---|\n| 提出者 | Antonio J. Gracias単独 · Amendment No. 1 | ① [SC 13G/A](https://www.sec.gov/Archives/edgar/data/1181412/000121390026120715/xslSCHEDULE_13G_X02/primary_doc.xml), 2026-11-16 |\n| 事由発生日 | 2026-09-30 | 同上 |\n| 実質所有 | Class A 457,614,684株 · 5.5% | 同上 |\n\n- **二つの値の差**: 9/30に提出したForm 4/Aには取引後の株式数が460,624,307株と記載されている。13G/Aとは3,009,623株異なる。原文が計算基準(直接・間接所有の範囲)を説明していないため、二つの値を併記し、合わせない (出典: ① [Form 4/A](https://www.sec.gov/Archives/edgar/data/1181412/000121390026105393/xslF345X06/ownership.xml), 2026-09-30)。\n- **判断層**: 5%以上の報告の更新である。ルールやマイルストーンの対象ではない。T2(12/8ロックアップ)期間の出来高・株価の観察に、背景としてのみ用いる (出典: `state.triggers_next_12m[T2]`)。\n\n---\n"
+ }
+}

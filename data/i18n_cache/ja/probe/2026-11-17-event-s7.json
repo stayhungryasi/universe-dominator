@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-17-event-s7",
+ "lang": "ja",
+ "src_hash": "eb3cbfaeea58",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "7. 次回までに直接確認すべきデータ3件",
+  "md": "\n1. **Samsung報道の原典**: ソウル経済の韓国語原文、Samsung・STの公式確認、商務省CHIPS協定のAustin 18nm FD-SOI生産能力条項 (出典: `state.open_questions_for_next_run`)。\n2. **11月のStarshield制限**: 米政府またはSpaceXの公式な原因文書、一級報道の二つ目の情報源、解除発表。同日のT7 ⓒ(下院歳出委員会30日)は11/19が確認点である (出典: `state.triggers_next_12m[T7]`)。\n3. **既存の確認点**: Ariane 64 LE-04(11/23、T4) · DA 26-1160 再審期限(11/27、T8) · 月次 12/01 · T2 12/8 ロックアップ · T12 12/9 議決 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回確認した事実の要約(出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| 基準株価 | $137.36(−1.26%) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-11-16 |\n| 時価総額 · AI内在価値 | $1,865十億 · $1,323十億 | 算式(3節) · `state.valuation` |\n| Gracias 13G/A | Class A 457,614,684株 · 5.5% | [SC 13G/A](https://www.sec.gov/Archives/edgar/data/1181412/000121390026120715/xslSCHEDULE_13G_X02/primary_doc.xml), 2026-11-16 |\n| Samsung CHIPS支援 | 最大$4.745B(Taylor・Austin合算) · 2030稼働 | [NIST](https://www.nist.gov/node/1855111) |\n| STM32V8 | 18nm FD-SOI · 800MHz · Starlinkレーザーリンクに採用 | [eeNews Europe](https://www.eenewseurope.com/en/stm32v8-pushes-18nm-microcontroller-tech-into-new-performance-territory), 2025-11-22(ST発表 2025-11-18) |\n| 確率 | 30/50/20(不変) | `state.scenarios` |\n| 確率加重価値 · バンド · 中心 | $36 · $36~$121 · $68(不変) | `state.valuation` |\n| 米10年債 | 5.15%(2026-11-13) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

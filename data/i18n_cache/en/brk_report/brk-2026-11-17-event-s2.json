@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-17-event-s2",
+ "lang": "en",
+ "src_hash": "97bd9056cb37",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. T1 — Expected vs Actual Date",
+  "md": "- **Expected**: 2026-11-16 (US Eastern; statutory deadline 11-14 Saturday → next business day, formula — state.triggers_next_12m T1).\n- **Actual**: SEC posting 2026-11-16 (US), cover signature date 2026-11-16 — the time this probe confirmed it was KST 2026-11-17 (sources: [EDGAR 13F list](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=13F-HR&dateb=&owner=include&count=10) · [cover page](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml)).\n- **Verdict**: Correct by US date, and confirmed one day later in KST — the 'US filing date + 1 day (KST confirmation date)' rule created in the previous edition was reproduced as is (source: section 1 of the [2026-11-16 edition](2026-11-16-event.md)). Rule kept; T3 expected date 2027-02-17 kept.\n- Cover page entries: 14 other included managers · 89 information table rows · not an amendment (original report) (source: [cover page](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml)). No confidential-treatment request notation was found on the cover page — whether any positions outside the 13F will be disclosed later is unknown (judgment).\n"
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "kind": "probe_trig",
+ "id": "T17",
+ "lang": "ja",
+ "src_hash": "d708adcb2573",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "Starlink衛星チップサプライチェーン(STM32V8·Samsung Austin FD-SOI報道) — ①Samsung·ST·SpaceXの公式確認②Austin 18nm FD-SOIラインの稼働③SpaceX 10-Kの供給集中·単一供給源リスク要因",
+  "expected": "2026-12-01(KST、月間確認点—公式確認有無)→2027-02(4Q26 10-Kリスク要因·購買約定、推定)→2030(NIST 'All facilities are expected to be operational by 2030')",
+  "check": "①Samsung·STの公式発表または実績資料の顧客言及②SpaceX 10-Kリスク要因(単一供給源·海外生産)③現在の生産地(ST Crolles)とAustin移転比率—報道数値のみあれば使用しない。マイルストーン·確率ルール入力なし(部品サプライチェーン背景)。Tesla AI5·AI6のTaylor生産はTesla案件—合併(T6)前はSpaceX判断層外。名前冒頭に調達·契約·実績·Starshipを置かない",
+  "note": "2026-11-17新設。原典: Seoul Economyhttps://en.sedaily.com/business/2026/11/15/samsung-splits-texas-fabs-space-chips-in-austin-ai-chips-in·https://en.sedaily.com/finance/2026/11/16/samsung-wins-tesla-ai-chips-spacex-satellite-chips-in-us·NIST https://www.nist.gov/node/1855111·ST発表(eeNews Europe掲載本)https://www.eenewseurope.com/en/stm32v8-pushes-18nm-microcontroller-tech-into-new-performance-territory。監視官はトリガーに連結しない(—)",
+  "statusText": "待機(2026-11-17新設: Seoul Economy 11/15·16—SamsungがAustinに18nm FD-SOI容量を確保してStarlink衛星用STM32V8を2030前後に生産する計画(匿名業界引用、会社発表なし)。1次原典: NIST—Austin拡張は航空宇宙·国防·自動車用FD-SOI、支援最大$4.745B(Taylor合算)、2030稼働、SpaceX言及なし/ST 2025-11-18—SpaceXがSTM32V8をStarlink mini laserシステムに採択。契約·数量·金額公示なし、SpaceX 8-K なし)"
+ }
+}

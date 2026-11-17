@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-17-event-s3",
+ "lang": "ja",
+ "src_hash": "ab69d9603dc4",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. 再共鳴の確認と価格",
+  "md": "\n| 項目 | 結果 | 出典 |\n|---|---|---|\n| Starship キャッチ | 11/15 r3 が R2 発動と B-2027-1 で処理を終えた。新たな事実なし | `state.definitions.ship_recovery` |\n| Vulcan LV-01 失敗 | 11/16 に T4・T13・R5 へ記録した。原因の発表や宇宙軍の保留延長といった公式の続報は検索結果 0件である(2026-11-17 KST) | `state.triggers_next_12m` T4·T13 |\n| 11月 Starshield 制限(T7 ③ 候補) | 再検索の結果、Forbes 11/13 · The Hill · DroneXL 11/16 は政府発表と会社側の否定の再叙述である。規約 ⑤ の1級の追加なし、解除発表なし → **判定待ち維持** | [Forbes 11/13](https://www.forbes.com/sites/fionariley/2026/11/13/zelenskyy-says-ukraine-is-still-seeking-clarity-from-us-on-renewed-spacex-starshield-speed-limits/) · [DroneXL 11/16](https://dronexl.co/2026/11/16/starshield-cap-occupied-ukraine-spacex-technical-zelensky-substations/) · `state.triggers_next_12m[T7].recheck_2026_11_17` |\n| EDGAR 最新 | 11/16 SC 13G/A → 11/13 SC 13G/A → 11/06 8-K(5.02) → 10/26 8-K(8.01) | [EDGAR submissions](https://data.sec.gov/submissions/CIK0001181412.json) |\n\n- **基準価格**: $139.11(11/13) → **$137.36(11/16)**、−1.3%。この取引日にはキャッチ・Vulcan の失敗・Starshield 制限・Samsung の報道が重なっており、どれか一つに帰属させない (出典: stockanalysis, 2026-11-16 · `state.market.event_run_note`)。\n- **価格依存の算術値**: 時価総額 137.36 × 13.581 = **$1,865十億** · EV 1,865 − 51 = $1,814十億 · AI 内在価値 1,865 − 350 − 141 − 51 = **$1,323十億** · 倍率 44/51/67倍 (出典: [10-Q 表紙の株式数](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · `state.valuation`)。\n- **データ記録**: 同サイトの11/13の出来高が 78,500,538株から 78,515,464株へ事後修正された。終値は変わらない (出典: stockanalysis, 2026-11-17 KST 閲覧)。\n\n---\n"
+ }
+}

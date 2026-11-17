@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-17-event-s2",
+ "lang": "es",
+ "src_hash": "97bd9056cb37",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. T1 — fecha prevista vs. fecha real",
+  "md": "- **Previsto**: 2026-11-16 (este de EE. UU.; plazo legal sábado 11-14 → siguiente día hábil, fórmula — state.triggers_next_12m T1).\n- **Real**: publicación en la SEC 2026-11-16 (EE. UU.), fecha de firma de la portada 2026-11-16 — la hora en que esta exploración lo verificó fue 2026-11-17 KST (fuente: [lista de 13F en EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=13F-HR&dateb=&owner=include&count=10) · [portada](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml)).\n- **Veredicto**: con la fecha de EE. UU. acertó, y en KST se verificó un día después — la regla «fecha de publicación en EE. UU. + 1 día (fecha de verificación KST)» creada en la edición anterior se reprodujo tal cual (fuente: sección 1 de la [edición del 2026-11-16](2026-11-16-event.md)). Se mantiene la regla y la fecha prevista de T3, 2027-02-17.\n- Datos de la portada: gestores incluidos 14 · tabla de información de 89 filas · no es una enmienda (informe original)(fuente: [portada](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml)). No se observa en la portada indicación de tratamiento confidencial (solicitud de confidencialidad) — no se puede saber si hay posiciones que se divulgarán más tarde fuera del 13F (juicio).\n"
+ }
+}

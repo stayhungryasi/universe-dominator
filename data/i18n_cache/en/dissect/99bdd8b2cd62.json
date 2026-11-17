@@ -1,0 +1,23 @@
+{
+ "kind": "dissect",
+ "id": "99bdd8b2cd62",
+ "lang": "en",
+ "src_hash": "9fd161457e3f",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Opus 5's paradox: high capability, diminished feel",
+  "sections.1.h": "Strengths of previous models: cautiousness and independence",
+  "sections.2.h": "Collision of two competing objectives",
+  "sections.3.h": "Structural characteristics of benchmarks and their impact",
+  "sections.4.h": "Fundamental difference between practice and benchmarks",
+  "sections.0.ko": "The author and colleagues find Anthropic's latest model, Opus 5, more inconvenient to use in practice compared to previous versions like Opus 4.7, 4.8, and Fable. While acknowledging that Opus 5 is superior in raw capability, they present a paradox: despite benchmark superiority, actual work experience is better with other models. This is presumed to arise not from simple technical performance degradation but from differences in model operational characteristics.",
+  "sections.1.ko": "Opus 4.7, 4.8, and Fable are distinguished from Opus 5 in requiring less careful user intervention and oversight. The author believes this difference stems from differences in model operational philosophy. The previous models appear to take more cautious approaches in ambiguous situations and are designed to produce stable results without requiring direct user intervention.",
+  "sections.2.ko": "The author points out two conflicting objectives that Anthropic and current major AI research labs face. One is building models that can reach AGI through self-improvement; the other is maximizing benchmark performance. As these two objectives simultaneously influence model development, selection pressure operates to strengthen specific characteristics.",
+  "sections.3.ko": "Benchmark tasks are inherently self-contained and must have clear correct answers without external information or additional explanation. The author argues that benchmark performance optimization causes models to make bold assumptions amid ambiguity. In this process, a structure emerges where the tendency to seek clarification rather than pursue ambiguity is penalized.",
+  "sections.4.ko": "In real-world coding work, it is nearly impossible to convey all context, intention, business constraints, and budget limitations. Therefore, ambiguity and moments of choice are inevitable; what the author wants is precisely for the agent to stop and request confirmation in those situations. Benchmarks measure the ability to solve problems with predetermined answers, but reality mostly involves cases where answers are either undefined or multiple, and a model that roughly guesses in such cases is dangerous in practice.",
+  "caveat": "The author's arguments are based on personal experience and conversations with colleagues, and have not been verified through systematic benchmark comparison or large-scale user surveys."
+ }
+}

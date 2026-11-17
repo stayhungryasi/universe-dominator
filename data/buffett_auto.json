@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-17 08:28",
- "generated_at": "2026-11-17T08:28:04.556299+09:00",
+ "generated_label": "2026-11-17 12:29",
+ "generated_at": "2026-11-17T12:29:47.894340+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-17",
@@ -371,16 +371,16 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 14.45
    },
    "eps_status": null,
-   "roe_tangible": 0.3612,
+   "roe_tangible": 0.3627,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
     "equity": 6997901424000.0,
-    "goodwill_intangibles": null,
+    "goodwill_intangibles": 28179660000.0,
     "net_income_ttm": 2527571475000.0,
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
@@ -434,11 +434,7 @@
     },
     "fcf_ttm": 39403000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 수익 호조에도 주가 하락, 주식 감정 악화로 이익 가시성 저하"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9836,
@@ -458,7 +454,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_ProfitLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산",
    "source": "Finnhub financials-reported · 분기 36건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -478,22 +474,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(69%) — 취재 필요",
-   "notes": "AI 칩 포트폴리오 강세 vs 소프트웨어 부진 간 불균형, 연간 AI 칩 전망 미상향 신호 포함",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "_evidence": {
-    "franchise": "Broadcom beats on earnings and guidance as AI revenue doubles; AI labs와의 성장 전략 CEO 발언",
-    "risk5": "Broadcom delivers strong earnings view와 weak software sales 간극; stock plunges on weak software sales, unchanged AI chip forecast for the year",
-    "owner_earnings": "Broadcom stock falls as chipmaker's strong results 'not enough to keep investors happy'; Down 14% Since Last Earnings Report"
-   }
+   "notes": "전망치 이상(69%) — 취재 필요"
   },
   "SPCX": {
    "as_of": "2026-11-17",
@@ -527,8 +508,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중",
-   "g_forward_status": "전망치 이상(1348%) — 취재 필요",
-   "notes": "전망치 이상(1348%) — 취재 필요"
+   "g_forward_status": "전망치 이상(1353%) — 취재 필요",
+   "notes": "전망치 이상(1353%) — 취재 필요"
   },
   "2222.SR": {
    "as_of": "2026-11-17",
@@ -596,11 +577,7 @@
     },
     "fcf_ttm": 28649000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "C",
-     "reason": "AI 캐펙스 급증으로 자유현금흐름 감소, 지출 규율 부재"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": -0.0677,
@@ -619,11 +596,11 @@
     "adj_ni": 74473220000.0
    },
    "g_cagr3y": 0.3541,
-   "g_forward": 0.2022,
+   "g_forward": 0.2013,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -641,33 +618,7 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "✕",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 0,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "네트워크 효과 기반 프랜차이즈 가치는 존재하나, AI 슈퍼인텔리전스 무분별 투자와 $95bn 주식발행으로 주주 충성도 훼손",
-   "_evidence": {
-    "franchise": "40억 사용자 기반의 네트워크 효과, 대체불가 광고 플랫폼",
-    "risk5": "Meta stock sinks after Q1 earnings as company raises 2026 AI spending forecast to $125 billion-$145 billion; Meta's stock drops on disappointing guidance, dwindling free cash flow",
-    "capalloc": "Meta plans $95bn stock offering to bankroll AI expansion; stock drops on disappointing guidance, dwindling free cash flow",
-    "owner_earnings": "2026 AI 지출 급증으로 자유현금흐름 악화, 주식발행 계획"
-   }
+   ]
   },
   "TSLA": {
    "as_of": "2026-11-17",
@@ -1063,7 +1014,7 @@
     "adj_ni": 22863630000.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.1057,
+   "g_forward": 0.1055,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -1193,32 +1144,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": null,
    "g_forward_status": "전망치 이상(198%) — 취재 필요",
-   "notes": "시클리컬 반도체 기업으로서 AI 초과수요 국면이지만, 필수 설비투자 의무가 본질적 프랜차이즈 가치를 제약하고 있음. IPO 이후 주가 변동성이 Buffett 기준의 '예측가능한 사업'과 거리 있음.",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "△",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "HBM4 enters mass production with unprecedented big tech firm supply offers, but capex requirement of 20 trillion won limits pricing power for decade",
-    "risk5": "Q2 revenue jumps 257% YoY to 79.3T won with 76% operating margin, yet stock sinks 34% from peak post-IPO and plunges after Nasdaq debut",
-    "capalloc": "SK Hynix plans $28.6 billion buyback after share price declines; raised $26.5 billion in US offering at $149 per ADR"
-   }
+   "notes": "전망치 이상(198%) — 취재 필요"
   },
   "ASML": {
    "as_of": "2026-11-17",
@@ -1379,7 +1307,7 @@
     "adj_ni": 8416960000.0
    },
    "g_cagr3y": 0.0956,
-   "g_forward": 0.3844,
+   "g_forward": 0.3824,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -1580,7 +1508,7 @@
    "conversion_check": null,
    "eps_divergence": null,
    "g_cagr3y": null,
-   "g_forward": 0.318,
+   "g_forward": 0.3206,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
@@ -1788,7 +1716,7 @@
     "adj_ni": 26446830.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.3141,
+   "g_forward": 0.3142,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 23건",
@@ -1817,7 +1745,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.56
+    "value": 55.78
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1976,7 +1904,12 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "A",
+     "reason": "AI 투자 호황으로 기록적 분기 매출 ¥732.3B 달성 및 상향 가이던스 제시"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1988,16 +1921,39 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중",
+   "confidence": "하",
    "g_forward_status": "전망치 이상(44%) — 취재 필요",
-   "notes": "전망치 이상(44%) — 취재 필요"
+   "notes": "반도체 장비 과점 기업(LRCX·AMAT와 동일 구조), 130% 1년 수익률 후 밸류에이션 재평가 필요, 5:1 주식분할 및 ¥150B 자사주 매입 진행 중",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2027H1"
+   },
+   "_evidence": {
+    "franchise": "LRCX·AMAT와 동일한 반도체 장비 과점 구조로 대체 불가능한 프랜차이즈 보유",
+    "risk5": "AI 투자 테일윈드 중 단기 조정 후 강한 회복세 보였으나, 반도체 사이클 의존도 높음",
+    "capalloc": "FY2027 Q1 기록적 수익 달성, ¥150B 자사주 매입 및 5:1 주식분할 단행으로 현금 운영 및 주주친화적 자본배분 입증",
+    "owner_earnings": "AI 투자 테일윈드가 첫 반기 가이던스 대폭 상향으로 이어짐"
+   }
   },
   "6857.T": {
    "as_of": "2026-11-17",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 787.93
+    "value": 700.28
    },
    "eps_status": null,
    "roe_tangible": 0.5398,
@@ -2121,5 +2077,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-17 08:29"
+ "scout_label": "2026-11-17 12:30"
 }

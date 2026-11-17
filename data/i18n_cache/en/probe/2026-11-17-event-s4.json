@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-17-event-s4",
+ "lang": "en",
+ "src_hash": "d9121345ab58",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probabilities, value, milestones — no change",
+  "md": "\n| Scenario | Previous | Current | Basis |\n|---|---|---|---|\n| Bull | 0.30 | 0.30 | No rule triggered |\n| Base | 0.50 | 0.50 | Same |\n| Bear | 0.20 | 0.20 | Same |\n\n- **Rule check**: The supply-chain report and the 13G/A meet none of the conditions R1~R6 (source: `state.probability_adjustment_rules`).\n- **Probability-weighted value**: 0.30 × 76.3 + 0.50 × 24.1 + 0.20 × 3.3 = 35.60 → **$36** (unchanged) · band **$36~$121** · center **$68** (source: `state.valuation`).\n- **Versus reference price**: 68 ÷ 137.36 − 1 = **−50%** (previously −51%, reflecting only the price change) (source: `state.valuation.upside_vs_price_basis`).\n- **Risk-free rate memo**: The U.S. 10-year yield is 5.15% (2026-11-13). This is +16bp versus the 4.99% input in the November issue, and the discount rate will be recalculated in the monthly run (12/01) (source: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json meta.macro.ust10`).\n- **29 milestones**: 24 in progress · 4 unjudged · 1 missed. A line for this run was added to `status_history` for all 29 (source: `state.scorecard`).\n\n---\n"
+ }
+}

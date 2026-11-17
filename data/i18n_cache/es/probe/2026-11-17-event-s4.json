@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-17-event-s4",
+ "lang": "es",
+ "src_hash": "d9121345ab58",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probabilidad, valor e hitos — sin cambios",
+  "md": "\n| Escenario | Anterior | Actual | Fundamento |\n|---|---|---|---|\n| Alcista | 0,30 | 0,30 | Ninguna regla activada |\n| Base | 0,50 | 0,50 | Ídem |\n| Bajista | 0,20 | 0,20 | Ídem |\n\n- **Contraste con las reglas**: la noticia de la cadena de suministro y el 13G/A no corresponden a ninguna condición de R1~R6 (fuente: `state.probability_adjustment_rules`).\n- **Valor ponderado por probabilidad**: 0,30 × 76,3 + 0,50 × 24,1 + 0,20 × 3,3 = 35,60 → **$36** (sin cambios) · banda **$36~$121** · centro **$68** (fuente: `state.valuation`).\n- **Frente al precio de referencia**: 68 ÷ 137,36 − 1 = **−50 %** (anterior −51 %, solo refleja el cambio de precio) (fuente: `state.valuation.upside_vs_price_basis`).\n- **Nota sobre la tasa libre de riesgo**: el bono de EE. UU. a 10 años está en 5,15 % (2026-11-13). Frente al 4,99 % usado en la edición de noviembre, es +16 pb, y el recálculo de la tasa de descuento se hará en la edición mensual (01/12) (fuente: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json meta.macro.ust10`).\n- **29 hitos**: 24 en curso · 4 sin dictamen · 1 incumplido. En los 29 se añadió la línea de esta edición a `status_history` (fuente: `state.scorecard`).\n\n---\n"
+ }
+}

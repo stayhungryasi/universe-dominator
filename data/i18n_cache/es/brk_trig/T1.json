@@ -2,14 +2,14 @@
  "kind": "brk_trig",
  "id": "T1",
  "lang": "es",
- "src_hash": "6d2466338a35",
+ "src_hash": "6ac865988f97",
  "model": "claude-haiku-4-5",
- "at": "2026-11-16 12:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "name": "13F 3Q26 — cambios de cantidad en Alphabet·Apple·acciones bancarias, detalle de ventas netas trimestrales de $430 millones",
-  "expected": "2026-11-16 (plazo legal 11-14 sábado → siguiente día de negociación, cálculo — fecha zona este estadounidense)",
-  "check": "SEC 13F-HR documento original (capa de medición detectada — 13F-HR tiene clasificación 'crítica' por lo que activa motor separado al publicarse)"
- }
+ "at": "2026-11-17 12:44",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[2§name] 숫자: 원문에 없는 숫자 43 million",
+  "[2§name] 숫자: 원문의 숫자가 빠짐 4.3억"
+ ]
 }

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-17-event-s2",
+ "lang": "en",
+ "src_hash": "5739e8b76c92",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 12:44",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. SC 13G/A (2026-11-16) — Director Gracias",
+  "md": "\n| Item | Value | Source |\n|---|---|---|\n| Filer | Antonio J. Gracias alone · Amendment No. 1 | ① [SC 13G/A](https://www.sec.gov/Archives/edgar/data/1181412/000121390026120715/xslSCHEDULE_13G_X02/primary_doc.xml), 2026-11-16 |\n| Event date | 2026-09-30 | Same |\n| Beneficial ownership | Class A 457,614,684 shares · 5.5% | Same |\n\n- **Difference between the two values**: The Form 4/A filed on 9/30 states the post-transaction share count as 460,624,307. This differs from the 13G/A by 3,009,623 shares. Because the original does not explain the basis of calculation (scope of direct and indirect ownership), both values are listed and not reconciled (source: ① [Form 4/A](https://www.sec.gov/Archives/edgar/data/1181412/000121390026105393/xslF345X06/ownership.xml), 2026-09-30).\n- **Judgment layer**: This is an update to a filing of holdings of 5% or more. It is not subject to a rule or milestone. It is used only as background for observing trading volume and share price during the T2 (12/8 lock-up) period (source: `state.triggers_next_12m[T2]`).\n\n---\n"
+ }
+}
