@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-17-event-s2",
+ "lang": "ja",
+ "src_hash": "97bd9056cb37",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. T1 — 予想日 vs 実際日",
+  "md": "- **予想**: 2026-11-16(米国東部, 法定期限 11-14 土 → 翌営業日, 算式 — state.triggers_next_12m T1)。\n- **実際**: SEC掲載 2026-11-16(米国), 表紙署名日 2026-11-16 — この探査が確認した時刻はKST 2026-11-17(出典: [EDGAR 13F 一覧](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067983&type=13F-HR&dateb=&owner=include&count=10) · [表紙](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml))。\n- **判定**: 米国日付では的中し、KSTでは1日後に確認された — 前回が新設した「米国開示日 + 1日(KST確認日)」ルールがそのまま再現された(出典: [2026-11-16 回](2026-11-16-event.md) 1節)。ルール維持、T3予想日 2027-02-17 維持。\n- 表紙記載: 併せて含まれる運用者 14 · 情報表 89行 · 訂正ではない(原本報告書)(出典: [表紙](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/xslForm13F_X02/primary_doc.xml))。非公開扱い(機密要請)の表記は表紙で確認されなかった — 13F以外で遅れて開示される銘柄があるかは分からない(判断)。\n"
+ }
+}

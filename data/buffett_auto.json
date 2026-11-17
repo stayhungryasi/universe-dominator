@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-17 12:29",
- "generated_at": "2026-11-17T12:29:47.894340+09:00",
+ "generated_label": "2026-11-17 18:26",
+ "generated_at": "2026-11-17T18:26:27.854108+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-17",
@@ -371,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 14.45
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -722,8 +722,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": null,
-   "g_forward_status": "전망치 이상(242%) — 취재 필요",
-   "notes": "전망치 이상(242%) — 취재 필요"
+   "g_forward_status": "전망치 이상(243%) — 취재 필요",
+   "notes": "전망치 이상(243%) — 취재 필요"
   },
   "MU": {
    "as_of": "2026-11-17",
@@ -825,7 +825,33 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "○"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 4,
+    "period": "2026Q3"
+   },
+   "notes": "플로트 복리 엔진의 현금 축적 가속화 대비 순이익 28% 하락은 보험 언더라이팅 수익성 약화와 주식 매각으로 인한 양측 압력.",
+   "_evidence": {
+    "franchise": "Insurance float가 무대체 자본(no-cost capital) 역할 수행, BNSF 철도 사업이 Q3 순이익 19.3% 기여.",
+    "risk5": "Buffett의 주식 기부 약속와 경영진 교체 관측으로 경영진 충성도 불확실성 증가, 보험 언더라이팅 수익 43% 감소는 단기 사이클 변동성.",
+    "capalloc": "Berkshire more than doubles buybacks in third quarter, $9.6B buyback 집행, 현금 보유 계속."
+   }
   },
   "LLY": {
    "as_of": "2026-11-17",
@@ -1745,7 +1771,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 55.78
+    "value": 60.56
    },
    "eps_status": null,
    "roe_tangible": 0.2958,
@@ -1890,7 +1916,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 165.61
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -1907,7 +1933,7 @@
    "owner_earnings": {
     "ai_view": {
      "display": "A",
-     "reason": "AI 투자 호황으로 기록적 분기 매출 ¥732.3B 달성 및 상향 가이던스 제시"
+     "reason": "AI 투자 호황으로 기록적 분기 매출 ¥732.3B 달성 및 상향 조정된 가이던스"
     }
    },
    "conversion": null,
@@ -1923,7 +1949,7 @@
    "source": "yfinance TTM 희석 EPS",
    "confidence": "하",
    "g_forward_status": "전망치 이상(44%) — 취재 필요",
-   "notes": "반도체 장비 과점 기업(LRCX·AMAT와 동일 구조), 130% 1년 수익률 후 밸류에이션 재평가 필요, 5:1 주식분할 및 ¥150B 자사주 매입 진행 중",
+   "notes": "반도체 장비 과점 구조(LRCX·AMAT 동일)에서 AI 사이클 수혜 중이나 시클리컬 특성상 경기 민감도 높음",
    "franchise": {
     "need": "○",
     "no_substitute": "○",
@@ -1942,10 +1968,10 @@
     "period": "2027H1"
    },
    "_evidence": {
-    "franchise": "LRCX·AMAT와 동일한 반도체 장비 과점 구조로 대체 불가능한 프랜차이즈 보유",
-    "risk5": "AI 투자 테일윈드 중 단기 조정 후 강한 회복세 보였으나, 반도체 사이클 의존도 높음",
-    "capalloc": "FY2027 Q1 기록적 수익 달성, ¥150B 자사주 매입 및 5:1 주식분할 단행으로 현금 운영 및 주주친화적 자본배분 입증",
-    "owner_earnings": "AI 투자 테일윈드가 첫 반기 가이던스 대폭 상향으로 이어짐"
+    "franchise": "장비 과점 — LRCX·AMAT와 동일 구조로 높은 진입장벽과 대체불가능성",
+    "risk5": "AI 투자 호황 주도 실적이나 반도체 사이클 의존도로 인한 사업 불확실성 존재; 주가 1년 130% 상승으로 밸류에이션 재평가 필요",
+    "capalloc": "¥150억 자사주 매입 계획 및 5:1 주식분할 단행으로 현금 운용 규율 입증",
+    "owner_earnings": "AI 투자 테일윈드가 첫번째 반기 예상을 크게 상향 조정하며 기록적 분기 매출 달성"
    }
   },
   "6857.T": {
@@ -1953,7 +1979,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 700.28
+    "value": 787.94
    },
    "eps_status": null,
    "roe_tangible": 0.5398,
@@ -2077,5 +2103,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-17 12:30"
+ "scout_label": "2026-11-17 18:27"
 }

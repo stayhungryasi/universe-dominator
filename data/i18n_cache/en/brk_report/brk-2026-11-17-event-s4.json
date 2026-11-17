@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-17-event-s4",
+ "lang": "en",
+ "src_hash": "008e218ccc79",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-17 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Breakdown of the 3Q Net Sales of $430 Million — Reconciling with the 13F",
+  "md": "The 13F does not provide trade prices. Sizes were approximated as change in share count × per-share value at the end of 3Q (information table value ÷ number of shares) (estimate — differs from actual execution prices).\n\n| Category | Stock | Estimated amount ($ million) | Formula |\n|---|---|---|---|\n| Increased | Lennar A·B | 1,074.8 | 12,922,695 × 81.59 + 254,883 × 79.99 |\n| Increased | Bending Spoons | 689.4 | Fair value at end of 3Q (not acquisition cost) |\n| Increased | Delta Air Lines | 595.1 | 7,130,000 × 83.46 |\n| Increased | Macy's | 4.4 | 191,374 × 22.77 |\n| Reduced | Bank of America | 1,498.6 | 27,533,107 × 54.43 |\n| Reduced | VeriSign | 865.1 | 3,067,744 × 282.01 |\n| Reduced | Capital One | 357.2 | 1,850,000 × 193.07 |\n| Reduced | Kroger | 234.5 | 4,000,000 × 58.62 |\n| Reduced | Nucor | 64.7 | 276,976 × 233.75 |\n| Reduced | DaVita | 32.0 | 182,980 × 174.92 |\n\nExample of the per-share value formula: Bank of America 24,812.5 ÷ 455.86 = $54.43 (source: [3Q information table](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/60471.xml)).\n\n- Total increases about $2.36 billion (formula 1,074.8 + 689.4 + 595.1 + 4.4) — nearly the same as the 3Q purchases of about $2.4 billion back-calculated from the 10-Q cash flow statement (9M purchases $41.771 billion − first half $39.4 billion; sources: [3Q26 10-Q](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm) · [2Q26 10-Q](https://www.berkshirehathaway.com/qtrly/2ndqtr26.pdf)).\n- Total reductions about $3.05 billion (formula 1,498.6 + 865.1 + 357.2 + 234.5 + 64.7 + 32.0) — about $280 million larger than the 3Q sales of about $2.8 billion back-calculated from the 10-Q (9M sales $30.572 billion − first half $27.8 billion, same sources) (formula 30.5 − 27.7). Reasons for the gap (judgment): ① Measured at quarter-end prices (not execution prices) ② The 13F lists only US-listed securities — the $31.3 billion difference (formula 335,515 − 304,197) between the 10-Q equity fair value of $335.515 billion and the 13F total lies outside the 13F (presumed to be non-US-listed shares such as the Japanese trading companies) ③ Sales in the 10-Q are on a proceeds-received basis.\n- Conclusion (judgment): The 3Q net sales of $430 million (reported, [Forbes](https://www.forbes.com/sites/bill_stone/2026/11/07/berkshire-hathaway-q3-earnings-miss-on-insurance-not-on-strategy/) 2026-11-07) are closer to **swapping the reduction in banks and VeriSign for homebuilding (Lennar), airlines (Delta) and Bending Spoons**. Of the five large holdings, none was touched except Bank of America.\n"
+ }
+}

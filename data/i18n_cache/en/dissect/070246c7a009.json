@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "070246c7a009",
+ "lang": "en",
+ "src_hash": "7bdb5ecb86db",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-17 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Technology implemented a year ago becomes industry talking point",
+  "sections.1.h": "Laya's core performance: ultra-fast 33ms inference",
+  "sections.2.h": "The bottleneck created by excessive use of generative LLMs",
+  "sections.3.h": "Architecture designed with three basic arithmetic primitives",
+  "sections.4.h": "Three specialized checkpoints tailored to language and task",
+  "sections.5.h": "Language-specific accuracy variance and the necessity of routing",
+  "sections.6.h": "Laya vs Jev benchmark comparison",
+  "sections.7.h": "Validated performance in actual operational environments",
+  "sections.8.h": "Developer integration and practical usage examples",
+  "sections.9.h": "Open-source ecosystem and access pathways",
+  "sections.0.ko": "In March 2025, the author developed a reinforcement learning-based non-autoregressive decision model, published a paper on arXiv, and released it as open source. At the time, this approach received little attention, but in September 2026, TypeSafe AI, founded by researchers from OpenAI, launched Jev with an almost identical concept as 'innovative technology,' which became a hot topic. The author felt frustrated, but took this as an opportunity to improve all limitations of the existing design and decided to build Laya, a fully open-source System 1 decision model family.",
+  "sections.1.ko": "Laya is designed based on bidirectional encoders and operates within 32.8ms on a single GPU (7.2ms per question in batch processing). This is 6–8× faster than Jev, supports over 100 languages, and requires no API subscription fees. All weights are released under the Apache 2.0 license, enabling self-hosting and deployment in air-gapped environments.",
+  "sections.2.ko": "A major problem in modern AI pipelines is the use of generative LLMs even for simple structured decision-making. Calling models with 8B to tens of billions of parameters for simple judgments like customer support ticket classification or email triage introduces 500ms to 2 seconds of latency and incurs inference costs. More problematically, LLMs do not mathematically calibrate confidence values and only predict from token probabilities, making a reported 0.95 confidence essentially unreliable. Therefore, a model that returns immediate and calibrated probabilities within 30–35ms, like the human brain's System 1, is needed.",
+  "sections.3.ko": "Laya supports only three operations: choice (option selection), score (ordinal scale evaluation), and noul (binary true/false judgment). Since all outputs are probabilities and numbers, no text is generated, making hallucination impossible, and schema violations or JSON format errors cannot physically occur. There is no need to extract structured labels from raw text through complex pipelines.",
+  "sections.4.ko": "The author realized that a single model cannot optimize for all languages and tasks, leading to the development of three specialized checkpoints: laya, optimized for English text classification and email triage; laya-multilingual, supporting over 100 languages; and laya-typed-decisions, specialized for agent monitoring and shipment processing. They are integrated in a single Hugging Face repository, allowing users to selectively download only the checkpoints they need via allow_patterns.",
+  "sections.5.ko": "In MASSIVE benchmark testing across 51 languages, the English model failed catastrophically on non-Latin scripts. For example, Khmer showed 0% accuracy yet 95.2% confidence, and Armenian showed coin-flip-level accuracy (5%) with 88.5% confidence. This suggests that confidence gating alone cannot solve the problem; the choice of which model to use must be determined before the forward pass. Laya includes a built-in router that inspects Unicode scripts, recognizing 22 character systems with only ~2% processing overhead, and preloading models in memory can entirely eliminate 7–10 seconds of latency during language switching.",
+  "sections.6.ko": "In real benchmarks, Laya surpassed Jev on multiple metrics. On a 2000-decision dataset, 76.6% vs 72.7% accuracy; on AG News, 95.0% vs 91.0%; on expected calibration error (ECE), 0.081 vs 0.246—3× superior. Response speed was 32.8ms vs 236–276ms per single question (7.8× faster) and 72.3ms vs approximately 1500ms for batch processing (20× faster). Cost-wise, Laya is completely free when self-hosted, while Jev charges $0.042 per million tokens.",
+  "sections.7.ko": "Laya demonstrated production-level decision quality across 9 corporate workflows. It achieved 99.3% accuracy in email spam filtering, 75.5–76.2% in LLM security filtering, and 65.7% in RAG passage relevance filtering. The author honestly disclosed limitations: performance drops sharply with 20 or more options, so schemas should be limited to 20 or fewer, or staged filtering should be used.",
+  "sections.8.ko": "Laya is installable via pip install. After initializing a Router, multiple questions can be evaluated simultaneously in a single forward pass. In a customer support ticket example, the author shows code evaluating three aspects at once: queue assignment (choice), urgency (score), and churn risk (noul). The router automatically selects the appropriate model whether input is English or Hindi, with explicit model specification also possible.",
+  "sections.9.ko": "All Laya model weights are publicly available at the Hugging Face convaiinnovations/laya repository, with the complete code on GitHub. Users can test 8 workflows in real time in an interactive demo space running on ZeroGPU. This contrasts with TypeSafe Jev, which offers only closed API and proprietary weights.",
+  "caveat": "The author's claims emphasize the superiority of their own developed model, so benchmark figures and interpretations may have been selected under favorable conditions. Independent verification is advisable."
+ }
+}
