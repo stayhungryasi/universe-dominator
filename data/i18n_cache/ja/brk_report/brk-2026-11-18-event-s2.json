@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-18-event-s2",
+ "lang": "ja",
+ "src_hash": "1b9d8e76765f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-18 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. 13D/A 82次 — 何が開示されたか",
+  "md": "出所: [13D/A 82次](https://www.sec.gov/Archives/edgar/data/1067983/000119312526465884/xslSCHEDULE_13D_X02/primary_doc.xml)(事象日 2026-11-16 · 署名 2026-11-17) · [Form 4](https://www.sec.gov/Archives/edgar/data/1067983/000119312526465872/xslF345X06/ownership.xml)(署名 2026-11-17)。\n\n| 取引(2026-11-16) | 株式数 | 備考 |\n|---|---|---|\n| A株 → B株 転換 | A株 6,150株 → B株 9,225,000株 | 1:1,500(算式 6,150 × 1,500) |\n| 寄付 — Susan Thompson Buffett Foundation | B株 3,690,000株 | Form 4 コード G(贈与)、価格 $0 |\n| 寄付 — Sherwood Foundation | B株 1,845,000株 | 同上 |\n| 寄付 — Howard G. Buffett Foundation | B株 1,845,000株 | 同上 |\n| 寄付 — NoVo Foundation | B株 1,845,000株 | 同上 |\n\n出所: 上記の二つの原文。寄付合計 9,225,000株 = 転換株式数(算式 3,690,000 + 1,845,000 × 3)。\n\n- 取引後の保有(13D/A 82次 表紙): A株 182,140株(A株の38.4%) · B株 1,162株(0.01%未満) · 単独の議決権・処分権がすべて、共有は0 · 議決権 29.6% · 経済的持分 12.9%(出所: [82次](https://www.sec.gov/Archives/edgar/data/1067983/000119312526465884/xslSCHEDULE_13D_X02/primary_doc.xml))。\n- 開示が示していないもの: 寄付時点の金額。2026-11-16のB株終値で概算すると約 $54.7億(推定 — 算式 9,225,000 × 592.85、終値は [stockanalysis](https://stockanalysis.com/stocks/brk.b/history/))。\n- 同日、バークシャーのウェブサイトに 'Thanksgiving Message from Warren Buffett'(2026-11-16)が掲載された(出所: [2026 プレスリリース一覧](https://www.berkshirehathaway.com/news/2026news.html))。この探査ではPDF本文を読めなかった — 書簡の発言はもともと判定材料ではないため(規約1項)、マイルストーン候補の記録も次回に持ち越す。\n\n### 表紙数字の再現(検算)\n- A株 38.4%: 10-Q表紙のA株 480,476株(2026-10-28)から今回の転換 6,150株を引くと 474,326株 → 182,140 ÷ 474,326 = 38.4%(算式、表紙は [10-Q](https://www.sec.gov/Archives/edgar/data/1067983/000119312526452412/brka-20260930.htm))。10/28~11/16の間の他の転換は反映できていない(推定)。\n- 経済的持分 12.9%: 182,140 ÷ A株換算 1,416,346株(10-Q表紙) = 12.86%(算式) — 転換はA株換算の総数を変えない。\n- 議決権 29.6%: B株1株の議決権はA株の1/10,000である(定義 — state.definitions.buffett_stake)。B株 1,413,030,594株(算式 1,403,805,594 + 9,225,000) ÷ 10,000 = 141,303票 + A株 474,326票 = 615,629票 → 182,140 ÷ 615,629 = 29.6%(算式)。\n"
+ }
+}

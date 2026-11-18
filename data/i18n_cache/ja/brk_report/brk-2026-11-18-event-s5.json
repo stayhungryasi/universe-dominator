@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-18-event-s5",
+ "lang": "ja",
+ "src_hash": "409d1595625f",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-18 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. 併せて読んだ測定層の開示 — 13G 5件(2026-11-16)・424B5(2026-11-17)",
+  "md": "前回は13Fを読んだが、同じ日にバークシャーが提出した13G 5件は読まなかった。13Gは持株比率を示す — 13Fにはない欄である。\n\n| 発行会社 | 13Gの種類 | バークシャー合算株式数(2026-09-30) | 持株比率 | 13F 3Q株式数との照合 |\n|---|---|---|---|---|\n| Bending Spoons | 新規 | 20,689,655 | 6.4% | 一致 |\n| デルタ航空 | 訂正2次 | 64,450,000 | 9.8% | 一致 |\n| バンク・オブ・アメリカ | 訂正8次 | 455,860,908 | 6.6% | 一致 |\n| ベリサイン | 訂正6次 | 5,922,136 | 6.6% | 一致 |\n| クローガー | 訂正2次 | 35,000,000 | 5.9% | 一致 |\n\n出典: [Bending Spoons 13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464218/xslSCHEDULE_13G_X02/primary_doc.xml) · [デルタ](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464189/xslSCHEDULE_13G_X02/primary_doc.xml) · [バンク・オブ・アメリカ](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464211/xslSCHEDULE_13G_X02/primary_doc.xml) · [ベリサイン](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464219/xslSCHEDULE_13G_X02/primary_doc.xml) · [クローガー](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464214/xslSCHEDULE_13G_X02/primary_doc.xml) — いずれも署名日2026-11-16。13Fとの照合は[3Q情報表](https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/60471.xml)。\n\n- **T5(Bending Spoons)**: 13Gは9/30時点の持株比率6.4%を示す — 報告者はバフェット・バークシャー・National Indemnity・GEICO Corporation・GEICO(出典: [13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464218/xslSCHEDULE_13G_X02/primary_doc.xml))。逆算した発行株式数は約3.23億株(推定 — 算式 20,689,655 ÷ 0.064、持株比率が丸めた値のため誤差がある)。ただしT5が問う「追加持分(約4%)の決済」については、**当初の持株比率を本探査が原文で持ったことがなく**、6.4%が追加分を含む値かどうか判定できない — 保留を維持し、確認経路は4Q26の10-K・一級報道(判断)。\n- **デルタ9.8%**: 10%の基準のすぐ下である(出典: [デルタ13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464189/xslSCHEDULE_13G_X02/primary_doc.xml))。3Qに+12.4%積み増した銘柄である(出典: [2026-11-17回](2026-11-17-event.md) 2節)。10%を超えるとバークシャーはデルタのインサイダーとなり、Form 4で取引が随時開示される(規定の記述 — 判断)。次回の問いとして置く。\n- **424B5(2026-11-17 EDGAR、書類日2026-11-13)**: 円建て社債の確定目論見書 — 5トランシェ合計¥1,823億、引受手数料¥2.95億、会社受取額¥1,820.05億、決済予定2026-11-19、使途に¥734億(0.955%、2026-11-27満期)・¥230億(0.203%、2027-01-25満期)の借換えを明記(出典: [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526465047/d86634d424b5.htm))。FWP(2026-11-13)の条件と同じ — T8は確認完了の状態のまま、受取額の数字だけを加える。\n"
+ }
+}

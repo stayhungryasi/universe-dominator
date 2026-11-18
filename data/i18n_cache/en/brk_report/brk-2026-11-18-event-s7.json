@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-18-event-s7",
+ "lang": "en",
+ "src_hash": "6dd773ba28c6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-18 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Trigger Updates",
+  "md": "| ID | What | Expected date | How to verify | Change |\n|---|---|---|---|---|\n| T5 | Bending Spoons additional stake | Date TBD | 4Q26 10-K equity note · tier-1 reports | Recorded 6.4% stake as of 9/30 (new 13G) — unconfirmed whether it includes additional shares, remains pending |\n| T8 | Yen bond finalization | 2026-11-13 (actual) | 424B5 | Remains confirmed · added proceeds of ¥182.005 billion |\n| T3 | 4Q26 13F | 2027-02-17 (estimate: U.S. filing date + 1 day, KST) | SEC 13F-HR · 13G | Question added — whether Delta's stake crosses 10% (13G amendment) |\n\nSources: T5 [13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464218/xslSCHEDULE_13G_X02/primary_doc.xml) · T8 [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526465047/d86634d424b5.htm) · T3 [Delta 13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464189/xslSCHEDULE_13G_X02/primary_doc.xml). T1·T2·T4·T6·T7·T9 are unchanged from the previous edition. Buffett's next 13D amendment is not set as a trigger — the measurement layer detects a 13D/A as 'significant' and wakes the engine, so no expected date is needed (judgment).\n"
+ }
+}

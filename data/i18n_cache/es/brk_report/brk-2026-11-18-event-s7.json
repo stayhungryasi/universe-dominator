@@ -1,0 +1,14 @@
+{
+ "kind": "brk_report",
+ "id": "brk-2026-11-18-event-s7",
+ "lang": "es",
+ "src_hash": "6dd773ba28c6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-18 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Actualización de disparadores",
+  "md": "| ID | Qué | Fecha prevista | Cómo se verifica | Cambio |\n|---|---|---|---|---|\n| T5 | Participación adicional de Bending Spoons | Fecha sin definir | Nota de acciones del 10-K del 4T26 · cobertura de primer nivel | Registrada participación del 6,4% al 30/9 (13G nuevo) — sin confirmar si incluye la parte adicional; se mantiene en espera |\n| T8 | Confirmación del bono en yenes | 2026-11-13 (real) | 424B5 | Se mantiene como confirmado · se suma el importe recibido de ¥182.005 millones |\n| T3 | 13F del 4T26 | 2027-02-17 (estimada: fecha de publicación en EE. UU. + 1 día, KST) | SEC 13F-HR · 13G | Pregunta añadida — si la participación de Delta supera el 10% (corrección del 13G) |\n\nFuentes: T5 [13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464218/xslSCHEDULE_13G_X02/primary_doc.xml) · T8 [424B5](https://www.sec.gov/Archives/edgar/data/1067983/000119312526465047/d86634d424b5.htm) · T3 [Delta 13G](https://www.sec.gov/Archives/edgar/data/1067983/000119312526464189/xslSCHEDULE_13G_X02/primary_doc.xml). T1, T2, T4, T6, T7 y T9 siguen igual que en la edición anterior. La próxima corrección del 13D de Buffett no se establece como disparador: la capa de medición detecta el 13D/A como «importante» y despierta el motor, por lo que no necesita fecha prevista (juicio).\n"
+ }
+}

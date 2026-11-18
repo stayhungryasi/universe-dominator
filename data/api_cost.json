@@ -671,109 +671,126 @@
   },
   "2026-11-18": {
    "buffett_scout": {
-    "calls": 3,
+    "calls": 4,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 3374,
+    "in": 4407,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.010464
+      "calls": 4,
+      "usd": 0.012802
      }
     },
-    "out": 1418,
+    "out": 1679,
     "unpriced": 0,
-    "usd": 0.010464,
+    "usd": 0.012802,
     "ws": 0
    },
    "companion_essays": {
+    "calls": 10,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 100738,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 5,
+      "usd": 0.099594
+     },
+     "claude-sonnet-5-5": {
+      "calls": 5,
+      "usd": 0.140958
+     }
+    },
+    "out": 13867,
+    "unpriced": 0,
+    "usd": 0.240552,
+    "ws": 0
+   },
+   "fetch_calendar": {
+    "calls": 5,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 30936,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 5,
+      "usd": 0.033271
+     }
+    },
+    "out": 467,
+    "unpriced": 0,
+    "usd": 0.033271,
+    "ws": 0
+   },
+   "fetch_pioneers": {
     "calls": 6,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 56589,
+    "in": 3037,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.052478
-     },
-     "claude-sonnet-5-5": {
-      "calls": 3,
-      "usd": 0.080822
+      "calls": 6,
+      "usd": 0.012407
      }
     },
-    "out": 7260,
+    "out": 1874,
     "unpriced": 0,
-    "usd": 0.1333,
-    "ws": 0
-   },
-   "fetch_calendar": {
-    "calls": 3,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 20454,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.021259
-     }
-    },
-    "out": 161,
-    "unpriced": 0,
-    "usd": 0.021259,
-    "ws": 0
-   },
-   "fetch_pioneers": {
-    "calls": 3,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 1608,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.006683
-     }
-    },
-    "out": 1015,
-    "unpriced": 0,
-    "usd": 0.006683,
+    "usd": 0.012407,
     "ws": 0
    },
    "fetch_research": {
-    "calls": 7,
+    "calls": 14,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 32406,
+    "in": 63953,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 7,
-      "usd": 0.093941
+      "calls": 14,
+      "usd": 0.188603
      }
     },
-    "out": 12307,
+    "out": 24930,
     "unpriced": 0,
-    "usd": 0.093941,
+    "usd": 0.188603,
     "ws": 0
    },
    "fetch_signals": {
-    "calls": 3,
+    "calls": 5,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 2832,
+    "in": 4783,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.013167
+      "calls": 5,
+      "usd": 0.022103
      }
     },
-    "out": 2067,
+    "out": 3464,
     "unpriced": 0,
-    "usd": 0.013167,
+    "usd": 0.022103,
+    "ws": 0
+   },
+   "fetch_translations": {
+    "calls": 1,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 4663,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 1,
+      "usd": 0.020448
+     }
+    },
+    "out": 3157,
+    "unpriced": 0,
+    "usd": 0.020448,
     "ws": 0
    },
    "signal_column": {
@@ -794,41 +811,41 @@
     "ws": 0
    },
    "spacex_news": {
-    "calls": 8,
+    "calls": 14,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 61006,
+    "in": 108893,
     "models": {
      "claude-sonnet-5-5": {
-      "calls": 8,
-      "usd": 0.374642
+      "calls": 14,
+      "usd": 0.648396
      }
     },
-    "out": 25263,
+    "out": 43061,
     "unpriced": 0,
-    "usd": 0.374642,
+    "usd": 0.648396,
     "ws": 0
    },
    "translate_content": {
-    "calls": 127,
+    "calls": 181,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 336418,
+    "in": 473488,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 87,
-      "usd": 0.747428
+      "calls": 121,
+      "usd": 1.051863
      },
      "claude-sonnet-5-5": {
-      "calls": 40,
-      "usd": 1.17855
+      "calls": 60,
+      "usd": 1.61166
      }
     },
-    "out": 200057,
+    "out": 276841,
     "unpriced": 0,
-    "usd": 1.925978,
+    "usd": 2.663523,
     "ws": 0
    }
   }

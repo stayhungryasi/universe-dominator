@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-18 12:55",
- "generated_at": "2026-11-18T12:55:56.789021+09:00",
+ "generated_label": "2026-11-18 18:28",
+ "generated_at": "2026-11-18T18:28:19.266262+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-18",
@@ -130,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -148,7 +148,18 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ]
+   ],
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "notes": "소비자 프랜차이즈 최강이나 성장 정체로 프리미엄 가치 평가 한계, 현재 주가 수준에서는 과평가 위험",
+   "_evidence": {
+    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership"
+   }
   },
   "GOOG": {
    "as_of": "2026-11-18",
@@ -371,7 +382,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 14.86
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -516,7 +527,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.86
+    "value": 1.89
    },
    "eps_status": null,
    "roe_tangible": 0.3005,
@@ -1153,7 +1164,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 39.96
+    "value": 40.64
    },
    "eps_status": null,
    "roe_tangible": 0.7976,
@@ -1486,7 +1497,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.91
+    "value": 0.87
    },
    "eps_status": null,
    "roe_tangible": 0.1339,
@@ -1745,7 +1756,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 61.28
+    "value": 62.2
    },
    "eps_status": null,
    "roe_tangible": 0.2731,
@@ -1855,7 +1866,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 708.36
+    "value": 746.24
    },
    "eps_status": null,
    "roe_tangible": 1.0681,
@@ -1890,7 +1901,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 175.39
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -1925,7 +1936,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 753.33
+    "value": 787.92
    },
    "eps_status": null,
    "roe_tangible": 0.5398,
@@ -1960,7 +1971,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 33.24
+    "value": 31.31
    },
    "eps_status": null,
    "roe_tangible": 0.3547,
@@ -2049,5 +2060,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-18 12:57"
+ "scout_label": "2026-11-18 18:29"
 }
