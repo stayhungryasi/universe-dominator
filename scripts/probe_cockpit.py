@@ -841,6 +841,7 @@ def build(ar, today=None, watch=None, status=None, vres=None, kpi=None, essays=N
 PAYLOAD_BUDGET = 380 * 1024     # 관제실 데이터 덩어리 예산(selftest 상한 400KB 아래 여유)
 KEEP_FULL_REPORTS = 2           # 본문 전체 검색을 늘 남기는 최신 보고서 수
 SEARCH_FLOOR = 3                # 보장 단계에서도 검색 종류(출처·사건·이정표·트리거·변화 이력)마다 남기는 최소 건수
+SOURCE_ROWS_FLOOR = 40          # 검색 종류를 비우기 전에 옛 출처 행을 덜 때 남기는 최근 출처 수
 
 
 def _size(data):
@@ -972,8 +973,26 @@ def fit_budget(data, report_ids, budget=None):
     # 남기며 덜고(낮은 우선순위부터), 그래도 넘을 때만 바닥 없이 다시 던다(예산 보장은 그대로).
     prio = ("sources/", "events/", "milestones/", "triggers/", "changelog/", "report/")
     dropped = 0
+
+    def s_old_source_rows(keep):            # 출처 행을 오래된 날짜부터(최근 keep 건은 남긴다)
+        rows = sorted(data.get("sources") or [], key=lambda x: str(x.get("date") or ""))
+        n0 = len(rows)
+        while len(rows) > keep and _size(data) > budget:
+            rows = rows[min(len(rows) - keep, max(1, len(rows) // 10)):]
+            data["sources"] = rows
+        if n0 - len(rows):
+            trimmed.append(f"sources:drop{n0 - len(rows)}")
+
     if _size(data) > budget:
         for floor in (SEARCH_FLOOR, 0):
+            if floor == 0:
+                # 2026-11-18: 검색 입구를 바닥(3건)까지 덜어도 넘는다 — 검색을 뺀 본체(이정표·트리거·변화 이력)가
+                # 예산에 닿았다. 예전에는 여기서 곧장 바닥 없는 둘째 바퀴로 가 검색 종류를 통째로 지웠고(3KB 를
+                # 얻으려고), '검색 색인은 모든 종류를 덮는다'가 다시 실패해 11/18 사건 보고서가 게시되지 못했다(㉖ 재발).
+                # 둘째 바퀴 앞에 옛 출처 행을 먼저 던다(최근 SOURCE_ROWS_FLOOR 건은 남긴다) — 그래도 넘을 때만 종류를 비운다.
+                s_old_source_rows(SOURCE_ROWS_FLOOR)
+                if _size(data) <= budget:
+                    break
             srch = data.get("search") or []
             for pref in prio:
                 idx = [i for i, e in enumerate(srch) if e.get("anchor", "").startswith(pref)]
@@ -999,13 +1018,8 @@ def fit_budget(data, report_ids, budget=None):
             if _size(data) <= budget:
                 break
         trimmed.append(f"search:drop{dropped}")
-    if _size(data) > budget:                # 그래도 넘으면 출처 행을 오래된 날짜부터(최근 출처는 남긴다)
-        rows = sorted(data.get("sources") or [], key=lambda x: str(x.get("date") or ""))
-        n0 = len(rows)
-        while rows and _size(data) > budget:
-            rows = rows[max(1, len(rows) // 10):]
-            data["sources"] = rows
-        trimmed.append(f"sources:drop{n0 - len(rows)}")
+    if _size(data) > budget:                # 그래도 넘으면 남은 출처 행까지(예산 보장)
+        s_old_source_rows(0)
     over = _size(data) > budget
     data["budget"] = {"bytes": _size(data), "limit": budget, "trimmed": trimmed, "over": over}
     return trimmed

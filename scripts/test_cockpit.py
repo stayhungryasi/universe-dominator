@@ -276,6 +276,29 @@ class BudgetTest(unittest.TestCase):
         self.assertFalse(d["budget"]["over"])
         self.assertLess(sum(not e["anchor"].startswith("report/") for e in d["search"]), 5 * pc.SEARCH_FLOOR)
 
+    def test_old_source_rows_go_before_search_kinds(self):
+        """2026-11-18(㉖ 재발): 검색을 뺀 본체가 예산에 닿자, 바닥(3건)까지 덜고도 넘는다는 이유로 둘째 바퀴가
+        검색 종류를 통째로 지웠다 — 11/18 사건 보고서 미게시. 종류를 비우기 전에 옛 출처 행을 먼저 던다."""
+        ids = ["2026-11", "2026-11-16-event", "2026-11-18-event"]
+        search = [{"anchor": f"report/{r}:s0", "title": r, "text": "가" * 100} for r in ids]
+        for pref in ("sources/", "events/", "milestones/", "triggers/", "changelog/"):
+            search += [{"anchor": f"{pref}x{k}", "title": "t", "text": "다" * 60} for k in range(12)]
+        rows = [{"date": f"2026-{1 + k // 28:02d}-{1 + k % 28:02d}", "title": "라" * 120,
+                 "claims": [{"text": "바" * 20}]} for k in range(200)]     # 주장이 있는 행(주장 없는 행은 앞 단계가 뺀다)
+        d = {"search": search, "sources": rows, "milestones": [{"t": "마" * 300}] * 40}
+        floor_only = dict(d, search=[e for e in search if e["anchor"].startswith("report/")
+                                     or int(e["anchor"].split("x")[-1]) < pc.SEARCH_FLOOR])
+        budget = len(json.dumps(floor_only, ensure_ascii=False).encode()) - 6_000   # 바닥까지 덜어도 6KB 넘는다
+        pc.fit_budget(d, ids, budget=budget)
+        self.assertLessEqual(d["budget"]["bytes"], budget)
+        self.assertFalse(d["budget"]["over"])
+        kinds = {e["anchor"].split("/")[0] for e in d["search"]}
+        self.assertEqual(kinds, {"report", "sources", "events", "milestones", "triggers", "changelog"})
+        self.assertLess(len(d["sources"]), 200)                              # 대신 옛 출처 행이 줄었다
+        self.assertGreaterEqual(len(d["sources"]), pc.SOURCE_ROWS_FLOOR)     # 최근 출처는 남는다
+        self.assertEqual(max(r["date"] for r in d["sources"]), max(r["date"] for r in rows))   # 남는 것은 최근 쪽
+        self.assertTrue(any(t.startswith("sources:drop") for t in d["budget"]["trimmed"]))
+
     def test_render_wired(self):
         """render() 가 예산 맞추기를 실제로 거친다(배선) — 예산을 낮추면 덜어낸 기록이 데이터에 남고 상한 안이다."""
         from unittest import mock
