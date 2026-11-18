@@ -1,5 +1,13 @@
 # 버크셔 탐사선 변화 기록
 
+## 2026-11-18-event (6회차 · 사건 — 버핏 SCHEDULE 13D/A 82차, SEC 게시 2026-11-17)
+- 2026-11-16 버핏 A주 6,150주 → B주 9,225,000주 전환, 가족 재단 4곳 기부(STBF 3,690,000 · Sherwood·Howard G. Buffett·NoVo 각 1,845,000) — https://www.sec.gov/Archives/edgar/data/1067983/000119312526465884/xslSCHEDULE_13D_X02/primary_doc.xml
+- 거래 후 A주 182,140주(A주의 38.4%) · 의결권 29.6%(81차 2026-07-14 29.7%) · 경제적 지분 12.9%(13.2%) — 81차 https://www.sec.gov/Archives/edgar/data/315090/000119312526304838/xslSCHEDULE_13D_X02/primary_doc.xml
+- 정의 신설 state.definitions.buffett_stake(A주 내 비율·의결권 B주 1/10,000표·경제적 지분 A주 환산) — 전환은 자기자본·BPS·A주 환산 주식 수 불변
+- 13G 5건(2026-11-16) 첫 판독: Bending Spoons 6.4%(신규, T5 지분율 첫 확인 — 추가분 포함 여부는 미판정) · 델타 9.8% · 뱅크오브아메리카 6.6% · 베리사인 6.6% · 크로거 5.9% — https://www.sec.gov/Archives/edgar/data/1067983/000119312526464218/xslSCHEDULE_13G_X02/primary_doc.xml
+- T8 보탬: 424B5 확정 설명서 — 수령액 ¥1,820.05억(수수료 ¥2.95억) — https://www.sec.gov/Archives/edgar/data/1067983/000119312526465047/d86634d424b5.htm
+- 확률 25/50/25·가정 가치 밴드 변화 없음(규칙 충족 없음) · B주 2026-11-17 종가 $586.76(P/B 1.64배 · 영업 사업 배수 14.6배, 산식) — https://stockanalysis.com/stocks/brk.b/history/
+
 ## 2026-11-17-event (5회차 · 사건 — 3Q26 13F-HR 게시 2026-11-16)
 - T1 확인 완료: 89행·30개 종목·종류·총액 $3,041.97억 — 애플·아메리칸 익스프레스·코카콜라·알파벳 수량 불변, 뱅크오브아메리카 −27,533,107주(−5.7%) — https://www.sec.gov/Archives/edgar/data/1067983/000119312526463399/60471.xml
 - 줄임: 캐피털 원 −61.7%·베리사인 −34.1%·뉴코어 −14.9%·크로거 −10.3%·다비타 −0.6% / 늘림: 레나 A +98.6%·델타 +12.4%·메이시스 +2.6% · Bending Spoons 신규 20,689,655주($6.894억) — 2Q 대조 https://www.sec.gov/Archives/edgar/data/1067983/000119312526352200/56757.xml
