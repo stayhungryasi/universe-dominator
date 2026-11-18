@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-18 08:23",
- "generated_at": "2026-11-18T08:23:46.929194+09:00",
+ "generated_label": "2026-11-18 12:55",
+ "generated_at": "2026-11-18T12:55:56.789021+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-18",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": ""
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,26 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026H1"
-   },
-   "notes": "소비자 프랜차이즈 최강이나 성장 활주로 최저로 현재 주가는 프리미엄 가격대 형성 중.",
-   "_evidence": {
-    "franchise": "Apple's consumer franchise dominance with iPhone ecosystem and ecosystem lock-in",
-    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership; strong cash generation enabling shareholder returns",
-    "owner_earnings": "Post-earnings context shows margin pressure and mature growth profile limiting earnings expansion"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-18",
@@ -394,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 14.86
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -721,15 +698,15 @@
    "eps_status": {
     "state": "foreign_missing"
    },
-   "roe_tangible": 0.2794,
+   "roe_tangible": 0.3516,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 565064740000000.0,
-    "goodwill_intangibles": 29386502000000.0,
-    "net_income_ttm": 149669173000000.0,
-    "asof": "2026-06-30",
+    "equity": 605443984000000.0,
+    "goodwill_intangibles": null,
+    "net_income_ttm": 212870846000000.0,
+    "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -836,12 +813,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "Q3 순이익 28% 하락했으나 플로트 복리와 대규모 자사주 매입으로 주가는 18% 상승, 보유 주식 구성 변화 중"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -853,34 +825,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "mgmt_fidelity": "○",
-    "price": "△",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026Q3"
-   },
-   "notes": "리더십 전환 이후 첫해 18% 상승, CFO의 $888,869/주 매입으로 경영진 신뢰도 확인, 플로트 가치 창출 메커니즘 작동 중",
-   "_evidence": {
-    "franchise": "Berkshire Hathaway의 보험 플로트는 대체 불가능한 저비용 자본 조달 수단이며 복리 창출의 핵심 엔진",
-    "risk5": "리더십 변화 속에서도 18% 상승 달성, CFO의 대규모 자사주 매입(888,869/주)은 경영진 확신 반영, 다만 Q3 순이익 28% 하락과 주식 매각 증가는 가격 리스크와 불확실성 존재",
-    "capalloc": "Berkshire Hathaway more than doubles buybacks in third quarter, Berkshire's CFO Just Paid $888,869 a Share for Berkshire Stock",
-    "owner_earnings": "Berkshire Hathaway Is Up 18% in Its First Year Without Buffett as CEO와 Q3 2026 profit falls 28% to $22.1 bn의 괴리는 플로트 기반 자본배분 우월성을 시사"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-11-18",
@@ -1176,15 +1121,15 @@
    "eps_status": {
     "state": "foreign_missing"
    },
-   "roe_tangible": 0.6275,
+   "roe_tangible": 0.6123,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 262380610000000.0,
-    "goodwill_intangibles": 4283131000000.0,
-    "net_income_ttm": 161965390000000.0,
-    "asof": "2026-06-30",
+    "equity": 308494939000000.0,
+    "goodwill_intangibles": null,
+    "net_income_ttm": 188904587000000.0,
+    "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -1208,7 +1153,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 40.64
+    "value": 39.96
    },
    "eps_status": null,
    "roe_tangible": 0.7976,
@@ -1541,7 +1486,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.87
+    "value": 0.91
    },
    "eps_status": null,
    "roe_tangible": 0.1339,
@@ -1775,7 +1720,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 23건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1793,45 +1738,25 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "score": 1,
-    "period": "2024H2"
-   },
-   "notes": "AI 사이클 주도 중이지만 219배~157배 P/E에서 가격 규율 부재; SaaS 플랫폼으로 필수성은 있으나 실질 수익성 평가 어려움",
-   "_evidence": {
-    "franchise": "CrowdStrike jumps 11% on record second quarter as 'Mythos moment' drives AI cyber wave; 사이버보안 플랫폼으로 고객 switching cost 존재",
-    "risk5": "CrowdStrike Could Plunge 30% After Earnings & CrowdStrike (CRWD) Is Accelerating Again. Is 219 Times Earnings Too Far Ahead?; 초고 밸류에이션과 AI 사이클 의존성",
-    "capalloc": "CrowdStrike Holdings (CRWD) Q2 Earnings and Revenues Top Estimates; 분기별 실적 초과 달성으로 현금 창출력 입증"
-   }
+   ]
   },
   "2454.TW": {
    "as_of": "2026-11-18",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 60.56
+    "value": 61.28
    },
    "eps_status": null,
-   "roe_tangible": 0.2958,
+   "roe_tangible": 0.2731,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
-    "equity": 424190236000.0,
-    "goodwill_intangibles": 97509081000.0,
-    "net_income_ttm": 96634792000.0,
-    "asof": "2026-06-30",
+    "equity": 465426806000.0,
+    "goodwill_intangibles": 101792543000.0,
+    "net_income_ttm": 99296113000.0,
+    "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
    "owner_earnings": null,
@@ -1930,7 +1855,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 746.24
+    "value": 708.36
    },
    "eps_status": null,
    "roe_tangible": 1.0681,
@@ -2124,5 +2049,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-18 08:25"
+ "scout_label": "2026-11-18 12:57"
 }
