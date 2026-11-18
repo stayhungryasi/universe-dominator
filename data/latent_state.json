@@ -1,7 +1,7 @@
 {
  "_설명": "잠재지배자 명단 관성 상태 — generate_candidates.py 가 full 마다 쓴다. base 는 같은 날 재실행의 출발점, transitions 는 확정 전이(주간 이력이 읽는다).",
  "version": 1,
- "date": "2026-11-18",
+ "date": "2026-11-19",
  "members": {
   "DELL": {
    "name": "Dell",
@@ -9,7 +9,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 83
+   "rank": 85
   },
   "2454.TW": {
    "name": "MediaTek",
@@ -17,23 +17,23 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 93
+   "rank": 90
   },
   "SNDK": {
    "name": "Sandisk",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 0,
+   "streak_out": 1,
    "carried_days": 0,
-   "rank": 196
+   "rank": 201
   },
   "MRVL": {
    "name": "Marvell Technology",
    "joined": null,
    "streak_in": 3,
-   "streak_out": 2,
+   "streak_out": 0,
    "carried_days": 0,
-   "rank": 157
+   "rank": 158
   },
   "STX": {
    "name": "Seagate Technology",
@@ -41,7 +41,7 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 188
+   "rank": 183
   },
   "000660.KS": {
    "name": "SK Hynix",
@@ -57,10 +57,17 @@
    "streak_in": 3,
    "streak_out": 0,
    "carried_days": 0,
-   "rank": 54
+   "rank": 55
   }
  },
- "candidates": {},
+ "candidates": {
+  "CRWD": {
+   "streak_in": 1,
+   "swap_streak": 0,
+   "name": "CrowdStrike",
+   "rank": 69
+  }
+ },
  "transitions": [
   {
    "date": "2026-10-05",
@@ -264,7 +271,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 96
+    "rank": 93
    },
    "SNDK": {
     "name": "Sandisk",
@@ -272,15 +279,15 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 195
+    "rank": 196
    },
    "MRVL": {
     "name": "Marvell Technology",
     "joined": null,
     "streak_in": 3,
-    "streak_out": 1,
+    "streak_out": 2,
     "carried_days": 0,
-    "rank": 167
+    "rank": 157
    },
    "STX": {
     "name": "Seagate Technology",
@@ -288,7 +295,7 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 197
+    "rank": 188
    },
    "000660.KS": {
     "name": "SK Hynix",
@@ -304,12 +311,12 @@
     "streak_in": 3,
     "streak_out": 0,
     "carried_days": 0,
-    "rank": 58
+    "rank": 54
    }
   },
   "candidates": {}
  },
- "generated_at": "2026-11-18T18:16:53.429509+09:00",
+ "generated_at": "2026-11-19T08:16:49.615219+09:00",
  "limits": {
   "in": 3,
   "out": 5,

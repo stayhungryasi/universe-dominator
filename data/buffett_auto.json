@@ -1,9 +1,9 @@
 {
- "generated_label": "2026-11-18 18:28",
- "generated_at": "2026-11-18T18:28:19.266262+09:00",
+ "generated_label": "2026-11-19 08:28",
+ "generated_at": "2026-11-19T08:28:05.600734+09:00",
  "items": {
   "NVDA": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -74,11 +74,11 @@
      "end": "2025-10-26"
     }
    ],
-   "g_forward_status": "전망치 이상(82%) — 취재 필요",
-   "notes": "전망치 이상(82%) — 취재 필요"
+   "g_forward_status": "전망치 이상(86%) — 취재 필요",
+   "notes": "전망치 이상(86%) — 취재 필요"
   },
   "AAPL": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -110,7 +110,11 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "성숙기 비즈니스로 안정적 현금 창출하나 성장성 한계"
+    }
    },
    "conversion": {
     "value": 1.0334,
@@ -149,20 +153,26 @@
      "end": "2025-12-27"
     }
    ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
    "capalloc": {
     "cash_positive": 1,
     "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
+    "score": 2,
     "period": "2026H1"
    },
-   "notes": "소비자 프랜차이즈 최강이나 성장 정체로 프리미엄 가치 평가 한계, 현재 주가 수준에서는 과평가 위험",
+   "notes": "소비자 프랜차이즈 최강이나 성장 활주로 최저—프리미엄 밸류에이션 정당성 약화",
    "_evidence": {
-    "capalloc": "Apple Announced Its Largest-Ever Stock Buyback Under Tim Cook's Leadership"
+    "franchise": "Apple Shares Are Up 27% This Year—stock rally has priced in strong franchise value",
+    "capalloc": "Apple's Massive Buyback And Chip Shift Means For Shareholders—capital allocation discipline 입증",
+    "owner_earnings": "Q4 Earnings Margin Squeeze—성숙기 비즈니스의 마진 압박 신호"
    }
   },
   "GOOG": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -210,7 +220,7 @@
     "adj_ni": 126485520000.0
    },
    "g_cagr3y": 0.257,
-   "g_forward": 0.185,
+   "g_forward": 0.1843,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 33건 · GOOGL 조회",
@@ -235,7 +245,7 @@
    ]
   },
   "MSFT": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q1",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -305,7 +315,7 @@
    ]
   },
   "AMZN": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -378,7 +388,7 @@
    ]
   },
   "TSM": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -413,7 +423,7 @@
    "notes": "전망치 이상(48%) — 취재 필요"
   },
   "AVGO": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -488,7 +498,7 @@
    "notes": "전망치 이상(69%) — 취재 필요"
   },
   "SPCX": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -506,7 +516,12 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "C",
+     "reason": "순손실 지속으로 오너이익 산정 불가능"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -518,16 +533,39 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중",
+   "confidence": "하",
    "g_forward_status": "전망치 이상(1353%) — 취재 필요",
-   "notes": "전망치 이상(1353%) — 취재 필요"
+   "notes": "우주산업+AI칩+통신+소셜미디어 복합체로 사업모델 명확성 부족, 거대 자본지출 사이클 중으로 현금 창출 미성숙",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 0,
+    "debt_discipline": 0,
+    "score": 0,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "로켓, 스타링크, xAI, X 보유로 대체불가능한 플랫폼 구축",
+    "risk5": "순손실 지속, 10년 쿠폰 범위 최광폭(추정 범위 불확실), AI 캐팩스 증가로 Q2 사상 최저 기록",
+    "capalloc": "$40B AI 베팅, $4B 채권 발행으로 부채 활용, 주식 희석 가능성(머거 협상 진행 중)",
+    "owner_earnings": "첫 공개 어닝 이후 주요 질문 미해결, 수익성 경로 불명확"
+   }
   },
   "2222.SR": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.89
+    "value": 1.86
    },
    "eps_status": null,
    "roe_tangible": 0.3005,
@@ -556,7 +594,7 @@
    "confidence": "중"
   },
   "META": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -632,7 +670,7 @@
    ]
   },
   "TSLA": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -702,7 +740,7 @@
    ]
   },
   "005930.KS": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -737,7 +775,7 @@
    "notes": "전망치 이상(243%) — 취재 필요"
   },
   "MU": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q4",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -812,7 +850,7 @@
    "notes": "전망치 이상(66%) — 취재 필요"
   },
   "BRK-B": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": null,
@@ -839,7 +877,7 @@
    "confidence": null
   },
   "LLY": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -911,7 +949,7 @@
    "notes": "전망치 이상(45%) — 취재 필요"
   },
   "JPM": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -977,7 +1015,7 @@
    ]
   },
   "WMT": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1050,7 +1088,7 @@
    ]
   },
   "AMD": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1125,7 +1163,7 @@
    "notes": "전망치 이상(106%) — 취재 필요"
   },
   "000660.KS": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": null,
@@ -1143,7 +1181,12 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "사이클리컬 피크 수익(76% 영업마진)이 지속 가능한지 불확실, 메모리 칩 공급 계약은 견고하나 가격 변동성 큼"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1155,12 +1198,35 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null,
+   "confidence": "하",
    "g_forward_status": "전망치 이상(198%) — 취재 필요",
-   "notes": "전망치 이상(198%) — 취재 필요"
+   "notes": "AI 수요 급증으로 HBM4 대량생산 진입했으나, 역사적 메모리 반도체 사이클 하강 리스크 상존",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "South Korea's SK Hynix and Samsung Boosted by Strong Memory Demand; EXCLUSIVE: SK Hynix flooded with unprecedented offers from big tech firms to secure chip supplies",
+    "risk5": "SK Hynix plunges after Nasdaq debut as memory chip euphoria cools; Micron, Samsung, SK Hynix just dragged memory stocks into a bear market",
+    "capalloc": "SK Hynix plans $28.6 billion buyback after share price declines; SK Hynix raises $26.5 billion in US offering",
+    "owner_earnings": "SK Hynix Q2 Revenue Jumps 257% YoY to 79.3T Won as HBM4 Enters Mass Production, Operating Margin Hits 76%"
+   }
   },
   "ASML": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1195,7 +1261,7 @@
    "notes": "전망치 이상(51%) — 취재 필요"
   },
   "LRCX": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1270,7 +1336,7 @@
    "notes": "전망치 이상(45%) — 취재 필요"
   },
   "AMAT": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q3",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1343,7 +1409,7 @@
    ]
   },
   "DELL": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1418,7 +1484,7 @@
    "notes": "전망치 이상(66%) — 취재 필요"
   },
   "PANW": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2026Q4",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1493,7 +1559,7 @@
    "notes": "전망치 이상(-26%) — 취재 필요"
   },
   "ARM": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1526,7 +1592,7 @@
    "confidence": "중"
   },
   "SNDK": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1601,7 +1667,7 @@
    "notes": "전망치 이상(102%) — 취재 필요"
   },
   "STX": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q1",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1676,7 +1742,7 @@
    "notes": "전망치 이상(105%) — 취재 필요"
   },
   "CRWD": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q2",
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
@@ -1752,11 +1818,11 @@
    ]
   },
   "2454.TW": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 62.2
+    "value": 63.82
    },
    "eps_status": null,
    "roe_tangible": 0.2731,
@@ -1787,7 +1853,7 @@
    "notes": "전망치 이상(53%) — 취재 필요"
   },
   "MRVL": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": "2027Q2",
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
@@ -1862,11 +1928,11 @@
    "notes": "전망치 이상(61%) — 취재 필요"
   },
   "285A.T": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 746.24
+    "value": 751.77
    },
    "eps_status": null,
    "roe_tangible": 1.0681,
@@ -1897,11 +1963,11 @@
    "notes": "전망치 이상(284%) — 취재 필요"
   },
   "8035.T": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 178.17
+    "value": 179.03
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -1928,15 +1994,15 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중",
-   "g_forward_status": "전망치 이상(44%) — 취재 필요",
-   "notes": "전망치 이상(44%) — 취재 필요"
+   "g_forward_status": "전망치 이상(45%) — 취재 필요",
+   "notes": "전망치 이상(45%) — 취재 필요"
   },
   "6857.T": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 787.92
+    "value": 823.82
    },
    "eps_status": null,
    "roe_tangible": 0.5398,
@@ -1967,11 +2033,11 @@
    "notes": "전망치 이상(64%) — 취재 필요"
   },
   "2308.TW": {
-   "as_of": "2026-11-18",
+   "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 31.31
+    "value": 33.24
    },
    "eps_status": null,
    "roe_tangible": 0.3547,
@@ -2060,5 +2126,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-18 18:29"
+ "scout_label": "2026-11-19 08:29"
 }

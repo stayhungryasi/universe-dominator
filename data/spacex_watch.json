@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-18T18:31+09:00",
+  "fetched_at": "2026-11-19T08:31+09:00",
   "year": 2026,
   "year_count": 127,
   "starship_last": {
@@ -48,13 +48,13 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-18T18:31+09:00",
+  "checked_at": "2026-11-19T08:31+09:00",
   "last_run": {
    "conclusion": "failure",
-   "created_at": "2026-11-17T23:38:16Z",
+   "created_at": "2026-11-18T15:01:06Z",
    "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/44201108407",
-   "run_id": 44201108407
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/44330719025",
+   "run_id": 44330719025
   },
   "in_progress": false
  },
@@ -1127,7 +1127,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-18T18:31+09:00",
+ "generated_at": "2026-11-19T08:31+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1626,29 +1626,61 @@
    "detected_at": "2026-11-18",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "T7:date:2026-11-19",
+   "trigger_id": "T7",
+   "name": "우크라이나 Starlink 제한 후속 — ① 미국 정부 공식 응답(경로별: ⓐ 상원→감찰관 거부 10/27 · ⓑ 공군·우주군 계약 검토 · ⓒ 하원 세출위→국방장관 30일 · ⓓ Blumenthal→국방장관 11/5·11/12 · ⓔ 하원 3인→백악관 14일) ② 해외 정부 Starlink 계약 이탈·대체 조달 공식 발표 ③ 분쟁 개입 재발(2건째)",
+   "reason": "예상일 도래",
+   "expected": "2026-11-19(KST — ⓒ 하원 세출위 30일 11/18 + KST 1일) → 2027-1H(공군·우주군 검토 — 기한 없음). ⓓ 답변 11/5·ⓔ 백악관 11/6·ⓓ SpaceX 브리핑 11/12 는 경과(2026-11-14 확인: 공개 자료 없음)",
+   "detected_at": "2026-11-19"
+  },
+  {
+   "key": "news:nvidia-chip-financing:2026-11-19",
+   "trigger_id": "T1",
+   "name": "SpaceX가 400억 달러 규모의 부외 칩 금융을 준비하고 있다.",
+   "reason": "보도 감지(24/7 wall st.·briefs finance·crypto briefing)",
+   "event": "SpaceX readies $40B off-balance chip financing",
+   "event_date": "2026-11-18",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNdGhxemxxcEIyM21NSmo1Q0VpU1JGVG1Ba014WWVqUEdoNVdZc2hEZmpkNlFmS25sbHNfVWQxTkgxWDUySG9xMXhWLWYyc0xSMENQUG9tZlhYY1JuVk1Zd3hKbFczSE8tOGV4U1QxVkVLb09ocFZFZWh4VkxfRy01b0V5UHdIYlVTUFBYdzlZenI2UQ?oc=5",
+   "detected_at": "2026-11-19",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:spacex-40b-chip-debt:2026-11-19",
+   "trigger_id": null,
+   "name": "SpaceX의 칩 구매 자금 조달용 400억 달러 부채 계획에 대한 새로운 세부 내용이 보도됐다.",
+   "reason": "보도 감지(gurufocus·news.lavx.hu·seeking alpha)",
+   "event": "New details emerge in SpaceX's $40B debt plan to finance chips: report",
+   "event_date": "2026-11-19",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQazVjQllINmdZNzk2TlBwT1FRVU9reVV6YnMwdlkxcUl1UU1MYmw2Y0U2RS1iU0VDTGFYRWxUWnVWbXRXbGlMNVBGR21oX1Noc1N2dW9ob2xSN3JkcUpCd2ZISFd2VVBoUnpfQjA4S0F0c25aNl9oNmZyTEtJWXhqMTM2bVdBWDJoN2RlenphS09nT01xVVFuZ3gtdjVEZF9Tay1lUS1lYjc?oc=5",
+   "detected_at": "2026-11-19",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
   {
-   "key": "qn:2026-11-18:0827",
-   "run_id": "44196965448",
-   "queued_at": "2026-11-18T08:27+09:00",
+   "key": "qn:2026-11-19:0831",
+   "run_id": "44419166252",
+   "queued_at": "2026-11-19T08:31+09:00",
    "state": "queued",
    "trigger_id": "T1",
-   "name": "SpaceX의 AI 칩 구매용 부채가 이르면 이번 주 시장에 나온다고 Bloomberg가 보도했다. · Vulcan 실패 하루 뒤 국가안보 발사 계약이 9억 8,500만 달러 늘었다.",
+   "name": "SpaceX가 400억 달러 규모의 부외 칩 금융을 준비하고 있다. · SpaceX의 칩 구매 자금 조달용 400억 달러 부채 계획에 대한 새로운 세부 내용이 보도됐다.",
    "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
    "urls": [
-    "https://news.google.com/rss/articles/CBMirwFBVV95cUxQZkE5NTdrR2ppTkFxYzA0d0NPNngwR1hhTV80Wm9uT2tCWVh3U1o3Q0dWNmpDcEdUdi1UV0szVTJyR2tOa0tGbjBlTnNPcjBNR1F3N3F6WVZfWm9GRGlMcnlWWER2Vl8yQzBSOXRzQ0pMU29uWS16UWJVVDN4RE0wTUZNVUk3NUtyN0tERTQ3cW01WTFNbHBCTkRhdi14UDR1VU9iWUZ3bzl0SDJCZU5z?oc=5",
-    "https://news.google.com/rss/articles/CBMioAFBVV95cUxPTDhCTnBDb1BBTWh3cGNMeERZajBFRDFLNFBqVWdPZGlRUGxZZWtxN3hhaFJBVzRLSG02bEowUi15eXhfa0lINWVLMzRBb2h0V2hwbHgtUzRWNlVLT25JeVdNLWVyYS1YTWJmUzM3NjdDcFVZMHkwLXViNGhHWWJtYk9lMTlmTHo2T0NKY1U2RW14MXF2bF8tRU9ZXzQ1WWtF?oc=5",
-    "https://news.google.com/rss/articles/CBMihAFBVV95cUxPWlVLcm9zZE5lUUxJNzJacHdlUU1hZEZ2V0VveGUwbGJsVzZWSENFblU3Q2ViV19wOFRkUk93Y0ROSGNNVF9xYzd0dHFvbE10SWVsTG0yclN1TkZuQkJnLXV4Z09YSU5XUUxqQjZwZzJUUTlZQVo3bmE5UW5GbkV0Y0dGZzjSAYoBQVVfeXFMUDNMZHhLLVFoMUJuZGNsZzRmOXZkMjB3ZGh1anhydnlVbWNGdjhfb25EOEtvc2dJN3JHVVowNUVSdDVQUnBIVXRtRmxxV0JwNHRNY2FxaXo0SkRNN1p4dDQyYnNoOHhNTUU3NG5rYVpwY0V6UGh4SkFoS3J4RkR4T1hKOEw5MlV1VlJR?oc=5",
-    "https://news.google.com/rss/articles/CBMingFBVV95cUxNZWNxRllYbDd5d0JHT2U1X3ZZUlpDRV9nYVJTalNpREwtN0ZhV0Z4bUh1ZlB4eUd4aDBYb0tPVDF0OGJvM1BORllocTBsOHBiREpHNjVGelZ0eTNaclBHUVVISHd5dkNyTUl2OEdkb2Jfa3NsOXhkS1RiN0RwMDNWQVBRT3hEdEdqbHBYckJFbTgwVmt5dmVNdDJqOW5KUQ?oc=5"
+    "https://news.google.com/rss/articles/CBMikgFBVV95cUxNdGhxemxxcEIyM21NSmo1Q0VpU1JGVG1Ba014WWVqUEdoNVdZc2hEZmpkNlFmS25sbHNfVWQxTkgxWDUySG9xMXhWLWYyc0xSMENQUG9tZlhYY1JuVk1Zd3hKbFczSE8tOGV4U1QxVkVLb09ocFZFZWh4VkxfRy01b0V5UHdIYlVTUFBYdzlZenI2UQ?oc=5",
+    "https://news.google.com/rss/articles/CBMi7AFBVV95cUxOZ0JNRGl1Z3pOeDBpck02eXo0U3BLY05SUVNjWG9FclRlNkh6Zk9FMFF5XzkxRktTbHljU1VnYjFFNk9Tdl9TN3E2bksxM1FMLUVmVC1XeG0wRWcwaVBaTl9KZGlrX21nejZnbzNON0JxM2kwNy1Sb2hBSlhxZWtSLXh5RTNiRjNyYmRYR201NUJQUjlRZlRuNVcyNy1MX195dklTWnMxVkZBaEJvTFJZb2ROU2JxTFBYRmRSbkgzWFRCTXpOZl9kRllNbW44M2hRbWdJNGowSmViQ1B3SldJRURZQ1JvZHd6MkFjVQ?oc=5",
+    "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQazVjQllINmdZNzk2TlBwT1FRVU9reVV6YnMwdlkxcUl1UU1MYmw2Y0U2RS1iU0VDTGFYRWxUWnVWbXRXbGlMNVBGR21oX1Noc1N2dW9ob2xSN3JkcUpCd2ZISFd2VVBoUnpfQjA4S0F0c25aNl9oNmZyTEtJWXhqMTM2bVdBWDJoN2RlenphS09nT01xVVFuZ3gtdjVEZF9Tay1lUS1lYjc?oc=5",
+    "https://news.google.com/rss/articles/CBMisgFBVV95cUxNVEFTUEJYWFlUd2tHcmhzbFR0c0Q5TnN3ZEk1bkE2TUNGdU5FWDNsTFExMzRKOGthZjB3OEprbVVIbUFvXzdfWnNLTkVaMEFlNFI5SFBITzNxWHZ5RUpXX2pYNGM4Q29NMi1WSkx3aHZGZS1jX1oyWmgyYmpaSkNPaEVIekZMZlhhV2Fwak96Xzd1THhOaTVCM2k1MnljYzJwbHZiV01CTm9jZS1vc3dGbzVB?oc=5"
    ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-18T18:31+09:00",
-  "last_success_at": "2026-11-18T09:30:52Z",
-  "last_run_at": "2026-11-18T09:30:20Z",
+  "checked_at": "2026-11-19T08:31+09:00",
+  "last_success_at": "2026-11-18T23:30:57Z",
+  "last_run_at": "2026-11-18T23:30:19Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

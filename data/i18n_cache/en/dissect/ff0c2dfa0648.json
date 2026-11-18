@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "ff0c2dfa0648",
+ "lang": "en",
+ "src_hash": "dec1f6dc5b4e",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-19 08:42",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Critical Flaws Discovered Through Extensive Collaborative Research",
+  "sections.1.h": "Severity Assessment and Impact Scope",
+  "sections.2.h": "Memory Flaw Hidden for Over 10 Years",
+  "sections.3.h": "Security Threats Accelerating in the AI Era",
+  "sections.4.h": "Coordinated Disclosure and Patch Schedule",
+  "sections.5.h": "Vulnerability Discovery and Validation Using AI Tools",
+  "sections.6.h": "Technical Nature of the Vulnerabilities",
+  "sections.7.h": "Impact Scope by Technology and Additional Vulnerabilities",
+  "sections.8.h": "Immediate Response and Temporary Mitigation Measures",
+  "sections.9.h": "Fundamental Shift in Security Paradigm",
+  "sections.0.ko": "Multiple security research teams including Wiz, Ikotas Labs, Metnir, Rapid7, and Xint independently discovered 2 critical remote code execution vulnerabilities in the Nginx web server. Nginx is the most widely used open-source web server supporting over 225 million websites worldwide, primarily serving as the first gateway for web traffic and handling HTTPS processing and request routing. If attackers successfully exploit these vulnerabilities, they can gain complete control over Nginx servers, steal sensitive data, tamper with websites, or disrupt services.",
+  "sections.1.ko": "Both vulnerabilities (CVE-2026-123633, CVE-2026-123007) are rated at the highest level of 9.2 on the CVSS 4.0 scale. Because the vulnerabilities exist in Nginx itself, they can be exposed even if the web applications behind it are perfectly secure, and any Nginx server with HTTP/2 enabled can be targeted. Since a single Nginx deployment typically handles multiple applications simultaneously, one compromised server can threaten all services and data behind it.",
+  "sections.2.ko": "CVE-2026-123007 is an integer underflow vulnerability dating back to Nginx 1.9.5 (2015), hidden in the code for over 10 years. CVE-2026-123633 is a use-after-free memory defect that went undetected for approximately 6 years. Memory safety issues have traditionally been extremely difficult to discover and exploit because they require tracking complex interactions between memory operations. However, as AI models improve their ability to track these subtle interactions, both researchers and attackers can now easily find vulnerabilities that have been hidden for years.",
+  "sections.3.ko": "Cases where multiple independent research teams simultaneously discovered the same type of vulnerability in internet-based software such as PHP, Java, and Nginx demonstrate that AI technology is fundamentally breaking down discovery barriers. In the past, complexity itself served as a practical defense against discovery and exploitation, but we can no longer rely on that complexity. As AI capabilities improve, the risk that increasingly complex vulnerabilities previously unreachable will be exposed in an instant grows. This fundamentally changes not only which vulnerabilities can be found, but also how much the time from discovery to exploitation can be shortened.",
+  "sections.4.ko": "The research team reported the first vulnerability to F5 (Nginx's developer) on October 21, 2026, and received a patch for review on November 10. They reported the second vulnerability on November 16, and F5 released a security update on November 18. During this process, other research teams were confirmed to have discovered and reported the same vulnerabilities.",
+  "sections.5.ko": "Wiz discovered both vulnerabilities using Wiz Atlas, a tool based on its AI code scanning solution. The latest AI models such as Gemini 4 Carbon and ChatGPT 5.6 Sol were utilized to validate the impact of each vulnerability, confirming that attackers can execute code on servers without authentication. For CVE-2026-123007, they demonstrated that code execution is possible even on Nginx servers serving only static files without backend applications or third-party modules.",
+  "sections.6.ko": "Both vulnerabilities are memory safety issues in HTTP/2 traffic processing. CVE-2026-123633 creates a use-after-free state where requests still need connection memory after it has been freed, and CVE-2026-123007 causes incorrect memory copying due to flow control calculation errors. Both vulnerabilities can lead to unauthenticated arbitrary code execution. Common memory safety mitigation techniques such as ASLR do not provide protection against these vulnerabilities.",
+  "sections.7.ko": "CVE-2026-123633 is triggered when available connection slots are insufficient during reverse proxy processing, while CVE-2026-123007 is more widespread, including cases where Nginx serves content directly. F5's security update addresses these two vulnerabilities along with 9 additional vulnerabilities discovered in HTTP/3-related components, DNS resolver, and mail proxy modules. Most of these have high CVSS scores of 9.2.",
+  "sections.8.ko": "It is strongly recommended to identify affected Nginx deployments with HTTP/2 enabled and upgrade to the patched version as quickly as possible. If immediate upgrades are not possible, HTTP/2 can be temporarily disabled as a mitigation measure; on Nginx 1.25.1 and later, the http2 option can be disabled in the configuration file. Given the burden on security teams, it is important to minimize exposure in production environments even while testing patches.",
+  "sections.9.ko": "Long-term, the process of discovering and fixing these vulnerabilities will make internet-based software more robust. However, in the short term, advances in AI technology are rapidly accelerating the speed of vulnerability discovery and shortening the time from public disclosure to exploitation, further increasing the workload of already overburdened security teams. Translating released patches into production environment protection still requires considerable manual work and coordination. Organizations should focus on how quickly they can reduce exposure in their production environments.",
+  "caveat": "The original text contains future dates from 2026, and the existence and technical details of actual vulnerabilities should be verified once more through the original Wiz blog post."
+ }
+}
