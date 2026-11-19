@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-19 08:28",
- "generated_at": "2026-11-19T08:28:05.600734+09:00",
+ "generated_label": "2026-11-19 12:26",
+ "generated_at": "2026-11-19T12:26:59.447176+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-19",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "성숙기 비즈니스로 안정적 현금 창출하나 성장성 한계"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,24 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "소비자 프랜차이즈 최강이나 성장 활주로 최저—프리미엄 밸류에이션 정당성 약화",
-   "_evidence": {
-    "franchise": "Apple Shares Are Up 27% This Year—stock rally has priced in strong franchise value",
-    "capalloc": "Apple's Massive Buyback And Chip Shift Means For Shareholders—capital allocation discipline 입증",
-    "owner_earnings": "Q4 Earnings Margin Squeeze—성숙기 비즈니스의 마진 압박 신호"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-19",
@@ -392,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 15.56
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -516,12 +495,7 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "순손실 지속으로 오너이익 산정 불가능"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -533,32 +507,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": "중",
    "g_forward_status": "전망치 이상(1353%) — 취재 필요",
-   "notes": "우주산업+AI칩+통신+소셜미디어 복합체로 사업모델 명확성 부족, 거대 자본지출 사이클 중으로 현금 창출 미성숙",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 0,
-    "debt_discipline": 0,
-    "score": 0,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "로켓, 스타링크, xAI, X 보유로 대체불가능한 플랫폼 구축",
-    "risk5": "순손실 지속, 10년 쿠폰 범위 최광폭(추정 범위 불확실), AI 캐팩스 증가로 Q2 사상 최저 기록",
-    "capalloc": "$40B AI 베팅, $4B 채권 발행으로 부채 활용, 주식 희석 가능성(머거 협상 진행 중)",
-    "owner_earnings": "첫 공개 어닝 이후 주요 질문 미해결, 수익성 경로 불명확"
-   }
+   "notes": "전망치 이상(1353%) — 취재 필요"
   },
   "2222.SR": {
    "as_of": "2026-11-19",
@@ -626,7 +577,11 @@
     },
     "fcf_ttm": 28649000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "C",
+     "reason": "AI 지출 규율 부재로 자유현금흐름 감소, 슈퍼인텔리전스 캐펙스 폭증으로 순이익 창출 능력 훼손"
+    }
    },
    "conversion": {
     "value": -0.0677,
@@ -649,7 +604,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -667,7 +622,32 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 0,
+    "debt_discipline": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "40억 네트워크 효과 보유하나 $125-145B 2026 AI 지출 계획으로 캐펙스 공포 심화, $95B 증자 필요로 희석 위험 상존",
+   "_evidence": {
+    "franchise": "40억 네트워크 효과, 광고 수익 31% 성장(U.S. AI 순위 모델 가속화)",
+    "risk5": "AI 지출 규율 부재, 경영진 AI 확장 의도 명확하나 현금흐름 악화 신호 다수",
+    "capalloc": "Meta stock sinks after Q1 earnings as company raises 2026 AI spending forecast to $125 billion-$145 billion, Meta plans $95bn stock offering to bankroll AI expansion, dwindling free cash flow",
+    "owner_earnings": "Meta's stock drops on disappointing guidance, dwindling free cash flow"
+   }
   },
   "TSLA": {
    "as_of": "2026-11-19",
@@ -747,13 +727,13 @@
    "eps_status": {
     "state": "foreign_missing"
    },
-   "roe_tangible": 0.3516,
+   "roe_tangible": 0.368,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
     "equity": 605443984000000.0,
-    "goodwill_intangibles": null,
+    "goodwill_intangibles": 27067043000000.0,
     "net_income_ttm": 212870846000000.0,
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
@@ -1170,23 +1150,18 @@
    "eps_status": {
     "state": "foreign_missing"
    },
-   "roe_tangible": 0.6123,
+   "roe_tangible": 0.6209,
    "roe_basis": {
     "kind": "yfinance",
     "basis": "GAAP 미조정",
     "status": "ok",
     "equity": 308494939000000.0,
-    "goodwill_intangibles": null,
+    "goodwill_intangibles": 4274063000000.0,
     "net_income_ttm": 188904587000000.0,
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "사이클리컬 피크 수익(76% 영업마진)이 지속 가능한지 불확실, 메모리 칩 공급 계약은 견고하나 가격 변동성 큼"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1198,32 +1173,9 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
+   "confidence": null,
    "g_forward_status": "전망치 이상(198%) — 취재 필요",
-   "notes": "AI 수요 급증으로 HBM4 대량생산 진입했으나, 역사적 메모리 반도체 사이클 하강 리스크 상존",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "South Korea's SK Hynix and Samsung Boosted by Strong Memory Demand; EXCLUSIVE: SK Hynix flooded with unprecedented offers from big tech firms to secure chip supplies",
-    "risk5": "SK Hynix plunges after Nasdaq debut as memory chip euphoria cools; Micron, Samsung, SK Hynix just dragged memory stocks into a bear market",
-    "capalloc": "SK Hynix plans $28.6 billion buyback after share price declines; SK Hynix raises $26.5 billion in US offering",
-    "owner_earnings": "SK Hynix Q2 Revenue Jumps 257% YoY to 79.3T Won as HBM4 Enters Mass Production, Operating Margin Hits 76%"
-   }
+   "notes": "전망치 이상(198%) — 취재 필요"
   },
   "ASML": {
    "as_of": "2026-11-19",
@@ -2126,5 +2078,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-19 08:29"
+ "scout_label": "2026-11-19 12:28"
 }

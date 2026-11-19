@@ -4,11 +4,11 @@
  "lang": "en",
  "src_hash": "7c9d5d5789fb",
  "model": "claude-sonnet-5-5",
- "at": "2026-11-11 08:41",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[title] 한글이 남았다 — 전부 옮길 것"
- ]
+ "at": "2026-11-19 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "PHASE 3 — The Picture 10 Years Out: 3 Scenarios (2036, $1 billion units) — Recalculated",
+  "md": "\n**Baseline**: Because the latest quarter is still 3Q26, the starting point is the same as in the October issue: **3Q26 annualized revenue of $58.3 billion** (formula: 14,575 × 4 — AI $30.2 billion · Connectivity $21.0 billion · Space $7.1 billion). The scenario figures were rebuilt from the same baseline, and **no cell changed by more than 20% versus the previous round** (source: [8-K Ex.99.1](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm) · October issue PHASE 3).\n\n| Item | Bull (P=25%) | Base (P=50%) | Bear (P=25%) |\n|---|---:|---:|---:|\n| Connectivity revenue | 190 | 140 | 75 |\n| Space revenue | 35 | 25 | 15 |\n| AI revenue | 480 | 160 | 40 |\n| **Total revenue** | **705** | **325** | **130** |\n| Operating income | 229 | 91 | 13 |\n| Net income | 167 | 60 | ~0 |\n| FCF | 130 | 45 | (5) |\n| Net debt | 250 | 180 | 200 |\n\n(Source: estimates built from the PHASE 1 actuals in this report — same as October issue PHASE 3. Probabilities in Section 0-3)\n\n**One-line rationale (changes only)**: Bull — no change ($15 billion per GW held for 2 quarters + 13GW at end of 2027 + Ship recovery). Base — no change (ARPU reverting to the $50s, AI stalling at 8GW). Bear — adds to the rationale **\"the top 2 customers both hold termination options in 2027-1H (reported)\"**. The numbers stay the same — no adjustments outside the rules. The \"financing rate in the 8% range reported\" used in the October issue remains an **assumption not yet confirmed**, since the lease rate is still undetermined (source: 1-4·1-5 · [Yahoo/Bloomberg 10/29](https://finance.yahoo.com/technology/ai/articles/anthropic-accounts-over-third-spacex-014451805.html)).\n\n**Probability adjustment rules (pre-committed, unchanged)** (source: `state.probability_adjustment_rules`)\n\n| Condition | Adjustment | Status |\n|---|---|---|\n| Annual revenue per GW above $10 billion in 3Q26/4Q26 | Bull +5, Bear −5 | Triggered (2026-10, exhausted) |\n| Successful Ship recovery by 2027-06 | Bull +5, Bear −5 | Pending — Flight 15 is the first attempt |\n| Equity raise within 2027 (including convertible bonds) | Bear +10, Bull −5 | Pending |\n| ARPU below $60 for 2 consecutive quarters | Bear +5, Base −5 | Pending (currently $69) |\n| Kuiper has not launched a US consumer plan by end of 2027 | Base +5, Bear −5 | Pending (11/1 check: not launched, LV-01 11/13) |\n| Top 2 AI customers confirm 2029 renewal | Bull +10, Bear −10 | Pending |\n| 3 consecutive misses on the same axis | Full recalculation | Not applicable (Axis E: 1) |\n\n---\n\n[The investment-judgment paragraph has been omitted from the public view — this page is an observation record, not a recommendation.]"
+ }
 }

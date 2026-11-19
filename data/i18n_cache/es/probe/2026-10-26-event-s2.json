@@ -4,12 +4,11 @@
  "lang": "es",
  "src_hash": "d029393f18ca",
  "model": "claude-sonnet-5-5",
- "at": "2026-11-11 08:41",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[2§md] 숫자: 원문에 없는 숫자 400 billion",
-  "[2§md] 숫자: 원문의 숫자가 빠짐 400억"
- ]
+ "at": "2026-11-19 12:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. La pregunta que plantea la estructura fuera de balance sobre la definición del hito — definición fijada",
+  "md": "\nEl «financiamiento adicional» de D-2027-1 solo contemplaba hasta ahora la deuda y las ampliaciones de capital a nombre de la empresa. Dado que se ha informado de una estructura fuera de balance mediante SPV, **primero hay que fijar la definición** para que la próxima ronda pueda emitir un veredicto (cláusula 2 del reglamento: si la definición es ambigua, se fija primero y se registra en el state). Definición fijada en esta ronda (fuente: `state.definitions.additional_financing`, 2026-10-26):\n\n- **Financiamiento adicional** = ① deuda que la empresa contrae o emite directamente + ② **importes captados por vehículos fuera de balance cuyas obligaciones de pago asume la empresa**, mediante pagos de arrendamiento, compromisos de compra, garantías, etc. Se cuenta según la sustancia económica, con independencia de si se consolida contablemente.\n- **Ampliación de capital** = emisión de valores dilutivos como acciones ordinarias, bonos convertibles y acciones preferentes convertibles. Incluye también las estructuras en que la participación en el SPV se canjea o convierte en acciones de la empresa.\n- **Fundamento**: el sentido del hito es «dependencia de fondos externos y dilución». Si la deuda es la que la empresa paga a cambio del uso de GPU, es lo mismo aunque figure a nombre de un SPV. Ya hay un precedente en los documentos públicos: los 3 arrendamientos de equipos de Valor se diseñaron como venta con arrendamiento posterior (sale-and-leaseback), pero tras la auditoría se reconocieron como «sale-and-leaseback fallido» y se registraron como **deuda consolidada de 12.897 millones de dólares** ([10-Q R65](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/R65.htm), 2026-10-22; la reproducción de Bloomberg recoge el mismo hecho como «reconocimiento de unos 13.000 millones de dólares de deuda»).\n- **Veredicto no aplicado**: si el SPV del que se informó encaja en esta definición solo se verá en el texto original del 8-K o del 10-K (fuente: `state.definitions.additional_financing.not_applied_yet`).\n\n**Propuesta de nueva regla ③ (no incorporada)**: «Si el vehículo fuera de balance de la captación de 40.000 millones de dólares en GPU se reconoce definitivamente como deuda consolidada en el 10-K (ejercicio 2026) o en un 10-Q posterior → escenario bajista +5 p. p.». Motivo: si el diseño fuera de balance se derrumba, cambian las premisas de deuda/EBITDA y calificación crediticia. No se refleja en las cifras de esta ocasión (fuente: `state.rule_proposals_not_applied`).\n\n---\n"
+ }
 }
