@@ -1,0 +1,28 @@
+{
+ "kind": "dissect",
+ "id": "642a1494ec3f",
+ "lang": "es",
+ "src_hash": "76be818e4fac",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-19 18:46",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "El chat fue excelente, pero ¿por qué no la automatización?",
+  "sections.1.h": "El modelo System One y el surgimiento de Jev",
+  "sections.2.h": "Las diferencias fundamentales con los LLM",
+  "sections.3.h": "Estimación de confiabilidad y las verdaderas condiciones para la automatización",
+  "sections.4.h": "Metodología de evaluación y contexto de los números de desempeño",
+  "sections.5.h": "Casos de uso reales y demostraciones",
+  "sections.6.h": "Acceso anticipado y dirección futura",
+  "sections.0.ko": "El autor desarrolló el seguimiento de instrucciones y las capacidades de conversación que formaron la base de ChatGPT en OpenAI, pero durante 4 años ha cuestionado por qué esta tecnología no ha derivado en automatización real. En ese momento creía que los modelos de chat llevarían a la AGI, pero a diferencia del hype de la realidad, se dio cuenta de que faltaba algo fundamental. Esta pregunta fue el impulso para fundar TypeSafe AI.",
+  "sections.1.ko": "Tras 2 años de desarrollo privado y un avance tecnológico, TypeSafe AI presentó Jev, su primer modelo System One. Este modelo consta de una nueva arquitectura, un muestreador paralelo y un método de entrenamiento llamado RLCD (Reinforcement Learning for Calibrated Decisions), diseñado desde el inicio con enfoque en la automatización. Jev demuestra una inteligencia comparable a los grandes modelos de lenguaje existentes (LLM) en tareas System One, mientras es de 100 a 200 veces más rápido y eficiente, sin alucinaciones y garantiza seguridad de tipos.",
+  "sections.2.ko": "Los LLM existentes generan cadenas de texto, por lo que el software debe analizarlas y validarlas, y siempre conlleva riesgo de alucinación. En cambio, Jev produce valores estructurados de tipos predefinidos, por lo que los errores de tipo son matemáticamente imposibles, y proporciona una puntuación de probabilidad y confiabilidad con cada respuesta. Los LLM generan tokens secuencialmente uno a uno, pero Jev genera toda la salida en una sola consulta en paralelo, reduciendo el tiempo de respuesta de 3 a 329 segundos a 70 a 500 milisegundos, habilitando aplicaciones en tiempo real.",
+  "sections.3.ko": "Los LLM existentes típicamente tienen exceso de confianza o carecen de consistencia, de modo que pueden manejar una tarea con un 95% de tasa de éxito pero no comunican claramente cuándo fallan en el 5% restante. Esto es fatal para la automatización. Jev comunica explícitamente la confiabilidad e incertidumbre con cada salida, y está calibrado para que una mayor confiabilidad se corresponda consistentemente con una mayor precisión. Esto refleja la filosofía de que las alucinaciones y la seguridad de tipos están inextricablemente vinculadas, y que las garantías de latencia o los sistemas enterrados profundamente en cadenas de dependencias no son opcionales sino esenciales.",
+  "sections.4.ko": "TypeSafe desarrolló un nuevo marco de evaluación que va más allá de las metodologías existentes de evaluación de LLM, midiendo «cómo funciona la IA dentro del código». Dentro de flujos de trabajo designados, todos los modelos compiten en el mismo entorno, utilizando la probabilidad promedio de los modelos externos más grandes e inteligentes como punto de referencia. En las 4 evaluaciones de flujo de trabajo publicadas, Jev domina la frontera de Pareto con una diferencia de desempeño de casi dos dígitos, siendo 193,6 veces más rápido y 444,6 veces más económico según afirma el sitio web. Sin embargo, estos flujos de trabajo fueron escritos internamente por el equipo del modelo, por lo que existe potencial de sesgo.",
+  "sections.5.ko": "Los autores demuestran la practicidad de Jev a través de varios demostradores, incluyendo un bot de juego en tiempo real y un desafío de navegación por Wikipedia. El bot de juego puede procesar 10 consultas por segundo y cuesta aproximadamente 7 dólares por hora, significativamente menos de lo que el equipo de desarrollo esperaba. En el desafío de Wikipedia, Jev demostró su fortaleza al tomar decisiones entre cientos o miles de opciones sin alucinaciones. Estos casos ilustran posibilidades en entornos de automatización de tareas reales donde se requieren simultáneamente velocidad y confiabilidad.",
+  "sections.6.ko": "TypeSafe lanza hoy un programa de acceso anticipado para Jev, invitando gradualmente a los desarrolladores en la lista de espera. La empresa busca aprender a través de la retroalimentación de los desarrolladores en qué decisiones Jev es efectivo para automatizar y dónde es insuficiente. A largo plazo, TypeSafe fue fundada sobre la creencia de que la IA debe tener interfaces en las que el software pueda confiar, y espera que nuevos casos de uso de automatización se propaguen a través de la comunidad y la economía.",
+  "caveat": "Los números de desempeño (193,6 veces más rápido y 444,6 veces más económico) se obtuvieron en ese entorno de flujo de trabajo específico, y dado que los autores mismos los describen como «en el extremo superior de las ganancias del mundo real», se debe tener cuidado con la generalización. Además, considerando que el autor es fundador de esta empresa, puede haber sesgo en la selección de los criterios de evaluación.",
+  "title": "Introducción a los modelos System One y Jev"
+ }
+}

@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "30a1ac5d9b46",
  "lang": "en",
- "src_hash": "307ce890fa34",
+ "src_hash": "7edd5c5c3b34",
  "model": "claude-haiku-4-5",
- "at": "2026-11-19 12:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Amazon (AMZN +3.82%) expects Q4 revenue of $240-247 billion (12-16% year-over-year increase) and operating profit of $28.5-33.5 billion (14-34% increase), with profit growth outpacing revenue growth.",
-  "summary_ko.1": "Operating margin reached a record high of 13.9% last quarter with advertising revenue serving as the engine, and Alexa for Shopping users exceeded 400 million with interactions increasing 570%."
- }
+ "at": "2026-11-19 18:46",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[2§summary_ko.0] 숫자: 원문에 없는 숫자 247 billion, 28.5",
+  "[2§summary_ko.0] 숫자: 원문의 숫자가 빠짐 247억, 285"
+ ]
 }

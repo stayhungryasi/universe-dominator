@@ -1,0 +1,31 @@
+{
+ "kind": "dissect",
+ "id": "4e7ba9f5f04b",
+ "lang": "en",
+ "src_hash": "72d02b1f0c9b",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-19 18:46",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Project Overview: New Species Identification Based on Voice Detection",
+  "sections.1.h": "Technical Architecture: BirdNET-Go and Dynamic Page Updates",
+  "sections.2.h": "Hardware and Usage",
+  "sections.3.h": "Curation of Over 800 Public Reference Illustrations",
+  "sections.4.h": "Geographic Scope and Expansion Plans",
+  "sections.5.h": "Sources of Inspiration and Related Projects",
+  "sections.6.h": "Installation and Execution",
+  "sections.7.h": "Licensing and Data Sources",
+  "sections.8.h": "Contributions and Commercialization Potential",
+  "sections.0.ko": "A project using Raspberry Pi and e-ink panels to detect bird calls through a sound detection framework, identifying birds heard in real-time in a garden and representing them with 1800s natural history illustrations. It adopts on-device AI processing to eliminate cloud dependency and is currently operating at a kitchen window in Bergen, Norway. It is still in early development with several features planned to be added.",
+  "sections.1.ko": "The system consists of the BirdNET-Go module that takes microphone input and performs species classification, and main software that polls this API, matches each species to corresponding illustrations, and updates the e-ink panel only when changes occur. It also operates in web kiosk mode, allowing the same screen to be viewed on HDMI displays or networked devices, and provides an admin page to control display settings and automatic updates. If you are already running BirdNET-Go, you can specify that instance for reuse or fetch it from elsewhere on the network.",
+  "sections.2.ko": "It consists of a Raspberry Pi 5, 13.3-inch Inky Impression (Spectra 6) e-ink panel, microphone, and A4 frame, with detailed parts lists and alternative options provided in separate documentation. It can operate web-only without the e-ink panel, but panel installation is recommended for the intended experience.",
+  "sections.3.ko": "The core of the project is the curation of over 800 public domain natural history illustrations covering over 400 bird species. All illustrations were manually extracted from historical engravings with no AI-generated images, though some were processed and refined with AI. Each species illustration has its background removed and then systematically arranged over a textured paper background, with sizes adjusted by body mass so that larger birds are positioned toward the center.",
+  "sections.4.ko": "The illustrations currently collected focus on Northern Europe, Britain, and Central Europe, with Scandinavian and German region bird species best covered, while other regions remain insufficient. Acquisition of illustrations covering a broader European and North American range is underway.",
+  "sections.5.ko": "Aesthetic inspiration was drawn from Ax Torefeldt's World Wildlife Fund poster, the concept of a live frame from the AvianVisitors project seen on Instagram, and detection technology from BirdNET-Go, combined with the intent to create a poster representing birds in an actual garden. Several prior projects with similar functionality are listed as references.",
+  "sections.6.ko": "Various installation methods are provided: development environment setup, Raspberry Pi automated installation script, Docker container deployment, and running the full stack in a local Linux environment. After installation, the kiosk interface runs on default port 8080, the admin page on 8080/admin, and all settings are saved in the '/data' directory.",
+  "sections.7.ko": "The detection model uses BirdNET developed by the Cornell Lab of Ornithology and Chemnitz University of Technology, following a non-commercial license (CC BY-NC-SA 4.0). Bird illustrations have independent licenses by style folder, with the classic style under CC BY-SA 4.0. Bird body mass data are provided by the AVONET database, and taxonomic synonyms from the Open Fauna taxonomy map.",
+  "sections.8.ko": "Contributions such as bug fixes, documentation improvements, and illustration additions are welcome, and a method of contacting the developer is provided for users who prefer to purchase a finished product rather than build one themselves. The project demonstrates open-source licensing while recognizing commercial demand.",
+  "caveat": "This article is a GitHub repository README from the developer, describing technical progress status and user experience, but does not include practical verification such as field stability, detection accuracy, or user evaluations."
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "kind": "dissect",
+ "id": "642a1494ec3f",
+ "lang": "en",
+ "src_hash": "b95b8db222fd",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-19 18:46",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Chat excelled, but why no automation?",
+  "sections.1.h": "The System One model and Jev's arrival",
+  "sections.2.h": "Fundamental differences from LLMs",
+  "sections.3.h": "Confidence estimation and the true conditions for automation",
+  "sections.4.h": "Evaluation methodology and performance figures in context",
+  "sections.5.h": "Real-world use cases and demos",
+  "sections.6.h": "Early access and future direction",
+  "sections.0.ko": "The author developed instruction-following and conversational capabilities at OpenAI that became the foundation of ChatGPT, but spent 4 years questioning why this technology never led to real automation. At the time, it was believed that chat models would lead to AGI, but contrary to real-world hype, the author realized something fundamental was being missed. This question became the driving force behind founding TypeSafe AI.",
+  "sections.1.ko": "After 2 years of private development and technical breakthroughs, TypeSafe AI unveiled Jev, its first System One model. This model consists of a new architecture, parallel sampler, and RLCD (Reinforcement Learning for Calibrated Decisions) training methodology, designed from the ground up for automation focus. Jev demonstrates intelligence comparable to existing large language models (LLMs) on System One tasks while being 100 to 200 times faster and more efficient, free of hallucinations, and guaranteeing type safety.",
+  "sections.2.ko": "Existing LLMs generate text strings, requiring software to parse and validate them, necessarily carrying hallucination risk. Jev, by contrast, outputs structured values of predefined types, making type errors mathematically impossible, and provides probability and confidence scores with each response. While LLMs generate tokens sequentially one by one, Jev generates all outputs in parallel from a single query, reducing response time from 3–329 seconds to 70–500 milliseconds, enabling real-time applications.",
+  "sections.3.ko": "Existing LLMs typically either over-confident or lack consistency, failing to clearly indicate when a task can be handled with 95% success rate but fails in the remaining 5%. This is fatal for automation. Jev explicitly communicates confidence and uncertainty with every output, calibrated so that higher confidence consistently corresponds to higher accuracy. This reflects the philosophy that hallucination and type safety are inseparable, and particularly in systems with latency guarantees or dependencies buried deep in chains, it is not optional but essential.",
+  "sections.4.ko": "TypeSafe developed a new evaluation framework measuring \"how AI operates within code\" beyond existing LLM evaluation methods. All models compete in identical environments within designated workflows, using the average probability of the largest and smartest external models as the benchmark. In 4 published workflow evaluations, Jev dominates the Pareto frontier with nearly double-digit performance differentials, and the homepage claims of 193.6 times faster and 444.6 times cheaper derive from this data. However, as these workflows were written internally by the model team, potential bias exists.",
+  "sections.5.ko": "The authors demonstrate Jev's practicality through several demos including real-time game bots and Wikipedia navigation challenges. The game bot can process 10 queries per second with a cost of approximately $7 per hour, far cheaper than the development team expected. In the Wikipedia challenge, Jev showed strength in making decisions from hundreds to thousands of choices without hallucinations. These cases suggest potential in real-world task automation environments where both speed and reliability are simultaneously required.",
+  "sections.6.ko": "TypeSafe is launching Jev's early access program today, gradually inviting developers from the waitlist. The company seeks to learn through developer feedback what decisions Jev is effective at automating and where it falls short. Long-term, TypeSafe was founded on the belief that AI must have an interface that software can trust, and the company hopes new automation use cases will spread across the developer community and economy.",
+  "caveat": "Performance figures (193.6 times faster and 444.6 times cheaper claims) were derived from those specific workflow environments; since the authors themselves describe this as 'the high end of real-world gains,' caution should be exercised in generalizing these results. Additionally, given that the author is a founder of this company, potential bias may exist in the choice of evaluation criteria."
+ }
+}

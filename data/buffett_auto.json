@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-19 12:26",
- "generated_at": "2026-11-19T12:26:59.447176+09:00",
+ "generated_label": "2026-11-19 18:27",
+ "generated_at": "2026-11-19T18:27:56.937781+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-19",
@@ -74,8 +74,8 @@
      "end": "2025-10-26"
     }
    ],
-   "g_forward_status": "전망치 이상(86%) — 취재 필요",
-   "notes": "전망치 이상(86%) — 취재 필요"
+   "g_forward_status": "전망치 이상(87%) — 취재 필요",
+   "notes": "전망치 이상(87%) — 취재 필요"
   },
   "AAPL": {
    "as_of": "2026-11-19",
@@ -371,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.56
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -577,11 +577,7 @@
     },
     "fcf_ttm": 28649000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "C",
-     "reason": "AI 지출 규율 부재로 자유현금흐름 감소, 슈퍼인텔리전스 캐펙스 폭증으로 순이익 창출 능력 훼손"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": -0.0677,
@@ -604,7 +600,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -622,32 +618,7 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 0,
-    "buyback": 1,
-    "no_dilution": 0,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H1"
-   },
-   "notes": "40억 네트워크 효과 보유하나 $125-145B 2026 AI 지출 계획으로 캐펙스 공포 심화, $95B 증자 필요로 희석 위험 상존",
-   "_evidence": {
-    "franchise": "40억 네트워크 효과, 광고 수익 31% 성장(U.S. AI 순위 모델 가속화)",
-    "risk5": "AI 지출 규율 부재, 경영진 AI 확장 의도 명확하나 현금흐름 악화 신호 다수",
-    "capalloc": "Meta stock sinks after Q1 earnings as company raises 2026 AI spending forecast to $125 billion-$145 billion, Meta plans $95bn stock offering to bankroll AI expansion, dwindling free cash flow",
-    "owner_earnings": "Meta's stock drops on disappointing guidance, dwindling free cash flow"
-   }
+   ]
   },
   "TSLA": {
    "as_of": "2026-11-19",
@@ -1774,7 +1745,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 63.82
+    "value": 62.2
    },
    "eps_status": null,
    "roe_tangible": 0.2731,
@@ -1884,7 +1855,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 751.77
+    "value": 746.24
    },
    "eps_status": null,
    "roe_tangible": 1.0681,
@@ -1919,7 +1890,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 179.03
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -1933,7 +1904,12 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 사이클 꼭짓점 불확실성으로 인한 현금 창출 지속성 의문"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1945,16 +1921,38 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중",
+   "confidence": "하",
    "g_forward_status": "전망치 이상(45%) — 취재 필요",
-   "notes": "전망치 이상(45%) — 취재 필요"
+   "notes": "장비 과점 구조(LRCX·AMAT 동등)이나 AI 수요 기반 성장의 견고함 미확인; 주가 130% 상승 후 밸류에이션 재검토 필요",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "장비 과점—LRCX·AMAT와 동일 구조; 대체불가 지위 확립",
+    "risk5": "Tokyo Electron Forecasts 50.6% Jump in Full-Year Net Profit—단일 사이클 성장 의존; Promising Earnings May Rest On Soft Foundations—근간의 취약성 경고",
+    "capalloc": "¥150 Billion Buyback; 5-for-1 Stock Split 선언—적극적 자본환원",
+    "owner_earnings": "AI Investment Tailwinds Drive Record Quarterly Revenue ¥732.3B—절정 매출이 지속성 보증하지 않음"
+   }
   },
   "6857.T": {
    "as_of": "2026-11-19",
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 823.82
+    "value": 787.92
    },
    "eps_status": null,
    "roe_tangible": 0.5398,
@@ -2078,5 +2076,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-19 12:28"
+ "scout_label": "2026-11-19 18:29"
 }
