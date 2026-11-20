@@ -4,11 +4,11 @@
  "lang": "en",
  "src_hash": "b8727475ad06",
  "model": "claude-sonnet-5-5",
- "at": "2026-11-12 08:43",
+ "at": "2026-11-20 09:58",
  "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[md] 숫자: 원문에 없는 숫자 1,995B, 1,453B, 1,461B"
- ]
+ "status": "ok",
+ "fields": {
+  "title": "4. Probability, Milestones, Value — Impact",
+  "md": "\n- **Probability**: Bull 25 / Base 50 / Bear 25 — **no change**. No rule triggered (R1 exhausted, R2–R6 pending). R3 (\"capital raise within 2027\") stays pending because the 8-K contains no equity-raise element. No adjustments outside the rules (source: `state.probability_adjustment_rules`).\n- **Milestones**: no change to the 29 verdicts (24 in progress · 5 undetermined). Recorded in the progress_parts of D-2027-1: the committed value for 'additional financing size' of **$40 billion (to start in 2027, not yet closed)** and 'equity raise' of **0 cases (per the 8-K)** — the verdict is in 2027 (source: Sections 1 and 3).\n- **Fair value**: probability-weighted $32 · band $32–$121 · discount rate 12.9% — **not recalculated** (event mode). Only the reference price was updated to $146.90, so only price-dependent arithmetic changes: market cap $1,995 (billions of dollars) (formula: 146.90 × 13.581 billion shares), versus the band center of $66 at −55% (formula: 66 ÷ 146.90 − 1), and the implied value the market assigns to the AI segment is $1,453 (billions of dollars) (formula: 1,995 − 350 − 141 − 51; previously $1,461 in the same unit) (source: `state.valuation` · [10-Q share count](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm), as of 2026-10-15).\n- **Risk-free rate memo**: the US 10-year yield in `data/latest.json` is 5.00% (2026-10-23, FRED) — between the previous run's memo of 4.96% (10/22) and the monthly run's input of 5.13% (10/21). Because this is event mode, the discount rate is unchanged and the figure is recorded only as an input for the next monthly run ([FRED DGS10](https://fred.stlouisfed.org/series/DGS10)).\n- **Milestone candidates (management statements) updated**: CEO 10/25 \"closing\" → the original text is a commitment (closing planned before year-end) · \"mostly callable\" → the 8-K mentions no call or early termination (remains unconfirmed) · \"GPUs arrive in Q1–Q2 2027\" → consistent with the original's 'start in H1 2027'. CFO 10/26 press release \"SI infrastructure investment payback under 1 year\" → recorded only as a statement (conflicts with the measured 3.6 and 4.7 years in the 3Q26 filing) (source: `state.musk_statements_as_milestone_candidates_only`).\n\n---\n"
+ }
 }

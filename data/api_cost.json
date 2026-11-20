@@ -1028,10 +1028,122 @@
     "usd": 2.850637,
     "ws": 0
    }
+  },
+  "2026-11-20": {
+   "companion_essays": {
+    "calls": 3,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 26833,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 2,
+      "usd": 0.037523
+     },
+     "claude-sonnet-5-5": {
+      "calls": 1,
+      "usd": 0.02946
+     }
+    },
+    "out": 5084,
+    "unpriced": 0,
+    "usd": 0.066983,
+    "ws": 0
+   },
+   "fetch_calendar": {
+    "calls": 1,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 8201,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 1,
+      "usd": 0.009381
+     }
+    },
+    "out": 236,
+    "unpriced": 0,
+    "usd": 0.009381,
+    "ws": 0
+   },
+   "fetch_signals": {
+    "calls": 2,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 1957,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 2,
+      "usd": 0.008947
+     }
+    },
+    "out": 1398,
+    "unpriced": 0,
+    "usd": 0.008947,
+    "ws": 0
+   },
+   "fetch_translations": {
+    "calls": 1,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 1904,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 1,
+      "usd": 0.010729
+     }
+    },
+    "out": 1765,
+    "unpriced": 0,
+    "usd": 0.010729,
+    "ws": 0
+   },
+   "signal_column": {
+    "calls": 1,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 2334,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 1,
+      "usd": 0.014134
+     }
+    },
+    "out": 2360,
+    "unpriced": 0,
+    "usd": 0.014134,
+    "ws": 0
+   },
+   "translate_content": {
+    "calls": 72,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 215792,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 29,
+      "usd": 0.26636
+     },
+     "claude-sonnet-5-5": {
+      "calls": 43,
+      "usd": 1.312934
+     }
+    },
+    "out": 141407,
+    "unpriced": 0,
+    "usd": 1.579294,
+    "ws": 0
+   }
   }
  },
  "report": {
-  "last_dm": "2026-11-19"
+  "last_dm": "2026-11-20"
  },
  "schema": 1
 }

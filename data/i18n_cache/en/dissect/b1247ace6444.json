@@ -1,0 +1,27 @@
+{
+ "kind": "dissect",
+ "id": "b1247ace6444",
+ "lang": "en",
+ "src_hash": "9bc6e623b198",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-20 09:58",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "From reliable notifications to ad saturation",
+  "sections.1.h": "Corporate API blockade triggers response",
+  "sections.2.h": "Open-source alternative's architecture and pricing",
+  "sections.3.h": "HomeKit integration and voice control restored",
+  "sections.4.h": "Reviving father's idea in software",
+  "sections.5.h": "Remote monitoring implementation via Tailscale",
+  "sections.6.h": "True ownership reclaimed in fully local environment",
+  "sections.0.ko": "The author initially believed garage door open-close notifications were meaningful and useful. Alerts about the door opening while away served as security signals detecting abnormal situations. However, continued use of Chamberlain's myQ app led to excessive ad insertion, ultimately resulting in more serious erosion of trust.",
+  "sections.1.ko": "In late 2023, Chamberlain completely blocked third-party access to the myQ platform's API. The author deemed this an unreasonable decision and, as a countermeasure, purchased two ratgdo32 devices to escape the cloud-based system. This choice embodied not merely personal convenience but a refusal of corporate unilateral control.",
+  "sections.2.ko": "ratgdo is a WiFi control board made by ratcloud llc priced around $62, running open-source firmware. It connects to existing terminals on garage door openers and handles LiftMaster's Security+ 2.0 protocol within the local network range. This design operates only within the personal home network without passing through cloud servers.",
+  "sections.3.ko": "After installation, the author assigned fixed IP addresses (192.168.0.192, 192.168.0.245) to each board via the router, and Apple HomeKit integration worked immediately. This enabled garage door control via Siri voice commands and automation within the personal network range. This recovered functionality previously provided by the myQ app while securing greater autonomy.",
+  "sections.4.ko": "The author references a childhood example of his father creating a mercury switch to detect garage door opening and turn on hallway lights. When ratgdo32 provided a JSON status endpoint, he leveraged this to reimagine that old idea in modern form through Slack integration. He also configured recording of information the myQ never provided: 'who opened the door.'",
+  "sections.5.ko": "Both boards were configured to be exposed on the Tailscale network, enabling the author's monitoring software to load the /healthcheck endpoint. Custom route configuration was necessary; after specifying the Tailscale path and approving it via command line, device status can be verified from external networks. This approach enables remote monitoring without entrusting data to cloud services.",
+  "sections.6.ko": "Ultimately, all systems were configured to operate locally without cloud dependency. Through a combination of open-source hardware and firmware plus personal network infrastructure, the author regained complete control over his devices. The process also yielded positive feedback from the open-source project maintainer, demonstrating the possibility of user-driven technology ownership.",
+  "caveat": "As this article is a personal technical success story, it is risky to assume most consumers could find and install alternatives like ratgdo, and the piece does not include the company's position on Chamberlain's API blockade decision or its security rationale."
+ }
+}

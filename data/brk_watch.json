@@ -46,14 +46,14 @@
    "equity_usd_m": "ok:StockholdersEquity",
    "cash_usd_m": "ok:CashAndCashEquivalentsAtCarryingValue"
   },
-  "measured_at": "2026-11-19T18:35+09:00"
+  "measured_at": "2026-11-20T09:42+09:00"
  },
  "due": [],
  "due_fired": [
   "T1@2026-11-16",
   "T6@2026-11-03"
  ],
- "probe_age_days": 1,
+ "probe_age_days": 2,
  "engine": {
   "last": {
    "id": 44240826355,
@@ -62,22 +62,22 @@
    "event": "repository_dispatch",
    "created_at": "2026-11-18T04:57:14Z"
   },
-  "checked_at": "2026-11-19T18:35+09:00"
+  "checked_at": "2026-11-20T09:42+09:00"
  },
  "schema": 1,
- "generated_at": "2026-11-19T18:35+09:00",
+ "generated_at": "2026-11-20T09:42+09:00",
  "cik": "0001067983",
  "sources": {
   "sec_submissions": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-19T18:35+09:00",
-   "n": 1016
+   "at": "2026-11-20T09:42+09:00",
+   "n": 1018
   },
   "sec_facts": {
    "outcome": "ok",
    "streak": 0,
-   "at": "2026-11-19T18:35+09:00",
+   "at": "2026-11-20T09:42+09:00",
    "zero_keys": [
     "cash_usd_m"
    ]
@@ -918,6 +918,8 @@
   "0001193125-26-465047",
   "0001193125-26-465872",
   "0001193125-26-465884",
+  "0001193125-26-468549",
+  "0001193125-26-468887",
   "0001209191-17-022770",
   "0001209191-17-026722",
   "0001209191-17-028040",
@@ -1102,6 +1104,28 @@
   "9999999997-17-000759"
  ],
  "events": [
+  {
+   "accn": "0001193125-26-468887",
+   "date": "2026-11-19",
+   "form": "4",
+   "items": "",
+   "grade": "record",
+   "kind": "insider",
+   "title": "내부자·대량 보유자 거래 보고 (4)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526468887/xslF345X06/ownership.xml",
+   "baseline": false
+  },
+  {
+   "accn": "0001193125-26-468549",
+   "date": "2026-11-19",
+   "form": "8-K",
+   "items": "8.01,9.01",
+   "grade": "major",
+   "kind": "other_event",
+   "title": "수시공시 — 기타 중요 사건 (8-K)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526468549/d197844d8k.htm",
+   "baseline": false
+  },
   {
    "accn": "0001193125-26-465884",
    "date": "2026-11-17",
@@ -1959,32 +1983,15 @@
    "title": "주주총회 위임장(주총 안건) (DEFA14A)",
    "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526106273/d97126ddefa14a.htm",
    "baseline": true
-  },
-  {
-   "accn": "0001193125-26-106263",
-   "date": "2026-03-13",
-   "form": "DEFA14A",
-   "items": "",
-   "grade": "major",
-   "kind": "proxy",
-   "title": "주주총회 위임장(주총 안건) (DEFA14A)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526106263/d942071ddefa14a.htm",
-   "baseline": true
-  },
-  {
-   "accn": "0001193125-26-106253",
-   "date": "2026-03-13",
-   "form": "DEF 14A",
-   "items": "",
-   "grade": "major",
-   "kind": "proxy",
-   "title": "주주총회 위임장(주총 안건) (DEF 14A)",
-   "url": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526106253/d882687ddef14a.htm",
-   "baseline": true
   }
  ],
  "alerts": {},
  "dm_log": [
+  {
+   "at": "2026-11-20T09:42+09:00",
+   "ok": true,
+   "head": "🏛 버크셔 측정층"
+  },
   {
    "at": "2026-11-18T13:41+09:00",
    "ok": true,
@@ -2029,13 +2036,13 @@
  "dispatch_queue": [
   {
    "mode": "event",
-   "reason": "5% 이상 대량 보유 보고 (SCHEDULE 13D/A) · 원문: https://www.sec.gov/Archives/edgar/data/1067983/000119312526465884/xslSCHEDULE_13D_X02/primary_doc.xml",
+   "reason": "수시공시 — 기타 중요 사건 (8-K) · 원문: https://www.sec.gov/Archives/edgar/data/1067983/000119312526468549/d197844d8k.htm",
    "keys": [
-    "0001193125-26-465884"
+    "0001193125-26-468549"
    ],
    "state": "queued",
-   "run_id": "44229136933",
-   "queued_at": "2026-11-18T13:41+09:00"
+   "run_id": "44636094879",
+   "queued_at": "2026-11-20T09:42+09:00"
   }
  ]
 }
