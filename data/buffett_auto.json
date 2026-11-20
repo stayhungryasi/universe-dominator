@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-20 12:27",
- "generated_at": "2026-11-20T12:27:48.591504+09:00",
+ "generated_label": "2026-11-20 18:26",
+ "generated_at": "2026-11-20T18:26:50.135131+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-20",
@@ -577,7 +577,11 @@
     },
     "fcf_ttm": 28649000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 광고 수익 31% 성장 대비 초인텔리전스 캐펙스 급증으로 현금 흐름 불안정"
+    }
    },
    "conversion": {
     "value": -0.0677,
@@ -600,7 +604,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -618,7 +622,32 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "no_dilution": 0,
+    "debt_discipline": 0,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "notes": "40억 네트워크 효과로 프랜차이즈 가치 보존하나, 규율 없는 슈퍼인텔리전스 지출과 $97.5B 증자로 주주 권익 심각 훼손",
+   "_evidence": {
+    "franchise": "40억 네트워크 효과, 광고 비즈니스 주도력",
+    "risk5": "S&P 현금 흐름·캐펙스 우려 하향 조정, 증자 발표 후 주가 18% 하락",
+    "capalloc": "Meta eyes record $97.5 billion equity raise to fund AI expansion; Meta's $25 Billion Stock Sale Ended Five Times Oversubscribed",
+    "owner_earnings": "Meta Platforms (META) Surges as AI Ranking Models Accelerate U.S. Ad Revenue Growth to 31%"
+   }
   },
   "TSLA": {
    "as_of": "2026-11-20",
@@ -758,11 +787,7 @@
     },
     "fcf_ttm": 58963000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "사이클 정점에서 강한 실적이나 지속성 불명확"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.7519,
@@ -782,7 +807,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -802,30 +827,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "메모리 순수 사이클 사업으로 필수 증설 자본을 반복 필요; 현재 저밸류에이션(5~10배 선물 PER)은 사이클 정점 반영",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "○"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "Data center revenue jumps 11-fold; AI 수요 근본적 필요성",
-    "risk5": "CEO says 2027 and 2028 will be even tighter; Micron cratered 20% this month—사이클 변동성 고위험",
-    "capalloc": "$35 Billion Buyback; Micron beats on earnings and issues strong guidance",
-    "owner_earnings": "2026 첫 분기부터 증설 압박 신호; 메모리 순수 사이클의 자본 회귀 패턴"
-   }
+   "notes": "전망치 이상(66%) — 취재 필요"
   },
   "BRK-B": {
    "as_of": "2026-11-20",
@@ -1041,11 +1043,11 @@
     "adj_ni": 22863630000.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.1058,
+   "g_forward": 0.1083,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1063,28 +1065,7 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "notes": "예측 가능성 최상급 통행료형이나 마진율 압박 요인 상존(연료비, 가격 경쟁)",
-   "_evidence": {
-    "franchise": "Walmart hikes outlook as CEO tells CNBC retailer aims to keep prices low; 광범위한 고객 기반과 market share gains 보도",
-    "risk5": "Walmart Tops Q3 Forecasts; Walmart beats Q3 earnings expectations, raises full-year outlook again",
-    "capalloc": "Walmart raises outlook despite slower-than-expected Q3 sales—가이던스 상향 근거의 현금 창출력 존재 암시"
-   }
+   ]
   },
   "AMD": {
    "as_of": "2026-11-20",
@@ -1526,8 +1507,8 @@
      "end": "2025-10-31"
     }
    ],
-   "g_forward_status": "전망치 이상(-27%) — 취재 필요",
-   "notes": "전망치 이상(-27%) — 취재 필요"
+   "g_forward_status": "전망치 이상(-29%) — 취재 필요",
+   "notes": "전망치 이상(-29%) — 취재 필요"
   },
   "ARM": {
    "as_of": "2026-11-20",
@@ -1938,7 +1919,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 183.11
+    "value": 178.17
    },
    "eps_status": null,
    "roe_tangible": 0.3295,
@@ -1952,7 +1933,12 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 사이클 호황에 기반한 급등으로 실적 개선의 지속성 불확실"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1964,9 +1950,32 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "중",
+   "confidence": "하",
    "g_forward_status": "전망치 이상(45%) — 취재 필요",
-   "notes": "전망치 이상(45%) — 취재 필요"
+   "notes": "시클리컬 반도체 장비 과점기업으로 현재 AI 수요 사이클의 정점 근처에 위치한 것으로 판단됨",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "LRCX·AMAT와 동일한 장비 과점 구조; 기술 대체 불가능성",
+    "risk5": "AI 투자 테일윈드 기반 50.6% 순이익 증가 예측이지만 반도체 사이클의 하강 리스크 존재; 130% 1년 수익률 후 밸류에이션 과도 평가 우려",
+    "capalloc": "¥150억 자사주 매입 계획 및 5:1 주식분할 단행; 현금 창출 능력 입증",
+    "owner_earnings": "FY2027 Q1 사상 최고 분기 매출 ¥732.3억 달성하나 AI 사이클 의존도 높음"
+   }
   },
   "6857.T": {
    "as_of": "2026-11-20",
@@ -2097,5 +2106,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-20 12:28"
+ "scout_label": "2026-11-20 18:27"
 }

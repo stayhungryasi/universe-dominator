@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s2",
+ "lang": "ja",
+ "src_hash": "53ac645882a6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "1. Google — Project Suncatcher 初の専用大型打ち上げをNew Glennで",
+  "md": "\n### 1-1. 一次情報源が語ること\n\n| 項目 | 内容 | 出典 |\n|---|---|---|\n| タイトル・著者 | 'We're partnering with Blue Origin on our first heavy-lift Project Suncatcher launch' · Travis Beals(Senior Director, Paradigms of Intelligence) · 2026-11-19 | [Google ブログ](https://blog.google/innovation-and-ai/models-and-research/google-research/blue-origin-project-suncatcher-partnership/) |\n| ロケット・時期 | New Glennが衛星を配置する · 'Targeted for Q1 2029' | 同上 |\n| 軌道・搭載 | 太陽同期軌道 · 衛星1機あたり 'roughly the capacity of a data center rack' | 同上 |\n| 記載のないもの | 衛星数 · 金額 · 条件 · SpaceXへの言及 | 同上 |\n\n### 1-2. 報道が加えたもの(クロスチェック用)\n\n| 内容 | 出典 |\n|---|---|\n| 射場Cape Canaveral · 薄明薄暮の太陽同期軌道 · 'a batch' | ⑥ [SatNews](https://satnews.com/2026/11/19/google-selects-blue-origins-new-glenn-rocket-for-2029-ai-satellite-launch/), 2026-11-19 |\n| 最初の試作機(Planet製)は10月に軌道到達 · 2027年に衛星2機を接続する実験 · New Glennは5月の試験中に爆発し飛行停止、復帰は1月にずれ込んだ | ⑥ [TNW](https://thenextweb.com/news/google-blue-origin-new-glenn-project-suncatcher-2029), 2026-11-19 |\n| 最初の試作機はSpaceXのTransporter-18相乗りで軌道到達(Googleが10/1に確認) · 今回の発表は、SpaceXの既存契約の喪失や、以後のすべての打ち上げのBlue Originへの割り当てを意味しない | ⑥ [teslanorth](https://teslanorth.com/2026/11/19/google-blue-origin-suncatcher-launch/), 2026-11-19 |\n\n### 1-3. 判断層に関わる点\n\n- **C-2030-1(軌道データセンター売上 > $0)**: SpaceX自身の軌道データセンター売上だけを数えるマイルストーンである。競合の打ち上げ日程は入力ではない。記録はマイルストーンの背景メモとしてのみ残す (出典: `state.milestones[C-2030-1].event_note_2026_11_20`)。\n- **Googleとの関係**: GoogleはSpaceXのAIコンピュート顧客(報道 — 10%未満、2026-12-31以降90日前の通知で解約可能)であり、株主でもある。今回の発表はその契約に触れていない。変化は4Q26 10-Kの顧客集中の注記と、T1の 'SI売上 +$27.6億' の確認点でのみ見る (出典: `state.milestones[C-2029-1]` · `state.triggers_next_12m[T1]`)。\n- **打ち上げ市場**: 専用大型打ち上げ1件が競合に渡った。金額は公開されておらず、2029年の話であるため12か月トリガーの範囲外である。マイルストーン・ルールへの入力はない (出典: 1-1の表 · `state.probability_adjustment_rules`)。\n- **New Glennの日程**: Amazon LeoもNew Glennを24回予約している。復帰が2027-01にずれ込んだという報道はT4のメモに記録した(R5は2027年末の料金プラン発売の有無のみで判定) (出典: TNW, 2026-11-19 · `state.triggers_next_12m[T4]`)。\n- **監視官の担当(登録のみ)**: 監視官はこの事案をT1に紐づけた。同じ回の資金調達報道もT1に紐づけたが、これはT5の事案である (出典: `state.triggers_next_12m[T1].log_check`)。\n\n---\n"
+ }
+}

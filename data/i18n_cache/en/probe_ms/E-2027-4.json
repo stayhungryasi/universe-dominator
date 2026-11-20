@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "E-2027-4",
  "lang": "en",
- "src_hash": "98f2ebfe5426",
+ "src_hash": "97e0667e988d",
  "model": "claude-haiku-4-5",
- "at": "2026-11-11 18:40",
+ "at": "2026-11-20 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
   "text": "U.S. federal contract new orders above prior year",
-  "reason": "3Q26 NSSL 18 missions·ISS crew 3 missions·NASA Roman launch orders confirmed(8-K Ex.99.1), amounts and prior-year comparison data(USAspending) not yet compiled. 2026-11-04 reference value(not progress input): NPR 10/06 — 'SpaceX 2026 U.S. defense contracts exceed $8 billion'(government contract notices aggregated, no prior-year comparison) · DoD using Grok. As of same date, Musk is DoD advisory Project Meridian co-director(9/30) and 11/2 FACA lawsuit(SpaceX non-party) alleges 'contract steering inducement' — complaint does not allege steering occurred. 2026-11 reference: 10/23 bipartisan House and Senate delegation demands DoD expand Starshield contracts(request stage, not contracts) · DoD Inspector General 10/27 letter defines Ukraine restrictions as 'Air Force and Space Force jurisdiction contract matter'(Bloomberg summary) — contract term changes not observed. 2026-11-09 addition(statements and reports, not judgment input): CEO 11/6 X — 'willing to abandon contracts government does not want' · 'government contracts are highest product and lowest price' · government revenue 4Q under 10% → pledges under 5% one year ahead, after midterm elections(11/3) result Democratic majorities both chambers(reported, not confirmed aggregate). Contract terminations and order changes have no disclosure. Reference measured values: 3Q26 U.S. government revenue approximately $2,419M(customer A 16.6%, A-2032-1 reference) — different from milestone 'new orders'(USAspending). 2026-11-11-r2 background(not judgment input): DoD Office of Strategic Capital(OSC) conditional loan commitments to SpaceX competing launch providers — Stoke Space $150M(10/26, second launch pad) · Rocket Lab $150M(11/9, Neutron flight cadence). Government funding to diversify defense launch supply but at commitment stage and before both vehicle flights, so no SpaceX order changes yet(T13)",
-  "hit": "Political risk not materialized",
-  "miss": "Weakness probability rises if decline",
-  "method": "USAspending·DoD disclosure",
-  "parts.0.label": "U.S. federal contract new orders(year-over-year)",
-  "parts.0.reason": "Amounts and prior-year comparison data(USAspending) not yet compiled"
+  "reason": "Orders confirmed (3Q26 8-K Ex.99.1 — NSSL 18 times · ISS crew 3 times · NASA Roman), but amounts and year-over-year comparison (USAspending) not aggregated. 2026-11-20: NSSL Lane 2 maximum cap aggregate $985 million increase (DoD notice 11/16) is a cap, not an order — not entered. History is in progress_reason_log",
+  "hit": "Political risk unrealized",
+  "miss": "Decline increases weakness probability",
+  "method": "USAspending · DoD disclosure",
+  "parts.0.label": "U.S. federal contract new orders (year-over-year)",
+  "parts.0.reason": "Amount and year-over-year comparison data (USAspending) not aggregated"
  }
 }

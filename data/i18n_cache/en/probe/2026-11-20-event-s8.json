@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s8",
+ "lang": "en",
+ "src_hash": "6f19f6f68100",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "7. Picking Up Unpublished Runs",
+  "md": "\n| Run | Share of the copy | Re-verified this run |\n|---|---|---|\n| 11/08 (T3 expected date) | Flight 15 pending | No additional adoption — Flight 15 ended on 11/15 r3 |\n| 11/12 (API limit halt) | SINGULUS · Anthropic message | No additional adoption — no related 8-K on [EDGAR](https://data.sec.gov/submissions/CIK0001181412.json) (2026-11-20 KST) |\n| 11/18 (ABS · NSSL reports) | T5 · T13 records | Reopened the Bloomberg published version and the reprinted contract notice and adopted them (sections 3-1, 3-4). Background statements whose originals were not reopened are not used |\n| 11/19 (procurement · T7 deadline) | T5 · T7 ⓒ · ⓕ · Starshield | Reopened Semafor, the original letter, the Appropriations Committee list and CNBC and adopted them (sections 3-1 to 3-3). The copy's reference price is replaced by the 11/19 close |\n\n- **Why the two runs were blocked**: The gate record for both is 'new repository selftest failure (test_cockpit)'. The verifier cross-check matched 18 of 19 items plus 1 rounding, and 19 of 20 items plus 1 rounding, respectively. The tests could not be run directly in the authoring environment, so the cause was inferred from the code. The most likely cause is that the Mission Control data block exceeded its budget and some types of search index were dropped (section 8) (Source: commit messages of remote branches `probe/2026-11-18-event` · `probe/2026-11-19-event`).\n\n---\n"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s11",
+ "lang": "ja",
+ "src_hash": "7d8855a93cae",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "10. 次回までに自分で確認すべきデータ3点",
+  "md": "\n1. **T7 ⓕ 回答(11/30)**: SpaceX による保存の確認と3つの質問への回答が公開されたか、そして「誰が承認したか」に言及しているかを見る。WSJ 11/12 の本文と11月の制限解除の発表もあわせて確認する (出典: `state.open_questions_for_next_run`)。\n2. **貸し手側債券の価格決定と成立時の8-K**: トランシェ・クーポン・格付けに関する報道を確認し、リースの固定金利は8-K Item 1.01・2.03 で確認する (出典: `state.triggers_next_12m[T5]`)。\n3. **既存の確認ポイント**: Ariane 64 LE-04(11/23, T4) · DA 26-1160 再審期限(11/27, T8) · 月次 12/01 · T2 12/8 ロックアップ · T12 12/9 議決 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回確認した事実の要約 (出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| 基準株価 | $138.43(−3.53%) · 出来高 119,613,373株 | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-11-19 |\n| 時価総額 · AI内在価値 | $1,880十億 · $1,338十億 | 算式(4節) · `state.valuation` |\n| Google Suncatcher 打ち上げ | New Glenn · 2029-1Q · 太陽同期軌道 · 金額非公開 | [Google ブログ](https://blog.google/innovation-and-ai/models-and-research/google-research/blue-origin-project-suncatcher-partnership/), 2026-11-19 |\n| DealBook での発言 | 'That would be unreasonable and not right' | [Benzinga(Yahoo)](https://finance.yahoo.com/markets/stocks/articles/elon-musk-says-shouldn-t-163042794.html), 2026-11-19 |\n| 貸し手SPV債券(報道) | 7トランシェ · $355億 7.75%·8.3% · リスク部分 $30億未満 · Apollo 約 $200億 | [Semafor](https://www.semafor.com/article/11/18/2026/spacex-40-billion-chip-financing-to-stay-off-balance-sheet), 2026-11-18 |\n| 販売開始(報道) | $400億の一部 · 引受 Goldman·Apollo · Atlas SP 運用SPVのABS | [Bloomberg(Yahoo)](https://finance.yahoo.com/technology/ai/articles/spacex-debt-ai-chips-hit-145310043.html), 2026-11-17 |\n| T7 ⓕ 書簡 | 11/13 · 質問3つ · 期限 11/30 | [書簡原文](https://www.foreign.senate.gov/imo/media/doc/11132026%20Letter%20to%20Elon%20Musk%20and%20SpaceX%20on%20Starshield%20and%20Starlink.pdf) |\n| NSSL Lane 2 上限 | 合算 $9.85億 · 執行 0 · 2033-04 | [The Defense Watch](https://thedefensewatch.com/cyber-space-defense/spacex-ula-blue-origin-985-million-nssl-contract/), 2026-11-16 |\n| 確率 | 30/50/20(不変) | `state.scenarios` |\n| 確率加重価値 · バンド · 中心 | $36 · $36~$121 · $68(不変) | `state.valuation` |\n| 米10年債 | 5.07%(2026-11-18) | FRED DGS10 · `data/latest.json meta.macro.ust10` |"
+ }
+}

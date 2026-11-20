@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s9",
+ "lang": "en",
+ "src_hash": "69bcd70d39bb",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Mission Control Data Record — Budget Recovery",
+  "md": "\n- **What was done**: The cells rendered on screen had accumulated per-run history sentences. These were the note, status, check and prev fields of 13 triggers (T1, T3–T13, T16), the status of rule R5, and the progress sentences of 5 milestones (current for B-2027-1, C-2029-1 and E-2027-3; reasons for D-2027-1 and E-2027-4). The history was moved to off-screen cells (log_note, log_status, log_check, log_prev, status_log, current_log, progress_reason_log), leaving only the current state. **Nothing was deleted** (Source: `state.triggers_next_12m` · `state.milestones`).\n- **Honest disclosure**: Whether this change passes the selftest can only be known once the publication gate runs it. The full per-run change history, `status_history` and `run_history` are unchanged, so the root-cause fix (caps, folding, separating the index) remains a decision for the Captain (Source: `state.open_questions_for_next_run`).\n\n---\n"
+ }
+}

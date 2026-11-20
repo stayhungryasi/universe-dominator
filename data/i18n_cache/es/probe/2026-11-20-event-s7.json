@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s7",
+ "lang": "es",
+ "src_hash": "23a6d5ac12ac",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Disparadores — lo que tocó este ciclo",
+  "md": "\n| Disparador | Previsto | Real | Tratamiento | Fuente |\n|---|---|---|---|---|\n| T5 Adquisiciones | 12/01 · 2027-01-07 (8-K de cierre) | Noticias del inicio de venta de bonos por parte del arrendador, sin 8-K de cierre | No es previsión errónea: avanza la fase de fijación de precio | `state.triggers_next_12m[T5]` |\n| T6 Fusión | 2027-1H | Solo declaración del CEO, sin comunicado | Tabla de candidatos | `state.triggers_next_12m[T6]` |\n| T7 Ucrania | 11/19 (ⓒ + 1 día) | Sin respuesta transcurrido el plazo · se encontró ⓕ | **Errónea**: próximo punto de control 12/01 (ⓕ + 1 día) | `state.triggers_next_12m[T7].prev_2026_11_20` |\n| T13 Lanzamientos de defensa | 12/01 | Aumento del límite de NSSL (no es adjudicación) | Registro | `state.triggers_next_12m[T13]` |\n| T4 Amazon Leo | 12/01 · 2027-01-04 | Regreso de New Glenn en 2027-01 (noticias) | Registro | `state.triggers_next_12m[T4]` |\n\n---\n"
+ }
+}

@@ -2,14 +2,16 @@
  "kind": "probe_trig",
  "id": "T8",
  "lang": "es",
- "src_hash": "587fcea68f29",
+ "src_hash": "d8a38acf876d",
  "model": "claude-haiku-4-5",
- "at": "2026-11-19 08:42",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[check] 숫자: 원문에 없는 숫자 1695",
-  "[check] 숫자: 원문의 숫자가 빠짐 95"
- ]
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "Amazon Leo·SpaceX D2D(satélite-móvil) puntos de verificación regulatoria·transaccional — ① solicitud revisión DA 26-1160 ② aceptación condicional DA 26-1078·depósito garantía ③ autorización 5.105 satélites D2D Amazon ④ cierre Globalstar 8-K·participación Apple 20% ⑤ cierre fase 2 EchoStar → inicio operación 2GHz MSS SpaceX ⑥ NPRM D2D 482MHz FCC opinión vencida·subasta reglas 1675–1695/2020–2025MHz",
+  "expected": "2026-11-27(estimado: plazo petición revisión DA 26-1160 = adopción 10/27 + 30 días = 11/26 + 1 día KST) ~ 2027-1H(8-K cierre Globalstar Item 2.01 — 8-K 'cierre previsto 2027')",
+  "check": "① FCC — petición revisión DA 26-1160 ② aceptación·depósito DA 26-1078 ③ autorización 5.105 satélites D2D Amazon ④ 8-K cierre Globalstar·participación Apple ⑤ notificación operación 2GHz SpaceX tras cierre fase 2 EchoStar ⑥ NPRM D2D FCC opinión·reglas subasta. Determinación únicamente por orden FCC·divulgación SEC(detalles en log_check)",
+  "note": "creado 2026-10-28 — FCC DA 26-1160(aprobación transferencia Globalstar→Amazon) · DA 26-1078(autorización 15.000 satélites VLEO D2D SpaceX). contexto A-2028-1. detalles en log_note",
+  "statusText": "parcialmente confirmado(2026-11-01: ⑥ sesión pública FCC 10/29 — NPRM adicional máximo 482MHz D2D(SCS) por unanimidad(GN Docket 26-281·23-65, opinión 60 días tras publicación Registro Federal) + propuesta subasta 1675–1695/2020–2025MHz por unanimidad en proceso(reglas no confirmadas). solicitud SpaceX inclusión banda NextNav sin procesar. ②·① plazos no vencidos 11/4~5·11/26)"
+ }
 }

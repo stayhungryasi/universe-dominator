@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s9",
+ "lang": "ja",
+ "src_hash": "69bcd70d39bb",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 管制室データ記録 — 予算回復",
+  "md": "\n- **実施内容**: 画面に描画される欄に、回ごとの履歴文が積み重なっていた。トリガー13件(T1・T3~T13・T16)のnote・status・check・prev、ルールR5の状態、マイルストーン5件の進捗文(B-2027-1・C-2029-1・E-2027-3はcurrent、D-2027-1・E-2027-4は理由)である。履歴は画面外の欄(log_note・log_status・log_check・log_prev・status_log・current_log・progress_reason_log)に移し、現在の状態のみを残した。**削除した内容はない**(出典: `state.triggers_next_12m` · `state.milestones`)。\n- **正直な告知**: この措置でselftestを通過するかどうかは、公開ゲートが実行してみないとわからない。回ごとに積み重なる変化履歴の全文・`status_history`・`run_history`はそのままのため、根本的な処方(上限・折りたたみ・索引分離)は船長の判断事項として残る(出典: `state.open_questions_for_next_run`)。\n\n---\n"
+ }
+}

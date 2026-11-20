@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s5",
+ "lang": "en",
+ "src_hash": "01ddff1c5dd6",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "4. Price",
+  "md": "\n| Date | Close | Change | Volume |\n|---|---|---|---|\n| 11/16 | $137.36 | −1.26% | 101,662,135 |\n| 11/17 | $141.70 | +3.16% | 89,272,745 |\n| 11/18 | $143.50 | +1.27% | 86,453,875 |\n| 11/19 | **$138.43** | −3.53% | 119,613,373 |\n\n(Source: [stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), retrieved 2026-11-20 KST)\n\n- **Attribution**: +0.8% versus the reference price of the previous published edition. Within three days, the funding report (11/17 intraday), Semafor (11/18 pre-market), the DealBook remarks (11/18) and the Google announcement (11/19) overlapped, so the move is not attributed to any single one (Source: table above · `state.market.event_run_note`).\n- **Arithmetic values that change with price** (amounts in $ billions): market cap 138.43 × 13.581 = **$1,880** · EV 1,880 − 51 = $1,829 · AI intrinsic value 1,880 − 350 − 141 − 51 = **$1,338** · multiples 1,338 ÷ 30.24 = 44x · 1,338 ÷ 26 = 51x · 1,338 ÷ 19.81 = 68x (respectively annualized AI revenue · contracted ARR · annualized AI adjusted EBITDA, unit $ billions) (Source: [10-Q cover share count](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · `state.valuation`).\n- **Data record**: The same site's 11/16 volume was revised after the fact from 101,353,388 shares to 101,662,135 shares. The closing price is unchanged (Source: stockanalysis, retrieved 2026-11-20 KST).\n\n---\n"
+ }
+}

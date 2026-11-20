@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s7",
+ "lang": "en",
+ "src_hash": "23a6d5ac12ac",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. Triggers — What This Run Touched",
+  "md": "\n| Trigger | Expected | Actual | Handling | Source |\n|---|---|---|---|---|\n| T5 Financing | 12/01 · 2027-01-07 (signing 8-K) | Report of lessor-side bond sales starting; no signing 8-K | Not a missed expectation — pricing stage in progress | `state.triggers_next_12m[T5]` |\n| T6 Merger | 2027-1H | CEO remarks only, no filing | Candidate table | `state.triggers_next_12m[T6]` |\n| T7 Ukraine | 11/19 (ⓒ + 1 day) | No response elapsed · ⓕ found | **Missed** — next checkpoint 12/01 (ⓕ + 1 day) | `state.triggers_next_12m[T7].prev_2026_11_20` |\n| T13 Defense launch | 12/01 | NSSL ceiling increase (not an award) | Recorded | `state.triggers_next_12m[T13]` |\n| T4 Amazon Leo | 12/01 · 2027-01-04 | New Glenn return 2027-01 (report) | Recorded | `state.triggers_next_12m[T4]` |\n\n---\n"
+ }
+}

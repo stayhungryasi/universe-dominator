@@ -2,14 +2,16 @@
  "kind": "probe_trig",
  "id": "T9",
  "lang": "es",
- "src_hash": "2fcebcac2d1b",
+ "src_hash": "b9afcbdc43bd",
  "model": "claude-haiku-4-5",
- "at": "2026-11-14 12:42",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[check] 숫자: 원문에 없는 숫자 905152, 936571, 109036, 8667276, 3T",
-  "[check] 숫자: 원문의 숫자가 빠짐 905,152천, 936,571천, 109,036천, 8,667,276천"
- ]
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "Starlink Mobile red terrestre — ⓐ acuerdo Boost Mobile/EchoStar(① 8-K SpaceX·EchoStar ② transferencia licencia FCC·HSR ③ consentimiento contrato MVNO AT&T·T-Mobile ④ cierre definitivo transacción espectro anterior ⑤ anotación compromiso 10-K) + ⓑ construcción propia(equipamiento Qualcomm·torres·divulgación CAPEX) puntos de verificación",
+  "expected": "2026-12-01(KST, próximo punto de verificación mensual — reportes denominan 'negociaciones preliminares' por lo que fecha de acuerdo es estimada · construcción propia es anuncio de inicio 2027 por lo que momento de divulgación indeterminado) → 2027-02(10-K 4T26 estimado)",
+  "check": "ⓐ acuerdo Boost/EchoStar — 8-K SpaceX·EchoStar · transferencia licencia FCC·HSR · consentimiento contrato MVNO · cierre definitivo transacción espectro ⓑ construcción propia — 8-K contrato equipamiento·torres · guía CAPEX 4T26 · compromiso de compra 10-K. Determinación únicamente por texto original divulgación(detalles en log_check)",
+  "note": "2026-11-05: anuncio oficial Qualcomm(contrato multianual · inicio 2027 · decenas de miles de sitios · monto no divulgado) — sin 8-K·IR de SpaceX. negociación Boost únicamente en reportes. detalles en log_note",
+  "statusText": "en espera(2026-11-05: ⓑ construcción propia confirmada por anuncio oficial Qualcomm 11/4 — contrato multianual·inicio 2027·decenas de miles de sitios·monto no divulgado, sin 8-K·IR de SpaceX / ⓐ aún únicamente en reportes — 10-Q 3T26 EchoStar(11/3) sin mencionar negociación Boost, momento de cierre 'SpaceX Transactions' incierto)"
+ }
 }

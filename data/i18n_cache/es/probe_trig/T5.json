@@ -2,13 +2,17 @@
  "kind": "probe_trig",
  "id": "T5",
  "lang": "es",
- "src_hash": "a7477ad54612",
+ "src_hash": "cc3c6aa3b804",
  "model": "claude-haiku-4-5",
- "at": "2026-11-14 12:42",
+ "at": "2026-11-20 18:40",
  "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[prev] 숫자: 원문에 없는 숫자 4T"
- ]
+ "status": "ok",
+ "fields": {
+  "name": "Arrendamiento financiero GPU Master de $40 mil millones — Cierre 8-K y tasa fija confirmada (Pendiente: tasa, condiciones de rescate, cierre)",
+  "expected": "2026-12-01 (KST, punto de control mensual — después del comunicado de sindicación del 11/4, determinación de precio y presencia/ausencia de 8-K de cierre) → 2027-01-07 (estimado: 8-K del 10/26 'cierre previsto antes de fin de año' → 8-K de cierre Item 1.01 4 días hábiles → KST día 1. Si no hay 8-K de cierre antes del 31/12, se registra como 'cierre retrasado' y la consideración de la propuesta ② se pospone a la anotación de arrendamiento en 10-K de 4T26 (estimado febrero de 2027))",
+  "check": "① EDGAR 8-K Item 1.01/2.03 · Ex.10 — En cierre: tasa fija, tramos, rescate, garantías ② Si no hay 8-K de cierre, se verifica anotación de arrendamiento y compromiso en 10-K de 4T26 (método de reconocimiento de pasivo por arrendamiento — propuesta ③) ③ Detección de 'financiación' en capa de medición como primera prioridad; también se confirma divulgación voluntaria (8.01, IR) ④ Comunicados de determinación de precio y cierre son objetivos de verificación — la financiación del lado del arrendador (SPV, ABS) podría no estar sujeta a divulgación de SpaceX. Los registros de desconexión de monitor están en log_check",
+  "note": "2026-11-20 (continuación de no publicado 11/18·19): Bloomberg 11/17 — 'Parte' de $40 mil millones podría iniciar venta en la semana, colocadores Goldman·Apollo, SPV operado por Atlas compra chips Nvidia e emite ABS (descripción de estructura fuera de balance). Semafor 11/18 — 7 tramos, $35.500 millones al 8,3% y 7,75%, tramo riesgoso menos de $3 mil millones (combinado posiblemente superior al 9%), Apollo aproximadamente $20 mil millones en préstamo previo. Ambos son financiación del lado del arrendador de los mismos $40 mil millones y no es tasa fija de arrendamiento. Sin 8-K de cierre, sin comunicados de determinación de precio o cierre (2026-11-20 KST). Historial en log_note",
+  "prev": "T5 — Modificación 2026-10-27: punto de control es 'fecha esperada + 1 día (KST)', detección de primera prioridad es evento en capa de medición; no se estima 'podría no aparecer' por obligación de divulgación. 2026-11-20: comunicado de inicio de venta es progresión de fase de determinación de precio — la expectativa no es errónea. Historial en log_prev",
+  "statusText": "Verificación parcial (2026-10-27: estructura, tamaño, vencimiento, elementos de capital divulgados; tasa fija pendiente)"
+ }
 }

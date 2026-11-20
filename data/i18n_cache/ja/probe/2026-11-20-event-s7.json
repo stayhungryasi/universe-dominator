@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s7",
+ "lang": "ja",
+ "src_hash": "23a6d5ac12ac",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "6. トリガー — 今回の回が触れたもの",
+  "md": "\n| トリガー | 予想 | 実際 | 処理 | 出典 |\n|---|---|---|---|---|\n| T5 調達 | 12/01 · 2027-01-07(締結8-K) | 貸し手側の債券販売開始の報道、締結8-Kなし | 予想外れではない — 価格決定段階が進行 | `state.triggers_next_12m[T5]` |\n| T6 合併 | 2027-1H | CEO発言のみ、開示なし | 候補表 | `state.triggers_next_12m[T6]` |\n| T7 ウクライナ | 11/19(ⓒ + 1日) | 無応答のまま経過 · ⓕ発見 | **外れ** — 次の確認点12/01(ⓕ + 1日) | `state.triggers_next_12m[T7].prev_2026_11_20` |\n| T13 国防打ち上げ | 12/01 | NSSL上限増額(受注ではない) | 記録 | `state.triggers_next_12m[T13]` |\n| T4 Amazon Leo | 12/01 · 2027-01-04 | New Glenn復帰2027-01(報道) | 記録 | `state.triggers_next_12m[T4]` |\n\n---\n"
+ }
+}

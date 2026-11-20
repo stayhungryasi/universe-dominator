@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s9",
+ "lang": "es",
+ "src_hash": "69bcd70d39bb",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Datos del centro de control — recuperación del presupuesto",
+  "md": "\n- **Qué se hizo**: en las casillas que se dibujan en pantalla se habían acumulado frases de historial en cada ciclo. Son note, status, check y prev de 13 disparadores (T1, T3~T13, T16), el estado de la regla R5 y las frases de avance de 5 hitos (current de B-2027-1, C-2029-1 y E-2027-3; motivo de D-2027-1 y E-2027-4). El historial se trasladó a casillas fuera de pantalla (log_note, log_status, log_check, log_prev, status_log, current_log, progress_reason_log) y solo se dejó el estado actual. **No se borró ningún contenido** (fuente: `state.triggers_next_12m` · `state.milestones`).\n- **Aviso de honestidad**: si esta medida permite superar el selftest, solo lo sabrá la puerta de publicación al ejecutarlo. El texto completo del historial de cambios que se acumula en cada ciclo, `status_history` y `run_history` siguen igual, de modo que el remedio de fondo (límite, plegado y separación del índice) queda como decisión del capitán (fuente: `state.open_questions_for_next_run`).\n\n---\n"
+ }
+}

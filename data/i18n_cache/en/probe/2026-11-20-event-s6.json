@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s6",
+ "lang": "en",
+ "src_hash": "f545d3424c6d",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Probability, Value, Milestones — No Change",
+  "md": "\n| Scenario | Previous | This run | Basis |\n|---|---|---|---|\n| Bull | 0.30 | 0.30 | No rule triggered |\n| Base | 0.50 | 0.50 | Same |\n| Bear | 0.20 | 0.20 | Same |\n\n- **Rule check**: A competitor's launch contract, the CEO's remarks, the lessor-side SPV bonds, congressional non-response and a new letter, an intervention candidate awaiting judgment, and a contract ceiling do not meet any condition of R1–R6 (Source: `state.probability_adjustment_rules`).\n- **Probability-weighted value**: 0.30 × 76.3 + 0.50 × 24.1 + 0.20 × 3.3 = 35.60 → **$36** (unchanged) · band **$36–$121** · center **$68** (Source: `state.valuation`).\n- **Versus reference price**: 68 ÷ 138.43 − 1 = **−51%** (previously −50%, reflecting only the price change) (Source: `state.valuation.upside_vs_price_basis`).\n- **Risk-free rate memo**: The US 10-year yield is 5.07% (2026-11-18), 8bp higher than the 4.99% used as input for the November issue. The discount rate will be recalculated in the monthly run (12/01) (Source: [FRED DGS10](https://fred.stlouisfed.org/series/DGS10) · `data/latest.json meta.macro.ust10`).\n- **29 milestones**: 24 in progress · 4 undetermined · 1 missed. A line for this run was added to `status_history` for all 29 (Source: `state.scorecard`).\n\n---\n"
+ }
+}

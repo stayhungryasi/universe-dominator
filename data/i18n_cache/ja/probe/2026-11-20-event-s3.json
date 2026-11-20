@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s3",
+ "lang": "ja",
+ "src_hash": "304dfe57f7cc",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. DealBook発言 — 合併と報酬 (T6候補表)",
+  "md": "\n| 項目 | 内容 | 出典 |\n|---|---|---|\n| 場 | NYT DealBook Summit、2026-11-18 · Sorkinの質問 | ⑥ [Benzinga(Yahoo掲載版)](https://finance.yahoo.com/markets/stocks/articles/elon-musk-says-shouldn-t-163042794.html)、2026-11-19 11:30 EST |\n| 発言 | 合併がTesla報酬の条件を満たすことは'That would be unreasonable and not right' · 両社が別々のまま残る可能性もあり、Tesla株主が否決する可能性もある | 同上 |\n| 語られなかったこと | すでに受け取った報酬の返納の有無 | 同上 |\n| 市場参考値 | Polymarket「2026年内の正式発表」約16%(11/12のBloomberg報道後の31%から下落) | 同上 |\n\n- **判断層**: 意向の発言であり、判定の根拠ではない。候補表にのみ載せる。合併の成立、交換比率、報酬条項の適用は、8-Kと委任状(S-4/DEFM14A)でのみ確認する。SpaceX・Teslaの関連開示はない(出典: `state.musk_statements_as_milestone_candidates_only` · [EDGAR submissions](https://data.sec.gov/submissions/CIK0001181412.json)、2026-11-20 KST)。\n- **提案①(合併確定契約 → 基本 −5・弱気 +5)**: 契約がないため審議対象ではない(出典: `state.rule_proposals_not_applied`)。\n\n---\n"
+ }
+}

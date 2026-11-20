@@ -2,14 +2,18 @@
  "kind": "probe_ms",
  "id": "E-2027-4",
  "lang": "es",
- "src_hash": "98f2ebfe5426",
+ "src_hash": "97e0667e988d",
  "model": "claude-haiku-4-5",
- "at": "2026-11-19 08:42",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[0§reason] 숫자: 원문에 없는 숫자 2.419M",
-  "[0§reason] 숫자: 원문의 숫자가 빠짐 2,419M"
- ]
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "text": "Nuevos contratos federales estadounidenses por encima del año anterior",
+  "reason": "Los contratos se confirman (3Q26 8-K Ex.99.1 — NSSL 18 casos·tripulación ISS 3 casos·NASA Roman), pero los importes y comparativas anuales (USAspending) no están compilados. 2026-11-20: el incremento de límite máximo combinado de NSSL Lane 2 de $985 millones (anuncio del DoD 11/16) es un límite, no un contrato — no se incluye. El historial está en progress_reason_log",
+  "hit": "Riesgo político no materializado",
+  "miss": "Probabilidad de debilidad mayor si disminuye",
+  "method": "USAspending·DoD",
+  "parts.0.label": "Nuevos contratos federales estadounidenses (comparativa anual)",
+  "parts.0.reason": "Datos de importes y comparativa anual (USAspending) no compilados"
+ }
 }

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-20-event-s3",
+ "lang": "en",
+ "src_hash": "304dfe57f7cc",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-20 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. DealBook Remarks — Merger and Compensation (T6 Candidate Table)",
+  "md": "\n| Item | Content | Source |\n|---|---|---|\n| Setting | NYT DealBook Summit, 2026-11-18 · question from Sorkin | ⑥ [Benzinga (Yahoo published version)](https://finance.yahoo.com/markets/stocks/articles/elon-musk-says-shouldn-t-163042794.html), 2026-11-19 11:30 EST |\n| Remarks | A merger satisfying the Tesla compensation conditions would be 'That would be unreasonable and not right' · the two companies may remain separate and Tesla shareholders may vote it down | Same |\n| Not stated | Whether compensation already received would be returned | Same |\n| Market reference | Polymarket 'official announcement within 2026' about 16% (down from 31% after the 11/12 Bloomberg report) | Same |\n\n- **Judgment layer**: These are statements of intent, not grounds for a determination. They go only in the candidate table. Merger completion, exchange ratio and application of the compensation clauses are confirmed only through an 8-K and a proxy statement (S-4/DEFM14A). There are no related SpaceX or Tesla filings (Source: `state.musk_statements_as_milestone_candidates_only` · [EDGAR submissions](https://data.sec.gov/submissions/CIK0001181412.json), 2026-11-20 KST).\n- **Proposal ① (definitive merger agreement → Base −5 · Bear +5)**: There is no agreement, so it is not subject to review (Source: `state.rule_proposals_not_applied`).\n\n---\n"
+ }
+}
