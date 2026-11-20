@@ -1030,76 +1030,127 @@
    }
   },
   "2026-11-20": {
-   "companion_essays": {
-    "calls": 3,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 26833,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 2,
-      "usd": 0.037523
-     },
-     "claude-sonnet-5-5": {
-      "calls": 1,
-      "usd": 0.02946
-     }
-    },
-    "out": 5084,
-    "unpriced": 0,
-    "usd": 0.066983,
-    "ws": 0
-   },
-   "fetch_calendar": {
-    "calls": 1,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 8201,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 1,
-      "usd": 0.009381
-     }
-    },
-    "out": 236,
-    "unpriced": 0,
-    "usd": 0.009381,
-    "ws": 0
-   },
-   "fetch_signals": {
+   "buffett_scout": {
     "calls": 2,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 1957,
+    "in": 2089,
     "models": {
      "claude-haiku-4-5-20251001": {
       "calls": 2,
-      "usd": 0.008947
+      "usd": 0.006129
      }
     },
-    "out": 1398,
+    "out": 808,
     "unpriced": 0,
-    "usd": 0.008947,
+    "usd": 0.006129,
     "ws": 0
    },
-   "fetch_translations": {
-    "calls": 1,
+   "companion_essays": {
+    "calls": 11,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 1904,
+    "in": 103872,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 1,
-      "usd": 0.010729
+      "calls": 4,
+      "usd": 0.081886
+     },
+     "claude-sonnet-5-5": {
+      "calls": 7,
+      "usd": 0.292132
      }
     },
-    "out": 1765,
+    "out": 24816,
     "unpriced": 0,
-    "usd": 0.010729,
+    "usd": 0.374018,
+    "ws": 0
+   },
+   "fetch_calendar": {
+    "calls": 3,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 18636,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 3,
+      "usd": 0.020581
+     }
+    },
+    "out": 389,
+    "unpriced": 0,
+    "usd": 0.020581,
+    "ws": 0
+   },
+   "fetch_pioneers": {
+    "calls": 4,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 2033,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 4,
+      "usd": 0.009123
+     }
+    },
+    "out": 1418,
+    "unpriced": 0,
+    "usd": 0.009123,
+    "ws": 0
+   },
+   "fetch_research": {
+    "calls": 6,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 30298,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 6,
+      "usd": 0.086128
+     }
+    },
+    "out": 11166,
+    "unpriced": 0,
+    "usd": 0.086128,
+    "ws": 0
+   },
+   "fetch_signals": {
+    "calls": 4,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 3044,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 4,
+      "usd": 0.011489
+     }
+    },
+    "out": 1689,
+    "unpriced": 0,
+    "usd": 0.011489,
+    "ws": 0
+   },
+   "fetch_translations": {
+    "calls": 2,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 6051,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 2,
+      "usd": 0.028721
+     }
+    },
+    "out": 4534,
+    "unpriced": 0,
+    "usd": 0.028721,
     "ws": 0
    },
    "signal_column": {
@@ -1119,25 +1170,42 @@
     "usd": 0.014134,
     "ws": 0
    },
-   "translate_content": {
-    "calls": 72,
+   "spacex_news": {
+    "calls": 6,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 215792,
+    "in": 47471,
     "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 29,
-      "usd": 0.26636
-     },
      "claude-sonnet-5-5": {
-      "calls": 43,
-      "usd": 1.312934
+      "calls": 6,
+      "usd": 0.277242
      }
     },
-    "out": 141407,
+    "out": 18230,
     "unpriced": 0,
-    "usd": 1.579294,
+    "usd": 0.277242,
+    "ws": 0
+   },
+   "translate_content": {
+    "calls": 132,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 425537,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 67,
+      "usd": 0.547621
+     },
+     "claude-sonnet-5-5": {
+      "calls": 65,
+      "usd": 2.709492
+     }
+    },
+    "out": 295366,
+    "unpriced": 0,
+    "usd": 3.257113,
     "ws": 0
    }
   }

@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-20T09:34+09:00",
+  "checked_at": "2026-11-20T12:30+09:00",
   "last_run": {
    "conclusion": "failure",
    "created_at": "2026-11-18T23:43:45Z",
@@ -1127,7 +1127,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-20T09:33+09:00",
+ "generated_at": "2026-11-20T12:30+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1658,13 +1658,53 @@
    "detected_at": "2026-11-19",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:google-blue-origin-suncatcher:2026-11-20",
+   "trigger_id": "T1",
+   "name": "Google이 2029년 AI 위성 발사에 Blue Origin의 New Glenn을 선택했다.",
+   "reason": "보도 감지(biggo finance·business upturn·mlq.ai)",
+   "event": "Google Selects Blue Origin’s New Glenn Rocket for 2029 AI Satellite Launch",
+   "event_date": "2026-11-20",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNaDk3NmV0XzVHRm1idUxwSkh1NDRnSUZLQWdhcnpPcTR1RUJOdmdlaFF4Y21LcWVpWkdpdEVNTVRsWENLeWtFUmJqWVhEN1d0SXpmaFJrRllkSkt3YTRpLVVZRTdkNGNWem10UzQxN1Zvc01Kd0JTVXNOVnFwYkwwU2lhdVpkNFdIdmtnYzhvU3lNMEN0RzlTTDZHNGxWSlZjTjNFRGpwZHE?oc=5",
+   "detected_at": "2026-11-20",
+   "grade": "major",
+   "source": "news"
+  },
+  {
+   "key": "news:tesla-spacex-merger:2026-11-20",
+   "trigger_id": null,
+   "name": "머스크가 Tesla-SpaceX 합병이 이뤄져도 추가 보상을 받아서는 안 된다고 말했다.",
+   "reason": "보도 감지(benzinga·biggo finance·investor's business daily)",
+   "event": "Musk Says Tesla-SpaceX Merger Shouldn’t Earn Extra Pay - SpaceX (NASDAQ:SPCX)",
+   "event_date": "2026-11-20",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOeHFTeXFCMncxSmExZ1dMOGJvQmVWcVp5MVFBVnhwS0tYdy1LUWpOU1FDTnF1WC1KSjluNzZrb01XM1BqOHp3dnc5UThJWWpSMzdUUjlQY29FN3hwYTdQVVBRZmpYeXJYamxBcGtNZkMtTWlqWWJkMl9UQUIxOVp3Z2lNM1g3YThpNnB4Yk9iZlJIdXFi?oc=5",
+   "detected_at": "2026-11-20",
+   "grade": "major",
+   "source": "news"
   }
  ],
- "dispatch_queue": [],
+ "dispatch_queue": [
+  {
+   "key": "qn:2026-11-20:1230",
+   "run_id": "44666503747",
+   "queued_at": "2026-11-20T12:30+09:00",
+   "state": "queued",
+   "trigger_id": "T1",
+   "name": "Google이 2029년 AI 위성 발사에 Blue Origin의 New Glenn을 선택했다. · 머스크가 Tesla-SpaceX 합병이 이뤄져도 추가 보상을 받아서는 안 된다고 말했다.",
+   "reason": "보도 감지 2건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNaDk3NmV0XzVHRm1idUxwSkh1NDRnSUZLQWdhcnpPcTR1RUJOdmdlaFF4Y21LcWVpWkdpdEVNTVRsWENLeWtFUmJqWVhEN1d0SXpmaFJrRllkSkt3YTRpLVVZRTdkNGNWem10UzQxN1Zvc01Kd0JTVXNOVnFwYkwwU2lhdVpkNFdIdmtnYzhvU3lNMEN0RzlTTDZHNGxWSlZjTjNFRGpwZHE?oc=5",
+    "https://news.google.com/rss/articles/CBMioAFBVV95cUxQcXhTZVRZZFZSNGZiUG9BUVAtNENDYjM3bDJhckdPZzVDTEduREhQR3YtVW1EdzVENlpDbnBMSThSbUZuYWk1enY3aUwzczV5TFJ4UGJrb1oyTTZjM3R1Rm1LTVJNWjNYN1ZHZldpUVZMVGRtM2pNUU52cFNOdERWSjR4Tk1RMHJwLTllZGY2ekx0NGlKS1cyc3FXY2I1RFZE?oc=5",
+    "https://news.google.com/rss/articles/CBMilAFBVV95cUxOeHFTeXFCMncxSmExZ1dMOGJvQmVWcVp5MVFBVnhwS0tYdy1LUWpOU1FDTnF1WC1KSjluNzZrb01XM1BqOHp3dnc5UThJWWpSMzdUUjlQY29FN3hwYTdQVVBRZmpYeXJYamxBcGtNZkMtTWlqWWJkMl9UQUIxOVp3Z2lNM1g3YThpNnB4Yk9iZlJIdXFi?oc=5",
+    "https://news.google.com/rss/articles/CBMikgFBVV95cUxPZHNBWjNqazh6LUZkMmhnTWNGZnAtRFRxbGU1TzBIbVRFeTdud0dmc08wbXNOYmt4M1JzNVh1Uk1JdmoxUnVFUnlab0lvSVlfUXVkeFVpYnBTLURINTd0ZUsyYmdYRVptLXY2dzcwSVNQdjNWOVZtd3JjVElmUWFGX0xaUnh3TFZmX2hQM1MwMlN6UQ?oc=5"
+   ]
+  }
+ ],
  "hourly": {
-  "checked_at": "2026-11-20T09:34+09:00",
-  "last_success_at": "2026-11-20T00:30:58Z",
-  "last_run_at": "2026-11-20T00:30:20Z",
+  "checked_at": "2026-11-20T12:30+09:00",
+  "last_success_at": "2026-11-20T03:30:49Z",
+  "last_run_at": "2026-11-20T03:30:20Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

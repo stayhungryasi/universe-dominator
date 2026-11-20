@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-20 08:56",
- "generated_at": "2026-11-20T08:56:33.946433+09:00",
+ "generated_label": "2026-11-20 12:27",
+ "generated_at": "2026-11-20T12:27:48.591504+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-20",
@@ -758,7 +758,11 @@
     },
     "fcf_ttm": 58963000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "사이클 정점에서 강한 실적이나 지속성 불명확"
+    }
    },
    "conversion": {
     "value": 0.7519,
@@ -778,7 +782,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -798,7 +802,30 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "전망치 이상(66%) — 취재 필요"
+   "notes": "메모리 순수 사이클 사업으로 필수 증설 자본을 반복 필요; 현재 저밸류에이션(5~10배 선물 PER)은 사이클 정점 반영",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "○"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "Data center revenue jumps 11-fold; AI 수요 근본적 필요성",
+    "risk5": "CEO says 2027 and 2028 will be even tighter; Micron cratered 20% this month—사이클 변동성 고위험",
+    "capalloc": "$35 Billion Buyback; Micron beats on earnings and issues strong guidance",
+    "owner_earnings": "2026 첫 분기부터 증설 압박 신호; 메모리 순수 사이클의 자본 회귀 패턴"
+   }
   },
   "BRK-B": {
    "as_of": "2026-11-20",
@@ -1018,7 +1045,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1036,7 +1063,28 @@
      "period": "2026Q3",
      "end": "2025-10-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "○",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "score": 2
+   },
+   "notes": "예측 가능성 최상급 통행료형이나 마진율 압박 요인 상존(연료비, 가격 경쟁)",
+   "_evidence": {
+    "franchise": "Walmart hikes outlook as CEO tells CNBC retailer aims to keep prices low; 광범위한 고객 기반과 market share gains 보도",
+    "risk5": "Walmart Tops Q3 Forecasts; Walmart beats Q3 earnings expectations, raises full-year outlook again",
+    "capalloc": "Walmart raises outlook despite slower-than-expected Q3 sales—가이던스 상향 근거의 현금 창출력 존재 암시"
+   }
   },
   "AMD": {
    "as_of": "2026-11-20",
@@ -1307,7 +1355,7 @@
     "adj_ni": 8416960000.0
    },
    "g_cagr3y": 0.0956,
-   "g_forward": 0.3824,
+   "g_forward": 0.3819,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -2049,5 +2097,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-20 08:57"
+ "scout_label": "2026-11-20 12:28"
 }

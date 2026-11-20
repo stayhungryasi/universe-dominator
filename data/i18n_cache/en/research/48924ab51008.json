@@ -2,14 +2,13 @@
  "kind": "research",
  "id": "48924ab51008",
  "lang": "en",
- "src_hash": "95a77d151f70",
+ "src_hash": "ef54fd450932",
  "model": "claude-haiku-4-5",
- "at": "2026-11-19 18:46",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[15§summary_ko.0] 준법: 원문에 없는 권고 표현(매매·비중·목표가) — Texas Instruments (TXN) has an average broker rating (ABR) of 1.93 among 33 brokers (between Strong Buy and Buy), with 5",
-  "[15§summary_ko.1] 준법: 원문에 없는 권고 표현(매매·비중·목표가) — Broker recommendations show Strong Buy five times more frequent than Strong Sell, diverging from retail investor interes"
- ]
+ "at": "2026-11-20 12:43",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "summary_ko.0": "Texas Instruments (TXN) average broker recommendation (ABR) is 1.93 on a 1-5 scale, near Buy, with 19 out of 33 securities firms (57.6%) recommending strong Buy.",
+  "summary_ko.1": "Given the positive bias issue in broker recommendations, it is efficient to validate with net models like Zacks Rank for investment decision-making."
+ }
 }
