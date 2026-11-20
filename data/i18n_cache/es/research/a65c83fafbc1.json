@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "a65c83fafbc1",
  "lang": "es",
- "src_hash": "c5cd8c745c04",
+ "src_hash": "e397d9334e6f",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 09:58",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "El precio de Eli Lilly (LLY) subió 45,3% durante 6 meses del 18 de mayo al 16 de noviembre de 2025, con los medicamentos para diabetes y obesidad Mounjaro y Zepbound representando más de $16.000 millones, aproximadamente 2/3 de los ingresos del trimestre de septiembre.",
-  "summary_ko.1": "Desde febrero de 2025 se han observado públicamente señales de fortalecimiento de capacidad de producción y expansión de cuota de mercado, con ingresos del trimestre de marzo alcanzando $12.700 millones, crecimiento del 45,2% interanual.",
-  "summary_ko.2": "La tasa de crecimiento interanual durante 2026 se ha ralentizado de 55,5% en el trimestre de marzo a 38,6% en el trimestre de septiembre, aunque el uso de medicamentos para la obesidad en EE.UU. aún muestra un crecimiento del 82%.",
-  "title": "¿Fue visible la racha del 45% de Eli Lilly Stock temprano?"
- }
+ "at": "2026-11-21 08:44",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§summary_ko.1] 숫자: 원문에 없는 숫자 24400 million",
+  "[0§summary_ko.1] 숫자: 원문의 숫자가 빠짐 24.4억"
+ ]
 }

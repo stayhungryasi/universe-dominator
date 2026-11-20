@@ -3,6 +3,136 @@
   "page_desc": "글로벌 시가총액 TOP 20의 시점별 변동 기록 — 신규 진입·이탈, 권역별 흐름, 환율, 데이터 보정 사항",
   "entries": [
     {
+      "date": "2026.11.21",
+      "period": "11.14 → 11.21 (주간)",
+      "prev": "2026-11-14",
+      "curr": "2026-11-21",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label_id": "weekly",
+          "label_p": {},
+          "label": "주간 변동 사항 (자동 감지)",
+          "events": [
+            {
+              "k": "enter",
+              "region": "earth",
+              "name": "Anthropic",
+              "tk": "ANT",
+              "rank": 14,
+              "mc": 1175.0
+            },
+            {
+              "k": "exit",
+              "region": "earth",
+              "name": "Exxon Mobil",
+              "tk": "XOM"
+            },
+            {
+              "k": "rank_down",
+              "name": "Micron Technology",
+              "tk": "MU",
+              "a": 17,
+              "b": 20
+            },
+            {
+              "k": "mc_move",
+              "name": "Micron Technology",
+              "tk": "MU",
+              "pct": -23.614849135238877,
+              "old": 880.59,
+              "new": 672.64
+            },
+            {
+              "k": "mc_move",
+              "name": "NVIDIA",
+              "tk": "NVDA",
+              "pct": -22.914547304170902,
+              "old": 3932.0,
+              "new": 3031.0
+            },
+            {
+              "k": "mc_move",
+              "name": "TSMC",
+              "tk": "TSM",
+              "pct": -20.116054158607348,
+              "old": 2068.0,
+              "new": 1652.0
+            },
+            {
+              "k": "mc_move",
+              "name": "AMD",
+              "tk": "AMD",
+              "pct": -19.809338965635344,
+              "old": 875.9,
+              "new": 702.39
+            },
+            {
+              "k": "enter",
+              "region": "us",
+              "name": "Anthropic",
+              "tk": "ANT",
+              "rank": 12,
+              "mc": 1175.0
+            },
+            {
+              "k": "exit",
+              "region": "us",
+              "name": "AbbVie",
+              "tk": "ABBV"
+            },
+            {
+              "k": "enter",
+              "region": "hk",
+              "name": "Hongkong Land",
+              "tk": "H78.SI",
+              "rank": 20,
+              "mc": 17.85
+            },
+            {
+              "k": "exit",
+              "region": "hk",
+              "name": "Henderson Land Development",
+              "tk": "0012.HK"
+            }
+          ],
+          "items": [
+            "<strong>Anthropic</strong> TOP 20 신규 진입 (<span class='em-up'>14위, $1.18T</span>)",
+            "<strong>Exxon Mobil</strong> TOP 20 이탈",
+            "<strong>Micron Technology</strong> <span class='em-down'>17위 → 20위 하락</span>",
+            "<strong>Micron Technology</strong> 시총 <span class='em-down'>-24%</span> ($881B → $673B)",
+            "<strong>NVIDIA</strong> 시총 <span class='em-down'>-23%</span> ($3.93T → $3.03T)",
+            "<strong>TSMC</strong> 시총 <span class='em-down'>-20%</span> ($2.07T → $1.65T)",
+            "<strong>AMD</strong> 시총 <span class='em-down'>-20%</span> ($876B → $702B)",
+            "[미국] <strong>Anthropic</strong> TOP 20 신규 진입 (<span class='em-up'>12위, $1.18T</span>)",
+            "[미국] <strong>AbbVie</strong> TOP 20 이탈",
+            "[홍콩] <strong>Hongkong Land</strong> TOP 20 신규 진입 (<span class='em-up'>20위, $18B</span>)",
+            "[홍콩] <strong>Henderson Land Development</strong> TOP 20 이탈"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "fx": {
+            "rate": "1,339",
+            "date": "11/21",
+            "mult": "1.34"
+          },
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,339 (11/21 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.34"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.11.14",
       "period": "11.5 → 11.14 (주간)",
       "prev": "2026-11-05",
