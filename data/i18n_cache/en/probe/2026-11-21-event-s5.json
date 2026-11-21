@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-21-event-s5",
+ "lang": "en",
+ "src_hash": "3a22012f4658",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-21 12:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probability·Value·Milestones — No Change in Probability or Value",
+  "md": "\n| Scenario | Previous | Current | Basis |\n|---|---|---|---|\n| Bull | 0.30 | 0.30 | No rule triggered |\n| Base | 0.50 | 0.50 | Same |\n| Bear | 0.20 | 0.20 | Same |\n\n- **Rule check**: The lessor-side bond pricing does not meet any condition of R1–R6. R3 (capital increase) does not apply because there is no equity component. The interest rate condition exists only in the unadopted Proposal ② (source: `state.probability_adjustment_rules`).\n- **Probability-weighted value**: 0.30 × 76.3 + 0.50 × 24.1 + 0.20 × 3.3 = 35.60 → **$36** (unchanged) · band **$36–$121** · center **$68** (source: `state.valuation`).\n- **Versus reference price**: 68 ÷ 127.79 − 1 = **−47%** (previously −51%, reflecting price change only) (source: `state.valuation.upside_vs_price_basis`).\n- **Risk-free rate memo**: The US 10-year yield is 5.04% (2026-11-19), 5bp higher than the 4.99% used as input in the November edition. The discount rate will be recalculated in the monthly run (12/01) (source: `data/latest.json meta.macro.ust10` — FRED).\n- **29 milestones**: 24 in progress · 4 untested · 1 missed, with no change in verdicts. For D-2027-1 only the progress figure changed (400 → 440, remains untested). A line for this run was added to `status_history` for all 29 (source: `state.scorecard`).\n\n---\n"
+ }
+}

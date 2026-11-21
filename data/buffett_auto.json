@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-21 08:29",
- "generated_at": "2026-11-21T08:29:04.054123+09:00",
+ "generated_label": "2026-11-21 12:28",
+ "generated_at": "2026-11-21T12:28:04.043919+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-21",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "서비스 프랜차이즈와 설치기반은 견고하나 성장 한계와 고평가가 수익창출 질을 압박"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,30 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "소비자 프랜차이즈 최강이나 활주로 최저 — 성장 없는 프리미엄으로 현재 밸류에이션 근 10년 고점, 자사주 매입이 재무학적 근거 부족",
-   "_evidence": {
-    "franchise": "Services Franchise and Installed Base Anchor Apple's Durable Earnings Growth",
-    "risk5": "Apple (AAPL) Stock Could Be 33% Overvalued On Fresh Service Outage Concerns; global memory crisis hurts profits; margin squeeze in Q4",
-    "capalloc": "Apple Is 'Buying Back Stock at 40 Times Earnings.' Cash in Treasuries Would Earn More; Treasury Bills Now Outperform Apple's Buyback Math As Valuation Nears A Decade High",
-    "owner_earnings": "iPhone Revenue Rises 18%, but Shares Look Expensive; Services growth anchors durability despite valuation headwinds"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-21",
@@ -210,11 +183,7 @@
     },
     "fcf_ttm": 53273000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "검색 수익 미스 및 클라우드 성장이 자본지출 급증을 상쇄하지 못함"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.1527,
@@ -234,7 +203,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 33건 · GOOGL 조회",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -252,31 +221,7 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026Q3"
-   },
-   "notes": "2027년 대규모 capex 증설 계획이 near-term FCF 압박; 반독점 리스크와 검색 경쟁력 약화가 해자 검증 가능성을 훼손",
-   "_evidence": {
-    "franchise": "Record Cloud Growth 보도에도 불구하고 Search revenue miss 발생; 검색 해자의 약화 신호",
-    "risk5": "Alphabet stock sinks 10% as it holds 2026 capex unchanged, expects significant increase in 2027—미래 수익성 확신 부족",
-    "capalloc": "Alphabet loses $500bn in market value after profit disappoints—수익성 악화로 capex 증설 계획의 정당성 의문",
-    "owner_earnings": "Google misses Wall Street expectations; profit disappoints despite Cloud growth—capital intensity 상승으로 owner earnings 압박"
-   }
+   ]
   },
   "MSFT": {
    "as_of": "2026-11-21",
@@ -307,7 +252,11 @@
     },
     "fcf_ttm": 59957000000.0,
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "초과 캐펙스 투자가 단기 오너 수익을 압박하나 Azure 성장이 구조적 가치 창출 중"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -328,7 +277,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -346,7 +295,19 @@
      "period": "2026Q2",
      "end": "2025-12-31"
     }
-   ]
+   ],
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2027Q1"
+   },
+   "notes": "플라이트세이프티 변태 리스크: AI 칩 공급선 다각화 추진도 클라우드 인프라 과잉투자 주기 진입 가능성 경계 필요",
+   "_evidence": {
+    "capalloc": "Microsoft jumps 8% as it boosts capital spending plans, citing demand / Microsoft announces debt offerings / $36 Billion Net Income In Q1",
+    "owner_earnings": "FY27 Q1 cloud growth accelerates 하나 capex/sales 30%대 지속 구조"
+   }
   },
   "AMZN": {
    "as_of": "2026-11-21",
@@ -426,7 +387,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 13.97
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -777,8 +738,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": null,
-   "g_forward_status": "전망치 이상(243%) — 취재 필요",
-   "notes": "전망치 이상(243%) — 취재 필요"
+   "g_forward_status": "전망치 이상(244%) — 취재 필요",
+   "notes": "전망치 이상(244%) — 취재 필요"
   },
   "MU": {
    "as_of": "2026-11-21",
@@ -833,7 +794,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 48건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -853,23 +814,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "데이터센터 수익 11배 증가 등 현 사이클 강세를 보이나, 월세 올리려면 매번 증축 공사하는 구조적 약점이 근본 문제",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "✕",
-    "no_price_reg": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2025H2"
-   },
-   "_evidence": {
-    "franchise": "메모리는 필수 소비재이나 경쟁자 대체 가능",
-    "capalloc": "Micron Stock Is Down 41%, but the $35 Billion Buyback Could Change the Game"
-   }
+   "notes": "전망치 이상(66%) — 취재 필요"
   },
   "BRK-B": {
    "as_of": "2026-11-21",
@@ -1512,8 +1457,8 @@
     "display": "C",
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
-     "display": "B",
-     "reason": "인수 상각으로 인한 이익 기반 훼손으로 GAAP 기준 P/E 왜곡"
+     "display": "C",
+     "reason": "인수 상각으로 GAAP 이익 기반이 얇아 진정한 경제적 이익 가시성 제한"
     }
    },
    "conversion": {
@@ -1554,10 +1499,11 @@
     }
    ],
    "g_forward_status": "전망치 이상(-28%) — 취재 필요",
-   "notes": "플랫폼 통합 전략과 구독 전환 메커니즘의 검증이 진행 중이며 가시성 제약",
+   "notes": "AI 플랫폼 통합 전략과 $4.5B Applied Compute 인수로 성장 가속 중이나 고평가 우려 상존",
    "franchise": {
     "need": "○",
-    "no_substitute": "○"
+    "no_substitute": "○",
+    "no_price_reg": "△"
    },
    "risk5": {
     "business_certainty": "△",
@@ -1566,14 +1512,15 @@
    },
    "capalloc": {
     "cash_positive": 1,
-    "debt_discipline": 1,
-    "score": 2
+    "buyback": 1,
+    "score": 2,
+    "period": "2026Q1"
    },
    "_evidence": {
-    "franchise": "보안 구독 모델의 높은 전환비용과 플랫폼 통합에 따른 고착성",
-    "risk5": "플랫폼 통합 전략의 성공 가능성이 미검증 상태로 사업 확실성 중간",
-    "capalloc": "현금 창출 능력과 부채 규율 추적 필요",
-    "owner_earnings": "GAAP 기준 순이익이 인수 관련 상각으로 압축되어 경제적 실질 파악 필요"
+    "franchise": "39% 수익 성장, ARR 확대로 보안 구독 경제의 강한 필요성 입증; 플랫폼 통합으로 대체 불가능성 강화",
+    "risk5": "Q1 실적 상회 및 가이던스 인상으로 사업 불확실성 완화되나 고주가($7% 상승 후 $3.61% 하락)로 가격 리스크 명시; AI 인수 상각 영향으로 진정 이익 평가 복잡",
+    "capalloc": "Q1 2026/2027 earnings beat 및 주가 상승으로 현금 창출 확인; Applied Compute 대규모 인수로 자본배분 적극성",
+    "owner_earnings": "GAAP 기준 선행 EPS는 인수 상각으로 기반이 얇으며 조정 이익(non-GAAP) 의존도 높음"
    }
   },
   "ARM": {
@@ -1581,7 +1528,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 0.87
+    "value": 0.84
    },
    "eps_status": null,
    "roe_tangible": 0.1339,
@@ -1642,11 +1589,7 @@
     },
     "fcf_ttm": 17365000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "C",
-     "reason": ""
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.9986,
@@ -1666,7 +1609,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 13건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -1686,30 +1629,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(101%) — 취재 필요",
-   "notes": "낸드 사이클 하강기에 CEO 긴급 교체, 주가 50% 붕괴로 사이클 타이밍 판단 불가능.",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "△",
-    "mgmt_fidelity": "△",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2
-   },
-   "_evidence": {
-    "franchise": "스토리지는 필수재지만 메모리칩은 상품화된 경쟁재로 대체 가능성 높음.",
-    "risk5": "AI Leadership Exit 헤드라인으로 경영진 변동, 순수 사이클 하강기에 사업 확실성 최저.",
-    "capalloc": "Earnings Surprise 긍정평가와 8-for-1 Stock Split 진행 중으로 현금 창출 가능 신호.",
-    "owner_earnings": "주가 50% 하락 중 헤드라인 톤이 극도로 엇갈리며 실적과 주가의 괴리로 신뢰도 C등급."
-   }
+   "notes": "전망치 이상(101%) — 취재 필요"
   },
   "STX": {
    "as_of": "2026-11-21",
@@ -1867,7 +1787,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 62.2
+    "value": 58.73
    },
    "eps_status": null,
    "roe_tangible": 0.2731,
@@ -2171,5 +2091,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-21 08:30"
+ "scout_label": "2026-11-21 12:29"
 }

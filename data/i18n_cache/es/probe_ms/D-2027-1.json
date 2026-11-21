@@ -2,21 +2,21 @@
  "kind": "probe_ms",
  "id": "D-2027-1",
  "lang": "es",
- "src_hash": "503395ccdf8d",
+ "src_hash": "dff8796cb17b",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-21 12:39",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "text": "Captación adicional de $50.000 millones o menos Y sin ampliación de capital",
-  "reason": "Año de sentencia (2027) no llegado. Captación programada en 2027 (fase comprometida) = aproximadamente $40.000 millones de arrendamiento financiero maestro del 8-K 2026-10-26 (inicio de arrendamiento 2027-1H → se cuenta como captación 2027, margen $10.000 millones), sin elementos de ampliación de capital. 2026-11-20: inicio de venta de bonos de SPV arrendador·7 informes parciales (Bloomberg 11/17 · Semafor 11/18) corresponden al mismo $40.000 millones — entrada sin cambios. El historial está en progress_reason_log",
-  "hit": "Financiado con deuda",
-  "miss": "Dilución + recálculo de probabilidad si ocurre ampliación de capital",
-  "parts.0.label": "Volumen de captación adicional (inicio previsto 2027, base comprometida)",
-  "parts.1.label": "Ampliación de capital (base 8-K)",
-  "parts.0.reason": "8-K 2026-10-26 principal total aproximado $40.000 millones — no finalizado (previsto antes de fin de año)·no iniciado (2027-1H). Sentencia en 2027",
-  "parts.1.reason": "8-K sin elementos de acciones·conversiones·warrants — año de sentencia (2027) no llegado",
+  "text": "Financiación adicional ≤ 50.000 millones de dólares AND sin ampliación de capital",
+  "reason": "Año de determinación (2027) aún no llegado. Financiación prevista 2027 = financiación de vehículo fuera de balance (Saturn Funding Trust) aprox. 44.000 millones de dólares (anuncio de fijación de precio Apollo·Goldman 2026-11-20 — aumentada por sobresuscripción, inicio de arrendamiento 2027-1H → contabilizado como financiación 2027, margen 6.000 millones de dólares). Sin elementos de ampliación de capital. Se confirmará en 8-K de cierre si el principal de arrendamiento en 8-K de 'aprox. 40.000 millones de dólares' ha aumentado. El histórico consta en progress_reason_log",
+  "hit": "Cubierto por deuda",
+  "miss": "Si se produce ampliación de capital, dilución + recálculo de probabilidad",
+  "parts.0.label": "Volumen de financiación adicional (inicio previsto 2027, importe de financiación de vehículo fuera de balance)",
+  "parts.1.label": "Ampliación de capital (según 8-K)",
+  "parts.0.reason": "Anuncio de fijación de precio Apollo·Goldman 2026-11-20 aprox. 44.000 millones de dólares (aumentado) — ha aumentado respecto al principal de 8-K 2026-10-26 de aprox. 40.000 millones de dólares. Escritura maestra de arrendamiento no celebrada·no iniciada (2027-1H). Determinación en 2027",
+  "parts.1.reason": "Sin elementos de acciones, conversión o warrants en 8-K — año de determinación (2027) aún no llegado",
   "parts.0.unit": "cien millones de dólares",
-  "parts.1.unit": "caso"
+  "parts.1.unit": "cantidad"
  }
 }

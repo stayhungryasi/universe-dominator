@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-21-event-s5",
+ "lang": "es",
+ "src_hash": "3a22012f4658",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-21 12:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probabilidad·valor·hitos — sin cambios en probabilidad ni valor",
+  "md": "\n| Escenario | Anterior | Actual | Fundamento |\n|---|---|---|---|\n| Alcista | 0,30 | 0,30 | Ninguna regla activada |\n| Base | 0,50 | 0,50 | Ídem |\n| Bajista | 0,20 | 0,20 | Ídem |\n\n- **Contraste con las reglas**: la fijación de precio de los bonos del lado del arrendador no cumple ninguna condición de R1~R6. R3 (ampliación de capital) no aplica porque no hay componente de participación. La condición de tipos solo figura en la propuesta ② no adoptada (fuente: `state.probability_adjustment_rules`).\n- **Valor ponderado por probabilidad**: 0,30 × 76,3 + 0,50 × 24,1 + 0,20 × 3,3 = 35,60 → **36 $** (sin cambios) · banda **36~121 $** · centro **68 $** (fuente: `state.valuation`).\n- **Frente al precio base**: 68 ÷ 127,79 − 1 = **−47 %** (antes −51 %, refleja solo el cambio de precio) (fuente: `state.valuation.upside_vs_price_basis`).\n- **Nota sobre la tasa libre de riesgo**: el bono del Tesoro de EE. UU. a 10 años está en 5,04 % (2026-11-19), 5 pb por encima del 4,99 % usado en la edición de noviembre. El nuevo cálculo de la tasa de descuento se hará en la edición mensual (12/01) (fuente: `data/latest.json meta.macro.ust10` — FRED).\n- **29 hitos**: en curso 24 · sin dictamen 4 · incumplido 1, sin cambios de dictamen. En D-2027-1 solo cambió la cifra de avance (400 → 440, sigue sin dictamen). En los 29 se añadió una línea de esta edición a `status_history` (fuente: `state.scorecard`).\n\n---\n"
+ }
+}

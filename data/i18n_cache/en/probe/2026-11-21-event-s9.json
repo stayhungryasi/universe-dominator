@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-21-event-s9",
+ "lang": "en",
+ "src_hash": "ad15425ad307",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-21 12:39",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "8. Three data points to check yourself before the next issue",
+  "md": "\n1. **Executed 8-K (Item 1.01·2.03)**: the master lease's fixed rate · whether the principal rose from about $40 billion to about $44 billion · call and guarantee terms · whether there are usage restriction clauses such as 'chips stay on the ground' (source: `state.triggers_next_12m[T5]`).\n2. **T7 ⓕ answer (11/30)**: whether SpaceX publicly answered the 3 questions from the Senate Foreign Relations Committee (source: `state.triggers_next_12m[T7]`).\n3. **Existing checkpoints**: Ariane 64 LE-04 (11/23, T4) · DA 26-1160 reconsideration deadline (11/27, T8) · monthly 12/01 · T2 12/8 lock-up · T12 12/9 vote (source: `state.triggers_next_12m`).\n\n---\n\n### Appendix: Summary of facts confirmed this issue (source · date)\n\n| Fact | Value | Source · date |\n|---|---|---|\n| Reference share price | $127.79 (−7.69%) · volume 124,419,426 shares | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-11-20 |\n| Market cap · AI intrinsic value | $1,736 (in billions) · $1,194 (in billions) | Formula (section 3) · `state.valuation` |\n| Financing size | about $44 billion · oversubscribed · upsized · lease start 2027-1H | [Apollo IR](https://ir.apollo.com/news-events/press-releases/detail/662/apollo-and-goldman-sachs-announce-pricing-of-44-billion), 2026-11-20 |\n| A3 | $25.17 billion · 2033-04 · 8.259% | [Reuters(AOL)](https://www.aol.com/articles/apollo-goldman-lead-44-billion-174543000.html), 2026-11-20 |\n| A2 | about $4.4 billion · 2031-04 · 7.66% | Same as above |\n| B | $2.564 billion · 2033-04 · 8.36% | Same as above |\n| Investment-grade corporate bond average | 5.95% (11/19) | [Bloomberg(Yahoo)](https://finance.yahoo.com/technology/ai/articles/spacex-sells-32-billion-ai-234112045.html), 2026-11-20 |\n| GPU equipment | about $47.3 billion · deliveries expected to start in January | Same as above |\n| KBRA preliminary | A- · A-2·A-3 about $27.2 billion · B about $2.4 billion · about 5-year finance lease | [KBRA](https://finance.yahoo.com/markets/stocks/articles/kbra-assigns-preliminary-ratings-stable-115700547.html), 2026-11-16 |\n| D-2027-1 progress | $40 billion → $44 billion (target ≤ $50 billion) | Formula · `state.milestones[D-2027-1]` |\n| Probabilities | 30/50/20 (unchanged) | `state.scenarios` |\n| Probability-weighted value · band · center | $36 · $36~$121 · $68 (unchanged) | `state.valuation` |\n| US 10-year yield | 5.04% (2026-11-19) | FRED · `data/latest.json meta.macro.ust10` |"
+ }
+}

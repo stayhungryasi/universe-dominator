@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-21-event-s4",
+ "lang": "en",
+ "src_hash": "148b1989ba00",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-21 12:39",
+ "attempts": 2,
+ "status": "ok",
+ "fields": {
+  "title": "3. Price",
+  "md": "\n| Date | Close | Change | Volume |\n|---|---|---|---|\n| 11/19 | $138.43 | −3.53% | 119,613,372 |\n| 11/20 | **$127.79** | −7.69% | 124,419,426 |\n\n(Source: [stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), accessed 2026-11-21 KST)\n\n- **Attribution**: There is a report that the stock fell −6.57% before the open on 11/20 (⑥ TradingView/GuruFocus). The only company-related events confirmed for that day are the pricing announcement and its coverage. However, since it was not checked against overall market movement, it is not attributed (Source: [TradingView](https://www.tradingview.com/news/gurufocus:8a4101c9c094b:0-spacex-stocks-drop-6-57-premarket-after-32-billion-bond-sale-at-8-26/) · `state.market.event_run_note`).\n- **Arithmetic values that change with price**: market cap 127.79 × 13.581 = **$1,736** · EV 1,736 − 51 = $1,685 · AI intrinsic value 1,736 − 350 − 141 − 51 = **$1,194** (previously $1,338, −10.8%) · multiples 1,194 ÷ 30.24 = 39x · 1,194 ÷ 26 = 46x · 1,194 ÷ 19.81 = 60x (against annualized AI revenue · contracted ARR · annualized AI adjusted EBITDA respectively; all dollar figures in $ billions) (Source: [10-Q cover share count](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · `state.valuation`).\n- **Data record**: The same site's 11/19 volume was revised after the fact from 119,613,373 shares to 119,613,372 shares. The closing price is unchanged (Source: stockanalysis, accessed 2026-11-21 KST).\n\n---\n"
+ }
+}

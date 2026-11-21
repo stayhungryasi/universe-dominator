@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-21-event-s6",
+ "lang": "en",
+ "src_hash": "8c19ad9ee6e7",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-21 12:39",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers — What This Run Touched",
+  "md": "\n| Trigger | Expected | Actual | Handling | Source |\n|---|---|---|---|---|\n| T5 Financing | 12/01 (monthly) · 2027-01-07 (closing 8-K) | Lessor financing pricing 11/19–20 · upsized to approx. $44 billion · no closing 8-K | **Not a mistaken expectation** — the news watcher woke it up between checkpoints (as designed). Both checkpoints are kept, and 'after pricing, master lease signing → fixed rate in 8-K Items 1.01·2.03' was added to the verification method | `state.triggers_next_12m[T5]` |\n| T1 Earnings | early 2027-02 | The watcher linked the financing event | Recorded as a mislink (`log_check`) | `state.triggers_next_12m[T1]` |\n\n- **Remainder of due**: Samsung (T17, handled 11/17) · 'Bloomberg: as soon as this week' (handled 11/20 — realized by this sale) · NSSL limit (T13, 11/20) · T7 expected date (handled 11/20, next checkpoint 12/01) · off-balance-sheet $40 billion and Semafor details (11/20) · Google New Glenn (11/20) · DealBook remarks (T6 candidate table, 11/20). All of these fired again and there is nothing new to handle (source: `state.triggers_next_12m`).\n- **T7 re-search** (every run per protocol): No new Starlink·Starshield announcement from Ukraine's president or defense ministry was found since the 11/17 'restrictions maintained in occupied areas' (searched 2026-11-21 KST). The verdict remains pending (source: `state.milestones[E-2027-3].progress.candidates[0]`).\n\n---\n"
+ }
+}
