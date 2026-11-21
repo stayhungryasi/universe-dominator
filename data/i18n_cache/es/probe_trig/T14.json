@@ -4,11 +4,14 @@
  "lang": "es",
  "src_hash": "317f947531a6",
  "model": "claude-haiku-4-5",
- "at": "2026-11-14 18:39",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[3§check] 숫자: 원문에 없는 숫자 3T"
- ]
+ "at": "2026-11-22 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "Cliente de IA B (Anthropic) Punto de Verificación de Renovación·Rescisión — ① Texto Original de la Cláusula SpaceX en Documentos de Oferta Pública de Anthropic (S-1/A·FWP) (Fecha de Vencimiento del Período Inicial No Rescindible·Sujeto de Notificación) ② Divulgación de Notificación de Rescisión (Propuesta de Nueva Regla ⑤) ③ Nota de Concentración de Clientes del 10-K 4Q26",
+  "expected": "2026-12-01 (KST, punto de verificación mensual — texto original de cláusula S-1/A) → 2027-02 (nota de concentración de clientes del 10-K 4Q26, estimado) → 2027-04-02 (KST — asumiendo que el período inicial no rescindible vence 2027-01·03, con notificación posible 90 días después, y suponiendo ejercicio cerrado 6/30, la fecha límite de notificación es aproximadamente 4/1 + 1 día, estimado)",
+  "check": "① EDGAR — Texto original de la cláusula de acuerdo de cómputo de SpaceX en S-1/A·FWP de Anthropic (CIK 2130357) (según prensa: máximo 120.500 millones de dólares hasta 2029 · período inicial no rescindible vencimiento 2027-01·2027-03 · notificación escrita 90 días después) ② 8-K de SpaceX (recepción de notificación de rescisión es evento material) — propuesta ⑤ condición de activación ③ proporción de Cliente B en 10-K 4Q26 ④ Cliente B R12 10-Q 34,5% 3Q (aproximadamente 5.028 M$ = 34,5% × 14.575, fórmula). Rumores y respuestas del CEO están en seguimiento, la determinación solo con texto de divulgación pública. No anteponer adquisición·contrato·desempeño·Starship en el encabezado del nombre (clasificación de tipo de capa de medición)",
+  "note": "Creado 2026-11-14 (sesión sin publicación del 11/12 — retomada de revisión de teslanorth 11/11: fuente es publicación en X de Jukan (@jukan05), 'verificación independiente no posible'. El 'happy to take the compute back' del CEO (wccftech 11/11) solo en tabla de candidatos). Vigilante conectado a T1 — incorrecto",
+  "statusText": "En espera (creado 2026-11-14: rumor de nota de reunión de venta lateral de Citrini Research por Jukan en X (11/11) — 'sin renovación a partir de mediados de 2027'. Anthropic·SpaceX sin confirmar, sin notificación de rescisión·divulgación pública)"
+ }
 }

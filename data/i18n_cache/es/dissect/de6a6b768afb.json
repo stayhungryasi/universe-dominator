@@ -1,0 +1,30 @@
+{
+ "kind": "dissect",
+ "id": "de6a6b768afb",
+ "lang": "es",
+ "src_hash": "85049aee8196",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-22 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Anuncio de un logro histórico",
+  "sections.1.h": "Proceso de validación dirigido por la comunidad",
+  "sections.2.h": "Garantía de precisión del enunciado de la proposición",
+  "sections.3.h": "Verificación de reproducibilidad de la compilación del código",
+  "sections.4.h": "Confirmación de coherencia entre proposición y demostración",
+  "sections.5.h": "Sistema de validación multicapa y garantía formal",
+  "sections.6.h": "Garantía de inmutabilidad del proceso de demostración",
+  "sections.7.h": "Reconocimiento del logro de la colaboración comunitaria",
+  "sections.0.ko": "El 20 de noviembre de 2026, el matemático Levent Alfvöge escribió la demostración de la Hipótesis de Riemann en Lean, un lenguaje de demostración formal, y la publicó como una biblioteca de código de 17 millones de líneas. La comunidad de Lean y la comunidad de Mathlib (biblioteca matemática) tienen la certeza de que esta demostración es correcta y han emitido una declaración oficial certificándola. Este logro es significativo en la historia de las matemáticas como la resolución formal de un problema sin resolver.",
+  "sections.1.ko": "La certificación formal de la demostración no es simplemente una afirmación del autor, sino el resultado de la validación por toda la comunidad de Lean y Mathlib dentro de 24 horas. La comunidad satisfizo todos los cuatro criterios de validación presentados por el proyecto Xena y, basándose en esto, certificó formalmente la precisión del enunciado de la demostración y el proceso de demostración. Este proceso se llevó a cabo mediante la colaboración de una comunidad descentralizada, no mediante validación centralizada.",
+  "sections.2.ko": "El enunciado mismo de la Hipótesis de Riemann que se pretende demostrar se incluye en Mathlib como 'RiemannHypothesis' y ha sido cuidadosamente revisado por expertos en Lean y teoría de números. La precisión del enunciado debe garantizarse para que el proceso de demostrarlo tenga significado, por lo que esta etapa es el primer elemento esencial de todo el procedimiento de validación.",
+  "sections.3.ko": "La biblioteca de Alfvöge se compiló exitosamente sin errores, y hasta ahora decenas de personas han compilado directamente esta base de código y obtuvieron el mismo archivo de demostración exportado. Esto significa que no funciona solo en la computadora de una persona, sino que se pueden obtener resultados idénticos repetidamente en múltiples entornos, demostrando la reproducibilidad de la demostración.",
+  "sections.4.ko": "La comunidad extrajo de forma independiente un archivo que contiene solo la proposición de la Hipótesis de Riemann de Mathlib y lo comparó con el teorema demostrado por Alfvöge. Esta comparación utilizó dos herramientas independientes, 'comparator' y 'con-leche –compare', y ambas confirmaron que el teorema demostrado en la biblioteca de Alfvöge coincide exactamente con la proposición de Mathlib. Esta etapa garantiza que la demostración aborda el objeto correcto.",
+  "sections.5.ko": "Para validar la solidez de la demostración misma, se utilizaron varios verificadores de demostraciones, incluido el kernel oficial de Lean. En particular, los verificadores 'con-leche' y 'con-ron' están equipados con demostraciones formales basadas en teoría de conjuntos, por lo que se garantiza matemáticamente que no pueden aceptar demostraciones falsas. Además, se movilizaron verificadores independientes implementados por terceros en diferentes lenguajes de programación, bloqueando también la posibilidad de que defectos en el lenguaje Lean invaliden la demostración.",
+  "sections.6.ko": "Toda la validación se realizó en archivos de demostración en formato extraído, completamente separados del código fuente de la demostración. Esto se diseñó para descartar la posibilidad de código malicioso oculto en el código fuente de Lean, aunque sea hipotético, y permitir la validación de la lógica pura de la demostración. El proceso de validación más detallado se publica ampliamente en un sitio web separado del MIT.",
+  "sections.7.ko": "La declaración deja claro que este logro no es un logro individual, sino el resultado de la colaboración de toda la comunidad que proporcionó y participó en los recursos para la validación. Además, agrega que espera que la comunidad matemática entienda y utilice las nuevas ideas contenidas en esta demostración en el futuro, sugiriendo que la demostración formal puede convertirse en un activo compartido para el avance de las matemáticas más allá de simplemente ser una herramienta de validación.",
+  "caveat": "Como esta declaración es un anuncio oficial de la comunidad de Lean, el contenido matemático de la demostración misma o cómo se evalúa en la comunidad de investigación existente sobre la Hipótesis de Riemann no se aborda en el texto original, enfocándose únicamente en la verificación técnica de la validez de la demostración formal.",
+  "title": "Verificación en Lean de la Hipótesis de Riemann"
+ }
+}

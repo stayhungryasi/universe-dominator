@@ -1,0 +1,29 @@
+{
+ "kind": "dissect",
+ "id": "de6a6b768afb",
+ "lang": "en",
+ "src_hash": "081a69646b2a",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-22 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Announcement of Historic Achievement",
+  "sections.1.h": "Community-Led Verification Process",
+  "sections.2.h": "Ensuring Accuracy of the Proposition Statement",
+  "sections.3.h": "Verification of Code Compilation Reproducibility",
+  "sections.4.h": "Confirmation of Consistency Between Proposition and Proof",
+  "sections.5.h": "Multi-Layer Verification System and Formal Assurance",
+  "sections.6.h": "Guarantee of Immutability in the Proof Process",
+  "sections.7.h": "Recognition of Community Collaboration Achievement",
+  "sections.0.ko": "On November 20, 2026, mathematician Levent Alpöge published a proof of the Riemann Hypothesis written in Lean, a formal proof language, as a 17 million-line code library. The Lean community and Mathlib (Mathematics Library) community are confident that this proof is correct, and have issued a statement formally certifying it. This achievement is significant in mathematical history as a formal resolution of an unsolved problem.",
+  "sections.1.ko": "The formal certification of the proof is not merely the prover's claim, but the result of verification by the entire Lean and Mathlib community within 24 hours. The community satisfied all four verification criteria presented by the Xena Project, and on this basis formally certified the accuracy of the proof statement and proof process. This process was conducted through collaboration among a distributed community rather than centralized verification.",
+  "sections.2.ko": "The proposition statement of the Riemann Hypothesis to be proved is itself included in Mathlib as 'RiemannHypothesis' and has been carefully reviewed by Lean and number theory experts. The accuracy of the proposition statement must be secured for the proof process itself to have meaning, so this step is the first essential element of the entire verification procedure.",
+  "sections.3.ko": "Alpöge's library compiled successfully without errors, and to date, dozens have directly compiled this codebase and obtained identical proof export files. This means it does not function only on one person's computer, but can repeatedly produce the same result in multiple environments, demonstrating the reproducibility of the proof.",
+  "sections.4.ko": "The community independently extracted a file containing only the Riemann Hypothesis proposition from Mathlib and compared it with the theorem proved by Alpöge. This comparison used two independent tools, 'comparator' and 'con-leche –compare', and both confirmed that the theorem proved in Alpöge's library exactly matches the proposition in Mathlib. This step ensures that the proof addresses the correct subject.",
+  "sections.5.ko": "Multiple proof checkers, including Lean's official kernel, were deployed to verify the validity of the proof itself. In particular, the 'con-leche' and 'con-ron' checkers are equipped with set-theoretic formal proofs, so it is mathematically guaranteed that they cannot accept false proofs. Additionally, independent checkers implemented by third parties in different programming languages were also deployed, blocking the possibility that defects in the Lean language itself could invalidate the proof.",
+  "sections.6.ko": "All verification was performed on proof files in extracted form, completely separate from the proof source code. This design excludes the hypothetical possibility of malicious code lurking in Lean source code and allows verification of only the pure logic of the proof. More detailed verification procedures are widely published on a separate MIT website.",
+  "sections.7.ko": "The statement clarifies that this achievement is not an individual accomplishment but a result of collaboration by the entire community that provided resources and participated in verification work. It also adds that the mathematics community is expected to understand and utilize the new ideas contained in this proof going forward, suggesting that formal proof can become a shared asset for mathematical progress beyond being a mere verification tool.",
+  "caveat": "Since this statement is an official announcement by the Lean community, the mathematical content of the proof itself or how it is evaluated by the existing Riemann Hypothesis research community is not addressed in the original text, and focuses exclusively on verification of the technical validity of the formal proof."
+ }
+}
