@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "E-2027-4",
  "lang": "es",
- "src_hash": "97e0667e988d",
+ "src_hash": "1a33ec888cf2",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-23 08:41",
  "attempts": 1,
  "status": "ok",
  "fields": {
   "text": "Nuevos contratos federales estadounidenses por encima del año anterior",
-  "reason": "Los contratos se confirman (3Q26 8-K Ex.99.1 — NSSL 18 casos·tripulación ISS 3 casos·NASA Roman), pero los importes y comparativas anuales (USAspending) no están compilados. 2026-11-20: el incremento de límite máximo combinado de NSSL Lane 2 de $985 millones (anuncio del DoD 11/16) es un límite, no un contrato — no se incluye. El historial está en progress_reason_log",
+  "reason": "Se confirmaron pedidos (3Q26 8-K Ex.99.1 — NSSL 18 ocasiones·tripulación ISS 3 ocasiones·NASA Roman), pero los montos y la comparación interanual (USAspending) no están compilados. 2026-11-20: el incremento de límite máximo combinado de NSSL Lane 2 de $985 millones (anuncio del Departamento de Defensa 11/16) es un límite, no un contrato — sin entrada. 2026-11-22-r2 (antecedentes, sin entrada): el 20 de noviembre, Himes de la Comisión de Inteligencia de la Cámara (presidente previsto para 01/2027 — reportaje de CNN) envió una carta al CEO diciendo 'It is difficult for me to continue supporting the authorization of funding' (11/20, CNN·Newsweek — texto original no publicado) — es una advertencia de suspensión de apoyo a la autorización, no una medida contractual o presupuestaria. El registro de cabildeo de Mehlman Consulting de SpaceX (LDA, vigencia 10/1 · publicado 11/16 · 7 cabilderos) tampoco es entrada de contrato. El historial está en progress_reason_log",
   "hit": "Riesgo político no materializado",
-  "miss": "Probabilidad de debilidad mayor si disminuye",
-  "method": "USAspending·DoD",
-  "parts.0.label": "Nuevos contratos federales estadounidenses (comparativa anual)",
-  "parts.0.reason": "Datos de importes y comparativa anual (USAspending) no compilados"
+  "miss": "Si disminuye, aumenta probabilidad de debilidad",
+  "method": "USAspending·divulgaciones del DoD",
+  "parts.0.label": "Nuevos contratos federales estadounidenses (comparación interanual)",
+  "parts.0.reason": "Datos de montos y comparación interanual (USAspending) no compilados"
  }
 }

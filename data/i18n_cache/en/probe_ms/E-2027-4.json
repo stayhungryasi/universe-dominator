@@ -2,18 +2,18 @@
  "kind": "probe_ms",
  "id": "E-2027-4",
  "lang": "en",
- "src_hash": "97e0667e988d",
+ "src_hash": "1a33ec888cf2",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
- "attempts": 1,
+ "at": "2026-11-23 08:41",
+ "attempts": 2,
  "status": "ok",
  "fields": {
   "text": "U.S. federal contract new orders above prior year",
-  "reason": "Orders confirmed (3Q26 8-K Ex.99.1 — NSSL 18 times · ISS crew 3 times · NASA Roman), but amounts and year-over-year comparison (USAspending) not aggregated. 2026-11-20: NSSL Lane 2 maximum cap aggregate $985 million increase (DoD notice 11/16) is a cap, not an order — not entered. History is in progress_reason_log",
-  "hit": "Political risk unrealized",
-  "miss": "Decline increases weakness probability",
-  "method": "USAspending · DoD disclosure",
-  "parts.0.label": "U.S. federal contract new orders (year-over-year)",
-  "parts.0.reason": "Amount and year-over-year comparison data (USAspending) not aggregated"
+  "reason": "New orders confirmed (3Q26 8-K Ex.99.1 — NSSL 18 times·ISS crew 3 times·NASA Roman) but amount and prior-year comparison (USAspending) not aggregated. 2026-11-20: NSSL Lane 2 maximum cap combined $985M increase (DoD notice 11/16) is a cap limit, not a new order — not entered. 2026-11-22-r2 (background, not entered): House Intelligence Committee Himes (scheduled chair in 2027-01 — CNN report) letter to CEO stating 'It is difficult for me to continue supporting the authorization of funding' (11/20, CNN·Newsweek — full text not disclosed) — warning of authorization support suspension, not a contract or budget action. SpaceX's Mehlman Consulting lobbying registration (LDA, effective 10/1 · posted 11/16 · 7 lobbyists) also not a new order entry. History in progress_reason_log",
+  "hit": "political risk not materialized",
+  "miss": "if decline, weakness probability higher",
+  "method": "USAspending·DoD disclosure",
+  "parts.0.label": "U.S. federal contract new orders (versus prior year)",
+  "parts.0.reason": "amount and prior-year comparison data (USAspending) not aggregated"
  }
 }

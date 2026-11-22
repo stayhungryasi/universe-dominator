@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-r2-s6",
+ "lang": "es",
+ "src_hash": "d9e032cf4e2e",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-23 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores — lo que tocó esta entrega",
+  "md": "\n| Disparador | Previsto | Real | Tratamiento | Fuente |\n|---|---|---|---|---|\n| Ruta del Congreso T7 | 12/01 (ⓕ 11/30 + 1 día KST) | Entre los puntos de control se interpusieron reportes (registro de cabildeo · carta de Himes) | ⓗ nuevo · ⓘ·ⓓ2·ⓖ registrados retroactivamente · ⓓ corregido · próximo punto de control 12/01 → 2027-01 (ⓗ) → 2027-1H (ⓑ) | `state.triggers_next_12m[T7]` |\n\n- **Método de previsión — dónde falló**: la entrega del 11/20 corrigió el método a 'buscar también cartas dirigidas a la empresa'. Pero incluso después, en la tabla de rutas la única carta dirigida a la empresa era ⓕ. Esto se debe a que no se revisaron de nuevo las 3 cartas del periodo previo a la corrección (10/19~10/23). De ellas, la carta del 10/19 ya había sido señalada por la copia de la entrega del 11/08, que no pudo publicarse, pero al bloquearse esa entrega no llegó a entrar en state. **Corrección**: cuando una entrega cambie el método, se revisará de nuevo todo lo posterior a la fecha de inicio del suceso (10/13). La falta de respuesta a los tres plazos no es un suceso, por lo que no afecta a la probabilidad ni al veredicto (fuente: `state.triggers_next_12m[T7].prev_2026_11_22_r2`).\n- **Resto de los vencimientos (due)**: límite NSSL (T13, 11/20) · fecha prevista de T7 · 4 reportes de adquisiciones (T5, 11/20·11/21) · Google New Glenn (11/20) · declaraciones de DealBook sobre la compensación de la fusión (tabla de candidatos T6, 11/20) · declaraciones de Amodei (T14, mañana del 11/22). Todos son repeticiones de avisos y no hay nada nuevo que tratar (fuente: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

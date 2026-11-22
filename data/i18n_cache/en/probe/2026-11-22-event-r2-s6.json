@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-r2-s6",
+ "lang": "en",
+ "src_hash": "d9e032cf4e2e",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-23 08:41",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers — What This Run Touched",
+  "md": "\n| Trigger | Expected | Actual | Handling | Source |\n|---|---|---|---|---|\n| T7 congressional path | 12/01 (ⓕ 11/30 + 1 day KST) | Reports (lobbying registration · Himes letter) intervened between checkpoints | ⓗ added · ⓘ·ⓓ2·ⓖ registered retroactively · ⓓ corrected · next checkpoint 12/01 → 2027-01 (ⓗ) → 2027-1H (ⓑ) | `state.triggers_next_12m[T7]` |\n\n- **Expectation method — where it was wrong**: The 11/20 run revised its method to 'also search for letters addressed to the company.' Yet even afterward, the path table contained only one letter to the company, ⓕ. This was because the three letters from the pre-revision period (10/19–10/23) were not re-scanned. Of these, the 10/19 letter had already been flagged by the draft of the 11/08 run that could not be published, but it never made it into state because that run was blocked. **Fix**: when a run revises its method, it re-scans everything after the event start date (10/13). Non-responses to the three deadlines are not events, so there is no effect on probabilities or verdicts (source: `state.triggers_next_12m[T7].prev_2026_11_22_r2`).\n- **Remainder of due items**: NSSL limit (T13, 11/20) · T7 expected date · four procurement reports (T5, 11/20·11/21) · Google New Glenn (11/20) · DealBook merger compensation remarks (T6 candidate table, 11/20) · Amodei remarks (T14, morning of 11/22). All of these are repeat alerts and nothing new needs handling (source: `state.triggers_next_12m`).\n\n---\n"
+ }
+}

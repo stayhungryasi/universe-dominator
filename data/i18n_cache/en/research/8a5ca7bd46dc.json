@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "8a5ca7bd46dc",
  "lang": "en",
- "src_hash": "a06f21058fe3",
+ "src_hash": "67bd5f5b976c",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 18:43",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Marvell Technology (MRVL) trades at the lower end of its 52-week range and below its 200-day moving average, down 11.69% from recent session.",
-  "summary_ko.1": "Annual total revenue increased 42.09%, net income surged 401.71%, and EPS climbed 400.25%; positioned in $10B-$200B large-cap category."
- }
+ "at": "2026-11-23 08:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[19§summary_ko.1] 숫자: 원문에 없는 숫자 100 billion, 2 trillion",
+  "[19§summary_ko.1] 숫자: 원문의 숫자가 빠짐 100억, 2000억"
+ ]
 }

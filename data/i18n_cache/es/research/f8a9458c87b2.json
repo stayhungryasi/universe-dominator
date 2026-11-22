@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "f8a9458c87b2",
  "lang": "es",
- "src_hash": "ddfc2a1bf6c8",
+ "src_hash": "0a0e58ee7597",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 18:43",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "BofA aumenta el precio objetivo de Eli Lilly (LLY:NYSE) a 1.600 dólares, mostrando un margen alcista del 19% respecto al precio actual, manteniendo la calificación de Compra",
-  "summary_ko.1": "LLY registró un crecimiento de ingresos del 39% en el tercer trimestre, superando significativamente a Novo Nordisk (4%), y ajustó hacia arriba la guía de 2026 a 91.000-92.000 millones de dólares",
-  "summary_ko.2": "Se espera ventas máximas de 5.000-15.000 millones de dólares en nuevos fármacos para enfermedades cerebrales (cleminorexton, AtaiBeckley) además de medicamentos para la obesidad, asegurando impulsor de crecimiento adicional",
-  "title": "Eli Lilly está cerca de su máximo. Bank of America ve otro 19%"
- }
+ "at": "2026-11-23 08:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.1] 숫자: 원문에 없는 숫자 85000, 91000",
+  "[17§summary_ko.1] 숫자: 원문의 숫자가 빠짐 850, 910"
+ ]
 }

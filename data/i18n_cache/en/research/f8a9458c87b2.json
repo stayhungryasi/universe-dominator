@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "f8a9458c87b2",
  "lang": "en",
- "src_hash": "fb9ac7a74f04",
+ "src_hash": "30e2d2aaf532",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 18:43",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "BofA raised Eli Lilly (LLY:NYSE) price target to $1,600, suggesting 19% upside from current levels, while maintaining Buy rating.",
-  "summary_ko.1": "LLY's Q3 revenue grew 39%, significantly outpacing Novo Nordisk (4%), and 2026 guidance was raised to $91-92B.",
-  "summary_ko.2": "Beyond obesity treatments, peak sales of $5-15B are expected from new neurological drugs (cleminorexton, AtaiBeckley), securing additional growth drivers."
- }
+ "at": "2026-11-23 08:41",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[11§summary_ko.1] 숫자: 원문에 없는 숫자 85, 91",
+  "[11§summary_ko.1] 숫자: 원문의 숫자가 빠짐 850, 910"
+ ]
 }
