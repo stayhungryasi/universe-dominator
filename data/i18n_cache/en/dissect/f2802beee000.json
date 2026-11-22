@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "f2802beee000",
+ "lang": "en",
+ "src_hash": "adccf6030518",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-22 18:43",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Resolution of the Navier-Stokes Problem, One of the Millennium Prize Problems",
+  "sections.1.h": "A Fundamental Mathematical Question Unsolved for Over 90 Years",
+  "sections.2.h": "The Navier-Stokes Equation: Describing Fluids Using Newton's Laws",
+  "sections.3.h": "The Possibility of Singularities: Questioning the Limits of the Equation",
+  "sections.4.h": "OpenAI's Solution: Singularities Created by Vortices",
+  "sections.5.h": "Approaching the Problem with an AI Agent System",
+  "sections.6.h": "Solving the Euler Equation Problem as Well: Unexpected Achievement",
+  "sections.7.h": "Acknowledging Independence from Other Research Teams and Collaboration",
+  "sections.8.h": "Communicating the Speed of AI Advancement to the World",
+  "sections.9.h": "AI Progress: Seeking Balance Between Control and Responsibility",
+  "sections.0.ko": "OpenAI's internal system announced that it has solved the Navier-Stokes existence and smoothness problem, one of the Millennium Prize Problems. This proof demonstrates that the Navier-Stokes equation, which describes fluid motion, can generate singularities in finite time. OpenAI publicly released both the proof materials and the proof written in Lean, a formal verification language.",
+  "sections.1.ko": "The Millennium Prize Problems represent the deepest questions at the forefront of mathematics. The question of whether the smooth motion of three-dimensional fluids can collapse has gone unanswered for approximately 90 years. To understand why solving this problem is important, we must first learn what the Navier-Stokes equation is and why it is difficult to solve.",
+  "sections.2.ko": "The Navier-Stokes equation describes fluid motion by applying Newton's second law (F=ma). A key characteristic of this equation is that it treats fluids as a continuum and does not track individual molecules. The equation is applied in many real-world problems, such as aircraft design, weather prediction, and blood flow research. However, the most fundamental unsolved question is when this continuum approximation breaks down.",
+  "sections.3.ko": "The core question is whether the Navier-Stokes equation for three-dimensional incompressible fluids can create singularities in finite time even when starting from smooth initial conditions. A singularity refers to a state where the velocity of the fluid rises to infinity within finite time. This means that since actual fluids cannot move infinitely fast, the equation can no longer properly model reality. The question of whether such collapse can occur even with viscosity has remained unsolved since Jean Leray proved the existence of solutions in 1934.",
+  "sections.4.ko": "OpenAI's system's proof showed that when a smooth external force is applied to a fluid that was initially at rest, singularities can be generated in finite time. The key is that a vortex forms, spiraling inward like spaghetti, and as this central region shrinks, the velocity increases, yet the total energy remains finite. This mathematically demonstrates a phenomenon where, while satisfying physical laws, the terms of the equation itself cancel out very delicately, reaching a singularity without infinite external force input.",
+  "sections.5.ko": "OpenAI used a new internal model trained from August 28th and began evaluating all Millennium Prize Problems starting September 1st. For this, it operated a multi-agent system consisting of approximately 10,000 concurrent agents, each with access to internet cache and code execution capabilities. The agents reached the Navier-Stokes solution in approximately 88 hours by September 5th, with an additional 17 hours required for Lean formal verification. During this process, the agents exchanged approximately 2.7 million messages and used approximately 130 billion output tokens.",
+  "sections.6.ko": "Before solving the Navier-Stokes problem, OpenAI had agents attempt easier problems as well. In particular, it solved the regularity problem of the Euler equation without viscous terms under no external force conditions, an achievement accomplished by approximately 100 agents over approximately 50 hours. The resolution of the Euler problem inspired the Navier-Stokes approach, and upon seeing this, OpenAI decided to focus on Navier-Stokes.",
+  "sections.7.ko": "After OpenAI's effort was completed, they contacted Levent Alpoge, an employee at Anthropic, and Tristan Buckmaster, a mathematics professor at NYU, who had obtained similar results. They had solved the forced Euler problem, and OpenAI acknowledged their priority and proposed a joint announcement. OpenAI stated that they had not previously encountered these individuals' work, and that the proofs from both teams differ substantially in content and results.",
+  "sections.8.ko": "By publishing this result, OpenAI seeks to report substantial progress in its AI model and inform the world of the performance level to be expected from future models. While not claiming the Millennium Prize reward, it presented this achievement as an indicator of the stage AI advancement has reached. This is significant in that the AI system independently solved pure mathematics, an area traditionally difficult for AI to approach.",
+  "sections.9.ko": "OpenAI views this result as evidence of \"the next era of AI advancement\" and is considering how to better understand the model and control the pace of future capability development through it. While emphasizing that the core goal is to create navigable, responsible, and human-connected AI systems, it suggests that more careful choices may be necessary to ensure AGI benefits everyone. This represents a commitment to balancing the speed of technological progress and safety.",
+  "caveat": "Whether OpenAI's proof has passed verification by the mathematical community and whether the presented result completely solves the original Millennium Prize Problem cannot be determined from the original text alone, so we must await future expert evaluation."
+ }
+}

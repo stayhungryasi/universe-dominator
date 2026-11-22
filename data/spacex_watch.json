@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-22T08:31+09:00",
+  "fetched_at": "2026-11-22T18:31+09:00",
   "year": 2026,
   "year_count": 128,
   "starship_last": {
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-22T12:31+09:00",
+  "checked_at": "2026-11-22T18:31+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-21T23:43:03Z",
@@ -1127,7 +1127,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-22T12:31+09:00",
+ "generated_at": "2026-11-22T18:30+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1718,6 +1718,18 @@
    "detected_at": "2026-11-22",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:starshield-lobbyists:2026-11-22",
+   "trigger_id": null,
+   "name": "머스크가 Starshield 조사와 관련해 로비스트를 고용했다.",
+   "reason": "보도 감지(dev.ua·mezha.net·ukrmedia news)",
+   "event": "Musk hired lobbyists in connection with the Starshield investigation",
+   "event_date": "2026-11-21",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5ha2p1UklvNEhlT2x2MXZwbGRFM1lVcF9UOEcwdWZLeW02YkoyWVNncHJiNWhrY3R5Z1lIX0daWXQ0MTAwVnp1SEtTeUROdDJjaXRaVGFHcUM0OXNwT3p3RUtON05pNGY3Y2l6bXVVQzViYWhIWXJXb0pn?oc=5",
+   "detected_at": "2026-11-22",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
@@ -1733,12 +1745,25 @@
     "https://news.google.com/rss/articles/CBMihAJBVV95cUxPV1NtaGR4aUVTSzVZM0E3OGZaVUVEZGJnNzVjYTJIWkZfYnhQUHJJZUpRWGRCSXl2R1NuclB1OG1waHh2dk96QjRoZjBXdXo5NU1Zb09oRXVKWjdxT0hXcmluVUs2NlZBaGRyM256YnZPR2RMLW53S3NrVm9yRlI3ek50anZVc1J4Nlg1aXdKbzJjY1Q4Qk5QcG81V3ZyRlNRcnJrZC1MVHNUMlJHZGhER2RkVGpoenAyMVZDNnUxOVBsa09QdzJaMFlEVmo5SHRVUEJmLW9GVV9ldE9Jc09DNlZHb0wxY3F1TmlaU3VFakYwaWt3dDQ4eFl2eENWeUhPQVNvYdIBigJBVV95cUxNcGlPZ1JzeF8tazNyWC1OOXdKM3luZWwtTmtfRTEyVG9CWm5oeXpVejV5Y1psZFJmRW9jakg4aU9RQnAyY3d3a251RnhSVGpEdjNEcVAtQThFUkh4U3RvRnBzYlZ3b2lsTmFZdWxFMVZaTUxPV2U0eG9mUmNxODRKTHdvb3FsZ25YemFLZUFfR1ZmUVJBLUw1TllrZFUyQUpVV0RfV2R3eHBlZ3JuWXZyNWR2ZGI4NTdfOGpObzBFcXZqT0Z5anJhN3RSYXdxekhSUTl5OUlRWjFXZWRYLTlxLURZTkhENm5SamNubXVHQllsNXY3WlNzaUhpQnJFR1V3RFJCZEk4dDBHUQ?oc=5",
     "https://news.google.com/rss/articles/CBMiQkFVX3lxTE15eGtDemFCbmtVR0FYcUhSOWR3YnVHX0F3a0hQakRySHU4cFVGRk05NEtzM2FNWFM2OG9feFMxenhvdw?oc=5"
    ]
+  },
+  {
+   "key": "qn:2026-11-22:1831",
+   "run_id": "45006666514",
+   "queued_at": "2026-11-22T18:31+09:00",
+   "state": "queued",
+   "trigger_id": "",
+   "name": "머스크가 Starshield 조사와 관련해 로비스트를 고용했다.",
+   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMiekFVX3lxTE5ha2p1UklvNEhlT2x2MXZwbGRFM1lVcF9UOEcwdWZLeW02YkoyWVNncHJiNWhrY3R5Z1lIX0daWXQ0MTAwVnp1SEtTeUROdDJjaXRaVGFHcUM0OXNwT3p3RUtON05pNGY3Y2l6bXVVQzViYWhIWXJXb0pn?oc=5",
+    "https://news.google.com/rss/articles/CBMiswFBVV95cUxQR1pDQW1rd0tiVE5XVUdMdklPSTBOcFlKSXFsRlA2dEdhUnBoYmwwU2hDZVJELWoxN2hxUHpzZkZUN2ZjNmJJV2NnN0NTNEE2SXcxQy1vdlFHeTgwZElfNVE5LTg4akJVZk43bE5RTUF3TTB1ZXNFZHlVUHZFT0RfYnY2MThtcV9RQ3FmbU1jVHJrV3lMVzBXUTlpc0F2aDdqMTdTVVd6a2ZZdDJFbzRYQVZfRQ?oc=5"
+   ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-22T12:31+09:00",
-  "last_success_at": "2026-11-22T03:30:57Z",
-  "last_run_at": "2026-11-22T03:30:21Z",
+  "checked_at": "2026-11-22T18:31+09:00",
+  "last_success_at": "2026-11-22T09:31:13Z",
+  "last_run_at": "2026-11-22T09:30:21Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

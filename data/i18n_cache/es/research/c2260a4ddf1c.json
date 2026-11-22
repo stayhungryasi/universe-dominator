@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "c2260a4ddf1c",
  "lang": "es",
- "src_hash": "8fbc34fc88ea",
+ "src_hash": "48a92e5044b9",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 12:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Amazon (AMZN) actualmente cotiza cerca de $258, con un precio objetivo de consenso de Wall Street de $326 que sugiere una posible subida de aproximadamente el 27%; 59 de 61 analistas proporcionan una calificación de compra.",
-  "summary_ko.1": "Los ingresos de AWS en el tercer trimestre fueron de $4.600 millones, un crecimiento del 39% (tasa de crecimiento más alta en 5 años); el CEO Andy Jassy mencionó la posibilidad de un crecimiento de '40% o superior' en 2027-2028, con volúmenes de tokens de Bedrock aumentando aproximadamente 17 veces.",
-  "title": "59 analistas califican a Amazon como compra. Aquí está a dónde podría llegar la acción"
- }
+ "at": "2026-11-22 18:43",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[0§summary_ko.1] 숫자: 원문에 없는 숫자 45980 million",
+  "[0§summary_ko.1] 숫자: 원문의 숫자가 빠짐 45.98억"
+ ]
 }

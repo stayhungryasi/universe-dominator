@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "655ab8122846",
  "lang": "es",
- "src_hash": "87380e8ddd5c",
+ "src_hash": "62716498c7a3",
  "model": "claude-haiku-4-5",
- "at": "2026-11-21 18:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "SanDisk (SNDK) ejecutó un desdoble de acciones 8 por 1 el 20 de enero, y el precio objetivo de 24/7 Wall St. es de aproximadamente 151,22 dólares después del ajuste del desdoble, lo que indica un potencial de alza del 55,85%.",
-  "summary_ko.1": "Los ingresos del primer trimestre de 11.031 millones de dólares aumentaron un 377,95% interanual, el EPS no-GAAP de 49,51 dólares superó las expectativas por sexto trimestre consecutivo, aunque el precio de las acciones cayó un 40,89% mensualmente.",
-  "title": "Las acciones de SanDisk han retrocedido. Aquí es donde podrían dirigirse los valores a continuación"
- }
+ "at": "2026-11-22 18:43",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[8§summary_ko.1] 숫자: 원문에 없는 숫자 11.031 billion, 10.677 billion",
+  "[8§summary_ko.1] 숫자: 원문의 숫자가 빠짐 11.031억, 10.677억"
+ ]
 }

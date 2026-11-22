@@ -2,14 +2,16 @@
  "kind": "research",
  "id": "03cb2108b929",
  "lang": "es",
- "src_hash": "8ee2f36cb19e",
+ "src_hash": "28decc4f2579",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 12:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Alphabet (GOOGL -2,70%, GOOG -2,59%) ha caído a su mínimo de 1 año de $265,29, bajando un 34% desde el máximo de mayo de $402,62 y 15% por debajo del nivel de principios de año.",
-  "summary_ko.1": "La deuda a largo plazo de Alphabet aumentó de $4.650 millones a finales de 2025 a $12.510 millones en septiembre de 2026, y emitió $1.090 millones adicionales en bonos este mes para construcción de centros de datos de IA con gasto de capital significativamente mayor planeado en 2027.",
-  "title": "La Acción de Alphabet Acaba de Alcanzar un Mínimo de 1 Año. ¿Por Qué la Empresa Matriz de Google Está Endeudándose Tanto?"
- }
+ "at": "2026-11-22 18:43",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[17§summary_ko.0] 숫자: 원문에 없는 숫자 52",
+  "[17§summary_ko.1] 숫자: 원문에 없는 숫자 10900 million, 125100 million, 9100 million",
+  "[17§summary_ko.1] 숫자: 원문의 숫자가 빠짐 10.9억, 125.1억, 9.1억",
+  "[17§title] 숫자: 원문에 없는 숫자 12"
+ ]
 }
