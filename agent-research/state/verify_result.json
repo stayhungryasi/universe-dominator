@@ -1,37 +1,21 @@
 {
-  "run_id": "2026-11-22-event",
-  "checked": 20,
+  "run_id": "2026-11-22-event-r2",
+  "checked": 19,
   "match": 19,
   "rounding": 0,
   "mismatch": [],
-  "unverifiable": [
-    {
-      "claim": "2026-11-20 거래량(직전 회차 조회 값, 주)",
-      "value": 124419426,
-      "reason": "과거 조회 시점의 값이라 지금은 재현할 수 없다. 현재 stockanalysis 의 2026-11-20 행은 124737116 이고, 보고서 3절 표·부록도 이 수정값을 쓴다(일치). 보고서는 124419426 을 '사후 수정 전 값'으로만 기록한다"
-    }
+  "unverifiable": [],
+  "notes": [
+    "LDA 등록서(print): 효력일 10/1/2026 · 서명 11/16/2026 1:47:12 PM · 로비스트 7명(1면 5 + 추가 2) · 분야 코드 AER·CPI·SCI·TEC 4개 — 보고서 1-1 표·부록과 같다",
+    "LDA API: dt_posted 2026-11-16T13:47:12-05:00 — 보고서 '13:47'(동부시각)과 같다",
+    "Kyiv Post 11/21: Fox News 인용 로비스트 5명 — 보고서 1-2 표와 같다",
+    "Newsweek: Himes 서한 날짜 11/20 — 일치. Yahoo(CNN) 게재 2026-11-20 6:42 PM UTC — 일치",
+    "상원 외교위 10/19 보도자료: 수신 Cardaci(법무 부사장) · 기한 11/2 · 질문 6개(기록 요청 3건 별도) — 일치",
+    "HSGAC SpaceX 앞 서한 PDF: 10/22 · 서면 답변 11/5 · 질문 1~9 · SpaceX 관리 브리핑 11/12 — 일치",
+    "HSGAC 국방장관 앞 서한 PDF: 10/22 · 서면 답변 11/5 · 질문 1~13 · DoD 관리 브리핑 11/12 — 일치(정정 문단의 서술과 같다)",
+    "Schiff 등 6인 서한 PDF: 10/23 · 기한 10/31 · 질문 1~5 · 서명 6인 — 일치",
+    "stockanalysis 11/20: 종가 127.79 · −7.69% · 거래량 124,737,116 · 장중 126.28~133.84 — 일치",
+    "FRED DGS10: 최신 관측 2026-11-19 5.04% — data/latest.json meta.macro.ust10 과 같다"
   ],
-  "details": [
-    {"claim": "기준 주가 2026-11-20 종가", "value": 127.79, "source_value": 127.79, "result": "일치", "report": "머리말·3절 표·부록 127.79 일치"},
-    {"claim": "2026-11-20 등락률(%)", "value": -7.69, "source_value": -7.69, "result": "일치", "report": "3절 표 일치"},
-    {"claim": "2026-11-20 거래량(수정값)", "value": 124737116, "source_value": 124737116, "result": "일치", "report": "3절 표·데이터 기록 일치"},
-    {"claim": "2026-11-20 거래량(직전 회차 조회 값)", "value": 124419426, "result": "확인 불가", "report": "3절 데이터 기록 124419426 — verify_list 와 같음"},
-    {"claim": "Anthropic 공모가", "value": 83.0, "source_value": 83.00, "result": "일치", "report": "1-2 표 일치"},
-    {"claim": "Anthropic 기본 공모 주식 수", "value": 980000000, "source_value": 980000000, "result": "일치", "report": "1-2 표 9억 8,000만주(956351354 + 23648646 도 원문과 일치)"},
-    {"claim": "Anthropic 공모 규모(선택권 제외)", "value": 81340000000, "source_value": 81340000000, "result": "일치", "report": "1-2 표 $813.4억 일치"},
-    {"claim": "Anthropic 동시 사모 Class N", "value": 26000000000, "source_value": 26000000000, "result": "일치", "report": "1-2 표 $260억 일치"},
-    {"claim": "Anthropic 추가 매입 선택권", "value": 147000000, "source_value": 147000000, "result": "일치", "report": "1-2 표 1억 4,700만주 일치"},
-    {"claim": "Anthropic 424B4 제출일·accn", "value": "2026-11-19 · 0001628280-26-074944", "source_value": "2026-11-19 · 0001628280-26-074944", "result": "일치", "report": "1-2 표·부록 일치"},
-    {"claim": "SpaceX 최신 EDGAR 공시 SC 13G/A 제출일", "value": "2026-11-16", "source_value": "2026-11-16 (accn 0001213900-26-120715)", "result": "일치", "report": "0절 EDGAR 줄 일치 — 앞선 순서 11/13 13G/A · 11/06 8-K · 10/26 8-K 도 원문과 같음"},
-    {"claim": "SpaceXAI 컴퓨트 약정 상한(보도)", "value": 120500000000, "source_value": 120500000000, "result": "일치", "report": "1-3 표 $1,205억 일치"},
-    {"claim": "해지 통지 기간(보도)", "value": 90, "source_value": 90, "result": "일치", "report": "1-3 표 90일 일치"},
-    {"claim": "Anthropic 의 SpaceX 월 지급 예상(보도)", "value": 3100000000, "source_value": 3100000000, "result": "일치", "report": "1-1 표 월 약 $31억 일치"},
-    {"claim": "Amodei 발언 보도 게재 시각", "value": "2026-11-20 08:21 EST", "source_value": "2026-11-20 08:21 EST", "result": "일치", "report": "1-1 표·3절 귀속 일치"},
-    {"claim": "CEO DealBook 전언 추가 컴퓨트(GW)", "value": 10, "source_value": 10, "result": "일치", "report": "1-4 표 10GW 일치"},
-    {"claim": "10-Q 고객 B 3Q26 매출 비중", "value": 34.5, "source_value": 34.5, "result": "일치", "report": "2절 T14 ③ 34.5% 일치"},
-    {"claim": "3Q26 매출(USD 백만)", "value": 14575, "source_value": 14575, "result": "일치", "source_note": "8-K 본문에는 숫자가 없고 EX-99.1(spaceexplorationtechnologi.htm)에 있다", "report": "2절 T14 ③ 산식 0.345 × 14575 = 5028.4 → 약 $5,028M 일치"},
-    {"claim": "미국 10년물 국채 금리", "value": 5.04, "source_value": 5.04, "result": "일치", "report": "4절 5.04%(2026-11-19) 일치"},
-    {"claim": "발행주식수(십억 주, 10-Q 표지)", "value": 13.581, "source_value": "8246541218 + 5334522491 = 13581063709 (2026-10-15 기준)", "result": "일치", "report": "3절 산술값 — 127.79 × 13.581 = 1735.5 → 시가총액 $1,736십억 일치"}
-  ],
-  "verified_at": "2026-11-22T08:55+09:00"
+  "verified_at": "2026-11-22T18:58+09:00"
 }
