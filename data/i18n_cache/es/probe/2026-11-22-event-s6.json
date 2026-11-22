@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s6",
+ "lang": "es",
+ "src_hash": "926455dbbc35",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores — lo que tocó esta entrega",
+  "md": "\n| Disparador | Previsto | Real | Tratamiento | Fuente |\n|---|---|---|---|---|\n| T14 Cliente de IA B | 12/01 · 2027-02 · 2027-04-02 | Declaración del CEO de la contraparte (reportaje del 11/20) · cotización (11/19) | Se actualizó la frase de estado (en espera), se cambió el objeto del check ① a 424B4 y se registró como emisor de la notificación «ambas partes según los reportajes» | `state.triggers_next_12m[T14]` |\n| T1 Resultados | principios de 2027-02 | El vigilante vinculó la declaración del cliente | Vinculación errónea — registrada en la nota de T14 | `state.triggers_next_12m[T14].note` |\n\n- **Resto de los vencidos (due)**: 5 reportajes sobre financiación (T5, tratados el 11/20 y 11/21) · límite NSSL (T13, 11/20) · fecha prevista de T7 (11/20, próximo punto de control 12/01) · Google New Glenn (11/20) · declaración sobre compensación de fusión en DealBook (tabla de candidatos de T6, 11/20). Todos sonaron de nuevo y no hay nada nuevo que tratar (fuente: `state.triggers_next_12m`).\n- **Nueva búsqueda de T7** (por protocolo, en cada entrega): desde el 11/17 «mantenimiento de restricciones en territorios ocupados» no se encontró ningún nuevo anuncio de Starshield del gobierno ucraniano (búsqueda del 2026-11-22 KST). Se mantiene la espera de dictamen, y el plazo de ⓕ es el 11/30 (fuente: `state.milestones[E-2027-3].progress.candidates[0]`).\n\n---\n"
+ }
+}

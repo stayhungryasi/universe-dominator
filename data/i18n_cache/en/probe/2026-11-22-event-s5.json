@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s5",
+ "lang": "en",
+ "src_hash": "5e297d2f2911",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probabilities·Value·Milestones — No Change",
+  "md": "\n| Scenario | Previous | Current | Basis |\n|---|---|---|---|\n| Bull | 0.30 | 0.30 | No rule triggered |\n| Base | 0.50 | 0.50 | Same |\n| Bear | 0.20 | 0.20 | Same |\n\n- **Rule check**: The remark and message meet none of the conditions of R1~R6. The only one conditioned on a termination-notice filing is the unadopted Proposal ⑤ (Source: `state.probability_adjustment_rules`).\n- **Probability-weighted value**: 0.30 × 76.3 + 0.50 × 24.1 + 0.20 × 3.3 = 35.60 → **$36** (unchanged) · band **$36~$121** · center **$68** (Source: `state.valuation`).\n- **Versus reference price**: 68 ÷ 127.79 − 1 = **−47%** (unchanged) (Source: `state.valuation.upside_vs_price_basis`).\n- **Risk-free rate memo**: The US 10-year yield is 5.04% (2026-11-19), the same as the previous run. The discount rate will be recalculated in the monthly run (12/01) (Source: `data/latest.json meta.macro.ust10` — FRED).\n- **29 milestones**: 24 in progress · 4 untested · 1 missed, with no change in rulings. A line for this run was added to `status_history` for all 29 (Source: `state.scorecard`).\n\n---\n"
+ }
+}

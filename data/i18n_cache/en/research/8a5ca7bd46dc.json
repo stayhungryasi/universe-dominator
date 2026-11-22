@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "8a5ca7bd46dc",
  "lang": "en",
- "src_hash": "05a6a8a260ca",
+ "src_hash": "c4969f74b395",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 08:41",
+ "at": "2026-11-22 12:40",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Marvell Technology (MRVL) is trading near 52-week low, below the 200-day moving average, down 11.69% from recent trading day",
-  "summary_ko.1": "Total revenue up 42.09% year-over-year, net income up 401.71%, recording strong earnings growth",
-  "summary_ko.2": "Large-cap semiconductor design and manufacturing company (market cap $10B–$200B range) focused on data center servers and storage solutions"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[15§summary_ko.1] 숫자: 원문에 없는 숫자 100 billion, 2 trillion",
+  "[15§summary_ko.1] 숫자: 원문의 숫자가 빠짐 2000억"
+ ]
 }

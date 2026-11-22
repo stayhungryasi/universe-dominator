@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s3",
+ "lang": "ja",
+ "src_hash": "f9fc54a8d2c8",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. 判断層に触れる箇所",
+  "md": "\n### 2-1. T14 (AI 顧客 B 延長·解約の確認点) — 待機維持\n\n| 確認点 | 今回の回 | 出典 |\n|---|---|---|\n| ① 書類条項の原文 | 対象が S-1/A から最終 424B4(11/19)に変わった — 原文は依然として開けていない | [EDGAR(Anthropic)](https://data.sec.gov/submissions/CIK0002130357.json) |\n| ② 解約通知の開示 | なし — SpaceX の最新開示は 11/16 の SC 13G/A | [EDGAR(SpaceX)](https://data.sec.gov/submissions/CIK0001181412.json) |\n| ③ 4Q26 10-K の顧客集中 | 待機(2027-02 推定)。3Q の顧客 B 比率 34.5% — 約 $5,028M(算式 34.5% × 14,575) | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · [8-K 業績](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spcx-20261020.htm) |\n\n- **予想日の照合**: T14 の確認点は 12/01(月次) → 2027-02(10-K) → 2027-04-02(通知期限の推定)のままである。今回の呼び起こしは確認点の間に発言報道が割り込んだものであり、予想が外れたわけではない (出典: `state.triggers_next_12m[T14].expected_date`)。\n- **監視官の連結**: 監視官は T1 に連結したが、正しい先は T14 である。T14 note に記録した (出典: `state.triggers_next_12m[T14].note`)。\n\n### 2-2. ルール新設提案 ⑤ (主要顧客の解約通知の開示 → 弱気 +10 · 強気 −5) — 該当なし\n\n- 提案の発動条件は「解約通知の開示」である。発言·伝言は条件ではなく、提案自体も未採用である。数字に反映するものはない (出典: `state.rule_proposals_not_applied`)。\n\n### 2-3. 軸 C マイルストーン — 入力なし\n\n- Amodei の発言も 10GW の伝言も、売上·銘板 GW·契約の開示ではない。C 軸マイルストーンの判定と進捗はそのままである (出典: `state.milestones` · `state.scorecard`)。\n\n---\n"
+ }
+}

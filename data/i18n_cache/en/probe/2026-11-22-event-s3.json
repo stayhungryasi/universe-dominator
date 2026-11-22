@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s3",
+ "lang": "en",
+ "src_hash": "f9fc54a8d2c8",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "2. Where It Touches the Judgment Layer",
+  "md": "\n### 2-1. T14 (AI Customer B extension·termination checkpoint) — Pending maintained\n\n| Checkpoint | This run | Source |\n|---|---|---|\n| ① Original text of filing clause | The target changed from the S-1/A to the final 424B4 (11/19) — the original text still could not be opened | [EDGAR(Anthropic)](https://data.sec.gov/submissions/CIK0002130357.json) |\n| ② Termination-notice filing | None — SpaceX's latest filing is the 11/16 SC 13G/A | [EDGAR(SpaceX)](https://data.sec.gov/submissions/CIK0001181412.json) |\n| ③ 4Q26 10-K customer concentration | Pending (estimated 2027-02). Customer B share in 3Q 34.5% — about $5,028M (formula 34.5% × 14,575) | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm) · [8-K earnings](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spcx-20261020.htm) |\n\n- **Expected-date check**: T14's checkpoints remain 12/01 (monthly) → 2027-02 (10-K) → 2027-04-02 (estimated notice deadline). This wake-up was a remark report landing between checkpoints, so the expectation was not wrong (Source: `state.triggers_next_12m[T14].expected_date`).\n- **Watcher linkage**: The watcher linked it to T1, but the correct place is T14. It was recorded in the T14 note (Source: `state.triggers_next_12m[T14].note`).\n\n### 2-2. New Rule Proposal ⑤ (top-customer termination-notice filing → Bear +10 · Bull −5) — Not applicable\n\n- The proposal's trigger condition is a 'termination-notice filing'. A remark or message is not the condition, and the proposal itself is unadopted. There is nothing to reflect in the numbers (Source: `state.rule_proposals_not_applied`).\n\n### 2-3. Axis C Milestones — No input\n\n- Neither the Amodei remark nor the 10GW message is a revenue, nameplate GW, or contract filing. The rulings and progress of Axis C milestones are unchanged (Source: `state.milestones` · `state.scorecard`).\n\n---\n"
+ }
+}

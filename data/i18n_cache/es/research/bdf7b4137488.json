@@ -2,14 +2,14 @@
  "kind": "research",
  "id": "bdf7b4137488",
  "lang": "es",
- "src_hash": "be23d7c5b99a",
+ "src_hash": "91fe435cd090",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 08:41",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "El analista de RBC Capital Gerard Cassidy mantiene una calificación de compra en JPMorgan Chase (JPM) con un objetivo de precio de $370,00, siendo clasificado como analista de los 100 mejores con un rendimiento medio del 15,1% y una tasa de éxito del 73%.",
-  "summary_ko.1": "JPMorgan Chase registró ventas de $76,19 mil millones en el tercer trimestre e ingresos netos de $15,31 mil millones, con un aumento de ventas del 6% y un aumento de ingresos netos del 6,4% año tras año.",
-  "title": "JPMorgan Chase (JPM) recibe una actualización de calificación de un analista de los mejores"
- }
+ "at": "2026-11-22 12:40",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[3§summary_ko.1] 숫자: 원문에 없는 숫자 15310 billion, 14390 billion",
+  "[3§summary_ko.1] 숫자: 원문의 숫자가 빠짐 153.1억, 143.9억"
+ ]
 }

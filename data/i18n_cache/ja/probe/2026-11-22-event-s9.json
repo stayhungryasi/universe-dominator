@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s9",
+ "lang": "ja",
+ "src_hash": "3e893ffbe8b4",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. 次回までに自分で確認すべきデータ3点",
+  "md": "\n1. **Anthropic 424B4 の SpaceXAI 条項**: 通知主体(双方かどうか)、初期期間の終了日、上限$1,205億の性格。容量超過を避けるには、EDGAR全文検索の文脈確認や分割閲覧が必要である (出典: `state.open_questions_for_next_run`)。\n2. **CNBCインタビュー原本**: 日付と全体の文脈 — 引用文が延長・解約の質問への回答かどうか (出典: `state.musk_statements_as_milestone_candidates_only`)。\n3. **既存の確認ポイント**: Ariane 64 LE-04(11/23, T4) · DA 26-1160 再審期限(11/27, T8) · T7 ⓕ(11/30) · 月間 12/01 · T2 12/8 ロックアップ · T12 12/9 議決 (出典: `state.triggers_next_12m`)。\n\n---\n\n### 付録: 今回確認した事実の要約(出典・日付)\n\n| 事実 | 値 | 出典・日付 |\n|---|---|---|\n| 基準株価 | $127.79(−7.69%) · 出来高 124,737,116株(事後修正) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-11-20 |\n| Amodei発言 | 'high quality' · 'enjoying working with SpaceX' · 将来の保証は不可 | [wccftech](https://wccftech.com/anthropic-ceo-dario-amodei-says-spacex-compute-is-high-quality-and-anthropic-is-enjoying-working-with-spacex-casting-doubt-on-shock-q2-2027-exit-reports/), 2026-11-20 |\n| Anthropic公募 | $83 · 9億8,000万株 · $813.4億 · 私募 $260億 | [FWP](https://www.sec.gov/Archives/edgar/data/2130357/000162828026074937/anthropicpbc-fwppricing.htm), 2026-11-18 |\n| 424B4 | 2026-11-19 · accn 0001628280-26-074944(原文未閲覧) | [EDGAR](https://data.sec.gov/submissions/CIK0002130357.json), 2026-11-19 |\n| 条項(報道) | 最大 $1,205億 · 2027-01・03 以降、双方に90日の通知 | [TechTimes](https://www.techtimes.com/articles/330782/20261116/anthropic-compute-commitments-hit-9009-billion-spacex-can-cancel-deal-worth-1205-billion.htm), 2026-11-16 |\n| CEO発言 | Anthropicが10GWの追加を希望 | [wccftech](https://wccftech.com/elon-musk-says-anthropic-wants-to-rent-an-additional-10-gw-of-compute-from-spacex-warning-power-is-the-real-limiting-factor-as-his-starbase-clears-1456-mws-of-gas-turbines/), 2026-11-19 |\n| 顧客B 3Q比率 | 34.5%(約 $5,028M, 算式) | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm), 2026-10-22 |\n| 確率 | 30/50/20(不変) | `state.scenarios` |\n| 確率加重価値 · バンド · 中心 | $36 · $36~$121 · $68(不変) | `state.valuation` |\n| 米10年債 | 5.04%(2026-11-19) | FRED · `data/latest.json meta.macro.ust10` |"
+ }
+}

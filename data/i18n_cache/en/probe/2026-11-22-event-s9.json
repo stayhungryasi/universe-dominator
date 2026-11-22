@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s9",
+ "lang": "en",
+ "src_hash": "3e893ffbe8b4",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "8. Three data points to verify directly before the next issue",
+  "md": "\n1. **SpaceXAI clause in Anthropic's 424B4**: who may give notice (whether both parties), the end date of the initial term, and the nature of the $120.5 billion cap. Avoiding the size limit requires EDGAR full-text search context or split viewing (source: `state.open_questions_for_next_run`).\n2. **Original CNBC interview**: the date and full context — whether the quote answers a question about extension or termination (source: `state.musk_statements_as_milestone_candidates_only`).\n3. **Existing checkpoints**: Ariane 64 LE-04 (11/23, T4) · DA 26-1160 reconsideration deadline (11/27, T8) · T7 ⓕ (11/30) · monthly 12/01 · T2 12/8 lock-up · T12 12/9 vote (source: `state.triggers_next_12m`).\n\n---\n\n### Appendix: Summary of facts confirmed this issue (source, date)\n\n| Fact | Value | Source, date |\n|---|---|---|\n| Reference share price | $127.79 (−7.69%) · volume 124,737,116 shares (revised after the fact) | [stockanalysis](https://stockanalysis.com/stocks/spcx/history/), 2026-11-20 |\n| Amodei remarks | 'high quality' · 'enjoying working with SpaceX' · cannot guarantee the future | [wccftech](https://wccftech.com/anthropic-ceo-dario-amodei-says-spacex-compute-is-high-quality-and-anthropic-is-enjoying-working-with-spacex-casting-doubt-on-shock-q2-2027-exit-reports/), 2026-11-20 |\n| Anthropic offering | $83 · 980 million shares · $81.34 billion · private placement $26 billion | [FWP](https://www.sec.gov/Archives/edgar/data/2130357/000162828026074937/anthropicpbc-fwppricing.htm), 2026-11-18 |\n| 424B4 | 2026-11-19 · accn 0001628280-26-074944 (original text not reviewed) | [EDGAR](https://data.sec.gov/submissions/CIK0002130357.json), 2026-11-19 |\n| Clause (reported) | Up to $120.5 billion · 90-day notice by either party after 2027-01·03 | [TechTimes](https://www.techtimes.com/articles/330782/20261116/anthropic-compute-commitments-hit-9009-billion-spacex-can-cancel-deal-worth-1205-billion.htm), 2026-11-16 |\n| CEO statement | Anthropic wants an additional 10GW | [wccftech](https://wccftech.com/elon-musk-says-anthropic-wants-to-rent-an-additional-10-gw-of-compute-from-spacex-warning-power-is-the-real-limiting-factor-as-his-starbase-clears-1456-mws-of-gas-turbines/), 2026-11-19 |\n| Customer B share of 3Q | 34.5% (about $5,028M, by formula) | [10-Q](https://www.sec.gov/Archives/edgar/data/1181412/000162828026066880/spcx-20260930.htm), 2026-10-22 |\n| Probabilities | 30/50/20 (unchanged) | `state.scenarios` |\n| Probability-weighted value · band · center | $36 · $36~$121 · $68 (unchanged) | `state.valuation` |\n| US 10-year yield | 5.04% (2026-11-19) | FRED · `data/latest.json meta.macro.ust10` |"
+ }
+}

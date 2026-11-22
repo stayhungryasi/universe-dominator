@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s5",
+ "lang": "es",
+ "src_hash": "5e297d2f2911",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "4. Probabilidad, valor e hitos — sin cambios",
+  "md": "\n| Escenario | Anterior | Actual | Fundamento |\n|---|---|---|---|\n| Alcista | 0,30 | 0,30 | Ninguna regla activada |\n| Base | 0,50 | 0,50 | Ídem |\n| Bajista | 0,20 | 0,20 | Ídem |\n\n- **Contraste con las reglas**: la declaración y el mensaje no cumplen ninguna condición de R1~R6. La única que tiene como condición la divulgación de una notificación de rescisión es la propuesta ⑤, no adoptada (fuente: `state.probability_adjustment_rules`).\n- **Valor ponderado por probabilidad**: 0,30 × 76,3 + 0,50 × 24,1 + 0,20 × 3,3 = 35,60 → **$36** (sin cambios) · banda **$36~$121** · centro **$68** (fuente: `state.valuation`).\n- **Frente al precio base**: 68 ÷ 127,79 − 1 = **−47%** (sin cambios) (fuente: `state.valuation.upside_vs_price_basis`).\n- **Nota sobre la tasa libre de riesgo**: el bono del Tesoro de EE. UU. a 10 años está en 5,04% (2026-11-19), igual que en la entrega anterior. La tasa de descuento se recalculará en la entrega mensual (12/01) (fuente: `data/latest.json meta.macro.ust10` — FRED).\n- **29 hitos**: 24 en progreso · 4 sin dictaminar · 1 incumplido, sin cambios de dictamen. En los 29 se añadió la línea de esta entrega a `status_history` (fuente: `state.scorecard`).\n\n---\n"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-22-event-s6",
+ "lang": "en",
+ "src_hash": "926455dbbc35",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-22 12:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers — What This Run Touched",
+  "md": "\n| Trigger | Expected | Actual | Handling | Source |\n|---|---|---|---|---|\n| T14 AI Customer B | 12/01 · 2027-02 · 2027-04-02 | Counterparty CEO remark (reported 11/20) · listing (11/19) | Status sentence updated (pending), check ① target changed to the 424B4, notifying party recorded as 'both sides per reports' | `state.triggers_next_12m[T14]` |\n| T1 Earnings | Early 2027-02 | The watcher linked the customer remark | Linked in error — recorded in the T14 note | `state.triggers_next_12m[T14].note` |\n\n- **Rest of the due items**: five financing reports (T5, handled 11/20·11/21) · NSSL limit (T13, 11/20) · T7 expected date (11/20, next checkpoint 12/01) · Google New Glenn (11/20) · DealBook merger compensation remark (T6 candidate table, 11/20). All are re-triggers, and nothing new needs handling (Source: `state.triggers_next_12m`).\n- **T7 re-search** (every run per protocol): since the 11/17 'occupied-territory restrictions maintained', no new Starshield announcement from the Ukrainian government was found (searched 2026-11-22 KST). The ruling stays pending, and the ⓕ deadline is 11/30 (Source: `state.milestones[E-2027-3].progress.candidates[0]`).\n\n---\n"
+ }
+}

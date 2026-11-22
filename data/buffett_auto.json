@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-22 08:28",
- "generated_at": "2026-11-22T08:28:22.924253+09:00",
+ "generated_label": "2026-11-22 12:28",
+ "generated_at": "2026-11-22T12:28:12.528501+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-22",
@@ -149,7 +149,7 @@
      "end": "2025-12-27"
     }
    ],
-   "notes": "P/E 37배·성장 12%로 활주로 부족; 최강 프랜차이즈도 가격이 과도함",
+   "notes": "신임 CEO 첫 어닝콜에서 글로벌 메모리 위기와 마진 압박 직면; 버핏 기준선 28배 상한을 현재 PER이 초과",
    "_evidence": {}
   },
   "GOOG": {
@@ -185,7 +185,11 @@
     },
     "fcf_ttm": 53273000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "검색 수익 부진과 2027년 대규모 자본지출 예상으로 단기 현금흐름 압박 가시화"
+    }
    },
    "conversion": {
     "value": 0.1527,
@@ -205,7 +209,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 33건 · GOOGL 조회",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q2",
@@ -223,7 +227,31 @@
      "period": "2025Q3",
      "end": "2025-09-30"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026"
+   },
+   "notes": "클라우드 성장 기록 갱신에도 주가 반응 부족, 검색 경쟁 심화와 반독점 리스크가 해자 신뢰도 훼손 중",
+   "_evidence": {
+    "franchise": "Search moat challenged by competition; Cloud growth record but insufficient market response suggests franchise durability questioned",
+    "risk5": "Search revenue miss; capex guidance uncertainty with 'significant increase in 2027' signals management confidence volatility and business cyclicality concern",
+    "capalloc": "Alphabet raises $4.19B in debt; maintains buyback despite earnings pressure; capex held unchanged in 2026 with large increase expected 2027",
+    "owner_earnings": "Google misses Wall Street expectations; revenue miss despite Cloud growth; cash burn concerns noted in headlines"
+   }
   },
   "MSFT": {
    "as_of": "2026-11-22",
@@ -1093,7 +1121,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense+us-gaap_InterestExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -1113,7 +1141,27 @@
     }
    ],
    "g_forward_status": "전망치 이상(106%) — 취재 필요",
-   "notes": "전망치 이상(106%) — 취재 필요"
+   "notes": "NVDA 대비 사이클 후반 진입, CEO Su 가속성장 예측이나 AI 칩 경기순환 위험 내재",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "data center revenue climbs 97%, CEO Su expects growth to accelerate",
+    "risk5": "AI spending fears 언급, NVIDIA turmoil 이슈로 대체가능성 의문 제기",
+    "capalloc": "strong Q3 earnings beat 달성, 긍정적 현금 흐름 신호"
+   }
   },
   "000660.KS": {
    "as_of": "2026-11-22",
@@ -2051,5 +2099,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-22 08:29"
+ "scout_label": "2026-11-22 12:29"
 }
