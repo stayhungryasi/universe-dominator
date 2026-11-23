@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-23 12:29",
- "generated_at": "2026-11-23T12:29:00.943468+09:00",
+ "generated_label": "2026-11-23 18:27",
+ "generated_at": "2026-11-23T18:27:59.374627+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-23",
@@ -252,11 +252,7 @@
     },
     "fcf_ttm": 59957000000.0,
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 캐펙스 급증으로 단기 현금흐름 압박, 장기 수익성 불확실"
-    }
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
    },
    "conversion": null,
    "conversion_status": {
@@ -277,7 +273,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -295,31 +291,7 @@
      "period": "2026Q2",
      "end": "2025-12-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024H2"
-   },
-   "notes": "전환비용 우위 견고하나 캐펙스/매출 30%대 돌입으로 플라이트세이프티 변태 리스크 상존",
-   "_evidence": {
-    "franchise": "Microsoft jumps 8% as it boosts capital spending plans, citing demand",
-    "risk5": "Microsoft (MSFT) Stock May Look Reasonable As AI Commitments Draw Scrutiny; $36 Billion Net Income in Q1 against elevated capex",
-    "capalloc": "Microsoft secures new AI chip supply deal for Azure growth, ongoing buyback activity evident from earnings reports",
-    "owner_earnings": "Microsoft boosts capital spending plans significantly while beating earnings estimates, creating capex-to-revenue pressure"
-   }
+   ]
   },
   "AMZN": {
    "as_of": "2026-11-23",
@@ -544,7 +516,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.86
+    "value": 1.88
    },
    "eps_status": null,
    "roe_tangible": 0.3005,
@@ -624,7 +596,7 @@
     "adj_ni": 74473220000.0
    },
    "g_cagr3y": 0.3541,
-   "g_forward": 0.2013,
+   "g_forward": 0.1999,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
@@ -1042,7 +1014,7 @@
     "adj_ni": 22863630000.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.1058,
+   "g_forward": 0.1052,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -1392,7 +1364,11 @@
     },
     "fcf_ttm": 8560000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 서버는 저마진 OEM으로 매출 폭발이 주주가치 창출로 직결되지 않음"
+    }
    },
    "conversion": {
     "value": 0.953,
@@ -1412,7 +1388,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 34건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q2",
@@ -1432,7 +1408,21 @@
     }
    ],
    "g_forward_status": "전망치 이상(66%) — 취재 필요",
-   "notes": "전망치 이상(66%) — 취재 필요"
+   "notes": "AI 서버 수요의 지속성 불확실 속 $95B 백로그 검증 국면; 최근 3분기 연속 어닝서프라이즈도 마진율 개선 미확인",
+   "franchise": {
+    "need": "△",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "_evidence": {
+    "franchise": "AI Bubble Deflating? Dell's $95B Backlog Faces a Test",
+    "risk5": "Dell Stock Plunges 10% in the AI Selloff; Can AI Server Demand Survive Nvidia's 23% Stock Crash?",
+    "owner_earnings": "Dell Could Swing $25.2 Billion After Earnings & Server Price Hikes on Signed Deals"
+   }
   },
   "PANW": {
    "as_of": "2026-11-23",
@@ -1578,7 +1568,7 @@
     "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
     "ai_view": {
      "display": "C",
-     "reason": "낸드 사이클 하강기에 이익 가시성 급격히 악화, 주가 40-50% 하락으로 현재 가치평가 신뢰도 최저"
+     "reason": "NAND 사이클 최하단의 예측 불가능성과 중국 경쟁 심화로 지속성 의문"
     }
    },
    "conversion": {
@@ -1619,7 +1609,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(101%) — 취재 필요",
-   "notes": "AI 리더십 이탈 충격, 사이클 예측 불가능성, 밸류에이션 급변 — 버핏 기준 투자 대상 외",
+   "notes": "AI 저장장치 수요 호황이 초단기 이익 급증을 주도하나, 사이클 역전 시 수익성 급락 위험 내재",
    "franchise": {
     "need": "○",
     "no_substitute": "△",
@@ -1628,18 +1618,18 @@
    "risk5": {
     "business_certainty": "✕",
     "mgmt_ability": "△",
-    "price": "✕"
+    "price": "△"
    },
    "capalloc": {
+    "cash_positive": 1,
     "buyback": 1,
-    "score": 1,
-    "period": "2026H1"
+    "score": 2
    },
    "_evidence": {
-    "franchise": "메모리는 필수재(need)이나, 경쟁 치열·대체 가능성 높음(no_substitute △), 공급 과잉 시 가격 급락(no_price_reg ✕)",
-    "risk5": "NAND 순수 사이클로 사업 예측 불가(business_certainty ✕), AI 리더십 퇴출(mgmt_ability △), 주가 40-50% 슬라이드 후 공정가치 추정 재하향(price ✕)",
-    "capalloc": "주식분할 8:1 시행, 주가 795달러 근처에서도 매수 추천 존재 → 적극적 자사주 매입 신호",
-    "owner_earnings": "Q1 어닝비트 직후 주가 하락, 이익 성장률 둔화 우려(Morningstar), 사이클 하강국면 진입으로 소유자익 가시성 최악"
+    "franchise": "Sandisk (SNDK) Profits Are Surging—Can the AI Storage Boom Sustain Them?; What Does Sandisk (SNDK) Losing NAND Share To China Mean Now?",
+    "risk5": "SNDK Earnings: A Semiconductor Standout, but Is 85% Margin the Ceiling?; Sandisk (SNDK) Stock Price Sinks As Q1 Results Fuel Profit Debate",
+    "capalloc": "Jim Cramer Highlights Sandisk's (SNDK) Massive Buybacks After Stock Surge",
+    "owner_earnings": "유형 시클리컬 · 낸드 순수 사이클 — 메모리 중 예측 가능성 최하단"
    }
   },
   "STX": {
@@ -1769,7 +1759,7 @@
     "adj_ni": 26446830.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.3145,
+   "g_forward": 0.3146,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 23건",
@@ -1970,8 +1960,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": "중",
-   "g_forward_status": "전망치 이상(45%) — 취재 필요",
-   "notes": "전망치 이상(45%) — 취재 필요"
+   "g_forward_status": "전망치 이상(46%) — 취재 필요",
+   "notes": "전망치 이상(46%) — 취재 필요"
   },
   "6857.T": {
    "as_of": "2026-11-23",
@@ -2102,5 +2092,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-23 12:30"
+ "scout_label": "2026-11-23 18:29"
 }

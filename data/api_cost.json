@@ -1588,109 +1588,109 @@
   },
   "2026-11-23": {
    "buffett_scout": {
-    "calls": 5,
+    "calls": 7,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 5197,
+    "in": 7248,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 5,
-      "usd": 0.016472
+      "calls": 7,
+      "usd": 0.022578
      }
     },
-    "out": 2255,
+    "out": 3066,
     "unpriced": 0,
-    "usd": 0.016472,
+    "usd": 0.022578,
     "ws": 0
    },
    "companion_essays": {
-    "calls": 8,
+    "calls": 10,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 75060,
+    "in": 98149,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 2,
-      "usd": 0.01855
+      "calls": 3,
+      "usd": 0.030692
      },
      "claude-sonnet-5-5": {
-      "calls": 6,
-      "usd": 0.22561
+      "calls": 7,
+      "usd": 0.263194
      }
     },
-    "out": 11259,
+    "out": 12828,
     "unpriced": 0,
-    "usd": 0.24416,
+    "usd": 0.293886,
     "ws": 0
    },
    "fetch_calendar": {
+    "calls": 6,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 32106,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 6,
+      "usd": 0.036736
+     }
+    },
+    "out": 926,
+    "unpriced": 0,
+    "usd": 0.036736,
+    "ws": 0
+   },
+   "fetch_pioneers": {
+    "calls": 6,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 3070,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 6,
+      "usd": 0.012445
+     }
+    },
+    "out": 1875,
+    "unpriced": 0,
+    "usd": 0.012445,
+    "ws": 0
+   },
+   "fetch_research": {
+    "calls": 18,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 81733,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 18,
+      "usd": 0.250678
+     }
+    },
+    "out": 33789,
+    "unpriced": 0,
+    "usd": 0.250678,
+    "ws": 0
+   },
+   "fetch_signals": {
     "calls": 4,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 21061,
+    "in": 2840,
     "models": {
      "claude-haiku-4-5-20251001": {
       "calls": 4,
-      "usd": 0.024211
+      "usd": 0.00959
      }
     },
-    "out": 630,
+    "out": 1350,
     "unpriced": 0,
-    "usd": 0.024211,
-    "ws": 0
-   },
-   "fetch_pioneers": {
-    "calls": 5,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 2513,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 5,
-      "usd": 0.010168
-     }
-    },
-    "out": 1531,
-    "unpriced": 0,
-    "usd": 0.010168,
-    "ws": 0
-   },
-   "fetch_research": {
-    "calls": 12,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 54449,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 12,
-      "usd": 0.162474
-     }
-    },
-    "out": 21605,
-    "unpriced": 0,
-    "usd": 0.162474,
-    "ws": 0
-   },
-   "fetch_signals": {
-    "calls": 2,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 1470,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 2,
-      "usd": 0.00528
-     }
-    },
-    "out": 762,
-    "unpriced": 0,
-    "usd": 0.00528,
+    "usd": 0.00959,
     "ws": 0
    },
    "signal_column": {
@@ -1711,41 +1711,41 @@
     "ws": 0
    },
    "spacex_news": {
-    "calls": 11,
+    "calls": 16,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 91180,
+    "in": 131001,
     "models": {
      "claude-sonnet-5-5": {
-      "calls": 11,
-      "usd": 0.5487
+      "calls": 16,
+      "usd": 0.756052
      }
     },
-    "out": 36634,
+    "out": 49405,
     "unpriced": 0,
-    "usd": 0.5487,
+    "usd": 0.756052,
     "ws": 0
    },
    "translate_content": {
-    "calls": 125,
+    "calls": 177,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 347519,
+    "in": 496856,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 58,
-      "usd": 0.503437
+      "calls": 108,
+      "usd": 1.047974
      },
      "claude-sonnet-5-5": {
-      "calls": 67,
-      "usd": 1.901004
+      "calls": 69,
+      "usd": 1.938444
      }
     },
-    "out": 221284,
+    "out": 304068,
     "unpriced": 0,
-    "usd": 2.404441,
+    "usd": 2.986418,
     "ws": 0
    }
   }
