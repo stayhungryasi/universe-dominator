@@ -2,13 +2,14 @@
  "kind": "research",
  "id": "856d78a0ccda",
  "lang": "en",
- "src_hash": "22e27fde4d25",
+ "src_hash": "9ee829c6e5e5",
  "model": "claude-haiku-4-5",
- "at": "2026-11-21 18:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Dell Technologies (DELL) total revenue increased 19.12% year-over-year, but stock price trades at the lower end of 52-week range and is below the 200-day moving average.",
-  "summary_ko.1": "Net income increased 29.27% and EPS increased 36.07% year-over-year, but recent sharp stock price decline places market cap in the large-cap category of $10B–$200B."
- }
+ "at": "2026-11-24 08:46",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[15§summary_ko.0] 숫자: 원문에 없는 숫자 100 billion, 2 trillion",
+  "[15§summary_ko.0] 숫자: 원문의 숫자가 빠짐 2,000억"
+ ]
 }

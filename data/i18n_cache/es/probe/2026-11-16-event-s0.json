@@ -4,11 +4,10 @@
  "lang": "es",
  "src_hash": "dbf5bfd579a7",
  "model": "claude-sonnet-5-5",
- "at": "2026-11-16 12:40",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[5§md] 숫자: 원문에 없는 숫자 3 m"
- ]
+ "at": "2026-11-24 08:46",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Fecha de redacción**: 2026-11-16 (KST) · id de edición `2026-11-16-event` · modo **event** (incremental) · edición anterior `2026-11-15-event-r3` (edición n.º 19) · edición mensual anterior `2026-11` (fuente: información de la edición inyectada por el flujo de trabajo)\n- **Motivo**: el vigilante de noticias detectó 2 reportes y la capa de medición detectó 1 lanzamiento de la competencia. ① «SpaceX captura por primera vez la nave Starship en la torre de lanzamiento» (CBS y otros) — suceso ya tratado por la edición r3 del 15/11. ② «SpaceX atribuyó la restricción de Starshield a un problema técnico, pero no dio detalles a Ucrania» (CBC y otros) — el vigilante no lo vinculó a ningún disparador, pero en realidad es T7 ③ (reincidencia de intervención en un conflicto). ③ [Competencia] Fallo en el lanzamiento Vulcan VC6L Amazon Leo LV-01 (LL2). Los reportes no son base de juicio, sino objeto de verificación (fuente: motivo inyectado por el flujo de trabajo · `state.run.reason`)\n- **Precio de referencia**: $139.11 — cierre del 2026-11-13 (viernes). No hay nueva sesión (fuente: [historial diario de stockanalysis](https://stockanalysis.com/stocks/spcx/history/))\n- **Alcance**: determinación del candidato de reincidencia T7 ③ · registro de lanzamientos de la competencia para T4/T13/R5 · retomar ediciones no publicadas. No se recalculan las cifras de los escenarios ni la tasa de descuento (fuente: `prompts/monthly_run.md`)\n\n> **Conclusión primero**: hubo un suceso que las cuatro ediciones anteriores (11/14 · 11/15 · r2 · r3) pasaron por alto: **la segunda limitación de velocidad de Starshield de noviembre**. El presidente de Ucrania anunció el 11/12 «limitación sistemática de velocidad desde hace días» y el 11/13 dijo «el quinto día». Afecta al frente y a los territorios ocupados temporalmente, con un tope de 161 km/h. La explicación de SpaceX es un «problema técnico» (según el embajador adjunto de Ucrania), y la respuesta pública es «This is false. There has been no change.» (Axios — citado por Kyiv Independent). Por definición, la intervención en un conflicto debe ser «una decisión, no una falla técnica». Como la causa es objeto de disputa y solo hay un reporte de primer nivel (CNBC), **el segundo caso queda como «en espera de determinación»**. La regla de determinación cuando la causa se disputa se fijó antes del resultado. E-2027-3 ya no alcanza el umbral (1 caso), por lo que su estado no cambia. En la competencia, **el Vulcan de ULA no alcanzó la órbita con 40 satélites de Amazon Leo** (11/15). No se activó ninguna regla → **probabilidades 30/50/20 · valor ponderado por probabilidad $36 · banda $36~$121 · centro $68, todo sin cambios**, y tampoco hay cambios en la determinación de los 29 hitos (fuente: secciones 1~3 siguientes · `state.milestones` E-2027-3 · `state.probability_adjustment_rules`).\n\n---\n"
+ }
 }
