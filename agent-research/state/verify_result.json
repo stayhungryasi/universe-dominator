@@ -1,21 +1,22 @@
 {
-  "run_id": "2026-11-22-event-r2",
-  "checked": 19,
-  "match": 19,
+  "run_id": "2026-11-23-event",
+  "report": "agent-research/reports/2026-11-23-event.md",
+  "checked": 18,
+  "match": 18,
   "rounding": 0,
   "mismatch": [],
   "unverifiable": [],
   "notes": [
-    "LDA 등록서(print): 효력일 10/1/2026 · 서명 11/16/2026 1:47:12 PM · 로비스트 7명(1면 5 + 추가 2) · 분야 코드 AER·CPI·SCI·TEC 4개 — 보고서 1-1 표·부록과 같다",
-    "LDA API: dt_posted 2026-11-16T13:47:12-05:00 — 보고서 '13:47'(동부시각)과 같다",
-    "Kyiv Post 11/21: Fox News 인용 로비스트 5명 — 보고서 1-2 표와 같다",
-    "Newsweek: Himes 서한 날짜 11/20 — 일치. Yahoo(CNN) 게재 2026-11-20 6:42 PM UTC — 일치",
-    "상원 외교위 10/19 보도자료: 수신 Cardaci(법무 부사장) · 기한 11/2 · 질문 6개(기록 요청 3건 별도) — 일치",
-    "HSGAC SpaceX 앞 서한 PDF: 10/22 · 서면 답변 11/5 · 질문 1~9 · SpaceX 관리 브리핑 11/12 — 일치",
-    "HSGAC 국방장관 앞 서한 PDF: 10/22 · 서면 답변 11/5 · 질문 1~13 · DoD 관리 브리핑 11/12 — 일치(정정 문단의 서술과 같다)",
-    "Schiff 등 6인 서한 PDF: 10/23 · 기한 10/31 · 질문 1~5 · 서명 6인 — 일치",
-    "stockanalysis 11/20: 종가 127.79 · −7.69% · 거래량 124,737,116 · 장중 126.28~133.84 — 일치",
-    "FRED DGS10: 최신 관측 2026-11-19 5.04% — data/latest.json meta.macro.ust10 과 같다"
+    "LL2 Flight 15: net 2026-11-13T22:47:36Z, last_updated 2026-11-22T05:34:51Z, launcher Booster 22 landing attempt=true success=false, spacecraft serial S42 (name Ship 42) landing success=true — 4개 항목 일치. 도구가 페이지 뒤쪽 약 7천 자를 읽지 못했으나 대조 칸은 모두 앞쪽에 있음",
+    "Tesla DEF 14A: 2026-12-03 3:00 p.m. CT, 안건 3개(이사 선임·보상 자문·PwC 비준), 합병 안건 없음 — 일치",
+    "SpaceX 10-Q: 'the evaluation of a potential combination with Tesla, Inc., including whether and when any discussions will continue' 원문 그대로 확인 — 일치",
+    "Tesla 10-Q: 공정가치 2,865(백만 달러, Level I), 3분기 손실 142 · 9개월 이익 863, 매각 제한 'expire in December 2026' — 일치",
+    "Tesla R21: 투자 2.00 billion(2026-03, 1% 미만), Megapack 매출 3분기 221 · 9개월 626(백만 달러) — 일치",
+    "Tesla EDGAR: DEFA14A 2026-10-29~2026-11-20 9건(10-29, 11-02, 11-06, 11-09, 11-16, 11-17, 11-18, 11-19, 11-20) — 일치",
+    "SpaceX EDGAR 최신: SCHEDULE 13G/A 2026-11-16 0001213900-26-120715 — 일치",
+    "SPCX 2026-11-20: 종가 127.79, 등락 -7.69%, 거래량 124,737,116 — 일치",
+    "FRED DGS10: 2026-11-19 5.04 — 일치",
+    "보고서 본문 where_in_report 위치(머리말·0절·1-2·2-1·2-2·4절·부록)의 숫자가 verify_list 값과 모두 같음"
   ],
-  "verified_at": "2026-11-22T18:58+09:00"
+  "verified_at": "2026-11-23T12:55+09:00"
 }
