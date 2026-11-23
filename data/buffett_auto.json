@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-23 08:27",
- "generated_at": "2026-11-23T08:27:54.277806+09:00",
+ "generated_label": "2026-11-23 12:29",
+ "generated_at": "2026-11-23T12:29:00.943468+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-23",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "12% 성장률에 37배 PER로 거래 중이며 마진 압박(메모리 비용 증가)으로 인한 불확실성"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,22 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "notes": "새 CEO 취임 첫 실적 발표 임박; 서비스 사업 고착화로 내구성 있으나 성장 한계와 고평가 우려",
-   "_evidence": {
-    "franchise": "Services Franchise and Installed Base Anchor Apple's Durable Earnings Growth",
-    "risk5": "Apple Grows at 12% and Trades at 37 Times Earnings. Is It Worth It?; Apple forecasts margin drop in holiday quarter as rising memory costs bite",
-    "owner_earnings": "Apple Grows at 12% and Trades at 37 Times Earnings"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-23",
@@ -271,7 +252,11 @@
     },
     "fcf_ttm": 59957000000.0,
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 캐펙스 급증으로 단기 현금흐름 압박, 장기 수익성 불확실"
+    }
    },
    "conversion": null,
    "conversion_status": {
@@ -311,15 +296,29 @@
      "end": "2025-12-31"
     }
    ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "price": "△"
+   },
    "capalloc": {
     "cash_positive": 1,
-    "debt_discipline": 0,
-    "score": 1,
-    "period": "2026H1"
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2024H2"
    },
-   "notes": "플라이트세이프티 변태 임계값(capex 30%대) 근처에서 AI 투자 가속화—분기별 capex/매출 추이 감시 필수",
+   "notes": "전환비용 우위 견고하나 캐펙스/매출 30%대 돌입으로 플라이트세이프티 변태 리스크 상존",
    "_evidence": {
-    "capalloc": "Microsoft announces debt offerings; capex/sales 30%대 sustained"
+    "franchise": "Microsoft jumps 8% as it boosts capital spending plans, citing demand",
+    "risk5": "Microsoft (MSFT) Stock May Look Reasonable As AI Commitments Draw Scrutiny; $36 Billion Net Income in Q1 against elevated capex",
+    "capalloc": "Microsoft secures new AI chip supply deal for Azure growth, ongoing buyback activity evident from earnings reports",
+    "owner_earnings": "Microsoft boosts capital spending plans significantly while beating earnings estimates, creating capex-to-revenue pressure"
    }
   },
   "AMZN": {
@@ -842,12 +841,7 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "B",
-     "reason": "익익 감소 예상에도 플로트 복리와 대규모 자사주 매입으로 주당가치 창출 지속"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -859,32 +853,7 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "○"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "debt_discipline": 1,
-    "score": 4,
-    "period": "2026Q3"
-   },
-   "notes": "2026년 버핏 경영진출 후 첫해 18% 상승, 나스닥 정체와 대비되는 상대가치 부각, 현가 매력 평가 혼재",
-   "_evidence": {
-    "franchise": "플로트형 비즈니스 모델로 보증금 복리 창출, P/E 측정 불가의 별도 바구니",
-    "risk5": "익익 감소 예상이나 경영진 연속성 유지, 플로트 플로우 안정성 고평가",
-    "capalloc": "Berkshire more than doubles buybacks in third quarter, $9.6 billion buybacks, 현금 양의흐름 유지",
-    "owner_earnings": "Earnings decline forecast와 buyback double 동시 진행으로 주당수익 증대 메커니즘 작동"
-   }
+   "confidence": null
   },
   "LLY": {
    "as_of": "2026-11-23",
@@ -1606,7 +1575,11 @@
     },
     "fcf_ttm": 17365000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "C",
+     "reason": "낸드 사이클 하강기에 이익 가시성 급격히 악화, 주가 40-50% 하락으로 현재 가치평가 신뢰도 최저"
+    }
    },
    "conversion": {
     "value": 0.9986,
@@ -1626,7 +1599,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_EquitySecuritiesFvNiUnrealizedGainLoss)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 13건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -1646,7 +1619,28 @@
     }
    ],
    "g_forward_status": "전망치 이상(101%) — 취재 필요",
-   "notes": "전망치 이상(101%) — 취재 필요"
+   "notes": "AI 리더십 이탈 충격, 사이클 예측 불가능성, 밸류에이션 급변 — 버핏 기준 투자 대상 외",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "✕",
+    "mgmt_ability": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "buyback": 1,
+    "score": 1,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "메모리는 필수재(need)이나, 경쟁 치열·대체 가능성 높음(no_substitute △), 공급 과잉 시 가격 급락(no_price_reg ✕)",
+    "risk5": "NAND 순수 사이클로 사업 예측 불가(business_certainty ✕), AI 리더십 퇴출(mgmt_ability △), 주가 40-50% 슬라이드 후 공정가치 추정 재하향(price ✕)",
+    "capalloc": "주식분할 8:1 시행, 주가 795달러 근처에서도 매수 추천 존재 → 적극적 자사주 매입 신호",
+    "owner_earnings": "Q1 어닝비트 직후 주가 하락, 이익 성장률 둔화 우려(Morningstar), 사이클 하강국면 진입으로 소유자익 가시성 최악"
+   }
   },
   "STX": {
    "as_of": "2026-11-23",
@@ -2108,5 +2102,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-23 08:29"
+ "scout_label": "2026-11-23 12:30"
 }

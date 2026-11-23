@@ -1588,109 +1588,109 @@
   },
   "2026-11-23": {
    "buffett_scout": {
-    "calls": 3,
+    "calls": 5,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 3199,
+    "in": 5197,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.009674
+      "calls": 5,
+      "usd": 0.016472
      }
     },
-    "out": 1295,
+    "out": 2255,
     "unpriced": 0,
-    "usd": 0.009674,
+    "usd": 0.016472,
     "ws": 0
    },
    "companion_essays": {
-    "calls": 6,
+    "calls": 8,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 51765,
+    "in": 75060,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 1,
-      "usd": 0.008698
+      "calls": 2,
+      "usd": 0.01855
      },
      "claude-sonnet-5-5": {
-      "calls": 5,
-      "usd": 0.187864
+      "calls": 6,
+      "usd": 0.22561
      }
     },
-    "out": 10173,
+    "out": 11259,
     "unpriced": 0,
-    "usd": 0.196562,
+    "usd": 0.24416,
     "ws": 0
    },
    "fetch_calendar": {
+    "calls": 4,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 21061,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 4,
+      "usd": 0.024211
+     }
+    },
+    "out": 630,
+    "unpriced": 0,
+    "usd": 0.024211,
+    "ws": 0
+   },
+   "fetch_pioneers": {
+    "calls": 5,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 2513,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 5,
+      "usd": 0.010168
+     }
+    },
+    "out": 1531,
+    "unpriced": 0,
+    "usd": 0.010168,
+    "ws": 0
+   },
+   "fetch_research": {
+    "calls": 12,
+    "cr": 0,
+    "cw": 0,
+    "fail": 0,
+    "in": 54449,
+    "models": {
+     "claude-haiku-4-5-20251001": {
+      "calls": 12,
+      "usd": 0.162474
+     }
+    },
+    "out": 21605,
+    "unpriced": 0,
+    "usd": 0.162474,
+    "ws": 0
+   },
+   "fetch_signals": {
     "calls": 2,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 10809,
+    "in": 1470,
     "models": {
      "claude-haiku-4-5-20251001": {
       "calls": 2,
-      "usd": 0.012239
+      "usd": 0.00528
      }
     },
-    "out": 286,
+    "out": 762,
     "unpriced": 0,
-    "usd": 0.012239,
-    "ws": 0
-   },
-   "fetch_pioneers": {
-    "calls": 3,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 1449,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 3,
-      "usd": 0.005529
-     }
-    },
-    "out": 816,
-    "unpriced": 0,
-    "usd": 0.005529,
-    "ws": 0
-   },
-   "fetch_research": {
-    "calls": 6,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 29736,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 6,
-      "usd": 0.083036
-     }
-    },
-    "out": 10660,
-    "unpriced": 0,
-    "usd": 0.083036,
-    "ws": 0
-   },
-   "fetch_signals": {
-    "calls": 1,
-    "cr": 0,
-    "cw": 0,
-    "fail": 0,
-    "in": 767,
-    "models": {
-     "claude-haiku-4-5-20251001": {
-      "calls": 1,
-      "usd": 0.002797
-     }
-    },
-    "out": 406,
-    "unpriced": 0,
-    "usd": 0.002797,
+    "usd": 0.00528,
     "ws": 0
    },
    "signal_column": {
@@ -1711,41 +1711,41 @@
     "ws": 0
    },
    "spacex_news": {
-    "calls": 7,
+    "calls": 11,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 57521,
+    "in": 91180,
     "models": {
      "claude-sonnet-5-5": {
-      "calls": 7,
-      "usd": 0.350312
+      "calls": 11,
+      "usd": 0.5487
      }
     },
-    "out": 23527,
+    "out": 36634,
     "unpriced": 0,
-    "usd": 0.350312,
+    "usd": 0.5487,
     "ws": 0
    },
    "translate_content": {
-    "calls": 51,
+    "calls": 125,
     "cr": 0,
     "cw": 0,
     "fail": 0,
-    "in": 129075,
+    "in": 347519,
     "models": {
      "claude-haiku-4-5-20251001": {
-      "calls": 32,
-      "usd": 0.244173
+      "calls": 58,
+      "usd": 0.503437
      },
      "claude-sonnet-5-5": {
-      "calls": 19,
-      "usd": 0.532174
+      "calls": 67,
+      "usd": 1.901004
      }
     },
-    "out": 76237,
+    "out": 221284,
     "unpriced": 0,
-    "usd": 0.776347,
+    "usd": 2.404441,
     "ws": 0
    }
   }

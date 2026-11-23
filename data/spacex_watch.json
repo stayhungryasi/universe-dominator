@@ -48,13 +48,13 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-23T08:31+09:00",
+  "checked_at": "2026-11-23T12:32+09:00",
   "last_run": {
-   "conclusion": "success",
-   "created_at": "2026-11-22T09:43:25Z",
+   "conclusion": "failure",
+   "created_at": "2026-11-22T23:42:46Z",
    "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/45008921540",
-   "run_id": 45008921540
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/45084713689",
+   "run_id": 45084713689
   },
   "in_progress": false
  },
@@ -1127,7 +1127,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-23T08:30+09:00",
+ "generated_at": "2026-11-23T12:32+09:00",
  "due": [
   {
    "key": "T3:date:2026-10-01",
@@ -1742,6 +1742,18 @@
    "detected_at": "2026-11-23",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:starship-flight15-booster-loss:2026-11-23",
+   "trigger_id": null,
+   "name": "Starship이 궤도에 올랐지만 부스터 폭발로 전례 없던 동시 포획은 무산됐다.",
+   "reason": "보도 감지(abc news - breaking news, latest news and videos·pluang)",
+   "event": "SpaceX’s Starship soars into orbit after booster explosion prevents an unprecedented double catch",
+   "event_date": "2026-11-21",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNMDhoN241dEpUR1hVcVJYVTVfZzZ4ZWw4UXV4YlVLdGZWdWZfc0dGZjgxTnVINmZmZEUyMzNXVEQ2VzFQOUdkUUFiYXFLejB6NC1pNnBqbzlqNFZOcjcxT0pRYjNqM0hwMzhhMU1wdmNHaFBha0xrVUJ2Q2VFVEUzdktNc0ZTcHc1azlQaWFnaDlqUGc1U19SSjZhVHFDTWlwRjRUYW9tanpNQdIBrwFBVV95cUxNc3hYbk5SeDh1VjJGd0YtZ0VUVGE1LUJoOE02S0dfRlprMUwxbmtQWHRHdDZhWnRBWnpWaXEzWU1KWE9jSUVlYUU3NXdvVXhtQWxkQk9nZS1RWFk1NmlEaWZRMmc4WFAzRjRRTWtXcVV5SzBiNUtvZjZJQVFVR3dnRlpoOGlRM0pzbTVhTm00VFZVZU9WQmE2WV9EX20tSDZLMTFDLVY0MHpXNTJNckJJ?oc=5",
+   "detected_at": "2026-11-23",
+   "grade": "major",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
@@ -1757,12 +1769,25 @@
     "https://news.google.com/rss/articles/CBMikAFBVV95cUxNNWVxWWtWekRNWDZBeENKWDdwYjRraEZXQWIwRGpYMXAwX2VRcS1iTGNWcEo5Mm5sU0dIM0VHODZVM3RKZlREd3g1VE1IV0d0Si1jR2lvazFMazZqNFdmTnFyWmlqR1ZMel9kX1ItTTdob0phY2hNLTVNbzNDVkZqVE4yWnB1VXpuSXhocFBWR0w?oc=5",
     "https://news.google.com/rss/articles/CBMidEFVX3lxTFBfTWN5TExxWGNZcHczNmtVNnpqWGtibEw1Y0g0Y1ZwTHhydzRXRWxjcW85Q012Uk1YbzZwOGJUZWhaMXNlNF9QZVRycXpZSjhWZ3JTYVdMM3kzbU1KQU0zUzdUSHQ5dHM2Zk5zT2NfRXROdFRm?oc=5"
    ]
+  },
+  {
+   "key": "qn:2026-11-23:1232",
+   "run_id": "45104931104",
+   "queued_at": "2026-11-23T12:32+09:00",
+   "state": "queued",
+   "trigger_id": "",
+   "name": "Starship이 궤도에 올랐지만 부스터 폭발로 전례 없던 동시 포획은 무산됐다.",
+   "reason": "보도 감지 1건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNMDhoN241dEpUR1hVcVJYVTVfZzZ4ZWw4UXV4YlVLdGZWdWZfc0dGZjgxTnVINmZmZEUyMzNXVEQ2VzFQOUdkUUFiYXFLejB6NC1pNnBqbzlqNFZOcjcxT0pRYjNqM0hwMzhhMU1wdmNHaFBha0xrVUJ2Q2VFVEUzdktNc0ZTcHc1azlQaWFnaDlqUGc1U19SSjZhVHFDTWlwRjRUYW9tanpNQdIBrwFBVV95cUxNc3hYbk5SeDh1VjJGd0YtZ0VUVGE1LUJoOE02S0dfRlprMUwxbmtQWHRHdDZhWnRBWnpWaXEzWU1KWE9jSUVlYUU3NXdvVXhtQWxkQk9nZS1RWFk1NmlEaWZRMmc4WFAzRjRRTWtXcVV5SzBiNUtvZjZJQVFVR3dnRlpoOGlRM0pzbTVhTm00VFZVZU9WQmE2WV9EX20tSDZLMTFDLVY0MHpXNTJNckJJ?oc=5",
+    "https://news.google.com/rss/articles/CBMihgFBVV95cUxPb0ZHRVdnbXpDMDE0YVJidXlQZU44VEhLczVBTVR1RmFSSUZoM3Rrd3NuZTNlTmFrU1Rod1ItcWVLNEZzZERiWkhtNmk2SUNfZkdmck95dkRyWXhWdkJiLVZwbjRiMzQxUmRpazdZVHNpMmxuOE9iVzBIdUp0Z2Z4c1NhMkltZw?oc=5"
+   ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-23T08:31+09:00",
-  "last_success_at": "2026-11-22T23:30:48Z",
-  "last_run_at": "2026-11-22T23:30:20Z",
+  "checked_at": "2026-11-23T12:32+09:00",
+  "last_success_at": "2026-11-23T03:30:54Z",
+  "last_run_at": "2026-11-23T03:30:21Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50
