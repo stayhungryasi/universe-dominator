@@ -2,15 +2,16 @@
  "kind": "probe_trig",
  "id": "T1",
  "lang": "en",
- "src_hash": "7958d4c66531",
+ "src_hash": "0fd98f1f1dea",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-24 18:40",
  "attempts": 2,
- "status": "ok",
- "fields": {
-  "name": "4Q26 Results — GW Revenue Exceeds $10B for 2 Consecutive Quarters (C-2027-2 Early Determination) · 4Q CAPEX Actual vs. Guidance · Google 9/30 Delivery Milestone Met · Customer Concentration Restatement",
-  "expected": "Early 2027-02 (Estimated: 10/20 + approximately 100 days, IR calendar not disclosed — extended lockup release of 20% / 351.9 million shares on second trading day of same date)",
-  "check": "8-K Ex.99.1 KPI table (GW·SI Solutions·Infrastructure revenue·Cursor contribution) · 10-K customer concentration footnote (Customer B concentration · Customer A = US government falls below 10% and disappears from table — if disappears, A-2032-1 measurement converts to 10-K government revenue narrative) · If 4Q SI revenue is +$2.76B or more versus 3Q, Google normal commencement · 424B4 extended lockup release (second trading day after results). Observer's T1 misconnection log record is log_check",
-  "prev": "T1 3Q26 AI Unit Economics — Expected early 2026-11 → Actual 2026-10-20 (3 weeks early). Result $15.09B per GW, Rule 1 triggered"
- }
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[1§expected] 숫자: 원문에 없는 숫자 353.9 million",
+  "[1§expected] 숫자: 원문의 숫자가 빠짐 3억 5,190만",
+  "[1§prev] 숫자: 원문에 없는 숫자 150.9 billion",
+  "[1§prev] 숫자: 원문의 숫자가 빠짐 150.9억"
+ ]
 }

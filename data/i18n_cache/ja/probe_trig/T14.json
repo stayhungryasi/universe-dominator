@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T14",
  "lang": "ja",
- "src_hash": "12e07f7a3078",
+ "src_hash": "34c30591fe4c",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 12:40",
- "attempts": 2,
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "AI顧客B(Anthropic)延長・解除確認点 — ① Anthropic公募書類(S-1/A·FWP)のSpaceX条項原文(初期非取消期間終了日・通知主体) ② 解除通知公示(規則新設提案⑤) ③ 4Q26 10-K顧客集中注釈",
-  "expected": "2026-12-01(KST、月間確認点 — S-1/A条項原文) → 2027-02(4Q26 10-K顧客集中注釈、推定) → 2027-04-02(KST — 報道上初期非取消期間終了2027-01·03以降90日通知が可能になる時点を6/30終了と仮定すると通知期限約4/1 + 1日、推定)",
-  "check": "① EDGAR — Anthropic(CIK 2130357)最終説明書424B4(2026-11-19、accn 0001628280-26-074944)·S-1/Aの SpaceX コンピュート約定条項原文(報道引用:2029までの最大$1,205億・初期非取消期間2027-01·2027-03終了・以降90日書面通知 — 通知主体は報道上両側) · 上場後Anthropic 10-Q·8-K(第1四半期報告は4Q26 10-K推定)のコンピュート約定変化 ② SpaceX 8-K(解除通知受領は重要事象) — 提案⑤発動条件 ③ 4Q26 10-K顧客B比重 ④ 10-Q R12顧客B 3Q 34.5%(約$5,028M = 34.5% × 14,575、計算式)。 伝言·CEO回答は確認対象、判定は公示原文のみ。 名前冒頭に調達·契約·実績·Starshipを置かない(測定層種類分類)",
-  "note": "2026-11-22:監視官がAmodei発言報道(wccftech·digg)をT1に接続 — 誤り(T14)。 同週CEO DealBook 11/18 『10GW追加希望』伝言と共に候補表のみ。 履歴はlog_note",
-  "statusText": "待機(2026-11-22:Anthropic CEOがCNBC インタビューでSpaceXコンピュートを『high quality』·『We're enjoying working with SpaceX』と述べながら将来は保証できないと述べた(wccftech 11/20 — 報道、映像未確認)。 延長·解除約束なし·Anthropicは11/19上場(424B4最終説明書)·SpaceX 8-Kなし — 11/11伝言は確認も否定もできず)。 履歴はlog_status"
+  "name": "AI 顧客 B(Anthropic) 延長・解除確認点 — ① Anthropic 公募書類(S-1/A・FWP)の SpaceX 条項原文(初期非取消期間終了日・通知主体) ② 解除通知公示(規則新設提案 ⑤) ③ 4Q26 10-K 顧客集中注釈",
+  "expected": "2026-12-01(KST、月間確認点 — S-1/A 条項原文) → 2027-02(4Q26 10-K 顧客集中注釈、推定) → 2027-04-02(KST — 報道上初期非取消期間終了 2027-01・03 以降 90日通知が可能になる時点を 6/30 終了と仮定すると通知時限約 4/1 + 1日、推定)",
+  "check": "① Anthropic 424B4・S-1/A の SpaceX コンピュート約定条項原文 ② SpaceX 8-K(解除通知) ③ 4Q26 10-K 顧客 B 比重。判定は公示原文のみ。詳細は detail_check",
+  "note": "2026-11-22: 監視官が Amodei 発言報道(wccftech・digg)を T1 に連結 — 誤り(T14)。同週 CEO DealBook 11/18『10GW 追加希望』伝聞とともに候補表のみ。履歴は log_note",
+  "statusText": "待機(2026-11-22: Anthropic CEO 発言報道 — 延長・解除約束なし・SpaceX 8-K なし)。詳細は detail_status・log_status"
  }
 }

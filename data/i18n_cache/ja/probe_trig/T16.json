@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T16",
  "lang": "ja",
- "src_hash": "22a1acc1c2ad",
+ "src_hash": "ef67619ee8a0",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-24 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "フロンティア AI 開発中止請求訴訟(SF 上級法院、2026-11-12) — ① 仮処分·禁止命令申立と判定 ② 被告対応(移送·却下申立) ③ SpaceX 10-K 法的手続き注釈記載",
-  "expected": "2026-12-01(KST、月間確認点 — 法院日程未公開) → 2027-02(4Q26 10-K 法的手続き注釈、推定)",
-  "check": "① 法院記録 — 事件番号·禁止命令(TRO·予備) 申立の有無·判定 ② 被告側連邦法院移送·却下申立 ③ SpaceX 10-K 法的手続き注釈·リスク要因 ④ 別件: 9/18 連邦反トラスト集団訴訟 Buist et al. v. Anthropic PBC et al.(N.D. Cal. 3:26-cv-10693 — Anthropic·OpenAI·SpaceXAI·Google、'Pace the Frontier' 談合主張)も同じ確認点で見る。判定は法院記録·会社公示のみ。名前冒頭に調達·契約·実績·Starship を置かない",
-  "note": "2026-11-14 新設。出典(報道 — 原告側報道資料未発見): cryptobriefing·kucoin 転載 11/13(原告代理 Matthew Platkin 前ニュージャージー州法務長官)。監視官ヘッドライン('OpenAI, Google, Anthropic, Meta and SpaceX sued over frontier AI development' — BNN Bloomberg など)と一致。9/18 反トラスト訴訟は local10/PBS(AP) 9/19 · Bloomberg Government。両者ともに SpaceX の AI 部門(C 軸) 背景 — 禁止命令が出る前には里程標入力なし",
-  "statusText": "待機(2026-11-15: 10-Q 注釈 16 法的手続き 10件に 9/18 反トラスト訴訟なし · 11/12 SF 訴訟訴状原文·事件番号未確認 → 4Q26 10-K 確認点)。履歴は log_status"
+  "name": "フロンティア AI 開発中止請求訴訟(SF 上級裁判所、2026-11-12) — ① 仮処分・禁止命令申立てと判定 ② 被告対応(移送・却下申立て) ③ SpaceX 10-K 法的手続き注釈登載",
+  "expected": "2026-12-01(KST、月間確認点 — 裁判所日程非公開) → 2027-02(4Q26 10-K 法的手続き注釈、推定)",
+  "check": "① 裁判所記録(事件番号・禁止命令) ② 被告移送・却下申立て ③ SpaceX 10-K 法的手続き注釈 ④ 別件 9/18 反独占訴訟。詳細は detail_check",
+  "note": "2026-11-14 新設(報道出典 — 原告側報道資料未発見)。禁止命令前にはマイルストーン入力なし。Grok 画像生成州司法長官訴訟は別件 T18。詳細は detail_note",
+  "statusText": "待機(2026-11-15: 10-Q 注釈 16 法的手続き 10件に 9/18 反独占訴訟なし・11/12 SF 訴訟訴状原文・事件番号未確認 → 4Q26 10-K 確認点)。履歴は log_status"
  }
 }

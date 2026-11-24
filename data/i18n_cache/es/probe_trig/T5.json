@@ -2,17 +2,17 @@
  "kind": "probe_trig",
  "id": "T5",
  "lang": "es",
- "src_hash": "eae0adee9564",
+ "src_hash": "e6f097b4d681",
  "model": "claude-haiku-4-5",
- "at": "2026-11-21 12:39",
- "attempts": 2,
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Arrendamiento financiero GPU Master de $40.000 millones — 8-K de cierre·tasa fija confirmada(pendiente: tasa·condiciones de compra·cierre)",
-  "expected": "2026-12-01(KST, punto de control mensual — después del comunicado de sindicación del 11/4 fijación de precio·8-K de cierre) → 2027-01-07(estimado: 8-K del 10/26 'se espera cierre antes de fin de año' → 8-K de cierre Item 1.01 4 días hábiles → KST 1 de enero. Si no hay 8-K de cierre antes del 31/12, se registra como 'cierre retrasado' y se pospone la revisión de propuesta ② a anotación de arrendamiento en 10-K de 4T26(estimado febrero 2027))",
-  "check": "① EDGAR 8-K Item 1.01/2.03 · Ex.10 — al cierre tasa fija·tramos·compra·garantía · si capital pasó de aproximadamente $40.000 millones a aproximadamente $44.000 millones · cláusula de restricción de ubicación de uso de chips(sindicadores solicitaron 'terrestre' — comunicado citado por FT) ② si no hay 8-K de cierre, anotaciones de arrendamiento·pacto en 10-K de 4T26(método de reconocimiento de pasivo por arrendamiento — propuesta ③) ③ detección de 'financiamiento' en capa de medición es primaria, también verificar divulgación voluntaria(8.01·IR) ④ comunicados de fijación de precio·cierre son objetivo de verificación — deuda del lado del arrendador(SPV·ABS) puede no estar en alcance de divulgación de SpaceX. el registro de desconexión del monitor es log_check",
-  "note": "2026-11-21: fijación de precio — Apollo IR 11/20 'aproximadamente $44.000 millones, suscripción excesiva·aumento, Vera Rubin, cómputo terrestre, inicio de arrendamiento 1H 2027' · Reuters 11/20 A3 $25.170 millones 2033-04 8,259% · A2 aproximadamente $4.400 millones 2031-04 7,66% · B $2.564 millones 2033-04 8,36% · Bloomberg 11/20 bonos $32.000 millones(venta del 11/19), promedio de bonos senior 5,95%, equipos GPU aproximadamente $47.300 millones · KBRA 11/16 A- preliminar(Saturn Funding Trust — no relacionado con SpaceX, rama WHCO, arrendamiento financiero hell-or-high-water aproximadamente 5 años). Sin 8-K de cierre(EDGAR 2026-11-21 KST). El historial está en log_note",
-  "prev": "T5 — 2026-10-27 revisado: punto de control es 'fecha estimada + 1 día(KST)', detección primaria es evento en capa de medición, no se estima 'puede no aparecer' por obligación de divulgación. 2026-11-20: comunicado de inicio de venta es fase de fijación de precio — estimación no incorrecta. 2026-11-21: fijación de precio(11/19~20) despertó al monitor de noticias entre puntos de control(12/01·2027-01-07) primero — estimación no incorrecta(fecha es auxiliar, detección primaria es capa de medición). La tarea pendiente es 8-K de cierre de arrendamiento master. El historial está en log_prev",
-  "statusText": "confirmación parcial(2026-11-21: fijación de precio de financiamiento del arrendador completada — aumento de aproximadamente $44.000 millones, 3 bonos parciales aproximadamente $32.100 millones · tasa fija de arrendamiento·8-K de cierre aún pendientes. 2026-10-27: estructura·tamaño·plazo·elementos de aumento divulgados)"
+  "name": "$40 mil millones master financiero arrendamiento GPU — 8-K cierre·fijación tasa fija(pendiente: tasa·condiciones call·cierre)",
+  "expected": "2026-12-01(KST, punto de verificación mensual — tras reportaje negociación sindicación 11/4 ausencia fijación precio·8-K cierre) → 2027-01-07(estimado: 8-K 10/26 'cierre previsto fin de año' → 8-K Item 1.01 cierre 4 días hábiles → 1 día KST. Sin 8-K cierre hasta 12/31 registrar como 'cierre retrasado' y proponer ② deliberación 4T26 10-K(estimado 2027-02) aplaza nota arrendamiento)",
+  "check": "① 8-K cierre(Item 1.01/2.03 · Ex.10) — tasa fija·tramos·call·principal ② sin él nota arrendamiento 4T26 10-K ③ capa medición detección 'captación' es primaria. Detalle en detail_check·log_check",
+  "note": "2026-11-21: fijación precio captación arrendador(Apollo RI 11/20 — aumento aproximado $44 mil millones, inicio arrendamiento 2027-1H). Sin 8-K cierre. Detalle en detail_note·log_note",
+  "prev": "T5 — punto de verificación es 'fecha estimada + 1 día(KST)', detección primaria es capa medición. Progresión 11/20·21 no invalida previsión. Detalle en detail_prev·log_prev",
+  "statusText": "parcialmente confirmado(2026-11-21: fijación precio captación arrendador completada — aumento aproximado $44 mil millones, 3 bonos parciales aproximadamente $32,1 mil millones · tasa fija arrendamiento·8-K cierre aún pendientes. 2026-10-27: estructura·tamaño·plazo·factor aumento capital divulgados)"
  }
 }

@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-24-event-s6",
+ "lang": "en",
+ "src_hash": "e707a850ce43",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Triggers · Picking up the unpublished runs",
+  "md": "\n| Item | Expected | Actual · Recheck | Handling | Source |\n|---|---|---|---|---|\n| T18 new | — | Suit filed 11/22·23 | Pending · checkpoint 12/01 | `state.triggers_next_12m[T18]` |\n| T3 Flight 15 (unpublished item from 11/23) | 12/01 | LL2 updated 2026-11-22 05:34 UTC, ruling values unchanged (Booster 22 landing failed · Ship 42 returned to Starbase successfully) — re-report | Confirmation maintained | [LL2 Flight 15](https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), 2026-11-24 KST |\n| T6 merger committee (unpublished item from 11/23) | 2027-1H | Tesla 12/3 shareholder meeting has 3 agenda items — no merger or combination item | Pending · check changed to original-text confirmation | [Tesla DEF 14A](https://www.sec.gov/Archives/edgar/data/1318605/000110465926116700/tm267596-1_def14a.htm) |\n\n- **Review of the forecasting method**: The Virginia suit was not in the expectation table. The 10-Q recorded the 10/19 notice, but it was not set as a trigger. From now on, when we open the legal-proceedings notes of a filing, we will also list 'considering suit' and notice-stage matters as trigger candidates (source: `state.triggers_next_12m[T18].prev`).\n- **Unpublished runs**: For 11/23, only the re-read of LL2 and DEF 14A was adopted. The Tesla 10-Q figures were not adopted because the original was not reopened. For the same reason, the earlier-executed 11/24 run reopened the sources of sections 1–4 above and adopted the same facts. Among them, the 11/23 trading volume was recorded as a value revised after the fact. 11/18·19 were already absorbed by the 11/20 run (source: `state.run.unpublished_runs`).\n- **Publication gate memo**: All four runs (the earlier executions of 11/18·19·23·24) were blocked by a new failure in the repository selftest (test_cockpit). The cause is presumed to be the Mission Control data budget being exceeded. This run rewrote the trigger display field more briefly (details are preserved in a separate field). The fundamental remedy is a decision outside the judgment layer (source: `state.open_questions_for_next_run`).\n\n---\n"
+ }
+}

@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T4",
  "lang": "es",
- "src_hash": "07b6e6da63a4",
+ "src_hash": "2cfe1e97e498",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-24 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Amazon Leo inicio comercial de consumidor estadounidense — región y tarifa",
-  "expected": "2026-12-01(punto de control mantenido: Ariane 64 LE-04 11/23 · Vulcan LV-01 11/mes(unidad mensual LL2) resultado + tarifa publicada — 2.º punto de control 2027-01-04 = declaración de Amazon 'servicio inicial dentro de 2026' vencimiento 12/31 + día laborable estadounidense + KST 1 día) ~ 2027-1H",
-  "check": "publicación de página oficial de tarifa y región leo.amazon.com · resultado Ariane 64 LE-04(11/23)·Vulcan LV-01(11/mes) · tarifa oficial residencial estadounidense Starlink(denominador comparativo) · evento D2D(satélite-teléfono móvil) es T8 — T4 solo banda ancha de consumidor",
-  "note": "2026-11-20: tarifa y región sin verificación(punto de control 12/01). retorno New Glenn(Amazon 24 reservas) retrasado a 2027-01(reportaje — TNW 11/19). Google reservó lanzamiento exclusivo Suncatcher en el mismo New Glenn(blog Google 11/19) — evento separado de despliegue Amazon Leo. anterior: fallo Vulcan LV-01 11/15(LL2 'Launch Failure') · Ariane 64 LE-04 11/23 en espera. historial de verificación está en log_note",
-  "prev": "T4 — predicción '2026-4Q ~ 2027-1H' → sin evento en inicio de intervalo 2026-10-23 con resonancia. predicción de intervalo se lee desde inicio en capa de medición — reemplazar fecha con 'evento anterior + retardo de verificación' / 2026-10-28: premisa 'Vulcan LV-01 10/29' de ronda 10/23 incorrecta(LL2 11/mes, unidad mensual) — mantener punto de control 12/01 pero cambiar base de 'lanzamiento + un mes' a 'resultado LE-04·LV-01 + tarifa publicada', añadir 2.º punto de control 2027-01-04 con criterio vencimiento declaración(12/31). vigilante de noticias conectó evento D2D(aprobación Globalstar) a T4 ronda de evento abierta — evento diferente de definición de disparador"
+  "name": "Amazon Leo inicio comercial consumidor EE.UU. región·tarifa",
+  "expected": "2026-12-01(punto de verificación mantenido: Ariane 64 LE-04 11/23 · Vulcan LV-01 noviembre(LL2 unidad mensual) resultado + publicación tarifa — 2.º punto de verificación 2027-01-04 = declaración Amazon 'servicio inicial antes fin 2026' vencimiento 12/31 + día hábil EE.UU. + 1 día KST) ~ 2027-1H",
+  "check": "página oficial tarifa·región leo.amazon.com publicada · resultado Ariane 64 LE-04(11/23)·Vulcan LV-01(noviembre) · tarifa oficial residencial Starlink EE.UU.(denominador comparación) · evento D2D(satélite-móvil) → T8 — T4 solo banda ancha consumidor",
+  "note": "2026-11-20: tarifa·región no verificadas(punto de verificación 12/01) · Vulcan LV-01 11/15 fallo. Detalle en detail_note·log_note",
+  "prev": "T4 — estimación intervalo se lee por fecha inicio · premisa 'Vulcan LV-01 10/29' errada → punto de verificación es 'resultado LE-04·LV-01 + publicación tarifa'. Detalle en detail_prev"
  }
 }

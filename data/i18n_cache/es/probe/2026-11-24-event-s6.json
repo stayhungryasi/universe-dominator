@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-24-event-s6",
+ "lang": "es",
+ "src_hash": "e707a850ce43",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "5. Disparadores · retoma de ediciones no publicadas",
+  "md": "\n| Objeto | Previsto | Real · reverificación | Tratamiento | Fuente |\n|---|---|---|---|---|\n| T18 nuevo | — | demandas del 11/22·23 | en espera · punto de control 12/01 | `state.triggers_next_12m[T18]` |\n| T3 Flight 15 (parte no publicada del 11/23) | 12/01 | LL2 actualizado 2026-11-22 05:34 UTC, valores del veredicto sin cambios (aterrizaje fallido del Booster 22 · regreso exitoso de la Ship 42 a Starbase) — nueva noticia | se mantiene la verificación | [LL2 Flight 15](https://ll.thespacedevs.com/2.4.0/launches/0f867f0c-5422-4d44-93b8-d7faaae7019b/), 2026-11-24 KST |\n| T6 comité de fusión (parte no publicada del 11/23) | 2027-1H | 3 puntos en el orden del día de la junta de Tesla del 12/3 — sin punto de fusión ni combinación | en espera · el check pasa a ser verificación del texto original | [Tesla DEF 14A](https://www.sec.gov/Archives/edgar/data/1318605/000110465926116700/tm267596-1_def14a.htm) |\n\n- **Revisión del método de previsión**: la demanda de Virginia no figuraba en la tabla de previsiones. El 10-Q recogía la notificación del 10/19, pero no la fijamos como disparador. En adelante, al abrir las notas sobre procedimientos legales de los informes, también se anotarán como candidatos a disparador los casos en fase de «estudio de demanda» o de notificación (fuente: `state.triggers_next_12m[T18].prev`).\n- **Ediciones no publicadas**: del 11/23 solo se adoptó lo reabierto de LL2 y DEF 14A. Las cifras del 10-Q de Tesla no se adoptaron porque no se volvió a abrir el original. Por el mismo motivo, la ejecución anterior del 11/24 volvió a abrir las fuentes de las secciones 1 a 4 y adoptó los mismos hechos. Entre ellos, el volumen del 11/23 se registró con el valor corregido posteriormente. Las del 11/18·19 ya fueron absorbidas por la edición del 11/20 (fuente: `state.run.unpublished_runs`).\n- **Nota sobre la barrera de publicación**: las cuatro ediciones (ejecuciones previas del 11/18·19·23·24) quedaron bloqueadas por un nuevo fallo del selftest del repositorio (test_cockpit). Se presume que la causa es el exceso del presupuesto de datos del centro de control. En esta edición se reescribió de forma breve la casilla de visualización de disparadores (el detalle se conserva en otra casilla). El remedio de fondo es una decisión ajena a la capa de juicio (fuente: `state.open_questions_for_next_run`).\n\n---\n"
+ }
+}

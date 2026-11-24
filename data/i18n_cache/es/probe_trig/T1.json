@@ -2,14 +2,15 @@
  "kind": "probe_trig",
  "id": "T1",
  "lang": "es",
- "src_hash": "7958d4c66531",
+ "src_hash": "0fd98f1f1dea",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
- "attempts": 2,
- "status": "failed",
- "fields": {},
- "reasons": [
-  "[2§name] 숫자: 원문에 없는 숫자 4T",
-  "[2§check] 숫자: 원문에 없는 숫자 4T, 3T"
- ]
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "name": "Resultados de 4Q26 — ingresos anuales por GW superiores a 10.000 millones de dólares durante 2 trimestres consecutivos (sentencia anticipada C-2027-2) · CAPEX real de 4Q vs. guía · hito de entrega de Google 9/30 cumplido · renotificación de concentración de clientes",
+  "expected": "Principios de 2027-02 (estimado: 10/20 + aproximadamente 100 días, calendario de IR no publicado — liberación de bloqueo extendido del 20 % de 351,9 millones de acciones en el segundo día de negociación del mismo día)",
+  "check": "Tabla KPI 8-K Ex.99.1 · anotación de concentración de clientes de 10-K · incremento de ingresos de SI de 4Q (inicio de Google) · liberación de bloqueo extendido. Los detalles están en detail_check·log_check",
+  "prev": "T1 economía unitaria de IA de 3Q26 — estimado principios de 2026-11 → real 2026-10-20 (3 semanas antes). Resultado: 15.090 millones de dólares por GW, regla 1 activada"
+ }
 }

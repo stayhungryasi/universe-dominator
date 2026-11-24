@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-24-event-s4",
+ "lang": "es",
+ "src_hash": "4a88dc83bffa",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Dónde toca la capa de juicio",
+  "md": "\n| Objeto | Relación | Tratamiento | Fuente |\n|---|---|---|---|\n| Reglas de probabilidad R1~R6 · propuestas ①~⑤ | Los litigios y la regulación no son condición de ninguna | sin activación · se mantienen | `state.probability_adjustment_rules` |\n| 29 hitos | No es condición de veredicto de ingresos, GW de placa, beneficio operativo, concentración de clientes, FAA ni contratos federales | sin entrada | `state.milestones` |\n| T16 (demanda por detener el desarrollo de IA de frontera) | Caso aparte con otros demandantes y pretensiones | sin cambios | `state.triggers_next_12m[T16]` |\n| **T18 (nuevo)** | Demanda del fiscal general estatal por la generación de imágenes de Grok | en espera — punto de control 12/01 · 10-K del 4T26 | `state.triggers_next_12m[T18]` |\n\n- **Vía hacia el resultado**: solo hay dos caminos por los que pueden entrar cifras. Primero, que una orden de prohibición restrinja las funciones de Grok o la distribución en X. En ese caso, la edición mensual volverá a medir la vía de ingresos de publicidad y SI. Segundo, que el 10-K del 4T26 asigne provisiones a este caso o consigne una estimación de pérdidas. Hasta que llegue alguno de los dos, no se incorporan a los hitos ni a las probabilidades (fuente: T18 check).\n\n---\n"
+ }
+}

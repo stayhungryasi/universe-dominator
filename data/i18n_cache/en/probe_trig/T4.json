@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T4",
  "lang": "en",
- "src_hash": "07b6e6da63a4",
+ "src_hash": "2cfe1e97e498",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-24 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Amazon Leo US Consumer Commercial Launch Region & Pricing",
-  "expected": "2026-12-01 (checkpoint maintained: Ariane 64 LE-04 11/23 · Vulcan LV-01 November (LL2 monthly unit) results + pricing posted — 2nd checkpoint 2027-01-04 = Amazon 'initial service by end of 2026' pledge expiration 12/31 + US business day + KST +1 day) ~ 2027-1H",
-  "check": "leo.amazon.com official pricing & region page publication · Ariane 64 LE-04 (11/23) · Vulcan LV-01 (November) results · Starlink US residential official pricing (comparison baseline) · D2D (satellite-to-phone) event goes to T8 — T4 is consumer broadband only",
-  "note": "2026-11-20: pricing & region unchecked (checkpoint 12/01). New Glenn (Amazon 24 reservations) return delayed to 2027-01 (report — TNW 11/19). Same New Glenn has Google booking Suncatcher dedicated launch (2029-1Q) (Google blog 11/19) — separate event from Amazon Leo deployment. Prior: Vulcan LV-01 11/15 failure (LL2 'Launch Failure') · Ariane 64 LE-04 11/23 awaiting. Check history in log_note",
-  "prev": "T4 — expected '2026-4Q ~ 2027-1H' → no events on interval start date 2026-10-23 with ring. Interval expected reads from measurement layer as start date — 'leading event + verification delay' replaced with single date / 2026-10-28: premise 'Vulcan LV-01 10/29' of 10/23 round incorrect (LL2 November, monthly unit) — checkpoint 12/01 maintained but rationale changed from 'launch + one month' to 'LE-04·LV-01 results + pricing posted', added 2nd checkpoint 2027-01-04 based on pledge expiration (12/31). News monitor connected D2D event (Globalstar approval) to T4 opening event round — different event from trigger definition"
+  "name": "Amazon Leo U.S. consumer commercial launch region·pricing",
+  "expected": "2026-12-01(checkpoint maintained: Ariane 64 LE-04 11/23 · Vulcan LV-01 November (LL2 monthly) results + pricing posting — 2nd checkpoint 2027-01-04 = Amazon '2026 initial service' commitment expires 12/31 + U.S. business day + 1 day KST) ~ 2027-1H",
+  "check": "leo.amazon.com official pricing·region page posting · Ariane 64 LE-04 (11/23)·Vulcan LV-01 (November) results · Starlink U.S. residential official pricing (comparison baseline) · D2D (satellite-to-phone) matter → T8 — T4 consumer broadband only",
+  "note": "2026-11-20: pricing·region unchecked (checkpoint 12/01) · Vulcan LV-01 11/15 failure. Details in detail_note·log_note",
+  "prev": "T4 — range expectation reads from start date · 'Vulcan LV-01 10/29' premise incorrect → checkpoint reads as 'LE-04·LV-01 results + pricing posting'. Details in detail_prev"
  }
 }

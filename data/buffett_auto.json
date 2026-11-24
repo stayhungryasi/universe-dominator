@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-24 12:28",
- "generated_at": "2026-11-24T12:28:57.698436+09:00",
+ "generated_label": "2026-11-24 18:28",
+ "generated_at": "2026-11-24T18:28:36.689127+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-24",
@@ -130,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -148,7 +148,9 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ]
+   ],
+   "notes": "신임 CEO Ternus의 첫 실적 발표 시점에서 메모리 비용 상승이 마진 압박 요인; 서비스 프랜차이즈 고착성이 유일한 내구적 가치 원천",
+   "_evidence": {}
   },
   "GOOG": {
    "as_of": "2026-11-24",
@@ -371,7 +373,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 17.61
+    "value": 15.43
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -516,7 +518,7 @@
    "period": null,
    "cyclical_peak_guard": true,
    "eps_adj_ttm": {
-    "value": 1.86
+    "value": 1.87
    },
    "eps_status": null,
    "roe_tangible": 0.3005,
@@ -577,11 +579,7 @@
     },
     "fcf_ttm": 28649000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "AI 캐펙스 급증으로 현금흐름 감시 필요, 광고사업 강세 상쇄 미흡"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": -0.0677,
@@ -604,7 +602,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -622,31 +620,7 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "△",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2024H2"
-   },
-   "notes": "40억 네트워크 효과 견고하나 슈퍼인텔리전스 지출 규율 부재가 프랜차이즈 질을 훼손하는 중.",
-   "_evidence": {
-    "franchise": "40억 네트워크 효과, 광고사업 주요 수익원",
-    "risk5": "AI 지출 규율 부재로 감점, S&P 현금흐름·캐펙스 우려로 아웃룩 하향, 45% AI 배출량 증가",
-    "capalloc": "Meta's $25 Billion Stock Sale Ended Five Times Oversubscribed",
-    "owner_earnings": "Meta outlook revised downward by S&P on cash flow and capex concerns, Why Meta Platforms (NASDAQ:META) Slid on Heavy Volume as AI Spending Fears Deepened"
-   }
+   ]
   },
   "TSLA": {
    "as_of": "2026-11-24",
@@ -841,7 +815,12 @@
     "kind": "xbrl",
     "status": "income_missing"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "B",
+     "reason": "보험 부문 수익 미스에도 불구하고 현금 창출 능력과 공격적 자사주 매입으로 본질적 가치 창출 지속"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "float_skip"
@@ -853,7 +832,34 @@
    "g_forward_source": null,
    "method": "플로트형 — 투자평가손익 지배, 자동 조정 생략(사람 취재 전용)",
    "source": null,
-   "confidence": null
+   "confidence": "하",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "○"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "○",
+    "mgmt_fidelity": "○",
+    "price": "△",
+    "tax_inflation": "△"
+   },
+   "capalloc": {
+    "cash_positive": 0,
+    "buyback": 1,
+    "no_dilution": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2026H3"
+   },
+   "notes": "플로트 복리 엔진 가동 중이나 현금 감소세와 수익 부진으로 평가 갭 축소 중",
+   "_evidence": {
+    "franchise": "Berkshire Hathaway의 보험 플로트는 대체 불가능한 저비용 자금 공급원이며 금융서비스 부문 선도 위치 유지",
+    "risk5": "Q3 수익 미스 및 현금 수준 후퇴, 경영진 buyback 적극화는 가치 판단의 불확실성 증대; 월스트리트 다운그레이드 지속 중",
+    "capalloc": "Berkshire Hathaway more than doubles buybacks in third quarter as earnings decline; Berkshire Hathaway Earnings: Cash Levels Retreat Again as Acquisitions and Share Buybacks Pick Up",
+    "owner_earnings": "Berkshire Hathaway Q3 Earnings Miss On Insurance, Not On Strategy"
+   }
   },
   "LLY": {
    "as_of": "2026-11-24",
@@ -1099,11 +1105,7 @@
     },
     "fcf_ttm": 7056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "데이터센터 97% 급성장 중이나 NVDA 대비 30x/10x 밸류에이션 불일치 신호"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 0.8263,
@@ -1123,7 +1125,7 @@
    "g_forward_source": null,
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense+us-gaap_InterestExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 49건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -1143,29 +1145,7 @@
     }
    ],
    "g_forward_status": "전망치 이상(106%) — 취재 필요",
-   "notes": "AI 칩 사이클 초반이나 중국 수출 규제 리스크와 주식 희석(336.9M 공모)이 주주가치 잠식",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "△",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 0,
-    "no_dilution": 0,
-    "score": 1,
-    "period": "2026Q3"
-   },
-   "_evidence": {
-    "franchise": "Data center revenue climbs 97%, revenue climbs 50% — 필수 수요 충족 중",
-    "risk5": "AMD stock flat following strong Q3 earnings beat — 실적 대비 주가 약세, Why Does AMD Trade at 30x When Nvidia Is at 10x Forward Earnings? AMD's China Exposure Is Bigger",
-    "capalloc": "Advanced Micro Devices files for 336.9M share common stock offering by selling stockholders — 희석 진행",
-    "owner_earnings": "AMD's Data Center Sales Jumped 97% but stock is down — 성장성 대비 밸류에이션 프리미엄 과다"
-   }
+   "notes": "전망치 이상(106%) — 취재 필요"
   },
   "000660.KS": {
    "as_of": "2026-11-24",
@@ -1186,12 +1166,7 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "Cyclical peak evident in record 104.6T revenue and 80% margins; memory chip bear market already unfolding post-euphoria"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1205,29 +1180,8 @@
    "source": "yfinance TTM 희석 EPS",
    "confidence": "하",
    "g_forward_status": "전망치 이상(198%) — 취재 필요",
-   "notes": "Cyclical capex trap visible: 20조 won capex prerequisite for capacity growth creates long-term reinvestment obligation despite current cash generation; cyclical peak pricing risks owner earnings durability.",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "no_dilution": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "_evidence": {
-    "franchise": "HBM4 mass production entry with 257% YoY revenue jump; strong AI demand signals non-substitutable positioning",
-    "risk5": "Memory stocks dragged into bear market; share price halved; plunge after Nasdaq debut despite record earnings shows price/demand cyclicality",
-    "capalloc": "100 trillion won shareholder return plan; $28.6B buyback; 80% operating margin in Q3 2026",
-    "owner_earnings": "Record 104.6T revenue and 80% margins represent cyclical peak; memory chip sector euphoria cooling as evident from post-IPO plunge"
-   }
+   "notes": "시클리컬 반도체 기업으로서 현재 초호황 국면(AI 수요 급증)이지만 선행지표 악화(가격 하락, 애널리스트 하향, 메모리칩 약세장 진입) 중",
+   "_evidence": {}
   },
   "ASML": {
    "as_of": "2026-11-24",
@@ -2130,5 +2084,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-24 12:30"
+ "scout_label": "2026-11-24 18:29"
 }

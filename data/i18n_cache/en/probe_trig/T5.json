@@ -2,17 +2,17 @@
  "kind": "probe_trig",
  "id": "T5",
  "lang": "en",
- "src_hash": "eae0adee9564",
+ "src_hash": "e6f097b4d681",
  "model": "claude-haiku-4-5",
- "at": "2026-11-21 12:39",
+ "at": "2026-11-24 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "$40B GPU Master Finance Lease — Closing 8-K · Fixed Rate Confirmed (Remaining: Rate · Call Terms · Closing)",
-  "expected": "2026-12-01(KST, monthly checkpoint — after 11/4 syndication discussion reporting, pricing and closing 8-K presence/absence) → 2027-01-07(estimated: 8-K 10/26 'closing expected before year-end' → closing 8-K Item 1.01 4 business days → KST Jan 1. If no closing 8-K by 12/31, record as 'closing delayed' and defer proposal ② review to 4Q26 10-K (estimated 2027-02) lease footnote)",
-  "check": "① EDGAR 8-K Item 1.01/2.03 · Ex.10 — at closing, fixed rate · tranches · call · guarantee · principal increased from ~$40B to ~$44B · chip usage location restriction clause (lender 'on-ground' requirement — per FT reporting) ② if no closing 8-K, 4Q26 10-K lease · covenant footnote (lease liability recognition method — proposal ③) ③ measurement layer 'financing' detection is primary; voluntary disclosure (8.01 · IR) also confirmed ④ pricing and closing reporting are monitoring targets — lessor-side debt (SPV · ABS) may not be SpaceX disclosure subject. Monitoring connection error record is log_check",
-  "note": "2026-11-21: pricing confirmed — Apollo IR 11/20 '~$44B, oversubscribed · upsized, Vera Rubin, on-ground compute, lease commencement 2027-1H' · Reuters 11/20 A3 $25.17B 2033-04 8.259% · A2 ~$4.4B 2031-04 7.66% · B $2.564B 2033-04 8.36% · Bloomberg 11/20 bonds $32B (11/19 sold), investment-grade average 5.95%, GPU equipment ~$47.3B · KBRA 11/16 preliminary A-(Saturn Funding Trust — WHCO affiliate independent of SpaceX, ~5-year hell-or-high-water finance lease). No closing 8-K (EDGAR 2026-11-21 KST). History in log_note",
-  "prev": "T5 — 2026-10-27 revised: checkpoint is 'expected date + 1 day (KST)', primary detection is measurement layer event detection; does not infer 'may not appear' by disclosure obligation status. 2026-11-20: sale commencement reporting is pricing stage progress — forecast not invalidated. 2026-11-21: pricing (11/19~20) occurred between checkpoints (12/01 · 2027-01-07); news monitor detected first — forecast not invalidated (dates are supplementary; primary detection is measurement layer). Remaining work is master lease closing 8-K. History in log_prev",
-  "statusText": "partially confirmed (2026-11-21: lessor financing pricing complete — ~$44B upsized, 3 tranches bonds partial ~$32.1B · lease fixed rate · closing 8-K pending. 2026-10-27: structure · size · maturity · equity elements disclosed)"
+  "name": "$40 billion GPU master financial lease — closing 8-K·fixed rate confirmed (remaining: rate·call terms·termination)",
+  "expected": "2026-12-01(KST, monthly checkpoint — after 11/4 syndication discussion reports, pricing·closing 8-K presence) → 2027-01-07(estimated: 8-K 10/26 'expected closure before year-end' → closing 8-K Item 1.01 4 business days → 1 day KST. if no closing 8-K by 12/31, record as 'closure delayed' and defer to 4Q26 10-K lease footnote (estimated 2027-02))",
+  "check": "① closing 8-K (Item 1.01/2.03 · Ex.10) — fixed rate·tranches·call·principal ② if absent, 4Q26 10-K lease footnote ③ measurement layer 'financing' detection as primary. Details in detail_check·log_check",
+  "note": "2026-11-21: lessor financing pricing finalized (Apollo IR 11/20 — approximately $44 billion increase, lease commencement 2027-1H). No closing 8-K. Details in detail_note·log_note",
+  "prev": "T5 — checkpoint reads as 'estimated date + 1 day (KST)', primary detection by measurement layer. 11/20·21 progress does not invalidate expectation. Details in detail_prev·log_prev",
+  "statusText": "Partially confirmed (2026-11-21: lessor financing pricing finalized — approximately $44 billion increase, partial 3 bonds approximately $32.1 billion · lease fixed rate·closing 8-K pending. 2026-10-27: structure·size·maturity·equity component disclosed)"
  }
 }

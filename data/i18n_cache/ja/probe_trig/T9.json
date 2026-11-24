@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T9",
  "lang": "ja",
- "src_hash": "b9afcbdc43bd",
+ "src_hash": "4113655d9991",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-24 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
   "name": "Starlink Mobile 地上網 — ⓐ Boost Mobile/EchoStar 取引(① SpaceX·EchoStar 8-K ② FCC ライセンス移転·HSR ③ AT&T·T-Mobile MVNO 契約同意 ④ 既存スペクトラム取引最終終結 ⑤ 10-K 約定注釈) + ⓑ 自社構築(Qualcomm 機器·タワー·CAPEX 開示) 確認点",
-  "expected": "2026-12-01(KST, 次月次確認点 — 報道が「予備協議」ゆえ取引日は推定しない · 自社構築は2027 着工発表ゆえ開示時期未定) → 2027-02(4Q26 10-K 推定)",
-  "check": "ⓐ Boost/EchoStar 取引 — SpaceX·EchoStar 8-K · FCC ライセンス移転·HSR · MVNO 契約同意 · スペクトラム取引最終終結 ⓑ 自社構築 — 機器·タワー契約 8-K · 4Q26 CAPEX ガイダンス · 10-K 購買約定。判定は開示原文のみ(詳細は log_check)",
-  "note": "2026-11-05: Qualcomm 公式発表(複数年契約 · 2027 着工 · 数万個サイト · 金額非公開) — SpaceX 8-K·IR なし。Boost 協議は報道のみ。詳細は log_note",
-  "statusText": "待機(2026-11-05: ⓑ 自社構築は Qualcomm 11/4 公式発表で確認 — 複数年契約·2027 着工·数万個サイト·金額非公開、SpaceX 8-K·IR なし / ⓐ は依然報道のみ — EchoStar 3Q26 10-Q(11/3)に Boost 協議言及なし、'SpaceX Transactions' 終結時期不確実)"
+  "expected": "2026-12-01(KST、次月次確認点 — 報道が「予備協議」だから取引日は推定しない · 自社構築は2027着工発表だから開示時期未定) → 2027-02(4Q26 10-K 推定)",
+  "check": "ⓐ Boost/EchoStar 取引 — SpaceX·EchoStar 8-K · FCC ライセンス移転·HSR · MVNO 契約同意 · スペクトラム取引最終終結 ⓑ 自社構築 — 機器·タワー契約8-K · 4Q26 CAPEX ガイダンス · 10-K 購買約定。判定は開示原文のみ(詳細はlog_check)",
+  "note": "2026-11-05: Qualcomm 公式発表(複数年契約 · 2027着工 · 数万サイト · 金額非公開) — SpaceX 8-K·IR なし。Boost 協議は報道のみ。詳細はlog_note",
+  "statusText": "待機(2026-11-05: ⓑ 自社構築はQualcomm 11/4公式発表で確認 · ⓐ Boost 取引は報道のみ)。詳細はdetail_status"
  }
 }

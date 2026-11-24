@@ -2,17 +2,17 @@
  "kind": "probe_trig",
  "id": "T3",
  "lang": "es",
- "src_hash": "bfcb5bcd4639",
+ "src_hash": "b0313ce02827",
  "model": "claude-haiku-4-5",
- "at": "2026-11-20 18:40",
+ "at": "2026-11-24 18:40",
  "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "Starship Flight 15 — resultado retorno Ship·captura de torre(captura de propulsor cancelada durante vuelo)",
-  "expected": "2026-12-01(KST — punto de control mensual: designación investigación accidente FAA · registro oficial razón cancelación propulsor · licencia Flight 16). refuerzo base R2 finalizó cuando vigilante de noticias detectó reportaje primero en r3 2026-11-15",
-  "check": "① resultado vuelo LL2 confirmado(medición capa 1.ª — detección automática evento confirmación resultado Starship) · resumen vuelo oficial SpaceX ② resultado recuperación Ship → determinación R2(definición state.definitions.ship_recovery — confirmado antes resultado 11/15: solo cuando recuperación cuerpo por captura de torre·aterrizaje terrestre, excluir amarizaje) + columna recuperación Ship B-2027-1 ③ razón cancelación propulsor B22 · designación investigación accidente FAA · emisión zona respuesta escombros(DRA) — confirmación oficial razón cancelación vuelo costa oeste(solo publicación HDOT) ④ impacto licencia vuelo siguiente",
-  "note": "2026-11-01: TechTimes 10/30 — B22·Ship 42 encendido estático completado, solo falta modificación licencia FAA. declaración Musk 10/10 '4~6 semanas' (→ 11/7~21) solo en tabla candidatos",
-  "prev": "T3 Flight 14 captura Ship — predicción 4Q26 → vuelo real 9/28, sin intento captura(meta inyección orbital). predicción vinculando número vuelo y captura incorrecta / 2026-11-09: predicción '11/8~'(plan interno FAA) → sin vuelo 11/8, anuncio empresa NET 11/13. premisa incorrecta: plan interno regulador = fecha lanzamiento(licencia sin emisión). corrección: fecha solo desde aviso empresa(X·IR)+LL2 NET, detección 1.ª entregada a registro lanzamiento capa medición",
-  "statusText": "verificado(2026-11-15 r3: base R2 satisfecho — aterrizaje Ship LL2 success=true + reportaje grado 1 dos puntos CNBC·Bloomberg 11/14). tarea pendiente investigación accidente FAA·razón cancelación propulsor·licencia Flight 16(12/01). historial está en log_status"
+  "name": "Starship Flight 15 — retorno nave·resultado captura torre(cancelación captura propulsor durante vuelo)",
+  "expected": "2026-12-01(KST — punto de verificación mensual: designación investigación accidente FAA · registro oficial motivo cancelación propulsor · licencia Flight 16). Refuerzo fundamento R2 en 2026-11-15 r3 completado por detección reportaje vigilancia noticias primero despertó",
+  "check": "① resultado LL2 confirmado ② recuperación nave → R2 ③ motivo cancelación propulsor·designación investigación accidente FAA ④ licencia próximo vuelo. Detalle en detail_check",
+  "note": "2026-11-01: TechTimes 10/30 — B22·Ship 42 encendido estático completado, pendiente es revisión licencia FAA. Declaración Musk 10/10 'dentro 4–6 semanas'(→ 11/7~21) solo en tabla candidatos",
+  "prev": "T3 — estimación número vuelo·captura vinculados·previsión vio plan interno organismo regulador como fecha lanzamiento errónea → fecha es noticia empresa + NET LL2, detección primaria es capa medición. Detalle en detail_prev",
+  "statusText": "confirmado(2026-11-15 r3: fundamento R2 satisfecho — LL2 aterrizaje nave success=true + reportaje 1.ª categoría 2 fuentes CNBC·Bloomberg 11/14). Pendiente investigación accidente FAA·motivo cancelación propulsor·licencia Flight 16(12/01). Historial en log_status"
  }
 }

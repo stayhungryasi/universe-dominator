@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-11-24-event-s0",
+ "lang": "es",
+ "src_hash": "906a41533a98",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Fecha de referencia**: 2026-11-24 (KST). ID de edición `2026-11-24-event` · modo **event** (incremental). La edición publicada anterior es `2026-11-22-event-r2` (edición n.º 25) y la mensual anterior es `2026-11` (fuente: información de edición inyectada por el flujo de trabajo)\n- **Motivo**: el vigilante de noticias detectó el reportaje de que 'Virginia y Oregón demandaron a SpaceX por las imágenes sexuales y el material de explotación sexual infantil creados por Grok'. El vigilante no lo vinculó a ningún disparador. Un reportaje es algo que hay que verificar, no un fundamento de juicio (fuente: motivo inyectado por el flujo de trabajo)\n- **Precio de referencia**: $133,35: cierre del 2026-11-23 (lun.), +4,35 % (fuente: [historial diario de stockanalysis](https://stockanalysis.com/stocks/spcx/history/), consultado el 2026-11-24 KST)\n- **Alcance**: se contrasta la demanda con el texto original de los gobiernos estatales y las divulgaciones de la SEC, y se determina dónde incide en la capa de juicio. No se recalculan las cifras de los escenarios ni la tasa de descuento (fuente: `prompts/monthly_run.md`)\n\n> **Conclusión primero**: las dos demandas estatales son un hecho. La Oficina del Fiscal General de Virginia anunció ambas juntas en un comunicado del 11/23. Pero **no es un riesgo nuevo.** La nota 16 del 10-Q de SpaceX (10/22) ya recogía la notificación de infracción de Virginia del 10/19 y el hecho de que se estudiaba demandar. Una contingencia ya divulgada se ha materializado. El importe reclamado no figura en los datos públicos. La provisión para litigios de $350M (9/30) del 10-Q tampoco está desglosada por caso. Por eso no hay ningún valor que incorporar como cifra. **Probabilidades 30/50/20 · valor ponderado por probabilidad $36 · banda $36~$121 · centro $68: todo se mantiene igual**, y el veredicto de los 29 hitos tampoco cambia. Los puntos de verificación se asignan al nuevo T18 (fuente: secciones 1~3 siguientes · `state.probability_adjustment_rules`).\n\n---\n"
+ }
+}

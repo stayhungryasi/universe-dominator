@@ -2,16 +2,16 @@
  "kind": "probe_trig",
  "id": "T14",
  "lang": "en",
- "src_hash": "12e07f7a3078",
+ "src_hash": "34c30591fe4c",
  "model": "claude-haiku-4-5",
- "at": "2026-11-22 12:40",
- "attempts": 2,
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
  "status": "ok",
  "fields": {
-  "name": "AI Customer B (Anthropic) Renewal/Termination Checkpoint — ① Original SpaceX provision text from Anthropic public filing (S-1/A·FWP) (initial non-cancellable period end date·notifying party) ② Termination notice disclosure (proposed rule ⑤) ③ 4Q26 10-K customer concentration footnote",
-  "expected": "2026-12-01(KST, monthly checkpoint — S-1/A provision text) → 2027-02(4Q26 10-K customer concentration footnote, estimated) → 2027-04-02(KST — assuming initial non-cancellable period ends 2027-01·03, 90-day notice becomes possible thereafter; notice deadline approximately 4/1 + 1 day on 6/30 period-end assumption, estimated)",
-  "check": "① EDGAR — Anthropic (CIK 2130357) final prospectus 424B4 (2026-11-19, accn 0001628280-26-074944)·S-1/A SpaceX compute commitment provision text (press citation: maximum $120.5B through 2029 · initial non-cancellable period ends 2027-01·2027-03 · thereafter 90-day written notice — notifying parties per press are both sides) · post-listing Anthropic 10-Q·8-K (first period report estimated as 4Q26 10-K) compute commitment changes ② SpaceX 8-K (termination notice receipt is material event) — proposed rule ⑤ trigger conditions ③ 4Q26 10-K Customer B concentration ④ 10-Q R12 Customer B 3Q 34.5% (approximately $5,028M = 34.5% × 14,575, formula). Statements·CEO remarks subject to verification; determination by disclosure text only. Name header excludes procurement·contract·performance·Starship (measurement layer classification)",
-  "note": "2026-11-22: observer connected Amodei statement press (wccftech·digg) to T1 — incorrect (T14). Same week CEO DealBook 11/18 '10GW additional desired' statement included in candidate row only. History in log_note",
-  "statusText": "Awaiting (2026-11-22: Anthropic CEO in CNBC interview called SpaceX compute 'high quality' · 'We're enjoying working with SpaceX' while unable to guarantee future (wccftech 11/20 — press report, video not verified). Not a renewal/termination commitment · Anthropic listed 11/19 (424B4 final prospectus) · no SpaceX 8-K — 11/11 statement neither confirmed nor refuted). History in log_status"
+  "name": "AI Customer B (Anthropic) Renewal · Termination Checkpoint — ① Anthropic Offering Documents (S-1/A · FWP) SpaceX Terms Original Text (Initial Non-Cancelable Period End Date · Notice Party) ② Termination Notice Disclosure (Rule Proposal ⑤) ③ 4Q26 10-K Customer Concentration Note",
+  "expected": "2026-12-01(KST, Monthly Checkpoint — S-1/A Terms Original Text) → 2027-02(4Q26 10-K Customer Concentration Note, Estimated) → 2027-04-02(KST — Based on Initial Non-Cancelable Period End Reported as 2027-01 · 03 Followed by 90-Day Notice Period to FYE 6/30, Estimated Notice Deadline ca. 4/1 + 1 Day)",
+  "check": "① Anthropic 424B4 · S-1/A SpaceX Compute Commitment Terms Original Text ② SpaceX 8-K (Termination Notice) ③ 4Q26 10-K Customer B Percentage. Determination by Disclosure Original Text Only. Details in detail_check",
+  "note": "2026-11-22: Monitor Linked Amodei Statement News Report (wccftech · digg) to T1 — Incorrect (T14). Same Week CEO DealBook 11/18 '10GW Additional Desired' Statement Listed in Candidates Table Only. History in log_note",
+  "statusText": "Awaiting (2026-11-22: Anthropic CEO Statement News Report — Not Renewal · Termination Commitment · SpaceX 8-K Absent). Details in detail_status · log_status"
  }
 }

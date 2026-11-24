@@ -1,0 +1,13 @@
+{
+ "kind": "probe",
+ "id": "2026-11-24-event-s0",
+ "lang": "en",
+ "src_hash": "906a41533a98",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "md": "\n- **Reference date**: 2026-11-24 (KST). Run id `2026-11-24-event` · mode **event** (incremental). The previous published run is `2026-11-22-event-r2` (run 25), and the previous monthly run is `2026-11` (source: run information injected by the workflow)\n- **Reason**: The news monitor detected reports that 'Virginia and Oregon have sued SpaceX over sexual images and child sexual exploitation material created by Grok.' The monitor did not link it to any trigger. Reports are something to verify, not a basis for judgment (source: reason injected by the workflow)\n- **Reference share price**: $133.35 — 2026-11-23 (Mon) close, +4.35% (source: [stockanalysis daily history](https://stockanalysis.com/stocks/spcx/history/), retrieved 2026-11-24 KST)\n- **Scope**: Check the filing of the suits against state government primary sources and SEC filings, and determine where they touch the judgment layer. Scenario numbers and discount rates are not recalculated (source: `prompts/monthly_run.md`)\n\n> **Conclusion first**: The two states' lawsuits are real. The Virginia Attorney General's Office announced both together in an 11/23 press release. However, **this is not a new risk.** Note 16 of the SpaceX 10-Q (10/22) had already described Virginia's 10/19 notice of violation and the fact that it was considering suit. A disclosed contingent liability has become real. The amount sought is not in public materials. The 10-Q's litigation reserve of $350M (9/30) is also not broken down by case. So there is no value to enter as a number. **The probabilities 30/50/20 · probability-weighted value $36 · band $36~$121 · center $68 are all unchanged**, and the verdicts on the 29 milestones have not changed either. The checkpoint is placed on the new T18 (source: Sections 1–3 below · `state.probability_adjustment_rules`).\n\n---\n"
+ }
+}

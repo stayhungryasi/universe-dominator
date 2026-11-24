@@ -1,0 +1,14 @@
+{
+ "kind": "probe",
+ "id": "2026-11-24-event-s4",
+ "lang": "en",
+ "src_hash": "4a88dc83bffa",
+ "model": "claude-sonnet-5-5",
+ "at": "2026-11-24 18:40",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "title": "3. Where it touches the judgment layer",
+  "md": "\n| Item | Relationship | Handling | Source |\n|---|---|---|---|\n| Probability rules R1~R6 · proposals ①~⑤ | Litigation and regulation are not a condition for any of them | Not triggered · maintained | `state.probability_adjustment_rules` |\n| 29 milestones | Not a ruling condition for any of revenue, nameplate GW, operating profit, customer concentration, FAA, or federal contracts | No input | `state.milestones` |\n| T16 (frontier AI development suspension suit) | A separate matter with different plaintiffs and claims | No change | `state.triggers_next_12m[T16]` |\n| **T18 (new)** | State attorney general suit over Grok image generation | Pending — checkpoint 12/01 · 4Q26 10-K | `state.triggers_next_12m[T18]` |\n\n- **Profit-and-loss path**: There are only two ways numbers could come in. First, if an injunction restricts Grok features or X distribution. In that case the monthly run re-measures the advertising and SI revenue path. Second, if the 4Q26 10-K allocates the provision to this case or states a loss estimate. Until either arrives, it is not put into milestones or probabilities (source: T18 check).\n\n---\n"
+ }
+}
