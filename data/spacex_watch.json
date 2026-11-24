@@ -2,9 +2,9 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-24T18:31+09:00",
+  "fetched_at": "2026-11-25T08:29+09:00",
   "year": 2026,
-  "year_count": 129,
+  "year_count": 130,
   "starship_last": {
    "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
    "date": "2026-11-13",
@@ -28,10 +28,10 @@
   "source": "Launch Library 2 (2.4.0)",
   "competitor_next": [
    {
-    "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
-    "date": "2026-11-24",
-    "status": "Go for Launch",
-    "precision": "Minute"
+    "name": "Falcon 9 Block 5 | Amazon Leo (LF-04)",
+    "date": "2026-12-31",
+    "status": "To Be Determined",
+    "precision": "Month"
    },
    {
     "name": "New Glenn | Blue Ring-1",
@@ -48,7 +48,7 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-24T18:31+09:00",
+  "checked_at": "2026-11-25T08:29+09:00",
   "last_run": {
    "conclusion": "success",
    "created_at": "2026-11-24T03:43:23Z",
@@ -59,6 +59,20 @@
   "in_progress": false
  },
  "events": [
+  {
+   "id": "7bdc412b-c965-4517-a131-f57a01189803",
+   "date": "2026-11-24",
+   "form": "경쟁 발사",
+   "items": "",
+   "title": "[경쟁] Ariane 64 Block 2 | Amazon Leo (LE-04) — 발사 성공",
+   "result": "Success",
+   "name": "Ariane 64 Block 2 | Amazon Leo (LE-04)",
+   "kind": "competitor",
+   "grade": "record",
+   "url": "https://ll.thespacedevs.com/2.4.0/launches/7bdc412b-c965-4517-a131-f57a01189803/",
+   "source": "Launch Library 2",
+   "label": "경쟁 발사"
+  },
   {
    "date": "2026-11-16",
    "form": "SCHEDULE 13G/A",
@@ -1003,17 +1017,6 @@
    "source": "SEC EDGAR",
    "kind": "filing",
    "grade": "record"
-  },
-  {
-   "date": "2020-05-26",
-   "form": "D/A",
-   "items": "06b",
-   "title": "사모 발행 신고 정정",
-   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000118141220000002/xslFormDX01/primary_doc.xml",
-   "accn": "0001181412-20-000002",
-   "source": "SEC EDGAR",
-   "kind": "filing",
-   "grade": "record"
   }
  ],
  "seen": [
@@ -1104,6 +1107,7 @@
   "0001628280-26-071689",
   "0001950047-26-009740",
   "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+  "7bdc412b-c965-4517-a131-f57a01189803",
   "7d1afb26-6f9c-429b-9ccf-29012fd1e519",
   "9999999995-26-001968",
   "9999999997-02-047442",
@@ -1127,7 +1131,7 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-24T18:31+09:00",
+ "generated_at": "2026-11-25T08:29+09:00",
  "due": [
   {
    "key": "news:louisiana-lawsuit:2026-10-29",
@@ -1823,44 +1827,11 @@
    "source": "news"
   }
  ],
- "dispatch_queue": [
-  {
-   "key": "qn:2026-11-24:0833",
-   "run_id": "45287225085",
-   "queued_at": "2026-11-24T08:33+09:00",
-   "state": "queued",
-   "trigger_id": "",
-   "name": "버지니아 법무장관이 Grok의 성적 AI 이미지 문제로 SpaceX, X, xAI를 제소했다. · 버지니아와 오리건이 Grok이 만든 아동 성착취물(CSAM)을 이유로 SpaceX를 상대로 새 소송을 제기했다. · 버지니아주와 오리건주가 Grok AI의 아동 성착취 이미지 생성을 이유로 SpaceX를 제소했다. · 버지니아 법무장관이 Grok가 생성한 성적",
-   "reason": "보도 감지 8건(확인 대상 — 보도는 판단 근거가 아니다)",
-   "urls": [
-    "https://news.google.com/rss/articles/CBMiXkFVX3lxTE10OW10YjA4Q2hVN18yLTVBSlpHX3FEZ1NnYTI2WTQza3c2SktMel8xMmxXZmVOS1NHX0VBVUN3a3JiNUxDNFlESEt5S1lOM1hKeTRacFhfNExncFZhRmfSAWNBVV95cUxOM2VweTZEdm5mQWhwYlQzX3doYzRYNHNZdmtLVWdUTzhxMmJLWGhiMjFBNTE1RkxJbXVBYVFMQktmYkpKSXRBUlc3cnJ3YzJjeTJNbGZJOU0ycHQyWGRkRzBsSmc?oc=5",
-    "https://news.google.com/rss/articles/CBMipwFBVV95cUxQcjU1N3N0NzJpZUZ2YklDcm12NlAxQ0hOaXVHRjh1MVpENUtDZTZlZVFBYTlzWGRSdmlsUWc0SG5GNmVseFZ5R05zdmdzUThhR0dtYUlEZ0hJdFNwcTBNb3ZqbDVhYi1mUkdjd3Q2QlM3LXNrczFDcHYwRU1fUHdXaDRYY3phSXpjazJ6RVBuUUpGenp1bFgzQjAtcFNEdHA4cWc4SDQ2TQ?oc=5",
-    "https://news.google.com/rss/articles/CBMic0FVX3lxTE1VYkN2emttNkV2dEhFcnNDY0hBNWtBZVhHSm04S3VqVmgwT3VmWVNxRlNmb05vbl9kdGJ6MTFzZzYzZFZmQ2NTcHJ5U0xweVU0X2pHU1ptY0NSTWhRNlNWazMyM0V0TGI3c1h2ZVFrM3FPZEk?oc=5",
-    "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOcmktLWpXTWk3WE1WWHJSVGlXQnJEUS1mbC1icElZMGU3ZFJnM0I0VTZtUnE0aDc0aUVSdlgtNS1BbHdPWnA5VUp0bHZiTHV6Sjd4Q3JGbjNyd3hKUUV6b0pxQVR1aGRUWDdKaXRVUWlJenk1TDBDWGRzMlJSaHBSQmxWdWVoM3locld6V1YtZWxGY0taRVpxamJ4dzVjZktUS2tXYnNUQ0I5WktBenF0Rm1jYWYySlhYRHRaTFlnN1nSAdQBQVVfeXFMTXhWNnhiU0RLWlhNZWlSZU9lS29UNm55ZHdaeG0wdDMtMkpDTUlGLUc0TjdkNjBIYTVZRzhfdXV0R2gweUZLSjhNdVFKSmxCbWJfcVI1djcxVEwySUxkSXBGUnRTR09ERFZTZVdpZ05MQ3VMUF90V09OemhxR2FjV1Y3ZUloMUl0WGxnTVgwMHRnYmp6SFRzN1FJcU5uRXljVkRIcHlkWGdwcTJHSHRiQTBWVTlnRy1rQjN1bjVreEVDYk9abTRreUNjWmZLYjhMLUhKNGM?oc=5",
-    "https://news.google.com/rss/articles/CBMixgFBVV95cUxObnVxU21QWWFOSHYzcW1sajgxS25DUndFTGd6dTh6UzdyaFR5U0QtMWlROWIxZ01IcU0wNG5FLXRaMWZoS1o0dHhEUUFiaDItWFVIbE01S1pTbDZxYVZGN1hMaHlNYXBZck84N3JPaW1xcW5VMHdNeFBHSWZmRVN6MzlHZjdEcl8wTkVERGhBU3M0dVBXSHBFUHNpM1pCc1Q0MV9HTWlveVJSV1hiSEFaWjJDMEI0b2p2bzBIZEdrampIVFlVWEE?oc=5"
-   ]
-  },
-  {
-   "key": "qn:2026-11-24:1232",
-   "run_id": "45318228332",
-   "queued_at": "2026-11-24T12:32+09:00",
-   "state": "queued",
-   "trigger_id": "",
-   "name": "SpaceX가 Grok이 아동 성학대 이미지를 만들었다는 의혹으로 피소됐다. · 두 개 주가 Grok AI 이미지와 관련해 SpaceX를 상대로 소송을 제기했다. · 버지니아주와 오리건주가 Grok AI의 아동 성착취 이미지 생성을 이유로 SpaceX를 제소했다. · 미국 주(州)들이 Grok AI의 아동 성착취물 생성을 이유로 SpaceX를 고소했다. ·",
-   "reason": "보도 감지 5건(확인 대상 — 보도는 판단 근거가 아니다)",
-   "urls": [
-    "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQblBXemZkZUIwcE5OYlhlaVNWT1FRaU40QXRld0hUc1FfZTVHTjBKLTU2eUNXcXlGU3pJclEzTDBudTNraDhtd0xKekhZQzRkWlp3VlpzN09mSVU4OWxfSEdzaGI3RUF5a0tyUDh3UGQyYnF0RnRqUkYtcXdUTTZFbzgzekd3NW9xRThQNzBLTi0zYnBSMmNxbGlEU1ZmRDJuTXBpSE1RMzFXdw?oc=5",
-    "https://news.google.com/rss/articles/CBMitwFBVV95cUxQckMxUlVrU2w4SXk3cjdRbFoxTmdIZ2FZTUpieDdITk5SX09qTm9vRVpEMk5zSFlWcU1lMHUteVBsVkw0ZXV5bDhFYkNGeVp2dkd4YjYtSXBuR29MZzJGUXJoMWZOMEltNnZGUmhKOF9ldTd6M1hlc1FsLVdHY1ZQajFZLTBzLVd2aU5ueDlMcWxjbU55Qktxbk5oRzBHU3NVNUlMRi1ndlBCZ2c0TGkxeFQzTWt5NDg?oc=5",
-    "https://news.google.com/rss/articles/CBMihgFBVV95cUxPcXYwa3B0Z2RGVXJjWXo1RndURjBGM1JWRXB4U1hBMXNZT3F1TGVRQklycENPT0lRWXJka3BLNGRtZlYzNjZnVnBPNFZWeUVET2NBbnF3b09EckV3SzQ2Tm54VGd6MHlzT2dnSTRMQV9yb0dGY1RiQW1MelFuTDRSSFg4bUw5UQ?oc=5",
-    "https://news.google.com/rss/articles/CBMimAFBVV95cUxOWENuZl9Sa04wT3VCRnFjUjdka2VGYW8wS2FFdTV0Vkt0OWRqX1cwTkM0TmlmY3JLU0tlY0pKQjBUaUJlZ3RYLXhZWGlmSnM5cXZIcU1FMG96RWNVZmluT1M3ZGFUWjJNQzhobXhhM3Y2MUJ1S3R2VkVoeDQtQjZkSWhvb2l6LXo4S2MzLWhHZUtZZ1JMSWtFbw?oc=5",
-    "https://news.google.com/rss/articles/CBMixgFBVV95cUxObnVxU21QWWFOSHYzcW1sajgxS25DUndFTGd6dTh6UzdyaFR5U0QtMWlROWIxZ01IcU0wNG5FLXRaMWZoS1o0dHhEUUFiaDItWFVIbE01S1pTbDZxYVZGN1hMaHlNYXBZck84N3JPaW1xcW5VMHdNeFBHSWZmRVN6MzlHZjdEcl8wTkVERGhBU3M0dVBXSHBFUHNpM1pCc1Q0MV9HTWlveVJSV1hiSEFaWjJDMEI0b2p2bzBIZEdrampIVFlVWEE?oc=5"
-   ]
-  }
- ],
+ "dispatch_queue": [],
  "hourly": {
-  "checked_at": "2026-11-24T18:32+09:00",
-  "last_success_at": "2026-11-24T09:30:55Z",
-  "last_run_at": "2026-11-24T09:30:23Z",
+  "checked_at": "2026-11-25T08:29+09:00",
+  "last_success_at": "2026-11-24T23:15:48Z",
+  "last_run_at": "2026-11-24T23:15:13Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50
@@ -1914,6 +1885,11 @@
    "at": "2026-11-16T08:28+09:00",
    "ok": true,
    "head": "🛰 SpaceX 감시 — 엔진 깨움 1건(긴급 0 · 중요 1) · 기록 0건"
+  },
+  {
+   "at": "2026-11-25T08:29+09:00",
+   "ok": true,
+   "head": "🛰 SpaceX 감시 — 엔진 깨움 0건(긴급 0 · 중요 0) · 기록 1건"
   }
  ]
 }
