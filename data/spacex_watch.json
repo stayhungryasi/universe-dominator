@@ -48,13 +48,13 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-24T08:33+09:00",
+  "checked_at": "2026-11-24T12:32+09:00",
   "last_run": {
    "conclusion": "failure",
-   "created_at": "2026-11-23T03:41:49Z",
+   "created_at": "2026-11-23T23:48:05Z",
    "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/45107496235",
-   "run_id": 45107496235
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/45291898369",
+   "run_id": 45291898369
   },
   "in_progress": false
  },
@@ -1127,63 +1127,8 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-24T08:33+09:00",
+ "generated_at": "2026-11-24T12:32+09:00",
  "due": [
-  {
-   "key": "T5:date:2026-10-26",
-   "trigger_id": "T5",
-   "name": "$400억 조달 확정 조건(8-K) — 금리·담보·만기·증자 포함 여부",
-   "reason": "예상일 도래",
-   "expected": "2026-10-26 ~ 2026-11-06(추정: Semafor 10/22 '다음 주 가격 확정' + 8-K 4영업일)",
-   "detected_at": "2026-10-26"
-  },
-  {
-   "key": "T5:event:0001104659-26-118614",
-   "trigger_id": "T5",
-   "name": "$400억 조달 확정 조건(8-K) — 금리·담보·만기·증자 포함 여부",
-   "reason": "사건 감지",
-   "event": "수시공시 — 기타 중요 사건",
-   "event_date": "2026-10-26",
-   "detected_at": "2026-10-27",
-   "grade": "major",
-   "url": "https://www.sec.gov/Archives/edgar/data/1181412/000110465926118614/tm2628247d1_8k.htm"
-  },
-  {
-   "key": "news:starlink-ukraine-outage:2026-10-27",
-   "trigger_id": null,
-   "name": "우크라이나에서 Starlink 서비스가 정상으로 돌아왔다.",
-   "reason": "보도 감지(fakti.bg·silicon uk)",
-   "event": "Starlink Services Return To Normal For Ukraine",
-   "event_date": "2026-10-27",
-   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1LOUE2S2Q0Ti16ZUk0RTIxWnYwTlN6Q0lJR0N5Rl9ocW9JeE5ob2d5b1NnOG9FeWZpRzV0alFyZzByTUplRGV1WjVHaHdKODdDaER5YjFsQ2lxVmZkR09BdV9PbkZWcUJWNFpnWW13?oc=5",
-   "detected_at": "2026-10-27",
-   "grade": "major",
-   "source": "news"
-  },
-  {
-   "key": "news:amazon-globalstar-fcc:2026-10-28",
-   "trigger_id": "T4",
-   "name": "Amazon의 115억 달러 규모 Globalstar 인수가 FCC 승인을 받았다.",
-   "reason": "보도 감지(advanced television·businessline·fierce network)",
-   "event": "Amazon’s $11.5 billion Globalstar deal gets FCC approval",
-   "event_date": "2026-10-28",
-   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQNEZ6XzJNdldSREgwTVB6NmJOdk9UU0NjaUpVVnh5amI0MVZyaXMyYkdkUUNtMG82WHdRVzd6b0Z3ODVHSTlFLWl0SFlNZWpvTllJVTFSSzVzYjJvamVHVkc3Q0FrakxfaFlfRXRrVk5CbjlwLXlKcFdaR3dHYUs0MlAwV3lWejdMY1M1OGFmRG93SDhWQ09BTDFiYmozV1NLTDlTV2NzRXdnSXhzQW5QOTMtOWJXY0JyaGpRVS1kOTM0NUtHS1FCSkRBd3JQZXVweUJZRHJQQlJITUo2alpDcUFtT3VoZWo3R1FJ0gHyAUFVX3lxTE1sbjkzMWFWV05kVUNQbGQwMmFySHgtMFczOXdkdHk4MHVpcC1EUW1obnlpams1NG1VQVl1YUFtelFBam9hRnNGSHdlSzRIWFl6UzZaMXVlcHpEcHExMlpabDctU3NDY3NTQ2hrSG5icUtzYTlqaDgzN29vQjlDN3Y2Z2ZxbW0xRnZNRmFxR1NjSnUydUF3ZWJaY1FKMXdIcno5SmtRWG1wWGZ1VUg3S2xBdjA3dVVvc251UF9Hd3BoVEpHZUFaSmtib0xBSVdiendqQm1lNmFvTEJlSnFSOHNUdUQtQ2p2dEtCbHN4VEdTVFVn?oc=5",
-   "detected_at": "2026-10-28",
-   "grade": "major",
-   "source": "news"
-  },
-  {
-   "key": "news:amazon-leo-globalstar-fcc:2026-10-28",
-   "trigger_id": null,
-   "name": "Amazon Leo가 Globalstar 인수에 대해 FCC의 승인을 받았다.",
-   "reason": "보도 감지(citinewsroom.com·finimize·latest news from azerbaijan)",
-   "event": "Amazon’s Leo Gets FCC Clearance To Buy Globalstar",
-   "event_date": "2026-10-28",
-   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQaHhKWENvbGV4VDRfU3JnWnRQa0ZQUzBCY3V3dUpGRDctYzZaejRWYVpGTlF5QnNtMkE1S1Zrakd4U0NxaVlOQnVBX0VRX3BQdVREeEVndnpZVktuSS03WS1YNXdEYzJiYy1nZDFBX1NKWUFDVTJNTUQwVG5va3AzVmxhQQ?oc=5",
-   "detected_at": "2026-10-28",
-   "grade": "major",
-   "source": "news"
-  },
   {
    "key": "news:louisiana-lawsuit:2026-10-29",
    "trigger_id": null,
@@ -1816,6 +1761,66 @@
    "detected_at": "2026-11-24",
    "grade": "major",
    "source": "news"
+  },
+  {
+   "key": "news:virginia-oregon-grok-suits:2026-11-24",
+   "trigger_id": null,
+   "name": "SpaceX가 Grok이 아동 성학대 이미지를 만들었다는 의혹으로 피소됐다.",
+   "reason": "보도 감지(breitbart news·cyberscoop·finchannel)",
+   "event": "Elon Musk’s SpaceX Sued Over Allegations Grok Made Child Sex Abuse Images",
+   "event_date": "2026-11-24",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQblBXemZkZUIwcE5OYlhlaVNWT1FRaU40QXRld0hUc1FfZTVHTjBKLTU2eUNXcXlGU3pJclEzTDBudTNraDhtd0xKekhZQzRkWlp3VlpzN09mSVU4OWxfSEdzaGI3RUF5a0tyUDh3UGQyYnF0RnRqUkYtcXdUTTZFbzgzekd3NW9xRThQNzBLTi0zYnBSMmNxbGlEU1ZmRDJuTXBpSE1RMzFXdw?oc=5",
+   "detected_at": "2026-11-24",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:virginia-oregon-grok-lawsuit:2026-11-24",
+   "trigger_id": null,
+   "name": "두 개 주가 Grok AI 이미지와 관련해 SpaceX를 상대로 소송을 제기했다.",
+   "reason": "보도 감지(boing boing·cryptopolitan·dailyvoice.com)",
+   "event": "2 States Sue SpaceX Over Grok AI Images: Why Now",
+   "event_date": "2026-11-24",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPcXYwa3B0Z2RGVXJjWXo1RndURjBGM1JWRXB4U1hBMXNZT3F1TGVRQklycENPT0lRWXJka3BLNGRtZlYzNjZnVnBPNFZWeUVET2NBbnF3b09EckV3SzQ2Tm54VGd6MHlzT2dnSTRMQV9yb0dGY1RiQW1MelFuTDRSSFg4bUw5UQ?oc=5",
+   "detected_at": "2026-11-24",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:grok-csam-state-suits:2026-11-24",
+   "trigger_id": null,
+   "name": "버지니아주와 오리건주가 Grok AI의 아동 성착취 이미지 생성을 이유로 SpaceX를 제소했다.",
+   "reason": "보도 감지(law commentary·law360·oregon capital chronicle)",
+   "event": "Virginia, Oregon sue Musk's SpaceX over Grok AI's creation of child sexual abuse images",
+   "event_date": "2026-11-24",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxObnVxU21QWWFOSHYzcW1sajgxS25DUndFTGd6dTh6UzdyaFR5U0QtMWlROWIxZ01IcU0wNG5FLXRaMWZoS1o0dHhEUUFiaDItWFVIbE01S1pTbDZxYVZGN1hMaHlNYXBZck84N3JPaW1xcW5VMHdNeFBHSWZmRVN6MzlHZjdEcl8wTkVERGhBU3M0dVBXSHBFUHNpM1pCc1Q0MV9HTWlveVJSV1hiSEFaWjJDMEI0b2p2bzBIZEdrampIVFlVWEE?oc=5",
+   "detected_at": "2026-11-24",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:grok-state-ag-lawsuit:2026-11-24",
+   "trigger_id": null,
+   "name": "미국 주(州)들이 Grok AI의 아동 성착취물 생성을 이유로 SpaceX를 고소했다.",
+   "reason": "보도 감지(al jazeera·cnet·digital watch observatory)",
+   "event": "US states sue SpaceX over Grok AI’s creation of child sexual abuse material",
+   "event_date": "2026-11-24",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQTFFieDlnaXIxeGhqTDYtdDhwNEFyMnNJM29SY3poc2F6R3VIek9OeXJad2dKU3ZiZ1hhZ3BIRW9vX1RVaS05ZFJCcnlEbWdsS3NzRkJtVGIxTENDdzJDSk90NE1ySDNuSF9IYlVsOVpmcGRYRnZwLWJMSUdMY0d3WUFvblRNN3BrWmRoY1JqQzctM2ItcDF0S1V1cVd3dzhmU213d0F0UDdHX0hySEFRRXIyWUJmM3BlWW1Z0gHAAUFVX3lxTE9OWFJXNU4tM0gxYzRpdDBWelp4Tm5uZlF1SUVGQVA2MXc1aldsSVJYOXhCeHNnTFBUcm1odVpaSUNKTmw5OVhMVFhJX2JLb3J1TG9IVG1oTTZIZ2FzZXBpZzMzbng3UU8yMUpnUDFYWk5FMnpaVlhOZU5QVVVPaHZjUklmVU13dFppdFd0aWpjcDk0TUFaclBQZXhGSndwYTdWNUtkRGlfTDZjSVhEcEFCM3pfX1djOWhFSmMzZTk0NQ?oc=5",
+   "detected_at": "2026-11-24",
+   "grade": "urgent",
+   "source": "news"
+  },
+  {
+   "key": "news:grok-deepfake-suit:2026-11-24",
+   "trigger_id": null,
+   "name": "오리건주와 버지니아주가 Grok 딥페이크 문제로 SpaceX를 고소했다.",
+   "reason": "보도 감지(explainx.ai·hindustan times)",
+   "event": "Grok Lawsuit: Oregon and Virginia Sue SpaceX Over Deepfakes",
+   "event_date": "2026-11-23",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQdk1kVkJFaDhvX2Q0eVROY1VBWVJtS2tKcmVXOUFad0FZMFBESk1adllGTXFNQWZpRFJtZl8yOWo3b3JHalI1eW5rUG5qSi0zR3NzbDJHQlVMdkZNMUd0TDBLX2FxS29xLU1MclU4RTVvUnFsS0gxUGNUcHFvamlCUS1mTC15YnlTWVpuOFJ4UlZ4dw?oc=5",
+   "detected_at": "2026-11-24",
+   "grade": "urgent",
+   "source": "news"
   }
  ],
  "dispatch_queue": [
@@ -1834,12 +1839,28 @@
     "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOcmktLWpXTWk3WE1WWHJSVGlXQnJEUS1mbC1icElZMGU3ZFJnM0I0VTZtUnE0aDc0aUVSdlgtNS1BbHdPWnA5VUp0bHZiTHV6Sjd4Q3JGbjNyd3hKUUV6b0pxQVR1aGRUWDdKaXRVUWlJenk1TDBDWGRzMlJSaHBSQmxWdWVoM3locld6V1YtZWxGY0taRVpxamJ4dzVjZktUS2tXYnNUQ0I5WktBenF0Rm1jYWYySlhYRHRaTFlnN1nSAdQBQVVfeXFMTXhWNnhiU0RLWlhNZWlSZU9lS29UNm55ZHdaeG0wdDMtMkpDTUlGLUc0TjdkNjBIYTVZRzhfdXV0R2gweUZLSjhNdVFKSmxCbWJfcVI1djcxVEwySUxkSXBGUnRTR09ERFZTZVdpZ05MQ3VMUF90V09OemhxR2FjV1Y3ZUloMUl0WGxnTVgwMHRnYmp6SFRzN1FJcU5uRXljVkRIcHlkWGdwcTJHSHRiQTBWVTlnRy1rQjN1bjVreEVDYk9abTRreUNjWmZLYjhMLUhKNGM?oc=5",
     "https://news.google.com/rss/articles/CBMixgFBVV95cUxObnVxU21QWWFOSHYzcW1sajgxS25DUndFTGd6dTh6UzdyaFR5U0QtMWlROWIxZ01IcU0wNG5FLXRaMWZoS1o0dHhEUUFiaDItWFVIbE01S1pTbDZxYVZGN1hMaHlNYXBZck84N3JPaW1xcW5VMHdNeFBHSWZmRVN6MzlHZjdEcl8wTkVERGhBU3M0dVBXSHBFUHNpM1pCc1Q0MV9HTWlveVJSV1hiSEFaWjJDMEI0b2p2bzBIZEdrampIVFlVWEE?oc=5"
    ]
+  },
+  {
+   "key": "qn:2026-11-24:1232",
+   "run_id": "45318228332",
+   "queued_at": "2026-11-24T12:32+09:00",
+   "state": "queued",
+   "trigger_id": "",
+   "name": "SpaceX가 Grok이 아동 성학대 이미지를 만들었다는 의혹으로 피소됐다. · 두 개 주가 Grok AI 이미지와 관련해 SpaceX를 상대로 소송을 제기했다. · 버지니아주와 오리건주가 Grok AI의 아동 성착취 이미지 생성을 이유로 SpaceX를 제소했다. · 미국 주(州)들이 Grok AI의 아동 성착취물 생성을 이유로 SpaceX를 고소했다. ·",
+   "reason": "보도 감지 5건(확인 대상 — 보도는 판단 근거가 아니다)",
+   "urls": [
+    "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQblBXemZkZUIwcE5OYlhlaVNWT1FRaU40QXRld0hUc1FfZTVHTjBKLTU2eUNXcXlGU3pJclEzTDBudTNraDhtd0xKekhZQzRkWlp3VlpzN09mSVU4OWxfSEdzaGI3RUF5a0tyUDh3UGQyYnF0RnRqUkYtcXdUTTZFbzgzekd3NW9xRThQNzBLTi0zYnBSMmNxbGlEU1ZmRDJuTXBpSE1RMzFXdw?oc=5",
+    "https://news.google.com/rss/articles/CBMitwFBVV95cUxQckMxUlVrU2w4SXk3cjdRbFoxTmdIZ2FZTUpieDdITk5SX09qTm9vRVpEMk5zSFlWcU1lMHUteVBsVkw0ZXV5bDhFYkNGeVp2dkd4YjYtSXBuR29MZzJGUXJoMWZOMEltNnZGUmhKOF9ldTd6M1hlc1FsLVdHY1ZQajFZLTBzLVd2aU5ueDlMcWxjbU55Qktxbk5oRzBHU3NVNUlMRi1ndlBCZ2c0TGkxeFQzTWt5NDg?oc=5",
+    "https://news.google.com/rss/articles/CBMihgFBVV95cUxPcXYwa3B0Z2RGVXJjWXo1RndURjBGM1JWRXB4U1hBMXNZT3F1TGVRQklycENPT0lRWXJka3BLNGRtZlYzNjZnVnBPNFZWeUVET2NBbnF3b09EckV3SzQ2Tm54VGd6MHlzT2dnSTRMQV9yb0dGY1RiQW1MelFuTDRSSFg4bUw5UQ?oc=5",
+    "https://news.google.com/rss/articles/CBMimAFBVV95cUxOWENuZl9Sa04wT3VCRnFjUjdka2VGYW8wS2FFdTV0Vkt0OWRqX1cwTkM0TmlmY3JLU0tlY0pKQjBUaUJlZ3RYLXhZWGlmSnM5cXZIcU1FMG96RWNVZmluT1M3ZGFUWjJNQzhobXhhM3Y2MUJ1S3R2VkVoeDQtQjZkSWhvb2l6LXo4S2MzLWhHZUtZZ1JMSWtFbw?oc=5",
+    "https://news.google.com/rss/articles/CBMixgFBVV95cUxObnVxU21QWWFOSHYzcW1sajgxS25DUndFTGd6dTh6UzdyaFR5U0QtMWlROWIxZ01IcU0wNG5FLXRaMWZoS1o0dHhEUUFiaDItWFVIbE01S1pTbDZxYVZGN1hMaHlNYXBZck84N3JPaW1xcW5VMHdNeFBHSWZmRVN6MzlHZjdEcl8wTkVERGhBU3M0dVBXSHBFUHNpM1pCc1Q0MV9HTWlveVJSV1hiSEFaWjJDMEI0b2p2bzBIZEdrampIVFlVWEE?oc=5"
+   ]
   }
  ],
  "hourly": {
-  "checked_at": "2026-11-24T08:33+09:00",
-  "last_success_at": "2026-11-23T23:31:19Z",
-  "last_run_at": "2026-11-23T23:30:21Z",
+  "checked_at": "2026-11-24T12:32+09:00",
+  "last_success_at": "2026-11-24T03:30:49Z",
+  "last_run_at": "2026-11-24T03:30:22Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

@@ -1,6 +1,6 @@
 {
- "generated_label": "2026-11-24 08:30",
- "generated_at": "2026-11-24T08:30:00.735964+09:00",
+ "generated_label": "2026-11-24 12:28",
+ "generated_at": "2026-11-24T12:28:57.698436+09:00",
  "items": {
   "NVDA": {
    "as_of": "2026-11-24",
@@ -110,11 +110,7 @@
     },
     "fcf_ttm": 136056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
-    "ai_view": {
-     "display": "B",
-     "reason": "12% 성장률은 성숙기 기업에 적절하나 37배 밸류에이션은 과거 10년 고점에 근접"
-    }
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
    },
    "conversion": {
     "value": 1.0334,
@@ -134,7 +130,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2026Q4",
@@ -152,30 +148,7 @@
      "period": "2026Q1",
      "end": "2025-12-27"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "△",
-    "mgmt_ability": "○",
-    "price": "✕"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "score": 2,
-    "period": "2026H1"
-   },
-   "notes": "Services 프랜차이즈 강화로 내구성 있으나 성장 한계와 가격 정당성 괴리 심화",
-   "_evidence": {
-    "franchise": "Services Franchise and Installed Base Anchor Apple's Durable Earnings Growth",
-    "risk5": "Apple stock sinks as global memory crisis hurts profits + Margin Squeeze 보도; iPhone 18 출시 성과 불확실",
-    "capalloc": "Treasury Bills Now Outperform Apple's Buyback Math As Valuation Nears A Decade High",
-    "owner_earnings": "Apple (AAPL) Grows at 12% and Trades at 37 Times Earnings"
-   }
+   ]
   },
   "GOOG": {
    "as_of": "2026-11-24",
@@ -226,7 +199,7 @@
     "adj_ni": 126485520000.0
    },
    "g_cagr3y": 0.257,
-   "g_forward": 0.1896,
+   "g_forward": 0.1895,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_DebtAndEquitySecuritiesGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_EarningsPerShareDiluted 역산 · GOOGL 조회",
    "source": "Finnhub financials-reported · 분기 33건 · GOOGL 조회",
@@ -279,11 +252,7 @@
     },
     "fcf_ttm": 59957000000.0,
     "display": null,
-    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가",
-    "ai_view": {
-     "display": "A",
-     "reason": "Net income $36B with Azure acceleration, but capex/sales 30% tier limits FCF conversion quality to Flight Safety paradigm level"
-    }
+    "display_reason": "자동 — 캐펙스 전액 기준 산출 불가"
    },
    "conversion": null,
    "conversion_status": {
@@ -300,11 +269,11 @@
     "adj_ni": 131258950000.0
    },
    "g_cagr3y": 0.2474,
-   "g_forward": 0.1834,
+   "g_forward": 0.1841,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 47건",
-   "confidence": "하",
+   "confidence": "중",
    "ttm_window": [
     {
      "period": "2027Q1",
@@ -322,31 +291,7 @@
      "period": "2026Q2",
      "end": "2025-12-31"
     }
-   ],
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "△"
-   },
-   "risk5": {
-    "business_certainty": "○",
-    "mgmt_ability": "○",
-    "price": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2026H1"
-   },
-   "notes": "씨즈 특성 확인되나 고capex 체질 변태 리스크 상존—분기마다 capex/sales 비율 감시 필요. AI 투자 수익화 불확실성이 주요 감시 대상.",
-   "_evidence": {
-    "franchise": "Microsoft 365 To Audi Vehicles In 28 Countries; Cloud and AI strength fuels fourth quarter results",
-    "risk5": "AI Commitments Draw Scrutiny; valuation crashed from 75x to 10x even as Earnings Kept Growing",
-    "capalloc": "Microsoft boosts capital spending plans; $36 Billion Net Income In Q1; announces debt offerings",
-    "owner_earnings": "$36 Billion Net Income In Q1 Earnings Report; capex/sales 30% tier noted in brief"
-   }
+   ]
   },
   "AMZN": {
    "as_of": "2026-11-24",
@@ -397,7 +342,7 @@
     "adj_ni": 79845560000.0
    },
    "g_cagr3y": 0.9275,
-   "g_forward": 0.2192,
+   "g_forward": 0.2199,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_OtherNonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 44건",
@@ -426,7 +371,7 @@
    "period": null,
    "cyclical_peak_guard": false,
    "eps_adj_ttm": {
-    "value": 15.43
+    "value": 17.61
    },
    "eps_status": null,
    "roe_tangible": 0.3627,
@@ -585,12 +530,7 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": {
-    "ai_view": {
-     "display": "C",
-     "reason": "유가 사이클 종속성으로 인한 순이익 변동성이 본질적 수익력 평가를 왜곡"
-    }
-   },
+   "owner_earnings": null,
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -602,32 +542,7 @@
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": "하",
-   "franchise": {
-    "need": "○",
-    "no_substitute": "○",
-    "no_price_reg": "✕"
-   },
-   "risk5": {
-    "business_certainty": "✕",
-    "mgmt_ability": "○",
-    "price": "✕",
-    "tax_inflation": "△"
-   },
-   "capalloc": {
-    "cash_positive": 1,
-    "buyback": 1,
-    "debt_discipline": 1,
-    "score": 3,
-    "period": "2025Q4-2026H1"
-   },
-   "notes": "Aramco's Record Profits Hide a Growing Cash Flow Crisis 헤드라인이 핵심—순이익 증가가 실질 현금 창출력 개선을 반영하지 않음",
-   "_evidence": {
-    "franchise": "Oil giant Saudi Aramco profits jump 25% as Iran war drives prices higher; Google News headline indicates price-driven profit volatility",
-    "risk5": "Crude Oil Extends Gains as Houthi Attacks on Saudi Refineries Tighten Supply Chain; Aramco CEO warns of 'catastrophic' consequences if oil crisis continues; Saudi Aramco reducing output at two oilfields",
-    "capalloc": "Earnings call transcript: Saudi Aramco Q4 2025 sees slight stock dip despite strong cash flow; profits jump 35% indicating cash generation capacity",
-    "owner_earnings": "Aramco's Record Profits Hide a Growing Cash Flow Crisis; Profit Beats Expectations as Oil Prices Soar—수익과 현금흐름의 괴리 명시"
-   }
+   "confidence": "중"
   },
   "META": {
    "as_of": "2026-11-24",
@@ -662,7 +577,11 @@
     },
     "fcf_ttm": 28649000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "AI 캐펙스 급증으로 현금흐름 감시 필요, 광고사업 강세 상쇄 미흡"
+    }
    },
    "conversion": {
     "value": -0.0677,
@@ -681,11 +600,11 @@
     "adj_ni": 74473220000.0
    },
    "g_cagr3y": 0.3541,
-   "g_forward": 0.1999,
+   "g_forward": 0.1992,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 / us-gaap_NetIncomeLoss − 비영업(us-gaap_NonoperatingIncomeExpense)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 42건",
-   "confidence": "중",
+   "confidence": "하",
    "ttm_window": [
     {
      "period": "2026Q3",
@@ -703,7 +622,31 @@
      "period": "2025Q4",
      "end": "2025-12-31"
     }
-   ]
+   ],
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "mgmt_ability": "△",
+    "price": "△"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "debt_discipline": 1,
+    "score": 3,
+    "period": "2024H2"
+   },
+   "notes": "40억 네트워크 효과 견고하나 슈퍼인텔리전스 지출 규율 부재가 프랜차이즈 질을 훼손하는 중.",
+   "_evidence": {
+    "franchise": "40억 네트워크 효과, 광고사업 주요 수익원",
+    "risk5": "AI 지출 규율 부재로 감점, S&P 현금흐름·캐펙스 우려로 아웃룩 하향, 45% AI 배출량 증가",
+    "capalloc": "Meta's $25 Billion Stock Sale Ended Five Times Oversubscribed",
+    "owner_earnings": "Meta outlook revised downward by S&P on cash flow and capex concerns, Why Meta Platforms (NASDAQ:META) Slid on Heavy Volume as AI Spending Fears Deepened"
+   }
   },
   "TSLA": {
    "as_of": "2026-11-24",
@@ -807,8 +750,8 @@
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
    "confidence": null,
-   "g_forward_status": "전망치 이상(244%) — 취재 필요",
-   "notes": "전망치 이상(244%) — 취재 필요"
+   "g_forward_status": "전망치 이상(243%) — 취재 필요",
+   "notes": "전망치 이상(243%) — 취재 필요"
   },
   "MU": {
    "as_of": "2026-11-24",
@@ -1099,7 +1042,7 @@
     "adj_ni": 22863630000.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.1052,
+   "g_forward": 0.1054,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 50건",
@@ -1156,7 +1099,11 @@
     },
     "fcf_ttm": 7056000000.0,
     "display": "C",
-    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정"
+    "display_reason": "자동 기본값 — 유지캐펙스를 캐펙스 전액으로 본 보수적 가정",
+    "ai_view": {
+     "display": "B",
+     "reason": "데이터센터 97% 급성장 중이나 NVDA 대비 30x/10x 밸류에이션 불일치 신호"
+    }
    },
    "conversion": {
     "value": 0.8263,
@@ -1196,8 +1143,29 @@
     }
    ],
    "g_forward_status": "전망치 이상(106%) — 취재 필요",
-   "notes": "NVDA와 동일 AI 칩 로직 적용 시 장기 성장성 주목되나, 경쟁 강화 및 지정학적 위험 고려 필요",
-   "_evidence": {}
+   "notes": "AI 칩 사이클 초반이나 중국 수출 규제 리스크와 주식 희석(336.9M 공모)이 주주가치 잠식",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "△",
+    "no_price_reg": "△"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 0,
+    "no_dilution": 0,
+    "score": 1,
+    "period": "2026Q3"
+   },
+   "_evidence": {
+    "franchise": "Data center revenue climbs 97%, revenue climbs 50% — 필수 수요 충족 중",
+    "risk5": "AMD stock flat following strong Q3 earnings beat — 실적 대비 주가 약세, Why Does AMD Trade at 30x When Nvidia Is at 10x Forward Earnings? AMD's China Exposure Is Bigger",
+    "capalloc": "Advanced Micro Devices files for 336.9M share common stock offering by selling stockholders — 희석 진행",
+    "owner_earnings": "AMD's Data Center Sales Jumped 97% but stock is down — 성장성 대비 밸류에이션 프리미엄 과다"
+   }
   },
   "000660.KS": {
    "as_of": "2026-11-24",
@@ -1218,7 +1186,12 @@
     "asof": "2026-09-30",
     "source": "yfinance 대차대조표·손익계산서"
    },
-   "owner_earnings": null,
+   "owner_earnings": {
+    "ai_view": {
+     "display": "C",
+     "reason": "Cyclical peak evident in record 104.6T revenue and 80% margins; memory chip bear market already unfolding post-euphoria"
+    }
+   },
    "conversion": null,
    "conversion_status": {
     "state": "foreign"
@@ -1230,9 +1203,31 @@
    "g_forward_source": null,
    "method": "GAAP 미조정 (해외 공시 — 투자손익 조정 없음)",
    "source": "yfinance TTM 희석 EPS",
-   "confidence": null,
+   "confidence": "하",
    "g_forward_status": "전망치 이상(198%) — 취재 필요",
-   "notes": "전망치 이상(198%) — 취재 필요"
+   "notes": "Cyclical capex trap visible: 20조 won capex prerequisite for capacity growth creates long-term reinvestment obligation despite current cash generation; cyclical peak pricing risks owner earnings durability.",
+   "franchise": {
+    "need": "○",
+    "no_substitute": "○",
+    "no_price_reg": "✕"
+   },
+   "risk5": {
+    "business_certainty": "△",
+    "price": "✕"
+   },
+   "capalloc": {
+    "cash_positive": 1,
+    "buyback": 1,
+    "no_dilution": 1,
+    "score": 3,
+    "period": "2026H1"
+   },
+   "_evidence": {
+    "franchise": "HBM4 mass production entry with 257% YoY revenue jump; strong AI demand signals non-substitutable positioning",
+    "risk5": "Memory stocks dragged into bear market; share price halved; plunge after Nasdaq debut despite record earnings shows price/demand cyclicality",
+    "capalloc": "100 trillion won shareholder return plan; $28.6B buyback; 80% operating margin in Q3 2026",
+    "owner_earnings": "Record 104.6T revenue and 80% margins represent cyclical peak; memory chip sector euphoria cooling as evident from post-IPO plunge"
+   }
   },
   "ASML": {
    "as_of": "2026-11-24",
@@ -1747,8 +1742,8 @@
      "end": "2026-01-02"
     }
    ],
-   "g_forward_status": "전망치 이상(105%) — 취재 필요",
-   "notes": "전망치 이상(105%) — 취재 필요"
+   "g_forward_status": "전망치 이상(103%) — 취재 필요",
+   "notes": "전망치 이상(103%) — 취재 필요"
   },
   "CRWD": {
    "as_of": "2026-11-24",
@@ -1802,7 +1797,7 @@
     "adj_ni": 26446830.0
    },
    "g_cagr3y": null,
-   "g_forward": 0.315,
+   "g_forward": 0.3204,
    "g_forward_source": "yfinance 연간 EPS 추정 CAGR",
    "method": "SEC XBRL 조정 · us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 / us-gaap_NetIncomeLoss − (us-gaap_GainLossOnInvestments+us-gaap_EquitySecuritiesFvNiGainLoss)×0.79 (FY−Q1~Q3) ÷ us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
    "source": "Finnhub financials-reported · 분기 23건",
@@ -2135,5 +2130,5 @@
    ]
   }
  ],
- "scout_label": "2026-11-24 08:31"
+ "scout_label": "2026-11-24 12:30"
 }

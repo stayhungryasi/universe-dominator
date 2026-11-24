@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "03592f0ca8ea",
  "lang": "es",
- "src_hash": "0a87b7d833fd",
+ "src_hash": "c822973e04a9",
  "model": "claude-haiku-4-5",
- "at": "2026-11-23 18:40",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "ANT realizó su IPO el 18 de noviembre a $83 por acción, recaudando $81,3B y convirtiéndose en la IPO más grande de la historia, superando los $75B de SpaceX.",
-  "summary_ko.1": "SPCX recaudó $75B el 12 de junio de 2026 a $135 por acción, subiendo un 19% en el primer día de negociación y alcanzando una capitalización de mercado de aproximadamente $2,1 billones.",
-  "summary_ko.2": "Entre las 10 mayores IPO de la historia, Visa registró una rentabilidad del 2.854% desde $11 en 2008 hasta ahora, mientras que Meta experimentó una caída inicial del 47% antes de generar un retorno de +1.572% desde el precio de IPO de 2012.",
-  "title": "Anthropic recaudó $81,3B en la mayor IPO jamás realizada, superando los $75B de SpaceX. Vea cómo se comportaron las 10 mayores IPO."
- }
+ "at": "2026-11-24 12:43",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[8§summary_ko.0] 숫자: 원문에 없는 숫자 81.3 billion",
+  "[8§summary_ko.0] 숫자: 원문의 숫자가 빠짐 81.3억"
+ ]
 }

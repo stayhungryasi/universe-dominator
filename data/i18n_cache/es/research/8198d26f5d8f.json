@@ -2,15 +2,14 @@
  "kind": "research",
  "id": "8198d26f5d8f",
  "lang": "es",
- "src_hash": "d2e804b7de14",
+ "src_hash": "2b4c344cc069",
  "model": "claude-haiku-4-5",
- "at": "2026-11-24 08:46",
- "attempts": 1,
- "status": "ok",
- "fields": {
-  "summary_ko.0": "Alphabet (GOOG, GOOGL) está transitando a un modelo de negocio con mayor intensidad de activos mediante la construcción de centros de datos de IA, cayendo 30% desde el máximo reciente y registrando flujo de efectivo libre negativo en 2 trimestres consecutivos.",
-  "summary_ko.1": "Se espera capex de $195-205 mil millones en 2026 con aumento significativo en 2027, con quemado de efectivo máximo de $80 mil millones esperado en 2027, aunque se anticipa recuperación del flujo de efectivo libre a partir de 2029.",
-  "summary_ko.2": "La actual relación PER de 21x está infravalorada, con Google Cloud creciendo rápidamente con $561 mil millones de cartera pendiente y crecimiento de ingresos del 103% en Q3; la aplicación Gemini ha superado 1.000 millones de usuarios.",
-  "title": "Predicción: Aquí es donde estará la acción de Alphabet en 5 años"
- }
+ "at": "2026-11-24 12:43",
+ "attempts": 2,
+ "status": "failed",
+ "fields": {},
+ "reasons": [
+  "[16§summary_ko.2] 숫자: 원문에 없는 숫자 127577 billion",
+  "[16§summary_ko.2] 숫자: 원문의 숫자가 빠짐 127.577B, 29.8"
+ ]
 }

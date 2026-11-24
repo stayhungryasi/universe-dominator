@@ -1,0 +1,33 @@
+{
+ "kind": "dissect",
+ "id": "57676719cf1f",
+ "lang": "en",
+ "src_hash": "375003bc1d91",
+ "model": "claude-haiku-4-5",
+ "at": "2026-11-24 12:43",
+ "attempts": 1,
+ "status": "ok",
+ "fields": {
+  "sections.0.h": "Research Design and Key Findings",
+  "sections.1.h": "Systematic Use of Low-Trust Sources",
+  "sections.2.h": "Corrupted Use of Content Marketing",
+  "sections.3.h": "Suspected Organized Network",
+  "sections.4.h": "Self-Description Targeting AI Indexing",
+  "sections.5.h": "Inconsistent Answers to Identical Questions",
+  "sections.6.h": "Credibility Issues in Recommended Vendor Sites",
+  "sections.7.h": "Limits of Dependency and Independence Between Models",
+  "sections.8.h": "Clarification of Research Scope and Limitations",
+  "sections.9.h": "Open Principles of Transparency and Reproducibility",
+  "sections.0.ko": "The research team requested recommendations for 380 software categories from two versions of Perplexity, collecting a total of 7,534 cited URLs. Analysis revealed that 83.2% of these domains ranked below 100,000 in web popularity or fell outside the top 1 million domains. Notably, three websites created 215,128 auto-generated 'Best Software' pages since December 2023, prompting AI models to cite them.",
+  "sections.1.ko": "The top 10 cited domains accounted for only 17.3% of total citations, so the problem was not a cartel of leading brands. The issue was that among the 2,055 domains comprising over 80% of the remainder, 751 (36.5%) fell outside the top 1 million domains. These domains were notably new sites; the median registration year for top-ranking domains was 2011, while for low-trust domains it was 2020, with 16.6% registered after 2025.",
+  "sections.2.ko": "Guideflow.com is a company that sells product demos, not a review site or directory. Nevertheless, Perplexity cited this site's blog 194 times across 96 of the 380 categories (25%), surpassing Gartner. The site maintains 3,351 blog URLs, demonstrating that AI search algorithms treat corporate advertising content as genuine expert information.",
+  "sections.3.ko": "Three sites among the top ten (wifitalents.com, worldmetrics.org, gitnux.org) were registered via NameCheap between December 2023 and May 2024, used an identical pair of Cloudflare nameservers (pam.ns.cloudflare.com, sean.ns.cloudflare.com), and shared identical page templates and menu structures. Each of the three sites held exactly 6 blog posts and wrote only about each other's brands. Together they provided 215,128 auto-generated 'Best Software' pages, far exceeding the actual number of software categories.",
+  "sections.4.ko": "These three sites labeled their HTML titles as 'Facts Grounding Page,' where 'grounding' refers to the stage at which AI search models retrieve documents to serve as the basis for answers. This is self-description directed at AI systems, not human readers. Meta descriptions were identical, and the three sites specified rankings in marked-up JSON-LD format for machine reading without interpretation. Simultaneously, they sold customer research services (from €5,000) and sales reports, operating auto-generated 'Best Lists' like product catalogs.",
+  "sections.5.ko": "Extracting the 'Project Estimation Software' page from the three sites revealed that worldmetrics.org recommended Float-Scoro-Teamwork.com-Procore-Wrike as positions 1–5, while gitnux.org placed Saviom at #1, completely different. Each page credited three different staff members (nine total), and gitnux's page was labeled 'AI-verified·Expert Review.' Both pages contained unrendered template variables ('within next 26 days' and 'within 40 days'), showing traces of auto-generation.",
+  "sections.6.ko": "Of 1,502 recommended vendor homepages, 10 (0.7%) could not be resolved to an address. In a query for the Dryad data repository, one model recommended the legitimate site (datadryad.org) while the other recommended dryad.co, which redirects to an Indonesian online gambling portal. In a query for Monte Carlo data tools, one model presented the legitimate domain while the other presented a domain connecting to a Monaco casino resort site.",
+  "sections.7.ko": "The two versions of Perplexity (sonar and sonar-pro) returned byte-identical citation lists across 289 categories, with Jaccard similarity between the full URL sets reaching 0.898. Top recommended products were identical in 290 of the 380 categories. This indicates that the two models are not independent systems but share the same search layer, meaning converging answers should not be regarded as reliable validation.",
+  "sections.8.ko": "This research measured only Perplexity and did not include ChatGPT, Gemini, Copilot, or Google's AI mode. The 380 categories were constructed by the research team rather than reflecting actual user queries; a list skewed toward niche fields may expose longer-established sources more heavily. Measurement was conducted only once; requests via rotating proxies may differ from responses received by actual crawlers or browsers.",
+  "sections.9.ko": "The research team released all citations, recommendations, ranking queries, vendor viability verification, and the scripts that generated them under CC BY 4.0 license. Tranco rank is a popularity metric, not a quality indicator, and claims about specific sites are substantiated by links and archives. The team did not verify whether recommendations actually changed when these sources were removed, and noted that it does not exclude the possibility that these sites could recommend reasonable products.",
+  "caveat": "This research is limited to Perplexity alone, so findings cannot be generalized to search issues in other AI models. The actual change in recommendation quality after source removal was not measured."
+ }
+}
