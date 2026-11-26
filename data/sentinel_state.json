@@ -120,17 +120,19 @@
   ],
   "2026-11-26": [
    "sentinel:bot:spacex_news:2026-11-26",
-   "sentinel:feed-zero-recover:companion:spacex:SpaceX IR 보도자료:2026-11-26"
+   "sentinel:feed-zero-recover:companion:spacex:SpaceX IR 보도자료:2026-11-26",
+   "sentinel:feed:signals:Hacker News 300+:2026-11-26"
   ]
  },
  "last_verdict": {
-  "at": "2026-11-26 12:31",
+  "at": "2026-11-26 18:30",
   "ok": false,
   "alerts": [
-   "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)"
+   "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)",
+   "신호 Hacker News 300+: HTTP 502 2회 연속"
   ]
  },
- "last_run": "2026-11-26 12:31",
+ "last_run": "2026-11-26 18:30",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -191,10 +193,12 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 1,
+   "err_streak": 2,
    "zero_streak": 0,
-   "err_alerted": false,
-   "zero_alerted": false
+   "err_alerted": true,
+   "zero_alerted": false,
+   "err_alerted_first": "2026-11-26",
+   "err_alerted_last": "2026-11-26"
   },
   "signals:OpenAI": {
    "err_streak": 0,
@@ -1178,7 +1182,7 @@
    "zero_alerted": false
   },
   "spacex_news:판정 모델": {
-   "err_streak": 5,
+   "err_streak": 6,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false,
@@ -1224,9 +1228,9 @@
   "fail_alerted": false
  },
  "i18n": {
-  "streak": 6,
+  "streak": 7,
   "alerted": true,
-  "last_ts": "2026-11-26 12:31",
+  "last_ts": "2026-11-26 18:30",
   "alerted_first": "2026-11-25",
   "alerted_last": "2026-11-25"
  },
