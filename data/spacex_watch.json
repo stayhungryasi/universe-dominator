@@ -2,7 +2,7 @@
  "form4_30d": 0,
  "launches": {
   "ok": true,
-  "fetched_at": "2026-11-26T18:28+09:00",
+  "fetched_at": "2026-11-27T08:27+09:00",
   "year": 2026,
   "year_count": 130,
   "starship_last": {
@@ -48,13 +48,13 @@
   ]
  },
  "engine": {
-  "checked_at": "2026-11-26T18:29+09:00",
+  "checked_at": "2026-11-27T08:28+09:00",
   "last_run": {
-   "conclusion": "success",
-   "created_at": "2026-11-24T03:43:23Z",
+   "conclusion": "failure",
+   "created_at": "2026-11-26T15:01:04Z",
    "event": "repository_dispatch",
-   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/45321455907",
-   "run_id": 45321455907
+   "url": "https://github.com/stayhungryasi/universe-dominator/actions/runs/45844789363",
+   "run_id": 45844789363
   },
   "in_progress": false
  },
@@ -1131,20 +1131,8 @@
   "ir:https://ir.spacex.com/updates/releases-details/2026/SpaceX-to-Post-Third-Quarter-2026-Results-and-Host-Webcast-on-October-20-2026-2026-QssQGye3im/default.aspx"
  ],
  "cik": "0001181412",
- "generated_at": "2026-11-26T18:28+09:00",
+ "generated_at": "2026-11-27T08:27+09:00",
  "due": [
-  {
-   "key": "news:louisiana-lawsuit:2026-10-29",
-   "trigger_id": null,
-   "name": "스페이스포트 관련 소송과 부채 우려 속에 SpaceX 주가가 하락했다.",
-   "reason": "보도 감지(streetinsider·tradingkey·tradingview)",
-   "event": "SpaceX stock drops amid spaceport lawsuit, debt concerns",
-   "event_date": "2026-10-29",
-   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUTlzSm5MX0Z2RlBLa1M4VnJ5ZDlkQ0d0OWZMM0pEa21nd1lTODZDMlRPWlFVRFpWQjVoYlU2bUZYalhVclN2X2I3T1BDbVpNRUVhVkpjcExXeEgtZlJqeGVhZ0l6b2hRanZpbW41aDQ3d0d5RkdmaWhsdHV2Qk44QmR6R2FmNUpqdUZMek9ZSzhzUi0wQ0dTSmtXRFc1RTRnb1JyN0I4TmZnbW1zZlA1OFln?oc=5",
-   "detected_at": "2026-10-29",
-   "grade": "major",
-   "source": "news"
-  },
   {
    "key": "news:pentagon-ig-ukraine-refusal:2026-10-29",
    "trigger_id": "T7",
@@ -1825,13 +1813,21 @@
    "detected_at": "2026-11-24",
    "grade": "urgent",
    "source": "news"
+  },
+  {
+   "key": "T8:date:2026-11-27",
+   "trigger_id": "T8",
+   "name": "Amazon Leo·SpaceX D2D(위성-휴대폰) 규제·거래 확인점 — ① DA 26-1160 재심 청구 유무 ② DA 26-1078 조건부 수락·보증금 ③ Amazon D2D 5,105기 허가 ④ Globalstar 종결 8-K·Apple 20% 지분 ⑤ EchoStar 2단계 종결 → SpaceX 2GHz MSS 운용 개시 ⑥ FCC D2D 482MHz NPRM 의견 마감·1675–1695/2020–2025MHz 경매 규칙",
+   "reason": "예상일 도래",
+   "expected": "2026-11-27(추정: DA 26-1160 재심 청구 기한 = 채택 10/27 + 30일 = 11/26 + KST 1일) ~ 2027-1H(Globalstar 종결 8-K Item 2.01 — 8-K '2027 종결 예정')",
+   "detected_at": "2026-11-27"
   }
  ],
  "dispatch_queue": [],
  "hourly": {
-  "checked_at": "2026-11-26T18:29+09:00",
-  "last_success_at": "2026-11-26T09:15:44Z",
-  "last_run_at": "2026-11-26T09:15:14Z",
+  "checked_at": "2026-11-27T08:28+09:00",
+  "last_success_at": "2026-11-26T23:15:37Z",
+  "last_run_at": "2026-11-26T23:15:12Z",
   "last_conclusion": "success",
   "runs_24h": 50,
   "ok_24h": 50

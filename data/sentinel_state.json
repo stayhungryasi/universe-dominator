@@ -24,11 +24,6 @@
  },
  "buffett": [
   {
-   "date": "2026-11-12",
-   "measured": 21,
-   "forward": 21
-  },
-  {
    "date": "2026-11-13",
    "measured": 21,
    "forward": 21
@@ -97,6 +92,11 @@
    "date": "2026-11-26",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-11-27",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
@@ -122,17 +122,23 @@
    "sentinel:bot:spacex_news:2026-11-26",
    "sentinel:feed-zero-recover:companion:spacex:SpaceX IR 보도자료:2026-11-26",
    "sentinel:feed:signals:Hacker News 300+:2026-11-26"
+  ],
+  "2026-11-27": [
+   "sentinel:bot:spacex_news:2026-11-27",
+   "sentinel:feed-recover:signals:Hacker News 300+:2026-11-27",
+   "sentinel:probe-fail:2026-11-27"
   ]
  },
  "last_verdict": {
-  "at": "2026-11-26 18:30",
+  "at": "2026-11-27 08:30",
   "ok": false,
   "alerts": [
    "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)",
-   "신호 Hacker News 300+: HTTP 502 2회 연속"
+   "신호 Hacker News 300+: 응답 회복 ✅",
+   "SpaceX 월간 엔진: 마지막 실행 실패(2026-11-26) — https://github.com/stayhungryasi/universe-dominator/actions/runs/45844789363"
   ]
  },
- "last_run": "2026-11-26 18:30",
+ "last_run": "2026-11-27 08:30",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -193,12 +199,10 @@
    "zero_alerted": false
   },
   "signals:Hacker News 300+": {
-   "err_streak": 2,
+   "err_streak": 0,
    "zero_streak": 0,
-   "err_alerted": true,
-   "zero_alerted": false,
-   "err_alerted_first": "2026-11-26",
-   "err_alerted_last": "2026-11-26"
+   "err_alerted": false,
+   "zero_alerted": false
   },
   "signals:OpenAI": {
    "err_streak": 0,
@@ -676,7 +680,7 @@
   },
   "research:META": {
    "err_streak": 0,
-   "zero_streak": 0,
+   "zero_streak": 1,
    "err_alerted": false,
    "zero_alerted": false
   },
@@ -1182,7 +1186,7 @@
    "zero_alerted": false
   },
   "spacex_news:판정 모델": {
-   "err_streak": 6,
+   "err_streak": 7,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false,
@@ -1221,16 +1225,18 @@
    22,
    25
   ],
-  "at": "2026-11-26"
+  "at": "2026-11-27"
  },
  "probe": {
   "stale": false,
-  "fail_alerted": false
+  "fail_alerted": true,
+  "fail_alerted_first": "2026-11-27",
+  "fail_alerted_last": "2026-11-27"
  },
  "i18n": {
-  "streak": 7,
+  "streak": 8,
   "alerted": true,
-  "last_ts": "2026-11-26 18:30",
+  "last_ts": "2026-11-27 08:29",
   "alerted_first": "2026-11-25",
   "alerted_last": "2026-11-25"
  },
