@@ -1,20 +1,24 @@
 {
-  "run_id": "2026-11-24-event",
-  "checked": 20,
-  "match": 20,
+  "run_id": "2026-11-27-event",
+  "report": "agent-research/reports/2026-11-27-event.md",
+  "checked": 21,
+  "match": 21,
   "rounding": 0,
   "mismatch": [],
   "unverifiable": [],
   "notes": [
-    "버지니아 보도자료: 게시일 2026-11-23 · CCDH 약 3백만 건(2025-12-29~2026-01-08) · 아동으로 보이는 이미지 약 23,000건 — 원문 일치",
-    "CNBC: 오리건 Multnomah 카운티 순회법원 일요일 저녁 · 버지니아 Richmond 시 순회법원 월요일 오전(기사 2026-11-23 월) — 일치",
-    "10-Q R25: 통지 2026-10-19 · Va. Code § 59.1-203 · 충당금 $350M(9/30) · $399M(12/31) · Baltimore 2026-03-24 — 일치",
-    "EDGAR submissions 최신: SCHEDULE 13G/A 2026-11-16 0001213900-26-120715 — 일치",
-    "stockanalysis 11/23: 고가 141.87 · 저가 133.10 · 종가 133.35 · +4.35% · 거래량 96,163,599 — 일치",
-    "LL2: last_updated 2026-11-22T05:34:51Z · Booster 22 착륙 실패 · Ship 42 착륙 성공(Starbase) — 일치",
-    "Tesla DEF 14A: 주총 2026-12-03 · 소집 공고의 안건 3개(이사 선임·보수 자문 투표·감사인 승인), SpaceX 합병 안건 없음 — 일치(문서 뒷부분은 앞부분 안건 목록 외 추가 안건 언급 없음)",
-    "FRED DGS10: 2026-11-20 4.92% — 일치",
-    "보고서 where_in_report 위치의 숫자 전부 verify_list 와 동일"
+    "DA 26-1160: adopted and released 2026-10-27 · GN Docket No. 26-134 · ¶32 says petitions under §1.106 are due within thirty days of adoption — matches the report's 1절 표 ①",
+    "47 CFR §1.4(j): 'the document shall be filed on the next business day' — matches",
+    "DA 26-1078: condition 17(a) 'no later than November 4, 2026' · 50% milestone 2032-10-07 · full constellation 2035-10-07 — matches 1절 표 ②",
+    "DA 26-866 (2026-08-18): 5,105 NGSO satellites — matches 1절 표 ③",
+    "Globalstar 8-K list: latest is 2026-11-05 (2.02, 9.01) and no 8-K on the list has Item 2.01 — matches 1절 표 ④",
+    "Globalstar 10-Q: HSR expired 2026-07-17 · outside date 2027-04-13, extendable to 2027-10-13 and then 2028-04-13 · Apple 400,000 Class B units, $400M, 20% — matches 2절 표",
+    "EchoStar 8-K dated 2026-10-02: Items 1.01, 2.01, 9.01 · DISH DBS emerged from bankruptcy — matches 1절 표 ⑤",
+    "LL2 LE-04: NET 2026-11-24T11:14:52Z · Launch Successful · ELA-4 — matches 0절 표. The '36기' in the report is not on the verify list; the LL2 structured payload data has no count (only a video description says 36), so it was not checked",
+    "SpaceX IR 2026-11-25: President's personal gift of 'over 2 million SpaceX shares' — matches",
+    "EDGAR submissions: latest filing is SCHEDULE 13G/A 2026-11-16, 0001213900-26-120715 — matches. The form label 'SC 13G/A' is just a different way of writing the same form",
+    "stockanalysis: 11/25 O 118.47 H 128.45 L 112.93 C 127.44 +1.30% V 148,301,336 · 11/24 O 131.90 H 132.50 L 123.52 C 125.81 -5.65% V 104,030,838 — every cell in the 4절 표 matches",
+    "FRED DGS10: 2026-11-24 = 4.91 — matches 4절 무위험금리 메모"
   ],
-  "verified_at": "2026-11-24T12:55+09:00"
+  "verified_at": "2026-11-27T00:15+09:00"
 }
