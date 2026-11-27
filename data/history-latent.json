@@ -3,6 +3,247 @@
   "page_desc": "차세대 지배자 후보군의 시점별 변동 — 졸업·신규 편입, 섹터 분포, 관전 포인트, 역사적 케이스",
   "entries": [
     {
+      "date": "2026.11.28",
+      "period": "11.21 → 11.28 (주간)",
+      "prev": "2026-11-21",
+      "curr": "2026-11-28",
+      "auto": true,
+      "blocks": [
+        {
+          "type": "items",
+          "label_id": "latent_weekly",
+          "label_p": {},
+          "label": "잠재지배자 주간 변동 (자동 감지)",
+          "events": [
+            {
+              "k": "t_in",
+              "name": "CrowdStrike",
+              "tk": "CRWD",
+              "rank": 65,
+              "mc": 234.93,
+              "mom": 81,
+              "when": "11.23",
+              "replacing": null,
+              "swap": "?",
+              "streak": 3
+            },
+            {
+              "k": "t_in",
+              "name": "Palo Alto Networks",
+              "tk": "PANW",
+              "rank": 47,
+              "mc": 290.16,
+              "mom": 92,
+              "when": "11.24",
+              "replacing": null,
+              "swap": "?",
+              "streak": 3
+            },
+            {
+              "k": "t_out",
+              "name": "Sandisk",
+              "tk": "SNDK",
+              "when": "11.25",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "t_out",
+              "name": "Marvell Technology",
+              "tk": "MRVL",
+              "when": "11.26",
+              "by": null,
+              "carried": null,
+              "out": 5
+            },
+            {
+              "k": "l_rank",
+              "name": "Dell",
+              "tk": "DELL",
+              "a": 96,
+              "b": 83
+            },
+            {
+              "k": "l_rank",
+              "name": "MediaTek",
+              "tk": "2454.TW",
+              "a": 113,
+              "b": 107
+            },
+            {
+              "k": "l_rank",
+              "name": "Seagate Technology",
+              "tk": "STX",
+              "a": 206,
+              "b": 186
+            }
+          ],
+          "items": [
+            "<strong>CrowdStrike</strong> 잠재지배자 신규 편입 (<span class='em-up'>65위, $235B, 1Y +81%</span>) — 기준 충족 3거래일 연속, 11.23 확정",
+            "<strong>Palo Alto Networks</strong> 잠재지배자 신규 편입 (<span class='em-up'>47위, $290B, 1Y +92%</span>) — 기준 충족 3거래일 연속, 11.24 확정",
+            "<strong>Sandisk</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.25 확정",
+            "<strong>Marvell Technology</strong> 잠재지배자 제외 — 기준 미달 5거래일 연속, 11.26 확정",
+            "<strong>Dell</strong> 잠재 순위 <span class='em-up'>96위 → 83위 상승</span>",
+            "<strong>MediaTek</strong> 잠재 순위 <span class='em-up'>113위 → 107위 상승</span>",
+            "<strong>Seagate Technology</strong> 잠재 순위 <span class='em-up'>206위 → 186위 상승</span>"
+          ]
+        },
+        {
+          "type": "items",
+          "label_id": "watch",
+          "label_p": {},
+          "label": "경계 관찰",
+          "events": [
+            {
+              "k": "watch",
+              "parts": [
+                {
+                  "w": "out",
+                  "name": "CrowdStrike",
+                  "tk": "CRWD",
+                  "a": 4,
+                  "b": 5
+                },
+                {
+                  "w": "out",
+                  "name": "Texas Instruments",
+                  "tk": "TXN",
+                  "a": 3,
+                  "b": 5
+                },
+                {
+                  "w": "out",
+                  "name": "Seagate Technology",
+                  "tk": "STX",
+                  "a": 2,
+                  "b": 5
+                }
+              ]
+            }
+          ],
+          "items": [
+            "<strong>CrowdStrike</strong> 제외 카운트 4/5 · <strong>Texas Instruments</strong> 제외 카운트 3/5 · <strong>Seagate Technology</strong> 제외 카운트 2/5"
+          ]
+        },
+        {
+          "type": "items",
+          "label_id": "sector",
+          "label_p": {
+            "n": 7
+          },
+          "label": "섹터 분포 (7종목)",
+          "events": [
+            {
+              "k": "sector",
+              "theme": "AI 반도체",
+              "tid": "",
+              "names": [
+                {
+                  "name": "SK Hynix",
+                  "tk": "000660.KS"
+                },
+                {
+                  "name": "Texas Instruments",
+                  "tk": "TXN"
+                },
+                {
+                  "name": "MediaTek",
+                  "tk": "2454.TW"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 소프트웨어",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Palo Alto Networks",
+                  "tk": "PANW"
+                },
+                {
+                  "name": "CrowdStrike",
+                  "tk": "CRWD"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 서버 OEM",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Dell",
+                  "tk": "DELL"
+                }
+              ]
+            },
+            {
+              "k": "sector",
+              "theme": "AI 테크",
+              "tid": "",
+              "names": [
+                {
+                  "name": "Seagate Technology",
+                  "tk": "STX"
+                }
+              ]
+            }
+          ],
+          "items": [
+            "<strong>AI 반도체 (3)</strong>: SK Hynix, Texas Instruments, MediaTek",
+            "<strong>AI 소프트웨어 (2)</strong>: Palo Alto Networks, CrowdStrike",
+            "<strong>AI 서버 OEM (1)</strong>: Dell",
+            "<strong>AI 테크 (1)</strong>: Seagate Technology"
+          ]
+        },
+        {
+          "type": "items",
+          "label_id": "points",
+          "label_p": {},
+          "label": "관전 포인트",
+          "events": [
+            {
+              "k": "pt_hot",
+              "name": "MediaTek",
+              "tk": "2454.TW",
+              "m": 160
+            },
+            {
+              "k": "pt_new",
+              "name": "Palo Alto Networks",
+              "tk": "PANW",
+              "rank": 47
+            }
+          ],
+          "items": [
+            "<strong>가장 폭발적</strong>: MediaTek — 1Y <span class='em-up'>+160%</span>",
+            "<strong>신규 중 최고 순위</strong>: Palo Alto Networks — 글로벌 47위 데뷔"
+          ]
+        },
+        {
+          "type": "stats",
+          "label": "환율 · 환산",
+          "fx": {
+            "rate": "1,335",
+            "date": "11/28",
+            "mult": "1.33"
+          },
+          "items": [
+            {
+              "k": "USD/KRW",
+              "v": "1,335 (11/28 기준)"
+            },
+            {
+              "k": "환산식",
+              "v": "시총(조원) = 시총(USD bn) × 1.33"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "date": "2026.11.21",
       "period": "11.14 → 11.21 (주간)",
       "prev": "2026-11-14",

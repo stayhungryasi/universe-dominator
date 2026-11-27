@@ -24,11 +24,6 @@
  },
  "buffett": [
   {
-   "date": "2026-11-13",
-   "measured": 21,
-   "forward": 21
-  },
-  {
    "date": "2026-11-14",
    "measured": 21,
    "forward": 21
@@ -97,13 +92,14 @@
    "date": "2026-11-27",
    "measured": 21,
    "forward": 21
+  },
+  {
+   "date": "2026-11-28",
+   "measured": 21,
+   "forward": 21
   }
  ],
  "sent": {
-  "2026-11-20": [
-   "sentinel:bot:spacex_news:2026-11-20",
-   "sentinel:probe-fail-recover:2026-11-20"
-  ],
   "2026-11-23": [
    "sentinel:feed-zero:companion:spacex:SpaceX IR 보도자료:2026-11-23",
    "sentinel:probe-fail:2026-11-23"
@@ -127,16 +123,21 @@
    "sentinel:bot:spacex_news:2026-11-27",
    "sentinel:feed-recover:signals:Hacker News 300+:2026-11-27",
    "sentinel:probe-fail:2026-11-27"
+  ],
+  "2026-11-28": [
+   "sentinel:bot:spacex_news:2026-11-28",
+   "sentinel:stale:columns.json:2026-11-28"
   ]
  },
  "last_verdict": {
-  "at": "2026-11-27 18:31",
+  "at": "2026-11-28 08:31",
   "ok": false,
   "alerts": [
+   "columns.json: 81시간째 갱신 정체 (허용 72h)",
    "SpaceX 뉴스 감시관: 이번 회차 실행 흔적 없음 (스텝 failure)"
   ]
  },
- "last_run": "2026-11-27 18:31",
+ "last_run": "2026-11-28 08:31",
  "materials": {
   "streak": 0,
   "alerted": false
@@ -1184,7 +1185,7 @@
    "zero_alerted": false
   },
   "spacex_news:판정 모델": {
-   "err_streak": 9,
+   "err_streak": 10,
    "zero_streak": 0,
    "err_alerted": true,
    "zero_alerted": false,
@@ -1223,7 +1224,7 @@
    22,
    25
   ],
-  "at": "2026-11-27"
+  "at": "2026-11-28"
  },
  "probe": {
   "stale": false,
@@ -1232,9 +1233,9 @@
   "fail_alerted_last": "2026-11-27"
  },
  "i18n": {
-  "streak": 10,
+  "streak": 11,
   "alerted": true,
-  "last_ts": "2026-11-27 18:30",
+  "last_ts": "2026-11-28 08:30",
   "alerted_first": "2026-11-25",
   "alerted_last": "2026-11-25"
  },
